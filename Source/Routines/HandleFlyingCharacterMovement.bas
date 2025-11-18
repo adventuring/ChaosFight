@@ -61,7 +61,7 @@ end
           rem Reset left-collision flag
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then goto HFCM_CheckRightMovement
@@ -79,7 +79,7 @@ end
           rem Do not check if beyond screen
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then goto HFCM_CheckRightMovement
@@ -101,7 +101,7 @@ HFCM_LeftApplyDone
           rem Preserve facing during hurt/recovery states (knockback, hitstun)
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto SPF_InlineYes1
-          gosub GetPlayerAnimationStateFunction
+          gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then goto SPF_InlineNo1
           if temp2 > 9 then goto SPF_InlineNo1
 SPF_InlineYes1
@@ -156,7 +156,7 @@ end
           rem Reset right-collision flag
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then return
@@ -175,7 +175,7 @@ end
           rem Do not check if beyond screen
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then return
@@ -197,7 +197,7 @@ HFCM_RightApplyDone
           rem Preserve facing during hurt/recovery states while processing right movement
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto SPF_InlineYes2
-          gosub GetPlayerAnimationStateFunction
+          gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then goto SPF_InlineNo2
           if temp2 > 9 then goto SPF_InlineNo2
 SPF_InlineYes2

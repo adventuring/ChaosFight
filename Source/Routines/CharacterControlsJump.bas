@@ -64,7 +64,7 @@ end
           let temp3 = temp1
           let temp1 = temp2
           let temp2 = temp6
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           let temp1 = temp3
           if temp4 = 0 then return
@@ -86,7 +86,7 @@ end
           let temp3 = temp1
           let temp1 = temp2
           let temp2 = temp4
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp3
           if temp5 = 1 then return
@@ -124,7 +124,7 @@ BernieCheckBottomWrap
           let temp3 = temp1
           let temp1 = temp2
           let temp2 = temp4
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp3
           if temp5 = 1 then return
@@ -178,7 +178,7 @@ DragonOfStormsJump
           let temp6 = temp1
           let temp1 = temp2
           let temp2 = temp4
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp6
           if temp5 = 1 then return
@@ -414,7 +414,7 @@ FrootyJump
           let temp6 = temp1
           let temp1 = temp2
           let temp2 = temp4
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp6
           if temp5 = 1 then return
@@ -638,7 +638,7 @@ GroundSearchLoop
           let temp3 = temp1
           let temp1 = temp4
           let temp2 = temp5
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp6 = 1
           let temp1 = temp3
           if temp6 = 1 then goto GroundFound
@@ -753,7 +753,7 @@ RoboTitoCheckCeiling
           let temp5 = temp1
           let temp1 = temp2
           let temp2 = temp4
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then goto RoboTitoLatch
           let temp1 = temp5
 

@@ -175,7 +175,7 @@ end
           let temp4 = temp1
           let temp1 = temp6
           let temp2 = temp5
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp3 = 1
           let temp1 = temp4
           if temp3 = 0 then goto GravityNextPlayer

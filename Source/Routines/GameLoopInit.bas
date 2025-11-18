@@ -72,7 +72,7 @@ end
           gosub InitializeSpritePointers bank14
           rem Ensure pointers are set before loading any sprite data
 
-          gosub SetGameScreenLayout bank7
+          gosub SetGameScreenLayout bank8
           rem Set screen layout for gameplay (32×8 game layout)
           rem SuperChip variables var0-var15 available in gameplay
 
@@ -174,9 +174,8 @@ skip_activation3
           rem   Player 1, bit 2 = Player 2, bit 3 = Player 3
           let missileActive  = 0
 
-          let playersEliminated_W = 0
-          rem Initialize elimination system
           let playersRemaining_W = 1
+          rem Initialize remaining players count
           rem CharacterSelectCheckReady guarantees Player 1 is active; seed count with P1
           let gameEndTimer_W = 0
           rem Will be calculated

@@ -8,7 +8,7 @@ end
           rem
           rem Find Winner
           rem Identify the last standing player.
-          rem Input: currentPlayer (loop), playersEliminated_R, eliminationOrder[]
+          rem Input: currentPlayer (loop), playerHealth[], eliminationOrder[]
           rem Output: winnerPlayerIndex (0-3, 255 if all eliminated)
           rem Mutates: temp2, currentPlayer, winnerPlayerIndex
           rem Calls: IsPlayerEliminated, FindLastEliminated (if needed)
@@ -18,12 +18,12 @@ end
 
           for currentPlayer = 0 to 3
           rem Check each player using FOR loop
-          gosub IsPlayerEliminated
+          gosub IsPlayerEliminated bank13
           if !temp2 then let winnerPlayerIndex_W = currentPlayer
           next
 
           rem If no winner found (all eliminated), pick last eliminated
           rem tail call
-          if winnerPlayerIndex_R = 255 then goto FindLastEliminated bank12
+          if winnerPlayerIndex_R = 255 then goto FindLastEliminated bank14
           return
 

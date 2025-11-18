@@ -53,7 +53,7 @@ end
           let fallComplete = 0
           let activePlayers = 0
 
-          gosub SetGameScreenLayout bank7
+          gosub SetGameScreenLayout bank8
           rem Set game screen layout (32×8 for playfield scanning)
 
           COLUBK = ColGray(0)

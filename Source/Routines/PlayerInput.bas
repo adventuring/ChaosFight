@@ -86,7 +86,7 @@ end
           if qtcontroller then goto InputHandleQuadtariPlayers
 
           rem Even frame: Handle Players 1 & 2 - only if alive
-          let currentPlayer = 0 : gosub IsPlayerAlive bank12
+          let currentPlayer = 0 : gosub IsPlayerAlive bank13
           if temp2 = 0 then goto InputDonePlayer0Input
           if (playerState[0] & 8) then goto InputDonePlayer0Input
           let temp1 = 0 : gosub InputHandleLeftPortPlayerFunction
@@ -104,7 +104,7 @@ InputDonePlayer0Input
           rem
           rem Constraints: Must be colocated with InputHandleAllPlayers
 
-          let currentPlayer = 1 : gosub IsPlayerAlive bank12
+          let currentPlayer = 1 : gosub IsPlayerAlive bank13
           if temp2 = 0 then goto InputDonePlayer1Input
           if (playerState[1] & 8) then goto InputDonePlayer1Input
           goto InputHandlePlayer1
@@ -166,7 +166,7 @@ InputHandleQuadtariPlayers
           rem alive)
           if (controllerStatus & SetQuadtariDetected) = 0 then goto InputDonePlayer3Input
           if playerCharacter[2] = NoCharacter then goto InputDonePlayer3Input
-          let currentPlayer = 2 : gosub IsPlayerAlive bank12
+          let currentPlayer = 2 : gosub IsPlayerAlive bank13
           if temp2 = 0 then goto InputDonePlayer3Input
           if (playerState[2] & 8) then goto InputDonePlayer3Input
           let temp1 = 2 : gosub InputHandleLeftPortPlayerFunction
@@ -184,7 +184,7 @@ InputDonePlayer3Input
           rem Constraints: Must be colocated with InputHandleQuadtariPlayers
           if (controllerStatus & SetQuadtariDetected) = 0 then goto InputDonePlayer4Input
           if playerCharacter[3] = NoCharacter then goto InputDonePlayer4Input
-          let currentPlayer = 3 : gosub IsPlayerAlive bank12
+          let currentPlayer = 3 : gosub IsPlayerAlive bank13
           if temp2 = 0 then goto InputDonePlayer4Input
           if (playerState[3] & 8) then goto InputDonePlayer4Input
           let temp1 = 3 : gosub InputHandleRightPortPlayerFunction
@@ -315,7 +315,7 @@ end
           rem Reset left-collision flag
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then goto HFCM_CheckRightMovement
@@ -333,7 +333,7 @@ end
           rem Do not check if beyond screen
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then goto HFCM_CheckRightMovement
@@ -410,7 +410,7 @@ end
           rem Reset right-collision flag
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then return
@@ -429,7 +429,7 @@ end
           rem Do not check if beyond screen
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then return
@@ -568,7 +568,7 @@ SPF_InlineDone4
           rem Right movement complete
 DoneLeftPortMovement
 IHLP_FlyingMovement
-          gosub HandleFlyingCharacterMovement
+          gosub HandleFlyingCharacterMovement bank12
 IHLP_DoneFlyingLeftRight
 
           rem Process UP input for character-specific behaviors
@@ -637,7 +637,7 @@ end
           let currentPlayer = temp1
           let temp1 = temp4
           let temp2 = temp3
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then goto RoboTitoLatchLeft
           let temp1 = currentPlayer
           rem Clear latch if DOWN pressed
@@ -893,7 +893,7 @@ SPF_InlineDone6
 
 DoneRightPortMovement
 IHRP_FlyingMovement
-          gosub HandleFlyingCharacterMovement
+          gosub HandleFlyingCharacterMovement bank12
 IHRP_DoneFlyingLeftRight
 
 
@@ -964,7 +964,7 @@ end
           let currentPlayer = temp1
           let temp1 = temp4
           let temp2 = temp3
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then goto RoboTitoLatchRight
           let temp1 = currentPlayer
           rem Clear latch if DOWN pressed

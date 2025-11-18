@@ -1,7 +1,7 @@
           rem ChaosFight - Source/Common/Preamble.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          includesfile ChaosFight.inc
+          set includesfile ChaosFight.inc
 
           asm
 ;; CRITICAL: Define bscode_length before any code that uses it

@@ -558,8 +558,6 @@
           rem NOTE: var37-var40 used for playerAttackCooldown (Game
           rem   Mode), var37-var38 used for characterSelect (Admin Mode)
           dim playerAttackCooldown = var37
-          rem Scratch: playersEliminated_R | BitMask[currentPlayer] (PlayerElimination)
-          dim CPE_eliminatedFlags = var47
 
           rem Game Mode: Additional game state variables (moved to SCRAM
           rem   - less performance critical)
@@ -697,14 +695,6 @@
           rem Bit 0 = Player 1, Bit 1 = Player 2, Bit 2 = Player 3, Bit
           rem   3 = Player 4
           rem Set when player health reaches 0, prevents respawn/reentry
-          rem NOTE: w095 conflicts with fireHoldTimer_W (COMMON Admin
-          rem   Mode), but playersEliminated is GAME MODE only
-          rem Using proper _W/_R suffixes to follow SCRAM conventions
-          rem   despite intentional redim
-          dim playersEliminated_W = w095
-          rem GAME: Eliminated player bit flags (SCRAM - low frequency
-          rem   access, redimmed with fireHoldTimer_W)
-          dim playersEliminated_R = r095
 
           rem Character-specific state flags for special mechanics
           rem   (SCRAM)

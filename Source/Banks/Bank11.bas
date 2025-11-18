@@ -14,6 +14,7 @@ end
 #include "Source/Routines/GameLoopMain.bas"
 #include "Source/Routines/PlayerCollisionResolution.bas"
 #include "Source/Routines/DisplayHealth.bas"
+#include "Source/Routines/HealthBarSystem.bas"
 
           asm
 Bank11CodeEnds

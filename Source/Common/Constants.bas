@@ -198,15 +198,6 @@
           rem VBLANK constants for controller detection
           rem VBLANK with paddle ground enabled for controller detection
 
-          const PlayerEliminatedPlayer0 = 1
-          rem Player elimination bit constants (playersEliminated flags)
-          const PlayerEliminatedPlayer1 = 2
-          rem Bit 0: Player 0 eliminated ($01)
-          const PlayerEliminatedPlayer2 = 4
-          rem Bit 1: Player 1 eliminated ($02)
-          const PlayerEliminatedPlayer3 = 8
-          rem Bit 2: Player 2 eliminated ($04)
-          rem Bit 3: Player 3 eliminated ($08)
 
           const QuadtariDetected = 7
           rem Controller status bit constants (packed into single byte)

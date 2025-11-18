@@ -38,7 +38,7 @@ end
 
           let temp1 = MusicChaotica
           rem Start Chaotica title music
-          ; gosub StartMusic bank1  ; TEMPORARILY DISABLED
+          gosub StartMusic bank1
 
           gosub SetTitleWindowValues bank14
           rem Set window values for Title screen (ChaosFight only)

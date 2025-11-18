@@ -26,6 +26,7 @@ end
 #include "Source/Routines/FallDamage.bas"
 #include "Source/Routines/ScreenLayout.bas"
 #include "Source/Routines/ProcessJumpInput.bas"
+#include "Source/Routines/MissileCollision.bas"
 
           asm
 Bank8CodeEnds

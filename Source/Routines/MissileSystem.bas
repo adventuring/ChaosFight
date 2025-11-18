@@ -410,7 +410,7 @@ PlayfieldCollisionDone
           rem No bounce - deactivate on background hit
 
           rem Check collision with players
-          gosub CheckAllMissileCollisions bank7
+          gosub CheckAllMissileCollisions bank8
           rem This handles both visible missiles and AOE attacks
           rem Check if hit was found (temp4 != MissileHitNotFound)
           if temp4 = MissileHitNotFound then goto MissileSystemNoHit
@@ -552,7 +552,7 @@ MissileSysPF
           let temp4 = 0
           let temp1 = temp6
           let temp2 = temp3
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1 : return
           rem Default: no collision detected
           return

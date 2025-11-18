@@ -227,13 +227,13 @@ end
           rem P3/p4 HEALTH DISPLAY (score Mode)
           rem Display players 3 and 4 health as 2-digit numbers in score
           rem   area
-          rem Format: AACFAA where:
-          rem Left 2 digits (AA): Player 3 health (00-99 in BCD) or $AA if inactive/eliminated
+          rem Format: nnCFmm where:
+          rem Left 2 digits (nn): Player 3 health (00-99 in BCD) or $ee if inactive/eliminated
           rem Middle 2 digits (CF): Literal CF ($CF - bad BCD displays
           rem   as hex)
-          rem Right 2 digits (AA): Player 4 health (00-99 in BCD) or $AA if inactive/eliminated
+          rem Right 2 digits (mm): Player 4 health (00-99 in BCD) or $ee if inactive/eliminated
           rem Score display uses 6 digits total (3 bytes)
-          rem Uses bad BCD technique: $AA and $CF are invalid BCD but
+          rem Uses bad BCD technique: $ee and $CF are invalid BCD but
           rem   display as hex characters
 
 ConvertToBCD
@@ -281,20 +281,19 @@ end
           rem Only update player health if players 3 or 4 are active
 
           rem Get Player 3 health (0-100), clamp to 99
-          rem Use $AA (bad BCD displays as AA) if inactive
+          rem Use $ee ("  ") if inactive
           let temp1 = playerHealth[2]
           rem (playerCharacter = NoCharacter) or eliminated
           if playerCharacter[2] = NoCharacter then goto P3UseAA
-          rem Check if Player 3 is eliminated (bit 2 of playersEliminated = 4)
-          let temp3 = playersEliminated_R & PlayerEliminatedPlayer2
-          if temp3 then goto P3UseAA
+          rem Check if Player 3 is eliminated (health = 0)
+          if temp1 = 0 then goto P3UseAA
           if PlayerHealthMax - 1 < temp1 then temp1 = PlayerHealthMax - 1
           rem Clamp health to valid range
           goto P3ConvertHealth
 
 P3UseAA
-          rem Player 3 inactive/eliminated - use $AA (bad BCD displays as AA)
-          let temp4 = $AA
+          rem Player 3 inactive/eliminated - use $ee (displays as "  ")
+          let temp4 = $ee
           goto P4GetHealth
 
 P3ConvertHealth
@@ -305,20 +304,19 @@ P3ConvertHealth
 
 P4GetHealth
           rem Get Player 4 health (0-100), clamp to 99
-          rem Use $AA (bad BCD displays as AA) if inactive
+          rem Use $ee (displays as "  ") if inactive
           let temp2 = playerHealth[3]
           rem (playerCharacter = NoCharacter) or eliminated
           if playerCharacter[3] = NoCharacter then goto P4UseAA
-          rem Check if Player 4 is eliminated (bit 3 of playersEliminated = 8)
-          let temp3 = playersEliminated_R & PlayerEliminatedPlayer3
-          if temp3 then goto P4UseAA
+          rem Check if Player 4 is eliminated (health = 0)
+          if temp2 = 0 then goto P4UseAA
           if temp2 > 99 then temp2 = 99
           rem Clamp health to valid range
           goto P4ConvertHealth
 
 P4UseAA
-          rem Player 4 inactive/eliminated - use $AA (bad BCD displays as AA)
-          let temp5 = $AA
+          rem Player 4 inactive/eliminated - use $ee (displays as "  ")
+          let temp5 = $ee
           goto SetScoreBytes
 
 P4ConvertHealth
@@ -329,21 +327,21 @@ P4ConvertHealth
           rem temp5 now contains P4 health as BCD (e.g., $50 for 50)
 
 SetScoreBytes
-          rem Set score for AACFAA format using bad BCD values
+          rem Set score for nnCFmm format using bad BCD values
           rem Format: score (digits 0-1), score+1 (digits 2-3), score+2
           rem   (digits 4-5)
-          rem score (high byte, digits 0-1) = P3 BCD ($00-$99) OR $AA if
+          rem score (high byte, digits 0-1) = P3 BCD ($00-$99) OR $ee if
           rem   inactive/eliminated
           rem score+1 (middle byte, digits 2-3) = $CF (literal CF -
           rem   bad BCD)
-          rem score+2 (low byte, digits 4-5) = P4 BCD ($00-$99) OR $AA
+          rem score+2 (low byte, digits 4-5) = P4 BCD ($00-$99) OR $ee
           rem   if inactive/eliminated
-          rem Note: $AA and $CF are invalid BCD but display as hex
+          rem Note: $ee and $CF are invalid BCD but display as hex
           rem   characters via score font
 
           rem Set score bytes directly (no BCD arithmetic needed - we
           rem   already have BCD or bad BCD values)
-          rem Write raw byte values: $AA/$CF/$AA or health BCD values
+          rem Write raw byte values: $ee/$CF/$ee or health BCD values
           asm
             LDA temp4
             STA score

@@ -68,7 +68,18 @@ CheckFallDamage
           if temp2 = 1 then goto WeightMultDone
           rem temp2 is 2-5, use optimized inline multiplication
           asm
-            jmp multstart
+            lda temp4
+            ldx temp2
+            cpx #2
+            beq mult2
+            cpx #3
+            beq mult3
+            cpx #4
+            beq mult4
+            cpx #5
+            beq mult5
+            sta temp4
+            jmp multdone
 mult2:      asl a
             sta temp4
             jmp multdone

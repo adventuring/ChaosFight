@@ -110,11 +110,6 @@ CheckPlayer2HealthUpdate
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           let temp6 = playerHealth[2] / 12
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
-          COLUPF = ColGray(14)
-          COLUP0 = ColGray(14)
-          COLUP1 = ColGray(14)
-          rem Score minikernel requires all three color registers set to same color
-          rem Players 3/4 health displayed as digits in score area
           return
 DonePlayer2HealthUpdate
           rem Player 2 health update check complete (label only)
@@ -438,7 +433,7 @@ BudgetedMissileCollisionCheck
           rem BitMask[playerIndex] (1, 2, 4, 8)
           let temp6 = BitMask[temp1]
           let temp4 = missileActive & temp6
-          if temp4 then gosub CheckAllMissileCollisions bank7
+          if temp4 then gosub CheckAllMissileCollisions bank8
           return
 
 BudgetedMissileCollisionCheck2P
@@ -449,6 +444,6 @@ BudgetedMissileCollisionCheck2P
           let temp6 = BitMask[temp1]
           rem Calculate bit flag using O(1) array lookup:
           let temp4 = missileActive & temp6
-          if temp4 then gosub CheckAllMissileCollisions bank7
+          if temp4 then gosub CheckAllMissileCollisions bank8
           return
 

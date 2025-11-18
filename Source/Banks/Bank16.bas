@@ -25,7 +25,7 @@ end
 #include "Source/Data/WinnerScreen.bas"
 
           asm
-Bank16DataEnds = .
+Bank16DataEnds
           echo "Bank 16 module sizes:"
           if Bank16DataEnds > $F100
            echo "  Arenas: ", [Bank16AfterArenas - $F100]d, " bytes"
@@ -33,9 +33,8 @@ Bank16DataEnds = .
            echo "  PlayerColors: ", [Bank16AfterPlayerColors - Bank16AfterNumbers]d, " bytes"
            echo "  WinnerScreen: ", [Bank16DataEnds - Bank16AfterPlayerColors]d, " bytes"
            echo "  Total data: ", [Bank16DataEnds - $F100]d, " bytes"
-          else
-           echo "  No data in Bank 16 (data starts at $F100)"
           endif
+          echo "FIXME: code modules sizes missing"
 end
 
           rem Second — routines locked to that data. Cannot be moved.

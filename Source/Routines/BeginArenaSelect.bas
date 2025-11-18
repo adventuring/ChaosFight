@@ -45,7 +45,7 @@ end
           rem Initialize fire hold timer (for returning to Character
           rem   Select)
 
-          gosub SetGameScreenLayout bank7
+          gosub SetGameScreenLayout bank8
           rem Set screen layout (32×8 for character display)
 
           COLUBK = ColGray(0)

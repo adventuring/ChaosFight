@@ -113,7 +113,7 @@ end
           gosub UpdateAttackCooldowns bank11
           rem Update attack cooldown timers
 
-          gosub UpdateCharacterAnimations bank14
+          gosub UpdateCharacterAnimations bank13
           rem Update animation system (10fps character animation) (in Bank 14)
 
           gosub UpdatePlayerMovement bank8 :
@@ -223,23 +223,23 @@ GameEndCheckDone
           rem   by UpdateAllMissiles
           rem No separate CheckMissileCollisions call needed
 
-          gosub CheckRoboTitoStretchMissileCollisions bank12
+          gosub CheckRoboTitoStretchMissileCollisions bank13
           rem Check RoboTito stretch missile collisions
 
           rem Set sprite positions (now handled by movement system)
           rem gosub SetSpritePositions
           rem Replaced by UpdatePlayerMovement
 
-          gosub SetPlayerSprites bank2
+          gosub SetPlayerSprites bank6
           rem Set sprite graphics (in Bank 6)
 
           gosub DisplayHealth bank11
           rem Display health information (in Bank 11)
 
-          gosub UpdatePlayer12HealthBars bank10
+          gosub UpdatePlayer12HealthBars bank11
           rem Update P1/P2 health bars using pfscore system
 
-          gosub UpdatePlayer34HealthBars bank10
+          gosub UpdatePlayer34HealthBars bank11
           rem Update P3/P4 health bars using playfield system
 
           gosub UpdateSoundEffect bank15

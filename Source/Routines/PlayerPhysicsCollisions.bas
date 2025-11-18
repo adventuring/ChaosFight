@@ -103,7 +103,7 @@ end
           rem Check for screen bottom elimination/wrap
           if playerY[temp1] <= ScreenBottom then return
           if playerCharacter[temp1] = CharacterBernie then goto CheckPlayerBoundary_BernieWrap
-          let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank12
+          let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank14
           return
 CheckPlayerBoundary_BernieWrap
           let playerY[temp1] = 0 : let playerSubpixelY_W[temp1] = 0 : let playerSubpixelY_WL[temp1] = 0
@@ -215,7 +215,7 @@ end
           rem Reset left-collision flag
           let temp1 = playfieldColumn_R
           let temp2 = playfieldRow_R
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
           rem Check middle position
@@ -232,7 +232,7 @@ end
           if rowCounter_R >= pfrows then goto PFCheckRight
           let temp1 = playfieldColumn_R
           let temp2 = rowCounter_R
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
           rem Check feet position (bottom of sprite)
@@ -243,7 +243,7 @@ end
           if rowCounter_R >= pfrows then goto PFCheckRight
           let temp1 = playfieldColumn_R
           let temp2 = rowCounter_R
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
 
@@ -290,7 +290,7 @@ PFCheckRight
           rem Reset right-collision flag
           let temp1 = playfieldColumn_R
           let temp2 = playfieldRow
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockRight
           rem Calculate (temp5 / 2) / pfrowheight
@@ -306,7 +306,7 @@ end
           if rowCounter_R >= pfrows then goto PFCheckUp
           let temp1 = playfieldColumn_R
           let temp2 = rowCounter_R
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockRight
           rem Reset temp2 to character height for feet check
@@ -317,7 +317,7 @@ end
           if rowCounter_R >= pfrows then goto PFCheckUp
           let temp1 = playfieldColumn_R
           let temp2 = rowCounter_R
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockRight
 
@@ -361,7 +361,7 @@ PFCheckUp
           rem Reset upward-collision flag
           let temp1 = temp6
           let temp2 = rowCounter_R
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockUp
           rem Check left edge column
@@ -369,7 +369,7 @@ PFCheckUp
           let playfieldColumn_W = temp6 - 1
           let temp1 = playfieldColumn_R
           let temp2 = rowCounter_R
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockUp
 PFCheckUp_CheckRight
@@ -378,7 +378,7 @@ PFCheckUp_CheckRight
           let playfieldColumn_W = temp6 + 1
           let temp1 = playfieldColumn_R
           let temp2 = rowCounter_R
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockUp
 
@@ -433,14 +433,14 @@ PFCheckDown_Body
           rem Reset downward-collision flag
           let temp1 = temp6
           let temp2 = playfieldRow
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockDown
           if temp6 = 0 then goto PFCheckDown_CheckRight
           let playfieldColumn_W = temp6 - 1
           let temp1 = playfieldColumn_R
           let temp2 = playfieldRow
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockDown
 PFCheckDown_CheckRight
@@ -448,7 +448,7 @@ PFCheckDown_CheckRight
           let playfieldColumn_W = temp6 + 1
           let temp1 = playfieldColumn_R
           let temp2 = playfieldRow
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockDown
 

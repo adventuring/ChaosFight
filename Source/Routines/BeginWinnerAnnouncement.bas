@@ -45,7 +45,7 @@ end
           rem winnerPlayerIndex should already be set by game end logic
           rem   (FindWinner.bas)
 
-          gosub SetGameScreenLayout bank7
+          gosub SetGameScreenLayout bank8
           rem Set screen layout (32×8 for character display)
 
           rem Set background color (B&W safe)
@@ -67,7 +67,7 @@ end
           rem   song ID constants)
 
           rem Start winner’s character theme song
-          ; gosub StartMusic bank1  ; TEMPORARILY DISABLED
+          gosub StartMusic bank1
 
           return
 

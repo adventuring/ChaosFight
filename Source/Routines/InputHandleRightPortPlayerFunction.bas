@@ -37,7 +37,7 @@ end
 
 DoneRightPortMovement
 IHRP_FlyingMovement
-          gosub HandleFlyingCharacterMovement
+          gosub HandleFlyingCharacterMovement bank12
 IHRP_DoneFlyingLeftRight
 
           rem Process UP input for character-specific behaviors
@@ -46,7 +46,7 @@ IHRP_DoneFlyingLeftRight
 
           rem Process jump input from enhanced buttons (must be identical
           rem   effect to ProcessUpInput for all characters)
-          gosub ProcessJumpInput
+          gosub ProcessJumpInput bank8
 InputDoneRightPortJump
 
           gosub HandleGuardInput

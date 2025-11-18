@@ -19,7 +19,7 @@
 #include "Source/Generated/MethHound.bas"
 
           asm
-Bank5DataEnds = .
+Bank5DataEnds
 end
 
           asm

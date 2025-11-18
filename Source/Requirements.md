@@ -451,8 +451,7 @@ positions; adjusting a single character’s values will not affect others.
 ### Game End Condition
 
 - Game ends when only one player remains (all others eliminated)
-- Eliminated players: Health reached 0, marked in playersEliminated bit
-  flags
+- Eliminated players: Health reached 0 (falling off screen kills)
 - Transition to Winner Screen after last elimination
 
 ### Sound Effects (During Gameplay)

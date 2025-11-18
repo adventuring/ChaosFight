@@ -20,7 +20,7 @@
 #include "Source/Generated/Shamone.bas"
 
           asm
-Bank3DataEnds = .
+Bank3DataEnds
 end
 
           asm

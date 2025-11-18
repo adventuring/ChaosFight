@@ -112,7 +112,7 @@ end
           let currentPlayer = temp1
           let temp1 = temp4
           let temp2 = temp3
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           if temp1 then goto PJI_RoboTitoLatch
           let temp1 = currentPlayer
           rem Clear latch if DOWN pressed (check appropriate port)

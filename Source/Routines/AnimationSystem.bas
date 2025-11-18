@@ -9,7 +9,7 @@ end
           rem Drives the 10fps animation system for every active player
           rem Inputs: controllerStatus (global), currentPlayer (global scratch)
           rem         animationCounter_R[] (SCRAM), currentAnimationFrame_R[],
-          rem         currentAnimationSeq[], playersEliminated_R (SCRAM)
+          rem         currentAnimationSeq[], playerHealth[] (global array)
           rem Outputs: animationCounter_W[], currentAnimationFrame_W[], player sprite state
           rem Mutates: currentPlayer (0-3), animationCounter_W[], currentAnimationFrame_W[]
           rem Calls: UpdatePlayerAnimation (bank10), LoadPlayerSprite (bank16)
@@ -71,8 +71,7 @@ end
           rem        current animation frames
           rem        currentAnimationSeq[] (global array) = current
           rem        animation sequences
-          rem        playersEliminated_R (global SCRAM) = eliminated
-          rem        players bitmask
+          rem        playerHealth[] (global array) = player health values
           rem        BitMask[] (global array) = bitmask lookup table
           rem        AnimationFrameDelay (constant) = frames per
           rem        animation step
@@ -97,9 +96,8 @@ end
           rem Constraints: Must be colocated with AdvanceFrame,
           rem DoneAdvance, HandleFrame7Transition,
           rem              UpdateSprite (all called via goto)
-          rem Skip if player is eliminated - use BitMask array lookup
-          let temp4 = BitMask[currentPlayer]
-          if playersEliminated_R & temp4 then return
+          rem Skip if player is eliminated (health = 0)
+          if playerHealth[currentPlayer] = 0 then return
 
           rem Increment this sprite 10fps animation counter (NOT global
           rem   frame counter)
@@ -344,7 +342,7 @@ TransitionHandleFallBack
           let temp1 = temp5
           let temp3 = temp2
           let temp2 = temp6
-          gosub PlayfieldRead bank10
+          gosub PlayfieldRead bank16
           let temp2 = temp3
           if temp1 then TransitionHandleFallBack_HitWall
           let temp2 = ActionFallen

@@ -83,7 +83,7 @@ end
           rem   CheckAllPlayerCollisions (bank8),
           rem   CheckAllPlayerEliminations,
           rem   UpdateAllMissiles (bank7),
-          rem   CheckRoboTitoStretchMissileCollisions (bank12), SetPlayerSprites (bank6),
+          rem   CheckRoboTitoStretchMissileCollisions (bank13), SetPlayerSprites (bank6),
           rem   DisplayHealth (bank6), UpdatePlayer12HealthBars (bank6),
           rem   UpdatePlayer34HealthBars (bank6), UpdateSoundEffect
           rem   (bank15)
@@ -113,8 +113,8 @@ end
           gosub UpdateAttackCooldowns bank11
           rem Update attack cooldown timers
 
-          gosub UpdateCharacterAnimations
-          rem Update animation system (10fps character animation) (in Bank 11)
+          gosub UpdateCharacterAnimations bank14
+          rem Update animation system (10fps character animation) (in Bank 14)
 
           gosub UpdatePlayerMovement bank8 :
           rem Update movement system (full frame rate movement) (in Bank 11)
@@ -154,7 +154,7 @@ GameMainLoopQuadtariSkip
           gosub CheckAllPlayerCollisions
           rem Check multi-player collisions (in Bank 11)
 
-          gosub CheckAllPlayerEliminations bank12
+          gosub CheckAllPlayerEliminations bank14
           rem Check for player eliminations
 
           gosub UpdateAllMissiles bank7
@@ -233,13 +233,13 @@ GameEndCheckDone
           gosub SetPlayerSprites bank6
           rem Set sprite graphics (in Bank 6)
 
-          gosub DisplayHealth bank6
-          rem Display health information (in Bank 6)
+          gosub DisplayHealth bank11
+          rem Display health information (in Bank 11)
 
-          gosub UpdatePlayer12HealthBars bank6
+          gosub UpdatePlayer12HealthBars bank10
           rem Update P1/P2 health bars using pfscore system
 
-          gosub UpdatePlayer34HealthBars bank6
+          gosub UpdatePlayer34HealthBars bank10
           rem Update P3/P4 health bars using playfield system
 
           gosub UpdateSoundEffect bank15

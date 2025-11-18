@@ -12,7 +12,7 @@ end
           rem Mutates: None; dispatcher only
           rem Calls: WarmStart bank13, PublisherPreludeMain bank14, AuthorPrelude bank14,
           rem        TitleScreenMain bank14, CharacterSelectInputEntry bank9,
-          rem        FallingAnimation1 bank10, ArenaSelect1 bank14,
+          rem        FallingAnimation1 bank4, ArenaSelect1 bank14,
           rem        GameMainLoop bank11, WinnerAnnouncementLoop bank12,
           rem        UpdateMusic bank1, titledrawscreen bank9
           rem Constraints: Must remain colocated with MainLoopDrawScreen
@@ -43,7 +43,7 @@ MainLoopModeCharacterSelect
 
 MainLoopModeFallingAnimation
           rem tail call
-          goto FallingAnimation1 bank10
+          goto FallingAnimation1 bank4
 
 MainLoopModeArenaSelect
           rem tail call
@@ -65,8 +65,8 @@ MainLoopContinue
           rem Notes: Modes 3-6 handle audio updates in their own routines
 
           rem Check if music update is needed for game modes < 3 or mode 7
-          ; if gameMode < 3 then goto UpdateMusic bank1  ; TEMPORARILY DISABLED
-          ; if gameMode = 7 then goto UpdateMusic bank1  ; TEMPORARILY DISABLED
+          if gameMode < 3 then goto UpdateMusic bank1
+          if gameMode = 7 then goto UpdateMusic bank1
 SkipMusicUpdate
 MainLoopDrawScreen
           rem Renders the appropriate screen for the current game mode

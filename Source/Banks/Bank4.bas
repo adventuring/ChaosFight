@@ -22,6 +22,8 @@
 Bank4DataEnds = .
 end
 
+#include "Source/Routines/FallingAnimation.bas"
+
           asm
           ; rem Character art lookup routines for Bank 4 (characters
           ; rem   16-23)

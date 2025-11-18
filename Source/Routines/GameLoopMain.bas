@@ -82,7 +82,7 @@ end
           rem   CheckPlayfieldCollisionAllDirections (bank10),
           rem   CheckAllPlayerCollisions (bank8),
           rem   CheckAllPlayerEliminations,
-          rem   UpdateAllMissiles (bank12),
+          rem   UpdateAllMissiles (bank7),
           rem   CheckRoboTitoStretchMissileCollisions (bank12), SetPlayerSprites (bank6),
           rem   DisplayHealth (bank6), UpdatePlayer12HealthBars (bank6),
           rem   UpdatePlayer34HealthBars (bank6), UpdateSoundEffect
@@ -157,7 +157,7 @@ GameMainLoopQuadtariSkip
           gosub CheckAllPlayerEliminations bank12
           rem Check for player eliminations
 
-          gosub UpdateAllMissiles bank12
+          gosub UpdateAllMissiles bank7
           rem Update missiles (in Bank 12)
 
           rem Check if game should end and transition to winner screen
@@ -216,7 +216,7 @@ GameEndCheckDone
           rem
           rem Constraints: Must be colocated with GameMainLoop
 
-          gosub UpdateAllMissiles bank12
+          gosub UpdateAllMissiles bank7
           rem Update missiles (in Bank 12)
 
           rem Check missile collisions (in Bank 7) - handled internally

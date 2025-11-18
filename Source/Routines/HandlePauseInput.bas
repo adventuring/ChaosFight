@@ -20,8 +20,8 @@ Joy2bPauseDone
 
           rem Debounce: only toggle if button just pressed (was 0, now
           rem 1)
-          if temp1 = 0 then DonePauseToggle
-          if systemFlags & SystemFlagPauseButtonPrev then DonePauseToggle
+          if temp1 = 0 then goto DonePauseToggle
+          if systemFlags & SystemFlagPauseButtonPrev then goto DonePauseToggle
           rem Toggle pause flag in systemFlags
           if systemFlags & SystemFlagGameStatePaused then systemFlags = systemFlags & ClearSystemFlagGameStatePaused else systemFlags = systemFlags | SystemFlagGameStatePaused
 DonePauseToggle

@@ -147,9 +147,6 @@
           rem   temp1 (local scope only)
           dim controllerStatus = h
 
-          rem Pause button debouncing state (0=not pressed, 1=pressed)
-          dim pauseButtonPrev = t
-
           rem Frame phase counter (cycles 0-3 each frame for multi-frame operations)
           dim framePhase = i
 
@@ -561,10 +558,6 @@
           rem NOTE: var37-var40 used for playerAttackCooldown (Game
           rem   Mode), var37-var38 used for characterSelect (Admin Mode)
           dim playerAttackCooldown = var37
-          rem Game Mode: Game state (0=normal play, 1=paused, 2=game ending)
-          rem Used for pause toggle and game state tracking during gameplay
-          rem NOTE: Using letter variable 'u' - redimmed from characterSelectAnimationIndex (Admin Mode)
-          dim gameState = u
           rem Scratch: playersEliminated_R | BitMask[currentPlayer] (PlayerElimination)
           dim CPE_eliminatedFlags = var47
 

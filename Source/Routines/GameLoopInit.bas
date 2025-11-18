@@ -212,9 +212,8 @@ SkipPlayer4
           rem Frame counter is automatically initialized and incremented
           rem by batariBASIC kernel
 
-          let gameState = 0
-          rem Initialize game state
-          rem 0 = normal play, 1 = paused, 2 = game ending
+          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
+          rem Clear paused flag in systemFlags (initialize to normal play)
 
           rem Initialize player sprite NUSIZ registers (double width)
           rem NUSIZ = 5: double width, single copy

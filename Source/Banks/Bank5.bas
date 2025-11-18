@@ -2,7 +2,7 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem ASSET BANK: Character Art Assets (separate memory budget)
-          rem Character sprites (24-31): Character24-30, MethHound + PlayerInput routine
+          rem Character sprites (24-31): Character24-30, MethHound
 
           bank 5
 

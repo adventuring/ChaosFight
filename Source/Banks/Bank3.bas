@@ -3,7 +3,7 @@
           rem
           rem ASSET BANK: Character Art Assets (separate memory budget)
           rem Character sprites (8-15): Frooty, Nefertem, NinjishGuy, PorkChop,
-          rem   RadishGoblin, RoboTito, Ursulo, Shamone + PlayerRendering routine
+          rem   RadishGoblin, RoboTito, Ursulo, Shamone
 
           bank 3
 
@@ -24,7 +24,7 @@ Bank3DataEnds
 end
 
           asm
-          ; rem Character art lookup routines for Bank 3 (characters 8-15)
+          ;; Character art lookup routines for Bank 3 (characters 8-15)
 #include "Source/Routines/CharacterArtBank3.s"
 Bank3CodeEnds
 end

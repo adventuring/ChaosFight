@@ -2,7 +2,7 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem ASSET BANK: Character Art Assets (separate memory budget)
-          rem Character sprites (16-23): Character16-23 (placeholders) + FallingAnimation routine
+          rem Character sprites (16-23)
 
           bank 4
 
@@ -23,8 +23,8 @@ Bank4DataEnds
 end
 
           asm
-          ; rem Character art lookup routines for Bank 4 (characters
-          ; rem   16-23)
+          ;; Character art lookup routines for Bank 4 (characters
+          ;;   16-23)
 #include "Source/Routines/CharacterArtBank4.s"
 Bank4CodeEnds
 end

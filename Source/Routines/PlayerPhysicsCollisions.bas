@@ -199,27 +199,9 @@ end
           if temp6 > 31 then temp6 = 31
 
           rem Convert Y position to playfield row (0-pfrows-1)
-          rem Divide by pfrowheight using helper
-          rem Inline DivideByPfrowheight logic from FallDamage.bas
+          rem Divide by pfrowheight using shared helper
           let temp2 = temp3
-          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
-          if pfrowheight = 8 then DBPF_InlineDivideBy8
-          rem pfrowheight is 16, divide by 16 (4 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-          goto DBPF_InlineDivideDone
-DBPF_InlineDivideBy8
-          rem pfrowheight is 8, divide by 8 (3 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-DBPF_InlineDivideDone
+          gosub DivideByPfrowheight
           let playfieldRow = temp2
           rem playfieldRow = playfield row
           if playfieldRow >= pfrows then let playfieldRow = pfrows - 1
@@ -258,25 +240,8 @@ DBPF_InlineDivideDone
             lsr
             sta temp2
 end
-          rem temp2 = temp5 / 2
-          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
-          if pfrowheight = 8 then DBPF_InlineDivideBy8_1
-          rem pfrowheight is 16, divide by 16 (4 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-          goto DBPF_InlineDivideDone_1
-DBPF_InlineDivideBy8_1
-          rem pfrowheight is 8, divide by 8 (3 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-DBPF_InlineDivideDone_1
+          rem temp2 = temp5 / 2, now divide by pfrowheight
+          gosub DivideByPfrowheight
           rem temp2 now contains (temp5 / 2) / pfrowheight
           let rowCounter_W = playfieldRow_R + temp2
           if rowCounter_R >= pfrows then goto PFCheckRight
@@ -287,24 +252,7 @@ DBPF_InlineDivideDone_1
           if temp4 = 1 then goto PFBlockLeft
           rem Check feet position (bottom of sprite)
           let temp2 = temp5
-          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
-          if pfrowheight = 8 then DBPF_InlineDivideBy8_2
-          rem pfrowheight is 16, divide by 16 (4 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-          goto DBPF_InlineDivideDone_2
-DBPF_InlineDivideBy8_2
-          rem pfrowheight is 8, divide by 8 (3 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-DBPF_InlineDivideDone_2
+          gosub DivideByPfrowheight
           rem temp2 now contains temp5 / pfrowheight
           let rowCounter_W = playfieldRow_R + temp2
           if rowCounter_R >= pfrows then goto PFCheckRight
@@ -366,25 +314,8 @@ PFCheckRight
             lsr a
             sta temp2
 end
-          rem temp2 = temp5 / 2
-          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
-          if pfrowheight = 8 then DBPF_InlineDivideBy8_6
-          rem pfrowheight is 16, divide by 16 (4 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-          goto DBPF_InlineDivideDone_6
-DBPF_InlineDivideBy8_6
-          rem pfrowheight is 8, divide by 8 (3 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-DBPF_InlineDivideDone_6
+          rem temp2 = temp5 / 2, now divide by pfrowheight
+          gosub DivideByPfrowheight
           rem temp2 now contains (temp5 / 2) / pfrowheight
           let rowCounter_W = playfieldRow + temp2
           if rowCounter_R >= pfrows then goto PFCheckUp
@@ -395,24 +326,7 @@ DBPF_InlineDivideDone_6
           if temp4 = 1 then goto PFBlockRight
           rem Reset temp2 to character height for feet check
           let temp2 = temp5
-          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
-          if pfrowheight = 8 then DBPF_InlineDivideBy8_7
-          rem pfrowheight is 16, divide by 16 (4 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-          goto DBPF_InlineDivideDone_7
-DBPF_InlineDivideBy8_7
-          rem pfrowheight is 8, divide by 8 (3 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-DBPF_InlineDivideDone_7
+          gosub DivideByPfrowheight
           rem temp2 now contains temp5 / pfrowheight
           let rowCounter_W = playfieldRow + temp2
           if rowCounter_R >= pfrows then goto PFCheckUp
@@ -519,24 +433,7 @@ PFCheckDown_Body
           rem This is primarily handled in PhysicsApplyGravity, but we
           rem Verify feet position using character height
           let temp2 = temp5
-          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
-          if pfrowheight = 8 then DBPF_InlineDivideBy8_5
-          rem pfrowheight is 16, divide by 16 (4 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-          goto DBPF_InlineDivideDone_5
-DBPF_InlineDivideBy8_5
-          rem pfrowheight is 8, divide by 8 (3 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-DBPF_InlineDivideDone_5
+          gosub DivideByPfrowheight
           let rowCounter_W = playfieldRow + temp2
           rem Row at player feet (rowCounter)
           if rowCounter_R >= pfrows then return
@@ -570,6 +467,30 @@ PFCheckDown_CheckRight
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockDown
 
+          return
+
+DivideByPfrowheight
+          rem Shared helper: Divide temp2 by pfrowheight (8 or 16)
+          rem Input: temp2 = value to divide
+          rem Output: temp2 = temp2 / pfrowheight
+          rem Mutates: temp2
+          rem Constraints: pfrowheight must be 8 or 16 (power of 2)
+          if pfrowheight = 8 then DivideByPfrowheight_By8
+          rem pfrowheight is 16, divide by 16 (4 right shifts)
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
+          return
+DivideByPfrowheight_By8
+          rem pfrowheight is 8, divide by 8 (3 right shifts)
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
           return
 
 CheckPlayfieldCollisionUpDone

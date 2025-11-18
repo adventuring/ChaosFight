@@ -20,6 +20,7 @@ end
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/ProcessUpInput.bas"
 #include "Source/Routines/ProcessJumpInput.bas"
+#include "Source/Routines/CharacterControlsJump.bas"
 
           asm
 Bank10CodeEnds

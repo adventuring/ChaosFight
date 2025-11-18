@@ -19,8 +19,8 @@ end
           rem Mutates: temp3, temp4, temp6, playerCharacter[], playerState[],
           rem         playerY[], characterStateFlags_W[]
           rem
-          rem Called Routines: CheckEnhancedJumpButton, BernieJump (bank13),
-          rem         HarpyJump (bank13), DispatchCharacterJump (bank13), PlayfieldRead (bank16)
+          rem Called Routines: CheckEnhancedJumpButton, BernieJump (bank10),
+          rem         HarpyJump (bank10), DispatchCharacterJump (bank10), PlayfieldRead (bank16)
           rem
           rem Constraints: Must be colocated with PJI_CheckEnhanced, PJI_CharacterBehaviors helpers
           rem Process jump input from enhanced buttons (Genesis/Joy2b+ Button C/II)
@@ -57,7 +57,7 @@ end
           if temp2 >= 13 then return
           rem Block jump during attack windup/execute/recovery
           let temp4 = playerCharacter[temp1]
-          gosub DispatchCharacterJump bank13
+          gosub DispatchCharacterJump bank10
           return
 
 PJI_ZoeJumpCheck
@@ -69,17 +69,17 @@ PJI_ZoeJumpCheck
           if temp2 >= 13 then return
           let temp4 = playerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
-          gosub DispatchCharacterJump bank13
+          gosub DispatchCharacterJump bank10
           if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
           return
 
 PJI_BernieFallThrough
           rem Bernie enhanced button handled in BernieJump routine (fall through 1-row floors)
-          gosub BernieJump bank13
+          gosub BernieJump bank10
           return
 
 PJI_HarpyFlap
-          gosub HarpyJump bank13
+          gosub HarpyJump bank10
           rem Harpy enhanced button handled in HarpyJump routine (flap to fly)
           return
 
@@ -113,10 +113,10 @@ end
           let temp1 = temp4
           let temp2 = temp3
           gosub PlayfieldRead bank16
-          if temp1 then PJI_RoboTitoLatch
+          if temp1 then goto PJI_RoboTitoLatch
           let temp1 = currentPlayer
           rem Clear latch if DOWN pressed (check appropriate port)
-          if temp1 & 2 = 0 then PJI_CheckJoy0Down
+          if temp1 & 2 = 0 then goto PJI_CheckJoy0Down
           if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
           return
 PJI_CheckJoy0Down

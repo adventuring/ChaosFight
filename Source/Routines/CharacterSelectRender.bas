@@ -219,11 +219,11 @@ end
           if switchselect then goto CharacterSelectDoRescan
           let temp6 = switchbw
           if temp6 = colorBWPrevious_R then goto CharacterSelectRescanDone
-          gosub DetectPads bank14
+          gosub DetectPads bank13
           let colorBWPrevious_W = switchbw
           goto CharacterSelectRescanDone
 CharacterSelectDoRescan
-          gosub DetectPads bank14
+          gosub DetectPads bank13
 CharacterSelectRescanDone
           return
 

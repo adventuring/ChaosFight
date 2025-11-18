@@ -72,7 +72,7 @@ end
           gosub CheckEnhancedPause
           rem Check Player 1 buttons
           if !temp1 then DonePlayer1Pause
-          gosub DetectPads bank14
+          gosub DetectPads
           rem Re-detect controllers when Select is pressed
           if (systemFlags & SystemFlagGameStatePaused) = 0 then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
@@ -87,7 +87,7 @@ DonePlayer1Pause
           gosub CheckEnhancedPause
           rem Check Player 2 buttons
           if !temp1 then DonePlayer2Pause
-          gosub DetectPads bank14
+          gosub DetectPads
           rem Re-detect controllers when Select is pressed
           if (systemFlags & SystemFlagGameStatePaused) = 0 then let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
@@ -103,7 +103,7 @@ DonePlayer2Pause
 
 #ifndef TV_SECAM
           rem 7800 Pause button - toggle Color/B&W mode (not in SECAM)
-          goto Check7800Pause bank14
+          goto Check7800Pause
           rem tail call
 #endif
 
@@ -174,7 +174,7 @@ end
           rem switchbw read),
           rem         colorBWPrevious_W (updated if switch changed)
           rem
-          rem Called Routines: DetectPads (bank14) - accesses
+          rem Called Routines: DetectPads (bank13) - accesses
           rem controller detection state
           rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
 
@@ -182,7 +182,7 @@ end
           let temp6 = 0
           if switchbw then temp6 = 1
           if temp6 = colorBWPrevious_R then DoneSwitchChange
-          gosub DetectPads bank14
+          gosub DetectPads
           let colorBWPrevious_W = temp6
 DoneSwitchChange
           rem Color/B&W switch change check complete (label only, no
@@ -218,6 +218,6 @@ DoneSwitchChange
           return
 
 ReloadArenaColorsNow
-          gosub ReloadArenaColors bank12
+          gosub ReloadArenaColors bank14
           rem Reload arena colors with current switch state
           return

@@ -14,7 +14,6 @@ end
 #include "Source/Routines/BeginTitleScreen.bas"
 #include "Source/Routines/BeginPublisherPrelude.bas"
 #include "Source/Routines/PublisherPrelude.bas"
-#include "Source/Routines/ControllerDetection.bas"
 #include "Source/Routines/ConsoleDetection.bas"
 #include "Source/Routines/ChangeGameMode.bas"
 #include "Source/Routines/BeginAuthorPrelude.bas"
@@ -27,6 +26,9 @@ end
 #include "Source/Routines/AttractMode.bas"
 #include "Source/Routines/AuthorPrelude.bas"
 #include "Source/Routines/LoadCharacterColors.bas"
+#include "Source/Routines/BeginArenaSelect.bas"
+#include "Source/Routines/ArenaSelect.bas"
+#include "Source/Routines/ArenaReloadUtils.bas"
 
           asm
 Bank14CodeEnds

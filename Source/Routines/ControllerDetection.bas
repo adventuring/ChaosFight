@@ -209,7 +209,7 @@ end
           rem
           rem Mutates: systemFlags (global) = system flags
           rem
-          rem Called Routines: ReloadArenaColors (bank12) - reloads
+          rem Called Routines: ReloadArenaColors (bank14) - reloads
           rem arena colors after override change
           rem
           rem Constraints: Only processes on 7800 console
@@ -235,7 +235,7 @@ ToggleBWDone
           rem XOR to toggle 0<->1 (done via if/else above)
 
           rem Reload arena colors with new override state
-          gosub ReloadArenaColors bank12
+          gosub ReloadArenaColors bank14
 #endif
 
           return

@@ -16,6 +16,7 @@ end
 #include "Source/Routines/IsPlayerEliminated.bas"
 #include "Source/Routines/IsPlayerAlive.bas"
 #include "Source/Routines/CheckPlayerCollision.bas"
+#include "Source/Routines/ControllerDetection.bas"
 #include "Source/Routines/GetPlayerAnimationStateFunction.bas"
 #include "Source/Routines/ConstrainToScreen.bas"
 #include "Source/Routines/AddVelocitySubpixelY.bas"

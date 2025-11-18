@@ -1,18 +1,20 @@
           rem ChaosFight - Source/Common/Preamble.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
+          includesfile ChaosFight.inc
+
           asm
-; CRITICAL: Define bscode_length before any code that uses it
-; Match actual 64kSC bankswitch stub size (see Tools/batariBASIC/includes/banksw.asm ;size=42)
-; $2A = 42 bytes, so bankswitch code runs right up to $FFE0 before EFSC header
-; Use = instead of EQU so ifconst can detect it
-; Define unconditionally - if already defined, this will be ignored by assembler
+;; CRITICAL: Define bscode_length before any code that uses it
+;; Match actual 64kSC bankswitch stub size (see Tools/batariBASIC/includes/banksw.asm ;size=42)
+;; $2A = 42 bytes, so bankswitch code runs right up to $FFE0 before EFSC header
+;; Use = instead of EQU so ifconst can detect it
+;; Define unconditionally - if already defined, this will be ignored by assembler
 bscode_length = $2A
 
-; CRITICAL: Define base variables (var0-var48, a-z) BEFORE redefs file
-; The Makefile inserts include "2600basic_variable_redefs.h" early (after processor 6502),
-; so base variables must be defined before that point
-; Multisprite memory layout (from multisprite.h)
+;; CRITICAL: Define base variables (var0-var48, a-z) BEFORE redefs file
+;; The Makefile inserts include "2600basic_variable_redefs.h" early (after processor 6502),
+;; so base variables must be defined before that point
+;; Multisprite memory layout (from multisprite.h)
 var0 = $A4
 var1 = $A5
 var2 = $A6
@@ -62,7 +64,7 @@ var45 = $D1
 var46 = $D2
 var47 = $D3
 var48 = $D4
-; Multisprite letter variables (different addresses than standard batariBASIC)
+;; Multisprite letter variables (different addresses than standard batariBASIC)
 A = $d7
 a = $d7
 B = $d8

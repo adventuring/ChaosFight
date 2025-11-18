@@ -139,7 +139,7 @@ end
           rem         COLUP0 (TIA register), currentCharacter, currentPlayer,
           rem         temp2-temp3 (LoadCharacterSprite parameters)
           rem
-          rem Called Routines: DrawParadeCharacterSprite (bank9) - draws
+          rem Called Routines: DrawParadeCharacterSprite (bank14, colocated) - draws
           rem character sprite
           rem
           rem Constraints: Must be colocated with DrawParadeCharacterSprite

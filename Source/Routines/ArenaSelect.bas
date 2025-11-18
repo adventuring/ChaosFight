@@ -36,7 +36,7 @@ ArenaSelect1Loop
           rem   CheckQuadtariFireHold - accesses INPT0, INPT2,
           rem   PlaySoundEffect (bank15) - plays navigation/selection
           rem   sounds,
-          rem   DrawDigit (bank16) - draws arena number digits,
+          rem   SetGlyph (bank16) - draws arena number digits,
           rem   ChangeGameMode (bank14) - accesses game mode state
           rem
           rem Constraints: Must be colocated with ArenaSelect1Loop,

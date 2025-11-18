@@ -67,9 +67,9 @@ end
           rem rowYPosition, rowCounter (global) = calculation
           rem temporaries
           rem
-          rem Called Routines: AddVelocitySubpixelY (bank14) - adds
+          rem Called Routines: AddVelocitySubpixelY (bank8) - adds
           rem gravity to vertical velocity,
-          rem ConvertPlayerXToPlayfieldColumn (bank13) - converts player
+          rem CCJ_ConvertPlayerXToPlayfieldColumn (bank13) - converts player
           rem X to playfield column, DivideByPfrowheight - divides Y by
           rem row height, PAG_SetRoboTitoStretchPermission - sets
           rem RoboTito stretch permission on landing
@@ -140,7 +140,7 @@ GravityCheckCharacter
           rem Check playfield collision for ground detection (downward)
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
-          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank8
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
           let temp6 = temp2
           rem Save playfield column (temp2 will be overwritten)
 
@@ -279,6 +279,4 @@ GravityNextPlayer
           if temp1 < 4 then goto GravityLoop
 
           return
-
-          rem ApplyMomentumAndRecovery moved to separate file for ROM balance (Bank 8)
 

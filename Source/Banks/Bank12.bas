@@ -17,6 +17,7 @@ end
 #include "Source/Routines/CharacterDamage.bas"
 #include "Source/Routines/DeactivatePlayerMissiles.bas"
 #include "Source/Routines/TriggerEliminationEffects.bas"
+#include "Source/Routines/FallDamage.bas"
 #include "Source/Routines/UpdatePlayers34ActiveFlag.bas"
 #include "Source/Routines/CountRemainingPlayers.bas"
 #include "Source/Routines/FindLastEliminated.bas"

@@ -173,15 +173,14 @@ SetPlayerCharacterArtBank4
     tax                 ; Store offset in X for later use
     
     ; Copy 16 bytes from ROM (temp4/temp5) to playerFrameBuffer_W[offset to offset+15]
-    ; Use X as base offset, Y as loop counter (countdown from 16 to 1)
-    ldy #$10            ; Start at 16 ($10)
+    ; Use X as base offset, Y as loop counter (countdown from 15 to 0)
+    ldy #$0f            ; Start at 15 ($0F)
 .CopyLoop
-    dey                 ; Decrement first (so we access 15, 14, ..., 0)
     lda (temp4),y       ; Read from ROM (indirect addressing via temp4/temp5)
     sta playerFrameBuffer_W,x          ; Write to SCRAM (absolute indexed addressing with X base)
     inx                 ; Increment destination offset
-    cpy #0              ; Check if we’ve copied all 16 bytes (y=0)
-    bne .CopyLoop
+    dey
+    bpl .CopyLoop
 
 .SetHeight
     ; Set sprite height (all sprites are 16 bytes = 16 scanlines)

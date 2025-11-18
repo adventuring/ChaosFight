@@ -47,6 +47,7 @@ end
 #include "Source/Routines/LoadArenaByIndex.bas"
 #include "Source/Routines/MainLoop.bas"
 #include "Source/Routines/SpriteLoader.bas"
+#include "Source/Routines/PlayfieldRead.bas"
 #include "Source/Routines/CopyGlyphToPlayer.bas"
 #include "Source/Routines/SetPlayerGlyphFromFont.bas"
 #include "Source/Routines/FontRendering.bas"

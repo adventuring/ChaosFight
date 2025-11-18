@@ -12,11 +12,10 @@ Bank10DataEnds
 end
 
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
-#include "Source/Routines/PlayerPhysicsGravity.bas"
+#include "Source/Routines/FrameBudgeting.bas"
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/ProcessUpInput.bas"
 #include "Source/Routines/ProcessJumpInput.bas"
-#include "Source/Routines/PlayfieldRead.bas"
 #include "Source/Routines/CharacterControlsJump.bas"
 
           asm

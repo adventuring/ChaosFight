@@ -53,7 +53,7 @@ ArenaSelect1Loop
           rem Draw locked-in player characters
           rem Check Game Select switch - return to Character Select
           rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
-          if !switchselect then SkipReturnToCharacterSelect
+          if !switchselect then goto SkipReturnToCharacterSelect
           goto ReturnToCharacterSelect
 SkipReturnToCharacterSelect
 
@@ -85,7 +85,7 @@ FireHoldCheckDone
 
           rem Handle LEFT/RIGHT navigation for arena selection
 
-          if joy0left then ArenaSelectLeft
+          if joy0left then goto ArenaSelectLeft
           goto ArenaSelectDoneLeft
 ArenaSelectLeft
           rem Decrement arena, wrap from 0 to RandomArena (255)
@@ -100,7 +100,7 @@ ArenaSelectLeftSound
           gosub PlaySoundEffect bank15
 ArenaSelectDoneLeft
 
-          if joy0right then ArenaSelectRight
+          if joy0right then goto ArenaSelectRight
           goto ArenaSelectDoneRight
 ArenaSelectRight
           rem Increment arena, wrap from MaxArenaID to 0, then to
@@ -212,7 +212,7 @@ DisplayDone
 
           rem Handle fire button press (confirm selection, start game)
 
-          if joy0fire then ArenaSelectConfirm
+          if joy0fire then goto ArenaSelectConfirm
           goto ArenaSelectDoneConfirm
 ArenaSelectConfirm
           let temp1 = SoundMenuSelect
@@ -321,9 +321,9 @@ end
 
           rem Playfield defined by ArenaSelect data; no per-frame register writes
           rem Draw Player 1 character (top left) if selected
-          if playerCharacter[0] = NoCharacter then ArenaSelectDoneDrawP0
-          if playerCharacter[0] = CPUCharacter then ArenaSelectDoneDrawP0
-          if playerCharacter[0] = RandomCharacter then ArenaSelectDoneDrawP0
+          if playerCharacter[0] = NoCharacter then goto ArenaSelectDoneDrawP0
+          if playerCharacter[0] = CPUCharacter then goto ArenaSelectDoneDrawP0
+          if playerCharacter[0] = RandomCharacter then goto ArenaSelectDoneDrawP0
           let temp1 = 0
           gosub PlayerPreviewSetPosition bank6
           gosub RenderPlayerPreview bank6
@@ -342,9 +342,9 @@ ArenaSelectDoneDrawP0
           rem Constraints: Must be colocated with
           rem ArenaSelectDrawCharacters
           rem Draw Player 2 character (top right) if selected
-          if playerCharacter[1] = NoCharacter then ArenaSelectDoneDrawP1
-          if playerCharacter[1] = CPUCharacter then ArenaSelectDoneDrawP1
-          if playerCharacter[1] = RandomCharacter then ArenaSelectDoneDrawP1
+          if playerCharacter[1] = NoCharacter then goto ArenaSelectDoneDrawP1
+          if playerCharacter[1] = CPUCharacter then goto ArenaSelectDoneDrawP1
+          if playerCharacter[1] = RandomCharacter then goto ArenaSelectDoneDrawP1
           let temp1 = 1
           gosub PlayerPreviewSetPosition bank6
           gosub RenderPlayerPreview bank6
@@ -366,9 +366,9 @@ ArenaSelectDoneDrawP1
           rem selected
           rem No Quadtari detected; park lower previews off-screen via shared helper
           if (controllerStatus & SetQuadtariDetected) = 0 then gosub SelectHideLowerPlayerPreviews bank6 : goto ArenaSelectDoneDrawP23
-          if playerCharacter[2] = NoCharacter then ArenaSelectDoneDrawP2
-          if playerCharacter[2] = CPUCharacter then ArenaSelectDoneDrawP2
-          if playerCharacter[2] = RandomCharacter then ArenaSelectDoneDrawP2
+          if playerCharacter[2] = NoCharacter then goto ArenaSelectDoneDrawP2
+          if playerCharacter[2] = CPUCharacter then goto ArenaSelectDoneDrawP2
+          if playerCharacter[2] = RandomCharacter then goto ArenaSelectDoneDrawP2
           let temp1 = 2
           gosub PlayerPreviewSetPosition bank6
           gosub RenderPlayerPreview bank6
@@ -389,10 +389,10 @@ ArenaSelectDoneDrawP2
           rem ArenaSelectDrawCharacters
           rem Draw Player 4 character (bottom right) if Quadtari and
           rem selected
-          if (controllerStatus & SetQuadtariDetected) = 0 then ArenaSelectDoneDrawP23
-          if playerCharacter[3] = NoCharacter then ArenaSelectDoneDrawP23
-          if playerCharacter[3] = CPUCharacter then ArenaSelectDoneDrawP23
-          if playerCharacter[3] = RandomCharacter then ArenaSelectDoneDrawP23
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto ArenaSelectDoneDrawP23
+          if playerCharacter[3] = NoCharacter then goto ArenaSelectDoneDrawP23
+          if playerCharacter[3] = CPUCharacter then goto ArenaSelectDoneDrawP23
+          if playerCharacter[3] = RandomCharacter then goto ArenaSelectDoneDrawP23
           let temp1 = 3
           gosub PlayerPreviewSetPosition bank6
           gosub RenderPlayerPreview bank6

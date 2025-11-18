@@ -149,7 +149,7 @@ end
 
           rem Apply Harpy dive velocity bonus if in dive mode
           rem Handler extracted to MissileCharacterHandlers.bas
-          if temp5 = 6 then HarpyCheckDiveVelocity
+          if temp5 = 6 then goto HarpyCheckDiveVelocity
           goto VelocityDone
           rem VelocityDone label is in MissileCharacterHandlers.bas
 
@@ -283,7 +283,7 @@ end
 
           rem Apply gravity if flag is set
 
-          if (temp5 & MissileFlagGravity) = 0 then GravityDone
+          if (temp5 & MissileFlagGravity) = 0 then goto GravityDone
           let temp3 = temp3 + GravityPerFrame
           let missileVelocityY[temp1] = temp3
           rem Add gravity (1 pixel/frame down)
@@ -292,7 +292,7 @@ GravityDone
 
           rem Apply friction if flag is set (curling stone deceleration
           rem with coefficient)
-          if (temp5 & MissileFlagFriction) = 0 then FrictionDone
+          if (temp5 & MissileFlagFriction) = 0 then goto FrictionDone
           let missileVelocityXCalc_W = missileVelocityX[temp1]
           rem Get current X velocity
 
@@ -302,7 +302,7 @@ GravityDone
           rem   1.56% per frame)
           rem Derived from constant: reduction = velocity / (256 /
           rem CurlingFrictionCoefficient) = velocity / 64
-          if missileVelocityXCalc_R = 0 then FrictionDone
+          if missileVelocityXCalc_R = 0 then goto FrictionDone
           rem Zero velocity, no friction to apply
 
           rem Calculate friction reduction (velocity / 64, approximates
@@ -312,7 +312,7 @@ GravityDone
           rem   127 are negative)
           rem For unsigned bytes, negative values in twos complement
           rem are 128-255
-          if velocityCalculation_R > 127 then FrictionNegative
+          if velocityCalculation_R > 127 then goto FrictionNegative
           rem Positive velocity
           rem Divide by 64 using bit shift (6 right shifts) - derived
           rem   from CurlingFrictionCoefficient
@@ -399,9 +399,9 @@ FrictionDone
           let temp5 = CharacterMissileFlags[temp5]
           rem temp5 now contains missile flags again (inlined)
           rem Restore player index for MissileCollPF
-          if (temp5 & MissileFlagHitBackground) = 0 then PlayfieldCollisionDone
+          if (temp5 & MissileFlagHitBackground) = 0 then goto PlayfieldCollisionDone
           gosub MissileCollPF bank7
-          if !temp4 then PlayfieldCollisionDone
+          if !temp4 then goto PlayfieldCollisionDone
           rem Collision detected - check if should bounce or deactivate
           if temp5 & MissileFlagBounce then goto HandleMissileBounceTail
           rem Bounced - continue moving (HandleMissileBounce returns)
@@ -413,12 +413,12 @@ PlayfieldCollisionDone
           gosub CheckAllMissileCollisions bank7
           rem This handles both visible missiles and AOE attacks
           rem Check if hit was found (temp4 != MissileHitNotFound)
-          if temp4 = MissileHitNotFound then MissileSystemNoHit
+          if temp4 = MissileHitNotFound then goto MissileSystemNoHit
 
           rem Check if hit player is guarding before handling hit
           let temp6 = playerState[temp4] & 2
           rem temp4 contains hit player index
-          if temp6 then GuardBounceFromCollision
+          if temp6 then goto GuardBounceFromCollision
           goto HandleMissileDamage
           rem Guarding - bounce instead of damage
 GuardBounceFromCollision
@@ -464,7 +464,7 @@ MissileSystemNoHit
 
           rem Decrement if not set to infinite (infinite until
           rem collision)
-          if missileLifetimeValue_R = MissileLifetimeInfinite then MissileUpdateComplete
+          if missileLifetimeValue_R = MissileLifetimeInfinite then goto MissileUpdateComplete
           let missileLifetimeValue_W = missileLifetimeValue_R - 1
           rem tail call
           if missileLifetimeValue_R = 0 then goto DeactivateMissile
@@ -583,7 +583,7 @@ end
 Div5Loop
           let temp2 = temp2 - 5
           let temp6 = temp6 + 1
-          if temp2>= 5 then Div5Loop
+          if temp2>= 5 then goto Div5Loop
           return
 
 CheckMissilePlayerCollision
@@ -635,12 +635,12 @@ CheckMissilePlayerCollision
 
           rem Check Player 1 (index 0)
 
-          if temp1  = 0 then MissileDonePlayer0
-          if playerHealth[0] = 0 then MissileDonePlayer0
-          if temp2>= playerX[0] + PlayerSpriteHalfWidth then MissileDonePlayer0
-          if temp2 + MissileAABBSize<= playerX[0] then MissileDonePlayer0
-          if temp3>= playerY[0] + PlayerSpriteHeight then MissileDonePlayer0
-          if temp3 + MissileAABBSize<= playerY[0] then MissileDonePlayer0
+          if temp1  = 0 then goto MissileDonePlayer0
+          if playerHealth[0] = 0 then goto MissileDonePlayer0
+          if temp2>= playerX[0] + PlayerSpriteHalfWidth then goto MissileDonePlayer0
+          if temp2 + MissileAABBSize<= playerX[0] then goto MissileDonePlayer0
+          if temp3>= playerY[0] + PlayerSpriteHeight then goto MissileDonePlayer0
+          if temp3 + MissileAABBSize<= playerY[0] then goto MissileDonePlayer0
           let temp4 = 0
           goto MissileCollisionReturn
 MissileDonePlayer0
@@ -648,12 +648,12 @@ MissileDonePlayer0
 
           rem Check Player 2 (index 1)
 
-          if temp1  = 1 then MissileDonePlayer1
-          if playerHealth[1] = 0 then MissileDonePlayer1
-          if temp2>= playerX[1] + PlayerSpriteHalfWidth then MissileDonePlayer1
-          if temp2 + MissileAABBSize<= playerX[1] then MissileDonePlayer1
-          if temp3>= playerY[1] + PlayerSpriteHeight then MissileDonePlayer1
-          if temp3 + MissileAABBSize<= playerY[1] then MissileDonePlayer1
+          if temp1  = 1 then goto MissileDonePlayer1
+          if playerHealth[1] = 0 then goto MissileDonePlayer1
+          if temp2>= playerX[1] + PlayerSpriteHalfWidth then goto MissileDonePlayer1
+          if temp2 + MissileAABBSize<= playerX[1] then goto MissileDonePlayer1
+          if temp3>= playerY[1] + PlayerSpriteHeight then goto MissileDonePlayer1
+          if temp3 + MissileAABBSize<= playerY[1] then goto MissileDonePlayer1
           let temp4 = 1
           goto MissileCollisionReturn
 MissileDonePlayer1
@@ -661,12 +661,12 @@ MissileDonePlayer1
 
           rem Check Player 3 (index 2)
 
-          if temp1  = 2 then MissileDonePlayer2
-          if playerHealth[2] = 0 then MissileDonePlayer2
-          if temp2>= playerX[2] + PlayerSpriteHalfWidth then MissileDonePlayer2
-          if temp2 + MissileAABBSize<= playerX[2] then MissileDonePlayer2
-          if temp3>= playerY[2] + PlayerSpriteHeight then MissileDonePlayer2
-          if temp3 + MissileAABBSize<= playerY[2] then MissileDonePlayer2
+          if temp1  = 2 then goto MissileDonePlayer2
+          if playerHealth[2] = 0 then goto MissileDonePlayer2
+          if temp2>= playerX[2] + PlayerSpriteHalfWidth then goto MissileDonePlayer2
+          if temp2 + MissileAABBSize<= playerX[2] then goto MissileDonePlayer2
+          if temp3>= playerY[2] + PlayerSpriteHeight then goto MissileDonePlayer2
+          if temp3 + MissileAABBSize<= playerY[2] then goto MissileDonePlayer2
           let temp4 = 2
           goto MissileCollisionReturn
 MissileDonePlayer2
@@ -674,12 +674,12 @@ MissileDonePlayer2
 
           rem Check Player 4 (index 3)
 
-          if temp1  = 3 then MissileDonePlayer3
-          if playerHealth[3] = 0 then MissileDonePlayer3
-          if temp2>= playerX[3] + PlayerSpriteHalfWidth then MissileDonePlayer3
-          if temp2 + MissileAABBSize<= playerX[3] then MissileDonePlayer3
-          if temp3>= playerY[3] + PlayerSpriteHeight then MissileDonePlayer3
-          if temp3 + MissileAABBSize<= playerY[3] then MissileDonePlayer3
+          if temp1  = 3 then goto MissileDonePlayer3
+          if playerHealth[3] = 0 then goto MissileDonePlayer3
+          if temp2>= playerX[3] + PlayerSpriteHalfWidth then goto MissileDonePlayer3
+          if temp2 + MissileAABBSize<= playerX[3] then goto MissileDonePlayer3
+          if temp3>= playerY[3] + PlayerSpriteHeight then goto MissileDonePlayer3
+          if temp3 + MissileAABBSize<= playerY[3] then goto MissileDonePlayer3
           let temp4 = 3
           goto MissileCollisionReturn
 MissileDonePlayer3
@@ -747,11 +747,11 @@ end
 
           rem Apply dive damage bonus for Harpy
 
-          if temp5 = 6 then HarpyCheckDive
+          if temp5 = 6 then goto HarpyCheckDive
           goto DiveCheckDone
 HarpyCheckDive
           rem Check if Harpy is in dive mode
-          if (characterStateFlags_R[temp1] & 4) = 0 then DiveCheckDone
+          if (characterStateFlags_R[temp1] & 4) = 0 then goto DiveCheckDone
           rem Not diving, skip bonus
           rem Apply 1.5x damage for diving attacks (temp6 + temp6/2 =
           rem   1.5 * temp6)
@@ -792,7 +792,7 @@ DiveCheckDone
           rem   100
           rem Simplify to avoid division: if weight < 50, use full
           rem Heavy characters use reduced knockback scaling
-          if characterWeight_R >= 50 then WeightBasedKnockbackScale
+          if characterWeight_R >= 50 then goto WeightBasedKnockbackScale
           let impulseStrength_W = KnockbackImpulse
           rem Light characters (weight < 50): full knockback
           goto WeightBasedKnockbackApply
@@ -824,7 +824,7 @@ end
 WeightBasedKnockbackApply
           rem Minimum 1 pixel knockback even for heaviest characters
           rem Apply scaled knockback impulse to velocity (not momentum)
-          if temp2 >= playerX[temp4] then KnockbackRight
+          if temp2 >= playerX[temp4] then goto KnockbackRight
           let playerVelocityX[temp4] = playerVelocityX[temp4] + impulseStrength_R
           rem Missile from left, push right (positive velocity)
           let playerVelocityXL[temp4] = 0
@@ -899,7 +899,7 @@ end
 
           rem Apply friction damping if friction flag is set
 
-          if (temp5 & MissileFlagFriction) = 0 then BounceDone
+          if (temp5 & MissileFlagFriction) = 0 then goto BounceDone
           rem Reduce velocity by half (bit shift right by 1)
           rem Use bit shift instead of division to avoid complexity
           rem issues

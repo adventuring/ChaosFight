@@ -141,7 +141,7 @@
 #include "Source/Data/SongPointers2.bas"
 
           asm
-Bank15DataEnds = .
+Bank15DataEnds
 end
 
           rem Sounds Bank Helper Functions And Data
@@ -156,5 +156,5 @@ end
 #include "Source/Routines/MusicBankHelpers15.bas"
 
           asm
-Bank15CodeEnds = .
+Bank15CodeEnds
 end

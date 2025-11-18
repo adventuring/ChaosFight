@@ -12,7 +12,7 @@
 #include "Source/Data/CharacterDataTables.bas"
 
           asm
-Bank7DataEnds = .
+Bank7DataEnds
 end
 
 #include "Source/Routines/ScreenLayout.bas"
@@ -25,5 +25,5 @@ end
 #include "Source/Routines/HealthBarSystem.bas"
 
           asm
-Bank7CodeEnds = .
+Bank7CodeEnds
 end

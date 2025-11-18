@@ -24,21 +24,16 @@ end
 #include "Source/Routines/UpdateGuardTimers.bas"
 #include "Source/Routines/BeginFallingAnimation.bas"
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
-
 #include "Source/Routines/MovementApplyGravity.bas"
 #include "Source/Routines/GetPlayerPosition.bas"
 #include "Source/Routines/GetPlayerVelocity.bas"
 #include "Source/Routines/SetPlayerPosition.bas"
 #include "Source/Routines/SetPlayerVelocity.bas"
 #include "Source/Routines/ApplyFriction.bas"
-
 #include "Source/Routines/CharacterSelectFire.bas"
 #include "Source/Routines/CharacterSelectHelpers.bas"
-
-          rem Winner announcement routines moved from Bank 12 to prevent overflow
 #include "Source/Routines/WinnerAnnouncement.bas"
 #include "Source/Routines/BeginWinnerAnnouncement.bas"
-
 
           asm
 Bank6CodeEnds

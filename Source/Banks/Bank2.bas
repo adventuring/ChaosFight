@@ -20,9 +20,9 @@
 #include "Source/Generated/KnightGuy.bas"
 
           asm
-Bank2DataEnds = .
+Bank2DataEnds
 
           ;; Character art lookup routines for Bank 2 (characters 0-7)
 #include "Source/Routines/CharacterArtBank2.s"
-Bank2CodeEnds = .
+Bank2CodeEnds
 end

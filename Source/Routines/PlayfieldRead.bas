@@ -17,7 +17,7 @@ PlayfieldRead
           rem        resides. Uses BitMask table.
           rem
           rem Optimized: Inlined setuppointers calculation - column/8 + row*2
-          rem        No need to save/restore temp2 since we don’t use it
+          rem        No need to save/restore temp2 since we do not use it
           asm
           ; Inlined setuppointers: calculate playfield byte offset
           ; X = column (temp1), Y = row (temp2)

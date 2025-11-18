@@ -11,7 +11,7 @@
 #include "Source/Data/CharacterPhysicsTables.bas"
 
           asm
-Bank8DataEnds = .
+Bank8DataEnds
 end
 
 #include "Source/Routines/ApplyMomentumAndRecovery.bas"
@@ -26,5 +26,5 @@ end
 #include "Source/Routines/FallDamage.bas"
 
           asm
-Bank8CodeEnds = .
+Bank8CodeEnds
 end

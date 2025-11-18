@@ -14,11 +14,7 @@ end
 #include "Source/Routines/GameLoopMain.bas"
 #include "Source/Routines/UpdateAttackCooldowns.bas"
 #include "Source/Routines/PlayerCollisionResolution.bas"
-
 #include "Source/Routines/InitializeMovementSystem.bas"
-
-          rem Movement routines moved from Bank 10/12/13/14 to prevent overflow
-          rem Animation moved to Bank 10 to prevent Bank 11 overflow
 #include "Source/Routines/HandleFlyingCharacterMovement.bas"
 
           asm

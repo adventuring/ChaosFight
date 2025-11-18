@@ -19,8 +19,8 @@
 ; Character sprite pointer tables (Bank 4 only)
 ; Low byte pointers for each character base sprite data
 CharacterSpriteLBank4
-          BYTE < Character16Frames, < Character17Frames, < Character18Frames, < Character19Frames
-          BYTE < Character20Frames, < Character21Frames, < Character22Frames, < Character23Frames
+    BYTE < Character16Frames, < Character17Frames, < Character18Frames, < Character19Frames
+    BYTE < Character20Frames, < Character21Frames, < Character22Frames, < Character23Frames
 
 ; High byte pointers for each character base sprite data  
 CharacterSpriteHBank4

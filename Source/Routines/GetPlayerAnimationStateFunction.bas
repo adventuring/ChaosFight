@@ -16,9 +16,7 @@ end
           rem Called Routines: None
           rem
           rem Constraints: None
-          let temp2 = playerState[temp1] & 240
-          let temp2 = temp2 / 16
-          rem Mask bits 4-7 (value 240 = %11110000)
+          let temp2 = playerState[temp1] / 16
           rem Shift right by 4 (divide by 16) to get animation state
           rem   (0-15)
           return

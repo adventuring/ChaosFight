@@ -54,8 +54,7 @@ end
           rem boundaries clamped (Y < 20 clamped to 20, Y > 80 clamped
           rem to 80). Players 3/4 only checked if Quadtari detected and
           rem selected
-          rem Loop through all players (0-3) - fully inlined to avoid
-          rem labels
+          rem Loop through all players (0-3) - using shared function to avoid duplication
           rem Handle RandomArena by checking selected arena (shared for all players)
           let temp3 = selectedArena_R
           rem Handle RandomArena (use proper RNG)
@@ -63,35 +62,11 @@ end
 
           rem Player 0 - boundaries
           let temp1 = 0
-          rem Horizontal wrap (player 0): wrap when leaving playable area margins
-          if playerX[0] < PlayerLeftWrapThreshold then let playerX[0] = PlayerRightEdge : let playerSubpixelX_W[0] = PlayerRightEdge : let playerSubpixelX_WL[0] = 0
-          if playerX[0] > PlayerRightWrapThreshold then let playerX[0] = PlayerLeftEdge : let playerSubpixelX_W[0] = PlayerLeftEdge : let playerSubpixelX_WL[0] = 0
-          rem Y clamp: top 20 only (allow falling below bottom)
-          if playerY[0] < 20 then let playerY[0] = 20 : let playerSubpixelY_W[0] = 20 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
-          rem Check for screen bottom elimination/wrap
-          if playerY[0] <= ScreenBottom then goto SkipP0BottomCheck
-          if playerCharacter[0] = CharacterBernie then goto BernieWrapP0
-          let playerHealth[0] = 0 : let currentPlayer = 0 : gosub CheckPlayerElimination bank12
-          goto SkipP0BottomCheck
-BernieWrapP0
-          let playerY[0] = 0 : let playerSubpixelY_W[0] = 0 : let playerSubpixelY_WL[0] = 0
-SkipP0BottomCheck
+          gosub CheckPlayerBoundary
 
           rem Player 1 - boundaries
           let temp1 = 1
-          rem Horizontal wrap (player 1): wrap when leaving playable area margins
-          if playerX[1] < PlayerLeftWrapThreshold then let playerX[1] = PlayerRightEdge : let playerSubpixelX_W[1] = PlayerRightEdge : let playerSubpixelX_WL[1] = 0
-          if playerX[1] > PlayerRightWrapThreshold then let playerX[1] = PlayerLeftEdge : let playerSubpixelX_W[1] = PlayerLeftEdge : let playerSubpixelX_WL[1] = 0
-          rem Y clamp: top 20 only (allow falling below bottom)
-          if playerY[1] < 20 then let playerY[1] = 20 : let playerSubpixelY_W[1] = 20 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0
-          rem Check for screen bottom elimination/wrap
-          if playerY[1] <= ScreenBottom then goto SkipP1BottomCheck
-          if playerCharacter[1] = CharacterBernie then goto BernieWrapP1
-          let playerHealth[1] = 0 : let currentPlayer = 1 : gosub CheckPlayerElimination bank12
-          goto SkipP1BottomCheck
-BernieWrapP1
-          let playerY[1] = 0 : let playerSubpixelY_W[1] = 0 : let playerSubpixelY_WL[1] = 0
-SkipP1BottomCheck
+          gosub CheckPlayerBoundary
 
           rem Player 2 - boundaries (if Quadtari and active)
           if controllerStatus & SetQuadtariDetected then goto ProcessPlayer2Physics
@@ -99,16 +74,7 @@ SkipP1BottomCheck
 ProcessPlayer2Physics
           if playerCharacter[2] = NoCharacter then goto PPC_SkipPlayer2
           let temp1 = 2
-          if playerX[2] < PlayerLeftWrapThreshold then let playerX[2] = PlayerRightEdge : let playerSubpixelX_W[2] = PlayerRightEdge : let playerSubpixelX_WL[2] = 0
-          if playerX[2] > PlayerRightWrapThreshold then let playerX[2] = PlayerLeftEdge : let playerSubpixelX_W[2] = PlayerLeftEdge : let playerSubpixelX_WL[2] = 0
-          if playerY[2] < 20 then let playerY[2] = 20 : let playerSubpixelY_W[2] = 20 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
-          rem Check for screen bottom elimination/wrap
-          if playerY[2] <= ScreenBottom then goto PPC_SkipPlayer2
-          if playerCharacter[2] = CharacterBernie then goto BernieWrapP2
-          let playerHealth[2] = 0 : let currentPlayer = 2 : gosub CheckPlayerElimination bank12
-          goto PPC_SkipPlayer2
-BernieWrapP2
-          let playerY[2] = 0 : let playerSubpixelY_W[2] = 0 : let playerSubpixelY_WL[2] = 0
+          gosub CheckPlayerBoundary
 PPC_SkipPlayer2
 
           rem Player 3 - boundaries (if Quadtari and active)
@@ -117,18 +83,45 @@ PPC_SkipPlayer2
 ProcessPlayer3Physics
           if playerCharacter[3] = NoCharacter then goto PPC_SkipPlayer3
           let temp1 = 3
-          if playerX[3] < PlayerLeftWrapThreshold then let playerX[3] = PlayerRightEdge : let playerSubpixelX_W[3] = PlayerRightEdge : let playerSubpixelX_WL[3] = 0
-          if playerX[3] > PlayerRightWrapThreshold then let playerX[3] = PlayerLeftEdge : let playerSubpixelX_W[3] = PlayerLeftEdge : let playerSubpixelX_WL[3] = 0
-          if playerY[3] < 20 then let playerY[3] = 20 : let playerSubpixelY_W[3] = 20 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
-          rem Check for screen bottom elimination/wrap
-          if playerY[3] <= ScreenBottom then goto PPC_SkipPlayer3
-          if playerCharacter[3] = CharacterBernie then goto BernieWrapP3
-          let playerHealth[3] = 0 : let currentPlayer = 3 : gosub CheckPlayerElimination bank12
-          goto PPC_SkipPlayer3
-BernieWrapP3
-          let playerY[3] = 0 : let playerSubpixelY_W[3] = 0 : let playerSubpixelY_WL[3] = 0
+          gosub CheckPlayerBoundary
 PPC_SkipPlayer3
 
+          return
+
+CheckPlayerBoundary
+          asm
+CheckPlayerBoundary
+end
+          rem Check Player Boundary
+          rem Shared function to check boundary collisions for a single player
+          rem Reduces code duplication from 4x to 1x implementation
+          rem
+          rem Input: temp1 = player index (0-3)
+          rem        playerX[], playerY[] (global arrays) = player positions
+          rem        playerCharacter[] (global array) = character types
+          rem        playerSubpixelX[], playerSubpixelY[] (global arrays) = subpixel positions
+          rem        playerVelocityY[] (global arrays) = vertical velocity
+          rem
+          rem Output: Player clamped to screen boundaries, horizontal wrap-around applied
+          rem
+          rem Mutates: playerX[], playerY[], playerSubpixelX[], playerSubpixelY[],
+          rem          playerVelocityY[], playerHealth[], currentPlayer
+          rem
+          rem Called Routines: CheckPlayerElimination (bank12)
+          rem
+          rem Constraints: Uses temp1 as player index, temp2 as scratch
+          rem Horizontal wrap: wrap when leaving playable area margins
+          if playerX[temp1] < PlayerLeftWrapThreshold then let playerX[temp1] = PlayerRightEdge : let playerSubpixelX_W[temp1] = PlayerRightEdge : let playerSubpixelX_WL[temp1] = 0
+          if playerX[temp1] > PlayerRightWrapThreshold then let playerX[temp1] = PlayerLeftEdge : let playerSubpixelX_W[temp1] = PlayerLeftEdge : let playerSubpixelX_WL[temp1] = 0
+          rem Y clamp: top 20 only (allow falling below bottom)
+          if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY_W[temp1] = 20 : let playerSubpixelY_WL[temp1] = 0 : let playerVelocityY[temp1] = 0 : let playerVelocityYL[temp1] = 0
+          rem Check for screen bottom elimination/wrap
+          if playerY[temp1] <= ScreenBottom then return
+          if playerCharacter[temp1] = CharacterBernie then goto CheckPlayerBoundary_BernieWrap
+          let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank12
+          return
+CheckPlayerBoundary_BernieWrap
+          let playerY[temp1] = 0 : let playerSubpixelY_W[temp1] = 0 : let playerSubpixelY_WL[temp1] = 0
           return
 
 CheckPlayfieldCollisionAllDirections

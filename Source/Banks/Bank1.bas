@@ -169,7 +169,7 @@ end
 #endif
 
           asm
-Bank1DataEnds = .
+Bank1DataEnds
 end
 
 
@@ -178,5 +178,5 @@ end
 #include "Source/Routines/MusicSystem.bas"
 
           asm
-Bank1CodeEnds = .
+Bank1CodeEnds
 end

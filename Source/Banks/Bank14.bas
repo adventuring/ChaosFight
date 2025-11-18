@@ -8,27 +8,12 @@
           bank 14
 
           asm
-Bank14DataEnds = .
+Bank14DataEnds
 end
 
-          rem Player position/velocity getter/setter routines moved to Bank 11 for ROM balance
-          rem (moved from Bank 14 due to overflow)
-
-          rem Physics helper routines moved to Bank 11 for ROM balance  
-          rem (moved from Bank 14 due to overflow)
-
-          rem Routines moved from Bank 1 - not needed for drawscreen
-          rem calls
-          rem These are called before/after drawscreen, not during it
-
-          rem Console detection and handling moved to Bank 13
-
-          rem Player locked helpers
 #include "Source/Routines/BeginTitleScreen.bas"
 #include "Source/Routines/BeginPublisherPrelude.bas"
 #include "Source/Routines/PublisherPrelude.bas"
-          rem PublisherPrelude moved from Bank 9 for ROM balance
-
 #include "Source/Routines/ControllerDetection.bas"
 #include "Source/Routines/ConsoleDetection.bas"
 #include "Source/Routines/ChangeGameMode.bas"
@@ -42,11 +27,9 @@ end
 #include "Source/Routines/AttractMode.bas"
 #include "Source/Routines/AuthorPrelude.bas"
 #include "Source/Routines/LoadCharacterColors.bas"
-
-          rem Game mode/physics routines moved from Bank 9/12/13/10/11 to prevent overflow
 #include "Source/Routines/Combat.bas"
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 
           asm
-Bank14CodeEnds = .
+Bank14CodeEnds
 end

@@ -11,7 +11,7 @@
 #include "Source/Data/CharacterThemeSongIndices.bas"
 
           asm
-Bank12DataEnds
+Bank12DataEnds = .
 end
 
           rem Titlescreen assets are in Bank 9 - this bank contains only logic
@@ -35,5 +35,5 @@ end
 #include "Source/Routines/BeginWinnerAnnouncement.bas"
 
           asm
-Bank12CodeEnds
+Bank12CodeEnds = .
 end

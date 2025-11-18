@@ -7,7 +7,7 @@
           bank 13
 
           asm
-Bank13DataEnds
+Bank13DataEnds = .
 end
 
           rem Character attack type routines (back from Bank 12 - rebalancing)
@@ -31,5 +31,5 @@ end
 #include "Source/Routines/CharacterControlsJump.bas"
 
           asm
-Bank13CodeEnds
+Bank13CodeEnds = .
 end

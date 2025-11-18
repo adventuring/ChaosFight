@@ -8,7 +8,7 @@
           bank 14
 
           asm
-Bank14DataEnds
+Bank14DataEnds = .
 end
 
           rem Player position/velocity getter/setter routines moved to Bank 11 for ROM balance
@@ -46,5 +46,5 @@ end
 #include "Source/Routines/LoadCharacterColors.bas"
 
           asm
-Bank14CodeEnds
+Bank14CodeEnds = .
 end

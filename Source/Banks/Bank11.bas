@@ -7,7 +7,7 @@
           bank 11
 
           asm
-Bank11DataEnds
+Bank11DataEnds = .
 end
 
 #include "Source/Routines/GameLoopInit.bas"
@@ -24,5 +24,5 @@ end
           rem ApplyFriction moved to Bank 12 for ROM balance
 
           asm
-Bank11CodeEnds
+Bank11CodeEnds = .
 end

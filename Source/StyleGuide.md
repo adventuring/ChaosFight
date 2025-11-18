@@ -296,7 +296,7 @@ globals).
 
 ### Apostrophes in Remarks
 
-**STRICT SYNTAX REQUIREMENT**: **MUST use typographic apostrophes (`'`,
+**STRICT SYNTAX REQUIREMENT**: **MUST use typographic apostrophes (`’`,
 U+2019) instead of straight apostrophes (`'`, U+0027) in ALL comments**
 (`rem` statements and `;` comments in `asm` blocks). The C preprocessor
 (`cpp`) treats straight apostrophes as string delimiters, causing
@@ -310,11 +310,11 @@ without it.**
 **Correct:**
 
 ```basic
-rem Check for negative velocity using two's complement
-rem It's important to note that this uses two's complement
-rem The player won't move if velocity is zero
-rem Other screens' minikernels should have window=0
-rem Character's weight affects fall damage
+rem Check for negative velocity using two’s complement
+rem It’s important to note that this uses two’s complement
+rem The player won’t move if velocity is zero
+rem Other screens’ minikernels should have window=0
+rem Character’s weight affects fall damage
 ```
 
 **Incorrect:**
@@ -333,7 +333,7 @@ rem apostrophe causes cpp warnings
 **Rationale**: The C preprocessor parses all comments and treats
 straight apostrophes (`'`, U+0027) as potential string delimiters,
 causing compilation warnings ("missing terminating ' character").
-Typographic apostrophes (`'`, U+2019) are the typographically correct
+Typographic apostrophes (`’`, U+2019) are the typographically correct
 character for apostrophes in English text and do not trigger
 preprocessor warnings.
 

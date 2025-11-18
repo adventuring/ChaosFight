@@ -25,7 +25,7 @@ end
 #include "Source/Data/WinnerScreen.bas"
 
           asm
-Bank16DataEnds
+Bank16DataEnds = .
           echo "Bank 16 module sizes:"
           if Bank16DataEnds > $F100
            echo "  Arenas: ", [Bank16AfterArenas - $F100]d, " bytes"
@@ -54,5 +54,5 @@ end
 #include "Source/Routines/DisplayWinScreen.bas"
           rem None of these modules above may be moved to other banks.
           asm
-Bank16CodeEnds
+Bank16CodeEnds = .
 end

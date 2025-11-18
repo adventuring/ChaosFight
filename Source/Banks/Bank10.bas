@@ -8,7 +8,7 @@
           bank 10
 
           asm
-Bank10DataEnds
+Bank10DataEnds = .
 end
 
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
@@ -21,5 +21,5 @@ end
 #include "Source/Routines/PlayerPhysicsGravity.bas"
 
           asm
-Bank10CodeEnds
+Bank10CodeEnds = .
 end

@@ -26,7 +26,7 @@
 end
 
           asm
-Bank9DataEnds
+Bank9DataEnds = .
 end
 
           asm
@@ -36,6 +36,6 @@ end
 #include "Source/Routines/CharacterSelectMain.bas"
 
           asm
-Bank9CodeEnds
+Bank9CodeEnds = .
 end
 

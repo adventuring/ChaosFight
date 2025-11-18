@@ -19,11 +19,11 @@
 #include "Source/Generated/MethHound.bas"
 
           asm
-Bank5DataEnds
+Bank5DataEnds = .
 end
 
           asm
           ;; Character art lookup routines for Bank 5 (characters 24-31)
 #include "Source/Routines/CharacterArtBank5.s"
-Bank5CodeEnds
+Bank5CodeEnds = .
 end

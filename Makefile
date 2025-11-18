@@ -668,35 +668,17 @@ Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.
 Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
-	@echo "Moving 2600basic_variable_redefs.h include to top of file..."
-	@sed -i '/^[[:space:]]*include[[:space:]]*"2600basic_variable_redefs\.h"/d' $<
-	@sed -i '/^[[:space:]]*processor[[:space:]]*6502/a\
-\
- include "2600basic_variable_redefs.h"\
-' $<
-	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -R -p10 -v3 -S -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -R -p10 -S -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 
 Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
-	@echo "Moving 2600basic_variable_redefs.h include to top of file..."
-	@sed -i '/^[[:space:]]*include[[:space:]]*"2600basic_variable_redefs\.h"/d' $<
-	@sed -i '/^[[:space:]]*processor[[:space:]]*6502/a\
-\
- include "2600basic_variable_redefs.h"\
-' $<
-	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -R -p10 -v3 -S -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -R -p10 -S -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
 
 Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
-	@echo "Moving 2600basic_variable_redefs.h include to top of file..."
-	@sed -i '/^[[:space:]]*include[[:space:]]*"2600basic_variable_redefs\.h"/d' $<
-	@sed -i '/^[[:space:]]*processor[[:space:]]*6502/a\
-\
- include "2600basic_variable_redefs.h"\
-' $<
-	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -R -p10 -v3 -S -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -R -p10 -S -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
 
 # Run emulator
 emu: $(ROM) Dist/$(GAME)$(GAMEYEAR).NTSC.pro

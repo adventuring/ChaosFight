@@ -7,7 +7,7 @@
           bank 6
 
           asm
-Bank6DataEnds
+Bank6DataEnds = .
 end
 
           rem Character select routines
@@ -37,5 +37,5 @@ end
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 
           asm
-Bank6CodeEnds
+Bank6CodeEnds = .
 end

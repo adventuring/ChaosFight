@@ -83,7 +83,7 @@ end
           rem   CheckAllPlayerCollisions (bank8),
           rem   CheckAllPlayerEliminations,
           rem   UpdateAllMissiles (bank7),
-          rem   CheckRoboTitoStretchMissileCollisions (bank13), SetPlayerSprites (bank6),
+          rem   CheckRoboTitoStretchMissileCollisions (bank12), SetPlayerSprites (bank2),
           rem   DisplayHealth (bank6), UpdatePlayer12HealthBars (bank6),
           rem   UpdatePlayer34HealthBars (bank6), UpdateSoundEffect
           rem   (bank15)
@@ -230,7 +230,7 @@ GameEndCheckDone
           rem gosub SetSpritePositions
           rem Replaced by UpdatePlayerMovement
 
-          gosub SetPlayerSprites bank6
+          gosub SetPlayerSprites bank2
           rem Set sprite graphics (in Bank 6)
 
           gosub DisplayHealth bank11

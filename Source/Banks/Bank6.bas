@@ -16,8 +16,6 @@ end
 #include "Source/Routines/PlayerLockedHelpers.bas"
 #include "Source/Routines/CharacterSelectRender.bas"
 #include "Source/Routines/CharacterSelectEntry.bas"
-#include "Source/Routines/SetSpritePositions.bas"
-#include "Source/Routines/SetPlayerSprites.bas"
 #include "Source/Routines/ApplyGuardColor.bas"
 #include "Source/Routines/RestoreNormalPlayerColor.bas"
 #include "Source/Routines/CheckGuardCooldown.bas"
@@ -26,9 +24,6 @@ end
 #include "Source/Routines/UpdateGuardTimers.bas"
 #include "Source/Routines/CharacterSelectFire.bas"
 #include "Source/Routines/CharacterSelectHelpers.bas"
-#include "Source/Routines/DisplayHealth.bas"
-#include "Source/Routines/FrameBudgeting.bas"
-#include "Source/Routines/HealthBarSystem.bas"
 
           asm
 Bank6CodeEnds

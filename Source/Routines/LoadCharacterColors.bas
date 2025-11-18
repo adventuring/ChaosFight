@@ -24,7 +24,7 @@ end
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Must remain in bank14 (called from SetPlayerSprites bank6)
+          rem Constraints: Must remain in bank14 (called from SetPlayerSprites bank2)
 
           rem Guard state takes priority over hurt state
           if temp3 then let temp6 = ColCyan(12) : return

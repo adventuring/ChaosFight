@@ -24,5 +24,10 @@ Bank2DataEnds = .
 
           ;; Character art lookup routines for Bank 2 (characters 0-7)
 #include "Source/Routines/CharacterArtBank2.s"
+
+          ;; Sprite positioning and rendering routines
+#include "Source/Routines/SetSpritePositions.bas"
+#include "Source/Routines/SetPlayerSprites.bas"
+
 Bank2CodeEnds
 end

@@ -14,13 +14,21 @@ end
           rem Output: Player moved closer to target, or at target
           rem Mutates: playerX[], playerY[], temp4-temp6, distanceUp_W
 
-          rem Calculate X distances
-          gosub CalcDeltaXRight
-          gosub CalcDeltaXLeft
+          rem Calculate X distances (inlined)
+          rem CalcDeltaXRight: temp4 = distance right (0 if at or left of target)
+          let temp4 = temp2 - playerX[temp1]
+          if temp4 < 0 then temp4 = 0
+          rem CalcDeltaXLeft: temp5 = distance left (0 if at or right of target)
+          let temp5 = playerX[temp1] - temp2
+          if temp5 < 0 then temp5 = 0
 
-          rem Calculate Y distances
-          gosub CalcDeltaYDown
-          gosub CalcDeltaYUp
+          rem Calculate Y distances (inlined)
+          rem CalcDeltaYDown: temp6 = distance down (0 if at or above target)
+          let temp6 = temp3 - playerY[temp1]
+          if temp6 < 0 then temp6 = 0
+          rem CalcDeltaYUp: distanceUp_W = distance up (0 if at or below target)
+          let distanceUp_W = playerY[temp1] - temp3
+          if distanceUp_W < 0 then distanceUp_W = 0
 
           rem Move in X direction first
           if temp4 > 0 then gosub MoveRight
@@ -34,54 +42,6 @@ end
           gosub AtTarget
           return
 
-CalcDeltaXRight
-          asm
-CalcDeltaXRight
-
-end
-          rem Calculate X distance to the right
-          rem Input: temp1 = player, temp2 = target X
-          rem Output: temp4 = distance right (0 if at or left of target)
-          let temp4 = temp2 - playerX[temp1]
-          if temp4 < 0 then temp4 = 0
-DeltaXDone
-          return
-
-CalcDeltaYDown
-          asm
-CalcDeltaYDown
-
-end
-          rem Calculate Y distance downward
-          rem Input: temp1 = player, temp3 = target Y
-          rem Output: temp6 = distance down (0 if at or above target)
-          let temp6 = temp3 - playerY[temp1]
-          if temp6 < 0 then temp6 = 0
-DeltaYDone
-          return
-
-CalcDeltaXLeft
-          asm
-CalcDeltaXLeft
-
-end
-          rem Calculate X distance to the left
-          rem Input: temp1 = player, temp2 = target X
-          rem Output: temp5 = distance left (0 if at or right of target)
-          let temp5 = playerX[temp1] - temp2
-          if temp5 < 0 then temp5 = 0
-          return
-
-CalcDeltaYUp
-          asm
-CalcDeltaYUp
-end
-          rem Calculate Y distance upward
-          rem Input: temp1 = player, temp3 = target Y
-          rem Output: distanceUp_W = distance up (0 if at or below target)
-          let distanceUp_W = playerY[temp1] - temp3
-          if distanceUp_W < 0 then distanceUp_W = 0
-          return
 
 MoveRight
           asm

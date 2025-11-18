@@ -18,6 +18,7 @@ end
 #include "Source/Routines/ShamoneAttack.bas"
 #include "Source/Routines/PlayerPhysicsGravity.bas"
 #include "Source/Routines/MissileSystem.bas"
+#include "Source/Routines/MissileCharacterHandlers.bas"
 #include "Source/Routines/ProcessUpInput.bas"
 #include "Source/Routines/ProcessJumpInput.bas"
 

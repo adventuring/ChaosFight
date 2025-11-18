@@ -26,5 +26,5 @@ end
           asm
           ; rem Character art lookup routines for Bank 3 (characters 8-15)
 #include "Source/Routines/CharacterArtBank3.s"
-Bank3CodeEnds = .
+Bank3CodeEnds
 end

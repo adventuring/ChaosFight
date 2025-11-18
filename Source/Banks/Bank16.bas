@@ -54,5 +54,5 @@ end
 #include "Source/Routines/DisplayWinScreen.bas"
           rem None of these modules above may be moved to other banks.
           asm
-Bank16CodeEnds = .
+Bank16CodeEnds
 end

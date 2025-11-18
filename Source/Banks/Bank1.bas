@@ -178,5 +178,5 @@ end
 #include "Source/Routines/MusicSystem.bas"
 
           asm
-Bank1CodeEnds = .
+Bank1CodeEnds
 end

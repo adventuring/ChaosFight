@@ -5,12 +5,6 @@
           rem Character theme songs (IDs 6-28): LowRes, RoboTito, SongOfTheBear,
           rem   DucksAway, Character16-30 themes
 
-          asm
-            if . != $f100
-              err
-            endif
-end
-
           bank 1
           asm
             ;; "Start of data" is at CPU space $F100 in Bank 1

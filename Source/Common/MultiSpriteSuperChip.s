@@ -236,59 +236,8 @@ var44 = $D0
 var45 = $D1
 var46 = $D2
 var47 = $D3
-var48 = $D4
-a = $d4
-A = $d4
-b = $d5
-B = $d5
-c = $d6
-C = $d6
-d = $d7
-D = $d7
-e = $d8
-E = $d8
-f = $d9
-F = $d9
-g = $da
-G = $da
-h = $db
-H = $db
-i = $dc
-I = $dc
-j = $dd
-J = $dd
-k = $de
-K = $de
-l = $df
-L = $df
-m = $e0
-M = $e0
-n = $e1
-N = $e1
-o = $e2
-O = $e2
-p = $e3
-P = $e3
-q = $e4
-Q = $e4
-r = $e5
-R = $e5
-s = $e6
-S = $e6
-t = $e7
-T = $e7
-u = $e8
-U = $e8
-v = $e9
-V = $e9
-w = $ea
-W = $ea
-x = $eb
-X = $eb
-y = $ec
-Y = $ec
-z = $ed
-Z = $ed
+; Note: var48 and a-z are defined below in multisprite section with different addresses
+; Multisprite uses different memory layout - see multisprite letter variables section below
 ; CRITICAL: Define SuperChip RAM ports (r000-r127, w000-w127) before redefs file
 ; These are referenced by the redefs file (e.g., r075, w102) and must exist first
 ; Write ports (w000-w127 at $F000-$F07F)
@@ -1012,7 +961,7 @@ frame = $00F5
   MS_ASSIGN  mk_score_on, 1
   MS_ASSIGN  mk_gameselect_on, 0
   MS_ASSIGN  qtcontroller, $E7
-  MS_ASSIGN  scoretable, $FF80
+  ; scoretable is defined in Source/Common/ScoreTable.s (replacement for score_graphics.asm)
 ; NOTE: pfread stub moved to end of file to avoid adding byte before data section
 
 ; --- Superchip RAM mapping --------------------------------------------------

@@ -21,17 +21,8 @@ end
 #include "Source/Routines/PerformMeleeAttack.bas"
 #include "Source/Routines/FrameBudgeting.bas"
 #include "Source/Routines/MissileCollision.bas"
-#include "Source/Routines/CharacterSelectFire.bas"
-#include "Source/Routines/CharacterSelectHelpers.bas"
 
-#include "Source/Routines/MovementApplyGravity.bas"
-
-#include "Source/Routines/GetPlayerPosition.bas"
-#include "Source/Routines/GetPlayerVelocity.bas"
-#include "Source/Routines/SetPlayerPosition.bas"
-#include "Source/Routines/SetPlayerVelocity.bas"
-
-#include "Source/Routines/ApplyFriction.bas"
+#include "Source/Routines/HealthBarSystem.bas"
 
           asm
 Bank7CodeEnds = .

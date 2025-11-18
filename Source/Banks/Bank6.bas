@@ -7,35 +7,39 @@
           bank 6
 
           asm
-Bank6DataEnds = .
+Bank6DataEnds
 end
 
           rem Character select routines
 #include "Source/Routines/PlayerLockedHelpers.bas"
 #include "Source/Routines/CharacterSelectRender.bas"
 #include "Source/Routines/CharacterSelectEntry.bas"
-
-          rem Health display routines (HealthBarSystem here, DisplayHealth in Bank 12)
-#include "Source/Routines/HealthBarSystem.bas"
-
-          rem Sprite rendering routines moved from Bank 10 for ROM balance
 #include "Source/Routines/SetSpritePositions.bas"
 #include "Source/Routines/SetPlayerSprites.bas"
-
-          rem Guard system routines moved from Bank 10 for ROM balance
 #include "Source/Routines/ApplyGuardColor.bas"
 #include "Source/Routines/RestoreNormalPlayerColor.bas"
 #include "Source/Routines/CheckGuardCooldown.bas"
 #include "Source/Routines/StartGuard.bas"
 #include "Source/Routines/UpdateSingleGuardTimer.bas"
 #include "Source/Routines/UpdateGuardTimers.bas"
-
-          rem Falling animation setup routine
 #include "Source/Routines/BeginFallingAnimation.bas"
-
-          rem CheckRoboTitoStretchMissileCollisions moved back from Bank 12 for ROM balance
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 
+#include "Source/Routines/MovementApplyGravity.bas"
+#include "Source/Routines/GetPlayerPosition.bas"
+#include "Source/Routines/GetPlayerVelocity.bas"
+#include "Source/Routines/SetPlayerPosition.bas"
+#include "Source/Routines/SetPlayerVelocity.bas"
+#include "Source/Routines/ApplyFriction.bas"
+
+#include "Source/Routines/CharacterSelectFire.bas"
+#include "Source/Routines/CharacterSelectHelpers.bas"
+
+          rem Winner announcement routines moved from Bank 12 to prevent overflow
+#include "Source/Routines/WinnerAnnouncement.bas"
+#include "Source/Routines/BeginWinnerAnnouncement.bas"
+
+
           asm
-Bank6CodeEnds = .
+Bank6CodeEnds
 end

@@ -36,14 +36,16 @@ end
 #include "Source/Routines/BeginAttractMode.bas"
 #include "Source/Routines/ColdStart.bas"
 #include "Source/Routines/SpritePointerInit.bas"
-#include "Source/Routines/ArenaSelect.bas"
-#include "Source/Routines/Combat.bas"
 #include "Source/Routines/TitleScreenMain.bas"
 #include "Source/Routines/TitleCharacterParade.bas"
 #include "Source/Routines/TitlescreenWindowControl.bas"
 #include "Source/Routines/AttractMode.bas"
 #include "Source/Routines/AuthorPrelude.bas"
 #include "Source/Routines/LoadCharacterColors.bas"
+
+          rem Game mode/physics routines moved from Bank 9/12/13/10/11 to prevent overflow
+#include "Source/Routines/Combat.bas"
+#include "Source/Routines/PlayerPhysicsCollisions.bas"
 
           asm
 Bank14CodeEnds = .

@@ -16,9 +16,13 @@ end
 #include "Source/Routines/HarpyAttack.bas"
 #include "Source/Routines/UrsuloAttack.bas"
 #include "Source/Routines/ShamoneAttack.bas"
-#include "Source/Routines/PlayerPhysicsCollisions.bas"
-#include "Source/Routines/FallingAnimation.bas"
 #include "Source/Routines/PlayerPhysicsGravity.bas"
+
+          rem Missile/movement routines moved from Banks 12/14/6/13/14/11 to prevent overflow
+          rem Animation moved to Bank 12 to prevent Bank 10 overflow
+#include "Source/Routines/MissileSystem.bas"
+#include "Source/Routines/ProcessUpInput.bas"
+#include "Source/Routines/ProcessJumpInput.bas"
 
           asm
 Bank10CodeEnds = .

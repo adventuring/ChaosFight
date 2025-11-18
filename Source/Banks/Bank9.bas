@@ -35,6 +35,7 @@ end
 #include "Source/Routines/TitleScreenRender.bas"
 #include "Source/Routines/CharacterSelectMain.bas"
 
+
           asm
 Bank9CodeEnds = .
 end

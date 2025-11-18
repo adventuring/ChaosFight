@@ -16,8 +16,6 @@ end
 
           rem Titlescreen assets are in Bank 9 - this bank contains only logic
 
-#include "Source/Routines/MissileSystem.bas"
-
 #include "Source/Routines/DisplayHealth.bas"
 #include "Source/Routines/CharacterDamage.bas"
 #include "Source/Routines/DeactivatePlayerMissiles.bas"
@@ -31,8 +29,18 @@ end
 #include "Source/Routines/ArenaReloadUtils.bas"
 #include "Source/Routines/BeginArenaSelect.bas"
 #include "Source/Routines/MovePlayerToTarget.bas"
-#include "Source/Routines/WinnerAnnouncement.bas"
-#include "Source/Routines/BeginWinnerAnnouncement.bas"
+
+          rem Physics/animation routines moved from Banks 10/11 to prevent overflow
+          rem Some moved to Bank 10/13/14 to prevent Bank 12 overflow
+#include "Source/Routines/FallingAnimation.bas"
+
+
+          rem Game mode/animation routines moved from Bank 14/13/11/10 to prevent overflow
+          rem Physics moved to Bank 14 to prevent Bank 12 overflow
+#include "Source/Routines/ArenaSelect.bas"
+#include "Source/Routines/AnimationSystem.bas"
+
+
 
           asm
 Bank12CodeEnds = .

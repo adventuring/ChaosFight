@@ -84,8 +84,8 @@ end
           rem   CheckAllPlayerEliminations,
           rem   UpdateAllMissiles (bank12),
           rem   CheckRoboTitoStretchMissileCollisions (bank6), SetPlayerSprites (bank6),
-          rem   DisplayHealth (bank6), UpdatePlayer12HealthBars (bank6),
-          rem   UpdatePlayer34HealthBars (bank6), UpdateSoundEffect
+          rem   DisplayHealth (bank6), UpdatePlayer12HealthBars (bank7),
+          rem   UpdatePlayer34HealthBars (bank7), UpdateSoundEffect
           rem   (bank15)
           rem
           rem Constraints: Must be colocated with
@@ -236,10 +236,10 @@ GameEndCheckDone
           gosub DisplayHealth bank12
           rem Display health information (in Bank 6)
 
-          gosub UpdatePlayer12HealthBars bank6
+          gosub UpdatePlayer12HealthBars bank7
           rem Update P1/P2 health bars using pfscore system
 
-          gosub UpdatePlayer34HealthBars bank6
+          gosub UpdatePlayer34HealthBars bank7
           rem Update P3/P4 health bars using playfield system
 
           gosub UpdateSoundEffect bank15

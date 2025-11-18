@@ -14,23 +14,16 @@
 Bank8DataEnds = .
 end
 
-#include "Source/Routines/GetPlayerAnimationStateFunction.bas"
-#include "Source/Routines/ConstrainToScreen.bas"
 #include "Source/Routines/ApplyMomentumAndRecovery.bas"
-#include "Source/Routines/AddVelocitySubpixelY.bas"
 #include "Source/Routines/InputHandleAllPlayers.bas"
 #include "Source/Routines/HandleGuardInput.bas"
-#include "Source/Routines/HandleFlyingCharacterMovement.bas"
-#include "Source/Routines/ProcessStandardMovement.bas"
-#include "Source/Routines/ProcessUpInput.bas"
-#include "Source/Routines/ProcessJumpInput.bas"
 #include "Source/Routines/ProcessAttackInput.bas"
 #include "Source/Routines/InputHandleLeftPortPlayerFunction.bas"
 #include "Source/Routines/InputHandleRightPortPlayerFunction.bas"
-#include "Source/Routines/HandlePauseInput.bas"
 #include "Source/Routines/UpdatePlayerMovementSingle.bas"
 #include "Source/Routines/UpdatePlayerMovement.bas"
 #include "Source/Routines/Physics.bas"
+#include "Source/Routines/FallDamage.bas"
 
           asm
 Bank8CodeEnds = .

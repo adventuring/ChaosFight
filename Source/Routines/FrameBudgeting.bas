@@ -99,7 +99,7 @@ CheckPlayer2HealthUpdate
           rem Mutates: temp6, COLUPF, playfield data (via
           rem UpdateHealthBarPlayer2)
           rem
-          rem Called Routines: UpdateHealthBarPlayer2 (bank8) - updates
+          rem Called Routines: UpdateHealthBarPlayer2 (bank6) - updates
           rem Player 3 health bar
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer2HealthUpdate
@@ -130,7 +130,7 @@ CheckPlayer3HealthUpdate
           rem Mutates: temp6, COLUPF, playfield data (via
           rem UpdateHealthBarPlayer3)
           rem
-          rem Called Routines: UpdateHealthBarPlayer3 (bank8) - updates
+          rem Called Routines: UpdateHealthBarPlayer3 (bank6) - updates
           rem Player 4 health bar
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer3HealthUpdate

@@ -14,7 +14,6 @@
 Bank12DataEnds
 end
 
-#include "Source/Routines/DisplayHealth.bas"
 #include "Source/Routines/CharacterDamage.bas"
 #include "Source/Routines/DeactivatePlayerMissiles.bas"
 #include "Source/Routines/TriggerEliminationEffects.bas"

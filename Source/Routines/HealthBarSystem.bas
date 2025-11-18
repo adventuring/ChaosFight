@@ -29,7 +29,7 @@ end
           rem Update Player 1 health bar (pfscore1).
           rem Input: temp1 = health value (0-100)
           rem        PlayerHealthMax (constant) = maximum health value
-          rem        HealthBarPatterns (ROM constant, bank7) = bit
+          rem        HealthBarPatterns (ROM constant, bank6) = bit
           rem        pattern table
           rem
           rem Output: pfscore1 set to health bar pattern (8 pixels, bit
@@ -74,7 +74,7 @@ P1SetPattern
           rem Look up bit pattern from table and set pfscore1
           rem
           rem Input: temp2 (from UpdatePlayer1HealthBar),
-          rem HealthBarPatterns (ROM constant, bank7)
+          rem HealthBarPatterns (ROM constant, bank6)
           rem
           rem Output: pfscore1 set to health bar pattern
           rem
@@ -84,7 +84,7 @@ P1SetPattern
           rem
           rem Constraints: Must be colocated with UpdatePlayer1HealthBar
           rem Look up bit pattern from table using patternIndex as index
-          rem Note: HealthBarPatterns is in same bank (Bank 7) as this
+          rem Note: HealthBarPatterns is in same bank (Bank 6) as this
           rem function, so no bank prefix needed
           let temp3 = HealthBarPatterns[temp2]
 
@@ -97,7 +97,7 @@ UpdatePlayer2HealthBar
           rem Update Player 2 health bar (pfscore2).
           rem Input: temp1 = health value (0-100)
           rem        PlayerHealthMax (constant) = maximum health value
-          rem        HealthBarPatterns (ROM constant, bank7) = bit
+          rem        HealthBarPatterns (ROM constant, bank6) = bit
           rem        pattern table
           rem
           rem Output: pfscore2 set to health bar pattern (8 pixels, bit
@@ -142,7 +142,7 @@ P2SetPattern
           rem Look up bit pattern from table and set pfscore2
           rem
           rem Input: temp2 (from UpdatePlayer2HealthBar),
-          rem HealthBarPatterns (ROM constant, bank7)
+          rem HealthBarPatterns (ROM constant, bank6)
           rem
           rem Output: pfscore2 set to health bar pattern
           rem
@@ -152,7 +152,7 @@ P2SetPattern
           rem
           rem Constraints: Must be colocated with UpdatePlayer2HealthBar
           rem Look up bit pattern from table using patternIndex as index
-          rem Note: HealthBarPatterns is in same bank (Bank 7) as this
+          rem Note: HealthBarPatterns is in same bank (Bank 6) as this
           rem function, so no bank prefix needed
           let temp3 = HealthBarPatterns[temp2]
 

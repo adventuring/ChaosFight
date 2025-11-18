@@ -6,6 +6,8 @@
 
           bank 6
 
+#include "Source/Data/HealthBarPatterns.bas"
+
           asm
 Bank6DataEnds
 end
@@ -24,6 +26,9 @@ end
 #include "Source/Routines/UpdateGuardTimers.bas"
 #include "Source/Routines/CharacterSelectFire.bas"
 #include "Source/Routines/CharacterSelectHelpers.bas"
+#include "Source/Routines/DisplayHealth.bas"
+#include "Source/Routines/FrameBudgeting.bas"
+#include "Source/Routines/HealthBarSystem.bas"
 
           asm
 Bank6CodeEnds

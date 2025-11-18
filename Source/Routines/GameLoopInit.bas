@@ -60,7 +60,7 @@ end
           rem sprite pointer addresses,
           rem   SetGameScreenLayout (bank7) - sets screen layout,
           rem   GetPlayerLocked (bank6) - accesses player lock state,
-          rem   InitializeHealthBars (bank7) - initializes health bar
+          rem   InitializeHealthBars (bank6) - initializes health bar
           rem   state,
           rem   LoadArena (bank16) - loads arena data
           rem
@@ -227,7 +227,7 @@ SkipPlayer4
           NUSIZ3 = 5
           rem Player 3 (Player 4) - multisprite kernel
 
-          gosub InitializeHealthBars bank8
+          gosub InitializeHealthBars bank6
           rem Initialize health bars
 
           gosub LoadArena bank16

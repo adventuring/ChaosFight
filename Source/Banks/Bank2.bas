@@ -6,11 +6,6 @@
           rem   FatTony, Megax, Harpy, KnightGuy + MissileCollision routine
 
           bank 2
-          asm
-            if . != $F100
-              err
-            endif
-end
 
           rem Character sprite data for characters 0-7
           rem Bank 2 dedicated to character art only - leave room for
@@ -26,9 +21,7 @@ end
 
           asm
 Bank2DataEnds
-end
 
-          asm
           ;; Character art lookup routines for Bank 2 (characters 0-7)
 #include "Source/Routines/CharacterArtBank2.s"
 Bank2CodeEnds

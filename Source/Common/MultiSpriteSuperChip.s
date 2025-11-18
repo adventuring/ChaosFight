@@ -45,6 +45,8 @@ COLUP3 = $9A
 COLUP4 = $9B
 COLUP5 = $9C
 SpriteGfxIndex = $9D
+aux2 = $F1
+pfcolortable = $F0
 player0pointer = $A2
 player0pointerlo = $A2
 player0pointerhi = $A3
@@ -170,6 +172,16 @@ player9height = $BC
 pfscore = 1
 pfrowheight = $D4
 screenheight = 192
+; Additional compile-time constants for kernel and system
+noscore = 0
+mk_score_on = 1
+NO_ILLEGAL_OPCODES = 0
+minikernel = 0
+NOT = $FF
+switchbw = $0282
+ECHOFIRST = 0
+; Runtime variables (may be set by code, but define as symbols for compatibility)
+pfrows = $D5
 ; Note: Multisprite kernel uses different memory layout than standard batariBASIC
 ; The definitions above match multisprite.h, which is the authoritative source
 ; --- Multisprite compatibility macros ----------------------------------------
@@ -185,7 +197,7 @@ screenheight = 192
 
 ; CRITICAL: Define base variables (var0-var48) BEFORE redefs file so symbols can resolve
 ; These MUST be defined unconditionally (not ifnconst) and appear before the redefs include
-; Note: Multisprite doesn't use var0-var48 in the same way as standard batariBASIC,
+; Note: Multisprite doesn’t use var0-var48 in the same way as standard batariBASIC,
 ; but we define them here for compatibility with code that might reference them
 ; Base variable definitions (var0-var48) - define unconditionally to ensure they exist
 var0 = $A4
@@ -929,12 +941,15 @@ var48 EQU $D4
   
   ; Forward declarations for batariBASIC built-in variables and routines
   ; These will be defined by batariBASIC compiler/generated code
-  ifnconst ECHOFIRST
-ECHOFIRST = 0
-  endif
+  ; ECHOFIRST is defined above unconditionally
   ifnconst frame
 frame = $00F5
   endif
+  ; Standard batariBASIC routines (defined in std_routines.asm, pf_drawing.asm, div_mul.asm)
+  ; These are labels, not constants, but we forward-declare them here for symbol resolution
+  ; Note: These are actual assembly routines, not variables
+  ; randomize, setuppointers, mul8, div8, ConvertToBCD, BlankPlayfield, PlayfieldRead, etc.
+  ; are defined in batariBASIC includes and will be available when those files are included
   
   MS_ASSIGN  interlaced, 0
   MS_ASSIGN  shakescreen, 0

@@ -3,7 +3,7 @@
 bmp_48x2_2_window = 5
 
  ;*** The height of the bitmap data. This can be larger than 
- ;*** the displayed data height, if you're scrolling or animating 
+ ;*** the displayed data height, if you’re scrolling or animating 
  ;*** the data...
 bmp_48x2_2_height = 5
 

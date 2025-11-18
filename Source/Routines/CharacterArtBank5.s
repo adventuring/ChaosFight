@@ -154,7 +154,8 @@ SetPlayerCharacterArtBank5
     ; Restore player number from stack
     pla
     sta temp6           ; Store player number in temp6 (safe to use)
-    
+    pha                 ; Save player number to stack    
+
     ; Copy sprite data from ROM to RAM buffer
     ; Source: ROM address in temp4/temp5
     ; Destination depends on player number (now in temp6):
@@ -163,95 +164,32 @@ SetPlayerCharacterArtBank5
     ;   Player 2 -> playerFrameBuffer_W[32-47] (r032-r047)
     ;   Player 3 -> playerFrameBuffer_W[48-63] (r048-r063)
     
-    ; Set up destination pointer based on player number (in temp6)
-    ; Save player number to stack before using it
+    ; Optimized: Use computed offset instead of separate copy routines
+    ; Calculate destination offset: player * 16
     lda temp6           ; Load player number (0-3)
-    pha                 ; Save player number to stack
-    ; Determine destination base address based on player
-    cmp #0
-    bne .CheckPlayer1Copy
-    ; Player 0: Copy to playerFrameBuffer_W[0-15] (absolute address $F000)
-    jmp .CopyPlayer0
-.CheckPlayer1Copy
-    cmp #1
-    bne .CheckPlayer2Copy
-    ; Player 1: Copy to playerFrameBuffer_W[16-31] (absolute address $F010)
-    jmp .CopyPlayer1
-.CheckPlayer2Copy
-    cmp #2
-    bne .CopyPlayer3
-    ; Player 2: Copy to playerFrameBuffer_W[32-47] (absolute address $F020)
-    jmp .CopyPlayer2
-.CopyPlayer3
-    ; Player 3: Copy to playerFrameBuffer_W[48-63] (absolute address $F030)
-    jmp .CopyPlayer3Data
+    asl                 ; player * 2
+    asl                 ; player * 4
+    asl                 ; player * 8
+    asl                 ; player * 16
+    tax                 ; Store offset in X for later use
     
-.CopyPlayer0
-    ; Copy 16 bytes from ROM (temp4/temp5) to playerFrameBuffer_W[0-15]
-    ldy #0
-.CopyLoop0
+    ; Copy 16 bytes from ROM (temp4/temp5) to playerFrameBuffer_W[offset to offset+15]
+    ; Use X as base offset, Y as loop counter (countdown from 16 to 1)
+    ldy #$10            ; Start at 16 ($10)
+.CopyLoop
+    dey                 ; Decrement first (so we access 15, 14, ..., 0)
     lda (temp4),y       ; Read from ROM (indirect addressing via temp4/temp5)
-    sta playerFrameBuffer_W,y          ; Write to SCRAM (absolute indexed addressing)
-    iny
-    cpy #16
-    bne .CopyLoop0
-    jmp .SetHeight
-    
-.CopyPlayer1
-    ; Copy 16 bytes from ROM (temp4/temp5) to playerFrameBuffer_W[16-31]
-    ldy #0
-.CopyLoop1
-    lda (temp4),y       ; Read from ROM
-    sta playerFrameBuffer_W+16,y       ; Write to SCRAM
-    iny
-    cpy #16
-    bne .CopyLoop1
-    jmp .SetHeight
-    
-.CopyPlayer2
-    ; Copy 16 bytes from ROM (temp4/temp5) to playerFrameBuffer_W[32-47]
-    ldy #0
-.CopyLoop2
-    lda (temp4),y       ; Read from ROM
-    sta playerFrameBuffer_W+32,y       ; Write to SCRAM
-    iny
-    cpy #16
-    bne .CopyLoop2
-    jmp .SetHeight
-    
-.CopyPlayer3Data
-    ; Copy 16 bytes from ROM (temp4/temp5) to playerFrameBuffer_W[48-63]
-    ldy #0
-.CopyLoop3
-    lda (temp4),y       ; Read from ROM
-    sta playerFrameBuffer_W+48,y       ; Write to SCRAM
-    iny
-    cpy #16
-    bne .CopyLoop3
-    
+    sta playerFrameBuffer_W,x          ; Write to SCRAM (absolute indexed addressing with X base)
+    inx                 ; Increment destination offset
+    cpy #0              ; Check if we've copied all 16 bytes (y=0)
+    bne .CopyLoop
+
 .SetHeight
     ; Set sprite height (all sprites are 16 bytes = 16 scanlines)
+    ; Optimized: Use indexed addressing since player heights are consecutive ($B0-$B3)
     ; Restore player number from stack
     pla                 ; Restore player number from stack
-    sta temp6           ; Store in temp6 for height setting
-    cmp #0
-    bne .CheckPlayer1Height
-    lda #16
-    sta player0height
-    rts
-.CheckPlayer1Height
-    cmp #1
-    bne .CheckPlayer2Height
-    lda #16
-    sta player1height
-    rts
-.CheckPlayer2Height
-    cmp #2
-    bne .SetPlayer3Height
-    lda #16
-    sta player2height
-    rts
-.SetPlayer3Height
-    lda #16
-    sta player3height
+    tax                 ; Use X as index (0-3)
+    lda #16             ; All sprites are 16 scanlines
+    sta player0height,x ; Store using indexed addressing (player0height=$B0, so $B0+x = correct address)
     rts

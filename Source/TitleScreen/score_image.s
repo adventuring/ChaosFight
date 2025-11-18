@@ -1,5 +1,5 @@
  ; feel free to modify the score graphics - just keep each digit 8 high
- ; if you're looking to want to modify any one font, pick on the 
+ ; if you’re looking to want to modify any one font, pick on the 
 
  ifnconst scorecolor
 scorecolor
@@ -1436,7 +1436,7 @@ miniscoretable
 
  endif ; PLOK
 
-; ### any characters that aren't font specific follow... 
+; ### any characters that aren’t font specific follow... 
 
  ifconst fontcharSPACE
        ;byte %00000000 ; SYMBOLS

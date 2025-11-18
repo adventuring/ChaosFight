@@ -71,7 +71,7 @@ end
           let temp1 = controllerStatus & SetRightPortJoy2bPlus
           if temp1 then if !INPT3{7} then AuthorPreludeComplete
 
-          gosub UpdateMusic bank1
+          ; gosub UpdateMusic bank1  ; TEMPORARILY DISABLED
 
           rem Auto-advance after music completes + 0.5s
 

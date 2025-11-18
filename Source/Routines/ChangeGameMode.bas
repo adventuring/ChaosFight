@@ -43,7 +43,7 @@ SetupPublisherPrelude
           rem Called Routines: BeginPublisherPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginPublisherPrelude bank14
+          gosub BeginPublisherPrelude
           return
 
 SetupAuthorPrelude
@@ -59,7 +59,7 @@ SetupAuthorPrelude
           rem Called Routines: BeginAuthorPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginAuthorPrelude bank14
+          gosub BeginAuthorPrelude
           return
 
 SetupTitle
@@ -75,7 +75,7 @@ SetupTitle
           rem Called Routines: BeginTitleScreen (bank14) - accesses title
           rem screen state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginTitleScreen bank14
+          gosub BeginTitleScreen
           return
 
 SetupCharacterSelect
@@ -103,10 +103,10 @@ SetupFallingAnimation
           rem Mutates: Falling animation state variables (via
           rem BeginFallingAnimation)
           rem
-          rem Called Routines: BeginFallingAnimation (bank6) - accesses
+          rem Called Routines: BeginFallingAnimation (bank12) - accesses
           rem animation state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginFallingAnimation bank6
+          gosub BeginFallingAnimation bank12
           return
 
 SetupArenaSelect
@@ -172,5 +172,5 @@ SetupAttract
           rem Called Routines: BeginAttractMode (bank14) - accesses
           rem attract mode state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginAttractMode bank14
+          gosub BeginAttractMode
           return

@@ -99,12 +99,22 @@ CheckPlayer2HealthUpdate
           rem Mutates: temp6, COLUPF, playfield data (via
           rem UpdateHealthBarPlayer2)
           rem
-          rem Called Routines: UpdateHealthBarPlayer2 (bank6) - updates
-          rem Player 3 health bar
+          rem Called Routines: (inlined UpdateHealthBarPlayer2)
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer2HealthUpdate
           if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
-          gosub UpdateHealthBarPlayer2
+          rem Update Player 3 health bar (inlined from UpdateHealthBarPlayer2)
+          rem Input: playerHealth[] (global array) = player health values
+          rem        HealthBarMaxLength (constant) = maximum health bar length
+          rem Output: Score colors set for health digit display
+          rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
+          let temp6 = playerHealth[2] / 12
+          if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
+          COLUPF = ColGray(14)
+          COLUP0 = ColGray(14)
+          COLUP1 = ColGray(14)
+          rem Score minikernel requires all three color registers set to same color
+          rem Players 3/4 health displayed as digits in score area
           return
 DonePlayer2HealthUpdate
           rem Player 2 health update check complete (label only)
@@ -195,32 +205,6 @@ UpdateHealthBarPlayer1
           rem Health bars for players 1/2 are displayed using score registers (pfscore/pfscore2)
           return
 
-UpdateHealthBarPlayer2
-          asm
-UpdateHealthBarPlayer2
-
-end
-          rem Update Player 3 health bar
-          rem Update Player 3 health bar (framePhase 2, 4-player mode
-          rem only)
-          rem
-          rem Input: playerHealth[] (global array) = player health
-          rem values
-          rem        HealthBarMaxLength (constant) = maximum health bar
-          rem        length
-          rem
-          rem Output: Score colors set for health digit display
-          rem
-          rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
-          rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
-          let temp6 = playerHealth[2] / 12
-          if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
-          COLUPF = ColGray(14)
-          COLUP0 = ColGray(14)
-          COLUP1 = ColGray(14)
-          rem Score minikernel requires all three color registers set to same color
-          rem Players 3/4 health displayed as digits in score area
-          return
 
 UpdateHealthBarPlayer3
           asm

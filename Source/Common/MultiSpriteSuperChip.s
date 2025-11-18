@@ -7,7 +7,171 @@
  #include "macro.h"
 ; Issue #930: Ensure every SuperChip SCRAM port symbol is exported here so
 ; cross-bank routines rely on one authoritative header.
-
+; CRITICAL: Define standard batariBASIC and multisprite symbols BEFORE redefs file
+; Multisprite kernel uses different addresses than standard batariBASIC (see multisprite.h)
+; Standard TIA/RIOT registers (multisprite layout from multisprite.h)
+missile0x = $80
+missile1x = $81
+ballx = $82
+SpriteIndex = $83
+player0x = $84
+NewSpriteX = $85
+player1x = $85
+player2x = $86
+player3x = $87
+player4x = $88
+player5x = $89
+objecty = $8A
+missile0y = $8A
+missile1y = $8B
+bally = $8C
+player0y = $8D
+NewSpriteY = $8E
+player1y = $8E
+player2y = $8F
+player3y = $90
+player4y = $91
+player5y = $92
+NewNUSIZ = $93
+_NUSIZ1 = $93
+NUSIZ2 = $94
+NUSIZ3 = $95
+NUSIZ4 = $96
+NUSIZ5 = $97
+NewCOLUP1 = $98
+_COLUP1 = $98
+COLUP2 = $99
+COLUP3 = $9A
+COLUP4 = $9B
+COLUP5 = $9C
+SpriteGfxIndex = $9D
+player0pointer = $A2
+player0pointerlo = $A2
+player0pointerhi = $A3
+P0Top = $CF
+P0Bottom = $A4
+P1Bottom = $A5
+player1pointerlo = $A6
+player2pointerlo = $A7
+player3pointerlo = $A8
+player4pointerlo = $A9
+player5pointerlo = $AA
+player1pointerhi = $AB
+player2pointerhi = $AC
+player3pointerhi = $AD
+player4pointerhi = $AE
+player5pointerhi = $AF
+player0height = $B0
+spriteheight = $B1
+player1height = $B1
+player2height = $B2
+player3height = $B3
+player4height = $B4
+player5height = $B5
+PF1temp1 = $B6
+PF1temp2 = $B7
+PF2temp1 = $B8
+PF2temp2 = $B9
+pfpixelheight = $BA
+playfield = $BB
+PF1pointer = $BB
+PF2pointer = $BD
+statusbarlength = $BF
+aux3 = $BF
+lifecolor = $C0
+pfscorecolor = $C0
+aux4 = $C0
+P1display = $cc
+lifepointer = $c1
+lives = $c2
+pfscore1 = $c1
+pfscore2 = $c2
+aux5 = $c1
+aux6 = $c2
+playfieldpos = $C3
+RepoLine = $ce
+pfheight = $C4
+scorepointers = $C5
+; Multisprite temp variables (different addresses than standard batariBASIC)
+temp1 = $CB
+temp2 = $CC
+temp3 = $CD
+temp4 = $CE
+temp5 = $CF
+temp6 = $D0
+temp7 = $D1
+score = $D2
+scorecolor = $D5
+rand = $D6
+; Multisprite letter variables (different addresses than standard batariBASIC)
+A = $d7
+a = $d7
+B = $d8
+b = $d8
+C = $d9
+c = $d9
+D = $da
+d = $da
+E = $db
+e = $db
+F = $dc
+f = $dc
+G = $dd
+g = $dd
+H = $de
+h = $de
+I = $df
+i = $df
+J = $e0
+j = $e0
+K = $e1
+k = $e1
+L = $e2
+l = $e2
+M = $e3
+m = $e3
+N = $e4
+n = $e4
+O = $e5
+o = $e5
+P = $e6
+p = $e6
+Q = $e7
+q = $e7
+R = $e8
+r = $e8
+S = $e9
+s = $e9
+T = $ea
+t = $ea
+U = $eb
+u = $eb
+V = $ec
+v = $ec
+W = $ed
+w = $ed
+X = $ee
+x = $ee
+Y = $ef
+y = $ef
+Z = $f0
+z = $f0
+spritesort = $f1
+spritesort2 = $f2
+spritesort3 = $f3
+spritesort4 = $f4
+spritesort5 = $f5
+stack1 = $f6
+stack2 = $f7
+stack3 = $f8
+stack4 = $f9
+; Compile-time constants (from MS_ASSIGN macros, but defined unconditionally here)
+player9height = $BC
+pfscore = 1
+pfrowheight = $D4
+screenheight = 192
+; Note: Multisprite kernel uses different memory layout than standard batariBASIC
+; The definitions above match multisprite.h, which is the authoritative source
 ; --- Multisprite compatibility macros ----------------------------------------
 ; Preserve the RETURN macro expected by multisprite-generated assembly.
 ; This must be defined early so it is available to all included files.
@@ -19,9 +183,11 @@
 	   endif
 	ENDM
 
-; CRITICAL: Define base variables (n, var0, etc.) BEFORE redefs file so symbols can resolve
+; CRITICAL: Define base variables (var0-var48) BEFORE redefs file so symbols can resolve
 ; These MUST be defined unconditionally (not ifnconst) and appear before the redefs include
-; Base variable definitions (from 2600basic.h) - define unconditionally to ensure they exist
+; Note: Multisprite doesn't use var0-var48 in the same way as standard batariBASIC,
+; but we define them here for compatibility with code that might reference them
+; Base variable definitions (var0-var48) - define unconditionally to ensure they exist
 var0 = $A4
 var1 = $A5
 var2 = $A6
@@ -70,6 +236,7 @@ var44 = $D0
 var45 = $D1
 var46 = $D2
 var47 = $D3
+var48 = $D4
 a = $d4
 A = $d4
 b = $d5

@@ -60,32 +60,17 @@ end
           rem Handle RandomArena (use proper RNG)
           if temp3 = RandomArena then temp3 = rand : temp3 = temp3 & 15
 
-          rem Player 0 - boundaries
-          let temp1 = 0
-          gosub CheckPlayerBoundary
-
-          rem Player 1 - boundaries
-          let temp1 = 1
-          gosub CheckPlayerBoundary
-
-          rem Player 2 - boundaries (if Quadtari and active)
-          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer2Physics
-          goto PPC_SkipPlayer2
-ProcessPlayer2Physics
-          if playerCharacter[2] = NoCharacter then goto PPC_SkipPlayer2
-          let temp1 = 2
-          gosub CheckPlayerBoundary
-PPC_SkipPlayer2
-
-          rem Player 3 - boundaries (if Quadtari and active)
-          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer3Physics
-          goto PPC_SkipPlayer3
-ProcessPlayer3Physics
-          if playerCharacter[3] = NoCharacter then goto PPC_SkipPlayer3
-          let temp1 = 3
-          gosub CheckPlayerBoundary
-PPC_SkipPlayer3
-
+          rem Process boundary checks for each player (skip inactive multiplexed slots)
+          for temp1 = 0 to 3
+              if temp1 < 2 then goto PPC_ProcessPlayer
+              if controllerStatus & SetQuadtariDetected then goto PPC_CheckActivePlayer
+              goto PPC_NextPlayer
+PPC_CheckActivePlayer
+              if playerCharacter[temp1] = NoCharacter then goto PPC_NextPlayer
+PPC_ProcessPlayer
+              gosub CheckPlayerBoundary
+PPC_NextPlayer
+          next
           return
 
 CheckPlayerBoundary

@@ -27,7 +27,6 @@ end
 #include "Source/Routines/AttractMode.bas"
 #include "Source/Routines/AuthorPrelude.bas"
 #include "Source/Routines/LoadCharacterColors.bas"
-#include "Source/Routines/PlayerPhysicsCollisions.bas"
 
           asm
 Bank14CodeEnds

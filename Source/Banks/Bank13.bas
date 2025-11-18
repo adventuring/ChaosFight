@@ -19,16 +19,13 @@ end
 #include "Source/Routines/AddVelocitySubpixelY.bas"
 #include "Source/Routines/ProcessStandardMovement.bas"
 #include "Source/Routines/CharacterControlsDown.bas"
-#include "Source/Routines/CharacterControlsJump.bas"
 #include "Source/Routines/ConsoleHandling.bas"
 #include "Source/Routines/TriggerEliminationEffects.bas"
-#include "Source/Routines/AnimationSystem.bas"
 #include "Source/Routines/GetCharacterAttackType.bas"
 #include "Source/Routines/IsCharacterRanged.bas"
 #include "Source/Routines/IsCharacterMelee.bas"
 #include "Source/Routines/IsPlayerEliminated.bas"
 #include "Source/Routines/IsPlayerAlive.bas"
-#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 
           asm
 Bank13CodeEnds

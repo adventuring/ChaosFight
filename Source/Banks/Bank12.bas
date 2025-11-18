@@ -15,7 +15,6 @@ Bank12DataEnds
 end
 
 #include "Source/Routines/UpdateAttackCooldowns.bas"
-#include "Source/Routines/PlayerInput.bas"
 #include "Source/Routines/CharacterDamage.bas"
 #include "Source/Routines/HandleFlyingCharacterMovement.bas"
 #include "Source/Routines/CharacterControlsJump.bas"

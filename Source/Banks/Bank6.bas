@@ -26,6 +26,7 @@ end
 #include "Source/Routines/UpdateGuardTimers.bas"
 #include "Source/Routines/CharacterSelectFire.bas"
 #include "Source/Routines/CharacterSelectHelpers.bas"
+#include "Source/Routines/MovePlayerToTarget.bas"
 
           asm
 Bank6CodeEnds

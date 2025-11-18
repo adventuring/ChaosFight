@@ -84,7 +84,7 @@ Player1TargetDone
           rem Called Routines: None
           rem Constraints: Must be colocated with FallingAnimation1
           let temp3 = 24
-          gosub MovePlayerToTarget bank12
+          gosub MovePlayerToTarget bank6
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer1Move
           rem reached = 1 if reached target
@@ -136,7 +136,7 @@ Player2TargetDone
           rem Called Routines: None
           rem Constraints: Must be colocated with FallingAnimation1
           let temp3 = 24
-          gosub MovePlayerToTarget bank12
+          gosub MovePlayerToTarget bank6
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer2Move
           rem Player 2 movement complete (skipped if not active)
@@ -159,7 +159,7 @@ DonePlayer2Move
           let temp2 = 64
           rem 4-player mode: target X = 64
           let temp3 = 24
-          gosub MovePlayerToTarget bank12
+          gosub MovePlayerToTarget bank6
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer3Move
           rem Player 3 movement complete (skipped if not in 4-player
@@ -183,7 +183,7 @@ DonePlayer3Move
           let temp2 = 96
           rem 4-player mode: target X = 96
           let temp3 = 24
-          gosub MovePlayerToTarget bank12
+          gosub MovePlayerToTarget bank6
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer4Move
           rem Player 4 movement complete (skipped if not in 4-player

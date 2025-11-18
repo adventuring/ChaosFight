@@ -15,6 +15,7 @@ end
 #include "Source/Routines/PlayerCollisionResolution.bas"
 #include "Source/Routines/DisplayHealth.bas"
 #include "Source/Routines/HealthBarSystem.bas"
+#include "Source/Routines/FallingAnimation.bas"
 
           asm
 Bank11CodeEnds

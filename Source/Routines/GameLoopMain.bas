@@ -223,7 +223,7 @@ GameEndCheckDone
           rem   by UpdateAllMissiles
           rem No separate CheckMissileCollisions call needed
 
-          gosub CheckRoboTitoStretchMissileCollisions bank13
+          gosub CheckRoboTitoStretchMissileCollisions bank10
           rem Check RoboTito stretch missile collisions
 
           rem Set sprite positions (now handled by movement system)

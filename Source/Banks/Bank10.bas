@@ -15,6 +15,7 @@ end
 #include "Source/Routines/FrameBudgeting.bas"
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/ProcessUpInput.bas"
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 
           asm
 Bank10CodeEnds

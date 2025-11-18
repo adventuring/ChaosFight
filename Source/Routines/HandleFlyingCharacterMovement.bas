@@ -61,7 +61,7 @@ end
           rem Reset left-collision flag
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then goto HFCM_CheckRightMovement
@@ -79,7 +79,7 @@ end
           rem Do not check if beyond screen
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then goto HFCM_CheckRightMovement
@@ -156,7 +156,7 @@ end
           rem Reset right-collision flag
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then return
@@ -175,7 +175,7 @@ end
           rem Do not check if beyond screen
           let temp1 = temp3
           let temp2 = temp6
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
           if temp5 = 1 then return

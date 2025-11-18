@@ -20,7 +20,7 @@ end
           rem Mutates: temp2, temp3, temp4, temp6, playerCharacter[],
           rem         playerY[], characterStateFlags_W[]
           rem
-          rem Called Routines: BernieJump (bank10), HarpyJump (bank10), PlayfieldRead (bank16)
+          rem Called Routines: BernieJump (bank10), HarpyJump (bank10), PlayfieldRead (bank10)
           rem
           rem Constraints: Must be colocated with PUI_UseJoy0, PUI_RoboTitoAscend helpers
           rem Determine which joy port to use based on player index
@@ -92,7 +92,7 @@ end
           let currentPlayer = temp1
           let temp1 = temp4
           let temp2 = temp3
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then goto PUI_RoboTitoLatch
           let temp1 = currentPlayer
           rem Clear latch if DOWN pressed (check appropriate port)

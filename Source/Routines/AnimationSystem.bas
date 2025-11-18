@@ -344,7 +344,7 @@ TransitionHandleFallBack
           let temp1 = temp5
           let temp3 = temp2
           let temp2 = temp6
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           let temp2 = temp3
           if temp1 then TransitionHandleFallBack_HitWall
           let temp2 = ActionFallen

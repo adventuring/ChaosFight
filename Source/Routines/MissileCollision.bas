@@ -476,7 +476,7 @@ end
           rem Assume clear until pfread says otherwise
           let temp1 = temp6
           let temp2 = temp3
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then let temp4 = 1 : return
           rem pfread(column, row) returns 0 if clear, non-zero if set
           rem Clear

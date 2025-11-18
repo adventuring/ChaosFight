@@ -552,7 +552,7 @@ MissileSysPF
           let temp4 = 0
           let temp1 = temp6
           let temp2 = temp3
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then let temp4 = 1 : return
           rem Default: no collision detected
           return

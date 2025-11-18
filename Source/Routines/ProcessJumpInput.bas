@@ -20,7 +20,7 @@ end
           rem         playerY[], characterStateFlags_W[]
           rem
           rem Called Routines: CheckEnhancedJumpButton, BernieJump (bank10),
-          rem         HarpyJump (bank10), DispatchCharacterJump (bank10), PlayfieldRead (bank16)
+          rem         HarpyJump (bank10), DispatchCharacterJump (bank10), PlayfieldRead (bank10)
           rem
           rem Constraints: Must be colocated with PJI_CheckEnhanced, PJI_CharacterBehaviors helpers
           rem Process jump input from enhanced buttons (Genesis/Joy2b+ Button C/II)
@@ -112,7 +112,7 @@ end
           let currentPlayer = temp1
           let temp1 = temp4
           let temp2 = temp3
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then goto PJI_RoboTitoLatch
           let temp1 = currentPlayer
           rem Clear latch if DOWN pressed (check appropriate port)

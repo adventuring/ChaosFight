@@ -49,7 +49,7 @@ DragonOfStormsDown
           let temp6 = temp1
           let temp1 = temp2
           let temp2 = temp4
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then let temp5 = 1
           let temp1 = temp6
           if temp5 = 1 then return
@@ -162,7 +162,7 @@ HarpyNormalDown
           let temp6 = temp1
           let temp1 = temp2
           let temp2 = temp4
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then let temp5 = 1
           let temp1 = temp6
           if temp5 = 1 then return
@@ -228,7 +228,7 @@ FrootyDown
           let temp6 = temp1
           let temp1 = temp2
           let temp2 = temp4
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then let temp5 = 1
           let temp1 = temp6
           if temp5 = 1 then return

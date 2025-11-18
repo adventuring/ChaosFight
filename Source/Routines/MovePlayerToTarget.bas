@@ -166,7 +166,7 @@ end
           let temp4 = temp1
           let temp1 = temp2
           let temp2 = temp5
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then let temp6 = 1
           let temp1 = temp4
 
@@ -181,7 +181,7 @@ end
             lsr temp2
 end
           let temp5 = temp2
-          if temp5 < pfrows then let temp4 = temp1 : let temp1 = temp2 : let temp2 = temp5 : gosub PlayfieldRead bank16 : if temp1 then let temp6 = 1 : let temp1 = temp4
+          if temp5 < pfrows then let temp4 = temp1 : let temp1 = temp2 : let temp2 = temp5 : gosub PlayfieldRead bank10 : if temp1 then let temp6 = 1 : let temp1 = temp4
 
           rem If collision detected, revert position
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
@@ -223,7 +223,7 @@ end
           let temp4 = temp1
           let temp1 = temp2
           let temp2 = temp5
-          gosub PlayfieldRead bank16
+          gosub PlayfieldRead bank10
           if temp1 then let temp6 = 1
           let temp1 = temp4
 
@@ -238,7 +238,7 @@ end
             lsr temp2
 end
           let temp5 = temp2
-          if temp5 < pfrows then let temp4 = temp1 : let temp1 = temp2 : let temp2 = temp5 : gosub PlayfieldRead bank16 : if temp1 then let temp6 = 1 : let temp1 = temp4
+          if temp5 < pfrows then let temp4 = temp1 : let temp1 = temp2 : let temp2 = temp5 : gosub PlayfieldRead bank10 : if temp1 then let temp6 = 1 : let temp1 = temp4
 
           rem If collision detected, revert position
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W

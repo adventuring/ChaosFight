@@ -740,7 +740,12 @@ end
           rem Apply damage from attacker to defender
           let temp3 = temp1
           let temp1 = temp5
-          gosub GetCharacterDamage bank12
+          rem GetCharacterDamage inlined - weight-based damage calculation
+          let temp3 = CharacterWeights[temp1]
+          if temp3 <= 15 then temp2 = 12 : goto MissileDamageDone
+          if temp3 <= 25 then temp2 = 18 : goto MissileDamageDone
+          let temp2 = 22
+MissileDamageDone
           let temp6 = temp2
           let temp1 = temp3
           rem Base damage derived from character definition

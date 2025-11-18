@@ -44,10 +44,20 @@ end
           rem PlayDamageSound (called via goto)
 
           let temp1 = playerCharacter[attackerID]
-          gosub GetCharacterDamage bank12
+          rem GetCharacterDamage inlined - weight-based damage calculation
+          let temp3 = CharacterWeights[temp1]
+          if temp3 <= 15 then temp2 = 12 : goto AttackerDamageDone
+          if temp3 <= 25 then temp2 = 18 : goto AttackerDamageDone
+          let temp2 = 22
+AttackerDamageDone
           let temp4 = temp2
           let temp1 = playerCharacter[defenderID]
-          gosub GetCharacterDamage bank12
+          rem GetCharacterDamage inlined - weight-based damage calculation
+          let temp3 = CharacterWeights[temp1]
+          if temp3 <= 15 then temp2 = 12 : goto DefenderDamageDone
+          if temp3 <= 25 then temp2 = 18 : goto DefenderDamageDone
+          let temp2 = 22
+DefenderDamageDone
           let temp1 = temp4 - temp2
           rem Calculate damage (considering defender state)
           rem Minimum damage

@@ -86,7 +86,7 @@ end
           if qtcontroller then goto InputHandleQuadtariPlayers
 
           rem Even frame: Handle Players 1 & 2 - only if alive
-          let currentPlayer = 0 : gosub IsPlayerAlive bank13
+          let currentPlayer = 0 : gosub IsPlayerAlive bank12
           if temp2 = 0 then goto InputDonePlayer0Input
           if (playerState[0] & 8) then goto InputDonePlayer0Input
           let temp1 = 0 : gosub InputHandleLeftPortPlayerFunction

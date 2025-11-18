@@ -14,7 +14,7 @@ end
           rem Output: temp2 = 1 if alive, 0 if eliminated/dead
           rem Mutates: temp2, temp3
           rem Calls: IsPlayerEliminated
-          gosub IsPlayerEliminated bank12
+          gosub IsPlayerEliminated
           rem Check elimination flag first
           if temp2 then return
           rem Already eliminated

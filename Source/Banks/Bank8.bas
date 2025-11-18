@@ -16,6 +16,7 @@ end
 
 #include "Source/Routines/ApplyMomentumAndRecovery.bas"
 #include "Source/Routines/InputHandleAllPlayers.bas"
+#include "Source/Routines/PlayerInput.bas"
 #include "Source/Routines/HandleGuardInput.bas"
 #include "Source/Routines/ProcessAttackInput.bas"
 #include "Source/Routines/InputHandleLeftPortPlayerFunction.bas"

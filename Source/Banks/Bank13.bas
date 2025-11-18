@@ -10,17 +10,11 @@
 Bank13DataEnds
 end
 
-#include "Source/Routines/GetCharacterAttackType.bas"
-#include "Source/Routines/IsCharacterRanged.bas"
-#include "Source/Routines/IsCharacterMelee.bas"
-#include "Source/Routines/IsPlayerEliminated.bas"
-#include "Source/Routines/IsPlayerAlive.bas"
 #include "Source/Routines/CheckPlayerCollision.bas"
 #include "Source/Routines/ControllerDetection.bas"
 #include "Source/Routines/GetPlayerAnimationStateFunction.bas"
 #include "Source/Routines/ConstrainToScreen.bas"
 #include "Source/Routines/AddVelocitySubpixelY.bas"
-#include "Source/Routines/HandlePauseInput.bas"
 #include "Source/Routines/ProcessStandardMovement.bas"
 #include "Source/Routines/CharacterControlsDown.bas"
 #include "Source/Routines/ConsoleHandling.bas"

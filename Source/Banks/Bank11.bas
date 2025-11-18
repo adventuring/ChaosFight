@@ -12,7 +12,6 @@ end
 
 #include "Source/Routines/GameLoopInit.bas"
 #include "Source/Routines/GameLoopMain.bas"
-#include "Source/Routines/UpdateAttackCooldowns.bas"
 #include "Source/Routines/PlayerCollisionResolution.bas"
 #include "Source/Routines/InitializeMovementSystem.bas"
 #include "Source/Routines/HandleFlyingCharacterMovement.bas"

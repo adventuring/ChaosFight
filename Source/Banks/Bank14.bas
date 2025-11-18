@@ -26,6 +26,7 @@ end
 #include "Source/Routines/AttractMode.bas"
 #include "Source/Routines/AuthorPrelude.bas"
 #include "Source/Routines/LoadCharacterColors.bas"
+#include "Source/Routines/HandlePauseInput.bas"
 #include "Source/Routines/BeginArenaSelect.bas"
 #include "Source/Routines/ArenaSelect.bas"
 #include "Source/Routines/ArenaReloadUtils.bas"

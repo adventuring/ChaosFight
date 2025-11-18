@@ -33,6 +33,6 @@ end
           rem Light character, good jump
           rem Set jumping flag
           rem Then execute the attack (PerformMeleeAttack sets animation state)
-          gosub PerformMeleeAttack bank7
+          gosub bank7 PerformMeleeAttack
           return
 

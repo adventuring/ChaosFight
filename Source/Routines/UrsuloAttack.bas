@@ -19,6 +19,6 @@ end
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack (claw swipe)
-          gosub PerformMeleeAttack bank7
+          gosub bank7 PerformMeleeAttack
           return
 

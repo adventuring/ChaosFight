@@ -2,24 +2,6 @@
 ; Copyright © 2025 Interworldly Adventuring, LLC.
 ; Derived from Tools/batariBASIC/includes/multisprite_kernel.asm (CC0)
 
-; Score area color constants (matches ColIndigo(12) and ColRed(12) from Colors.h)
-; NTSC: ColIndigo(12) = $7C, ColRed(12) = $4C
-; PAL: ColIndigo(12) = $8C, ColRed(12) = $4C
-; SECAM: ColIndigo(12) = 3, ColRed(12) = 1
- ifconst TV_NTSC
-ScoreColorIndigo12 = $7C
-ScoreColorRed12 = $4C
- else
-  ifconst TV_PAL
-ScoreColorIndigo12 = $8C
-ScoreColorRed12 = $4C
-  else
-; SECAM
-ScoreColorIndigo12 = 3
-ScoreColorRed12 = 1
-  endif
- endif
-
     ;echo "Multi-sprite kernel starts at ", *
 
 PFStart
@@ -34,7 +16,14 @@ multisprite_setup
  sta pfheight
 
 	ldx #4
+; stx temp3
 SetCopyHeight
+;	lda #76
+;	sta NewSpriteX,X
+;	lda CopyColorData,X
+;	sta NewCOLUP1,X
+ ;lda SpriteHeightTable,X
+; sta spriteheight,x
 	txa
 	sta SpriteGfxIndex,X
 	sta spritesort,X
@@ -43,7 +32,7 @@ SetCopyHeight
 
 
 
-; since we can’t turn off pf, point PF to BlankPlayfield in Bank 16
+; since we cannot turn off pf, point PF to BlankPlayfield in Bank 16
  lda #>BlankPlayfield
  sta PF2pointer+1
  sta PF1pointer+1
@@ -271,8 +260,14 @@ sixdigscore
 
 
  ; 6 digit score routine
+; lda #0
+; sta PF1
+; sta PF2
+; tax
 
    sta WSYNC;,x
+
+;                STA WSYNC ;first one, need one more
  sta REFP0
  sta REFP1
                 STA GRP0
@@ -382,6 +377,8 @@ FineAdjustTableEnd	=	FineAdjustTableBegin - 241
 ; repeat $f147-*
 ; brk
 ; repend
+;	org $F240
+
 SwitchDrawP0K1				;	72
 	lda P0Bottom
 	sta P0Top			;+6	 2
@@ -783,9 +780,8 @@ BottomOfKernelLoop
         STy VDELP1
         LDA #$10
         STA HMP1
-               LDA #ScoreColorIndigo12
+               LDA scorecolor 
                 STA COLUP0
-                LDA #ScoreColorRed12
                 STA COLUP1
  
         LDA #$03
@@ -799,8 +795,7 @@ BottomOfKernelLoop
  lda  (scorepointers),y
  sta  GRP0
  ifconst pfscore
-; Set playfield to score colors (use indigo for left side)
- lda #ScoreColorIndigo12
+ lda pfscorecolor
  sta COLUPF
  else
  sleep 6
@@ -925,7 +920,8 @@ AdjustYValuesDownLoop
 	bpl AdjustYValuesDownLoop
 
 
-	RETURN
+ RETURN
+	;rts
 
 SetupP1Subroutine
 ; flickersort algorithm
@@ -1030,7 +1026,7 @@ nonetoohigh
 
 shiftnumbers
  ; stick current x at end, shift others down
- ; if x=4: don’t do anything
+ ; if x=4: do not do anything
  ; if x=3: swap 3 and 4
  ; if x=2: 2=3, 3=4, 4=2
  ; if x=1: 1=2, 2=3, 3=4, 4=1

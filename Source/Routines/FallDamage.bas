@@ -68,18 +68,7 @@ CheckFallDamage
           if temp2 = 1 then goto WeightMultDone
           rem temp2 is 2-5, use optimized inline multiplication
           asm
-            lda temp4
-            ldx temp2
-            cpx #2
-            beq mult2
-            cpx #3
-            beq mult3
-            cpx #4
-            beq mult4
-            cpx #5
-            beq mult5
-            sta temp4
-            jmp multdone
+            jmp multstart
 mult2:      asl a
             sta temp4
             jmp multdone
@@ -98,6 +87,18 @@ mult5:      sta temp3
             asl a
             clc
             adc temp3
+            sta temp4
+            jmp multdone
+multstart:  lda temp4
+            ldx temp2
+            cpx #2
+            beq mult2
+            cpx #3
+            beq mult3
+            cpx #4
+            beq mult4
+            cpx #5
+            beq mult5
             sta temp4
 multdone:
 end
@@ -345,7 +346,7 @@ HarpyDive
           rem Set diagonal momentum at ~45° angle
           rem Horizontal: 4 pixels/frame (in facing direction)
           rem Vertical: 4 pixels/frame (downward)
-          if temp6 = 0 then SetHorizontalMomentumRight
+          if temp6 = 0 then goto SetHorizontalMomentumRight
           rem Facing left: set negative momentum (252 = -4 in signed
           let playerVelocityX[currentPlayer] = 252
           rem   8-bit)

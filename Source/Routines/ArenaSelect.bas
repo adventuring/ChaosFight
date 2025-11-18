@@ -139,6 +139,17 @@ ArenaSelectDoneRight
           asm
             lda temp1
             ldx #0
+            jmp FastBCDStart
+FastBCDOnesDigit
+            adc #10
+            sta temp4
+            stx temp2
+            jmp FastBCDDone
+FastBCDMaxTens
+            sta temp4
+            stx temp2
+            jmp FastBCDDone
+FastBCDStart
 FastBCDDivideBy10
             sec
             sbc #10
@@ -146,15 +157,7 @@ FastBCDDivideBy10
             inx
             cpx #3
             beq FastBCDMaxTens
-            bcc FastBCDDivideBy10
-FastBCDMaxTens
-            sta temp4
-            stx temp2
-            jmp FastBCDDone
-FastBCDOnesDigit
-            adc #10
-            sta temp4
-            stx temp2
+            jmp FastBCDDivideBy10
 FastBCDDone
 end
           rem temp2 = tens digit (0-3), temp4 = ones digit (0-9)

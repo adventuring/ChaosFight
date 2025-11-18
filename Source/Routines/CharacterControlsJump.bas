@@ -75,7 +75,7 @@ end
           rem Special case: if at bottom row (pfrows - 1), check top row
           rem   (0) for wrap
           rem For pfres=8: pfrows = 8, so bottom row is 7
-          if temp6 >= pfrows - 1 then BernieCheckBottomWrap
+          if temp6 >= pfrows - 1 then goto BernieCheckBottomWrap
           rem At or beyond bottom row, check wrap
 
           let temp4 = temp6 + 1
@@ -294,7 +294,7 @@ end
 
           rem Check screen bounds - do not go above top
 
-          if playerY[temp1] <= 5 then HarpyFlapRecord
+          if playerY[temp1] <= 5 then goto HarpyFlapRecord
           rem Already at top, cannot flap higher but still record
 
           rem Flap upward - apply upward velocity impulse
@@ -540,7 +540,7 @@ RoboTitoJump
           rem Check if already latched to ceiling
           if (characterStateFlags_R[temp1] & 1) then return
           rem Check if grounded and stretch is allowed
-          if (playerState[temp1] & 4) then RoboTitoCannotStretch
+          if (playerState[temp1] & 4) then goto RoboTitoCannotStretch
           rem Not grounded (jumping flag set), cannot stretch
 
           rem Check stretch permission flag (must be grounded)
@@ -548,33 +548,33 @@ RoboTitoJump
           rem Load bit-packed flags
           let temp3 = temp1
           rem Calculate bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp3 = 0 then RTJ_CheckBit0
-          if temp3 = 1 then RTJ_CheckBit1
-          if temp3 = 2 then RTJ_CheckBit2
+          if temp3 = 0 then goto RTJ_CheckBit0
+          if temp3 = 1 then goto RTJ_CheckBit1
+          if temp3 = 2 then goto RTJ_CheckBit2
           rem Player 3: bit 3
           let temp3 = temp2 & 8
-          if !temp3 then RoboTitoCannotStretch
+          if !temp3 then goto RoboTitoCannotStretch
           rem Bit 3 not set, cannot stretch
           goto RoboTitoCanStretch
 
 RTJ_CheckBit0
           rem Player 0: bit 0
           let temp3 = temp2 & 1
-          if !temp3 then RoboTitoCannotStretch
+          if !temp3 then goto RoboTitoCannotStretch
           rem Bit 0 not set, cannot stretch
           goto RoboTitoCanStretch
 
 RTJ_CheckBit1
           rem Player 1: bit 1
           let temp3 = temp2 & 2
-          if !temp3 then RoboTitoCannotStretch
+          if !temp3 then goto RoboTitoCannotStretch
           rem Bit 1 not set, cannot stretch
           goto RoboTitoCanStretch
 
 RTJ_CheckBit2
           rem Player 2: bit 2
           let temp3 = temp2 & 4
-          if !temp3 then RoboTitoCannotStretch
+          if !temp3 then goto RoboTitoCannotStretch
           rem Bit 2 not set, cannot stretch
           goto RoboTitoCanStretch
 
@@ -677,9 +677,9 @@ GroundSearchDone
           rem Calculate bit mask and clear bit
           let temp5 = roboTitoCanStretch_R
           rem Load current flags
-          if temp4 = 0 then RTS_ClearBit0
-          if temp4 = 1 then RTS_ClearBit1
-          if temp4 = 2 then RTS_ClearBit2
+          if temp4 = 0 then goto RTS_ClearBit0
+          if temp4 = 1 then goto RTS_ClearBit1
+          if temp4 = 2 then goto RTS_ClearBit2
           let temp5 = temp5 & 247
           rem Player 3: clear bit 3
           goto RTS_StretchPermissionCleared
@@ -704,7 +704,7 @@ RTS_StretchPermissionCleared
 
           rem Move upward 3 pixels per frame
 
-          if playerY[temp1] <= 5 then RoboTitoCheckCeiling
+          if playerY[temp1] <= 5 then goto RoboTitoCheckCeiling
           let playerY[temp1] = playerY[temp1] - 3
           return
 
@@ -746,15 +746,15 @@ RoboTitoCheckCeiling
 
           let temp3 = playerY[temp1]
           rem Check row above player for ceiling
-          if temp3 <= 0 then RoboTitoLatch
+          if temp3 <= 0 then goto RoboTitoLatch
           let temp4 = temp3 / pfrowheight
-          if temp4 <= 0 then RoboTitoLatch
+          if temp4 <= 0 then goto RoboTitoLatch
           let temp4 = temp4 - 1
           let temp5 = temp1
           let temp1 = temp2
           let temp2 = temp4
           gosub PlayfieldRead bank16
-          if temp1 then RoboTitoLatch
+          if temp1 then goto RoboTitoLatch
           let temp1 = temp5
 
           let playerY[temp1] = playerY[temp1] - 3
@@ -799,9 +799,9 @@ RoboTitoLatch
 
           let temp2 = missileStretchHeight_R[temp1]
           rem Rapidly reduce missile height to 0 over 2-3 frames
-          if temp2 <= 0 then RTL_HeightCleared
+          if temp2 <= 0 then goto RTL_HeightCleared
           rem Reduce by 25 scanlines per frame
-          if temp2 > 25 then RTL_ReduceHeight
+          if temp2 > 25 then goto RTL_ReduceHeight
           let missileStretchHeight_W[temp1] = 0
           rem Less than 25 remaining, set to 0
           goto RTL_HeightCleared

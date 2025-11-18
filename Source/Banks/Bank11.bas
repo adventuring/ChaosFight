@@ -16,6 +16,7 @@ end
 #include "Source/Routines/PlayerCollisionResolution.bas"
 #include "Source/Routines/InitializeMovementSystem.bas"
 #include "Source/Routines/HandleFlyingCharacterMovement.bas"
+#include "Source/Routines/Combat.bas"
 
           asm
 Bank11CodeEnds

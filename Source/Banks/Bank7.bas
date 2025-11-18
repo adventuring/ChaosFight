@@ -14,13 +14,12 @@
 Bank7DataEnds
 end
 
-#include "Source/Routines/ScreenLayout.bas"
 #include "Source/Routines/CharacterAttacksDispatch.bas"
 #include "Source/Routines/PerformRangedAttack.bas"
 #include "Source/Routines/PerformMeleeAttack.bas"
 #include "Source/Routines/MissileSystem.bas"
 #include "Source/Routines/MissileCharacterHandlers.bas"
-#include "Source/Routines/MissileCollision.bas"
+#include "Source/Routines/Combat.bas"
 
           asm
 Bank7CodeEnds

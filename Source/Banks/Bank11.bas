@@ -13,9 +13,7 @@ end
 #include "Source/Routines/GameLoopInit.bas"
 #include "Source/Routines/GameLoopMain.bas"
 #include "Source/Routines/PlayerCollisionResolution.bas"
-#include "Source/Routines/InitializeMovementSystem.bas"
-#include "Source/Routines/HandleFlyingCharacterMovement.bas"
-#include "Source/Routines/Combat.bas"
+#include "Source/Routines/DisplayHealth.bas"
 
           asm
 Bank11CodeEnds

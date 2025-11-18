@@ -15,9 +15,12 @@ Bank12DataEnds
 end
 
 #include "Source/Routines/UpdateAttackCooldowns.bas"
-#include "Source/Routines/PlayerInput.bas"
 #include "Source/Routines/CharacterDamage.bas"
-#include "Source/Routines/DeactivatePlayerMissiles.bas"
+#include "Source/Routines/GetCharacterAttackType.bas"
+#include "Source/Routines/IsCharacterRanged.bas"
+#include "Source/Routines/IsCharacterMelee.bas"
+#include "Source/Routines/IsPlayerEliminated.bas"
+#include "Source/Routines/IsPlayerAlive.bas"
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 
           asm

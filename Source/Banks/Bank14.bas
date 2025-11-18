@@ -30,6 +30,17 @@ end
 #include "Source/Routines/BeginArenaSelect.bas"
 #include "Source/Routines/ArenaSelect.bas"
 #include "Source/Routines/ArenaReloadUtils.bas"
+#include "Source/Routines/AnimationSystem.bas"
+#include "Source/Routines/BeginFallingAnimation.bas"
+#include "Source/Routines/FallingAnimation.bas"
+#include "Source/Routines/WinnerAnnouncement.bas"
+#include "Source/Routines/BeginWinnerAnnouncement.bas"
+#include "Source/Routines/UpdatePlayers34ActiveFlag.bas"
+#include "Source/Routines/CountRemainingPlayers.bas"
+#include "Source/Routines/FindLastEliminated.bas"
+#include "Source/Routines/FindWinner.bas"
+#include "Source/Routines/CheckPlayerElimination.bas"
+#include "Source/Routines/CheckAllPlayerEliminations.bas"
 
           asm
 Bank14CodeEnds

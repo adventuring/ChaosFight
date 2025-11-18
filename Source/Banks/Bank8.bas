@@ -25,6 +25,8 @@ end
 #include "Source/Routines/UpdatePlayerMovement.bas"
 #include "Source/Routines/Physics.bas"
 #include "Source/Routines/FallDamage.bas"
+#include "Source/Routines/ScreenLayout.bas"
+#include "Source/Routines/ProcessJumpInput.bas"
 
           asm
 Bank8CodeEnds

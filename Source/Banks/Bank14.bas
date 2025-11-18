@@ -30,7 +30,6 @@ end
 #include "Source/Routines/BeginArenaSelect.bas"
 #include "Source/Routines/ArenaSelect.bas"
 #include "Source/Routines/ArenaReloadUtils.bas"
-#include "Source/Routines/AnimationSystem.bas"
 #include "Source/Routines/BeginFallingAnimation.bas"
 #include "Source/Routines/FallingAnimation.bas"
 #include "Source/Routines/WinnerAnnouncement.bas"

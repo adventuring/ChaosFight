@@ -149,53 +149,12 @@ AdvanceFrame
           goto UpdateSprite
 DoneAdvance
           return
-AdvanceAnimationFrame
-          rem Animation counter not at threshold (label only, no
-          rem execution)
-          rem
-          rem Input: None (label only, no execution)
-          rem
-          rem Output: None (label only)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with UpdatePlayerAnimation
-          rem Advance to next frame in current animation action
-          rem Frame counter is per-sprite 10fps counter, NOT global
-          rem   frame counter
-          rem
-          rem INPUT: currentPlayer = player index (0-3)
-          rem currentAnimationSeq[currentPlayer] = current animation
-          rem   action/sequence (0-15)
-          rem currentAnimationFrame[currentPlayer] = current frame
-          rem   within sequence (0-7)
-          rem
-          rem OUTPUT: None
-          rem
-          rem EFFECTS: Increments currentAnimationFrame[currentPlayer],
-          rem   checks for frame 7 completion,
-          rem triggers HandleAnimationTransition when 8 frames completed
-          rem Advance to next frame in current animation action
-          rem Frame is from sprite 10fps counter
-          rem   (currentAnimationFrame), not global frame
-          rem SCRAM read-modify-write: currentAnimationFrame_R → currentAnimationFrame_W
-          let temp4 = currentAnimationFrame_R[currentPlayer]
-          let temp4 = 1 + temp4
-          let currentAnimationFrame_W[currentPlayer] = temp4
-
-          rem Check if we have completed the current action (8 frames
-          rem   per action)
-          rem Use temp4 (pre-incremented frame value) to detect sequence wrap
-          if temp4 >= FramesPerSequence then goto HandleFrame7Transition
-          goto UpdateSprite
 
 HandleFrame7Transition
           rem Frame 7 completed, handle action-specific transitions
           rem
           rem Input: currentPlayer (global) = player index (from
-          rem UpdatePlayerAnimation/AdvanceAnimationFrame)
+          rem UpdatePlayerAnimation/AdvanceFrame)
           rem
           rem Output: Animation transition handled, dispatches to
           rem UpdateSprite
@@ -315,30 +274,6 @@ end
 
           return
 
-GetCurrentAnimationFrame
-          rem Return the current animation frame for currentPlayer.
-          rem
-          rem Input: currentPlayer (global) = player index (0-3)
-          rem        currentAnimationFrame_R[] (SCRAM) = stored frame values
-          rem Output: temp2 = current animation frame (0-7)
-          rem Mutates: temp2 (set to current frame)
-          rem Constraints: None
-          let temp2 = currentAnimationFrame_R[currentPlayer]
-          rem SCRAM read: Read from r081
-          return
-
-GetCurrentAnimationAction
-          rem Get current animation action for a player
-          rem
-          rem INPUT: currentPlayer = player index (0-3)
-          rem currentAnimationSeq[currentPlayer] = current action (read
-          rem   from array)
-          rem
-          rem OUTPUT: temp2 = current animation action (0-15)
-          rem EFFECTS: None (read-only query)
-          let temp2 = currentAnimationSeq_R[currentPlayer]
-          return
-
 InitializeAnimationSystem
           rem Initialize animation system for all players
           rem Called at game start to set up initial animation states
@@ -354,63 +289,6 @@ InitializeAnimationSystem
           for currentPlayer = 0 to 3
             gosub SetPlayerAnimation
           next
-          return
-
-IsPlayerWalking
-          rem
-          rem Animation State Queries
-          rem Check if player is in walking animation
-          rem
-          rem INPUT: currentPlayer = player index (0-3)
-          rem
-          rem OUTPUT: temp2 = 1 if walking, 0 if not
-          rem EFFECTS: None (read-only query)
-          let temp2 = 0
-          if ActionWalking = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
-          return
-
-IsPlayerAttacking
-          rem Check if player is in attack animation
-          rem
-          rem INPUT: currentPlayer = player index (0-3)
-          rem
-          rem OUTPUT: temp2 = 1 if attacking, 0 if not
-          rem EFFECTS: None (read-only query)
-          let temp2 = 0
-          if ActionAttackWindup > currentAnimationSeq_R[currentPlayer] then goto NotAttacking
-          if ActionAttackRecovery < currentAnimationSeq_R[currentPlayer] then goto NotAttacking
-          let temp2 = 1
-NotAttacking
-          return
-
-IsPlayerHit
-          rem Check if player is in hit animation
-          rem
-          rem INPUT: currentPlayer = player index (0-3)
-          rem
-          rem OUTPUT: temp2 = 1 if hit, 0 if not
-          rem EFFECTS: None (read-only query)
-          let temp2 = 0
-          if ActionHit = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
-          return
-
-IsPlayerJumping
-          rem Check if player is in jumping animation based on sequence
-          rem NOTE: Returns 1 only when the current animation sequence is
-          rem       ActionJumping or ActionFalling. Permanent flyers such
-          rem       as Frooty or Dragon of Storms remain in idle/hover
-          rem       animations and will report 0 even while aloft. Use
-          rem       PlayerStateBitJumping if you need to detect physical
-          rem       airborne status instead of animation state.
-          rem
-          rem INPUT: currentPlayer = player index (0-3)
-          rem
-          rem OUTPUT: temp2 = 1 if jumping, 0 if not
-          rem EFFECTS: None (read-only query)
-          let temp2 = 0
-          rem Use temp2 directly to avoid batariBASIC alias resolution issues
-          if ActionJumping = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
-          if ActionFalling = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
           return
 
 HandleAnimationTransition

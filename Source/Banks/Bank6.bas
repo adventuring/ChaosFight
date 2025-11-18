@@ -22,18 +22,8 @@ end
 #include "Source/Routines/StartGuard.bas"
 #include "Source/Routines/UpdateSingleGuardTimer.bas"
 #include "Source/Routines/UpdateGuardTimers.bas"
-#include "Source/Routines/BeginFallingAnimation.bas"
-#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
-#include "Source/Routines/MovementApplyGravity.bas"
-#include "Source/Routines/GetPlayerPosition.bas"
-#include "Source/Routines/GetPlayerVelocity.bas"
-#include "Source/Routines/SetPlayerPosition.bas"
-#include "Source/Routines/SetPlayerVelocity.bas"
-#include "Source/Routines/ApplyFriction.bas"
 #include "Source/Routines/CharacterSelectFire.bas"
 #include "Source/Routines/CharacterSelectHelpers.bas"
-#include "Source/Routines/WinnerAnnouncement.bas"
-#include "Source/Routines/BeginWinnerAnnouncement.bas"
 
           asm
 Bank6CodeEnds

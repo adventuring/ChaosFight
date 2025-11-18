@@ -26,10 +26,14 @@ end
 #include "Source/Routines/CheckAllPlayerEliminations.bas"
 #include "Source/Routines/ArenaReloadUtils.bas"
 #include "Source/Routines/BeginArenaSelect.bas"
+#include "Source/Routines/BeginFallingAnimation.bas"
+#include "Source/Routines/WinnerAnnouncement.bas"
+#include "Source/Routines/BeginWinnerAnnouncement.bas"
 #include "Source/Routines/MovePlayerToTarget.bas"
 #include "Source/Routines/FallingAnimation.bas"
 #include "Source/Routines/ArenaSelect.bas"
 #include "Source/Routines/AnimationSystem.bas"
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 
           asm
 Bank12CodeEnds

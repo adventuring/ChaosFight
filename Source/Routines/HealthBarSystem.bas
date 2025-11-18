@@ -243,24 +243,27 @@ ConvertToBCD
           rem
           rem Output: temp1 = packed BCD value (e.g., 75 -> $75)
           rem
-          rem Mutates: temp1 (input value, then output), temp6 (tens digit)
+          rem Mutates: temp1 (input value, then output), temp6 (scratch)
           rem
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with UpdatePlayer34HealthBars
-          let temp6 = 0
+          asm
+            lda temp1
+            sta temp6    ; binary input value
+            lda #0
+            sta temp1    ; BCD result accumulator
+            ldx #8
+            sed
 ConvertToBCDLoop
-          if temp1 < 10 then goto ConvertToBCDFinalize
-          let temp1 = temp1 - 10
-          let temp6 = temp6 + 1
-          goto ConvertToBCDLoop
-ConvertToBCDFinalize
-          rem temp1 now contains ones digit (0-9), temp6 contains tens digit (0-9)
-          rem Save ones digit before overwriting temp1
-          let temp2 = temp1
-          rem Combine into packed BCD: tens * 16 + ones
-          let temp1 = temp6 * 16
-          let temp1 = temp1 + temp2
+            asl temp6    ; shift bit from binary into carry
+            lda temp1    ; load current BCD result
+            adc temp1    ; add to itself (multiply by 2) plus carry bit
+            sta temp1    ; store updated BCD result
+            dex
+            bne ConvertToBCDLoop
+            cld
+          end
           rem temp1 now contains packed BCD (e.g., $75 for 75)
           return
 

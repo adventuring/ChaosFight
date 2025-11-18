@@ -28,8 +28,8 @@
           rem Input: joy0fire, joy1fire (hardware) = button states
           rem        controllerStatus (global) = controller detection
           rem        state
-          rem        INPT0, INPT2 (hardware) = Quadtari controller
-          rem        states
+          rem        INPT0-3 (hardware) = MegaDrive/Joy2b+ controller
+          rem        button states
           rem        preambleTimer (global) = frame counter
           rem        musicPlaying (global) = music playback state
           rem
@@ -57,16 +57,19 @@ end
           if joy0fire then AuthorPreludeComplete
           if joy1fire then AuthorPreludeComplete
 
-          rem Check Quadtari controllers if detected
+          rem Check MegaDrive/Joy2b+ controllers if detected
+          rem Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0) or Joy2b+ Button III (INPT1)
+          rem OR flags together and check for nonzero match
+          let temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
+          if temp1 then if !INPT0{7} then AuthorPreludeComplete
+          let temp1 = controllerStatus & SetLeftPortJoy2bPlus
+          if temp1 then if !INPT1{7} then AuthorPreludeComplete
 
-          if controllerStatus & SetQuadtariDetected then goto CheckQuadtariButtons
-          goto SkipQuadtariCheck
-
-CheckQuadtariButtons
-          if !INPT0{7} then AuthorPreludeComplete
-          if !INPT2{7} then AuthorPreludeComplete
-
-SkipQuadtariCheck
+          rem Player 2: Genesis Button C (INPT2) or Joy2b+ Button C/II (INPT2) or Joy2b+ Button III (INPT3)
+          let temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
+          if temp1 then if !INPT2{7} then AuthorPreludeComplete
+          let temp1 = controllerStatus & SetRightPortJoy2bPlus
+          if temp1 then if !INPT3{7} then AuthorPreludeComplete
 
           gosub UpdateMusic bank1
 

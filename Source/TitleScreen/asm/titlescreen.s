@@ -1,6 +1,6 @@
 
- #include "TitleScreen/asm/layoutmacros.s"
- #include "TitleScreen/titlescreen_layout.s.backup"
+#include "TitleScreen/asm/layoutmacros.s"
+#include "TitleScreen/titlescreen_layout.s.backup"
 
 ; Optional bitmap index offsets (all are 0)
 bmp_48x2_1_index_value
@@ -93,7 +93,7 @@ title_playfield
 	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 
 	ifconst mk_score_on
-		#include "TitleScreen/asm/score_kernel.s"
+#include "TitleScreen/asm/score_kernel.s"
 	endif ;mk_score_on
 
 	; Gameselect minikernel removed - not used (mk_gameselect_on = 0)

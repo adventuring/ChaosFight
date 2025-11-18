@@ -42,7 +42,7 @@ CRTSMC_IsStretching
 
           let temp2 = missileStretchHeight_R[temp1]
           rem Check if stretch missile has height > 0
-          if !temp2 then CRTSMC_NextPlayer
+          if !temp2 then goto CRTSMC_NextPlayer
 
           let temp3 = playerX[temp1] + 7
           let temp4 = playerY[temp1] + 16

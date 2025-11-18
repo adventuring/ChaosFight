@@ -940,8 +940,7 @@ AdjustYValuesDownLoop
 	bpl AdjustYValuesDownLoop
 
 
- RETURN
-	;rts
+	RETURN
 
 SetupP1Subroutine
 ; flickersort algorithm

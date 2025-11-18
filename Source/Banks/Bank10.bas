@@ -12,7 +12,6 @@ Bank10DataEnds
 end
 
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
-          rem Character attack routines (attack-related)
 #include "Source/Routines/BernieAttack.bas"
 #include "Source/Routines/HarpyAttack.bas"
 #include "Source/Routines/UrsuloAttack.bas"

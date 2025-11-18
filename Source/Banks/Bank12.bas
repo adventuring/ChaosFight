@@ -34,6 +34,12 @@ end
 #include "Source/Routines/ArenaSelect.bas"
 #include "Source/Routines/AnimationSystem.bas"
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
+#include "Source/Routines/GetCharacterAttackType.bas"
+#include "Source/Routines/IsCharacterRanged.bas"
+#include "Source/Routines/IsCharacterMelee.bas"
+#include "Source/Routines/IsPlayerEliminated.bas"
+#include "Source/Routines/IsPlayerAlive.bas"
+#include "Source/Routines/UpdateAttackCooldowns.bas"
 
           asm
 Bank12CodeEnds

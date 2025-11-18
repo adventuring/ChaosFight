@@ -18,7 +18,7 @@ end
 
           for currentPlayer = 0 to 3
           rem Check each player using FOR loop
-          gosub IsPlayerEliminated bank13
+          gosub IsPlayerEliminated bank12
           if !temp2 then let winnerPlayerIndex_W = currentPlayer
           next
 

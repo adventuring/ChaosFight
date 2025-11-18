@@ -34,14 +34,7 @@ multisprite_setup
  sta pfheight
 
 	ldx #4
-; stx temp3
 SetCopyHeight
-;	lda #76
-;	sta NewSpriteX,X
-;	lda CopyColorData,X
-;	sta NewCOLUP1,X
- ;lda SpriteHeightTable,X
-; sta spriteheight,x
 	txa
 	sta SpriteGfxIndex,X
 	sta spritesort,X
@@ -278,14 +271,8 @@ sixdigscore
 
 
  ; 6 digit score routine
-; lda #0
-; sta PF1
-; sta PF2
-; tax
 
    sta WSYNC;,x
-
-;                STA WSYNC ;first one, need one more
  sta REFP0
  sta REFP1
                 STA GRP0
@@ -395,8 +382,6 @@ FineAdjustTableEnd	=	FineAdjustTableBegin - 241
 ; repeat $f147-*
 ; brk
 ; repend
-;	org $F240
-
 SwitchDrawP0K1				;	72
 	lda P0Bottom
 	sta P0Top			;+6	 2

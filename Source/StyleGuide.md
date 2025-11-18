@@ -296,11 +296,16 @@ globals).
 
 ### Apostrophes in Remarks
 
-**MUST use right single quotes (`'`) instead of straight apostrophes
-(`'`) in `rem` comments** - the C preprocessor (`cpp`) treats straight
-apostrophes as string delimiters, causing compilation warnings. Right
-single quotes are typographically correct and do not trigger
-preprocessor warnings.
+**STRICT SYNTAX REQUIREMENT**: **MUST use typographic apostrophes (`'`,
+U+2019) instead of straight apostrophes (`'`, U+0027) in ALL comments**
+(`rem` statements and `;` comments in `asm` blocks). The C preprocessor
+(`cpp`) treats straight apostrophes as string delimiters, causing
+compilation warnings ("missing terminating ' character"). Typographic
+apostrophes are typographically correct and do not trigger preprocessor
+warnings.
+
+**This is a hard syntax requirement - code will not compile correctly
+without it.**
 
 **Correct:**
 
@@ -326,11 +331,19 @@ rem apostrophe causes cpp warnings
 ```
 
 **Rationale**: The C preprocessor parses all comments and treats
-straight apostrophes (`'`) as potential string delimiters, causing
-compilation warnings. Right single quotes (`'`, U+2019) are the
-typographically correct character for apostrophes in English text and do
-not trigger preprocessor warnings. Always use right single quotes for
-contractions and possessives in remarks.
+straight apostrophes (`'`, U+0027) as potential string delimiters,
+causing compilation warnings ("missing terminating ' character").
+Typographic apostrophes (`'`, U+2019) are the typographically correct
+character for apostrophes in English text and do not trigger
+preprocessor warnings.
+
+**CRITICAL**: This applies to:
+- All `rem` comments in `.bas` files
+- All `;` comments in `asm` blocks
+- All comments in `.s` assembly files included via `#include`
+
+**Violations will cause build failures.** Always use typographic
+apostrophes (`'`) for contractions and possessives in all comments.
 
 ### Remark Length
 

@@ -184,7 +184,7 @@ SetPlayerCharacterArtBank2
     lda (temp4),y       ; Read from ROM (indirect addressing via temp4/temp5)
     sta playerFrameBuffer_W,x          ; Write to SCRAM (absolute indexed addressing with X base)
     inx                 ; Increment destination offset
-    cpy #0              ; Check if we've copied all 16 bytes (y=0)
+    cpy #0              ; Check if we’ve copied all 16 bytes (y=0)
     bne .CopyLoop
 
 .SetHeight

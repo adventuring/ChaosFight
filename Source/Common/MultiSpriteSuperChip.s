@@ -177,9 +177,9 @@ noscore = 0
 mk_score_on = 1
 NO_ILLEGAL_OPCODES = 0
 minikernel = 0
-NOT = $FF
-switchbw = $0282
 ECHOFIRST = 0
+switchbw = $0282
+; Note: NOT is a batariBASIC keyword (bitwise NOT operator), not a constant
 ; Runtime variables (may be set by code, but define as symbols for compatibility)
 pfrows = $D5
 ; Note: Multisprite kernel uses different memory layout than standard batariBASIC
@@ -969,7 +969,7 @@ frame = $00F5
   MS_ASSIGN  vertical_reflect, 1
   MS_ASSIGN  no_blank_lines, 0
   MS_ASSIGN  PFmaskvalue, 0
-  MS_ASSIGN  NOT, $FF
+  ; NOT is a batariBASIC keyword (bitwise NOT operator), not a constant - do not define
   MS_ASSIGN  playfieldRow, $5C
   MS_ASSIGN  miniscoretable, $0000
   MS_ASSIGN  gamenumber, $00

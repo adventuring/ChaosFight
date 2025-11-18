@@ -11,23 +11,48 @@ PlayfieldRead
           rem
           rem Mutates: temp1, temp2, X, Y, A registers
           rem
-          rem Called Routines: setuppointers (kernel routine)
+          rem Called Routines: None (setuppointers inlined and optimized)
           rem
           rem Constraints: Must be in Bank 16 where playfield data
-          rem        resides. Uses kernel routines setuppointers and
-          rem        BitMask table.
+          rem        resides. Uses BitMask table.
+          rem
+          rem Optimized: Inlined setuppointers calculation - column/8 + row*2
+          rem        No need to save/restore temp2 since we don’t use it
           asm
-          ldx temp1
-          ldy temp2
-          jsr setuppointers
-
-          lda BitMask, x
-          and playfield, y
-          eor BitMask, x
-          beq ReadZero
-          lda #$80
+          ; Inlined setuppointers: calculate playfield byte offset
+          ; X = column (temp1), Y = row (temp2)
+          ; Result: Y = byte offset, X = bit position (0-7)
+          ldx temp1          ; X = column (0-31)
+          ldy temp2          ; Y = row (0-7)
+          
+          ; Calculate byte offset: (column / 8) + (row * 2)
+          ; Column byte = X / 8 (3 right shifts)
+          txa                ; A = column
+          lsr                ; /2
+          lsr                ; /4
+          lsr                ; /8 (column byte offset)
+          sta temp1          ; Save column byte offset
+          
+          ; Row byte offset = Y * 2 (1 left shift)
+          tya                ; A = row
+          asl                ; *2 (row byte offset)
+          clc
+          adc temp1          ; Add column and row offsets
+          tay                ; Y = final byte offset in playfield
+          
+          ; X = bit position within byte (column mod 8)
+          txa                ; A = original column
+          and #7             ; Mask to get bit position (0-7)
+          tax                ; X = bit position for BitMask lookup
+          
+          ; Read playfield pixel
+          lda BitMask, x     ; Get bit mask for this bit position
+          and playfield, y  ; AND with playfield byte
+          eor BitMask, x     ; XOR to check if bit was set
+          beq ReadZero       ; If zero, bit was clear
+          lda #$80           ; Bit was set
 ReadZero
-          sta temp1
+          sta temp1          ; Store result
 end
           return
 

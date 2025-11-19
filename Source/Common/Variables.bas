@@ -443,7 +443,7 @@
           rem playerCharacter[0-3] - Character type indices (0-MaxCharacter)
           rem COMMON VAR - used in both Admin and Game Mode
           rem Uses var37-var40 (freed by playerAttackCooldown being in SCRAM)
-          rem Must use var37-var40 (not var48) since var48-var127 don't exist
+          rem Must use var37-var40 (not var48) since var48-var127 don’t exist
           dim playerCharacter = var37
 
           rem playerAttackType[0-3] - Attack type for each player (0=MeleeAttack, 1=RangedAttack, 2=AreaAttack)

@@ -873,10 +873,10 @@ var44 EQU $D0
 var45 EQU $D1
 var46 EQU $D2
 var47 EQU $D3
-; var48-var127 don't exist in multisprite - SuperChip RAM is accessed via r000-r127/w000-w127
+; var48-var127 don’t exist in multisprite - SuperChip RAM is accessed via r000-r127/w000-w127
 ; Variable aliases - ensure batariBASIC variable aliases are also assembly labels
 ; These are defined in Variables.bas as dim aliases, but assembler needs labels
-; Use = instead of EQU so it's a label (not just a constant) for indexed addressing
+; Use = instead of EQU so it’s a label (not just a constant) for indexed addressing
 ; playerCharacter is now in SCRAM (w111-w114), not zero-page, so no label needed here
 
           MS_ASSIGN  var0, $A4

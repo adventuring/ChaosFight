@@ -5,33 +5,33 @@ draw_bmp_48x1_X
 	; scorepointers = pointers to bitmap data for each character (6 pointers)
 	; bmp_gameselect_color = color for all characters
 
-	ldy aux2
-	beq draw_bmp_48x1_X_done
+          ldy aux2
+          beq draw_bmp_48x1_X_done
 
 draw_bmp_48x1_X_loop
-	sta WSYNC
+          sta WSYNC
 
 	; Load bitmap data for 6 characters
-	lda (scorepointers+0),y
-	sta GRP0
-	lda (scorepointers+2),y
-	sta GRP1
-	lda (scorepointers+4),y
-	sta GRP0
+          lda (scorepointers+0),y
+          sta GRP0
+          lda (scorepointers+2),y
+          sta GRP1
+          lda (scorepointers+4),y
+          sta GRP0
 
-	lda (scorepointers+6),y
-	sta GRP1
-	lda (scorepointers+8),y
-	sta GRP0
-	lda (scorepointers+10),y
-	sta GRP1
+          lda (scorepointers+6),y
+          sta GRP1
+          lda (scorepointers+8),y
+          sta GRP0
+          lda (scorepointers+10),y
+          sta GRP1
 
-	dey
-	bne draw_bmp_48x1_X_loop
+          dey
+          bne draw_bmp_48x1_X_loop
 
 draw_bmp_48x1_X_done
 	; Clear sprites
-	lda #0
-	sta GRP0
-	sta GRP1
-	rts
+          lda #0
+          sta GRP0
+          sta GRP1
+          rts

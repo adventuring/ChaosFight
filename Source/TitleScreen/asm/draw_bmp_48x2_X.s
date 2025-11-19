@@ -10,7 +10,7 @@ draw_bmp_48x2_X
 
 draw_bmp_48x2_X_done
 	; Clear sprites
-	lda #0
-	sta GRP0
-	sta GRP1
-	rts
+          lda #0
+          sta GRP0
+          sta GRP1
+          rts

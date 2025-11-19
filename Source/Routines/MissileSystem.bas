@@ -528,23 +528,35 @@ MissileSysPF
           rem
           rem Mutates: temp2-temp6 (used for calculations)
           rem
-          rem Called Routines: Div5Compute - converts X pixel to
-          rem playfield column
+          rem Called Routines: None (uses inline bit shifts for division)
           rem
           rem Constraints: Uses pfread to check playfield pixel at
-          rem missile position. X coordinate divided by 5 to get column
-          rem (0-31)
+          rem missile position. X coordinate converted to playfield column
+          rem (0-31) by subtracting ScreenInsetX and dividing by 4.
           let temp2 = missileX[temp1]
           rem Get missile X/Y position (read from _R port)
           let temp3 = missileY_R[temp1]
 
           rem Convert X/Y to playfield coordinates
-          rem Playfield is 32 pixels wide (doubled to 160), 192 pixels
-          rem   tall
+          rem Playfield is 32 quad-width pixels covering 128 pixels
+          rem (from X=16 to X=144), 192 pixels tall
           rem pfread uses playfield coordinates: column (0-31), row
-          gosub Div5Compute
-          rem   (0-11 or 0-31 depending on pfres)
-          rem Convert X pixel to playfield column (160/32 = 5)
+          rem (0-11 or 0-31 depending on pfres)
+          rem Convert X pixel to playfield column: subtract ScreenInsetX (16),
+          rem then divide by 4 (each quad-width pixel is 4 pixels wide)
+          let temp6 = temp2
+          rem Save original X in temp6 after removing screen inset
+          let temp6 = temp6 - ScreenInsetX
+          rem Divide by 4 using bit shift (2 right shifts)
+          asm
+            lsr temp6
+            lsr temp6
+end
+          rem temp6 = playfield column (0-31)
+          rem Clamp column to valid range
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if temp6 & $80 then temp6 = 0
+          if temp6 > 31 then temp6 = 31
           rem temp3 is already in pixel coordinates, pfread will handle
           rem   it
 
@@ -555,35 +567,6 @@ MissileSysPF
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1 : return
           rem Default: no collision detected
-          return
-
-Div5Compute
-          asm
-Div5Compute
-end
-          rem Div5Compute: compute floor(temp2/5) into temp6 via
-          rem   repeated subtraction
-          rem Helper: Computes floor(temp2/5) into temp6 via repeated
-          rem subtraction
-          rem
-          rem Input: temp2 = value to divide by 5
-          rem
-          rem Output: temp6 = floor(temp2/5), temp2 = temp2 mod 5
-          rem (remainder)
-          rem
-          rem Mutates: temp2 (reduced by multiples of 5), temp6 (result)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for playfield coordinate
-          rem conversion, uses repeated subtraction (no division
-          rem support)
-          let temp6 = 0
-          if temp2 < 5 then return
-Div5Loop
-          let temp2 = temp2 - 5
-          let temp6 = temp6 + 1
-          if temp2>= 5 then goto Div5Loop
           return
 
 CheckMissilePlayerCollision

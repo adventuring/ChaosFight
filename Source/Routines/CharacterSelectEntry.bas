@@ -11,8 +11,9 @@ CharacterSelectEntry
           rem initialized, animation state initialized,
           rem         COLUBK set, Quadtari detection called
           rem
-          rem Mutates: playerCharacter[0-3] (set to 0), playerLocked (set to
-          rem 0), characterSelectAnimationTimer,
+          rem Mutates: playerCharacter[0-3] (P1=RandomCharacter, P2=CPUCharacter,
+          rem P3/P4=NoCharacter), playerLocked (P2/P3/P4 locked),
+          rem characterSelectAnimationTimer,
           rem         characterSelectAnimationState, characterSelectCharacterIndex,
           rem         characterSelectAnimationFrame, COLUBK (TIA register)
           rem
@@ -23,24 +24,34 @@ CharacterSelectEntry
           rem initialization
           rem              Per-frame loop is handled by CharacterSelectInputEntry
           rem              (in CharacterSelectMain.bas, called from MainLoop)
+          rem Player 1: RandomCharacter (not locked)
           let playerCharacter[0] = RandomCharacter
-          let playerCharacter[1] = RandomCharacter
-          let playerCharacter[2] = RandomCharacter
-          let playerCharacter[3] = RandomCharacter
+          rem Player 2: CPUCharacter (locked)
+          let playerCharacter[1] = CPUCharacter
+          rem Player 3: NoCharacter (locked)
+          let playerCharacter[2] = NoCharacter
+          rem Player 4: NoCharacter (locked)
+          let playerCharacter[3] = NoCharacter
+          rem Initialize playerLocked (bit-packed)
           let playerLocked = 0
-          rem Initialize playerLocked (bit-packed, all unlocked)
+          rem Lock Player 2 (CPUCharacter)
+          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+          rem Lock Player 3 (NoCharacter)
+          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+          rem Lock Player 4 (NoCharacter)
+          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic
           rem   detection (upgrades only)
           rem Controller detection is handled by DetectPads with
           rem   monotonic state machine
 
-          let characterSelectAnimationTimer  = 0
           rem Initialize character select animations
+          let characterSelectAnimationTimer  = 0
           let characterSelectAnimationState  = 0
-          let characterSelectCharacterIndex  = 0
           rem Start with idle animation
-          let characterSelectAnimationFrame  = 0
+          let characterSelectCharacterIndex  = 0
           rem Start with first character
+          let characterSelectAnimationFrame  = 0
 
           rem Check for Quadtari adapter (inlined for performance)
           rem CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
@@ -53,9 +64,9 @@ CharacterSelectEntry
           let controllerStatus = controllerStatus | SetQuadtariDetected
 CharacterSelectQuadtariAbsent
 
-          COLUBK = ColGray(0)
           rem Set background color (B&W safe)
           rem Always black background
+          COLUBK = ColGray(0)
 
-          return
           rem Initialization complete - per-frame loop handled by CharacterSelectInputEntry
+          return

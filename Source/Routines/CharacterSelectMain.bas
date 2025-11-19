@@ -302,31 +302,22 @@ CharacterSelectRollRandomPlayer
 CharacterSelectRollRandomPlayer
 
 end
-          rem Handle random character roll for the current player’s slot.
+          rem Handle random character roll for the current player's slot.
           rem Requirements: Each frame, if selection is RandomCharacter,
           rem sample rand & $1f and accept the result when it is < NumCharacters.
+          rem Does NOT lock the character - player must press fire to lock.
           rem
           rem Input: currentPlayer (global) = player index (0-3)
-          rem        randomSelectFlags_R[] (SCRAM, read port) = handicap flags
           rem Output: playerCharacter[currentPlayer] updated when roll succeeds
           rem
-          rem Mutates: temp1-temp2, playerCharacter[], randomSelectFlags_W[],
-          rem           playerLocked[] via SetPlayerLocked
+          rem Mutates: temp2, playerCharacter[]
           rem
-          rem Called Routines: SetPlayerLocked
+          rem Called Routines: None
+CharacterSelectRollRandomPlayerReroll
           let temp2 = rand & $1f
-          rem Roll 5-bit random per frame (0-31 range)
-          rem If temp2 >= NumCharacters, retry next frame
-          if temp2 >= NumCharacters then return
+          if temp2 >= NumCharacters then goto CharacterSelectRollRandomPlayerReroll
+          rem Valid roll - character ID updated, but not locked
           let playerCharacter[currentPlayer] = temp2
-          rem Valid! Set character and lock with normal or handicap
-          if randomSelectFlags_R[currentPlayer] then goto CharacterSelectRollRandomPlayerHandicap
-          let temp1 = currentPlayer : temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
-          goto CharacterSelectRollRandomPlayerLockDone
-CharacterSelectRollRandomPlayerHandicap
-          let temp1 = currentPlayer : temp2 = PlayerHandicapped : gosub SetPlayerLocked bank6
-CharacterSelectRollRandomPlayerLockDone
-          let randomSelectFlags_W[currentPlayer] = 0
           return
 
 CharacterSelectRollsDone

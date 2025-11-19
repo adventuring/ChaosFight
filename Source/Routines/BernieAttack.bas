@@ -47,11 +47,11 @@ end
           rem we need it set first)
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           rem Attack in facing direction
-          gosub bank7 PerformMeleeAttack
+          gosub PerformMeleeAttack bank7
           rem Flip facing (XOR with bit 0)
           let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
           rem Attack in opposite direction
-          gosub bank7 PerformMeleeAttack
+          gosub PerformMeleeAttack bank7
           rem Restore original facing (XOR again to flip back)
           let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
           return

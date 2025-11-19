@@ -88,7 +88,7 @@ Bank2Dispatch
           let temp5 = temp4
           rem Copy player number to temp5 for bank routine
           rem Bank routine expects: temp6=char, temp2=frame,
-          gosub bank2 SetPlayerCharacterArtBank2
+          gosub SetPlayerCharacterArtBank2 bank2
           rem temp3=action, temp5=player
           return
 
@@ -117,7 +117,7 @@ Bank3Dispatch
           let temp5 = temp4
           rem Copy player number to temp5 for bank routine
           rem Bank routine expects: temp6=char, temp2=frame,
-          gosub bank3 SetPlayerCharacterArtBank3
+          gosub SetPlayerCharacterArtBank3 bank3
           rem temp3=action, temp5=player
           return
 
@@ -146,7 +146,7 @@ Bank4Dispatch
           let temp5 = temp4
           rem Copy player number to temp5 for bank routine
           rem Bank routine expects: temp6=char, temp2=frame,
-          gosub bank4 SetPlayerCharacterArtBank4
+          gosub SetPlayerCharacterArtBank4 bank4
           rem temp3=action, temp5=player
           return
 
@@ -175,7 +175,7 @@ Bank5Dispatch
           let temp5 = temp4
           rem Copy player number to temp5 for bank routine
           rem Bank routine expects: temp6=char, temp2=frame,
-          gosub bank5 SetPlayerCharacterArtBank5
+          gosub SetPlayerCharacterArtBank5 bank5
           rem temp3=action, temp5=player
           return
 

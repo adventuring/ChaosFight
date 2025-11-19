@@ -182,7 +182,7 @@ SetPlayerCharacterArtBank2
 	ldy #$0f            ; Start at 16 ($10)
 .CopyLoop
 	lda (temp4),y       ; Read from ROM (indirect addressing via temp4/temp5)
-	sta playerFrameBuffer_W,x          ; Write to SCRAM (absolute indexed addressing with X base)
+	sta w000,x          ; Write to SCRAM (absolute indexed addressing with X base)
 	inx                 ; Increment destination offset
 	dey
 	bpl .CopyLoop

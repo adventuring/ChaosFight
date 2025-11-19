@@ -783,6 +783,17 @@ BottomOfKernelLoop
                LDA scorecolor 
                 STA COLUP0
                 STA COLUP1
+        ; Set score color mode: COLUP0 = ColIndigo(12), COLUP1 = ColRed(12)
+        ; CTRLPF bit 2 ($04) enables score mode (left half uses COLUP0, right half uses COLUP1)
+        ifconst pfscore
+        LDA #$8C  ; ColIndigo(12) = $80 (base) + $0C (brightness 12)
+        STA COLUP0
+        LDA #$4C  ; ColRed(12) = $40 (base) + $0C (brightness 12)
+        STA COLUP1
+        LDA CTRLPF
+        ORA #$04  ; Set bit 2 for score mode
+        STA CTRLPF
+        endif
  
         LDA #$03
         STA NUSIZ0
@@ -841,6 +852,12 @@ beginscore
  sty  GRP0            ;+3  53  159      D4*    D5!     D6     D6
  dey
  bpl  loop2           ;+2  60  180
+        ; Reset CTRLPF score mode after score kernel
+        ifconst pfscore
+        LDA CTRLPF
+        AND #$FB  ; Clear bit 2 (score mode)
+        STA CTRLPF
+        endif
  	ldx stack1
 	txs
 

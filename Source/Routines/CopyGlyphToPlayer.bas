@@ -35,45 +35,49 @@ end
             sta temp5
             lda #16
             sta temp6  ; Height constant
-            
-            ; Store to appropriate player pointer based on temp3
-            ldx temp3
-            beq .SetP0
-            dex
-            beq .SetP1
-            dex
-            beq .SetP2
-            ; else P3
+end
+          rem Store to appropriate player pointer based on temp3 (using then goto to avoid branch out of range)
+          if temp3 = 0 then goto CopyGlyphP0
+          if temp3 = 1 then goto CopyGlyphP1
+          if temp3 = 2 then goto CopyGlyphP2
+          rem else P3
+          asm
             lda temp4
             sta player3pointerlo
             lda temp5
             sta player3pointerhi
             lda temp6
             sta player3height
-            jmp .SetDone
-.SetP0
+end
+          goto CopyGlyphDone
+CopyGlyphP0
+          asm
             lda temp4
             sta player0pointerlo
             lda temp5
             sta player0pointerhi
             lda temp6
             sta player0height
-            jmp .SetDone
-.SetP1
+end
+          goto CopyGlyphDone
+CopyGlyphP1
+          asm
             lda temp4
             sta player1pointerlo
             lda temp5
             sta player1pointerhi
             lda temp6
             sta player1height
-            jmp .SetDone
-.SetP2
+end
+          goto CopyGlyphDone
+CopyGlyphP2
+          asm
             lda temp4
             sta player2pointerlo
             lda temp5
             sta player2pointerhi
             lda temp6
             sta player2height
-.SetDone
 end
+CopyGlyphDone
           return

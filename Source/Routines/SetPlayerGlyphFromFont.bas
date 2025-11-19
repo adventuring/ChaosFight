@@ -32,67 +32,73 @@ end
             sta temp5
             lda #16
             sta temp6  ; Height constant
-            
-            ; Store to appropriate player pointer based on temp3
-            ldx temp3
-            beq .SetP0
-            dex
-            beq .SetP1
-            dex
-            beq .SetP2
-            dex
-            beq .SetP3
-            dex
-            beq .SetP4
-            ; else P5
+end
+          rem Store to appropriate player pointer based on temp3 (using then goto to avoid branch out of range)
+          if temp3 = 0 then goto SetGlyphP0
+          if temp3 = 1 then goto SetGlyphP1
+          if temp3 = 2 then goto SetGlyphP2
+          if temp3 = 3 then goto SetGlyphP3
+          if temp3 = 4 then goto SetGlyphP4
+          rem else P5
+          asm
             lda temp4
             sta player5pointerlo
             lda temp5
             sta player5pointerhi
             lda temp6
             sta player5height
-            jmp .SetDone
-.SetP0
+end
+          goto SetGlyphDone
+SetGlyphP0
+          asm
             lda temp4
             sta player0pointerlo
             lda temp5
             sta player0pointerhi
             lda temp6
             sta player0height
-            jmp .SetDone
-.SetP1
+end
+          goto SetGlyphDone
+SetGlyphP1
+          asm
             lda temp4
             sta player1pointerlo
             lda temp5
             sta player1pointerhi
             lda temp6
             sta player1height
-            jmp .SetDone
-.SetP2
+end
+          goto SetGlyphDone
+SetGlyphP2
+          asm
             lda temp4
             sta player2pointerlo
             lda temp5
             sta player2pointerhi
             lda temp6
             sta player2height
-            jmp .SetDone
-.SetP3
+end
+          goto SetGlyphDone
+SetGlyphP3
+          asm
             lda temp4
             sta player3pointerlo
             lda temp5
             sta player3pointerhi
             lda temp6
             sta player3height
-            jmp .SetDone
-.SetP4
+end
+          goto SetGlyphDone
+SetGlyphP4
+          asm
             lda temp4
             sta player4pointerlo
             lda temp5
             sta player4pointerhi
             lda temp6
             sta player4height
-.SetDone
 end
+SetGlyphDone
           return
 
 

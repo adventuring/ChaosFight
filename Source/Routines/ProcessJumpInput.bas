@@ -35,24 +35,24 @@ end
           if temp3 = 0 then return
           
           rem For characters with special UP behaviors, enhanced button acts as UP
-          rem Check Shamone form switching first (Character 15 <-> 31)
-          if playerCharacter[temp1] = 15 then let playerCharacter[temp1] = 31 : return
+          rem Check Shamone form switching first (Shamone <-> MethHound)
+          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : return
           rem Switch Shamone -> MethHound
-          if playerCharacter[temp1] = 31 then let playerCharacter[temp1] = 15 : return
+          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : return
           rem Switch MethHound -> Shamone
 
-          rem Robo Tito (13): Hold enhanced button to ascend; auto-latch on ceiling contact
-          if playerCharacter[temp1] = 13 then goto PJI_RoboTitoAscend
+          rem Robo Tito: Hold enhanced button to ascend; auto-latch on ceiling contact
+          if playerCharacter[temp1] = CharacterRoboTito then goto PJI_RoboTitoAscend
 
-          rem Check Bernie fall-through (Character 0)
-          if playerCharacter[temp1] = 0 then goto PJI_BernieFallThrough
+          rem Check Bernie fall-through
+          if playerCharacter[temp1] = CharacterBernie then goto PJI_BernieFallThrough
 
-          rem Check Harpy flap (Character 6)
-          if playerCharacter[temp1] = 6 then goto PJI_HarpyFlap
+          rem Check Harpy flap
+          if playerCharacter[temp1] = CharacterHarpy then goto PJI_HarpyFlap
 
           rem For all other characters, enhanced button is jump
-          rem Allow Zoe (3) a single mid-air double-jump
-          if playerCharacter[temp1] = 3 then goto PJI_ZoeJumpCheck
+          rem Allow Zoe Ryen a single mid-air double-jump
+          if playerCharacter[temp1] = CharacterZoeRyen then goto PJI_ZoeJumpCheck
           rem Use cached animation state - block jump during attack animations (states 13-15)
           if temp2 >= 13 then return
           rem Block jump during attack windup/execute/recovery

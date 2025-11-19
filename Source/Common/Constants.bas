@@ -86,6 +86,7 @@
           const CharacterRoboTito = 13
           const CharacterUrsulo = 14
           const CharacterShamone = 15
+          const CharacterMethHound = 31
 
           rem Special sprite constants for SpecialSpritePointers table
           const SpriteQuestionMark = 0

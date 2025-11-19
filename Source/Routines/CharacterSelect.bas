@@ -23,11 +23,11 @@ CharacterSelectEntry
           rem initialization
           rem              Must be colocated with CharacterSelectLoop (called
           rem              via goto)
-          let playerCharacter[0] = 0
+          let playerCharacter[0] = CharacterBernie
           rem Initialize character selections
-          let playerCharacter[1] = 0
-          let playerCharacter[2] = 0
-          let playerCharacter[3] = 0
+          let playerCharacter[1] = CharacterBernie
+          let playerCharacter[2] = CharacterBernie
+          let playerCharacter[3] = CharacterBernie
           let playerLocked = 0
           rem Initialize playerLocked (bit-packed, all unlocked)
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic
@@ -87,13 +87,8 @@ end
           rem playerLocked state
           rem
           rem Constraints: Must be colocated with SelectStickLeft,
-          rem SelectStickRight, Player1LockSelection,
-          rem Player1HandicapSelection, Player1LockSelectionDone,
-          rem Player2LockSelection, Player2HandicapSelection,
-          rem Player2LockSelectionDone, Player3LockSelection,
-          rem Player3HandicapSelection, Player3LockSelectionDone,
-          rem Player4LockSelection, Player4HandicapSelection,
-          rem Player4LockSelectionDone, CharacterSelectHandleQuadtari
+          rem SelectStickRight, HandleCharacterSelectPlayerInput,
+          rem CharacterSelectHandleQuadtari
           rem              Entry point for character select screen loop
           rem Quadtari controller multiplexing:
           rem On even frames (qtcontroller=0): handle controllers 0 and
@@ -117,8 +112,7 @@ end
 CharacterSelectHandleQuadtari
           rem Handle Player 3 input (joy0 on odd frames, Quadtari only)
           if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer3
-
-          goto CharacterSelectSkipPlayer3
+          goto CharacterSelectHandleQuadtariDone
 
 CharacterSelectHandlePlayer3
           rem Handle Player 3 input (joy0 on odd frames, Quadtari only)
@@ -127,18 +121,15 @@ CharacterSelectHandlePlayer3
 
           rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
           if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer4
-
-          goto CharacterSelectSkipPlayer4
+          goto CharacterSelectHandleQuadtariDone
 
 CharacterSelectHandlePlayer4
           let temp1 = 3
           gosub HandleCharacterSelectPlayerInput
 
+CharacterSelectHandleQuadtariDone
           qtcontroller = 0
           rem Switch back to even frame mode for next iteration
-CharacterSelectDonePlayer3
-CharacterSelectDonePlayer4
-SelectStick1OddFrameSkip
 
 SelectStickLeft
           rem Handle stick-left navigation for the active player
@@ -168,7 +159,7 @@ SelectStickRight
           rem Called Routines: SetPlayerLocked (bank6)
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
-          if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
+          if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = CharacterBernie
           if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           return
 
@@ -217,6 +208,46 @@ CharacterSelectDoneQuadtariReadyInline
 CharacterSelectDrawScreen
           rem Draw character selection screen via shared renderer
           gosub SelectDrawScreen bank6
+          return
+
+HandleCharacterSelectPlayerInput
+          rem Unified handler for character select player input
+          rem
+          rem Input: temp1 = player index (0-3)
+          rem        joy0left/joy0right/joy0up/joy0fire/joy0down (players 0,2)
+          rem        joy1left/joy1right/joy1up/joy1fire/joy1down (players 1,3)
+          rem
+          rem Output: playerCharacter[] updated, playerLocked state updated
+          rem
+          rem Mutates: currentPlayer (set to temp1), playerCharacter[],
+          rem playerLocked state, temp1, temp2 (passed to helpers)
+          rem
+          rem Called Routines: SelectStickLeft, SelectStickRight,
+          rem SetPlayerLocked (bank6), HandleCharacterSelectFire (bank6)
+          rem
+          rem Constraints: Must determine joy port based on player index
+          rem (players 0,2 use joy0; players 1,3 use joy1)
+          let currentPlayer = temp1
+          rem Determine which joy port to use based on player index
+          rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
+          if temp1 = 0 then goto HCSPI_UseJoy0
+          if temp1 = 2 then goto HCSPI_UseJoy0
+          rem Players 1,3 use joy1
+          if joy1left then gosub SelectStickLeft
+          if joy1right then gosub SelectStickRight
+          rem Unlock by moving up
+          if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          rem Handle fire button (selection)
+          gosub HandleCharacterSelectFire bank6
+          return
+HCSPI_UseJoy0
+          rem Players 0,2 use joy0
+          if joy0left then gosub SelectStickLeft
+          if joy0right then gosub SelectStickRight
+          rem Unlock by moving up
+          if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          rem Handle fire button (selection)
+          gosub HandleCharacterSelectFire bank6
           return
 
 CharacterSelectCompleted

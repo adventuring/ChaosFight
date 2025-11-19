@@ -35,20 +35,20 @@ PUI_UseJoy0
           if !joy0up then goto PUI_DoneUpInputHandling
           
 PUI_ProcessUp
-          rem Check Shamone form switching first (Character 15 <-> 31)
-          if playerCharacter[temp1] = 15 then let playerCharacter[temp1] = 31 : goto PUI_DoneJumpInput
+          rem Check Shamone form switching first (Shamone <-> MethHound)
+          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : goto PUI_DoneJumpInput
           rem Switch Shamone -> MethHound
-          if playerCharacter[temp1] = 31 then let playerCharacter[temp1] = 15 : goto PUI_DoneJumpInput
+          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : goto PUI_DoneJumpInput
           rem Switch MethHound -> Shamone
 
-          rem Robo Tito (13): Hold UP to ascend; auto-latch on ceiling contact
-          if playerCharacter[temp1] = 13 then goto PUI_RoboTitoAscend
+          rem Robo Tito: Hold UP to ascend; auto-latch on ceiling contact
+          if playerCharacter[temp1] = CharacterRoboTito then goto PUI_RoboTitoAscend
 
-          rem Check Bernie fall-through (Character 0)
-          if playerCharacter[temp1] = 0 then goto PUI_BernieFallThrough
+          rem Check Bernie fall-through
+          if playerCharacter[temp1] = CharacterBernie then goto PUI_BernieFallThrough
 
-          rem Check Harpy flap (Character 6)
-          if playerCharacter[temp1] = 6 then goto PUI_HarpyFlap
+          rem Check Harpy flap
+          if playerCharacter[temp1] = CharacterHarpy then goto PUI_HarpyFlap
 
           goto PUI_NormalJumpInput
           rem For all other characters, UP is jump

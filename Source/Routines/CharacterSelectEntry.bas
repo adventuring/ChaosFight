@@ -23,11 +23,10 @@ CharacterSelectEntry
           rem initialization
           rem              Per-frame loop is handled by CharacterSelectInputEntry
           rem              (in CharacterSelectMain.bas, called from MainLoop)
-          let playerCharacter[0] = 0
-          rem Initialize character selections
-          let playerCharacter[1] = 0
-          let playerCharacter[2] = 0
-          let playerCharacter[3] = 0
+          let playerCharacter[0] = RandomCharacter
+          let playerCharacter[1] = RandomCharacter
+          let playerCharacter[2] = RandomCharacter
+          let playerCharacter[3] = RandomCharacter
           let playerLocked = 0
           rem Initialize playerLocked (bit-packed, all unlocked)
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic

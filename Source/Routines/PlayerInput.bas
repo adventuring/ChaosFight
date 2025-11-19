@@ -220,8 +220,8 @@ end
           rem INPUT: temp1 = player index (0-3)
           rem Uses: joy0down for players 0,2; joy1down for players 1,3
           rem Determine which joy port to use based on player index
-          rem Frooty (8) cannot guard
-          if playerCharacter[temp1] = 8 then return
+          rem Frooty cannot guard
+          if playerCharacter[temp1] = CharacterFrooty then return
           rem Players 0,2 use joy0; Players 1,3 use joy1
           if temp1 = 0 then goto HGI_CheckJoy0
           if temp1 = 2 then goto HGI_CheckJoy0
@@ -235,10 +235,10 @@ HGI_HandleDownPressed
           let temp4 = playerCharacter[temp1]
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           if temp4 >= 32 then return
-          if temp4 = 2 then goto DragonOfStormsDown
-          if temp4 = 6 then goto HarpyDown
-          if temp4 = 8 then goto FrootyDown
-          if temp4 = 13 then goto DCD_HandleRoboTitoDown
+          if temp4 = CharacterDragonOfStorms then goto DragonOfStormsDown
+          if temp4 = CharacterHarpy then goto HarpyDown
+          if temp4 = CharacterFrooty then goto FrootyDown
+          if temp4 = CharacterRoboTito then goto DCD_HandleRoboTitoDown
           goto StandardGuard
 DCD_HandleRoboTitoDown
           gosub RoboTitoDown
@@ -253,6 +253,237 @@ HGI_CheckGuardRelease
           rem Stop guard early and start cooldown
           let playerTimers_W[temp1] = GuardTimerMaxFrames
           rem Start cooldown timer
+          return
+
+HandleUpInputAndEnhancedButton
+          rem Unified handler for UP input and enhanced button (Button II) handling
+          rem
+          rem INPUT: temp1 = player index (0-3), temp2 = cached animation state
+          rem Uses: joy0up/joy0down for players 0,2; joy1up/joy1down for players 1,3
+          rem        CheckEnhancedJumpButton for enhanced button state
+          rem
+          rem OUTPUT: temp3 = jump pressed flag (1=yes, 0=no)
+          rem         Character-specific behaviors executed (form switch, fall-through, etc.)
+          rem         Jump executed if conditions met
+          rem
+          rem Determine which joy port to use based on player index
+          rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
+          if temp1 = 0 then goto HUIEB_UseJoy0
+          if temp1 = 2 then goto HUIEB_UseJoy0
+          rem Players 1,3 use joy1
+          if !joy1up then goto HUIEB_CheckEnhanced
+          goto HUIEB_HandleUp
+HUIEB_UseJoy0
+          rem Players 0,2 use joy0
+          if !joy0up then goto HUIEB_CheckEnhanced
+HUIEB_HandleUp
+          rem Check Shamone form switching first (Shamone <-> MethHound)
+          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : let temp3 = 0 : return
+          rem Switch Shamone -> MethHound
+          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : let temp3 = 0 : return
+          rem Switch MethHound -> Shamone
+          rem Robo Tito: Hold UP to ascend; auto-latch on ceiling contact
+          if playerCharacter[temp1] = CharacterRoboTito then goto HUIEB_RoboTitoAscend
+          rem Check Bernie fall-through
+          if playerCharacter[temp1] = CharacterBernie then goto HUIEB_BernieFallThrough
+          rem Check Harpy flap
+          if playerCharacter[temp1] = CharacterHarpy then goto HUIEB_HarpyFlap
+          rem For all other characters, UP is jump
+          let temp3 = 1
+          goto HUIEB_CheckEnhanced
+HUIEB_RoboTitoAscend
+          rem Ascend toward ceiling
+          rem Save cached animation state (temp2) - will be restored after playfield read
+          let temp5 = temp2
+          let temp6 = playerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerY[temp1] = playerY[temp1] - temp6
+          rem Compute playfield column
+          let temp4 = playerX[temp1]
+          let temp4 = temp4 - ScreenInsetX
+          asm
+            lsr temp4
+            lsr temp4
+end
+          if temp4 > 31 then temp4 = 31
+          if temp4 & $80 then temp4 = 0
+          rem Compute head row and check ceiling contact
+          let temp3 = playerY[temp1]
+          asm
+            lsr temp3
+            lsr temp3
+            lsr temp3
+            lsr temp3
+end
+          if temp3 = 0 then goto HUIEB_RoboTitoLatch
+          let temp3 = temp3 - 1
+          let currentPlayer = temp1
+          let temp1 = temp4
+          let temp2 = temp3
+          gosub PlayfieldRead bank16
+          let temp1 = currentPlayer
+          rem Restore cached animation state
+          let temp2 = temp5
+          if temp1 then goto HUIEB_RoboTitoLatch
+          rem Clear latch if DOWN pressed (check appropriate joy port)
+          if temp1 = 0 then goto HUIEB_RoboTitoCheckJoy0
+          if temp1 = 2 then goto HUIEB_RoboTitoCheckJoy0
+          if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
+          goto HUIEB_RoboTitoDone
+HUIEB_RoboTitoCheckJoy0
+          if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
+HUIEB_RoboTitoDone
+          let temp3 = 0
+          return
+HUIEB_RoboTitoLatch
+          rem Restore cached animation state
+          let temp2 = temp5
+          let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
+          let temp3 = 0
+          return
+HUIEB_BernieFallThrough
+          rem Bernie UP input handled in BernieJump routine (fall through 1-row floors)
+          gosub BernieJump bank10
+          let temp3 = 0
+          return
+HUIEB_HarpyFlap
+          rem Harpy UP input handled in HarpyJump routine (flap to fly)
+          gosub HarpyJump bank10
+          let temp3 = 0
+          return
+HUIEB_CheckEnhanced
+          rem Process jump input from enhanced buttons (Genesis/Joy2b+ Button C/II)
+          rem Note: For Shamone/MethHound, UP is form switch, so jump via enhanced buttons only
+          rem Note: For Bernie, UP is fall-through, so jump via enhanced buttons only
+          rem Note: For Harpy, UP is flap, so jump via enhanced buttons only
+          if playerCharacter[temp1] = CharacterShamone then goto HUIEB_EnhancedCheck
+          if playerCharacter[temp1] = CharacterMethHound then goto HUIEB_EnhancedCheck
+          if playerCharacter[temp1] = CharacterBernie then goto HUIEB_EnhancedCheck
+          if playerCharacter[temp1] = CharacterHarpy then goto HUIEB_EnhancedCheck
+          rem Bernie and Harpy also use enhanced buttons for jump
+          goto HUIEB_StandardEnhancedCheck
+HUIEB_EnhancedCheck
+          gosub CheckEnhancedJumpButton
+          rem Check Genesis/Joy2b+ Button C/II for alternative UP for any characters
+          rem For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
+          if playerCharacter[temp1] = CharacterShamone then if temp3 then let playerCharacter[temp1] = CharacterMethHound : return
+          if playerCharacter[temp1] = CharacterMethHound then if temp3 then let playerCharacter[temp1] = CharacterShamone : return
+          if temp3 = 0 then return
+          goto HUIEB_ExecuteJump
+HUIEB_StandardEnhancedCheck
+          gosub CheckEnhancedJumpButton
+          rem Check Genesis/Joy2b+ Button C/II
+          if temp3 = 0 then return
+HUIEB_ExecuteJump
+          rem Execute jump if pressed and not already jumping
+          rem Allow Zoe Ryen a single mid-air double-jump
+          if playerCharacter[temp1] = CharacterZoeRyen then goto HUIEB_ZoeJumpCheck
+          if (playerState[temp1] & 4) then return
+          rem Already jumping, cannot jump again
+          goto HUIEB_JumpProceed
+HUIEB_ZoeJumpCheck
+          let temp6 = 0
+          if (playerState[temp1] & 4) then temp6 = 1
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return
+          rem Zoe already used double-jump
+HUIEB_JumpProceed
+          rem Use cached animation state - block jump during attack animations (states 13-15)
+          if temp2 >= 13 then return
+          rem Block jump during attack windup/execute/recovery
+          let temp4 = playerCharacter[temp1]
+          rem Dispatch character jump (inlined for performance)
+          if temp4 >= 32 then goto HUIEB_JumpDone
+          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
+          if temp4 = CharacterMethHound then goto ShamoneJump
+          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
+HUIEB_JumpDone
+          rem Set Zoe Ryen double-jump flag if applicable
+          if playerCharacter[temp1] = CharacterZoeRyen then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
+          return
+
+HandleStandardHorizontalMovement
+          rem Unified handler for standard horizontal movement
+          rem
+          rem INPUT: temp1 = player index (0-3)
+          rem Uses: joy0left/joy0right for players 0,2; joy1left/joy1right for players 1,3
+          rem
+          rem OUTPUT: playerVelocityX[temp1] and playerVelocityXL[temp1] updated,
+          rem playerState[temp1] facing bit updated
+          rem
+          rem Determine which joy port to use based on player index
+          rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
+          if temp1 = 0 then goto HSHM_UseJoy0
+          if temp1 = 2 then goto HSHM_UseJoy0
+          rem Players 1,3 use joy1
+          if !joy1left then goto HSHM_CheckRight
+          goto HSHM_HandleLeft
+HSHM_UseJoy0
+          rem Players 0,2 use joy0
+          if !joy0left then goto HSHM_CheckRight
+HSHM_HandleLeft
+          rem Left movement: set negative velocity
+          if playerCharacter[temp1] = CharacterFrooty then goto HSHM_LeftMomentum
+          let temp6 = playerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let temp2 = 0
+          let temp2 = temp2 - temp6
+          let playerVelocityX[temp1] = temp2
+          let playerVelocityXL[temp1] = 0
+          goto HSHM_AfterLeftSet
+HSHM_LeftMomentum
+          let temp6 = playerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          let playerVelocityXL[temp1] = 0
+HSHM_AfterLeftSet
+          rem Inline ShouldPreserveFacing logic
+          if (playerState[temp1] & 8) then goto HSHM_SPF_Yes1
+          gosub GetPlayerAnimationStateFunction
+          if temp2 < 5 then goto HSHM_SPF_No1
+          if temp2 > 9 then goto HSHM_SPF_No1
+HSHM_SPF_Yes1
+          let temp3 = 1
+          goto HSHM_SPF_Done1
+HSHM_SPF_No1
+          let temp3 = 0
+HSHM_SPF_Done1
+          if !temp3 then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+HSHM_CheckRight
+          rem Determine which joy port to use for right movement
+          if temp1 = 0 then goto HSHM_CheckRightJoy0
+          if temp1 = 2 then goto HSHM_CheckRightJoy0
+          rem Players 1,3 use joy1
+          if !joy1right then return
+          goto HSHM_HandleRight
+HSHM_CheckRightJoy0
+          rem Players 0,2 use joy0
+          if !joy0right then return
+HSHM_HandleRight
+          rem Right movement: set positive velocity
+          if playerCharacter[temp1] = CharacterFrooty then goto HSHM_RightMomentum
+          let temp6 = playerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerVelocityX[temp1] = temp6
+          let playerVelocityXL[temp1] = 0
+          goto HSHM_AfterRightSet
+HSHM_RightMomentum
+          let temp6 = playerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
+          let playerVelocityXL[temp1] = 0
+HSHM_AfterRightSet
+          rem Inline ShouldPreserveFacing logic
+          if (playerState[temp1] & 8) then goto HSHM_SPF_Yes2
+          gosub GetPlayerAnimationStateFunction
+          if temp2 < 5 then goto HSHM_SPF_No2
+          if temp2 > 9 then goto HSHM_SPF_No2
+HSHM_SPF_Yes2
+          let temp3 = 1
+          goto HSHM_SPF_Done2
+HSHM_SPF_No2
+          let temp3 = 0
+HSHM_SPF_Done2
+          if !temp3 then let playerState[temp1] = playerState[temp1] | 1
           return
 
 HandleFlyingCharacterMovement
@@ -507,242 +738,20 @@ end
           if temp5 = 8 then goto IHLP_FlyingMovement
           if temp5 = 2 then goto IHLP_FlyingMovement
 
-          rem Standard horizontal movement (modifies velocity, not
-          rem position)
-          rem Left movement: set negative velocity (255 in 8-bit twos
-          rem complement = -1)
-          if !joy0left then goto IHLP_DoneLeftMovement
-          if playerCharacter[temp1] = 8 then goto IHLP_LeftMomentum0
-          let temp6 = playerCharacter[temp1]
-          let temp6 = CharacterMovementSpeed[temp6]
-          let temp2 = 0
-          let temp2 = temp2 - temp6
-          let playerVelocityX[temp1] = temp2
-          let playerVelocityXL[temp1] = 0
-          goto IHLP_AfterLeftSet0
-IHLP_LeftMomentum0
-          let temp6 = playerCharacter[temp1]
-          let temp6 = CharacterMovementSpeed[temp6]
-          let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
-          let playerVelocityXL[temp1] = 0
-IHLP_AfterLeftSet0
-          rem Inline ShouldPreserveFacing logic
-          if (playerState[temp1] & 8) then goto SPF_InlineYes3
-          gosub GetPlayerAnimationStateFunction
-          if temp2 < 5 then goto SPF_InlineNo3
-          if temp2 > 9 then goto SPF_InlineNo3
-SPF_InlineYes3
-          let temp3 = 1
-          goto SPF_InlineDone3
-SPF_InlineNo3
-          let temp3 = 0
-SPF_InlineDone3
-          if !temp3 then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
-IHLP_DoneLeftMovement
-          rem Right movement: set positive velocity
-          if !joy0right then goto IHLP_DoneFlyingLeftRight
-          if playerCharacter[temp1] = 8 then goto IHLP_RightMomentum0
-          let temp6 = playerCharacter[temp1]
-          let temp6 = CharacterMovementSpeed[temp6]
-          let playerVelocityX[temp1] = temp6
-          let playerVelocityXL[temp1] = 0
-          goto IHLP_AfterRightSet0
-IHLP_RightMomentum0
-          let temp6 = playerCharacter[temp1]
-          let temp6 = CharacterMovementSpeed[temp6]
-          let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
-          let playerVelocityXL[temp1] = 0
-IHLP_AfterRightSet0
-          rem Inline ShouldPreserveFacing logic
-          if (playerState[temp1] & 8) then goto SPF_InlineYes4
-          gosub GetPlayerAnimationStateFunction
-          if temp2 < 5 then goto SPF_InlineNo4
-          if temp2 > 9 then goto SPF_InlineNo4
-SPF_InlineYes4
-          let temp3 = 1
-          goto SPF_InlineDone4
-SPF_InlineNo4
-          let temp3 = 0
-SPF_InlineDone4
-          if !temp3 then let playerState[temp1] = playerState[temp1] | 1
-          rem Right movement complete
+          rem Standard horizontal movement (modifies velocity, not position)
+          gosub HandleStandardHorizontalMovement
 DoneLeftPortMovement
 IHLP_FlyingMovement
           gosub HandleFlyingCharacterMovement bank12
 IHLP_DoneFlyingLeftRight
 
-          rem Process UP input for character-specific behaviors
-          rem - Shamone/MethHound: form switching (15 <-> 31)
-          rem - Bernie: fall through 1-row floors
-          rem - Harpy: flap to fly (Character 6)
-          if !joy0up then goto DoneUpInputHandling
-
-          rem Check Shamone form switching first (Character 15 <-> 31)
-          if playerCharacter[temp1] = 15 then let playerCharacter[temp1] = 31 : goto DoneJumpInput
-          rem Switch Shamone -> MethHound
-          if playerCharacter[temp1] = 31 then let playerCharacter[temp1] = 15 : goto DoneJumpInput
-          rem Switch MethHound -> Shamone
-
-          rem Robo Tito (13): Hold UP to ascend; auto-latch on ceiling contact
-          if playerCharacter[temp1] = 13 then goto RoboTitoAscendLeft
-
-          rem Check Bernie fall-through (Character 0)
-
-          if playerCharacter[temp1] = 0 then goto BernieFallThrough
-
-          rem Check Harpy flap (Character 6)
-
-          if playerCharacter[temp1] = 6 then goto HarpyFlap
-
-          goto NormalJumpInput
-          rem For all other characters, UP is jump
-
-BernieFallThrough
-          rem Bernie UP input handled in BernieJump routine (fall
-          gosub BernieJump bank10
-          rem   through 1-row floors)
-          goto DoneJumpInput
-
-HarpyFlap
-          gosub HarpyJump bank10
-          rem Harpy UP input handled in HarpyJump routine (flap to fly)
-          goto DoneJumpInput
-
-RoboTitoAscendLeft
-          rem Ascend toward ceiling
-          let temp6 = playerCharacter[temp1]
-          let temp6 = CharacterMovementSpeed[temp6]
-          let playerY[temp1] = playerY[temp1] - temp6
-          rem Compute playfield column
-          let temp2 = playerX[temp1]
-          let temp2 = temp2 - ScreenInsetX
-          asm
-            lsr temp2
-            lsr temp2
-end
-          if temp2 > 31 then temp2 = 31
-          if temp2 & $80 then temp2 = 0
-          let temp4 = temp2
-          rem Save playfield column (temp2 will be overwritten)
-          rem Compute head row and check ceiling contact
-          let temp2 = playerY[temp1]
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-          if temp2 = 0 then goto RoboTitoLatchLeft
-          let temp3 = temp2 - 1
-          let currentPlayer = temp1
-          let temp1 = temp4
-          let temp2 = temp3
-          gosub PlayfieldRead bank16
-          if temp1 then goto RoboTitoLatchLeft
-          let temp1 = currentPlayer
-          rem Clear latch if DOWN pressed
-          if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
-          goto DoneJumpInput
-RoboTitoLatchLeft
-          let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
-          goto DoneJumpInput
-NormalJumpInput
-          let temp3 = 1
-          rem Process jump input (UP + enhanced buttons)
-          goto DoneUpInputHandling
-          rem Jump pressed flag (UP pressed)
-
-DoneJumpInput
-          let temp3 = 0
-          rem No jump (UP used for special ability)
-
-DoneUpInputHandling
-          rem Process jump input from enhanced buttons (Genesis/Joy2b+
-          rem   Button C/II)
-          rem Note: For Shamone/MethHound, UP is form switch, so jump
-          rem   via enhanced buttons only
-          rem Note: For Bernie, UP is fall-through, so jump via enhanced
-          rem   buttons only
-          rem Note: For Harpy, UP is flap, so jump via enhanced buttons
-          rem only
-          if playerCharacter[temp1] = 15 then goto ShamoneJumpCheckEnhanced
-          if playerCharacter[temp1] = 31 then goto ShamoneJumpCheckEnhanced
-          if playerCharacter[temp1] = 0 then goto ShamoneJumpCheckEnhanced
-          if playerCharacter[temp1] = 6 then goto ShamoneJumpCheckEnhanced
-          rem Bernie and Harpy also use enhanced buttons for jump
-
-          goto SkipEnhancedJumpCheck
-ShamoneJumpCheckEnhanced
-          gosub CheckEnhancedJumpButton
-          rem Check Genesis/Joy2b+ Button C/II for alternative UP for any characters
-
-          rem Execute jump if pressed and not already jumping
-          rem For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
-          if playerCharacter[temp1] = 15 then if temp3 then let playerCharacter[temp1] = 31 : goto InputDoneLeftPortJump
-          if playerCharacter[temp1] = 31 then if temp3 then let playerCharacter[temp1] = 15 : goto InputDoneLeftPortJump
-          rem Use goto to avoid branch out of range (target is 244+ bytes away)
-          if temp3 = 0 then goto InputDoneLeftPortJump
-          rem Allow Zoe (3) a single mid-air double-jump
-          if playerCharacter[temp1] = 3 then goto LeftZoeEnhancedCheck
-          rem Use goto to avoid branch out of range (target is 224+ bytes away)
-          if (playerState[temp1] & 4) then goto InputDoneLeftPortJump
-          goto LeftEnhancedJumpProceed
-LeftZoeEnhancedCheck
-          let temp6 = 0
-          if (playerState[temp1] & 4) then temp6 = 1
-          rem Use goto to avoid branch out of range (target is 189+ bytes away)
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneLeftPortJump
-LeftEnhancedJumpProceed
-          rem Use cached animation state - block jump during attack animations (states 13-15)
-          rem Use goto to avoid branch out of range (target is 183+ bytes away)
-          if temp2 >= 13 then goto InputDoneLeftPortJump
-          let temp4 = playerCharacter[temp1]
-          rem Block jump during attack windup/execute/recovery
-          rem Dispatch character jump (inlined for performance)
-          if temp4 >= 32 then goto InputDoneLeftPortJump
-          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
-          if temp4 = 31 then goto ShamoneJump
-          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
-          goto InputDoneLeftPortJump
-
-SkipEnhancedJumpCheck
-          gosub CheckEnhancedJumpButton
-          rem Check Genesis/Joy2b+ Button C/II
-
-          rem Execute jump if pressed and not already jumping
-          rem Handle MethHound jump (character 31 uses same jump as
-          rem Use goto to avoid branch out of range (target is 244+ bytes away)
-          if temp3 = 0 then goto InputDoneLeftPortJump
-          rem Allow Zoe (3) a single mid-air double-jump
-          if playerCharacter[temp1] = 3 then goto LeftZoeStdJumpCheck
-          rem Use goto to avoid branch out of range (target is 224+ bytes away)
-          if (playerState[temp1] & 4) then goto InputDoneLeftPortJump
-          goto LeftStdJumpProceed
-LeftZoeStdJumpCheck
-          let temp6 = 0
-          if (playerState[temp1] & 4) then temp6 = 1
-          rem Use goto to avoid branch out of range (target is 189+ bytes away)
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneLeftPortJump
-LeftStdJumpProceed
-          rem Use cached animation state - block jump during attack
-          rem animations (states 13-15)
-          rem Use goto to avoid branch out of range (target is 183+ bytes away)
-          if temp2 >= 13 then goto InputDoneLeftPortJump
-          let temp4 = playerCharacter[temp1]
-          rem Block jump during attack windup/execute/recovery
-          rem Dispatch character jump (inlined for performance)
-          if temp4 >= 32 then goto InputDoneLeftPortJump2
-          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
-          if temp4 = 31 then goto ShamoneJump
-          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
-          goto InputDoneLeftPortJump2
-InputDoneLeftPortJump2
-          if playerCharacter[temp1] = 3 then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
-InputDoneLeftPortJump
+          rem Process UP input and enhanced button (Button II)
+          rem temp2 already contains cached animation state from GetPlayerAnimationStateFunction
+          gosub HandleUpInputAndEnhancedButton
 
           rem Process down/guard input (inlined for performance)
-          rem Frooty (8) cannot guard
-          if playerCharacter[temp1] = 8 then goto HGI_Done1
+          rem Frooty cannot guard
+          if playerCharacter[temp1] = CharacterFrooty then goto HGI_Done1
           rem Players 0,2 use joy0; Players 1,3 use joy1
           if temp1 = 0 then goto HGI_CheckJoy0_1
           if temp1 = 2 then goto HGI_CheckJoy0_1
@@ -756,10 +765,10 @@ HGI_HandleDownPressed1
           let temp4 = playerCharacter[temp1]
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           if temp4 >= 32 then goto HGI_Done1
-          if temp4 = 2 then goto DragonOfStormsDown
-          if temp4 = 6 then goto HarpyDown
-          if temp4 = 8 then goto FrootyDown
-          if temp4 = 13 then goto DCD_HandleRoboTitoDown1
+          if temp4 = CharacterDragonOfStorms then goto DragonOfStormsDown
+          if temp4 = CharacterHarpy then goto HarpyDown
+          if temp4 = CharacterFrooty then goto FrootyDown
+          if temp4 = CharacterRoboTito then goto DCD_HandleRoboTitoDown1
           goto StandardGuard
 DCD_HandleRoboTitoDown1
           gosub RoboTitoDown
@@ -823,251 +832,27 @@ end
           if temp6 then goto DoneRightPortMovement
           rem Guarding - block movement
 
-          rem Frooty (8) and Dragon of Storms (2) need collision checks
+          rem Frooty and Dragon of Storms need collision checks
           let temp5 = playerCharacter[temp1]
           rem   for horizontal movement
           rem Use goto to avoid branch out of range (target is 302+ bytes away)
-          if temp5 = 8 then goto IHRP_FlyingMovement
-          if temp5 = 2 then goto IHRP_FlyingMovement
+          if temp5 = CharacterFrooty then goto IHRP_FlyingMovement
+          if temp5 = CharacterDragonOfStorms then goto IHRP_FlyingMovement
 
           rem Standard horizontal movement (no collision check)
-
-          if !joy1left then goto IHRP_DoneLeftMovement
-          if playerCharacter[temp1] = 8 then goto IHRP_LeftMomentum1
-          let temp6 = playerCharacter[temp1]
-          let temp6 = CharacterMovementSpeed[temp6]
-          let temp2 = 0
-          let temp2 = temp2 - temp6
-          let playerVelocityX[temp1] = temp2
-          let playerVelocityXL[temp1] = 0
-          goto IHRP_AfterLeftSet1
-IHRP_LeftMomentum1
-          let temp6 = playerCharacter[temp1]
-          let temp6 = CharacterMovementSpeed[temp6]
-          let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
-          let playerVelocityXL[temp1] = 0
-IHRP_AfterLeftSet1
-          rem Preserve facing during hurt/recovery states while processing right movement
-          rem Inline ShouldPreserveFacing logic
-          if (playerState[temp1] & 8) then goto SPF_InlineYes5
-          gosub GetPlayerAnimationStateFunction
-          if temp2 < 5 then goto SPF_InlineNo5
-          if temp2 > 9 then goto SPF_InlineNo5
-SPF_InlineYes5
-          let temp3 = 1
-          goto SPF_InlineDone5
-SPF_InlineNo5
-          let temp3 = 0
-SPF_InlineDone5
-          if !temp3 then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
-IHRP_DoneLeftMovement
-
-          if !joy1right then goto IHRP_DoneFlyingLeftRight
-          if playerCharacter[temp1] = 8 then goto IHRP_RightMomentum1
-          let temp6 = playerCharacter[temp1]
-          let temp6 = CharacterMovementSpeed[temp6]
-          let playerVelocityX[temp1] = temp6
-          rem Apply rightward velocity impulse
-          let playerVelocityXL[temp1] = 0
-          goto IHRP_AfterRightSet1
-IHRP_RightMomentum1
-          let temp6 = playerCharacter[temp1]
-          let temp6 = CharacterMovementSpeed[temp6]
-          let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
-          let playerVelocityXL[temp1] = 0
-IHRP_AfterRightSet1
-          rem Preserve facing during hurt/recovery states (knockback, hitstun)
-          rem Inline ShouldPreserveFacing logic
-          if (playerState[temp1] & 8) then goto SPF_InlineYes6
-          gosub GetPlayerAnimationStateFunction
-          if temp2 < 5 then goto SPF_InlineNo6
-          if temp2 > 9 then goto SPF_InlineNo6
-SPF_InlineYes6
-          let temp3 = 1
-          goto SPF_InlineDone6
-SPF_InlineNo6
-          let temp3 = 0
-SPF_InlineDone6
-          if !temp3 then let playerState[temp1] = playerState[temp1] | 1
-          rem Right movement complete (right port)
-
+          gosub HandleStandardHorizontalMovement
 DoneRightPortMovement
 IHRP_FlyingMovement
           gosub HandleFlyingCharacterMovement bank12
 IHRP_DoneFlyingLeftRight
 
 
-          rem Process UP input for character-specific behaviors (right
-          rem   port)
-          rem - Shamone/MethHound: form switching (15 <-> 31)
-          rem - Bernie: fall through 1-row floors
-          rem - Harpy: flap to fly (Character 6)
-          if !joy1up then goto DoneUpInputHandlingRight
-
-          rem Check Shamone form switching first (Character 15 <-> 31)
-          if playerCharacter[temp1] = 15 then let playerCharacter[temp1] = 31 : goto DoneJumpInputRight
-          rem Switch Shamone -> MethHound
-          if playerCharacter[temp1] = 31 then let playerCharacter[temp1] = 15 : goto DoneJumpInputRight
-          rem Switch MethHound -> Shamone
-
-          rem Robo Tito (13): Hold UP to ascend; auto-latch on ceiling contact
-          if playerCharacter[temp1] = 13 then goto RoboTitoAscendRight
-
-          rem Check Bernie fall-through (Character 0)
-
-          if playerCharacter[temp1] = 0 then goto BernieFallThroughRight
-
-          rem Check Harpy flap (Character 6)
-
-          if playerCharacter[temp1] = 6 then goto HarpyFlapRight
-
-          goto NormalJumpInputRight
-          rem For all other characters, UP is jump
-
-BernieFallThroughRight
-          rem Bernie UP input handled in BernieJump routine (fall
-          gosub BernieJump bank10
-          rem   through 1-row floors)
-          goto DoneJumpInputRight
-
-HarpyFlapRight
-          gosub HarpyJump bank10
-          rem Harpy UP input handled in HarpyJump routine (flap to fly)
-          goto DoneJumpInputRight
-
-RoboTitoAscendRight
-          rem Ascend toward ceiling (right port)
-          let temp6 = playerCharacter[temp1]
-          let temp6 = CharacterMovementSpeed[temp6]
-          let playerY[temp1] = playerY[temp1] - temp6
-          rem Compute playfield column
-          let temp2 = playerX[temp1]
-          let temp2 = temp2 - ScreenInsetX
-          asm
-            lsr temp2
-            lsr temp2
-end
-          if temp2 > 31 then temp2 = 31
-          if temp2 & $80 then temp2 = 0
-          let temp4 = temp2
-          rem Save playfield column (temp2 will be overwritten)
-          rem Compute head row and check ceiling contact
-          let temp2 = playerY[temp1]
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-          if temp2 = 0 then goto RoboTitoLatchRight
-          let temp3 = temp2 - 1
-          let currentPlayer = temp1
-          let temp1 = temp4
-          let temp2 = temp3
-          gosub PlayfieldRead bank16
-          if temp1 then goto RoboTitoLatchRight
-          let temp1 = currentPlayer
-          rem Clear latch if DOWN pressed
-          if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
-          goto DoneJumpInputRight
-RoboTitoLatchRight
-          let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
-          goto DoneJumpInputRight
-NormalJumpInputRight
-          let temp3 = 1
-          rem Process jump input (UP + enhanced buttons)
-          goto DoneUpInputHandlingRight
-          rem Jump pressed flag (UP pressed)
-
-DoneJumpInputRight
-          let temp3 = 0
-          rem No jump (UP used for special ability)
-
-DoneUpInputHandlingRight
-          rem Process jump input from enhanced buttons (Genesis/Joy2b+
-          rem   Button C/II)
-          rem Note: For Shamone/MethHound, UP is form switch, so jump
-          rem   via enhanced buttons only
-          rem Note: For Bernie, UP is fall-through, so jump via enhanced
-          rem   buttons only
-          rem Note: For Harpy, UP is flap, so jump via enhanced buttons
-          rem only
-          if playerCharacter[temp1] = 15 then goto ShamoneJumpCheckEnhancedRight
-          if playerCharacter[temp1] = 31 then goto ShamoneJumpCheckEnhancedRight
-          if playerCharacter[temp1] = 0 then goto ShamoneJumpCheckEnhancedRight
-          if playerCharacter[temp1] = 6 then goto ShamoneJumpCheckEnhancedRight
-          rem Bernie and Harpy also use enhanced buttons for jump
-
-          goto SkipEnhancedJumpCheckRight
-ShamoneJumpCheckEnhancedRight
-          gosub CheckEnhancedJumpButton
-          rem Check Genesis/Joy2b+ Button C/II for JUMP for any character, identical to UP
-
-          rem Execute jump if pressed and not already jumping
-          rem For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
-          if playerCharacter[temp1] = 15 then if temp3 then let playerCharacter[temp1] = 31 : goto InputDoneRightPortJump
-          if playerCharacter[temp1] = 31 then if temp3 then let playerCharacter[temp1] = 15 : goto InputDoneRightPortJump
-          rem Use goto to avoid branch out of range (target is 218+ bytes away)
-          if temp3 = 0 then goto InputDoneRightPortJump
-          rem Allow Zoe (3) a single mid-air double-jump
-          if playerCharacter[temp1] = 3 then goto RightZoeEnhancedCheck
-          rem Use goto to avoid branch out of range (target is 198+ bytes away)
-          if (playerState[temp1] & 4) then goto InputDoneRightPortJump
-          goto RightEnhancedJumpProceed
-RightZoeEnhancedCheck
-          let temp6 = 0
-          if (playerState[temp1] & 4) then temp6 = 1
-          rem Use goto to avoid branch out of range (target is 163+ bytes away)
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneRightPortJump
-RightEnhancedJumpProceed
-          rem Use cached animation state - block jump during attack animations (states 13-15)
-          rem Use goto to avoid branch out of range (target is 157+ bytes away)
-          if temp2 >= 13 then goto InputDoneRightPortJump
-          let temp4 = playerCharacter[temp1]
-          rem Block jump during attack windup/execute/recovery
-          rem Dispatch character jump (inlined for performance)
-          if temp4 >= 32 then goto InputDoneRightPortJump
-          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
-          if temp4 = 31 then goto ShamoneJump
-          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
-          goto InputDoneRightPortJump
-
-SkipEnhancedJumpCheckRight
-          gosub CheckEnhancedJumpButton
-          rem Check Genesis/Joy2b+ Button C/II
-          rem temp3 already set by CheckEnhancedJumpButton
-
-          rem Execute jump if pressed and not already jumping
-          rem Handle MethHound jump (character 31 uses same jump as
-          rem Shamone)
-          rem Use goto to avoid branch out of range (target is 218+ bytes away)
-          if temp3 = 0 then goto InputDoneRightPortJump
-          rem Allow Zoe (3) a single mid-air double-jump
-          if playerCharacter[temp1] = 3 then goto RightZoeStdJumpCheck
-          rem Use goto to avoid branch out of range (target is 198+ bytes away)
-          if (playerState[temp1] & 4) then goto InputDoneRightPortJump
-          goto RightStdJumpProceed
-RightZoeStdJumpCheck
-          let temp6 = 0
-          if (playerState[temp1] & 4) then temp6 = 1
-          rem Use goto to avoid branch out of range (target is 163+ bytes away)
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneRightPortJump
-RightStdJumpProceed
-          rem Use cached animation state - block jump during attack
-          rem animations (states 13-15)
-          rem Use goto to avoid branch out of range (target is 157+ bytes away)
-          if temp2 >= 13 then goto InputDoneRightPortJump
-          let temp4 = playerCharacter[temp1]
-          rem Block jump during attack windup/execute/recovery
-          rem Dispatch character jump (inlined for performance)
-          if temp4 >= 32 then goto InputDoneRightPortJump
-          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
-          if temp4 = 31 then goto ShamoneJump
-          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
-InputDoneRightPortJump
+          rem Process UP input and enhanced button (Button II)
+          rem temp2 already contains cached animation state from GetPlayerAnimationStateFunction
+          gosub HandleUpInputAndEnhancedButton
           rem Process down/guard input (inlined for performance)
-          rem Frooty (8) cannot guard
-          if playerCharacter[temp1] = 8 then goto HGI_Done2
+          rem Frooty cannot guard
+          if playerCharacter[temp1] = CharacterFrooty then goto HGI_Done2
           rem Players 0,2 use joy0; Players 1,3 use joy1
           if temp1 = 0 then goto HGI_CheckJoy0_2
           if temp1 = 2 then goto HGI_CheckJoy0_2
@@ -1081,10 +866,10 @@ HGI_HandleDownPressed2
           let temp4 = playerCharacter[temp1]
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           if temp4 >= 32 then goto HGI_Done2
-          if temp4 = 2 then goto DragonOfStormsDown
-          if temp4 = 6 then goto HarpyDown
-          if temp4 = 8 then goto FrootyDown
-          if temp4 = 13 then goto DCD_HandleRoboTitoDown2
+          if temp4 = CharacterDragonOfStorms then goto DragonOfStormsDown
+          if temp4 = CharacterHarpy then goto HarpyDown
+          if temp4 = CharacterFrooty then goto FrootyDown
+          if temp4 = CharacterRoboTito then goto DCD_HandleRoboTitoDown2
           goto StandardGuard
 DCD_HandleRoboTitoDown2
           gosub RoboTitoDown

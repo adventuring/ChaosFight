@@ -34,7 +34,7 @@ end
           
           rem Left movement: set negative velocity
           if !joy1left then goto PSM_CheckRightJoy1
-          if playerCharacter[temp1] = 8 then PSM_LeftMomentum1
+          if playerCharacter[temp1] = CharacterFrooty then PSM_LeftMomentum1
           let temp6 = playerCharacter[temp1]
           let temp6 = CharacterMovementSpeed[temp6]
           let temp2 = 0
@@ -63,7 +63,7 @@ PSM_InlineDoneLeft
 PSM_CheckRightJoy1
           rem Right movement: set positive velocity
           if !joy1right then return
-          if playerCharacter[temp1] = 8 then PSM_RightMomentum1
+          if playerCharacter[temp1] = CharacterFrooty then PSM_RightMomentum1
           let temp6 = playerCharacter[temp1]
           let temp6 = CharacterMovementSpeed[temp6]
           let playerVelocityX[temp1] = temp6
@@ -94,7 +94,7 @@ PSM_UseJoy0
           
           rem Left movement: set negative velocity
           if !joy0left then goto PSM_CheckRightJoy0
-          if playerCharacter[temp1] = 8 then PSM_LeftMomentum0
+          if playerCharacter[temp1] = CharacterFrooty then PSM_LeftMomentum0
           let temp6 = playerCharacter[temp1]
           let temp6 = CharacterMovementSpeed[temp6]
           let temp2 = 0
@@ -124,7 +124,7 @@ PSM_InlineDoneLeft0
 PSM_CheckRightJoy0
           rem Right movement: set positive velocity
           if !joy0right then return
-          if playerCharacter[temp1] = 8 then PSM_RightMomentum0
+          if playerCharacter[temp1] = CharacterFrooty then PSM_RightMomentum0
           let temp6 = playerCharacter[temp1]
           let temp6 = CharacterMovementSpeed[temp6]
           let playerVelocityX[temp1] = temp6

@@ -29,6 +29,6 @@ SelectStickRight
           rem Called Routines: SetPlayerLocked (bank6)
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
-          if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
+          if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = CharacterBernie
           if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           return

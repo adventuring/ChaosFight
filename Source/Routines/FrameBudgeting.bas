@@ -108,7 +108,29 @@ CheckPlayer2HealthUpdate
           rem        HealthBarMaxLength (constant) = maximum health bar length
           rem Output: Score colors set for health digit display
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
-          let temp6 = playerHealth[2] / 12
+          rem Use inline assembly for division by 12 (multiply by 21/256 ≈ 1/12)
+          rem Algorithm: temp6 = (playerHealth[2] * 21) >> 8
+          asm
+            lda playerHealth+2
+            sta temp6
+            asl
+            asl
+            clc
+            adc temp6
+            asl
+            asl
+            clc
+            adc temp6
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta temp6
+end
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           return
 DonePlayer2HealthUpdate
@@ -144,7 +166,29 @@ CheckPlayer3HealthUpdate
           rem        HealthBarMaxLength (constant) = maximum health bar length
           rem Output: Score colors set for health digit display
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
-          let temp6 = playerHealth[3] / 12
+          rem Use inline assembly for division by 12 (multiply by 21/256 ≈ 1/12)
+          rem Algorithm: temp6 = (playerHealth[3] * 21) >> 8
+          asm
+            lda playerHealth+3
+            sta temp6
+            asl
+            asl
+            clc
+            adc temp6
+            asl
+            asl
+            clc
+            adc temp6
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta temp6
+end
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGray(14)
           COLUP0 = ColGray(14)
@@ -179,7 +223,29 @@ UpdateHealthBarPlayer0
           rem
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
-          let temp6 = playerHealth[0] / 12
+          rem Use inline assembly for division by 12 (multiply by 21/256 ≈ 1/12)
+          rem Algorithm: temp6 = (playerHealth[0] * 21) >> 8
+          asm
+            lda playerHealth+0
+            sta temp6
+            asl
+            asl
+            clc
+            adc temp6
+            asl
+            asl
+            clc
+            adc temp6
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta temp6
+end
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGray(14)
           COLUP0 = ColGray(14)
@@ -201,7 +267,29 @@ UpdateHealthBarPlayer1
           rem
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
-          let temp6 = playerHealth[1] / 12
+          rem Use inline assembly for division by 12 (multiply by 21/256 ≈ 1/12)
+          rem Algorithm: temp6 = (playerHealth[1] * 21) >> 8
+          asm
+            lda playerHealth+1
+            sta temp6
+            asl
+            asl
+            clc
+            adc temp6
+            asl
+            asl
+            clc
+            adc temp6
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta temp6
+end
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGray(14)
           COLUP0 = ColGray(14)

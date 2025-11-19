@@ -40,10 +40,10 @@ end
 
           rem Convert player Y position to playfield row
           rem Player Y is bottom-left of sprite (top of sprite visually)
-          rem For pfres=8: pfrowheight = 16 pixels per row
+          rem pfrowheight is always 16, so divide by 16
           let temp3 = playerY[temp1]
-          rem Row = playerY[playerIndex] / pfrowheight
-          let temp4 = temp3 / pfrowheight
+          rem Row = playerY[playerIndex] / 16
+          let temp4 = temp3 / 16
           rem currentRow = row player sprite bottom is in (0-7 for
           rem   pfres=8)
 
@@ -51,10 +51,9 @@ end
           rem   solid)
           rem Bernie feet are visually at bottom of 16px sprite, so
           rem   check row below
-          rem Feet are at playerY + 16, so row = (playerY + 16) /
+          rem Feet are at playerY + 16, so row = (playerY + 16) / 16
           let temp5 = temp3 + 16
-          rem   pfrowheight
-          let temp6 = temp5 / pfrowheight
+          let temp6 = temp5 / 16
           rem feetY = feet Y position in pixels
           rem feetRow = row directly below player feet
 
@@ -166,7 +165,8 @@ DragonOfStormsJump
 
           let temp3 = playerY[temp1]
           rem Check row above player (top of sprite)
-          let temp4 = temp3 / pfrowheight
+          rem pfrowheight is always 16, so divide by 16
+          let temp4 = temp3 / 16
           rem currentRow = current row
           rem Check row above (currentRow - 1), but only if not at top
           if temp4 <= 0 then return
@@ -402,7 +402,8 @@ FrootyJump
 
           let temp3 = playerY[temp1]
           rem Check row above player (top of sprite)
-          let temp4 = temp3 / pfrowheight
+          rem pfrowheight is always 16, so divide by 16
+          let temp4 = temp3 / 16
           rem currentRow = current row
           rem Check row above (currentRow - 1), but only if not at top
           if temp4 <= 0 then return
@@ -622,9 +623,10 @@ RoboTitoStretching
           rem temp4 = playfield column from subroutine
 
           rem Convert starting Y position to playfield row
+          rem pfrowheight is always 16, so divide by 16
           let temp2 = playerY[temp1] + 16
           rem Restore starting Y position (overwritten by subroutine)
-          let temp5 = temp2 / pfrowheight
+          let temp5 = temp2 / 16
           rem temp5 = starting row for ground search
 
           rem Search downward from starting row until we find ground
@@ -747,7 +749,8 @@ RoboTitoCheckCeiling
           let temp3 = playerY[temp1]
           rem Check row above player for ceiling
           if temp3 <= 0 then goto RoboTitoLatch
-          let temp4 = temp3 / pfrowheight
+          rem pfrowheight is always 16, so divide by 16
+          let temp4 = temp3 / 16
           if temp4 <= 0 then goto RoboTitoLatch
           let temp4 = temp4 - 1
           let temp5 = temp1

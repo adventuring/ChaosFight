@@ -79,8 +79,8 @@ var44 = $D0
 var45 = $D1
 var46 = $D2
 var47 = $D3
-var48 = $D4
-;; playerCharacter is defined in MultiSpriteSuperChip.s (included above)
+;; var48-var127 don't exist - SuperChip RAM accessed via r000-r127/w000-w127 only
+;; playerCharacter is now in SCRAM (w111-w114), defined in Variables.bas
 ;; Multisprite letter variables (different addresses than standard batariBASIC)
 ;; Note: These are also defined in MultiSpriteSuperChip.s, but we keep them here
 ;; for compatibility and to ensure they’re defined before the redefs file

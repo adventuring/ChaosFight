@@ -51,13 +51,8 @@ LoadArenaDispatch
           rem Load color color table - fall through to LoadArenaColorsColor
           goto LA_LoadColorColors
 LA_LoadBWColors
-          rem Load B&W color table
-          asm
-            lda #<ArenaColorsBW
-            sta pfcolortable
-            lda #>ArenaColorsBW
-            sta pfcolortable+1
-end
+          rem Load B&W color table (shared routine)
+          gosub LoadArenaColorsBW
           return
 LA_LoadColorColors
 
@@ -91,6 +86,29 @@ end
 end
           return
 
+LoadArenaColorsBW
+          asm
+LoadArenaColorsBW
+end
+          rem Shared B&W color table loader
+          rem
+          rem Input: None
+          rem
+          rem Output: pfcolortable pointer set to ArenaColorsBW
+          rem
+          rem Mutates: pfcolortable (playfield color table pointer)
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Must be colocated with LoadArena
+          asm
+            lda #<ArenaColorsBW
+            sta pfcolortable
+            lda #>ArenaColorsBW
+            sta pfcolortable+1
+end
+          return
+
 LoadArenaRandom
           rem Select random arena (0-31) using proper random number
           rem generator
@@ -120,11 +138,6 @@ LoadArenaRandom
           gosub LoadArenaColorsColor
           return
 LAR_LoadBWColors
-          rem Load B&W color table
-          asm
-            lda #<ArenaColorsBW
-            sta pfcolortable
-            lda #>ArenaColorsBW
-            sta pfcolortable+1
-end
+          rem Load B&W color table (shared routine)
+          gosub LoadArenaColorsBW
           return

@@ -326,6 +326,7 @@
           rem ADMIN: Currently selected character index (0-15) for
           rem   preview (REDIMMED - Game Mode uses var37 for
           rem ADMIN: Character select variables moved to SCRAM to free var37-var40 for playerCharacter (COMMON)
+          rem NOTE: Overlaps with Game Mode roboTitoCanStretch/enhancedButtonStates (w122-w123) - safe since Admin and Game never run simultaneously
           rem Primary alias for reads (most common access pattern)
           dim characterSelectCharacterIndex = r122
           dim characterSelectCharacterIndex_W = w122

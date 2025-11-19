@@ -16,6 +16,10 @@ end
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/ProcessUpInput.bas"
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
+#include "Source/Routines/BernieAttack.bas"
+#include "Source/Routines/HarpyAttack.bas"
+#include "Source/Routines/UrsuloAttack.bas"
+#include "Source/Routines/ShamoneAttack.bas"
 
           asm
 Bank10CodeEnds

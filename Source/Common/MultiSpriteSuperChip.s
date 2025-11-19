@@ -1,8 +1,7 @@
 ; ChaosFight superchip RAM definitions and ChaosFight-specific additions.
 ; The upstream multisprite definitions are included separately.
-; Licensed under CC0 to match upstream batariBASIC headers.
+; NOTE: processor 6502 directive is in AssemblyConfig.bas, not here
 
-          processor 6502
 #include "vcs.h"
 #include "macro.h"
 ; Issue #930: Ensure every SuperChip SCRAM port symbol is exported here so
@@ -874,11 +873,11 @@ var44 EQU $D0
 var45 EQU $D1
 var46 EQU $D2
 var47 EQU $D3
-var48 EQU $D4
+; var48-var127 don't exist in multisprite - SuperChip RAM is accessed via r000-r127/w000-w127
 ; Variable aliases - ensure batariBASIC variable aliases are also assembly labels
 ; These are defined in Variables.bas as dim aliases, but assembler needs labels
 ; Use = instead of EQU so it's a label (not just a constant) for indexed addressing
-playerCharacter = $D4
+; playerCharacter is now in SCRAM (w111-w114), not zero-page, so no label needed here
 
           MS_ASSIGN  var0, $A4
           MS_ASSIGN  var1, $A5
@@ -946,9 +945,7 @@ playerCharacter = $D4
   ; Forward declarations for batariBASIC built-in variables and routines
   ; These will be defined by batariBASIC compiler/generated code
   ; ECHOFIRST is defined above unconditionally
-          ifnconst frame
-frame = $00F5
-          endif
+  ; NOTE: frame is a batariBASIC built-in variable - do not define it here
   ; Standard batariBASIC routines (defined in std_routines.asm, pf_drawing.asm, div_mul.asm)
   ; These are labels, not constants, but we forward-declare them here for symbol resolution
   ; Note: These are actual assembly routines, not variables

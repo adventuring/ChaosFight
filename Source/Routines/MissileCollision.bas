@@ -467,9 +467,11 @@ end
           let temp3 = missileY_R[temp1]
 
           rem Convert X to playfield coordinates
-          let temp6 = temp2 / 5
-          rem Playfield is 32 pixels wide (doubled to 160 screen pixels)
-          rem Convert X pixel to playfield column (160/32 ≈ 5)
+          
+          rem Playfield is 32 pf-pixels wide (4px wide each, so 128 screen pixels)
+          rem Convert X pixel to playfield column
+          let temp6 = temp2 - 16
+          let temp6 = temp6 / 4
 
           rem Check if playfield pixel is set at missile position
           let temp4 = 0
@@ -477,7 +479,7 @@ end
           let temp1 = temp6
           let temp2 = temp3
           gosub PlayfieldRead bank16
-          if temp1 then let temp4 = 1 : return
+          if temp1 then let temp4 = $80 : return
           rem pfread(column, row) returns 0 if clear, non-zero if set
           rem Clear
           return

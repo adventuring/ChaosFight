@@ -23,10 +23,57 @@ end
           rem Calculate offset into font data (16 bytes per glyph)
           let temp2 = temp1 * 16
 
-          rem Set player pointer to font data
-          if temp3 = 0 then player0pointer = FontData + temp2 : player0height = 16
-          if temp3 = 1 then player1pointer = FontData + temp2 : player1height = 16
-          if temp3 = 2 then player2pointer = FontData + temp2 : player2height = 16
-          if temp3 = 3 then player3pointer = FontData + temp2 : player3height = 16
-
+          rem Set player pointer to font data (optimized: calculate once, store conditionally)
+          asm
+            ; Calculate base address: FontData + temp2 (shared calculation)
+            lda #<FontData
+            clc
+            adc temp2
+            sta temp4
+            lda #>FontData
+            adc #0
+            sta temp5
+            lda #16
+            sta temp6  ; Height constant
+            
+            ; Store to appropriate player pointer based on temp3
+            ldx temp3
+            beq .SetP0
+            dex
+            beq .SetP1
+            dex
+            beq .SetP2
+            ; else P3
+            lda temp4
+            sta player3pointerlo
+            lda temp5
+            sta player3pointerhi
+            lda temp6
+            sta player3height
+            jmp .SetDone
+.SetP0
+            lda temp4
+            sta player0pointerlo
+            lda temp5
+            sta player0pointerhi
+            lda temp6
+            sta player0height
+            jmp .SetDone
+.SetP1
+            lda temp4
+            sta player1pointerlo
+            lda temp5
+            sta player1pointerhi
+            lda temp6
+            sta player1height
+            jmp .SetDone
+.SetP2
+            lda temp4
+            sta player2pointerlo
+            lda temp5
+            sta player2pointerhi
+            lda temp6
+            sta player2height
+.SetDone
+end
           return

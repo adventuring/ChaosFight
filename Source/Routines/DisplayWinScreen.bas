@@ -59,15 +59,13 @@ end
           rem Set screen layout (32×8 for character display)
 
           rem Load winner screen playfield pattern
-          rem Set playfield pointers to WinnerScreenPlayfield data
+          rem Set playfield pointers to WinnerScreenPlayfield data (optimized: load once, store twice)
           asm
           lda #<WinnerScreenPlayfield
           sta PF1pointer
-          lda #>WinnerScreenPlayfield
-          sta PF1pointer+1
-          lda #<WinnerScreenPlayfield
           sta PF2pointer
           lda #>WinnerScreenPlayfield
+          sta PF1pointer+1
           sta PF2pointer+1
 end
 

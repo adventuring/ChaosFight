@@ -36,6 +36,7 @@ DragonOfStormsDown
 
           let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
+          rem pfrowheight is always 16, so divide by 16
           let temp3 = temp3 + 16
           let temp4 = temp3 / 16
           rem feetY = feet Y position
@@ -149,6 +150,7 @@ HarpyNormalDown
 
           let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
+          rem pfrowheight is always 16, so divide by 16
           let temp3 = temp3 + 16
           let temp4 = temp3 / 16
           rem feetY = feet Y position
@@ -215,8 +217,9 @@ FrootyDown
 
           let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
-          let temp3 = temp3 + 16
-          let temp4 = temp3 / pfrowheight
+          rem pfrowheight is always 16, so divide by 16
+          let temp4 = temp3 / 16
+          let temp4 = temp4 - 1
           rem feetY = feet Y position
           rem feetRow = row below feet
           rem Check if at or beyond bottom row

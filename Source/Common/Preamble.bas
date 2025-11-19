@@ -3,7 +3,21 @@
 
           set includesfile ChaosFight.inc
 
+;; CRITICAL: Include AssemblyConfig.bas FIRST to set processor directive
+;; This must be before MultiSpriteSuperChip.s (which includes vcs.h and macro.h)
+#include "Source/Common/AssemblyConfig.bas"
+
           asm
+
+;; Include sleep macro
+#include "Source/Routines/Sleep.s"
+
+;; CRITICAL: Include MultiSpriteSuperChip.s FIRST to define all symbols before
+;; batariBASIC includes are processed. This ensures symbols like frame,
+;; missile0height, missile1height, qtcontroller, playfieldRow, miniscoretable,
+;; etc. are available when batariBASIC includes reference them.
+#include "Source/Common/MultiSpriteSuperChip.s"
+
 ;; CRITICAL: Define bscode_length before any code that uses it
 ;; Match actual 64kSC bankswitch stub size (see Tools/batariBASIC/includes/banksw.asm ;size=42)
 ;; $2A = 42 bytes, so bankswitch code runs right up to $FFE0 before EFSC header
@@ -15,6 +29,8 @@ bscode_length = $2A
 ;; The Makefile inserts include "2600basic_variable_redefs.h" early (after processor 6502),
 ;; so base variables must be defined before that point
 ;; Multisprite memory layout (from multisprite.h)
+;; Note: These are also defined in MultiSpriteSuperChip.s, but we keep them here
+;; for compatibility and to ensure they&rsquo;re defined before the redefs file
 var0 = $A4
 var1 = $A5
 var2 = $A6
@@ -64,7 +80,10 @@ var45 = $D1
 var46 = $D2
 var47 = $D3
 var48 = $D4
+;; playerCharacter is defined in MultiSpriteSuperChip.s (included above)
 ;; Multisprite letter variables (different addresses than standard batariBASIC)
+;; Note: These are also defined in MultiSpriteSuperChip.s, but we keep them here
+;; for compatibility and to ensure they’re defined before the redefs file
 A = $d7
 a = $d7
 B = $d8
@@ -119,14 +138,8 @@ Z = $f0
 z = $f0
 end
 
-#include "Source/Common/AssemblyConfig.bas"
-
 #include "Source/Common/Colors.h"
 #include "Source/Common/Constants.bas"
 #include "Source/Common/Enums.bas"
 #include "Source/Common/Macros.bas"
 #include "Source/Common/Variables.bas"
-
-          asm
-#include "Source/Common/MultiSpriteSuperChip.s"
-end

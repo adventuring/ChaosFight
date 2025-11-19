@@ -302,7 +302,7 @@ CharacterSelectRollRandomPlayer
 CharacterSelectRollRandomPlayer
 
 end
-          rem Handle random character roll for the current player's slot.
+          rem Handle random character roll for the current player’s slot.
           rem Requirements: Each frame, if selection is RandomCharacter,
           rem sample rand & $1f and accept the result when it is < NumCharacters.
           rem Does NOT lock the character - player must press fire to lock.

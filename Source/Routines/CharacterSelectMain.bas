@@ -303,6 +303,8 @@ CharacterSelectRollRandomPlayer
 
 end
           rem Handle random character roll for the current player’s slot.
+          rem Requirements: Each frame, if selection is RandomCharacter,
+          rem sample rand & $1f and accept the result when it is < NumCharacters.
           rem
           rem Input: currentPlayer (global) = player index (0-3)
           rem        randomSelectFlags_R[] (SCRAM, read port) = handicap flags
@@ -312,10 +314,10 @@ end
           rem           playerLocked[] via SetPlayerLocked
           rem
           rem Called Routines: SetPlayerLocked
-          let temp2 = rand & 31
-          rem Roll 5-bit random: rand & 31 (0-31)
-          rem If > MaxCharacter, stay as RandomCharacter and retry next frame
-          if temp2 > MaxCharacter then return
+          let temp2 = rand & $1f
+          rem Roll 5-bit random per frame (0-31 range)
+          rem If temp2 >= NumCharacters, retry next frame
+          if temp2 >= NumCharacters then return
           let playerCharacter[currentPlayer] = temp2
           rem Valid! Set character and lock with normal or handicap
           if randomSelectFlags_R[currentPlayer] then goto CharacterSelectRollRandomPlayerHandicap

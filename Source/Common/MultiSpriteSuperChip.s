@@ -3,8 +3,8 @@
 ; Licensed under CC0 to match upstream batariBASIC headers.
 
  processor 6502
- #include "vcs.h"
- #include "macro.h"
+#include "vcs.h"
+#include "macro.h"
 ; Issue #930: Ensure every SuperChip SCRAM port symbol is exported here so
 ; cross-bank routines rely on one authoritative header.
 ; CRITICAL: Define standard batariBASIC and multisprite symbols BEFORE redefs file
@@ -875,6 +875,10 @@ var45 EQU $D1
 var46 EQU $D2
 var47 EQU $D3
 var48 EQU $D4
+; Variable aliases - ensure batariBASIC variable aliases are also assembly labels
+; These are defined in Variables.bas as dim aliases, but assembler needs labels
+; Use EQU to match var48 definition and ensure indexed addressing works
+playerCharacter EQU $D4
   
   MS_ASSIGN  var0, $A4
   MS_ASSIGN  var1, $A5
@@ -948,8 +952,7 @@ frame = $00F5
   ; Standard batariBASIC routines (defined in std_routines.asm, pf_drawing.asm, div_mul.asm)
   ; These are labels, not constants, but we forward-declare them here for symbol resolution
   ; Note: These are actual assembly routines, not variables
-  ; randomize, setuppointers, mul8, div8, ConvertToBCD, BlankPlayfield, PlayfieldRead, etc.
-  ; are defined in batariBASIC includes and will be available when those files are included
+  ; randomize, setuppointers, ConvertToBCD, BlankPlayfield, PlayfieldRead, etc.
   
   MS_ASSIGN  interlaced, 0
   MS_ASSIGN  shakescreen, 0

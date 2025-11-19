@@ -9,64 +9,62 @@
 
           asm
 Bank3DataStart
-            FrootyDataStart = *
+FrootyDataStart
 end
 #include "Source/Generated/Frooty.bas"
           asm
-            FrootyDataEnd = *
+FrootyDataEnd
             echo "// Bank 3: ", [FrootyDataEnd - FrootyDataStart]d, " bytes = Frooty data"
-            NefertemDataStart = *
+NefertemDataStart
 end
 #include "Source/Generated/Nefertem.bas"
           asm
-            NefertemDataEnd = *
+NefertemDataEnd
             echo "// Bank 3: ", [NefertemDataEnd - NefertemDataStart]d, " bytes = Nefertem data"
-            NinjishGuyDataStart = *
+NinjishGuyDataStart
 end
 #include "Source/Generated/NinjishGuy.bas"
           asm
-            NinjishGuyDataEnd = *
+NinjishGuyDataEnd
             echo "// Bank 3: ", [NinjishGuyDataEnd - NinjishGuyDataStart]d, " bytes = NinjishGuy data"
-            PorkChopDataStart = *
+PorkChopDataStart
 end
 #include "Source/Generated/PorkChop.bas"
           asm
-            PorkChopDataEnd = *
+PorkChopDataEnd
             echo "// Bank 3: ", [PorkChopDataEnd - PorkChopDataStart]d, " bytes = PorkChop data"
-            RadishGoblinDataStart = *
+RadishGoblinDataStart
 end
 #include "Source/Generated/RadishGoblin.bas"
           asm
-            RadishGoblinDataEnd = *
+RadishGoblinDataEnd
             echo "// Bank 3: ", [RadishGoblinDataEnd - RadishGoblinDataStart]d, " bytes = RadishGoblin data"
-            RoboTitoDataStart = *
+RoboTitoDataStart
 end
 #include "Source/Generated/RoboTito.bas"
           asm
-            RoboTitoDataEnd = *
+RoboTitoDataEnd
             echo "// Bank 3: ", [RoboTitoDataEnd - RoboTitoDataStart]d, " bytes = RoboTito data"
-            UrsuloDataStart = *
+UrsuloDataStart
 end
 #include "Source/Generated/Ursulo.bas"
           asm
-            UrsuloDataEnd = *
+UrsuloDataEnd
             echo "// Bank 3: ", [UrsuloDataEnd - UrsuloDataStart]d, " bytes = Ursulo data"
-            ShamoneDataStart = *
+ShamoneDataStart
 end
 #include "Source/Generated/Shamone.bas"
           asm
-            ShamoneDataEnd = *
+ShamoneDataEnd
             echo "// Bank 3: ", [ShamoneDataEnd - ShamoneDataStart]d, " bytes = Shamone data"
 Bank3DataEnds
 end
 
           asm
             ;; Character art lookup routines for Bank 3 (characters 8-15)
-            CharacterArtBank3Start = *
-end
+CharacterArtBank3Start
 #include "Source/Routines/CharacterArtBank3.s"
-          asm
-            CharacterArtBank3End = *
+CharacterArtBank3End
             echo "// Bank 3: ", [CharacterArtBank3End - CharacterArtBank3Start]d, " bytes = Character Art lookup routines"
 Bank3CodeEnds
 end

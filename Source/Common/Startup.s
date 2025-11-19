@@ -22,12 +22,12 @@ clearmem
           sta pfheight
 
           ldx # 4
-SetCopyHeight
+StartupSetCopyHeight
           txa
           sta SpriteGfxIndex, x
           sta spritesort, x
           dex
-          bpl SetCopyHeight
+          bpl StartupSetCopyHeight
 
           ; since we can’t turn off pf, point PF to BlankPlayfield in Bank 16
           lda # >BlankPlayfield

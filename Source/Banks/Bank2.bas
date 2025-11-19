@@ -12,64 +12,62 @@
                 err
             endif
 Bank2DataStart
-            BernieDataStart = *
+BernieDataStart
 end
 #include "Source/Generated/Bernie.bas"
           asm
-            BernieDataEnd = *
+BernieDataEnd
             echo "// Bank 2: ", [BernieDataEnd - BernieDataStart]d, " bytes = Bernie data"
-            CurlerDataStart = *
+CurlerDataStart
 end
 #include "Source/Generated/Curler.bas"
           asm
-            CurlerDataEnd = *
+CurlerDataEnd
             echo "// Bank 2: ", [CurlerDataEnd - CurlerDataStart]d, " bytes = Curler data"
-            DragonOfStormsDataStart = *
+DragonOfStormsDataStart
 end
 #include "Source/Generated/DragonOfStorms.bas"
           asm
-            DragonOfStormsDataEnd = *
+DragonOfStormsDataEnd
             echo "// Bank 2: ", [DragonOfStormsDataEnd - DragonOfStormsDataStart]d, " bytes = Dragon Of Storms data"
-            ZoeRyenDataStart = *
+ZoeRyenDataStart
 end
 #include "Source/Generated/ZoeRyen.bas"
           asm
-            ZoeRyenDataEnd = *
+ZoeRyenDataEnd
             echo "// Bank 2: ", [ZoeRyenDataEnd - ZoeRyenDataStart]d, " bytes = Zoe Ryen data"
-            FatTonyDataStart = *
+FatTonyDataStart
 end
 #include "Source/Generated/FatTony.bas"
           asm
-            FatTonyDataEnd = *
+FatTonyDataEnd
             echo "// Bank 2: ", [FatTonyDataEnd - FatTonyDataStart]d, " bytes = Fat Tony data"
-            MegaxDataStart = *
+MegaxDataStart
 end
 #include "Source/Generated/Megax.bas"
           asm
-            MegaxDataEnd = *
+MegaxDataEnd
             echo "// Bank 2: ", [MegaxDataEnd - MegaxDataStart]d, " bytes = Megax data"
-            HarpyDataStart = *
+HarpyDataStart
 end
 #include "Source/Generated/Harpy.bas"
           asm
-            HarpyDataEnd = *
+HarpyDataEnd
             echo "// Bank 2: ", [HarpyDataEnd - HarpyDataStart]d, " bytes = Harpy data"
-            KnightGuyDataStart = *
+KnightGuyDataStart
 end
 #include "Source/Generated/KnightGuy.bas"
           asm
-            KnightGuyDataEnd = *
+KnightGuyDataEnd
             echo "// Bank 2: ", [KnightGuyDataEnd - KnightGuyDataStart]d, " bytes = Knight Guy data"
 Bank2DataEnds
 end
 
           asm
             ;; Character art lookup routines for Bank 2 (characters 0-7)
-            CharacterArtBank2Start = *
-end
+CharacterArtBank2Start
 #include "Source/Routines/CharacterArtBank2.s"
-          asm
-            CharacterArtBank2End = *
+CharacterArtBank2End
             echo "// Bank 2: ", [CharacterArtBank2End - CharacterArtBank2Start]d, " bytes = Character Art lookup routines"
 Bank2CodeEnds
 end

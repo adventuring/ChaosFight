@@ -263,7 +263,7 @@ ConvertToBCDLoop
             bne ConvertToBCDLoop
             cld
           end
-          rem temp1 now contains packed BCD (e.g., $75 for 75)
+          ; rem temp1 now contains packed BCD (e.g., $75 for 75)
           return
 
 UpdatePlayer34HealthBars

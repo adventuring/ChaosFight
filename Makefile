@@ -112,7 +112,7 @@ GAME = ChaosFight
 GAMEYEAR = 25
 ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 PROJECT_JSON = Project.json
-PROJECT_VERSION := $(shell jq -r '.Version // empty' $(PROJECT_JSON))
+PROJECT_VERSION := $(shell jq '.Version' $(PROJECT_JSON))
 ifeq ($(strip $(PROJECT_VERSION)),)
 $(error Version field missing in $(PROJECT_JSON))
 endif
@@ -638,13 +638,13 @@ Object/2600basic_variable_redefs.h: | Object/
 
 # Step 2: Compile .preprocessed.bas → $(GAME)$(GAMEYEAR).bB.ARCH.s
 Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic | Object/
-	cd Object && bB=$(POSTINC) timeout 300 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
+	cd Object && > 2600basic_variable_redefs.h && bB=$(POSTINC) timeout 300 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
 
 Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic | Object/
-	cd Object && bB=$(POSTINC) timeout 300 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s 2>/dev/null
+	cd Object && > 2600basic_variable_redefs.h && bB=$(POSTINC) timeout 300 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s 2>/dev/null
 
 Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic | Object/
-	cd Object && bB=$(POSTINC) timeout 300 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s 2>/dev/null
+	cd Object && > 2600basic_variable_redefs.h && bB=$(POSTINC) timeout 300 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s 2>/dev/null
 
 # Step 3: Postprocess $(GAME)$(GAMEYEAR).bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory
@@ -652,27 +652,33 @@ Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.
 # postprocess also needs $(GAME)$(GAMEYEAR).bB.asm to exist (listed in includes.bB), so create symlink
 # Fix ## token pasting: cpp should expand ColGreen(6) → _COL_Green_L6, but if ##
 # remains, replace it with _ (e.g., _COL_Green_L##6 → _COL_Green_L6)
-# Depend on Object/includes.bB since it's symlinked in the recipe and used by postprocess
-Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Object/$(GAME)$(GAMEYEAR).bB.NTSC.s bin/postprocess bin/optimize | Source/Generated/ Object/NTSC/
-	cd Object/NTSC && ln -sf ../$(GAME)$(GAMEYEAR).bB.NTSC.s bB.asm && ln -sf ../includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize > ../../$@
+# Depend on Source/Common/includes.bB since it's symlinked in the recipe and used by postprocess
+Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Object/$(GAME)$(GAMEYEAR).bB.NTSC.s Source/Common/includes.bB bin/postprocess bin/optimize | Source/Generated/ Object/NTSC/
+	cd Object/NTSC && ln -sf ../$(GAME)$(GAMEYEAR).bB.NTSC.s bB.asm && ln -sf ../../Source/Common/includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize > ../../$@
 
-Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Object/$(GAME)$(GAMEYEAR).bB.PAL.s bin/postprocess bin/optimize | Source/Generated/ Object/PAL/
-	cd Object/PAL && ln -sf ../$(GAME)$(GAMEYEAR).bB.PAL.s bB.asm && ln -sf ../includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize > ../../$@ 
+Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Object/$(GAME)$(GAMEYEAR).bB.PAL.s Source/Common/includes.bB bin/postprocess bin/optimize | Source/Generated/ Object/PAL/
+	cd Object/PAL && ln -sf ../$(GAME)$(GAMEYEAR).bB.PAL.s bB.asm && ln -sf ../../Source/Common/includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize > ../../$@ 
 
-Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.s bin/postprocess bin/optimize | Source/Generated/ Object/SECAM/
-	cd Object/SECAM && ln -sf ../$(GAME)$(GAMEYEAR).bB.SECAM.s bB.asm && ln -sf ../includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize > ../../$@ 
+Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.s Source/Common/includes.bB bin/postprocess bin/optimize | Source/Generated/ Object/SECAM/
+	cd Object/SECAM && ln -sf ../$(GAME)$(GAMEYEAR).bB.SECAM.s bB.asm && ln -sf ../../Source/Common/includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize > ../../$@ 
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
 # ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS
 # The .s file is the final assembly output that includes all generated assets
 Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
-	cd Object && ../bin/dasm ../$< -I.. -f2 -E2 -R -p10 -S -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
+	@echo "Fixing include paths in generated assembly for DASM..."
+	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -p10 -S -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 
 Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
-	cd Object && ../bin/dasm ../$< -I.. -f2 -E2 -R -p10 -S -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
+	@echo "Fixing include paths in generated assembly for DASM..."
+	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -p10 -S -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
 
 Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
-	cd Object && ../bin/dasm ../$< -I.. -f2 -E2 -R -p10 -S -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.sym -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
+	@echo "Fixing include paths in generated assembly for DASM..."
+	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -p10 -S -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
 
 # Run emulator
 emu: $(ROM) Dist/$(GAME)$(GAMEYEAR).NTSC.pro

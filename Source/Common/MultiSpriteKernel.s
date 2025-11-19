@@ -17,7 +17,7 @@ multisprite_setup
 
           ldx #4
 ; stx temp3
-SetCopyHeight
+.SetCopyHeight
 ;	lda #76
 ;	sta NewSpriteX,X
 ;	lda CopyColorData,X
@@ -28,7 +28,7 @@ SetCopyHeight
           sta SpriteGfxIndex,X
           sta spritesort,X
           dex
-          bpl SetCopyHeight
+          bpl .SetCopyHeight
 
 
 

@@ -9,7 +9,7 @@
 
           asm
 
-;; Include sleep macro
+;; Include sleep macro (macro.h documents it but doesn’t define it)
 #include "Source/Routines/Sleep.s"
 
 ;; CRITICAL: Include MultiSpriteSuperChip.s FIRST to define all symbols before

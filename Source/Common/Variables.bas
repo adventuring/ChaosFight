@@ -627,7 +627,7 @@
           rem   collision
           rem Placed in SCRAM because the values are accessed infrequently
           rem   than other missile vars
-          rem NOTE: console7800Detected (COMMON) uses 'e' in standard
+          rem NOTE: console7800Detected (COMMON) uses ’e’ in standard
           rem   RAM, missileLifetime in SCRAM to avoid conflict
           dim missileLifetime_W = w110
           rem Game Mode: Missile lifetime array (4 bytes) - SCRAM

@@ -58,6 +58,8 @@ end
 
           rem Bit mask lookup table for playfield column bits
           asm
-BitMask   BYTE 1,2,4,8,$10,$20,$40,$80
+            ifndef BitMask
+BitMask       BYTE 1,2,4,8,$10,$20,$40,$80
+            endif
 end
 

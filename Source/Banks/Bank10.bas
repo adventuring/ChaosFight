@@ -11,16 +11,60 @@
 Bank10DataEnds
 end
 
-#include "Source/Routines/SpriteLoaderCharacterArt.bas"
-#include "Source/Routines/FrameBudgeting.bas"
-#include "Source/Routines/PlayerPhysicsCollisions.bas"
-#include "Source/Routines/ProcessUpInput.bas"
-#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
-#include "Source/Routines/BernieAttack.bas"
-#include "Source/Routines/HarpyAttack.bas"
-#include "Source/Routines/UrsuloAttack.bas"
-#include "Source/Routines/ShamoneAttack.bas"
-
           asm
+SpriteLoaderCharacterArtStart
+end
+#include "Source/Routines/SpriteLoaderCharacterArt.bas"
+          asm
+SpriteLoaderCharacterArtEnd
+            echo "// Bank 10: ", [SpriteLoaderCharacterArtEnd - SpriteLoaderCharacterArtStart]d, " bytes = SpriteLoaderCharacterArt"
+FrameBudgetingStart
+end
+#include "Source/Routines/FrameBudgeting.bas"
+          asm
+FrameBudgetingEnd
+            echo "// Bank 10: ", [FrameBudgetingEnd - FrameBudgetingStart]d, " bytes = FrameBudgeting"
+PlayerPhysicsCollisionsStart
+end
+#include "Source/Routines/PlayerPhysicsCollisions.bas"
+          asm
+PlayerPhysicsCollisionsEnd
+            echo "// Bank 10: ", [PlayerPhysicsCollisionsEnd - PlayerPhysicsCollisionsStart]d, " bytes = PlayerPhysicsCollisions"
+ProcessUpInputStart
+end
+#include "Source/Routines/ProcessUpInput.bas"
+          asm
+ProcessUpInputEnd
+            echo "// Bank 10: ", [ProcessUpInputEnd - ProcessUpInputStart]d, " bytes = ProcessUpInput"
+CheckRoboTitoStretchMissileCollisionsStart
+end
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
+          asm
+CheckRoboTitoStretchMissileCollisionsEnd
+            echo "// Bank 10: ", [CheckRoboTitoStretchMissileCollisionsEnd - CheckRoboTitoStretchMissileCollisionsStart]d, " bytes = CheckRoboTitoStretchMissileCollisions"
+BernieAttackStart
+end
+#include "Source/Routines/BernieAttack.bas"
+          asm
+BernieAttackEnd
+            echo "// Bank 10: ", [BernieAttackEnd - BernieAttackStart]d, " bytes = BernieAttack"
+HarpyAttackStart
+end
+#include "Source/Routines/HarpyAttack.bas"
+          asm
+HarpyAttackEnd
+            echo "// Bank 10: ", [HarpyAttackEnd - HarpyAttackStart]d, " bytes = HarpyAttack"
+UrsuloAttackStart
+end
+#include "Source/Routines/UrsuloAttack.bas"
+          asm
+UrsuloAttackEnd
+            echo "// Bank 10: ", [UrsuloAttackEnd - UrsuloAttackStart]d, " bytes = UrsuloAttack"
+ShamoneAttackStart
+end
+#include "Source/Routines/ShamoneAttack.bas"
+          asm
+ShamoneAttackEnd
+            echo "// Bank 10: ", [ShamoneAttackEnd - ShamoneAttackStart]d, " bytes = ShamoneAttack"
 Bank10CodeEnds
 end

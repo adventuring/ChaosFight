@@ -24,10 +24,17 @@ end
           rem Note: Strings are defined in BuildInfo.s and included with
           rem   ♯include inside asm so the build date macros expand before assembly
           asm
+Bank1DataStart
+BuildInfoStart
 #include "Source/Common/BuildInfo.s"
+BuildInfoEnd
+SongPointers1Start
 end
 
 #include "Source/Data/SongPointers1.bas"
+          asm
+SongPointers1End
+end
 
           rem Song Data (Bank 1)
           rem Song IDs hosted here: Bank1MinSongID-28 (currently 7-28) - character themes plus admin screen music
@@ -35,119 +42,206 @@ end
 
           rem Character theme songs (IDs Bank1MinSongID-25)
 
+          asm
+LowResSongStart
+end
 #ifdef TV_NTSC
 #include "Source/Generated/Song.LowRes.NTSC.bas"
 #else
 #include "Source/Generated/Song.LowRes.PAL.bas"
 #endif
+          asm
+LowResSongEnd
+RoboTitoSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.RoboTito.NTSC.bas"
 #else
 #include "Source/Generated/Song.RoboTito.PAL.bas"
 #endif
+          asm
+RoboTitoSongEnd
+SongOfTheBearSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.SongOfTheBear.NTSC.bas"
 #else
 #include "Source/Generated/Song.SongOfTheBear.PAL.bas"
 #endif
+          asm
+SongOfTheBearSongEnd
+DucksAwaySongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.DucksAway.NTSC.bas"
 #else
 #include "Source/Generated/Song.DucksAway.PAL.bas"
 #endif
+          asm
+DucksAwaySongEnd
+Character16ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character16Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character16Theme.PAL.bas"
 #endif
+          asm
+Character16ThemeSongEnd
+Character17ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character17Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character17Theme.PAL.bas"
 #endif
+          asm
+Character17ThemeSongEnd
+Character18ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character18Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character18Theme.PAL.bas"
 #endif
+          asm
+Character18ThemeSongEnd
+Character19ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character19Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character19Theme.PAL.bas"
 #endif
+          asm
+Character19ThemeSongEnd
+Character20ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character20Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character20Theme.PAL.bas"
 #endif
+          asm
+Character20ThemeSongEnd
+Character21ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character21Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character21Theme.PAL.bas"
 #endif
+          asm
+Character21ThemeSongEnd
+Character22ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character22Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character22Theme.PAL.bas"
 #endif
+          asm
+Character22ThemeSongEnd
+Character23ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character23Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character23Theme.PAL.bas"
 #endif
+          asm
+Character23ThemeSongEnd
+            echo "// Bank 1: ", [Character23ThemeSongEnd - Character23ThemeSongStart]d, " bytes = Song.Character23Theme"
+Character24ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character24Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character24Theme.PAL.bas"
 #endif
+          asm
+Character24ThemeSongEnd
+            echo "// Bank 1: ", [Character24ThemeSongEnd - Character24ThemeSongStart]d, " bytes = Song.Character24Theme"
+Character25ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character25Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character25Theme.PAL.bas"
 #endif
+          asm
+Character25ThemeSongEnd
+            echo "// Bank 1: ", [Character25ThemeSongEnd - Character25ThemeSongStart]d, " bytes = Song.Character25Theme"
+Character26ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character26Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character26Theme.PAL.bas"
 #endif
+          asm
+Character26ThemeSongEnd
+            echo "// Bank 1: ", [Character26ThemeSongEnd - Character26ThemeSongStart]d, " bytes = Song.Character26Theme"
+Character27ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character27Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character27Theme.PAL.bas"
 #endif
+          asm
+Character27ThemeSongEnd
+            echo "// Bank 1: ", [Character27ThemeSongEnd - Character27ThemeSongStart]d, " bytes = Song.Character27Theme"
+Character28ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character28Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character28Theme.PAL.bas"
 #endif
+          asm
+Character28ThemeSongEnd
+            echo "// Bank 1: ", [Character28ThemeSongEnd - Character28ThemeSongStart]d, " bytes = Song.Character28Theme"
+Character29ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character29Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character29Theme.PAL.bas"
 #endif
+          asm
+Character29ThemeSongEnd
+            echo "// Bank 1: ", [Character29ThemeSongEnd - Character29ThemeSongStart]d, " bytes = Song.Character29Theme"
+Character30ThemeSongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character30Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character30Theme.PAL.bas"
 #endif
+          asm
+Character30ThemeSongEnd
+            echo "// Bank 1: ", [Character30ThemeSongEnd - Character30ThemeSongStart]d, " bytes = Song.Character30Theme"
+ChaoticaSongStart
+end
 
           rem Admin screen songs (IDs 26-28)
 #ifdef TV_NTSC
@@ -155,28 +249,69 @@ end
 #else
 #include "Source/Generated/Song.Chaotica.PAL.bas"
 #endif
+          asm
+ChaoticaSongEnd
+            echo "// Bank 1: ", [ChaoticaSongEnd - ChaoticaSongStart]d, " bytes = Song.Chaotica"
+AtariTodaySongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.AtariToday.NTSC.bas"
 #else
 #include "Source/Generated/Song.AtariToday.PAL.bas"
 #endif
+          asm
+AtariTodaySongEnd
+            echo "// Bank 1: ", [AtariTodaySongEnd - AtariTodaySongStart]d, " bytes = Song.AtariToday"
+InterworldlySongStart
+end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Interworldly.NTSC.bas"
 #else
 #include "Source/Generated/Song.Interworldly.PAL.bas"
 #endif
-
           asm
+InterworldlySongEnd
 Bank1DataEnds
 end
 
-#include "Source/Routines/MusicBankHelpers.bas"
-#include "Source/Routines/MusicSystem.bas"
-
           asm
+MusicBankHelpersStart
+end
+#include "Source/Routines/MusicBankHelpers.bas"
+          asm
+MusicBankHelpersEnd
+MusicSystemStart
+end
+#include "Source/Routines/MusicSystem.bas"
+          asm
+MusicSystemEnd
 Bank1CodeEnds
-
-          echo "The end of bank 1 is at ", [(*)]
+           echo "// Bank 1: ", [BuildInfoEnd - BuildInfoStart]d, " bytes = BuildInfo"
+           echo "// Bank 1: ", [SongPointers1End - SongPointers1Start]d, " bytes = SongPointers1"
+           echo "// Bank 1: ", [LowResSongEnd - LowResSongStart]d, " bytes = Song.LowRes"
+           echo "// Bank 1: ", [RoboTitoSongEnd - RoboTitoSongStart]d, " bytes = Song.RoboTito"
+           echo "// Bank 1: ", [SongOfTheBearSongEnd - SongOfTheBearSongStart]d, " bytes = Song.SongOfTheBear"
+           echo "// Bank 1: ", [DucksAwaySongEnd - DucksAwaySongStart]d, " bytes = Song.DucksAway"
+           echo "// Bank 1: ", [Character16ThemeSongEnd - Character16ThemeSongStart]d, " bytes = Song.Character16Theme"
+           echo "// Bank 1: ", [Character17ThemeSongEnd - Character17ThemeSongStart]d, " bytes = Song.Character17Theme"
+           echo "// Bank 1: ", [Character18ThemeSongEnd - Character18ThemeSongStart]d, " bytes = Song.Character18Theme"
+           echo "// Bank 1: ", [Character19ThemeSongEnd - Character19ThemeSongStart]d, " bytes = Song.Character19Theme"
+           echo "// Bank 1: ", [Character20ThemeSongEnd - Character20ThemeSongStart]d, " bytes = Song.Character20Theme"
+           echo "// Bank 1: ", [Character21ThemeSongEnd - Character21ThemeSongStart]d, " bytes = Song.Character21Theme"
+           echo "// Bank 1: ", [Character22ThemeSongEnd - Character22ThemeSongStart]d, " bytes = Song.Character22Theme"
+           echo "// Bank 1: ", [Character23ThemeSongEnd - Character23ThemeSongStart]d, " bytes = Song.Character23Theme"
+           echo "// Bank 1: ", [Character24ThemeSongEnd - Character24ThemeSongStart]d, " bytes = Song.Character24Theme"
+           echo "// Bank 1: ", [Character25ThemeSongEnd - Character25ThemeSongStart]d, " bytes = Song.Character25Theme"
+           echo "// Bank 1: ", [Character26ThemeSongEnd - Character26ThemeSongStart]d, " bytes = Song.Character26Theme"
+           echo "// Bank 1: ", [Character27ThemeSongEnd - Character27ThemeSongStart]d, " bytes = Song.Character27Theme"
+           echo "// Bank 1: ", [Character28ThemeSongEnd - Character28ThemeSongStart]d, " bytes = Song.Character28Theme"
+           echo "// Bank 1: ", [Character29ThemeSongEnd - Character29ThemeSongStart]d, " bytes = Song.Character29Theme"
+           echo "// Bank 1: ", [Character30ThemeSongEnd - Character30ThemeSongStart]d, " bytes = Song.Character30Theme"
+           echo "// Bank 1: ", [ChaoticaSongEnd - ChaoticaSongStart]d, " bytes = Song.Chaotica"
+           echo "// Bank 1: ", [AtariTodaySongEnd - AtariTodaySongStart]d, " bytes = Song.AtariToday"
+           echo "// Bank 1: ", [InterworldlySongEnd - InterworldlySongStart]d, " bytes = Song.Interworldly"
+           echo "// Bank 1: ", [MusicBankHelpersEnd - MusicBankHelpersStart]d, " bytes = MusicBankHelpers"
+           echo "// Bank 1: ", [MusicSystemEnd - MusicSystemStart]d, " bytes = MusicSystem"
 end

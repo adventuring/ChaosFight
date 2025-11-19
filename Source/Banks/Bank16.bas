@@ -26,13 +26,11 @@ end
 
           asm
 Bank16DataEnds
-          echo "Bank 16 module sizes:"
           if Bank16DataEnds > $F100
-           echo "  Arenas: ", [Bank16AfterArenas - $F100]d, " bytes"
-           echo "  Numbers: ", [Bank16AfterNumbers - Bank16AfterArenas]d, " bytes"
-           echo "  PlayerColors: ", [Bank16AfterPlayerColors - Bank16AfterNumbers]d, " bytes"
-           echo "  WinnerScreen: ", [Bank16DataEnds - Bank16AfterPlayerColors]d, " bytes"
-           echo "  Total data: ", [Bank16DataEnds - $F100]d, " bytes"
+           echo "// Bank 16: ", [Bank16AfterArenas - $F100]d, " bytes = Arenas"
+           echo "// Bank 16: ", [Bank16AfterNumbers - Bank16AfterArenas]d, " bytes = Numbers"
+           echo "// Bank 16: ", [Bank16AfterPlayerColors - Bank16AfterNumbers]d, " bytes = PlayerColors"
+           echo "// Bank 16: ", [Bank16DataEnds - Bank16AfterPlayerColors]d, " bytes = WinnerScreen"
           endif
 end
 
@@ -78,16 +76,14 @@ end
           rem None of these modules above may be moved to other banks.
           asm
 Bank16CodeEnds
-           echo "Bank 16 code module sizes:"
-           echo "  MultiSpriteKernel: ", [Bank16AfterMultiSpriteKernel - Bank16DataEnds]d, " bytes"
-           echo "  ArenaLoader: ", [Bank16AfterArenaLoader - Bank16AfterMultiSpriteKernel]d, " bytes"
-           echo "  LoadArenaByIndex: ", [Bank16AfterLoadArenaByIndex - Bank16AfterArenaLoader]d, " bytes"
-           echo "  MainLoop: ", [Bank16AfterMainLoop - Bank16AfterLoadArenaByIndex]d, " bytes"
-           echo "  SpriteLoader: ", [Bank16AfterSpriteLoader - Bank16AfterMainLoop]d, " bytes"
-           echo "  PlayfieldRead: ", [Bank16AfterPlayfieldRead - Bank16AfterSpriteLoader]d, " bytes"
-           echo "  CopyGlyphToPlayer: ", [Bank16AfterCopyGlyphToPlayer - Bank16AfterPlayfieldRead]d, " bytes"
-           echo "  SetPlayerGlyphFromFont: ", [Bank16AfterSetPlayerGlyphFromFont - Bank16AfterCopyGlyphToPlayer]d, " bytes"
-           echo "  FontRendering: ", [Bank16AfterFontRendering - Bank16AfterSetPlayerGlyphFromFont]d, " bytes"
-           echo "  DisplayWinScreen: ", [Bank16CodeEnds - Bank16AfterFontRendering]d, " bytes"
-           echo "  Total code: ", [Bank16CodeEnds - Bank16DataEnds]d, " bytes"
+           echo "// Bank 16: ", [Bank16AfterMultiSpriteKernel - Bank16DataEnds]d, " bytes = MultiSpriteKernel"
+           echo "// Bank 16: ", [Bank16AfterArenaLoader - Bank16AfterMultiSpriteKernel]d, " bytes = ArenaLoader"
+           echo "// Bank 16: ", [Bank16AfterLoadArenaByIndex - Bank16AfterArenaLoader]d, " bytes = LoadArenaByIndex"
+           echo "// Bank 16: ", [Bank16AfterMainLoop - Bank16AfterLoadArenaByIndex]d, " bytes = MainLoop"
+           echo "// Bank 16: ", [Bank16AfterSpriteLoader - Bank16AfterMainLoop]d, " bytes = SpriteLoader"
+           echo "// Bank 16: ", [Bank16AfterPlayfieldRead - Bank16AfterSpriteLoader]d, " bytes = PlayfieldRead"
+           echo "// Bank 16: ", [Bank16AfterCopyGlyphToPlayer - Bank16AfterPlayfieldRead]d, " bytes = CopyGlyphToPlayer"
+           echo "// Bank 16: ", [Bank16AfterSetPlayerGlyphFromFont - Bank16AfterCopyGlyphToPlayer]d, " bytes = SetPlayerGlyphFromFont"
+           echo "// Bank 16: ", [Bank16AfterFontRendering - Bank16AfterSetPlayerGlyphFromFont]d, " bytes = FontRendering"
+           echo "// Bank 16: ", [Bank16CodeEnds - Bank16AfterFontRendering]d, " bytes = DisplayWinScreen"
 end

@@ -41,11 +41,10 @@ end
 
           asm
 Bank12CodeEnds
-           echo "Bank 12 file sizes (compiled code bytes):"
-           echo "  UpdateAttackCooldowns: ", [Bank12AfterUpdateAttackCooldowns - Bank12DataEnds]d, " bytes"
-           echo "  CharacterDamage: ", [Bank12AfterCharacterDamage - Bank12AfterUpdateAttackCooldowns]d, " bytes"
-           echo "  HandleFlyingCharacterMovement: ", [Bank12AfterHandleFlyingCharacterMovement - Bank12AfterCharacterDamage]d, " bytes"
-           echo "  CharacterControlsJump: ", [Bank12AfterCharacterControlsJump - Bank12AfterHandleFlyingCharacterMovement]d, " bytes"
-           echo "  AnimationSystem: ", [Bank12AfterAnimationSystem - Bank12AfterCharacterControlsJump]d, " bytes"
-           echo "  DeactivatePlayerMissiles: ", [Bank12AfterDeactivatePlayerMissiles - Bank12AfterAnimationSystem]d, " bytes"
+           echo "// Bank 12: ", [Bank12AfterUpdateAttackCooldowns - Bank12DataEnds]d, " bytes = UpdateAttackCooldowns"
+           echo "// Bank 12: ", [Bank12AfterCharacterDamage - Bank12AfterUpdateAttackCooldowns]d, " bytes = CharacterDamage"
+           echo "// Bank 12: ", [Bank12AfterHandleFlyingCharacterMovement - Bank12AfterCharacterDamage]d, " bytes = HandleFlyingCharacterMovement"
+           echo "// Bank 12: ", [Bank12AfterCharacterControlsJump - Bank12AfterHandleFlyingCharacterMovement]d, " bytes = CharacterControlsJump"
+           echo "// Bank 12: ", [Bank12AfterAnimationSystem - Bank12AfterCharacterControlsJump]d, " bytes = AnimationSystem"
+           echo "// Bank 12: ", [Bank12AfterDeactivatePlayerMissiles - Bank12AfterAnimationSystem]d, " bytes = DeactivatePlayerMissiles"
 end

@@ -86,12 +86,12 @@
           rem - var37-var40: Character select (Admin) or
           rem   playerAttackCooldown (Game) - ZPRAM
           rem NOTE: Animation vars (animationCounter,
-          rem currentAnimationFrame, currentAnimationSeq) moved to SCRAM
+          rem currentAnimationFrame, currentAnimationSeq) in SCRAM
           rem to free zero-page space (var24-var31, var33-var36) for
           rem   frequently-accessed physics variables
           rem - a,b,c,d: Fall animation vars (Admin Mode) or MissileX (Game Mode)
           rem - w-z: Animation vars (Admin Mode) or missile velocities (Game Mode)
-          rem - e: console7800Detected (COMMON); missileLifetime moved to SCRAM w045
+          rem - e: console7800Detected (COMMON); missileLifetime in SCRAM w045
           rem        to avoid conflict
           rem - selectedArena stored in SCRAM w117 to avoid redim conflict
 
@@ -325,11 +325,15 @@
           rem   playerAttackCooldown
           rem ADMIN: Currently selected character index (0-15) for
           rem   preview (REDIMMED - Game Mode uses var37 for
-          dim characterSelectCharacterIndex = var37
-          rem   playerAttackCooldown[0])
-          rem ADMIN: Which player is currently selecting (1-4) (REDIMMED
-          rem   - Game Mode uses var38 for playerAttackCooldown[1])
-          dim characterSelectPlayer = var38
+          rem ADMIN: Character select variables moved to SCRAM to free var37-var40 for playerCharacter (COMMON)
+          rem Primary alias for reads (most common access pattern)
+          dim characterSelectCharacterIndex = r122
+          dim characterSelectCharacterIndex_W = w122
+          dim characterSelectCharacterIndex_R = r122
+          rem ADMIN: Which player is currently selecting (1-4)
+          dim characterSelectPlayer = r123
+          dim characterSelectPlayer_W = w123
+          dim characterSelectPlayer_R = r123
 
           rem ADMIN: Arena select variables (var24-var27)
           rem NOTE: These are REDIMMED in Game Mode for animationCounter
@@ -436,7 +440,10 @@
           dim playerHealth = var12
 
           rem playerCharacter[0-3] - Character type indices (0-MaxCharacter)
-          dim playerCharacter = var48
+          rem COMMON VAR - used in both Admin and Game Mode
+          rem Uses var37-var40 (freed by playerAttackCooldown being in SCRAM)
+          rem Must use var37-var40 (not var48) since var48-var127 don't exist
+          dim playerCharacter = var37
 
           rem playerAttackType[0-3] - Attack type for each player (0=MeleeAttack, 1=RangedAttack, 2=AreaAttack)
           rem Initialized from CharacterAttackTypes[playerCharacter[playerIndex]]
@@ -531,7 +538,7 @@
           rem GAME MODE - Zero-page RAM (var24-var47) - sorted
           rem   numerically
 
-          rem Game Mode: Animation system variables (moved to SCRAM -
+          rem Game Mode: Animation system variables (in SCRAM -
           rem   updated at 10fps, not every frame)
           rem NOTE: Animation vars updated at 10fps (every 6 frames), so
           rem   SCRAM access cost is acceptable
@@ -550,16 +557,15 @@
           rem   animation sequence (4 bytes) - SCRAM w085-w088
           dim currentAnimationSeq_R = r085
 
-          rem Game Mode: Attack cooldown timers (var37-var40 = 4 bytes)
-          rem PERFORMANCE CRITICAL: Checked every frame for attack
-          rem   availability
+          rem Game Mode: Attack cooldown timers
+          rem In SCRAM to free var37-var40 for playerCharacter (COMMON var)
           rem Array accessible as playerAttackCooldown[0] through
-          rem   playerAttackCooldown[3] - ZPRAM for performance
-          rem NOTE: var37-var40 used for playerAttackCooldown (Game
-          rem   Mode), var37-var38 used for characterSelect (Admin Mode)
-          dim playerAttackCooldown = var37
+          rem   playerAttackCooldown[3]
+          rem NOTE: var37-var40 now used for playerCharacter (COMMON), var37-var38 still used for characterSelect (Admin Mode)
+          dim playerAttackCooldown_W = w090
+          dim playerAttackCooldown_R = r090
 
-          rem Game Mode: Additional game state variables (moved to SCRAM
+          rem Game Mode: Additional game state variables (in SCRAM
           rem   - less performance critical)
           rem NOTE: These are accessed infrequently (elimination/win
           rem   screen only), safe in SCRAM
@@ -620,8 +626,8 @@
           rem   collision
           rem Placed in SCRAM because the values are accessed infrequently
           rem   than other missile vars
-          rem NOTE: console7800Detected (COMMON) uses ’e’ in standard
-          rem   RAM, missileLifetime moved to SCRAM to avoid conflict
+          rem NOTE: console7800Detected (COMMON) uses 'e' in standard
+          rem   RAM, missileLifetime in SCRAM to avoid conflict
           dim missileLifetime_W = w110
           rem Game Mode: Missile lifetime array (4 bytes) - SCRAM
           rem   w110-w113 for performance

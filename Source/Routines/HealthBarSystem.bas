@@ -14,8 +14,7 @@
           rem Compare health starting from 84 downward to find pixel
           rem   count
           rem Bit patterns: 0-8 pixels filled from right to left
-          rem NOTE: HealthThresholds table removed - code uses hardcoded
-          rem thresholds
+          rem Uses hardcoded thresholds
 
           rem Bit pattern table for 0-8 pixels (right-aligned fill)
           rem 0 pixels = %00000000, 1 pixel = %00000001, ..., 8 pixels =

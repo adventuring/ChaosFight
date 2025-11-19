@@ -935,11 +935,3 @@ DonePauseToggle
 
           return
 
-          rem OLD INDIVIDUAL PLAYER HANDLERS - REPLACED BY GENERIC
-          rem   ROUTINES
-          rem The original InputHandlePlayer1, HandlePlayer2Input,
-          rem   HandlePlayer3Input,
-          rem and HandlePlayer4Input have been consolidated into
-          rem   HandleGenericPlayerInput
-          rem to eliminate code duplication and improve maintainability.
-

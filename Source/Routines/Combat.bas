@@ -492,13 +492,10 @@ NextAttacker
           rem Constraints: Internal label for ProcessAllAttacks FOR loop
 
 CombatShowDamageIndicator
-          rem Damage indicator system
-          rem NOTE: VisualEffects.bas was phased out - damage indicators
-          rem   handled inline
+          rem Damage indicator system (handled inline)
           return
 PlayDamageSound
-          rem Damage indicator system (phased out - visual feedback now
-          rem handled inline)
+          rem Damage sound effect handler (no-op placeholder)
           rem
           rem Input: None
           rem
@@ -508,8 +505,7 @@ PlayDamageSound
           rem
           rem Called Routines: None
           rem
-          rem Constraints: VisualEffects.bas was phased out - damage
-          rem indicators handled inline in damage calculation
+          rem Constraints: Damage indicators handled inline in damage calculation
           rem Visual feedback now handled inline in damage calculation
           rem Play damage sound effect (attack hit sound)
           rem

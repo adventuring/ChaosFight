@@ -1,10 +1,6 @@
           rem ChaosFight - Source/Routines/SpriteLoader.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem Special sprite lengths no longer needed (font-driven)
-
-          rem Player color tables moved to Source/Data/PlayerColors.bas
-
           asm
 ; SUPPORTED SPRITE CONFIGURATIONS:
 ; P0 = character | ?
@@ -82,10 +78,5 @@ end
           rem Inline dispatch to save size (same-bank)
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank10
-          return
-
-LoadPlayerSpriteDispatch
-          rem removed (was a small shim); callers now use inline block above
-          rem (label kept only if referenced by generated code)
           return
 

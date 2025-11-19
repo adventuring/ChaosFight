@@ -1,7 +1,6 @@
           rem ChaosFight - Source/Routines/CharacterSelectMain.bas
           rem
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          rem PlayerLockedHelpers.bas moved to Bank 1
           rem Character Select - Per-frame Loop
           rem
           rem Per-frame character selection screen with Quadtari
@@ -395,6 +394,4 @@ CycleRightFromNO
           let temp1 = 0
           rem NoCharacter(255) goes to 0
           return
-
-          rem Animation helpers moved to CharacterSelectRender.bas (bank 10)
 

@@ -541,17 +541,14 @@ MissileSysPF
           rem Playfield is 32 quad-width pixels covering 128 pixels
           rem (from X=16 to X=144), 192 pixels tall
           rem pfread uses playfield coordinates: column (0-31), row
-          rem (0-11 or 0-31 depending on pfres)
+          rem (0-7)
           rem Convert X pixel to playfield column: subtract ScreenInsetX (16),
           rem then divide by 4 (each quad-width pixel is 4 pixels wide)
           let temp6 = temp2
           rem Save original X in temp6 after removing screen inset
           let temp6 = temp6 - ScreenInsetX
           rem Divide by 4 using bit shift (2 right shifts)
-          asm
-            lsr temp6
-            lsr temp6
-end
+          let temp6 = temp6 / 4
           rem temp6 = playfield column (0-31)
           rem Clamp column to valid range
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
@@ -837,9 +834,7 @@ KnockbackDone
           rem Play hit sound effect
           gosub PlaySoundEffect bank15
 
-          rem Spawn damage indicator visual
-          rem NOTE: VisualEffects.bas was phased out - damage indicators
-          rem   handled inline
+          rem Spawn damage indicator visual (handled inline)
 
           return
 

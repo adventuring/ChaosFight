@@ -313,9 +313,9 @@ end
           rem Mutates: temp2, playerCharacter[]
           rem
           rem Called Routines: None
-CharacterSelectRollRandomPlayerReroll
+          rem Roll until we get a valid character ID (< NumCharacters)
           let temp2 = rand & $1f
-          if temp2 >= NumCharacters then goto CharacterSelectRollRandomPlayerReroll
+          if temp2 >= NumCharacters then goto CharacterSelectRollRandomPlayer
           rem Valid roll - character ID updated, but not locked
           let playerCharacter[currentPlayer] = temp2
           return

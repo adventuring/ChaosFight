@@ -8,57 +8,68 @@
           bank 2
 
           asm
-            echo " Bank 2: Start data ", [* - 1]
             if * != $F100
                 err
             endif
-end
-
-          rem Character sprite data for characters 0-7
-          rem Bank 2 dedicated to character art only - leave room for
-          rem   animation frames
-          asm
-            echo " Bank 2: Begin Bernie data ", [* - 1]
+Bank2DataStart
+            BernieDataStart = *
 end
 #include "Source/Generated/Bernie.bas"
           asm
-            echo " Bank 2: Begin Curler data ", [* - 1]
+            BernieDataEnd = *
+            echo "// Bank 2: ", [BernieDataEnd - BernieDataStart]d, " bytes = Bernie data"
+            CurlerDataStart = *
 end
 #include "Source/Generated/Curler.bas"
           asm
-            echo " Bank 2: Begin Dragon Of Storms data ", [* - 1]
+            CurlerDataEnd = *
+            echo "// Bank 2: ", [CurlerDataEnd - CurlerDataStart]d, " bytes = Curler data"
+            DragonOfStormsDataStart = *
 end
 #include "Source/Generated/DragonOfStorms.bas"
           asm
-            echo " Bank 2: Begin Zoe Ryen data ", [* - 1]
+            DragonOfStormsDataEnd = *
+            echo "// Bank 2: ", [DragonOfStormsDataEnd - DragonOfStormsDataStart]d, " bytes = Dragon Of Storms data"
+            ZoeRyenDataStart = *
 end
 #include "Source/Generated/ZoeRyen.bas"
           asm
-            echo " Bank 2: Begin Fat Tony data ", [* - 1]
+            ZoeRyenDataEnd = *
+            echo "// Bank 2: ", [ZoeRyenDataEnd - ZoeRyenDataStart]d, " bytes = Zoe Ryen data"
+            FatTonyDataStart = *
 end
 #include "Source/Generated/FatTony.bas"
           asm
-            echo " Bank 2: Begin Megax data ", [* - 1]
+            FatTonyDataEnd = *
+            echo "// Bank 2: ", [FatTonyDataEnd - FatTonyDataStart]d, " bytes = Fat Tony data"
+            MegaxDataStart = *
 end
 #include "Source/Generated/Megax.bas"
           asm
-            echo " Bank 2: Begin Harpy data ", [* - 1]
+            MegaxDataEnd = *
+            echo "// Bank 2: ", [MegaxDataEnd - MegaxDataStart]d, " bytes = Megax data"
+            HarpyDataStart = *
 end
 #include "Source/Generated/Harpy.bas"
           asm
-            echo " Bank 2: Begin Knight Guy data ", [* - 1]
+            HarpyDataEnd = *
+            echo "// Bank 2: ", [HarpyDataEnd - HarpyDataStart]d, " bytes = Harpy data"
+            KnightGuyDataStart = *
 end
 #include "Source/Generated/KnightGuy.bas"
           asm
-            echo " Bank 2: End data ", [* - 1]
+            KnightGuyDataEnd = *
+            echo "// Bank 2: ", [KnightGuyDataEnd - KnightGuyDataStart]d, " bytes = Knight Guy data"
+Bank2DataEnds
 end
 
           asm
-Bank2DataEnds
-
             ;; Character art lookup routines for Bank 2 (characters 0-7)
-            echo " Bank 2: Begin Character Art lookup routines ", [* - 1]
+            CharacterArtBank2Start = *
+end
 #include "Source/Routines/CharacterArtBank2.s"
-            echo " Bank 2: End Character Art lookup routines ", [* - 1]
+          asm
+            CharacterArtBank2End = *
+            echo "// Bank 2: ", [CharacterArtBank2End - CharacterArtBank2Start]d, " bytes = Character Art lookup routines"
 Bank2CodeEnds
 end

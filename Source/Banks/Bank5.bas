@@ -6,24 +6,66 @@
 
           bank 5
 
-          rem Bank 5 dedicated to character art only - leave room for
-          rem   animation frames
-          rem Character sprite data for characters 24-31
-#include "Source/Generated/Character24.bas"
-#include "Source/Generated/Character25.bas"
-#include "Source/Generated/Character26.bas"
-#include "Source/Generated/Character27.bas"
-#include "Source/Generated/Character28.bas"
-#include "Source/Generated/Character29.bas"
-#include "Source/Generated/Character30.bas"
-#include "Source/Generated/MethHound.bas"
-
           asm
+Bank5DataStart
+            Character24DataStart = *
+end
+#include "Source/Generated/Character24.bas"
+          asm
+            Character24DataEnd = *
+            echo "// Bank 5: ", [Character24DataEnd - Character24DataStart]d, " bytes = Character24 data"
+            Character25DataStart = *
+end
+#include "Source/Generated/Character25.bas"
+          asm
+            Character25DataEnd = *
+            echo "// Bank 5: ", [Character25DataEnd - Character25DataStart]d, " bytes = Character25 data"
+            Character26DataStart = *
+end
+#include "Source/Generated/Character26.bas"
+          asm
+            Character26DataEnd = *
+            echo "// Bank 5: ", [Character26DataEnd - Character26DataStart]d, " bytes = Character26 data"
+            Character27DataStart = *
+end
+#include "Source/Generated/Character27.bas"
+          asm
+            Character27DataEnd = *
+            echo "// Bank 5: ", [Character27DataEnd - Character27DataStart]d, " bytes = Character27 data"
+            Character28DataStart = *
+end
+#include "Source/Generated/Character28.bas"
+          asm
+            Character28DataEnd = *
+            echo "// Bank 5: ", [Character28DataEnd - Character28DataStart]d, " bytes = Character28 data"
+            Character29DataStart = *
+end
+#include "Source/Generated/Character29.bas"
+          asm
+            Character29DataEnd = *
+            echo "// Bank 5: ", [Character29DataEnd - Character29DataStart]d, " bytes = Character29 data"
+            Character30DataStart = *
+end
+#include "Source/Generated/Character30.bas"
+          asm
+            Character30DataEnd = *
+            echo "// Bank 5: ", [Character30DataEnd - Character30DataStart]d, " bytes = Character30 data"
+            MethHoundDataStart = *
+end
+#include "Source/Generated/MethHound.bas"
+          asm
+            MethHoundDataEnd = *
+            echo "// Bank 5: ", [MethHoundDataEnd - MethHoundDataStart]d, " bytes = MethHound data"
 Bank5DataEnds
 end
 
           asm
-          ;; Character art lookup routines for Bank 5 (characters 24-31)
+            ;; Character art lookup routines for Bank 5 (characters 24-31)
+            CharacterArtBank5Start = *
+end
 #include "Source/Routines/CharacterArtBank5.s"
+          asm
+            CharacterArtBank5End = *
+            echo "// Bank 5: ", [CharacterArtBank5End - CharacterArtBank5Start]d, " bytes = Character Art lookup routines"
 Bank5CodeEnds
 end

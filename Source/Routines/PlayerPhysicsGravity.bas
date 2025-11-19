@@ -107,14 +107,9 @@ GravityCheckCharacter
 
           if (playerState[temp1] & PlayerStateBitJumping) = 0 then goto GravityNextPlayer
 
-          rem Initialize or get vertical velocity (using temp variable)
-          rem Note: Vertical velocity is not persistent - we will track
-          rem it
-          rem   per-frame
-          rem For now, we will apply gravity acceleration directly to
-          rem   position
-          rem TODO: Consider implementing persistent vertical velocity
-          rem   tracking (Issue #599)
+          rem Vertical velocity is persistently tracked using playerVelocityY[]
+          rem and playerVelocityYL[] arrays (8.8 fixed-point format).
+          rem Gravity acceleration is applied to the stored velocity each frame.
 
           rem Determine gravity acceleration rate based on character
           rem   (8.8 fixed-point subpixel)

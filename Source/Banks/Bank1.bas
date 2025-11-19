@@ -177,4 +177,6 @@ end
 
           asm
 Bank1CodeEnds
+
+          echo "The end of bank 1 is at ", [(*)]
 end

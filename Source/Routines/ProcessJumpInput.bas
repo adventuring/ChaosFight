@@ -75,11 +75,11 @@ PJI_ZoeJumpCheck
 
 PJI_BernieFallThrough
           rem Bernie enhanced button handled in BernieJump routine (fall through 1-row floors)
-          gosub BernieJump bank10
+          gosub BernieJump bank12
           return
 
 PJI_HarpyFlap
-          gosub HarpyJump bank10
+          gosub HarpyJump bank12
           rem Harpy enhanced button handled in HarpyJump routine (flap to fly)
           return
 

@@ -46,15 +46,8 @@ end
           rem Constraints: Must be colocated with TitleSkipQuad,
           rem TitleScreenComplete
           rem              Called from MainLoop each frame (gameMode 2)
-          rem Update random number generator (inlined from std_routines.asm)
-          asm
-          lda rand
-          lsr
-          bcc TitleRandomizeNoEor
-          eor #$B4
-TitleRandomizeNoEor
-          sta rand
-end
+          rem Update random number generator (use local Randomize routine)
+          gosub randomize
           rem Handle input - any button press goes to character select
           rem Check standard controllers (Player 1 & 2)
           rem Use skip-over pattern to avoid complex || operator issues

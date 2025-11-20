@@ -139,6 +139,7 @@ P = $e6
 p = $e6
 Q = $e7
 q = $e7
+qtcontroller = $e7
 R = $e8
 r = $e8
 S = $e9
@@ -971,11 +972,14 @@ var47 EQU $D3
           MS_ASSIGN  PFmaskvalue, 0
   ; NOT is a batariBASIC keyword (bitwise NOT operator), not a constant - do not define
           MS_ASSIGN  playfieldRow, $5C
-          MS_ASSIGN  miniscoretable, $0000
+  ; FontData is defined in Source/Generated/Numbers.bas - do not define here
+  ; Forward assignments are not supported - use the actual label from Numbers.bas
           MS_ASSIGN  gamenumber, $00
           MS_ASSIGN  mk_score_on, 1
           MS_ASSIGN  mk_gameselect_on, 0
-          MS_ASSIGN  qtcontroller, $E7
+  ; qtcontroller is defined above at line 978 as $E7 (multisprite uses q=$E7)
+  ; frame is a user variable that must be dimmed - not provided by kernel
+  ; For multisprite, frame should be dimmed to a standard RAM location (a-z or var0-var47)
   ; scoretable is defined in Source/Common/ScoreTable.s (replacement for score_graphics.asm)
 ; NOTE: pfread stub moved to end of file to avoid adding byte before data section
 
@@ -1245,6 +1249,4 @@ var47 EQU $D3
           MS_ASSIGN  screenheight, 192
           MS_ASSIGN  rand16, $00F2
 
-; Stubs moved here to avoid adding bytes before data section at $F100
-; NOTE: pfread doesn’t need rts - it’s only used as an address, not called with jsr
-pfread
+

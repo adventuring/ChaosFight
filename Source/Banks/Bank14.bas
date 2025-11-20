@@ -11,6 +11,12 @@
 Bank14DataEnds
 end
 
+          rem Include Randomize routine (local implementation, not std_routines.asm)
+          asm
+#include "Source/Common/Randomize.s"
+Bank14AfterRandomize
+end
+
 #include "Source/Routines/BeginTitleScreen.bas"
           asm
 Bank14AfterBeginTitleScreen
@@ -126,7 +132,8 @@ end
 
           asm
 Bank14CodeEnds
-           echo "// Bank 14: ", [Bank14AfterBeginTitleScreen - Bank14DataEnds]d, " bytes = BeginTitleScreen"
+           echo "// Bank 14: ", [Bank14AfterRandomize - Bank14DataEnds]d, " bytes = Randomize"
+           echo "// Bank 14: ", [Bank14AfterBeginTitleScreen - Bank14AfterRandomize]d, " bytes = BeginTitleScreen"
            echo "// Bank 14: ", [Bank14AfterBeginPublisherPrelude - Bank14AfterBeginTitleScreen]d, " bytes = BeginPublisherPrelude"
            echo "// Bank 14: ", [Bank14AfterPublisherPrelude - Bank14AfterBeginPublisherPrelude]d, " bytes = PublisherPrelude"
            echo "// Bank 14: ", [Bank14AfterConsoleDetection - Bank14AfterPublisherPrelude]d, " bytes = ConsoleDetection"

@@ -18,6 +18,8 @@ end
           rem Constraints: Must remain colocated with MainLoopDrawScreen
 
           rem Entry point for entire game loop
+          rem Increment frame counter (used for frame budgeting and timing)
+          let frame = frame + 1
           if switchreset then gosub WarmStart bank13
           ; fall through to continue
 

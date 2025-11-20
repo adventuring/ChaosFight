@@ -6,6 +6,10 @@ A 4-player fighting game for the Atari 2600, built with batariBASIC targeting th
 
 ChaosFight uses a dual-context execution model: **Admin Mode** (title screens, menus) and **Game Mode** (gameplay). The game runs on a multisprite kernel, requiring 4-player sprite support while maintaining 60fps performance through careful frame budgeting.
 
+## Credits
+
+- **ConvertToBCD routine**: Optimized binary-to-BCD conversion algorithm by Thomas Jentsch (used with permission)
+
 ## Memory Architecture
 
 ### RAM Layout

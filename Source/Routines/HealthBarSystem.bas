@@ -237,33 +237,38 @@ end
 
 ConvertToBCD
           rem Convert binary value (0-99) to packed BCD format
+          rem Optimized routine by Thomas Jentsch (used with permission)
           rem
-          rem Input: temp1 = binary value (0-99)
+          rem Input: temp1 = binary value (0-99, max $63)
           rem
           rem Output: temp1 = packed BCD value (e.g., 75 -> $75)
           rem
-          rem Mutates: temp1 (input value, then output), temp6 (scratch)
+          rem Mutates: temp1 (input value, then output), temp6 (scratch, used as Y)
           rem
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with UpdatePlayer34HealthBars
+          rem Input must be <= $63 (99 decimal)
           asm
-            lda temp1
-            sta temp6    ; binary input value
-            lda #0
-            sta temp1    ; BCD result accumulator
-            ldx #8
-            sed
+            lda temp1    ; A = value (0..$63)
+            tax          ; save original value
+            lsr          ; divide by 16 (high nibble)
+            lsr
+            lsr
+            lsr
+            tay          ; Y = high nibble (tens digit)
+            txa          ; restore original value
+            clc
+            sed          ; decimal mode
+            adc #0       ; start with low nibble in decimal mode
+            .byte $2c    ; BIT abs (skip next instruction)
 ConvertToBCDLoop
-            asl temp6    ; shift bit from binary into carry
-            lda temp1    ; load current BCD result
-            adc temp1    ; add to itself (multiply by 2) plus carry bit
-            sta temp1    ; store updated BCD result
-            dex
-            bne ConvertToBCDLoop
-            cld
+            adc #6       ; add 6 to adjust for decimal (BCD correction)
+            dey          ; decrement tens counter
+            bpl ConvertToBCDLoop
+            cld          ; clear decimal mode
+            sta temp1    ; store result (packed BCD, e.g., $75 for 75)
           end
-          ; rem temp1 now contains packed BCD (e.g., $75 for 75)
           return
 
 UpdatePlayer34HealthBars

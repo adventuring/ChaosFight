@@ -44,7 +44,7 @@ IHLP_DoneFlyingLeftRight
           gosub ProcessJumpInput bank8
 InputDoneLeftPortJump
 
-          gosub HandleGuardInput
+          gosub HandleGuardInput bank8
           rem Process down/guard input
 
           rem Process attack input

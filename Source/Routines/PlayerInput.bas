@@ -343,12 +343,12 @@ HUIEB_RoboTitoLatch
           return
 HUIEB_BernieFallThrough
           rem Bernie UP input handled in BernieJump routine (fall through 1-row floors)
-          gosub BernieJump bank10
+          gosub BernieJump bank12
           let temp3 = 0
           return
 HUIEB_HarpyFlap
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
-          gosub HarpyJump bank10
+          gosub HarpyJump bank12
           let temp3 = 0
           return
 HUIEB_CheckEnhanced
@@ -391,11 +391,8 @@ HUIEB_JumpProceed
           if temp2 >= 13 then return
           rem Block jump during attack windup/execute/recovery
           let temp4 = playerCharacter[temp1]
-          rem Dispatch character jump (inlined for performance)
-          if temp4 >= 32 then goto HUIEB_JumpDone
-          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
-          if temp4 = CharacterMethHound then goto ShamoneJump
-          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
+          rem Dispatch character jump via dispatcher (proper cross-bank handling)
+          gosub DispatchCharacterJump bank10
 HUIEB_JumpDone
           rem Set Zoe Ryen double-jump flag if applicable
           if playerCharacter[temp1] = CharacterZoeRyen then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8

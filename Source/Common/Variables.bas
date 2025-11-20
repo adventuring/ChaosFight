@@ -107,9 +107,12 @@
           rem
           rem   storage
           rem   qtcontroller - Quadtari multiplexing state (0 or 1)
-          rem   frame - frame counter (increments every frame)
 
           rem COMMON VARS - Standard RAM (a-z) - Sorted Alphabetically
+          
+          rem Frame counter (increments every frame in MainLoop)
+          rem Used for frame budgeting, animation timing, and other per-frame logic
+          dim frame = u
 
           rem Current player index (0-3) for iteration loops
           rem Set before calling per-player routines such as AnimationSystem or PlayerElimination
@@ -227,9 +230,9 @@
           rem Frame counters for current notes on each voice (SCRAM
           rem   acceptable)
           dim musicVoice1Frame_R = r065
-          rem Music system frame counter aliases (mirroring sound system pattern)
-          dim MS_frameCount = musicVoice0Frame_W
-          dim MS_frameCount1 = musicVoice1Frame_W
+          rem Music system frame counter aliases (shared naming with sound system)
+          dim voice0Frame = musicVoice0Frame_W
+          dim voice1Frame = musicVoice1Frame_W
 
           rem Music System Current Song ID and Loop Pointers (SCRAM -
           rem   used in Admin Mode)
@@ -281,9 +284,9 @@
           rem NOTE: w101-w104 used by harpyLastFlapFrame, so soundEffectFrame1 uses w102
           rem       (skipping w101 which is first byte of harpyLastFlapFrame array)
           dim soundEffectFrame1_R = r102
-          rem Sound effect frame counter aliases (mirroring music system pattern)
-          dim SS_frameCount = soundEffectFrame_W
-          dim SS_frameCount1 = soundEffectFrame1_W
+          rem Sound effect frame counter aliases (shared naming with music system)
+          rem Note: voice0Frame/voice1Frame are aliases for music; sound effects use soundEffectFrame_W/R directly
+          rem No aliases needed for sound effects - they use different variable names
 
           rem ADMIN MODE VARIABLES (may be re-used in Game Mode for
           rem
@@ -560,8 +563,8 @@
 
           rem Game Mode: Attack cooldown timers
           rem In SCRAM to free var37-var40 for playerCharacter (COMMON var)
-          rem Array accessible as playerAttackCooldown[0] through
-          rem   playerAttackCooldown[3]
+          rem Array accessible as playerAttackCooldown_W[0] through
+          rem   playerAttackCooldown_W[3] (use _W for writes, _R for reads)
           rem NOTE: var37-var40 now used for playerCharacter (COMMON), var37-var38 still used for characterSelect (Admin Mode)
           dim playerAttackCooldown_W = w090
           dim playerAttackCooldown_R = r090

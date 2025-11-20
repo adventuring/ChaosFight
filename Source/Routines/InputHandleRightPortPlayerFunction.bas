@@ -49,7 +49,7 @@ IHRP_DoneFlyingLeftRight
           gosub ProcessJumpInput bank8
 InputDoneRightPortJump
 
-          gosub HandleGuardInput
+          gosub HandleGuardInput bank8
           rem Process down/guard input
 
           rem Process attack input

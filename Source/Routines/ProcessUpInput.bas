@@ -55,11 +55,11 @@ PUI_ProcessUp
 
 PUI_BernieFallThrough
           rem Bernie UP input handled in BernieJump routine (fall through 1-row floors)
-          gosub BernieJump bank10
+          gosub BernieJump bank12
           goto PUI_DoneJumpInput
 
 PUI_HarpyFlap
-          gosub HarpyJump bank10
+          gosub HarpyJump bank12
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
           goto PUI_DoneJumpInput
 

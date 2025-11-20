@@ -34,7 +34,7 @@ draw_score_display
 
           SLEEP 7   ; 7 13
 
-          lda #>miniscoretable   ; 2 15
+          lda #>FontData   ; 2 15  ; Use FontData from Numbers.bas
           sta scorepointers+1,x  ; 4 19
           sta scorepointers+3,x  ; 4 23
           sta scorepointers+5,x  ; 4 27
@@ -151,12 +151,12 @@ miniscorepointerset
           asl
           asl
           asl
-          adc #<miniscoretable
+          adc #<FontData   ; Use FontData from Numbers.bas
           tay
           txa
           and #$F0
           lsr
-          adc #<miniscoretable
+          adc #<FontData   ; Use FontData from Numbers.bas
           tax
           rts
 

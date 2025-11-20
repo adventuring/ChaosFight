@@ -14,7 +14,7 @@ end
             0, 2, 5, 2, 2, 5, 1, 2, 2, 3, 2, 2, 1, 3, 4, 1
 end
 
-          rem Square lookup table (v^2 ÷ 4 for velocities 0-24)
+          rem Square lookup table (v² ÷ 4 for velocities 0-24)
 SquareTable
           asm
 SquareTable

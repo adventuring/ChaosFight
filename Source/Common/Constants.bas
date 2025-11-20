@@ -340,6 +340,27 @@
           rem X value that triggers wrap-around from left edge
           const PlayerRightWrapThreshold = PlayerRightEdge + PlayerWrapOvershoot
           rem X value that triggers wrap-around from right edge
+
+          rem CRITICAL: Define constants used in assembly code as EQU statements for DASM
+          rem These EQU definitions allow DASM to resolve constants when used in assembly code
+          rem (e.g., LDA #PlayerRightEdge). Values must match the const definitions above.
+          asm
+;; Screen and player position constants for assembly code
+ScreenWidth          EQU 160
+ScreenLeftMargin     EQU 16
+ScreenRightMargin    EQU 16
+PlayerSpriteWidth    EQU 16
+PlayerSpriteHalfWidth EQU 8
+PlayerLeftEdge       EQU 16    ; ScreenLeftMargin
+PlayerRightEdge      EQU 128   ; ScreenWidth - ScreenRightMargin - PlayerSpriteWidth = 160 - 16 - 16
+PlayerWrapOvershoot  EQU 8     ; PlayerSpriteHalfWidth
+PlayerLeftWrapThreshold EQU 8  ; PlayerLeftEdge - PlayerWrapOvershoot = 16 - 8
+PlayerRightWrapThreshold EQU 136 ; PlayerRightEdge + PlayerWrapOvershoot = 128 + 8
+;; Music bank constants for assembly code
+Bank15MaxSongID      EQU 6
+Bank1MinSongID       EQU 7     ; Bank15MaxSongID + 1
+end
+
           const PlayerCollisionDistance = 16
           rem Collision detection distance (sprite width in pixels)
           const MissileDefaultHeight = 1

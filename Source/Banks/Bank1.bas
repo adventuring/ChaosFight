@@ -275,9 +275,6 @@ end
 InterworldlySongEnd
 Bank1DataEnds
 end
-          asm
-Bank1DataEnds
-end
 
           asm
 MusicBankHelpersStart

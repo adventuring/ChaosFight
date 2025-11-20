@@ -18,12 +18,23 @@
 ;; etc. are available when batariBASIC includes reference them.
 #include "Source/Common/MultiSpriteSuperChip.s"
 
-;; CRITICAL: Define bscode_length before any code that uses it
-;; Match actual 64kSC bankswitch stub size (see Tools/batariBASIC/includes/banksw.asm ;size=42)
-;; $2A = 42 bytes, so bankswitch code runs right up to $FFE0 before EFSC header
-;; Use = instead of EQU so ifconst can detect it
-;; Define unconditionally - if already defined, this will be ignored by assembler
-bscode_length = $2A
+          asm
+            ;; CRITICAL: Define constants used in assembly code as EQU statements for DASM
+            ;; These must be defined early so DASM can resolve them when used in assembly code
+            ;; (e.g., LDA #PlayerRightEdge). Values match const definitions in Constants.bas.
+ScreenWidth          EQU 160
+ScreenLeftMargin     EQU 16
+ScreenRightMargin    EQU 16
+PlayerSpriteWidth    EQU 16
+PlayerSpriteHalfWidth EQU 8
+PlayerLeftEdge       EQU 16    ; ScreenLeftMargin
+PlayerRightEdge      EQU 128   ; ScreenWidth - ScreenRightMargin - PlayerSpriteWidth = 160 - 16 - 16
+PlayerWrapOvershoot  EQU 8     ; PlayerSpriteHalfWidth
+PlayerLeftWrapThreshold EQU 8  ; PlayerLeftEdge - PlayerWrapOvershoot = 16 - 8
+PlayerRightWrapThreshold EQU 136 ; PlayerRightEdge + PlayerWrapOvershoot = 128 + 8
+            ;; Music bank constants for assembly code
+Bank15MaxSongID      EQU 6
+Bank1MinSongID       EQU 7     ; Bank15MaxSongID + 1
 
 ;; CRITICAL: Define base variables (var0-var48, a-z) BEFORE redefs file
 ;; The Makefile inserts include "2600basic_variable_redefs.h" early (after processor 6502),

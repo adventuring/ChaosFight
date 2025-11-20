@@ -30,8 +30,6 @@ end
             lda #>FontData
             adc #0
             sta temp5
-            lda #16
-            sta temp6  ; Height constant
 end
           rem Store to appropriate player pointer based on temp3 (using then goto to avoid branch out of range)
           if temp3 = 0 then goto SetGlyphP0
@@ -45,60 +43,59 @@ end
             sta player5pointerlo
             lda temp5
             sta player5pointerhi
-            lda temp6
+            lda #16
             sta player5height
 end
-          goto SetGlyphDone
+          return
 SetGlyphP0
           asm
             lda temp4
             sta player0pointerlo
             lda temp5
             sta player0pointerhi
-            lda temp6
+            lda #16
             sta player0height
 end
-          goto SetGlyphDone
+          return
 SetGlyphP1
           asm
             lda temp4
             sta player1pointerlo
             lda temp5
             sta player1pointerhi
-            lda temp6
+            lda #16
             sta player1height
 end
-          goto SetGlyphDone
+          return
 SetGlyphP2
           asm
             lda temp4
             sta player2pointerlo
             lda temp5
             sta player2pointerhi
-            lda temp6
+            lda #16
             sta player2height
 end
-          goto SetGlyphDone
+          return
 SetGlyphP3
           asm
             lda temp4
             sta player3pointerlo
             lda temp5
             sta player3pointerhi
-            lda temp6
+            lda #16
             sta player3height
 end
-          goto SetGlyphDone
+          return
 SetGlyphP4
           asm
             lda temp4
             sta player4pointerlo
             lda temp5
             sta player4pointerhi
-            lda temp6
+            lda #16
             sta player4height
 end
-SetGlyphDone
           return
 
 

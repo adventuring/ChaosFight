@@ -1247,6 +1247,15 @@ var47 EQU $D3
           MS_ASSIGN  r127, $F0FF
           MS_ASSIGN  switchbw, $0282
           MS_ASSIGN  screenheight, 192
-          MS_ASSIGN  rand16, $00F2
+          ; rand16 is optional (used by randomize if defined)
+          ; Define unconditionally so ifconst can detect it
+          ifnconst rand16
+rand16 = $00F2
+          endif
+          ; NOT is a bitwise NOT mask (all bits set)
+          ; Define unconditionally to avoid unresolved symbol
+          ifnconst NOT
+NOT = $FF
+          endif
 
 

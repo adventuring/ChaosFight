@@ -136,6 +136,9 @@ BernieCheckBottomWrap
           return
 
 DragonOfStormsJump
+          asm
+DragonOfStormsJump
+end
           rem DRAGON OF STORMS (2) - FREE FLIGHT (vertical movement)
           rem Dragon of Storms can fly up/down freely
           rem
@@ -193,6 +196,9 @@ DragonOfStormsJump
           return
 
 ZoeRyenJump
+          asm
+ZoeRyenJump
+end
           rem ZOE RYEN (3) - STANDARD JUMP (light weight, high jump)
           rem Light character with high jump (stronger upward impulse)
           rem
@@ -216,6 +222,9 @@ ZoeRyenJump
           return
 
 FatTonyJump
+          asm
+FatTonyJump
+end
           rem FAT TONY (4) - STANDARD JUMP (heavy weight, lower jump)
           rem Heavy character with lower jump (weaker upward impulse)
           rem
@@ -338,6 +347,9 @@ HarpyFlapRecord
           return
 
 KnightGuyJump
+          asm
+KnightGuyJump
+end
           rem KNIGHT GUY (7) - STANDARD JUMP (heavy weight)
           rem Heavy character with lower jump (weaker upward impulse)
           rem
@@ -361,6 +373,9 @@ KnightGuyJump
           return
 
 FrootyJump
+          asm
+FrootyJump
+end
           rem FROOTY (8) - PERMANENT FREE FLIGHT (vertical movement)
           rem Frooty has permanent flight ability - no UP tapping
           rem   required
@@ -430,6 +445,9 @@ FrootyJump
           return
 
 NinjishGuyJump
+          asm
+NinjishGuyJump
+end
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
           rem Very light character with highest jump (strongest upward
           rem impulse)
@@ -454,6 +472,9 @@ NinjishGuyJump
           return
 
 PorkChopJump
+          asm
+PorkChopJump
+end
           rem PORK CHOP (11) - STANDARD JUMP (heavy weight)
           rem Heavy character with lower jump (weaker upward impulse)
           rem
@@ -477,6 +498,9 @@ PorkChopJump
           return
 
 RadishGoblinJump
+          asm
+RadishGoblinJump
+end
           rem RADISH GOBLIN (12) - STANDARD JUMP (very light, high jump)
           rem Very light character with highest jump (strongest upward
           rem impulse)
@@ -501,6 +525,9 @@ RadishGoblinJump
           return
 
 RoboTitoJump
+          asm
+RoboTitoJump
+end
           rem ROBO TITO (13) - VERTICAL MOVEMENT (no jump physics)
           rem Robo Tito does not jump but moves vertically to screen top
           rem Special: sprite may not clear GRPn when done
@@ -815,6 +842,9 @@ RTL_HeightCleared
           return
 
 UrsuloJump
+          asm
+UrsuloJump
+end
           rem URSULO (14) - STANDARD JUMP (heavy weight)
           rem Heavy character with lower jump (weaker upward impulse)
           rem
@@ -838,6 +868,9 @@ UrsuloJump
           return
 
 ShamoneJump
+          asm
+ShamoneJump
+end
           rem SHAMONE (15) - STANDARD JUMP (light weight)
           rem Light character with good jump (strong upward impulse)
           rem

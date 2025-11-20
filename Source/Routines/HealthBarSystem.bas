@@ -236,6 +236,9 @@ end
           rem   display as hex characters
 
 ConvertToBCD
+          asm
+ConvertToBCD
+end
           rem Convert binary value (0-99) to packed BCD format
           rem Optimized routine by Thomas Jentsch (used with permission)
           rem

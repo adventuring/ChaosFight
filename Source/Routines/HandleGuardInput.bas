@@ -1,6 +1,10 @@
           rem ChaosFight - Source/Routines/HandleGuardInput.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
+HandleGuardInput
+          asm
+HandleGuardInput
+end
           rem Shared Guard Input Handling (inlined version)
           rem Handles down/guard input for both ports
           rem

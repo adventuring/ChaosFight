@@ -278,6 +278,9 @@ RoboTitoVoluntaryDrop
           return
 
 StandardJump
+          asm
+StandardJump
+end
           rem
           rem Standard Behaviors
           rem Standard jump behavior for most characters

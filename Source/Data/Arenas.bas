@@ -35,6 +35,9 @@ end
           rem loaded explicitly when we want a neutral background behind the
           rem score/kernel.
 BlankPlayfield
+          asm
+BlankPlayfield
+end
           playfield:
           ................
           ................

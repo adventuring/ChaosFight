@@ -6,6 +6,9 @@
 StartMusic
           asm
 StartMusic
+end
+          asm
+StartMusic
 
 end
           rem MUSIC SUBSYSTEM - Polyphony 2 Implementation
@@ -127,6 +130,9 @@ LoadSongPointersDone
           rem tail call
 
 UpdateMusic
+          asm
+UpdateMusic
+end
           asm
 UpdateMusic
 

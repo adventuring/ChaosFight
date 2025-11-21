@@ -679,8 +679,15 @@ GroundSearchLoop
 
 GroundFound
           rem Convert found row back to Y coordinate
-          rem temp2 = row * pfrowheight
-          let temp2 = temp5 * pfrowheight
+          rem temp2 = row * pfrowheight (pfrowheight is always 16, so multiply by 16 = shift left 4 bits)
+          asm
+            LDA temp5
+            ASL
+            ASL
+            ASL
+            ASL
+            STA temp2
+end
           goto GroundSearchDone
 
 GroundSearchBottom

@@ -1260,10 +1260,8 @@ playfieldRow = $5C
           ifnconst rand16
 rand16 = $00F2
           endif
-          ; NOT is a bitwise NOT mask (all bits set)
-          ; Define unconditionally to avoid unresolved symbol
-          ifnconst NOT
-NOT = $FF
-          endif
+          ; NOT is a batariBASIC keyword (bitwise NOT operator), not a constant
+          ; Do NOT define it here - it causes syntax errors when used as an operator
+          ; If you need a bitwise NOT mask, use ($FF ^ value) instead of (NOT value)
 
 

@@ -35,7 +35,13 @@ PlayerRightWrapThreshold EQU 136 ; PlayerRightEdge + PlayerWrapOvershoot = 128 +
             ;; Music bank constants for assembly code
 Bank15MaxSongID      EQU 6
 Bank1MinSongID       EQU 7     ; Bank15MaxSongID + 1
+            ;; NOTE: Variables like missile0height, missile1height, playfieldRow, rand16
+            ;; are memory addresses (defined with = in MultiSpriteSuperChip.s), not constants.
+            ;; They don't need EQU definitions - they're resolved by DASM when used as addresses.
+            ;; NOT is also a memory address, not a constant, and should not be used as an operator.
+end
 
+          asm
 ;; CRITICAL: Define base variables (var0-var48, a-z) BEFORE redefs file
 ;; The Makefile inserts include "2600basic_variable_redefs.h" early (after processor 6502),
 ;; so base variables must be defined before that point

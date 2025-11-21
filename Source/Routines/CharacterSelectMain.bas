@@ -315,7 +315,8 @@ end
 CharacterSelectRollRandomPlayerReroll
           let temp2 = rand & $1f
           rem if not valid, try next frame.
-          if temp2 >= NumCharacters then return          rem Valid roll - character ID updated, but not locked
+          if temp2 >= NumCharacters then return
+          rem Valid roll - character ID updated, but not locked
           let playerCharacter[currentPlayer] = temp2
           return
 

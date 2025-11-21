@@ -260,7 +260,7 @@ GravityBottomCalcLoop
           if rowCounter_R > 0 then goto GravityBottomCalcLoop
 GravityBottomCalcDone
           let playerY[temp1] = rowYPosition_R - PlayerSpriteHeight
-          let playerState[temp1] = playerState[temp1] & NOT 4
+          let playerState[temp1] = playerState[temp1] & ($FF ^ 4)
           rem Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
           if temp6 = 3 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
 

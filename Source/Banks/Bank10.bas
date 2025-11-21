@@ -32,6 +32,13 @@ end
 CharacterAttacksDispatchEnd
             echo "// Bank 10: ", [CharacterAttacksDispatchEnd - CharacterAttacksDispatchStart]d, " bytes = CharacterAttacksDispatch"
           asm
+ProcessAttackInputStart
+end
+#include "Source/Routines/ProcessAttackInput.bas"
+          asm
+ProcessAttackInputEnd
+            echo "// Bank 10: ", [ProcessAttackInputEnd - ProcessAttackInputStart]d, " bytes = ProcessAttackInput"
+          asm
 BernieAttackStart
 end
 #include "Source/Routines/BernieAttack.bas"
@@ -73,6 +80,13 @@ end
           asm
 CheckRoboTitoStretchMissileCollisionsEnd
             echo "// Bank 10: ", [CheckRoboTitoStretchMissileCollisionsEnd - CheckRoboTitoStretchMissileCollisionsStart]d, " bytes = CheckRoboTitoStretchMissileCollisions"
+          asm
+ScreenLayoutStart
+end
+#include "Source/Routines/ScreenLayout.bas"
+          asm
+ScreenLayoutEnd
+            echo "// Bank 10: ", [ScreenLayoutEnd - ScreenLayoutStart]d, " bytes = ScreenLayout"
 
 Bank10CodeEnds
 end

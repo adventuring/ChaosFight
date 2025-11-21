@@ -10,7 +10,7 @@ end
           rem         missileStretchHeight_R[], playerX[], playerY[], playerHealth[]
           rem Outputs: Updates via HandleRoboTitoStretchMissileHit when collisions occur
           rem Mutates: temp1-temp6, playerState[], characterStateFlags_W[],
-          rem          missileStretchHeight_W[], roboTitoCanStretch_W
+          rem          missileStretchHeight_W[], characterSpecialAbility_W[]
           rem Calls: HandleRoboTitoStretchMissileHit
           rem Constraints: None
 
@@ -99,13 +99,14 @@ HandleRoboTitoStretchMissileHit
 end
           rem Resolves stretch missile collisions and resets stretch state
           rem Inputs: temp1 = RoboTito player index, temp5 = hit player index
-          rem Outputs: Updates playerState[], characterStateFlags_W[], roboTitoCanStretch_W
-          rem Mutates: temp2-temp6 (scratch), missileStretchHeight_W[]
+          rem Outputs: Updates playerState[], characterStateFlags_W[],
+          rem characterSpecialAbility_W[]
+          rem Mutates: temp2-temp3 (scratch), missileStretchHeight_W[]
           rem Calls: None
           rem Constraints: Keep contiguous with CRTSMC logic for bank locality
           rem owner), temp5 = hit player index (victim), playerState[]
-          rem (global array) = player states, roboTitoCanStretch_R
-          rem (global SCRAM) = stretch permission flags,
+          rem (global array) = player states, characterSpecialAbility_R[]
+          rem (global SCRAM array) = stretch permission (for RoboTito),
           rem characterStateFlags_R[] (global SCRAM array) = character
           rem state flags
           rem
@@ -115,8 +116,8 @@ end
           rem Mutates: missileStretchHeight_W[] (global SCRAM array) =
           rem stretch missile heights, playerState[] (global array) =
           rem player states, playerVelocityY[], playerVelocityYL[]
-          rem (global arrays) = vertical velocity, roboTitoCanStretch_W
-          rem (global SCRAM) = stretch permission flags,
+          rem (global arrays) = vertical velocity, characterSpecialAbility_W[]
+          rem (global SCRAM array) = stretch permission,
           rem characterStateFlags_W[] (global SCRAM array) = character
           rem state flags, temp2-temp3 (used for calculations)
           rem
@@ -129,14 +130,10 @@ end
           playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
 
-          rem Clear stretch permission flag for this player
-          let temp2 = roboTitoCanStretch_R
-          let temp3 = 1
-          if temp1 > 0 then for temp4 = 1 to temp1 : temp3 = temp3 * 2 : next
-          let temp2 = temp2 & (255 - temp3)
-          rem Clear the appropriate bit
-          let roboTitoCanStretch_W = temp2
-          rem Store cleared permission flags
+          rem Clear stretch permission for this player
+          rem Optimized: Simple array assignment instead of bit manipulation
+          let characterSpecialAbility_W[temp1] = 0
+          rem Clear stretch permission
 
           let temp3 = characterStateFlags_R[temp1]
           rem Clear latched flag if set (falling from ceiling)

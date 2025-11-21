@@ -329,7 +329,7 @@
           rem ADMIN: Currently selected character index (0-15) for
           rem   preview (REDIMMED - Game Mode uses var37 for
           rem ADMIN: Character select variables moved to SCRAM to free var37-var40 for playerCharacter (COMMON)
-          rem NOTE: Overlaps with Game Mode roboTitoCanStretch/enhancedButtonStates (w089-w090) - safe since Admin and Game never run simultaneously
+          rem NOTE: Overlaps with Game Mode characterSpecialAbility/enhancedButtonStates (w089-w090) - safe since Admin and Game never run simultaneously
           rem Primary alias for reads (most common access pattern)
           dim characterSelectCharacterIndex = r122
           dim characterSelectCharacterIndex_W = w122
@@ -752,17 +752,19 @@
           rem   missileStretchHeight[3]
           dim missileStretchHeight_R = r118
 
-          rem RoboTito stretch permission flags (SCRAM)
-          rem Bit-packed: 1 bit per player (0=not grounded, 1=can
-          rem stretch)
-          rem Moved from w122 to w089 to free w122-w125 for missileFlags
-          dim roboTitoCanStretch_W = w089
-          rem Bit 0: Player 0 can stretch, Bit 1: Player 1, Bit 2:
-          rem Player 2,
-          rem   Bit 3: Player 3
-          rem Set to 1 when RoboTito lands on ground, cleared when hit
-          rem or
-          dim roboTitoCanStretch_R = r089
+          rem Character special ability state (SCRAM)
+          rem Shared array for character-specific abilities that are mutually
+          rem exclusive per player (one player can only be one character).
+          rem For RoboTito: stores stretch permission (0=no, 1=yes) per player
+          rem For Harpy: stores flight energy (0-255) per player
+          rem For other characters: unused (available for future abilities)
+          dim characterSpecialAbility_W = w089
+          rem [0-3] Special ability state for each player (4 bytes: w089-w092)
+          rem Array accessible as characterSpecialAbility[0] through
+          rem   characterSpecialAbility[3]
+          rem RoboTito: characterSpecialAbility[player] = stretch permission (0 or 1)
+          rem Harpy: characterSpecialAbility[player] = flight energy (0-255)
+          dim characterSpecialAbility_R = r089
 
           dim enhancedButtonStates_W = w090
           rem Enhanced controller button states (Genesis Button C, Joy2B+
@@ -784,18 +786,6 @@
           rem Array accessible as missileFlags[0] through missileFlags[3]
           rem Cached from CharacterMissileFlags[] at spawn time
           dim missileFlags_R = r122
-
-          rem Harpy flight energy/duration counters (SCRAM)
-          rem Moved from w089-w092 to w091-w094 to free w089-w090 for
-          rem roboTitoCanStretch/enhancedButtonStates
-          dim harpyFlightEnergy_W = w091
-          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 flight energy remaining (4
-          rem   bytes: w091-w094)
-          rem Decrements on each flap, resets on landing, maximum value
-          rem   FramesPerSecond (1 second at current TV standard)
-          rem Array accessible as harpyFlightEnergy[0] through
-          rem   harpyFlightEnergy[3]
-          dim harpyFlightEnergy_R = r091
 
           rem Last flap frame tracker for rapid tap detection (SCRAM)
           dim harpyLastFlapFrame_W = w101

@@ -258,12 +258,12 @@ end
           rem
           rem INPUT: temp1 = player index
           rem USES: playerY[temp1], playerState[temp1],
-          rem   harpyFlightEnergy[temp1], harpyLastFlapFrame[temp1]
+          rem   characterSpecialAbility[temp1], harpyLastFlapFrame[temp1]
           rem Harpy flaps to fly upward, consuming flight energy with
           rem cooldown
           rem
-          rem Input: temp1 = player index (0-3), harpyFlightEnergy_R[]
-          rem (global SCRAM array) = flight energy,
+          rem Input: temp1 = player index (0-3), characterSpecialAbility_R[]
+          rem (global SCRAM array) = flight energy (for Harpy),
           rem harpyLastFlapFrame_R[] (global SCRAM array) = last flap
           rem frame, frame (global) = frame counter, playerY[] (global
           rem array) = player Y position, characterStateFlags_R[]
@@ -278,7 +278,7 @@ end
           rem vertical velocity, playerState[] (global array) = player
           rem states (jumping flag set), characterStateFlags_W[] (global
           rem SCRAM array) = character state flags (flight mode set),
-          rem harpyFlightEnergy_W[] (global SCRAM array) = flight energy
+          rem characterSpecialAbility_W[] (global SCRAM array) = flight energy
           rem (decremented), harpyLastFlapFrame_W[] (global SCRAM array)
           rem = last flap frame (updated)
           rem
@@ -289,7 +289,7 @@ end
           rem still records flap)
           dim HJ_stateFlags = temp3
           rem Check if flight energy depleted
-          if harpyFlightEnergy_R[temp1] = 0 then return
+          if characterSpecialAbility_R[temp1] = 0 then return
           rem No energy remaining, cannot flap
 
           rem Check flap cooldown: enforce HarpyFlapCooldownFrames between flaps
@@ -326,20 +326,20 @@ end
 HarpyFlapRecord
           rem Helper: Records flap and decrements flight energy
           rem
-          rem Input: temp1 = player index, harpyFlightEnergy_R[] (global
-          rem SCRAM array) = flight energy, frame (global) = frame
+          rem Input: temp1 = player index, characterSpecialAbility_R[] (global
+          rem SCRAM array) = flight energy (for Harpy), frame (global) = frame
           rem counter
           rem
           rem Output: Flight energy decremented, last flap frame updated
           rem
-          rem Mutates: harpyFlightEnergy_W[] (global SCRAM array) =
+          rem Mutates: characterSpecialAbility_W[] (global SCRAM array) =
           rem flight energy (decremented), harpyLastFlapFrame_W[]
           rem (global SCRAM array) = last flap frame (updated)
           rem
           rem Called Routines: None
           rem Constraints: Internal helper for HarpyJump, only called after flap check
           rem Decrement flight energy on each flap
-          if harpyFlightEnergy_R[temp1] > 0 then let harpyFlightEnergy_W[temp1] = harpyFlightEnergy_R[temp1] - 1
+          if characterSpecialAbility_R[temp1] > 0 then let characterSpecialAbility_W[temp1] = characterSpecialAbility_R[temp1] - 1
 
           let harpyLastFlapFrame_W[temp1] = frame
           rem Record current frame as last flap time
@@ -540,11 +540,11 @@ end
           rem Input: temp1 = player index (0-3), characterStateFlags_R[]
           rem (global SCRAM array) = character state flags,
           rem playerState[] (global array) = player states,
-          rem roboTitoCanStretch_R (global SCRAM) = stretch permission
-          rem flags, playerY[] (global array) = player Y position,
-          rem ScreenBottom (global constant) = bottom Y coordinate,
-          rem missileStretchHeight_R[] (global SCRAM array) = stretch
-          rem missile heights
+          rem characterSpecialAbility_R[] (global SCRAM array) = stretch
+          rem permission (for RoboTito), playerY[] (global array) = player
+          rem Y position, ScreenBottom (global constant) = bottom Y
+          rem coordinate, missileStretchHeight_R[] (global SCRAM array) =
+          rem stretch missile heights
           rem
           rem Output: RoboTito moves up 3 pixels per frame if stretch
           rem allowed, latches to ceiling on contact, stretch height
@@ -557,8 +557,8 @@ end
           rem array) = character state flags (latched bit set on ceiling
           rem contact), missileStretchHeight_W[] (global SCRAM array) =
           rem stretch missile heights (calculated and set),
-          rem roboTitoCanStretch_W (global SCRAM) = stretch permission
-          rem flags (cleared when stretching)
+          rem characterSpecialAbility_W[] (global SCRAM array) = stretch
+          rem permission (cleared when stretching)
           rem
           rem Called Routines: None
           rem
@@ -571,39 +571,10 @@ end
           if (playerState[temp1] & 4) then goto RoboTitoCannotStretch
           rem Not grounded (jumping flag set), cannot stretch
 
-          rem Check stretch permission flag (must be grounded)
-          let temp2 = roboTitoCanStretch_R
-          rem Load bit-packed flags
-          let temp3 = temp1
-          rem Calculate bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp3 = 0 then goto RTJ_CheckBit0
-          if temp3 = 1 then goto RTJ_CheckBit1
-          if temp3 = 2 then goto RTJ_CheckBit2
-          rem Player 3: bit 3
-          let temp3 = temp2 & 8
-          if !temp3 then goto RoboTitoCannotStretch
-          rem Bit 3 not set, cannot stretch
-          goto RoboTitoCanStretch
-
-RTJ_CheckBit0
-          rem Player 0: bit 0
-          let temp3 = temp2 & 1
-          if !temp3 then goto RoboTitoCannotStretch
-          rem Bit 0 not set, cannot stretch
-          goto RoboTitoCanStretch
-
-RTJ_CheckBit1
-          rem Player 1: bit 1
-          let temp3 = temp2 & 2
-          if !temp3 then goto RoboTitoCannotStretch
-          rem Bit 1 not set, cannot stretch
-          goto RoboTitoCanStretch
-
-RTJ_CheckBit2
-          rem Player 2: bit 2
-          let temp3 = temp2 & 4
-          if !temp3 then goto RoboTitoCannotStretch
-          rem Bit 2 not set, cannot stretch
+          rem Check stretch permission (must be grounded)
+          rem Optimized: Use array access instead of bit manipulation
+          if characterSpecialAbility_R[temp1] = 0 then goto RoboTitoCannotStretch
+          rem No stretch permission, cannot stretch
           goto RoboTitoCanStretch
 
 RoboTitoCannotStretch
@@ -618,10 +589,11 @@ RoboTitoStretching
           rem
           rem Input: temp1 = player index, playerY[] (global array) =
           rem player Y position, ScreenBottom (global constant) = bottom
-          rem Y coordinate, roboTitoCanStretch_R (global SCRAM) =
-          rem stretch permission flags, playerState[] (global array) =
-          rem player states, MaskPlayerStateFlags, ActionJumpingShifted
-          rem (global constants) = state mask and animation value
+          rem Y coordinate, characterSpecialAbility_R[] (global SCRAM
+          rem array) = stretch permission (for RoboTito), playerState[]
+          rem (global array) = player states, MaskPlayerStateFlags,
+          rem ActionJumpingShifted (global constants) = state mask and
+          rem animation value
           rem
           rem Output: Stretching animation set, stretch height
           rem calculated and stored, stretch permission cleared
@@ -630,8 +602,8 @@ RoboTitoStretching
           rem playerState[] (global array) = player states
           rem (ActionJumping set), missileStretchHeight_W[] (global
           rem SCRAM array) = stretch missile heights (calculated),
-          rem roboTitoCanStretch_W (global SCRAM) = stretch permission
-          rem flags (cleared)
+          rem characterSpecialAbility_W[] (global SCRAM array) = stretch
+          rem permission (cleared)
           rem
           rem Called Routines: None
           rem
@@ -709,34 +681,9 @@ GroundSearchDone
 
           rem Clear stretch permission (stretching upward, cannot
           rem stretch again until grounded)
-          let temp4 = temp1
-          rem Calculate bit mask and clear bit
-          let temp5 = roboTitoCanStretch_R
-          rem Load current flags
-          if temp4 = 0 then goto RTS_ClearBit0
-          if temp4 = 1 then goto RTS_ClearBit1
-          if temp4 = 2 then goto RTS_ClearBit2
-          let temp5 = temp5 & 247
-          rem Player 3: clear bit 3
-          goto RTS_StretchPermissionCleared
-          rem 247 = $F7 = clear bit 3
-RTS_ClearBit0
-          let temp5 = temp5 & 254
-          rem Player 0: clear bit 0
-          goto RTS_StretchPermissionCleared
-          rem 254 = $FE = clear bit 0
-RTS_ClearBit1
-          let temp5 = temp5 & 253
-          rem Player 1: clear bit 1
-          goto RTS_StretchPermissionCleared
-          rem 253 = $FD = clear bit 1
-RTS_ClearBit2
-          let temp5 = temp5 & 251
-          rem Player 2: clear bit 2
-RTS_StretchPermissionCleared
-          rem 251 = $FB = clear bit 2
-          let roboTitoCanStretch_W = temp5
-          rem Store cleared permission flags
+          rem Optimized: Simple array assignment instead of bit manipulation
+          let characterSpecialAbility_W[temp1] = 0
+          rem Clear stretch permission for this player
 
           rem Move upward 3 pixels per frame
 

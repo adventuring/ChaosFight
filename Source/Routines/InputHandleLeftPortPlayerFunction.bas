@@ -49,7 +49,7 @@ InputDoneLeftPortJump
           rem Process down/guard input
 
           rem Process attack input
-          gosub ProcessAttackInput bank8
+          gosub ProcessAttackInput bank10
 InputDoneLeftPortAttack
 
           return

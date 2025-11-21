@@ -47,9 +47,8 @@ end
           rem SCRAM array) = character state flags, gravityRate (global)
           rem = gravity acceleration rate, GravityNormal,
           rem GravityReduced, TerminalVelocity (global constants) =
-          rem gravity constants, BitMask[] (global data table) = bit
-          rem masks, roboTitoCanStretch_R (global SCRAM) = stretch
-          rem permission flags
+          rem gravity constants, characterSpecialAbility_R[] (global SCRAM
+          rem array) = stretch permission (for RoboTito)
           rem
           rem Output: Gravity applied to jumping players, ground
           rem detection performed, players clamped to ground on landing
@@ -60,8 +59,8 @@ end
           rem positions, playerSubpixelY[], playerSubpixelYL[] (global
           rem arrays) = subpixel Y positions, playerState[] (global
           rem array) = player states (jumping flag cleared on landing),
-          rem roboTitoCanStretch_W (global SCRAM) = stretch permission
-          rem flags (via PAG_SetRoboTitoStretchPermission),
+          rem characterSpecialAbility_W[] (global SCRAM array) = stretch
+          rem permission (via PAG_SetRoboTitoStretchPermission),
           rem missileStretchHeight_W[] (global SCRAM array) = stretch
           rem missile heights (via PAG_SetRoboTitoStretchPermission),
           rem rowYPosition, rowCounter (global) = calculation
@@ -215,29 +214,23 @@ PAG_SetRoboTitoStretchPermission
           rem stretching again)
           rem
           rem Input: temp1 (temp1) = player index (0-3),
-          rem roboTitoCanStretch_R (global SCRAM) = stretch permission
-          rem flags, BitMask[] (global data table) = bit masks
+          rem characterSpecialAbility_R[] (global SCRAM array) = stretch
+          rem permission (for RoboTito)
           rem
-          rem Output: roboTitoCanStretch_W (global SCRAM) = stretch
-          rem permission flags updated, missileStretchHeight_W[] (global
+          rem Output: characterSpecialAbility_W[] (global SCRAM array) =
+          rem stretch permission updated, missileStretchHeight_W[] (global
           rem SCRAM array) = stretch missile height cleared
           rem
-          rem Mutates: temp1-temp3 (used for calculations),
-          rem roboTitoCanStretch_W (global SCRAM) = stretch permission
-          rem flags, missileStretchHeight_W[] (global SCRAM array) =
+          rem Mutates: temp1-temp2 (used for calculations),
+          rem characterSpecialAbility_W[] (global SCRAM array) = stretch
+          rem permission, missileStretchHeight_W[] (global SCRAM array) =
           rem stretch missile heights
           rem
           rem Called Routines: None
           rem Constraints: Only called for RoboTito character on landing
-          let temp2 = roboTitoCanStretch_R
-          rem Set stretch permission bit for this player using BitMask array lookup
-          let temp3 = BitMask[temp1]
-          rem Load current flags
-          let temp2 = temp2 | temp3
-          rem Get bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
-          let roboTitoCanStretch_W = temp2
-          rem Set bit for this player
-          rem Store updated permission flags
+          rem Set stretch permission for this player (simple array assignment)
+          let characterSpecialAbility_W[temp1] = 1
+          rem Grant stretch permission on landing
           let missileStretchHeight_W[temp1] = 0
           rem Clear stretch missile height on landing (not stretching)
           return

@@ -31,12 +31,6 @@ end
           asm
 InputHandleAllPlayersEnd
             echo "// Bank 8: ", [InputHandleAllPlayersEnd - InputHandleAllPlayersStart]d, " bytes = InputHandleAllPlayers"
-ProcessAttackInputStart
-end
-#include "Source/Routines/ProcessAttackInput.bas"
-          asm
-ProcessAttackInputEnd
-            echo "// Bank 8: ", [ProcessAttackInputEnd - ProcessAttackInputStart]d, " bytes = ProcessAttackInput"
 ProcessUpInputStart
 end
 #include "Source/Routines/ProcessUpInput.bas"
@@ -73,12 +67,6 @@ end
           asm
 FallDamageEnd
             echo "// Bank 8: ", [FallDamageEnd - FallDamageStart]d, " bytes = FallDamage"
-ScreenLayoutStart
-end
-#include "Source/Routines/ScreenLayout.bas"
-          asm
-ScreenLayoutEnd
-            echo "// Bank 8: ", [ScreenLayoutEnd - ScreenLayoutStart]d, " bytes = ScreenLayout"
 ProcessJumpInputStart
 end
 #include "Source/Routines/ProcessJumpInput.bas"

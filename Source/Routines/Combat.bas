@@ -2,6 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem COMBAT SYSTEM - Generic Subroutines Using Player Arrays
 GetWeightBasedDamage
+          asm
+GetWeightBasedDamage
+end
           rem Calculate damage value based on character weight
           rem Issue #1149: Deduplicated weight-tier calculation
           rem

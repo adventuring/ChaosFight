@@ -24,12 +24,18 @@ end
           asm
 FrameBudgetingEnd
             echo "// Bank 10: ", [FrameBudgetingEnd - FrameBudgetingStart]d, " bytes = FrameBudgeting"
-PlayerPhysicsCollisionsStart
+PlayerBoundaryCollisionsStart
 end
-#include "Source/Routines/PlayerPhysicsCollisions.bas"
+#include "Source/Routines/PlayerBoundaryCollisions.bas"
           asm
-PlayerPhysicsCollisionsEnd
-            echo "// Bank 10: ", [PlayerPhysicsCollisionsEnd - PlayerPhysicsCollisionsStart]d, " bytes = PlayerPhysicsCollisions"
+PlayerBoundaryCollisionsEnd
+            echo "// Bank 10: ", [PlayerBoundaryCollisionsEnd - PlayerBoundaryCollisionsStart]d, " bytes = PlayerBoundaryCollisions"
+PlayerPlayfieldCollisionsStart
+end
+#include "Source/Routines/PlayerPlayfieldCollisions.bas"
+          asm
+PlayerPlayfieldCollisionsEnd
+            echo "// Bank 10: ", [PlayerPlayfieldCollisionsEnd - PlayerPlayfieldCollisionsStart]d, " bytes = PlayerPlayfieldCollisions"
 ProcessUpInputStart
 end
 #include "Source/Routines/ProcessUpInput.bas"

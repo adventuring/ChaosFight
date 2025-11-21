@@ -139,8 +139,8 @@ end
 HCSC_CycleLeft
           rem Handle stick-left navigation with ordered wrap logic
           if temp1 = RandomCharacter then goto HCSC_LeftFromRandom
-          if temp1 = NoCharacter then goto HCSC_LeftFromNo
-          if temp1 = CPUCharacter then goto HCSC_LeftFromCPU
+          if temp1 = NoCharacter then goto HCSC_LeftFromNoOrCPU
+          if temp1 = CPUCharacter then goto HCSC_LeftFromNoOrCPU
           if temp1 = 0 then goto HCSC_LeftFromZero
           let temp1 = temp1 - 1
           goto HCSC_CycleDone
@@ -149,10 +149,7 @@ HCSC_LeftFromRandom
           if temp3 = 1 then gosub HCSC_GetPlayer2Tail : temp1 = temp6 : goto HCSC_CycleDone
           let temp1 = NoCharacter
           goto HCSC_CycleDone
-HCSC_LeftFromNo
-          let temp1 = MaxCharacter
-          goto HCSC_CycleDone
-HCSC_LeftFromCPU
+HCSC_LeftFromNoOrCPU
           let temp1 = MaxCharacter
           goto HCSC_CycleDone
 HCSC_LeftFromZero
@@ -161,18 +158,15 @@ HCSC_LeftFromZero
 HCSC_CycleRight
           rem Handle stick-right navigation with ordered wrap logic
           if temp1 = RandomCharacter then goto HCSC_RightFromRandom
-          if temp1 = NoCharacter then goto HCSC_RightFromNo
-          if temp1 = CPUCharacter then goto HCSC_RightFromCPU
+          if temp1 = NoCharacter then goto HCSC_RightFromNoOrCPU
+          if temp1 = CPUCharacter then goto HCSC_RightFromNoOrCPU
           if temp1 = MaxCharacter then goto HCSC_RightFromMax
           let temp1 = temp1 + 1
           goto HCSC_CycleDone
 HCSC_RightFromRandom
           let temp1 = 0
           goto HCSC_CycleDone
-HCSC_RightFromNo
-          let temp1 = RandomCharacter
-          goto HCSC_CycleDone
-HCSC_RightFromCPU
+HCSC_RightFromNoOrCPU
           let temp1 = RandomCharacter
           goto HCSC_CycleDone
 HCSC_RightFromMax

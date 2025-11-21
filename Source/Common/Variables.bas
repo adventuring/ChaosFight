@@ -755,15 +755,16 @@
           rem RoboTito stretch permission flags (SCRAM)
           rem Bit-packed: 1 bit per player (0=not grounded, 1=can
           rem stretch)
-          dim roboTitoCanStretch_W = w122
+          rem Moved from w122 to w089 to free w122-w125 for missileFlags
+          dim roboTitoCanStretch_W = w089
           rem Bit 0: Player 0 can stretch, Bit 1: Player 1, Bit 2:
           rem Player 2,
           rem   Bit 3: Player 3
           rem Set to 1 when RoboTito lands on ground, cleared when hit
           rem or
-          dim roboTitoCanStretch_R = r122
+          dim roboTitoCanStretch_R = r089
 
-          dim enhancedButtonStates_W = w123
+          dim enhancedButtonStates_W = w090
           rem Enhanced controller button states (Genesis Button C, Joy2B+
           rem Button II)
           rem Only players 1-2 can have enhanced controllers (players 3-4 require Quadtari)
@@ -771,13 +772,25 @@
           rem Bit 0: Player 1 enhanced button, Bit 1: Player 2 enhanced button
           rem Bits 2-3: Always 0 (players 3-4 cannot have enhanced controllers)
           rem Updated at start of each game loop frame
-          rem   stretching upward
-          dim enhancedButtonStates_R = r123
+          rem Moved from w123 to w090 to free w122-w125 for missileFlags
+          dim enhancedButtonStates_R = r090
+
+          rem Missile flags cache (SCRAM)
+          rem Cached missile flags per player to avoid per-frame lookups
+          rem in UpdateOneMissile. Flags are set at spawn time and reused
+          rem throughout missile lifetime.
+          dim missileFlags_W = w122
+          rem [0-3] Missile flags for each player missile (4 bytes: w122-w125)
+          rem Array accessible as missileFlags[0] through missileFlags[3]
+          rem Cached from CharacterMissileFlags[] at spawn time
+          dim missileFlags_R = r122
 
           rem Harpy flight energy/duration counters (SCRAM)
-          dim harpyFlightEnergy_W = w089
+          rem Moved from w089-w092 to w091-w094 to free w089-w090 for
+          rem roboTitoCanStretch/enhancedButtonStates
+          dim harpyFlightEnergy_W = w091
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 flight energy remaining (4
-          rem   bytes: w089-w092)
+          rem   bytes: w091-w094)
           rem Decrements on each flap, resets on landing, maximum value
           rem   FramesPerSecond (1 second at current TV standard)
           rem Array accessible as harpyFlightEnergy[0] through

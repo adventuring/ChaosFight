@@ -25,26 +25,19 @@ end
 PlayerPlayfieldCollisionsEnd
             echo "// Bank 10: ", [PlayerPlayfieldCollisionsEnd - PlayerPlayfieldCollisionsStart]d, " bytes = PlayerPlayfieldCollisions"
           asm
+BudgetedPlayerCollisionsStart
+end
+#include "Source/Routines/BudgetedPlayerCollisions.bas"
+          asm
+BudgetedPlayerCollisionsEnd
+            echo "// Bank 10: ", [BudgetedPlayerCollisionsEnd - BudgetedPlayerCollisionsStart]d, " bytes = BudgetedPlayerCollisions"
+          asm
 CharacterAttacksDispatchStart
 end
 #include "Source/Routines/CharacterAttacksDispatch.bas"
           asm
 CharacterAttacksDispatchEnd
             echo "// Bank 10: ", [CharacterAttacksDispatchEnd - CharacterAttacksDispatchStart]d, " bytes = CharacterAttacksDispatch"
-          asm
-PerformRangedAttackStart
-end
-#include "Source/Routines/PerformRangedAttack.bas"
-          asm
-PerformRangedAttackEnd
-            echo "// Bank 10: ", [PerformRangedAttackEnd - PerformRangedAttackStart]d, " bytes = PerformRangedAttack"
-          asm
-PerformMeleeAttackStart
-end
-#include "Source/Routines/PerformMeleeAttack.bas"
-          asm
-PerformMeleeAttackEnd
-            echo "// Bank 10: ", [PerformMeleeAttackEnd - PerformMeleeAttackStart]d, " bytes = PerformMeleeAttack"
           asm
 BernieAttackStart
 end
@@ -59,20 +52,6 @@ end
           asm
 HarpyAttackEnd
             echo "// Bank 10: ", [HarpyAttackEnd - HarpyAttackStart]d, " bytes = HarpyAttack"
-          asm
-UrsuloAttackStart
-end
-#include "Source/Routines/UrsuloAttack.bas"
-          asm
-UrsuloAttackEnd
-            echo "// Bank 10: ", [UrsuloAttackEnd - UrsuloAttackStart]d, " bytes = UrsuloAttack"
-          asm
-ShamoneAttackStart
-end
-#include "Source/Routines/ShamoneAttack.bas"
-          asm
-ShamoneAttackEnd
-            echo "// Bank 10: ", [ShamoneAttackEnd - ShamoneAttackStart]d, " bytes = ShamoneAttack"
           asm
 DispatchCharacterJumpStart
 end

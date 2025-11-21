@@ -91,5 +91,12 @@ end
           asm
 MissileCollisionEnd
             echo "// Bank 8: ", [MissileCollisionEnd - MissileCollisionStart]d, " bytes = MissileCollision"
+          asm
+BudgetedPlayerCollisionsStart
+end
+#include "Source/Routines/BudgetedPlayerCollisions.bas"
+          asm
+BudgetedPlayerCollisionsEnd
+            echo "// Bank 8: ", [BudgetedPlayerCollisionsEnd - BudgetedPlayerCollisionsStart]d, " bytes = BudgetedPlayerCollisions"
 Bank8CodeEnds
 end

@@ -329,7 +329,7 @@
           rem ADMIN: Currently selected character index (0-15) for
           rem   preview (REDIMMED - Game Mode uses var37 for
           rem ADMIN: Character select variables moved to SCRAM to free var37-var40 for playerCharacter (COMMON)
-          rem NOTE: Overlaps with Game Mode roboTitoCanStretch/enhancedButtonStates (w122-w123) - safe since Admin and Game never run simultaneously
+          rem NOTE: Overlaps with Game Mode roboTitoCanStretch/enhancedButtonStates (w089-w090) - safe since Admin and Game never run simultaneously
           rem Primary alias for reads (most common access pattern)
           dim characterSelectCharacterIndex = r122
           dim characterSelectCharacterIndex_W = w122
@@ -795,7 +795,7 @@
           rem   FramesPerSecond (1 second at current TV standard)
           rem Array accessible as harpyFlightEnergy[0] through
           rem   harpyFlightEnergy[3]
-          dim harpyFlightEnergy_R = r089
+          dim harpyFlightEnergy_R = r091
 
           rem Last flap frame tracker for rapid tap detection (SCRAM)
           dim harpyLastFlapFrame_W = w101

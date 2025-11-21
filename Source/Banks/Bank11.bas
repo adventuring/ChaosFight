@@ -29,6 +29,13 @@ end
           asm
 PlayerCollisionResolutionEnd
             echo "// Bank 11: ", [PlayerCollisionResolutionEnd - PlayerCollisionResolutionStart]d, " bytes = PlayerCollisionResolution"
+          asm
+BudgetedPlayerCollisionsStart
+end
+#include "Source/Routines/BudgetedPlayerCollisions.bas"
+          asm
+BudgetedPlayerCollisionsEnd
+            echo "// Bank 11: ", [BudgetedPlayerCollisionsEnd - BudgetedPlayerCollisionsStart]d, " bytes = BudgetedPlayerCollisions"
 DisplayHealthStart
 end
 #include "Source/Routines/DisplayHealth.bas"

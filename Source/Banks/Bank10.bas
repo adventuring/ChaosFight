@@ -25,13 +25,6 @@ end
 PlayerPlayfieldCollisionsEnd
             echo "// Bank 10: ", [PlayerPlayfieldCollisionsEnd - PlayerPlayfieldCollisionsStart]d, " bytes = PlayerPlayfieldCollisions"
           asm
-BudgetedPlayerCollisionsStart
-end
-#include "Source/Routines/BudgetedPlayerCollisions.bas"
-          asm
-BudgetedPlayerCollisionsEnd
-            echo "// Bank 10: ", [BudgetedPlayerCollisionsEnd - BudgetedPlayerCollisionsStart]d, " bytes = BudgetedPlayerCollisions"
-          asm
 CharacterAttacksDispatchStart
 end
 #include "Source/Routines/CharacterAttacksDispatch.bas"
@@ -53,12 +46,33 @@ end
 HarpyAttackEnd
             echo "// Bank 10: ", [HarpyAttackEnd - HarpyAttackStart]d, " bytes = HarpyAttack"
           asm
+UrsuloAttackStart
+end
+#include "Source/Routines/UrsuloAttack.bas"
+          asm
+UrsuloAttackEnd
+            echo "// Bank 10: ", [UrsuloAttackEnd - UrsuloAttackStart]d, " bytes = UrsuloAttack"
+          asm
+ShamoneAttackStart
+end
+#include "Source/Routines/ShamoneAttack.bas"
+          asm
+ShamoneAttackEnd
+            echo "// Bank 10: ", [ShamoneAttackEnd - ShamoneAttackStart]d, " bytes = ShamoneAttack"
+          asm
 DispatchCharacterJumpStart
 end
 #include "Source/Routines/DispatchCharacterJump.bas"
           asm
 DispatchCharacterJumpEnd
             echo "// Bank 10: ", [DispatchCharacterJumpEnd - DispatchCharacterJumpStart]d, " bytes = DispatchCharacterJump"
+          asm
+CheckRoboTitoStretchMissileCollisionsStart
+end
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
+          asm
+CheckRoboTitoStretchMissileCollisionsEnd
+            echo "// Bank 10: ", [CheckRoboTitoStretchMissileCollisionsEnd - CheckRoboTitoStretchMissileCollisionsStart]d, " bytes = CheckRoboTitoStretchMissileCollisions"
 
 Bank10CodeEnds
 end

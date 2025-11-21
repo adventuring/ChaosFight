@@ -29,13 +29,6 @@ Bank7DataEnds
 end
 
           asm
-CheckRoboTitoStretchMissileCollisionsStart
-end
-#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
-          asm
-CheckRoboTitoStretchMissileCollisionsEnd
-            echo "// Bank 7: ", [CheckRoboTitoStretchMissileCollisionsEnd - CheckRoboTitoStretchMissileCollisionsStart]d, " bytes = CheckRoboTitoStretchMissileCollisions"
-          asm
 BudgetedMissileCollisionsStart
 end
 #include "Source/Routines/BudgetedMissileCollisions.bas"
@@ -75,19 +68,5 @@ end
           asm
 PerformMeleeAttackEnd
             echo "// Bank 7: ", [PerformMeleeAttackEnd - PerformMeleeAttackStart]d, " bytes = PerformMeleeAttack"
-          asm
-UrsuloAttackStart
-end
-#include "Source/Routines/UrsuloAttack.bas"
-          asm
-UrsuloAttackEnd
-            echo "// Bank 7: ", [UrsuloAttackEnd - UrsuloAttackStart]d, " bytes = UrsuloAttack"
-          asm
-ShamoneAttackStart
-end
-#include "Source/Routines/ShamoneAttack.bas"
-          asm
-ShamoneAttackEnd
-            echo "// Bank 7: ", [ShamoneAttackEnd - ShamoneAttackStart]d, " bytes = ShamoneAttack"
 Bank7CodeEnds
 end

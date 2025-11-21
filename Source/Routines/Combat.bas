@@ -1,6 +1,27 @@
           rem ChaosFight - Source/Routines/Combat.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem COMBAT SYSTEM - Generic Subroutines Using Player Arrays
+GetWeightBasedDamage
+          rem Calculate damage value based on character weight
+          rem Issue #1149: Deduplicated weight-tier calculation
+          rem
+          rem Input: temp1 = character index (0-31)
+          rem        CharacterWeights[] (global data table) = character weights
+          rem
+          rem Output: temp2 = damage value (12, 18, or 22)
+          rem
+          rem Mutates: temp3 (used for weight lookup), temp2 (return value)
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Must be colocated with ApplyDamage
+          rem Weight tiers: <=15 = 12 damage, <=25 = 18 damage, >25 = 22 damage
+          let temp3 = CharacterWeights[temp1]
+          if temp3 <= 15 then temp2 = 12 : return
+          if temp3 <= 25 then temp2 = 18 : return
+          let temp2 = 22
+          return
+
 ApplyDamage
           asm
 ApplyDamage

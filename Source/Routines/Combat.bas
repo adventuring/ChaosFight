@@ -372,23 +372,35 @@ ProjectileHitbox
           return
 
 AreaHitbox
-          rem Area hitbox covers radius around attacker (to be
-          rem implemented)
+          rem Area hitbox covers radius around attacker center
+          rem Issue #1148: Implement radius-based area-of-effect hitbox
           rem
-          rem Input: None (placeholder)
+          rem Input: attackerID (from CalculateAttackHitbox), playerX[],
+          rem playerY[] (global arrays) = attacker position
           rem
-          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
-          rem set to 0 (placeholder)
+          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W,
+          rem cachedHitboxBottom_W set to area bounds (24px radius from center)
           rem
-          rem Mutates: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
-          rem (set to 0)
+          rem Mutates: temp2 (used for center calculation), cachedHitboxLeft_W,
+          rem cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with CalculateAttackHitbox
-          let cachedHitboxLeft_W = 0
-          let cachedHitboxRight_W = 0
-          let cachedHitboxTop_W = 0
-          let cachedHitboxBottom_W = 0
+          rem Area radius: 24 pixels (1.5× sprite width) centered on attacker
+          rem Calculate attacker center (sprite midpoint)
+          let temp2 = playerX[attackerID] + 8
+          rem Center X = playerX + half sprite width
+          let cachedHitboxLeft_W = temp2 - 24
+          rem Left edge: center - radius
+          let cachedHitboxRight_W = temp2 + 24
+          rem Right edge: center + radius
+          let temp2 = playerY[attackerID] + 8
+          rem Center Y = playerY + half sprite height
+          let cachedHitboxTop_W = temp2 - 24
+          rem Top edge: center - radius
+          let cachedHitboxBottom_W = temp2 + 24
+          rem Bottom edge: center + radius
           return
 
 ProcessAttackerAttacks
@@ -422,6 +434,9 @@ end
           rem via next). Caches hitbox once per attacker to avoid
           rem recalculating for each defender. Skips attacker as
           rem defender and dead players
+          rem Issue #1148: Skip ranged attackers (handled by missile system)
+          let temp1 = playerAttackType_R[attackerID]
+          if temp1 = RangedAttack then return
           rem Cache hitbox for this attacker (calculated once, used for
           rem all
           gosub CalculateAttackHitbox

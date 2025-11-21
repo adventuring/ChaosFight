@@ -26,32 +26,26 @@ end
           rem Input: temp1 = attacker player index (0-3)
           rem        missileActive (global) = missile active flags
           rem        playerCharacter[] (global) = character types
-          rem Output: temp4 = hit player index (0-3) if hit, 0 if no hit
+          rem Output: temp4 = hit player index (0-3) if hit, MissileHitNotFound otherwise
           rem Mutates: temp1-temp6, temp4
           rem
-          rem Called Routines: GetMissileWidth (bank7) - gets missile
-          rem width to determine if AOE or visible,
-          rem CheckVisibleMissileCollision (tail call) - if visible
-          rem missile, CheckAOECollision (goto) - if AOE attack
+          rem Called Routines: CheckVisibleMissileCollision (tail call) - if visible
+          rem missile, CheckAOECollision (goto) - if AOE attack,
+          rem CheckPlayersAgainstCachedHitbox - shared defender scan
           rem Constraints: None
           rem Optimized: Calculate missile active bit flag with formula
-          rem Bit flag: 1 << temp1 (1, 2, 4, 8 for players 0, 1, 2, 3)
-          let temp6 = 1
-          for temp4 = 0 to temp1 - 1
-          let temp6 = temp6 * 2
-          next
-          let temp4 = missileActive & temp6
-          if temp4 = 0 then return
+          rem Bit flag: BitMask[playerIndex] (1, 2, 4, 8 for players 0-3)
+          let temp4 = MissileHitNotFound
+          let temp6 = BitMask[temp1]
+          let temp5 = missileActive & temp6
+          if temp5 = 0 then return
           rem No active missile
 
-          let temp5 = playerCharacter[temp1]
-          rem Get character type to determine missile properties
+          let characterIndex_W = playerCharacter[temp1]
+          rem Cache character index for downstream routines
 
-          rem Check if this is a visible missile or AOE attack
-          rem Read missile width from character data (inlined for performance)
-          let temp6 = CharacterMissileWidths[temp5]
-          rem Missile width (0 = AOE, >0 = visible missile)
-
+          rem Visible missile when width > 0, otherwise treat as AOE
+          let temp6 = CharacterMissileWidths[characterIndex_R]
           if temp6 = 0 then goto CheckAOECollision
           goto CheckVisibleMissileCollision
           rem tail call
@@ -88,46 +82,21 @@ end
           rem Mutates: temp1-temp6 (used for calculations), temp4
           rem (return value)
           rem
-          rem Called Routines: GetMissileWidth - gets missile width,
-          rem GetMissileHeight - gets missile height
+          rem Called Routines: CheckPlayersAgainstCachedHitbox - scans defenders
           rem Constraints: None
-          let temp2 = missileX[temp1]
-          rem Get missile X/Y position
-          let temp3 = missileY_R[temp1]
+          let characterIndex_W = playerCharacter[temp1]
+          rem Ensure character index matches current attacker
 
-          rem Get missile size from character data (inlined for performance)
-          let temp5 = playerCharacter[temp1]
-          rem Get character type from player
-          rem Use characterType as index (preserve attackerIndex)
-          let temp6 = CharacterMissileWidths[temp5]
-          rem Missile width (inlined)
-          let temp3 = CharacterMissileHeights[temp5]
-          rem Missile height (inlined)
-          rem Restore missileX/Y after width/height lookup
+          let cachedHitboxLeft_W = missileX[temp1]
+          let cachedHitboxTop_W = missileY_R[temp1]
 
-          rem Missile bounding box:
-          rem   Left:   missileX
-          rem   Right:  missileX + missileWidth
-          rem   Top:    missileY
-          rem   Bottom: missileY + missileHeight
+          rem Derive hitbox bounds from missile dimensions
+          let temp6 = CharacterMissileWidths[characterIndex_R]
+          let cachedHitboxRight_W = cachedHitboxLeft_R + temp6
+          let temp6 = CharacterMissileHeights[characterIndex_R]
+          let cachedHitboxBottom_W = cachedHitboxTop_R + temp6
 
-          rem Optimized: Loop through all players to check collisions instead of individual blocks
-          let temp4 = 255
-          rem Default: no hit
-          for temp5 = 0 to 3
-          if temp5 = temp1 then goto NextPlayerCheck
-          rem Skip owner
-          if playerHealth[temp5] = 0 then goto NextPlayerCheck
-          rem Skip dead players
-          if temp2 >= playerX[temp5] + PlayerSpriteHalfWidth then goto NextPlayerCheck
-          if temp2 + temp6 <= playerX[temp5] then goto NextPlayerCheck
-          if temp3 >= playerY[temp5] + PlayerSpriteHeight then goto NextPlayerCheck
-          if temp3 + temp3 <= playerY[temp5] then goto NextPlayerCheck
-          let temp4 = temp5
-          rem Hit detected!
-          return
-NextPlayerCheck
-          next
+          gosub CheckPlayersAgainstCachedHitbox
           return
 
 CheckAOECollision
@@ -169,43 +138,31 @@ end
           rem AOE collision facing left, CheckBernieAOE - special case
           rem for Bernie (hits both directions)
           rem Constraints: Bernie (character 0) hits both left AND right simultaneously
-          let temp5 = playerCharacter[temp1]
+          let characterIndex_W = playerCharacter[temp1]
+          let temp5 = characterIndex_R
           rem Get attacker character type
 
           rem Check if this is Bernie (character 0)
           rem Bernie attacks both left AND right, so check both
           rem directions
-          if temp5 = 0 then CheckBernieAOE
+          if temp5 = CharacterBernie then CheckBernieAOE
 
           let temp6 = playerState[temp1] & PlayerStateBitFacing
           rem Normal character: Check only facing direction
-          if temp6 = 0 then CheckAOELeftDirection
-          gosub CheckAOEDirection_Right
-          return
-CheckAOELeftDirection
-          gosub CheckAOEDirection_Left
-          return
+          if temp6 = 0 then goto CheckAOEDirection_Left
+          goto CheckAOEDirection_Right
 
 CheckBernieAOE
           asm
 CheckBernieAOE
 end
-          rem Bernie: Check right direction first
-          gosub CheckAOEDirection_Right
+          rem Bernie swings both directions every frame
+          gosub CacheAOERightHitbox
+          gosub CheckPlayersAgainstCachedHitbox
+          if temp4 <> MissileHitNotFound then return
 
-          rem If hit found (hitPlayer != 255), return early
-          rem Use skip-over pattern: if hitPlayer = 255, skip to left
-          rem check
-          if temp4 = 255 then CheckBernieAOELeft
-          return
-
-CheckBernieAOELeft
-          asm
-CheckBernieAOELeft
-end
-          rem Check left direction
-          gosub CheckAOEDirection_Left
-
+          gosub CacheAOELeftHitbox
+          gosub CheckPlayersAgainstCachedHitbox
           return
           
 CheckAOEDirection_Right
@@ -239,83 +196,8 @@ end
           rem
           rem Called Routines: None
           rem Constraints: None
-          let temp2 = playerX[temp1]
-          rem Get attacker position
-          let temp3 = playerY[temp1]
-
-          rem Calculate AOE bounds
-          rem Read AOE offset from character data
-          let temp5 = playerCharacter[temp1]
-          rem Get character-specific AOE offset
-          let aoeOffset_W = CharacterAOEOffsets[temp5]
-          rem AOE_X = playerX + offset (facing right formula)
-          let temp2 = temp2 + aoeOffset_R
-          let temp6 = 8
-          let temp3 = 16
-          rem AOE width
-          rem AOE height
-
-          rem AOE bounding box:
-          rem   Left:   aoeX
-          rem   Right:  aoeX + aoeWidth
-          rem   Top:    playerY
-          rem   Bottom: playerY + aoeHeight
-
-          let temp4 = 255
-          rem Check each player (except attacker)
-
-          rem Check Player 1 (players are 16px wide - double-width
-          rem NUSIZ)
-          if temp1 = 0 then DoneAOEPlayer0
-          if playerHealth[0] = 0 then DoneAOEPlayer0
-          if temp2 >= playerX[0] + 16 then DoneAOEPlayer0
-          rem AOE left edge past player right edge
-          if temp2 + temp6 <= playerX[0] then DoneAOEPlayer0
-          rem AOE right edge before player left edge
-          if temp3 >= playerY[0] + 16 then DoneAOEPlayer0
-          rem AOE top edge past player bottom edge
-          if temp3 + temp3 <= playerY[0] then DoneAOEPlayer0
-          let temp4 = 0
-          rem AOE bottom edge before player top edge
-          return
-DoneAOEPlayer0
-
-          rem Check Player 2
-
-          if temp1 = 1 then DoneAOEPlayer1
-          if playerHealth[1] = 0 then DoneAOEPlayer1
-          if temp2 >= playerX[1] + 16 then DoneAOEPlayer1
-          if temp2 + temp6 <= playerX[1] then DoneAOEPlayer1
-          if temp3 >= playerY[1] + 16 then DoneAOEPlayer1
-          if temp3 + temp3 <= playerY[1] then DoneAOEPlayer1
-          let temp4 = 1
-          return
-DoneAOEPlayer1
-
-          rem Check Player 3
-
-          if temp1 = 2 then DoneAOEPlayer2
-          if playerHealth[2] = 0 then DoneAOEPlayer2
-          if temp2 >= playerX[2] + 16 then DoneAOEPlayer2
-          if temp2 + temp6 <= playerX[2] then DoneAOEPlayer2
-          if temp3 >= playerY[2] + 16 then DoneAOEPlayer2
-          if temp3 + temp3 <= playerY[2] then DoneAOEPlayer2
-          let temp4 = 2
-          return
-DoneAOEPlayer2
-
-          rem Check Player 4
-
-          if temp1 = 3 then DoneAOEPlayer3
-          if playerHealth[3] = 0 then DoneAOEPlayer3
-          if temp2 >= playerX[3] + 16 then DoneAOEPlayer3
-          if temp2 + temp6 <= playerX[3] then DoneAOEPlayer3
-          if temp3 >= playerY[3] + 16 then DoneAOEPlayer3
-          if temp3 + temp3 <= playerY[3] then DoneAOEPlayer3
-          let temp4 = 3
-          return
-DoneAOEPlayer3
-
+          gosub CacheAOERightHitbox
+          gosub CheckPlayersAgainstCachedHitbox
           return
 
 CheckAOEDirection_Left
@@ -349,87 +231,57 @@ end
           rem
           rem Called Routines: None
           rem Constraints: None
-          let temp2 = playerX[temp1]
-          rem Get attacker position
-          let temp3 = playerY[temp1]
-
-          rem Calculate AOE bounds for facing left
-          rem Read AOE offset from character data
-          let temp5 = playerCharacter[temp1]
-          rem Get character-specific AOE offset
-          let aoeOffset_W = CharacterAOEOffsets[temp5]
-          rem AOE_X = playerX + 7 - offset (facing left formula)
-          let temp2 = temp2 + PlayerSpriteWidth - 1 - aoeOffset_R
-          let temp6 = 8
-          let temp3 = 16
-          rem AOE width
-          rem AOE height
-
-          rem AOE extends to the left, so AOE goes from (aoeX -
-          let temp2 = temp2 - temp6
-          rem   aoeWidth) to aoeX
-
-          rem AOE bounding box:
-          rem   Left:   aoeX
-          rem   Right:  aoeX + aoeWidth
-          rem   Top:    playerY
-          rem   Bottom: playerY + aoeHeight
-
-          let temp4 = 255
-          rem Check each player (except attacker)
-
-          rem Check Player 1 (players are 16px wide - double-width
-          rem NUSIZ)
-          if temp1 = 0 then CheckPlayer2
-          if playerHealth[0] = 0 then CheckPlayer2
-          if temp2 >= playerX[0] + 16 then CheckPlayer2
-          rem AOE left edge past player right edge
-          if temp2 + temp6 <= playerX[0] then CheckPlayer2
-          rem AOE right edge before player left edge
-          if temp3 >= playerY[0] + 16 then CheckPlayer2
-          rem AOE top edge past player bottom edge
-          if temp3 + temp3 <= playerY[0] then CheckPlayer2
-          let temp4 = 0
-          rem AOE bottom edge before player top edge
+          gosub CacheAOELeftHitbox
+          gosub CheckPlayersAgainstCachedHitbox
           return
-CheckPlayer2
 
-          rem Check Player 2
-
-          if temp1 = 1 then DoneThirdPlayer1
-          if playerHealth[1] = 0 then DoneThirdPlayer1
-          if temp2 >= playerX[1] + 16 then DoneThirdPlayer1
-          if temp2 + temp6 <= playerX[1] then DoneThirdPlayer1
-          if temp3 >= playerY[1] + 16 then DoneThirdPlayer1
-          if temp3 + temp3 <= playerY[1] then DoneThirdPlayer1
-          let temp4 = 1
+CacheAOERightHitbox
+          asm
+CacheAOERightHitbox
+end
+          rem Cache right-facing AOE bounds for current attacker
+          rem Input: temp1 = attacker index, characterIndex_R = character ID
+          rem Output: cachedHitboxLeft/Right/Top/Bottom populated
+          let aoeOffset_W = CharacterAOEOffsets[characterIndex_R]
+          let cachedHitboxLeft_W = playerX[temp1] + aoeOffset_R
+          let cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
+          let cachedHitboxTop_W = playerY[temp1]
+          let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
           return
-DoneThirdPlayer1
 
-          rem Check Player 3
-
-          if temp1 = 2 then DoneThirdPlayer2
-          if playerHealth[2] = 0 then DoneThirdPlayer2
-          if temp2 >= playerX[2] + 16 then DoneThirdPlayer2
-          if temp2 + temp6 <= playerX[2] then DoneThirdPlayer2
-          if temp3 >= playerY[2] + 16 then DoneThirdPlayer2
-          if temp3 + temp3 <= playerY[2] then DoneThirdPlayer2
-          let temp4 = 2
+CacheAOELeftHitbox
+          asm
+CacheAOELeftHitbox
+end
+          rem Cache left-facing AOE bounds for current attacker
+          rem Input: temp1 = attacker index, characterIndex_R = character ID
+          rem Output: cachedHitboxLeft/Right/Top/Bottom populated
+          let aoeOffset_W = CharacterAOEOffsets[characterIndex_R]
+          let cachedHitboxRight_W = playerX[temp1] + PlayerSpriteWidth - 1 - aoeOffset_R
+          let cachedHitboxLeft_W = cachedHitboxRight_R - PlayerSpriteHalfWidth
+          let cachedHitboxTop_W = playerY[temp1]
+          let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
           return
-DoneThirdPlayer2
 
-          rem Check Player 4
-
-          if temp1 = 3 then DoneThirdPlayer3
-          if playerHealth[3] = 0 then DoneThirdPlayer3
-          if temp2 >= playerX[3] + 16 then DoneThirdPlayer3
-          if temp2 + temp6 <= playerX[3] then DoneThirdPlayer3
-          if temp3 >= playerY[3] + 16 then DoneThirdPlayer3
-          if temp3 + temp3 <= playerY[3] then DoneThirdPlayer3
-          let temp4 = 3
+CheckPlayersAgainstCachedHitbox
+          asm
+CheckPlayersAgainstCachedHitbox
+end
+          rem Shared defender scan for missile/AOE collisions
+          rem Input: temp1 = attacker index, cachedHitbox* = attacker bounds
+          rem Output: temp4 = hit player index or MissileHitNotFound
+          let temp4 = MissileHitNotFound
+          for temp2 = 0 to 3
+          if temp2 = temp1 then CPB_NextPlayer
+          if playerHealth[temp2] = 0 then CPB_NextPlayer
+          if playerX[temp2] + PlayerSpriteWidth <= cachedHitboxLeft_R then CPB_NextPlayer
+          if playerX[temp2] >= cachedHitboxRight_R then CPB_NextPlayer
+          if playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R then CPB_NextPlayer
+          if playerY[temp2] >= cachedHitboxBottom_R then CPB_NextPlayer
+          let temp4 = temp2
           return
-DoneThirdPlayer3
-
+CPB_NextPlayer
+          next
           return
 
 MissileCollPF

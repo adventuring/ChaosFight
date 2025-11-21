@@ -140,7 +140,8 @@ The game supports these sprite configurations per player:
 
 ### Physics System
 - Gravity and momentum handling (`Source/Routines/PlayerPhysicsGravity.bas`, bank 8)
-- Collision, boundary, and wrap logic (`Source/Routines/PlayerPhysicsCollisions.bas`, bank 10)
+- Boundary wrap and screen clamp logic (`Source/Routines/PlayerBoundaryCollisions.bas`, bank 10)
+- Playfield collision sampling (`Source/Routines/PlayerPlayfieldCollisions.bas`, bank 10)
 - Weight-based jump height, fall damage mitigation, knockback resistance, and recovery frames
 
 ### Animation System (`Source/Routines/AnimationSystem.bas`)

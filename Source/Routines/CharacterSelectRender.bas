@@ -1,6 +1,24 @@
           rem ChaosFight - Source/Routines/CharacterSelectRender.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
+          rem Player preview coordinate tables
+          data SelectPreviewX
+            56, 104, 56, 104
+end
+
+          data SelectPreviewY
+            40, 40, 80, 80
+end
+
+          rem Player color tables for normal and handicap lock states
+          data SelectPlayerColorNormal
+            ColIndigo(12), ColRed(12), ColYellow(12), ColTurquoise(12)
+end
+
+          data SelectPlayerColorHandicap
+            ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
+end
+
 SelectDrawScreen
           asm
 SelectDrawScreen
@@ -46,25 +64,35 @@ PlayerPreviewSetPosition
 PlayerPreviewSetPosition
 end
           rem Position player preview sprites in the four select quadrants
-          if temp1 = 0 then goto PlayerPreviewSetPositionP0
-          if temp1 = 1 then goto PlayerPreviewSetPositionP1
-          if temp1 = 2 then goto PlayerPreviewSetPositionP2
-          goto PlayerPreviewSetPositionP3
-PlayerPreviewSetPositionP0
-          player0x = 56
-          player0y = 40
+          let temp2 = SelectPreviewX[temp1]
+          let temp3 = SelectPreviewY[temp1]
+          gosub SelectApplyPreviewPosition
           return
-PlayerPreviewSetPositionP1
-          player1x = 104
-          player1y = 40
+
+SelectApplyPreviewPosition
+          asm
+SelectApplyPreviewPosition
+end
+          rem Input: temp1 = player index, temp2 = x position, temp3 = y position
+          if temp1 = 0 then goto SelectApplyPreviewPositionP0
+          if temp1 = 1 then goto SelectApplyPreviewPositionP1
+          if temp1 = 2 then goto SelectApplyPreviewPositionP2
+          goto SelectApplyPreviewPositionP3
+SelectApplyPreviewPositionP0
+          player0x = temp2
+          player0y = temp3
           return
-PlayerPreviewSetPositionP2
-          player2x = 56
-          player2y = 80
+SelectApplyPreviewPositionP1
+          player1x = temp2
+          player1y = temp3
           return
-PlayerPreviewSetPositionP3
-          player3x = 104
-          player3y = 80
+SelectApplyPreviewPositionP2
+          player2x = temp2
+          player2y = temp3
+          return
+SelectApplyPreviewPositionP3
+          player3x = temp2
+          player3y = temp3
           return
 
 SelectHideLowerPlayerPreviews
@@ -83,9 +111,7 @@ end
           rem Load preview sprite and base color for admin screens
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
-          if currentCharacter = NoCharacter then goto RenderPlayerPreviewDefault
-          if currentCharacter = CPUCharacter then goto RenderPlayerPreviewDefault
-          if currentCharacter = RandomCharacter then goto RenderPlayerPreviewDefault
+          if currentCharacter >= RandomCharacter then goto RenderPlayerPreviewDefault
           let temp4 = characterSelectPlayerAnimationFrame_R[currentPlayer]
           let temp1 = currentPlayer
           gosub GetPlayerLocked
@@ -99,17 +125,24 @@ RenderPlayerPreviewDefault
           let temp3 = ActionIdle
 RenderPlayerPreviewInvoke
           gosub LoadCharacterSprite bank16
+          let temp2 = SelectPlayerColorNormal[currentPlayer]
+          gosub SelectApplyPlayerColor
           let temp2 = 0
           let temp3 = 0
-PlayerPreviewApplyColor
-          rem Apply base color returned in temp6 to the appropriate sprite register
-          if currentPlayer = 0 then COLUP0 = ColIndigo(12)
+          return
+
+SelectApplyPlayerColor
+          asm
+SelectApplyPlayerColor
+end
+          rem Input: currentPlayer selects target register, temp2 = color value
+          if currentPlayer = 0 then COLUP0 = temp2
           if currentPlayer = 0 then return
-          if currentPlayer = 1 then _COLUP1 = ColRed(12)
+          if currentPlayer = 1 then _COLUP1 = temp2
           if currentPlayer = 1 then return
-          if currentPlayer = 2 then COLUP2 = ColYellow(12)
+          if currentPlayer = 2 then COLUP2 = temp2
           if currentPlayer = 2 then return
-          COLUP3 = ColTurquoise(12)
+          COLUP3 = temp2
           return
 
 SelectSetPlayerColorUnlocked
@@ -117,13 +150,8 @@ SelectSetPlayerColorUnlocked
 SelectSetPlayerColorUnlocked
 end
           rem Override sprite color to indicate unlocked state (white)
-          if currentPlayer = 0 then COLUP0 = ColGrey(14)
-          if currentPlayer = 0 then return
-          if currentPlayer = 1 then _COLUP1 = ColGrey(14)
-          if currentPlayer = 1 then return
-          if currentPlayer = 2 then COLUP2 = ColGrey(14)
-          if currentPlayer = 2 then return
-          COLUP3 = ColGrey(14)
+          let temp2 = ColGrey(14)
+          gosub SelectApplyPlayerColor
           return
 
 SelectSetPlayerColorHandicap
@@ -132,13 +160,8 @@ SelectSetPlayerColorHandicap
 
 end
           rem Override sprite color to indicate handicap lock (dim player color)
-          if currentPlayer = 0 then COLUP0 = ColIndigo(6)
-          if currentPlayer = 0 then return
-          if currentPlayer = 1 then _COLUP1 = ColRed(6)
-          if currentPlayer = 1 then return
-          if currentPlayer = 2 then COLUP2 = ColYellow(6)
-          if currentPlayer = 2 then return
-          COLUP3 = ColTurquoise(6)
+          let temp2 = SelectPlayerColorHandicap[currentPlayer]
+          gosub SelectApplyPlayerColor
           return
 
 SelectUpdateAnimations

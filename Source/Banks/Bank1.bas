@@ -319,5 +319,3 @@ end
 Bank1DataEndsConst SET Bank1DataEnds
 Bank1CodeEndsConst SET Bank1CodeEnds
 end
-#define Bank1DataEnds Bank1DataEndsConst
-#define Bank1CodeEnds Bank1CodeEndsConst

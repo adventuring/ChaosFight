@@ -102,5 +102,21 @@ end
           asm
 MovePlayerToTargetEnd
             echo "// Bank 6: ", [MovePlayerToTargetEnd - MovePlayerToTargetStart]d, " bytes = MovePlayerToTarget"
+
+          asm
+FramePhaseSchedulerStart
+end
+#include "Source/Routines/FramePhaseScheduler.bas"
+          asm
+FramePhaseSchedulerEnd
+            echo "// Bank 6: ", [FramePhaseSchedulerEnd - FramePhaseSchedulerStart]d, " bytes = FramePhaseScheduler"
+
+          asm
+BudgetedHealthBarsStart
+end
+#include "Source/Routines/BudgetedHealthBars.bas"
+          asm
+BudgetedHealthBarsEnd
+            echo "// Bank 6: ", [BudgetedHealthBarsEnd - BudgetedHealthBarsStart]d, " bytes = BudgetedHealthBars"
 Bank6CodeEnds
 end

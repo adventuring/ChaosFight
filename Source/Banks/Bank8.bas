@@ -85,6 +85,13 @@ end
           asm
 ProcessJumpInputEnd
             echo "// Bank 8: ", [ProcessJumpInputEnd - ProcessJumpInputStart]d, " bytes = ProcessJumpInput"
+          asm
+BudgetedPlayerCollisionsStart
+end
+#include "Source/Routines/BudgetedPlayerCollisions.bas"
+          asm
+BudgetedPlayerCollisionsEnd
+            echo "// Bank 8: ", [BudgetedPlayerCollisionsEnd - BudgetedPlayerCollisionsStart]d, " bytes = BudgetedPlayerCollisions"
 MissileCollisionStart
 end
 #include "Source/Routines/MissileCollision.bas"

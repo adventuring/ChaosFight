@@ -12,30 +12,6 @@ Bank10DataEnds
 end
 
           asm
-FramePhaseSchedulerStart
-end
-#include "Source/Routines/FramePhaseScheduler.bas"
-          asm
-FramePhaseSchedulerEnd
-            echo "// Bank 10: ", [FramePhaseSchedulerEnd - FramePhaseSchedulerStart]d, " bytes = FramePhaseScheduler"
-
-          asm
-BudgetedHealthBarsStart
-end
-#include "Source/Routines/BudgetedHealthBars.bas"
-          asm
-BudgetedHealthBarsEnd
-            echo "// Bank 10: ", [BudgetedHealthBarsEnd - BudgetedHealthBarsStart]d, " bytes = BudgetedHealthBars"
-
-          asm
-BudgetedPlayerCollisionsStart
-end
-#include "Source/Routines/BudgetedPlayerCollisions.bas"
-          asm
-BudgetedPlayerCollisionsEnd
-            echo "// Bank 10: ", [BudgetedPlayerCollisionsEnd - BudgetedPlayerCollisionsStart]d, " bytes = BudgetedPlayerCollisions"
-
-          asm
 PlayerBoundaryCollisionsStart
 end
 #include "Source/Routines/PlayerBoundaryCollisions.bas"
@@ -105,12 +81,5 @@ end
 DispatchCharacterJumpEnd
             echo "// Bank 10: ", [DispatchCharacterJumpEnd - DispatchCharacterJumpStart]d, " bytes = DispatchCharacterJump"
 
-          asm
-BudgetedMissileCollisionsStart
-end
-#include "Source/Routines/BudgetedMissileCollisions.bas"
-          asm
-BudgetedMissileCollisionsEnd
-            echo "// Bank 10: ", [BudgetedMissileCollisionsEnd - BudgetedMissileCollisionsStart]d, " bytes = BudgetedMissileCollisions"
 Bank10CodeEnds
 end

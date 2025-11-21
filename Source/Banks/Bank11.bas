@@ -41,20 +41,6 @@ end
           asm
 HealthBarSystemEnd
             echo "// Bank 11: ", [HealthBarSystemEnd - HealthBarSystemStart]d, " bytes = HealthBarSystem"
-          asm
-FramePhaseSchedulerStart
-end
-#include "Source/Routines/FramePhaseScheduler.bas"
-          asm
-FramePhaseSchedulerEnd
-            echo "// Bank 11: ", [FramePhaseSchedulerEnd - FramePhaseSchedulerStart]d, " bytes = FramePhaseScheduler"
-          asm
-BudgetedHealthBarsStart
-end
-#include "Source/Routines/BudgetedHealthBars.bas"
-          asm
-BudgetedHealthBarsEnd
-            echo "// Bank 11: ", [BudgetedHealthBarsEnd - BudgetedHealthBarsStart]d, " bytes = BudgetedHealthBars"
 FallingAnimationStart
 end
 #include "Source/Routines/FallingAnimation.bas"

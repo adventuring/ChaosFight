@@ -1,8 +1,10 @@
           rem ChaosFight - Source/Routines/ColdStart.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-game
 ColdStart
+          asm
+ColdStart
+end
           rem Cold Start Initialization
           rem
           rem Proper cold start initialization sequence for batariBASIC.

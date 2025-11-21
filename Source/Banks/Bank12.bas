@@ -26,6 +26,10 @@ end
           asm
 Bank12AfterHandleFlyingCharacterMovement
 end
+#include "Source/Routines/HandleGuardInput.bas"
+          asm
+Bank12AfterHandleGuardInput
+end
 #include "Source/Routines/CharacterControlsJump.bas"
           asm
 Bank12AfterCharacterControlsJump
@@ -44,7 +48,8 @@ Bank12CodeEnds
            echo "// Bank 12: ", [Bank12AfterUpdateAttackCooldowns - Bank12DataEnds]d, " bytes = UpdateAttackCooldowns"
            echo "// Bank 12: ", [Bank12AfterCharacterDamage - Bank12AfterUpdateAttackCooldowns]d, " bytes = CharacterDamage"
            echo "// Bank 12: ", [Bank12AfterHandleFlyingCharacterMovement - Bank12AfterCharacterDamage]d, " bytes = HandleFlyingCharacterMovement"
-           echo "// Bank 12: ", [Bank12AfterCharacterControlsJump - Bank12AfterHandleFlyingCharacterMovement]d, " bytes = CharacterControlsJump"
+           echo "// Bank 12: ", [Bank12AfterHandleGuardInput - Bank12AfterHandleFlyingCharacterMovement]d, " bytes = HandleGuardInput"
+           echo "// Bank 12: ", [Bank12AfterCharacterControlsJump - Bank12AfterHandleGuardInput]d, " bytes = CharacterControlsJump"
            echo "// Bank 12: ", [Bank12AfterAnimationSystem - Bank12AfterCharacterControlsJump]d, " bytes = AnimationSystem"
            echo "// Bank 12: ", [Bank12AfterDeactivatePlayerMissiles - Bank12AfterAnimationSystem]d, " bytes = DeactivatePlayerMissiles"
 end

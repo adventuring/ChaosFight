@@ -453,6 +453,9 @@ NextDefender
           rem loop
 
 ProcessAllAttacks
+          asm
+ProcessAllAttacks
+end
           rem Process all attacks for all players
           rem Process all attacks for all players (orchestrates attack
           rem processing for all active players)

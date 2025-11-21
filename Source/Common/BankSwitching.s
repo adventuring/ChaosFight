@@ -87,7 +87,7 @@ EFSC_Header:
 Reset:
           lda #14
           sta bankswitch_hotspot ; switch to bank 14
-          jmp MainLoop
+          jmp ColdStart
 
           ; Reset vectors at $fffc-$ffff
           ; $fffc-$fffd: Reset vector

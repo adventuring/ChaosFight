@@ -14,11 +14,11 @@ end
           rem Mutates: playerState[] (animation state set), missile
           rem state (via PerformMeleeAttack)
           rem
-          rem Called Routines: PerformMeleeAttack (tail call via goto) -
+          rem Called Routines: PerformMeleeAttack (bank10, tail call via goto) -
           rem executes melee attack, spawns missile
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack (claw swipe)
-          gosub PerformMeleeAttack bank7
+          gosub PerformMeleeAttack bank10
           return
 

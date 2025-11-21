@@ -20,7 +20,7 @@ end
           rem Mutates: temp2, temp3, temp4, temp6, playerCharacter[],
           rem         playerY[], characterStateFlags_W[]
           rem
-          rem Called Routines: BernieJump (bank10), HarpyJump (bank10), PlayfieldRead (bank10)
+          rem Called Routines: BernieJump (bank12), HarpyJump (bank12), PlayfieldRead (bank16)
           rem
           rem Constraints: Must be colocated with PUI_UseJoy0, PUI_RoboTitoAscend helpers
           rem Determine which joy port to use based on player index

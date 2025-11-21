@@ -796,7 +796,7 @@ HGI_Done1
           if !joy0fire then goto InputDoneLeftPortAttack
           if (playerState[temp1] & PlayerStateBitFacing) then goto InputDoneLeftPortAttack
           let temp4 = playerCharacter[temp1]
-          gosub DispatchCharacterAttack bank7
+          gosub DispatchCharacterAttack bank10
 InputDoneLeftPortAttack
 
 
@@ -895,7 +895,7 @@ HGI_Done2
           if !joy1fire then goto InputDoneRightPortAttack
           if (playerState[temp1] & PlayerStateBitFacing) then goto InputDoneRightPortAttack
           let temp4 = playerCharacter[temp1]
-          gosub DispatchCharacterAttack bank7
+          gosub DispatchCharacterAttack bank10
 InputDoneRightPortAttack
           return
 

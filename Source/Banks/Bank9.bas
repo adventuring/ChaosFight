@@ -59,6 +59,12 @@ end
           asm
 CharacterSelectMainEnd
             echo "// Bank 9: ", [CharacterSelectMainEnd - CharacterSelectMainStart]d, " bytes = CharacterSelectMain"
+SpriteLoaderCharacterArtStart
+end
+#include "Source/Routines/SpriteLoaderCharacterArt.bas"
+          asm
+SpriteLoaderCharacterArtEnd
+            echo "// Bank 9: ", [SpriteLoaderCharacterArtEnd - SpriteLoaderCharacterArtStart]d, " bytes = SpriteLoaderCharacterArt"
 Bank9CodeEnds
 end
 

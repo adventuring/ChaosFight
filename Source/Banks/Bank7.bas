@@ -29,24 +29,20 @@ Bank7DataEnds
 end
 
           asm
-CharacterAttacksDispatchStart
+CheckRoboTitoStretchMissileCollisionsStart
 end
-#include "Source/Routines/CharacterAttacksDispatch.bas"
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
           asm
-CharacterAttacksDispatchEnd
-            echo "// Bank 7: ", [CharacterAttacksDispatchEnd - CharacterAttacksDispatchStart]d, " bytes = CharacterAttacksDispatch"
-PerformRangedAttackStart
+CheckRoboTitoStretchMissileCollisionsEnd
+            echo "// Bank 7: ", [CheckRoboTitoStretchMissileCollisionsEnd - CheckRoboTitoStretchMissileCollisionsStart]d, " bytes = CheckRoboTitoStretchMissileCollisions"
+          asm
+BudgetedMissileCollisionsStart
 end
-#include "Source/Routines/PerformRangedAttack.bas"
+#include "Source/Routines/BudgetedMissileCollisions.bas"
           asm
-PerformRangedAttackEnd
-            echo "// Bank 7: ", [PerformRangedAttackEnd - PerformRangedAttackStart]d, " bytes = PerformRangedAttack"
-PerformMeleeAttackStart
-end
-#include "Source/Routines/PerformMeleeAttack.bas"
+BudgetedMissileCollisionsEnd
+            echo "// Bank 7: ", [BudgetedMissileCollisionsEnd - BudgetedMissileCollisionsStart]d, " bytes = BudgetedMissileCollisions"
           asm
-PerformMeleeAttackEnd
-            echo "// Bank 7: ", [PerformMeleeAttackEnd - PerformMeleeAttackStart]d, " bytes = PerformMeleeAttack"
 MissileSystemStart
 end
 #include "Source/Routines/MissileSystem.bas"

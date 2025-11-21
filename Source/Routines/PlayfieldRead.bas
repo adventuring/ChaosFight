@@ -19,6 +19,9 @@ PlayfieldRead
           rem Optimized: Inlined setuppointers calculation - column/8 + row*2
           rem        No need to save/restore temp2 since we do not use it
           asm
+PlayfieldRead
+end
+          asm
           ; Inlined setuppointers: calculate playfield byte offset
           ; X = column (temp1), Y = row (temp2)
           ; Result: Y = byte offset, X = bit position (0-7)

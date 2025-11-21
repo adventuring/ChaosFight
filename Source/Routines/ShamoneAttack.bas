@@ -22,7 +22,7 @@ end
           rem up 11 pixels), playerState[] (animation state set),
           rem missile state (via PerformMeleeAttack)
           rem
-          rem Called Routines: PerformMeleeAttack - executes melee
+          rem Called Routines: PerformMeleeAttack (bank10) - executes melee
           rem attack, spawns missile
           rem
           rem Constraints: None
@@ -33,6 +33,6 @@ end
           rem Light character, good jump
           rem Set jumping flag
           rem Then execute the attack (PerformMeleeAttack sets animation state)
-          gosub PerformMeleeAttack bank7
+          gosub PerformMeleeAttack bank10
           return
 

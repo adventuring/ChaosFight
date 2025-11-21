@@ -17,10 +17,10 @@ LoadCharacterSprite
           asm
 LoadCharacterSprite
 end
-          rem Load character sprite data - calls LocateCharacterArt (bank10)
+          rem Load character sprite data - calls LocateCharacterArt (bank9)
           rem Input: currentCharacter (global), currentPlayer (global)
           rem        temp2 = animation frame (0-7), temp3 = animation action (0-15)
-          rem Output: Sprite loaded via bank10 routines
+          rem Output: Sprite loaded via bank9 routines
           rem Inputs are trusted in internal context; skip range validation
 
           rem Handle special sprite cases first
@@ -33,7 +33,7 @@ end
           rem Normal character sprite loading
           let temp4 = currentPlayer
           let temp1 = currentCharacter
-          gosub LocateCharacterArt bank10
+          gosub LocateCharacterArt bank9
           return
 
 LoadPlayerSprite
@@ -56,12 +56,12 @@ end
 ; Note: Frame is relative to sprite own 10fps counter, NOT
 ;   global frame counter
 ;
-; Output: Sprite data loaded via LocateCharacterArt (bank10)
+; Output: Sprite data loaded via LocateCharacterArt (bank9)
 ;
 ; Mutates: currentCharacter (global), temp1 (passed to
 ; LocateCharacterArt)
 ;
-; Called Routines: LocateCharacterArt (bank10) - see
+; Called Routines: LocateCharacterArt (bank9) - see
 ; LoadCharacterSprite
 ;
 ; Constraints: Must be colocated with
@@ -77,6 +77,6 @@ end
 end
           rem Inline dispatch to save size (same-bank)
           let temp1 = currentCharacter
-          gosub LocateCharacterArt bank10
+          gosub LocateCharacterArt bank9
           return
 

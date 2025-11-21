@@ -18,7 +18,7 @@ end
           rem
           rem Mutates: temp2, temp4, playerCharacter[]
           rem
-          rem Called Routines: DispatchCharacterAttack (bank7)
+          rem Called Routines: DispatchCharacterAttack (bank10)
           rem
           rem Constraints: Must be colocated with PAI_UseJoy0 helper
           rem Process attack input
@@ -46,6 +46,6 @@ PAI_UseJoy0
 PAI_ExecuteAttack
           if (playerState[temp1] & PlayerStateBitFacing) then return
           let temp4 = playerCharacter[temp1]
-          gosub DispatchCharacterAttack bank7
+          gosub DispatchCharacterAttack bank10
           return
 

@@ -31,18 +31,18 @@ end
           asm
 InputHandleAllPlayersEnd
             echo "// Bank 8: ", [InputHandleAllPlayersEnd - InputHandleAllPlayersStart]d, " bytes = InputHandleAllPlayers"
-HandleGuardInputStart
-end
-#include "Source/Routines/HandleGuardInput.bas"
-          asm
-HandleGuardInputEnd
-            echo "// Bank 8: ", [HandleGuardInputEnd - HandleGuardInputStart]d, " bytes = HandleGuardInput"
 ProcessAttackInputStart
 end
 #include "Source/Routines/ProcessAttackInput.bas"
           asm
 ProcessAttackInputEnd
             echo "// Bank 8: ", [ProcessAttackInputEnd - ProcessAttackInputStart]d, " bytes = ProcessAttackInput"
+ProcessUpInputStart
+end
+#include "Source/Routines/ProcessUpInput.bas"
+          asm
+ProcessUpInputEnd
+            echo "// Bank 8: ", [ProcessUpInputEnd - ProcessUpInputStart]d, " bytes = ProcessUpInput"
 InputHandleLeftPortPlayerFunctionStart
 end
 #include "Source/Routines/InputHandleLeftPortPlayerFunction.bas"
@@ -67,12 +67,6 @@ end
           asm
 UpdatePlayerMovementEnd
             echo "// Bank 8: ", [UpdatePlayerMovementEnd - UpdatePlayerMovementStart]d, " bytes = UpdatePlayerMovement"
-PhysicsStart
-end
-#include "Source/Routines/Physics.bas"
-          asm
-PhysicsEnd
-            echo "// Bank 8: ", [PhysicsEnd - PhysicsStart]d, " bytes = Physics"
 FallDamageStart
 end
 #include "Source/Routines/FallDamage.bas"

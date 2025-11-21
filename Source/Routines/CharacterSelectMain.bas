@@ -338,24 +338,20 @@ CharacterSelectCheckReady
 
 CharacterSelectQuadtariReady
           rem 4-player mode: Count players who are ready (locked OR on
-          let readyCount = 0
           rem   CPU/NO)
-          rem Count P1 ready
-          let temp1 = 0 : gosub GetPlayerLocked bank6 : if temp2 then readyCount = readyCount + 1
-          let temp1 = 0 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[0] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 0 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[0] = NoCharacter then readyCount = readyCount + 1
-          rem Count P2 ready
-          let temp1 = 1 : gosub GetPlayerLocked bank6 : if temp2 then readyCount = readyCount + 1
-          let temp1 = 1 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[1] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 1 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[1] = NoCharacter then readyCount = readyCount + 1
-          rem Count P3 ready
-          let temp1 = 2 : gosub GetPlayerLocked bank6 : if temp2 then readyCount = readyCount + 1
-          let temp1 = 2 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[2] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 2 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[2] = NoCharacter then readyCount = readyCount + 1
-          rem Count P4 ready
-          let temp1 = 3 : gosub GetPlayerLocked bank6 : if temp2 then readyCount = readyCount + 1
-          let temp1 = 3 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[3] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 3 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[3] = NoCharacter then readyCount = readyCount + 1
+          let readyCount = 0
+          for currentPlayer = 0 to 3
+          let temp1 = currentPlayer
+          gosub GetPlayerLocked bank6
+          if temp2 then goto CharacterSelectQuadtariReadyIncrement
+          let temp4 = playerCharacter[currentPlayer]
+          if temp4 = CPUCharacter then goto CharacterSelectQuadtariReadyIncrement
+          if temp4 = NoCharacter then goto CharacterSelectQuadtariReadyIncrement
+          goto CharacterSelectQuadtariReadyNext
+CharacterSelectQuadtariReadyIncrement
+          let readyCount = readyCount + 1
+CharacterSelectQuadtariReadyNext
+          next
           if readyCount >= 2 then goto CharacterSelectFinish
 
 CharacterSelectReadyDone
@@ -373,18 +369,11 @@ CharacterSelectFinish
           rem Mutates: playerState[], gameMode
           rem Initialize facing bit (bit 0) for all selected players
           rem (default: face right = 1)
-          if playerCharacter[0] = NoCharacter then DoneCharacter1Facing
-          let playerState[0] = playerState[0] | 1
-DoneCharacter1Facing
-          if playerCharacter[1] = NoCharacter then DoneCharacter2Facing
-          let playerState[1] = playerState[1] | 1
-DoneCharacter2Facing
-          if playerCharacter[2] = NoCharacter then DoneCharacter3Facing
-          let playerState[2] = playerState[2] | 1
-DoneCharacter3Facing
-          if playerCharacter[3] = NoCharacter then DoneCharacter4Facing
-          let playerState[3] = playerState[3] | 1
-DoneCharacter4Facing
+          for currentPlayer = 0 to 3
+          if playerCharacter[currentPlayer] = NoCharacter then goto CharacterSelectSkipFacing
+          let playerState[currentPlayer] = playerState[currentPlayer] | PlayerStateBitFacing
+CharacterSelectSkipFacing
+          next
 
           let gameMode = ModeFallingAnimation
           rem Transition to falling animation

@@ -7,7 +7,9 @@
 ; Note: Converting to hex bytes is not acceptable.
 ; Generated at compile time via preprocessor defines BUILD_YEAR and BUILD_DAY
 BuildDateString
-          .byte 0, BUILD_DATE_STRING, 0
+          .byte 0
+          .byte BUILD_DATE_STRING
+          .byte 0
 
 ; Game URL string for attribution
 ; Format: ASCII bytes, null-terminated

@@ -81,8 +81,8 @@ end
           rem   CheckBoundaryCollisions (bank10),
           rem   CheckPlayfieldCollisionAllDirections (bank10),
           rem   CheckAllPlayerCollisions (bank8),
-rem   ProcessAllAttacks (bank7), CheckAllPlayerEliminations,
-rem   UpdateAllMissiles (bank7),
+          rem   ProcessAllAttacks (bank7), CheckAllPlayerEliminations,
+          rem   UpdateAllMissiles (bank7),
           rem   CheckRoboTitoStretchMissileCollisions (bank12), SetPlayerSprites (bank2),
           rem   DisplayHealth (bank6), UpdatePlayer12HealthBars (bank6),
           rem   UpdatePlayer34HealthBars (bank6), UpdateSoundEffect

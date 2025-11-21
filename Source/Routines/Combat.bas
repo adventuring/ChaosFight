@@ -478,6 +478,11 @@ end
               rem Skip if attacker is dead
           if playerHealth[attackerID] <= 0 then NextAttacker
 
+          let temp1 = playerState[attackerID] & MaskPlayerStateAnimation
+          rem Issue #1147: Only evaluate live attacks (windup-through-recovery window)
+          if temp1 < ActionAttackWindupShifted then NextAttacker
+          if temp1 > ActionAttackRecoveryShifted then NextAttacker
+
           gosub ProcessAttackerAttacks
 
 NextAttacker

@@ -61,5 +61,33 @@ end
           asm
 CombatEnd
             echo "// Bank 7: ", [CombatEnd - CombatStart]d, " bytes = Combat"
+          asm
+PerformRangedAttackStart
+end
+#include "Source/Routines/PerformRangedAttack.bas"
+          asm
+PerformRangedAttackEnd
+            echo "// Bank 7: ", [PerformRangedAttackEnd - PerformRangedAttackStart]d, " bytes = PerformRangedAttack"
+          asm
+PerformMeleeAttackStart
+end
+#include "Source/Routines/PerformMeleeAttack.bas"
+          asm
+PerformMeleeAttackEnd
+            echo "// Bank 7: ", [PerformMeleeAttackEnd - PerformMeleeAttackStart]d, " bytes = PerformMeleeAttack"
+          asm
+UrsuloAttackStart
+end
+#include "Source/Routines/UrsuloAttack.bas"
+          asm
+UrsuloAttackEnd
+            echo "// Bank 7: ", [UrsuloAttackEnd - UrsuloAttackStart]d, " bytes = UrsuloAttack"
+          asm
+ShamoneAttackStart
+end
+#include "Source/Routines/ShamoneAttack.bas"
+          asm
+ShamoneAttackEnd
+            echo "// Bank 7: ", [ShamoneAttackEnd - ShamoneAttackStart]d, " bytes = ShamoneAttack"
 Bank7CodeEnds
 end

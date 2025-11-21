@@ -380,8 +380,3 @@ CharacterSelectSkipFacing
           gosub ChangeGameMode bank14
           return
 
-CycleRightFromNO
-          let temp1 = 0
-          rem NoCharacter(255) goes to 0
-          return
-

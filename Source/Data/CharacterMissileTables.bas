@@ -14,6 +14,13 @@ end
             0, 4, 2, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 end
 
+          rem Precomputed NUSIZ values per character (optimization)
+          rem NUSIZ = (width-1)*16, clamped to 0 for width 0
+          rem Precomputed to avoid per-spawn arithmetic: width 0→0, 1→0, 2→16, 4→48
+          data CharacterMissileNUSIZ
+            0, 48, 16, 48, 48, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+end
+
           rem Missile heights per character
           data CharacterMissileHeights
             0, 4, 2, 1, 1, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0

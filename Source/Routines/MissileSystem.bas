@@ -131,6 +131,12 @@ end
           let missileLifetime_W[temp1] = missileLifetimeValue_R
           rem   lifetime
 
+          rem Cache missile flags at spawn to avoid per-frame lookups
+          rem Flags are immutable per character, so cache once at spawn
+          let temp2 = CharacterMissileFlags[temp5]
+          let missileFlags_W[temp1] = temp2
+          rem Store flags for use in UpdateOneMissile
+
           rem Initialize velocity from character data for friction
           let temp6 = CharacterMissileMomentumX[temp5]
           rem   physics
@@ -139,10 +145,9 @@ end
           let missileVelocityX[temp1] = temp6
           rem Apply facing direction (left = negative)
 
-          rem Optimized: Calculate NUSIZ value with formula instead of if-chain
-          rem NUSIZ bits 4-6: width 1=0x00, 2=0x10, 4=0x20 → (width-1)*16
-          let temp2 = CharacterMissileWidths[temp5]
-          let missileNUSIZ_W[temp1] = (temp2 - 1) * 16
+          rem Optimized: Use precomputed NUSIZ table instead of arithmetic
+          rem NUSIZ values precomputed in CharacterMissileNUSIZ table
+          let missileNUSIZ_W[temp1] = CharacterMissileNUSIZ[temp5]
 
           let temp6 = CharacterMissileMomentumY[temp5]
           rem Get Y velocity
@@ -260,13 +265,12 @@ end
           rem X velocity (already facing-adjusted from spawn)
           rem Y velocity
 
-          let temp5 = playerCharacter[temp1]
-          rem Read missile flags from character data (inlined for performance)
-          let temp5 = CharacterMissileFlags[temp5]
-          rem Store flags (inlined)
+          rem Use cached missile flags (set at spawn) instead of lookup
+          rem This avoids two CharacterMissileFlags lookups per frame
+          let temp5 = missileFlags_R[temp1]
+          rem Get cached flags (set at spawn time)
 
           let temp1 = temp6
-          rem Restore player index and get flags back
           rem Restore player index
 
           rem Special handling for Megax (character 5): stationary fire
@@ -394,11 +398,9 @@ FrictionDone
           rem Off-screen vertically, deactivate
 
           rem Check collision with playfield if flag is set
-          rem Reload missile flags (temp5 was overwritten with Y position above)
-          let temp5 = playerCharacter[temp1]
-          let temp5 = CharacterMissileFlags[temp5]
-          rem temp5 now contains missile flags again (inlined)
-          rem Restore player index for MissileCollPF
+          rem Reload cached missile flags (temp5 was overwritten with Y position above)
+          let temp5 = missileFlags_R[temp1]
+          rem Get cached flags again (restore after temp5 was used for Y position)
           if (temp5 & MissileFlagHitBackground) = 0 then goto PlayfieldCollisionDone
           gosub MissileCollPF bank7
           if !temp4 then goto PlayfieldCollisionDone
@@ -479,33 +481,7 @@ HandleMissileBounceTail
 
           rem Character handlers extracted to MissileCharacterHandlers.bas
 
-CheckMissileBounds
-          rem
-          rem Check Missile Bounds
-          rem Checks if missile is off-screen.
-          rem
-          rem INPUT:
-          rem   temp1 = player index (0-3)
-          rem
-          rem OUTPUT:
-          rem   temp4 = 1 if off-screen, 0 if on-screen
-          return
 MissileSysPF
-          rem Checks if missile is off-screen (currently
-          rem incomplete/unused)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: temp4 = 1 if off-screen, 0 if on-screen (not
-          rem implemented)
-          rem
-          rem Mutates: None (incomplete)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Currently incomplete/unused - bounds checking
-          rem handled inline in UpdateOneMissile
-          rem Get missile X/Y position (read from _R port)
           rem
           rem Check Missile-playfield Collision
           rem Checks if missile hit the playfield (walls, obstacles).
@@ -613,58 +589,23 @@ CheckMissilePlayerCollision
           rem Check collision with each player (except owner)
           rem Default: no hit
 
-          rem Check Player 1 (index 0)
-
-          if temp1  = 0 then goto MissileDonePlayer0
-          if playerHealth[0] = 0 then goto MissileDonePlayer0
-          if temp2>= playerX[0] + PlayerSpriteHalfWidth then goto MissileDonePlayer0
-          if temp2 + MissileAABBSize<= playerX[0] then goto MissileDonePlayer0
-          if temp3>= playerY[0] + PlayerSpriteHeight then goto MissileDonePlayer0
-          if temp3 + MissileAABBSize<= playerY[0] then goto MissileDonePlayer0
-          let temp4 = 0
+          rem Optimized: Loop through all players instead of copy-paste code
+          rem This reduces ROM footprint by ~150 bytes
+          for temp6 = 0 to 3
+          rem Skip owner player
+          if temp6 = temp1 then goto MissileCheckNextPlayer
+          rem Skip eliminated players
+          if playerHealth[temp6] = 0 then goto MissileCheckNextPlayer
+          rem AABB collision check: missile vs player bounding box
+          if temp2 >= playerX[temp6] + PlayerSpriteHalfWidth then goto MissileCheckNextPlayer
+          if temp2 + MissileAABBSize <= playerX[temp6] then goto MissileCheckNextPlayer
+          if temp3 >= playerY[temp6] + PlayerSpriteHeight then goto MissileCheckNextPlayer
+          if temp3 + MissileAABBSize <= playerY[temp6] then goto MissileCheckNextPlayer
+          rem Collision detected - return hit player index
+          let temp4 = temp6
           goto MissileCollisionReturn
-MissileDonePlayer0
-          rem Hit Player 1
-
-          rem Check Player 2 (index 1)
-
-          if temp1  = 1 then goto MissileDonePlayer1
-          if playerHealth[1] = 0 then goto MissileDonePlayer1
-          if temp2>= playerX[1] + PlayerSpriteHalfWidth then goto MissileDonePlayer1
-          if temp2 + MissileAABBSize<= playerX[1] then goto MissileDonePlayer1
-          if temp3>= playerY[1] + PlayerSpriteHeight then goto MissileDonePlayer1
-          if temp3 + MissileAABBSize<= playerY[1] then goto MissileDonePlayer1
-          let temp4 = 1
-          goto MissileCollisionReturn
-MissileDonePlayer1
-          rem Hit Player 2
-
-          rem Check Player 3 (index 2)
-
-          if temp1  = 2 then goto MissileDonePlayer2
-          if playerHealth[2] = 0 then goto MissileDonePlayer2
-          if temp2>= playerX[2] + PlayerSpriteHalfWidth then goto MissileDonePlayer2
-          if temp2 + MissileAABBSize<= playerX[2] then goto MissileDonePlayer2
-          if temp3>= playerY[2] + PlayerSpriteHeight then goto MissileDonePlayer2
-          if temp3 + MissileAABBSize<= playerY[2] then goto MissileDonePlayer2
-          let temp4 = 2
-          goto MissileCollisionReturn
-MissileDonePlayer2
-          rem Hit Player 3
-
-          rem Check Player 4 (index 3)
-
-          if temp1  = 3 then goto MissileDonePlayer3
-          if playerHealth[3] = 0 then goto MissileDonePlayer3
-          if temp2>= playerX[3] + PlayerSpriteHalfWidth then goto MissileDonePlayer3
-          if temp2 + MissileAABBSize<= playerX[3] then goto MissileDonePlayer3
-          if temp3>= playerY[3] + PlayerSpriteHeight then goto MissileDonePlayer3
-          if temp3 + MissileAABBSize<= playerY[3] then goto MissileDonePlayer3
-          let temp4 = 3
-          goto MissileCollisionReturn
-MissileDonePlayer3
-          rem Hit Player 4
-
+MissileCheckNextPlayer
+          next
 MissileCollisionReturn
           return
 

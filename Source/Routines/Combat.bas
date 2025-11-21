@@ -41,23 +41,14 @@ end
           rem   elimination, PlayDamageSound - plays damage sound effect
           rem
           rem Constraints: Must be colocated with PlayerDies,
-          rem PlayDamageSound (called via goto)
+          rem PlayDamageSound, GetWeightBasedDamage (called via goto/gosub)
 
           let temp1 = playerCharacter[attackerID]
-          rem GetCharacterDamage inlined - weight-based damage calculation
-          let temp3 = CharacterWeights[temp1]
-          if temp3 <= 15 then temp2 = 12 : goto AttackerDamageDone
-          if temp3 <= 25 then temp2 = 18 : goto AttackerDamageDone
-          let temp2 = 22
-AttackerDamageDone
+          gosub GetWeightBasedDamage
+          rem Issue #1149: Use shared helper instead of duplicated logic
           let temp4 = temp2
           let temp1 = playerCharacter[defenderID]
-          rem GetCharacterDamage inlined - weight-based damage calculation
-          let temp3 = CharacterWeights[temp1]
-          if temp3 <= 15 then temp2 = 12 : goto DefenderDamageDone
-          if temp3 <= 25 then temp2 = 18 : goto DefenderDamageDone
-          let temp2 = 22
-DefenderDamageDone
+          gosub GetWeightBasedDamage
           let temp1 = temp4 - temp2
           rem Calculate damage (considering defender state)
           rem Minimum damage
@@ -217,8 +208,7 @@ end
           rem
           rem Constraints: Must be colocated with MeleeHitbox,
           rem ProjectileHitbox, AreaHitbox,
-          rem              FacingRight, FacingLeft, FacingUp, FacingDown
-          rem              (all called via on/goto)
+          rem              FacingRight, FacingLeft (all called via goto)
           rem Set hitbox based on attack type and direction
           rem Use temporary variable to avoid compiler bug with array
           rem indexing
@@ -244,9 +234,8 @@ MeleeHitbox
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with CalculateAttackHitbox,
-          rem FacingRight, FacingLeft, FacingUp, FacingDown
+          rem FacingRight, FacingLeft
           rem Extract facing from playerState bit 3: 1=right (goto FacingRight), 0=left (goto FacingLeft)
-          rem FacingUp and FacingDown are unreachable (no up/down facing in game)
           let temp2 = playerState[attackerID] & PlayerStateBitFacing
           if temp2 then goto FacingRight
           goto FacingLeft
@@ -297,54 +286,6 @@ FacingLeft
           let cachedHitboxRight_W = playerX[attackerID]
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
-          return
-
-FacingUp
-          rem Hitbox extends 16 pixels upward from sprite top edge
-          rem
-          rem Input: attackerID, playerX[], playerY[] (from
-          rem MeleeHitbox)
-          rem
-          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
-          rem set for up-facing attack
-          rem
-          rem Mutates: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with CalculateAttackHitbox,
-          rem MeleeHitbox
-          rem Attacker sprite: [playerX, playerX+16] x [playerY,
-          rem   playerY+16]
-          let cachedHitboxLeft_W = playerX[attackerID]
-          rem Hitbox: [playerX, playerX+16] x [playerY-16, playerY]
-          let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth
-          let cachedHitboxTop_W = playerY[attackerID] - PlayerSpriteHeight
-          let cachedHitboxBottom_W = playerY[attackerID]
-          return
-
-FacingDown
-          rem Hitbox extends 16 pixels downward from sprite bottom edge
-          rem
-          rem Input: attackerID, playerX[], playerY[] (from
-          rem MeleeHitbox)
-          rem
-          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
-          rem set for down-facing attack
-          rem
-          rem Mutates: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with CalculateAttackHitbox,
-          rem MeleeHitbox
-          rem Attacker sprite: [playerX, playerX+16] x [playerY,
-          rem   playerY+16]
-          let cachedHitboxLeft_W = playerX[attackerID]
-          rem Hitbox: [playerX, playerX+16] x [playerY+16, playerY+32]
-          let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth
-          let cachedHitboxTop_W = playerY[attackerID] + PlayerSpriteHeight
-          let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight + PlayerSpriteHeight
           return
 
 ProjectileHitbox

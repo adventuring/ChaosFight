@@ -315,3 +315,9 @@ Bank1CodeEnds
            echo "// Bank 1: ", [MusicBankHelpersEnd - MusicBankHelpersStart]d, " bytes = MusicBankHelpers"
            echo "// Bank 1: ", [MusicSystemEnd - MusicSystemStart]d, " bytes = MusicSystem"
 end
+          asm
+Bank1DataEndsConst SET Bank1DataEnds
+Bank1CodeEndsConst SET Bank1CodeEnds
+end
+#define Bank1DataEnds Bank1DataEndsConst
+#define Bank1CodeEnds Bank1CodeEndsConst

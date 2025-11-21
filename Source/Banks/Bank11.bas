@@ -17,18 +17,21 @@ end
           asm
 GameLoopInitEnd
             echo "// Bank 11: ", [GameLoopInitEnd - GameLoopInitStart]d, " bytes = GameLoopInit"
+          asm
 GameLoopMainStart
 end
 #include "Source/Routines/GameLoopMain.bas"
           asm
 GameLoopMainEnd
             echo "// Bank 11: ", [GameLoopMainEnd - GameLoopMainStart]d, " bytes = GameLoopMain"
+          asm
 PlayerCollisionResolutionStart
 end
 #include "Source/Routines/PlayerCollisionResolution.bas"
           asm
 PlayerCollisionResolutionEnd
             echo "// Bank 11: ", [PlayerCollisionResolutionEnd - PlayerCollisionResolutionStart]d, " bytes = PlayerCollisionResolution"
+end
           asm
 DisplayHealthStart
 end
@@ -36,12 +39,14 @@ end
           asm
 DisplayHealthEnd
             echo "// Bank 11: ", [DisplayHealthEnd - DisplayHealthStart]d, " bytes = DisplayHealth"
+          asm
 HealthBarSystemStart
 end
 #include "Source/Routines/HealthBarSystem.bas"
           asm
 HealthBarSystemEnd
             echo "// Bank 11: ", [HealthBarSystemEnd - HealthBarSystemStart]d, " bytes = HealthBarSystem"
+          asm
 FallingAnimationStart
 end
 #include "Source/Routines/FallingAnimation.bas"

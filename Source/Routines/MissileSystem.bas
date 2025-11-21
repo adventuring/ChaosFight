@@ -301,15 +301,15 @@ GravityDone
           rem Get current X velocity
 
           rem Apply ice-like friction: reduce by
-          rem   CurlingFrictionCoefficient/256 per frame
-          rem CurlingFrictionCoefficient = 4 (Q8 fixed-point: 4/256 =
+          rem   CurlingFrictionCoefficient÷256 per frame
+          rem CurlingFrictionCoefficient = 4 (Q8 fixed-point: 4÷256 =
           rem   1.56% per frame)
-          rem Derived from constant: reduction = velocity / (256 /
-          rem CurlingFrictionCoefficient) = velocity / 64
+          rem Derived from constant: reduction = velocity ÷ (256 ÷
+          rem CurlingFrictionCoefficient) = velocity ÷ 64
           if missileVelocityXCalc_R = 0 then goto FrictionDone
           rem Zero velocity, no friction to apply
 
-          rem Calculate friction reduction (velocity / 64, approximates
+          rem Calculate friction reduction (velocity ÷ 64, approximates
           let velocityCalculation_W = missileVelocityXCalc_R
           rem   1.56% reduction)
           rem Check if velocity is negative (twos complement: values >
@@ -331,7 +331,7 @@ GravityDone
             sta velocityCalculation_W
 end
           let missileVelocityXCalc_W = missileVelocityXCalc_R - velocityCalculation_R
-          rem Reduce by 1/64 (1.56% - ice-like friction)
+          rem Reduce by 1÷64 (1.56% - ice-like friction)
           goto FrictionApply
 FrictionNegative
           let velocityCalculation_W = 0 - velocityCalculation_R
@@ -349,7 +349,7 @@ FrictionNegative
             sta velocityCalculation_W
 end
           let missileVelocityXCalc_W = missileVelocityXCalc_R + velocityCalculation_R
-          rem Reduce by 1/64 (1.56% - ice-like friction)
+          rem Reduce by 1÷64 (1.56% - ice-like friction)
 FrictionApply
           rem Add back (since missileVelocityXCalc was negative)
           let missileVelocityX[temp1] = missileVelocityXCalc_R
@@ -679,8 +679,8 @@ HarpyCheckDive
           rem Check if Harpy is in dive mode
           if (characterStateFlags_R[temp1] & 4) = 0 then goto DiveCheckDone
           rem Not diving, skip bonus
-          rem Apply 1.5x damage for diving attacks (temp6 + temp6/2 =
-          rem   1.5 * temp6)
+          rem Apply 1.5× damage for diving attacks (temp6 + temp6÷2 =
+          rem   1.5 × temp6)
           let temp2 = temp6
           asm
             lsr temp2
@@ -711,10 +711,10 @@ DiveCheckDone
           let characterWeight_W = CharacterWeights[characterWeight_R]
           rem Get character index
           rem Get character weight (5-100) - overwrite with weight value
-          rem Calculate scaled knockback: KnockbackImpulse * (100 -
-          rem   weight) / 100
-          rem Approximate: (KnockbackImpulse * (100 - weight)) / 100
-          rem For KnockbackImpulse = 4: scaled = (4 * (100 - weight)) /
+          rem Calculate scaled knockback: KnockbackImpulse × (100 -
+          rem   weight) ÷ 100
+          rem Approximate: (KnockbackImpulse × (100 - weight)) ÷ 100
+          rem For KnockbackImpulse = 4: scaled = (4 × (100 - weight)) ÷
           rem   100
           rem Simplify to avoid division: if weight < 50, use full
           rem Heavy characters use reduced knockback scaling
@@ -724,9 +724,9 @@ DiveCheckDone
           goto WeightBasedKnockbackApply
 WeightBasedKnockbackScale
           rem Heavy characters (weight >= 50): reduced knockback
-          rem Calculate: KnockbackImpulse * (100 - weight) / 100
-          rem KnockbackImpulse = 4, so: 4 * (100 - weight) / 100
-          rem Multiply first: 4 * velocityCalculation using bit shift
+          rem Calculate: KnockbackImpulse × (100 - weight) ÷ 100
+          rem KnockbackImpulse = 4, so: 4 × (100 - weight) ÷ 100
+          rem Multiply first: 4 × velocityCalculation using bit shift
           let velocityCalculation_W = 100 - characterWeight_R
           rem   (ASL 2)
           let impulseStrength_W = velocityCalculation_R

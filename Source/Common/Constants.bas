@@ -31,11 +31,11 @@
           rem Realistic Earth gravity would be 4410 px/frame² (too high
           rem   for gameplay!)
           rem Normal gravity acceleration (0.1 px/frame²)
-          rem Value: 0.1 * 256 = 25.6 ≈ 26 (in low byte of 8.8 fixed-point)
+          rem Value: 0.1 × 256 = 25.6 ≈ 26 (in low byte of 8.8 fixed-point)
           const GravityNormal = 26
 
           rem Reduced gravity acceleration (0.05 px/frame²) for Harpy
-          rem Value: 0.05 * 256 = 12.8 ≈ 13 (in low byte of 8.8 fixed-point)
+          rem Value: 0.05 × 256 = 12.8 ≈ 13 (in low byte of 8.8 fixed-point)
           const GravityReduced = 13
 
           rem Terminal velocity cap (maximum downward fall speed in px/frame)
@@ -434,7 +434,7 @@
 #ifdef TV_NTSC
           const AnimationFrameDelay = 6
           const MovementFrameRate = 60
-          rem 60fps / 10fps = 6 frames
+          rem 60fps ÷ 10fps = 6 frames
           const FramesPerSecond = 60
           rem 60fps movement updates
           const TitleParadeDelayFrames = 240
@@ -450,7 +450,7 @@
 #ifdef TV_PAL
           const AnimationFrameDelay = 5
           const MovementFrameRate = 50
-          rem 50fps / 10fps = 5 frames
+          rem 50fps ÷ 10fps = 5 frames
           const FramesPerSecond = 50
           rem 50fps movement updates
           const TitleParadeDelayFrames = 200

@@ -97,7 +97,7 @@ end
           gosub SetPlayerAnimation bank11
 
           let temp4 = temp1 / 2
-          rem Calculate recovery frames (damage / 2, clamped 10-30)
+          rem Calculate recovery frames (damage ÷ 2, clamped 10-30)
           if temp4 < 10 then temp4 = 10
           if temp4 > 30 then temp4 = 30
           let playerRecoveryFrames[defenderID] = temp4

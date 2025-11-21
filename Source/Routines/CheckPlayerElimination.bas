@@ -14,7 +14,7 @@ end
           rem variable)
           rem
           rem MUTATES:
-          rem   temp2 = temp2 / temp2 (reused, internal)
+          rem   temp2 = temp2 ÷ temp2 (reused, internal)
           rem   temp6 = temp6 (internal)
           rem WARNING: temp2 and temp6 are mutated during execution. Do
           rem not

@@ -967,7 +967,7 @@
           dim gravityRate_R = var42
 
           dim damageWeightProduct_W = var44
-          rem Intermediate value: damage * weight (used in fall damage
+          rem Intermediate value: damage × weight (used in fall damage
           rem   calculations)
           dim damageWeightProduct_R = var44
 
@@ -976,8 +976,8 @@
           dim missileLifetimeValue_R = g
 
           dim velocityCalculation_W = k
-          rem Intermediate velocity calculation (e.g., velocity / 2,
-          rem   velocity / 4)
+          rem Intermediate velocity calculation (e.g., velocity ÷ 2,
+          rem   velocity ÷ 4)
           dim velocityCalculation_R = k
 
           dim missileVelocityXCalc_W = l

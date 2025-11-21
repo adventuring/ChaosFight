@@ -314,7 +314,7 @@ DWS_Position3Players
           let playerX[0] = 80
           rem Winner (P0) - higher platform
           let playerY[0] = 128
-          rem Row 16 = 128 pixels (16 * 8)
+          rem Row 16 = 128 pixels (16 × 8)
           let currentCharacter = playerCharacter[temp2]
           let currentPlayer = 0
           gosub DWS_LoadIdleSprite

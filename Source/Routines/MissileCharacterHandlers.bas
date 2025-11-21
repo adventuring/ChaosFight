@@ -29,7 +29,7 @@ HarpyBoostDiveVelocity
           rem
           rem Input: temp6 = base velocity
           rem
-          rem Output: Velocity increased by 50% (velocity + velocity/2)
+          rem Output: Velocity increased by 50% (velocity + velocity÷2)
           rem
           rem Mutates: temp6, temp6 (velocity
           rem values)

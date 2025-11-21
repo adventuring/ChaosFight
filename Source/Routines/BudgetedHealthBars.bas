@@ -52,8 +52,8 @@ CheckPlayer2HealthUpdate
           rem        HealthBarMaxLength (constant) = maximum health bar length
           rem Output: Score colors set for health digit display
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
-          rem Use inline assembly for division by 12 (multiply by 21/256 ≈ 1/12)
-          rem Algorithm: temp6 = (playerHealth[2] * 21) >> 8
+          rem Use inline assembly for division by 12 (multiply by 21÷256 ≈ 1÷12)
+          rem Algorithm: temp6 = (playerHealth[2] × 21) >> 8
           asm
             lda playerHealth+2
             sta temp6
@@ -108,8 +108,8 @@ CheckPlayer3HealthUpdate
           rem        HealthBarMaxLength (constant) = maximum health bar length
           rem Output: Score colors set for health digit display
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
-          rem Use inline assembly for division by 12 (multiply by 21/256 ≈ 1/12)
-          rem Algorithm: temp6 = (playerHealth[3] * 21) >> 8
+          rem Use inline assembly for division by 12 (multiply by 21÷256 ≈ 1÷12)
+          rem Algorithm: temp6 = (playerHealth[3] × 21) >> 8
           asm
             lda playerHealth+3
             sta temp6
@@ -150,8 +150,8 @@ UpdateHealthBarPlayer0
           rem
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
-          rem Use inline assembly for division by 12 (multiply by 21/256 ≈ 1/12)
-          rem Algorithm: temp6 = (playerHealth[0] * 21) >> 8
+          rem Use inline assembly for division by 12 (multiply by 21÷256 ≈ 1÷12)
+          rem Algorithm: temp6 = (playerHealth[0] × 21) >> 8
           asm
             lda playerHealth+0
             sta temp6
@@ -191,8 +191,8 @@ UpdateHealthBarPlayer1
           rem
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
-          rem Use inline assembly for division by 12 (multiply by 21/256 ≈ 1/12)
-          rem Algorithm: temp6 = (playerHealth[1] * 21) >> 8
+          rem Use inline assembly for division by 12 (multiply by 21÷256 ≈ 1÷12)
+          rem Algorithm: temp6 = (playerHealth[1] × 21) >> 8
           asm
             lda playerHealth+1
             sta temp6
@@ -221,5 +221,6 @@ end
           rem Score minikernel requires all three color registers set to same color
           rem Health bars for players 1/2 are displayed using score registers (pfscore/pfscore2)
           return
+
 
 

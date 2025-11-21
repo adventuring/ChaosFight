@@ -189,7 +189,7 @@ GravityRowCalcLoop
           let rowCounter_W = rowCounter_R - 1
           if rowCounter_R > 0 then goto GravityRowCalcLoop
 GravityRowCalcDone
-          rem rowYPosition now contains rowBelow * pfrowheight (Y
+          rem rowYPosition now contains rowBelow × pfrowheight (Y
           rem   position of top of ground row)
           let playerY[temp1] = rowYPosition_R - PlayerSpriteHeight
           rem Clamp playerY so feet are at top of ground row
@@ -242,7 +242,7 @@ GravityCheckBottom
           rem Not at bottom row yet
 
           rem Bottom row is always ground - clamp to bottom
-          rem Calculate (pfrows - 1) * pfrowheight using repeated
+          rem Calculate (pfrows - 1) × pfrowheight using repeated
           let rowYPosition_W = 0
           rem   addition
           let rowCounter_W = pfrows - 1

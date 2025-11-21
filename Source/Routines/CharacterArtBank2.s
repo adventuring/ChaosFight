@@ -20,24 +20,24 @@
 ; Character sprite pointer tables (Bank 2 only)
 ; Low byte pointers for each character base sprite data
 CharacterSpriteLBank2
-          .byte < BernieFrames, < CurlerFrames, < DragonOfStormsFrames, < ZoeRyenFrames
-          .byte < FatTonyFrames, < MegaxFrames, < HarpyFrames, < KnightGuyFrames
+          BYTE < BernieFrames, < CurlerFrames, < DragonOfStormsFrames, < ZoeRyenFrames
+          BYTE < FatTonyFrames, < MegaxFrames, < HarpyFrames, < KnightGuyFrames
 
 ; High byte pointers for each character base sprite data  
 CharacterSpriteHBank2
-          .byte > BernieFrames, > CurlerFrames, > DragonOfStormsFrames, > ZoeRyenFrames
-          .byte > FatTonyFrames, > MegaxFrames, > HarpyFrames, > KnightGuyFrames
+          BYTE > BernieFrames, > CurlerFrames, > DragonOfStormsFrames, > ZoeRyenFrames
+          BYTE > FatTonyFrames, > MegaxFrames, > HarpyFrames, > KnightGuyFrames
 
 ; Character FrameMap pointer tables (Bank 2 only)
 ; Low byte pointers for each character FrameMap
 CharacterFrameMapLBank2
-          .byte < BernieFrameMap, < CurlerFrameMap, < DragonOfStormsFrameMap, < ZoeRyenFrameMap
-          .byte < FatTonyFrameMap, < MegaxFrameMap, < HarpyFrameMap, < KnightGuyFrameMap
+          BYTE < BernieFrameMap, < CurlerFrameMap, < DragonOfStormsFrameMap, < ZoeRyenFrameMap
+          BYTE < FatTonyFrameMap, < MegaxFrameMap, < HarpyFrameMap, < KnightGuyFrameMap
 
 ; High byte pointers for each character FrameMap
 CharacterFrameMapHBank2
-          .byte > BernieFrameMap, > CurlerFrameMap, > DragonOfStormsFrameMap, > ZoeRyenFrameMap
-          .byte > FatTonyFrameMap, > MegaxFrameMap, > HarpyFrameMap, > KnightGuyFrameMap
+          BYTE > BernieFrameMap, > CurlerFrameMap, > DragonOfStormsFrameMap, > ZoeRyenFrameMap
+          BYTE > FatTonyFrameMap, > MegaxFrameMap, > HarpyFrameMap, > KnightGuyFrameMap
 
 ; =================================================================
 ; CHARACTER ARTWORK LOCATION FUNCTION - BANK 2

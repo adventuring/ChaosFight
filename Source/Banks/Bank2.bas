@@ -8,7 +8,7 @@
           bank 2
 
           asm
-            if * != $F100
+            if . != $F100
                 err
             endif
 Bank2DataStart

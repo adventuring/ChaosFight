@@ -42,7 +42,7 @@ end
           rem Player Y is bottom-left of sprite (top of sprite visually)
           rem pfrowheight is always 16, so divide by 16
           let temp3 = playerY[temp1]
-          rem Row = playerY[playerIndex] / 16
+          rem Row = playerY[playerIndex] ÷ 16
           let temp4 = temp3 / 16
           rem currentRow = row player sprite bottom is in (0-7 for
           rem   pfres=8)
@@ -51,7 +51,7 @@ end
           rem   solid)
           rem Bernie feet are visually at bottom of 16px sprite, so
           rem   check row below
-          rem Feet are at playerY + 16, so row = (playerY + 16) / 16
+          rem Feet are at playerY + 16, so row = (playerY + 16) ÷ 16
           let temp5 = temp3 + 16
           let temp6 = temp5 / 16
           rem feetY = feet Y position in pixels
@@ -131,7 +131,7 @@ BernieCheckBottomWrap
 
           rem Top row is clear - wrap to top
           rem Set Bernie Y position to top of screen (row 0)
-          rem playerY at top row = 0 * pfrowheight = 0
+          rem playerY at top row = 0 × pfrowheight = 0
           let playerY[temp1] = 0
           return
 
@@ -651,7 +651,7 @@ GroundSearchLoop
 
 GroundFound
           rem Convert found row back to Y coordinate
-          rem temp2 = row * pfrowheight (pfrowheight is always 16, so multiply by 16 = shift left 4 bits)
+          rem temp2 = row × pfrowheight (pfrowheight is always 16, so multiply by 16 = shift left 4 bits)
           asm
             LDA temp5
             ASL

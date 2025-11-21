@@ -26,7 +26,7 @@ CheckFallDamage
           rem   like Frooty)
 
           rem Calculate safe fall velocity threshold
-          rem Formula: safe_velocity = 120 / weight
+          rem Formula: safe_velocity = 120 ÷ weight
           rem Use lookup table to avoid variable division
           let temp3 = SafeFallVelocityThresholds[currentCharacter]
           rem Pre-computed values in SafeFallVelocityThresholds table
@@ -44,9 +44,9 @@ CheckFallDamage
           rem Fall damage is environmental, so guard does not protect
 
           rem Calculate fall damage
-          rem Base damage = (velocity - safe_velocity) *
+          rem Base damage = (velocity - safe_velocity) ×
           rem   base_damage_multiplier
-          rem Base damage multiplier: 2 (so 1 extra velocity = 2 base
+          rem Base damage multiplier: 2 (so 1 extra velocity = 2 × base
           let temp4 = temp2 - temp3
           rem   damage)
           rem Multiply by 2 to double the base damage
@@ -56,13 +56,13 @@ CheckFallDamage
           rem   are, the harder they fall
           rem Heavy characters take more damage for the same impact
           rem   velocity
-          rem Formula: damage_multiplier = weight / 20 (average weight)
-          rem Using integer math: damage = damage * (weight / 20)
-          rem Use lookup table for weight/20, then multiply by damage
-          rem temp2 = weight / 20 from lookup table
+          rem Formula: damage_multiplier = weight ÷ 20 (average weight)
+          rem Using integer math: damage = damage × (weight ÷ 20)
+          rem Use lookup table for weight÷20, then multiply by damage
+          rem temp2 = weight ÷ 20 from lookup table
           let temp2 = WeightDividedBy20[currentCharacter]
           rem Apply weight-based damage multiplier using optimized inline assembly
-          rem temp2 = weight / 20 from lookup table (0-5 range)
+          rem temp2 = weight ÷ 20 from lookup table (0-5 range)
           rem Optimize multiplication for small values (0-5) without mul8 call
           if temp2 = 0 then temp4 = 0 : goto WeightMultDone
           if temp2 = 1 then goto WeightMultDone
@@ -114,7 +114,7 @@ multstart:  lda temp4
 multdone:
 end
 WeightMultDone
-          rem temp4 = damage * (weight / 20) (weight-based multiplier applied)
+          rem temp4 = damage × (weight ÷ 20) (weight-based multiplier applied)
 
           rem Apply damage reduction for characters with fall damage
           rem Ninjish Guy halves damage after weight multiplier
@@ -212,7 +212,7 @@ FallDamageApplyGravity
 
           rem Check for reduced gravity characters
           let temp6 = 2
-          rem Harpy (6): 1/2 gravity when falling
+          rem Harpy (6): 1÷2 gravity when falling
           rem Default gravity: 2 pixels/frame²
           if currentCharacter = CharacterHarpy then temp6 = 1
           rem Harpy: reduced gravity
@@ -398,7 +398,7 @@ DivideBy20
           rem Thanks to Omegamatrix and AtariAge forum contributors for
           rem   these routines
           asm
-          ; rem DivideBy20: compute floor(A / 20) using optimized assembly
+          ; rem DivideBy20: compute floor(A ÷ 20) using optimized assembly
           ; rem
           ; rem INPUT: A register = dividend (temp2)
           ; rem
@@ -424,7 +424,7 @@ end
           return
 
 DivideBy100
-          rem DivideBy100: compute floor(temp2 / 100) using range check
+          rem DivideBy100: compute floor(temp2 ÷ 100) using range check
           rem
           rem INPUT: temp2 = dividend
           rem
@@ -473,21 +473,21 @@ CalculateFallDistanceNormal
           rem temp3 = Safe velocity threshold
 
           rem Convert velocity to distance
-          rem Using kinematic equation: v² = 2 * g * d
-          rem Rearranged: d = v² / (2 * g)
-          rem With g = 2: d = v² / 4
+          rem Using kinematic equation: v² = 2 × g × d
+          rem Rearranged: d = v² ÷ (2 × g)
+          rem With g = 2: d = v² ÷ 4
           rem Square temp3 using lookup table (temp3 is 1-24)
           rem SquareTable is 0-indexed, so index = temp3 - 1
           let temp4 = temp3 - 1
           let temp2 = SquareTable[temp4]
           rem temp4 = index into SquareTable (0-23)
-          rem temp2 = temp3 * temp3 (v²)
+          rem temp2 = temp3 × temp3 (v²)
           rem Divide by 4 using bit shift right twice
           asm
             lsr temp2
             lsr temp2
 end
-          rem temp2 = v² / 4
+          rem temp2 = v² ÷ 4
 
           rem Apply Ninjish Guy bonus (can fall farther)
 

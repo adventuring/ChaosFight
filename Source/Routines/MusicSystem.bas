@@ -7,10 +7,6 @@ StartMusic
           asm
 StartMusic
 end
-          asm
-StartMusic
-
-end
           rem MUSIC SUBSYSTEM - Polyphony 2 Implementation
           rem Music system for publisher/author/title/winner screens
           rem   (gameMode 0-2, 7)
@@ -132,10 +128,6 @@ LoadSongPointersDone
 UpdateMusic
           asm
 UpdateMusic
-end
-          asm
-UpdateMusic
-
 end
           rem
           rem Updatemusic - Update Music Playback Each Frame

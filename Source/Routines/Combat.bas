@@ -348,22 +348,26 @@ FacingDown
           return
 
 ProjectileHitbox
-          rem Projectile hitbox is at current missile position (to be
-          rem implemented)
+          rem Projectile attacks handled by missile collision system
+          rem Issue #1148: Skip projectile hitbox calculation since missiles
+          rem handle their own collisions via MissileCollision routines
           rem
-          rem Input: None (placeholder)
+          rem Input: attackerID (from CalculateAttackHitbox)
           rem
-          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
-          rem set to 0 (placeholder)
+          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W,
+          rem cachedHitboxBottom_W set to invalid bounds (will never match)
           rem
-          rem Mutates: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
-          rem (set to 0)
+          rem Mutates: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W,
+          rem cachedHitboxBottom_W (set to invalid values)
           rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with CalculateAttackHitbox
-          let cachedHitboxLeft_W = 0
+          rem Set invalid bounds that will never match any defender
+          rem (ensures CheckAttackHit always returns miss for projectiles)
+          let cachedHitboxLeft_W = 255
           let cachedHitboxRight_W = 0
-          let cachedHitboxTop_W = 0
+          let cachedHitboxTop_W = 255
           let cachedHitboxBottom_W = 0
           return
 

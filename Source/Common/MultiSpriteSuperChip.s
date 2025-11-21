@@ -2,6 +2,13 @@
 ; The upstream multisprite definitions are included separately.
 ; NOTE: processor 6502 directive is in AssemblyConfig.bas, not here
 
+; CRITICAL: Define memory address variables FIRST to allow DASM to resolve forward references
+; These must be defined before any code that uses them
+missile1height = $A4
+missile0height = $A5
+playfieldRow = $5C
+rand16 = $00F2
+
 #include "vcs.h"
 #include "macro.h"
 ; Issue #930: Ensure every SuperChip SCRAM port symbol is exported here so
@@ -807,13 +814,8 @@ BANK16_END = $F000 + $FC0
           MS_ASSIGN  stack4, $F9
 
 ; --- Zero-page utility aliases ------------------------------------------------
-          ; Define unconditionally to avoid forward reference issues
-          ifnconst missile1height
-missile1height = $A4
-          endif
-          ifnconst missile0height
-missile0height = $A5
-          endif
+          ; NOTE: missile1height, missile0height, playfieldRow, rand16 are now defined at the top of this file
+          ; to allow DASM to resolve forward references
           MS_ASSIGN  ballheight, $92
           MS_ASSIGN  currentpaddle, $90
           MS_ASSIGN  paddle, $91
@@ -976,10 +978,7 @@ var47 EQU $D3
           MS_ASSIGN  no_blank_lines, 0
           MS_ASSIGN  PFmaskvalue, 0
   ; NOT is a batariBASIC keyword (bitwise NOT operator), not a constant - do not define
-          ; Define unconditionally to avoid forward reference issues
-          ifnconst playfieldRow
-playfieldRow = $5C
-          endif
+          ; NOTE: playfieldRow is now defined at the top of this file to allow DASM to resolve forward references
   ; FontData is defined in Source/Generated/Numbers.bas - do not define here
   ; Forward assignments are not supported - use the actual label from Numbers.bas
           MS_ASSIGN  gamenumber, $00
@@ -1256,10 +1255,7 @@ playfieldRow = $5C
           MS_ASSIGN  switchbw, $0282
           MS_ASSIGN  screenheight, 192
           ; rand16 is optional (used by randomize if defined)
-          ; Define unconditionally so ifconst can detect it
-          ifnconst rand16
-rand16 = $00F2
-          endif
+          ; NOTE: rand16 is now defined at the top of this file to allow DASM to resolve forward references
           ; NOT is a batariBASIC keyword (bitwise NOT operator), not a constant
           ; Do NOT define it here - it causes syntax errors when used as an operator
           ; If you need a bitwise NOT mask, use ($FF ^ value) instead of (NOT value)

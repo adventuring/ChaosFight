@@ -173,7 +173,11 @@ end
           if temp1 then let temp3 = 1
           let temp1 = temp4
           if temp3 = 0 then goto GravityNextPlayer
-          rem Ground detected! Stop falling and clamp position to ground
+          rem Ground detected! Skip standard landing logic for Radish Goblin (bounce system handles it)
+          if temp6 = CharacterRadishGoblin then goto GravityNextPlayer
+          rem Radish Goblin uses bounce movement system, skip standard landing
+          
+          rem Standard landing logic for all other characters
           let playerVelocityY[temp1] = 0
           rem Zero Y velocity (stop falling)
           let playerVelocityYL[temp1] = 0
@@ -201,7 +205,7 @@ GravityRowCalcDone
           rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
           rem Clear bit 2 (jumping flag)
 
-          rem Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
+          rem Clear Zoe's double-jump used flag on landing (bit 3 in characterStateFlags for this player)
           if temp6 = 3 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
 
           rem If RoboTito, set stretch permission on landing
@@ -240,6 +244,10 @@ GravityCheckBottom
           rem bottom row
           if temp4 < pfrows - 1 then goto GravityNextPlayer
           rem Not at bottom row yet
+
+          rem Skip standard landing logic for Radish Goblin (bounce system handles it)
+          if temp6 = CharacterRadishGoblin then goto GravityNextPlayer
+          rem Radish Goblin uses bounce movement system, skip standard landing
 
           rem Bottom row is always ground - clamp to bottom
           rem Calculate (pfrows - 1) × pfrowheight using repeated

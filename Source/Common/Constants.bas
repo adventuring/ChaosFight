@@ -42,6 +42,15 @@
           rem Prevents infinite acceleration from gravity
           const TerminalVelocity = 8
 
+          rem Radish Goblin bounce movement constants
+          rem Bounce height values in pixels (converted to velocity in movement system)
+          const RadishGoblinBounceNormal = 10
+          rem Normal bounce height (10 pixels upward)
+          const RadishGoblinBounceHighSpeed = 5
+          rem High-speed bounce height (5 pixels upward, when falling at TerminalVelocity or greater)
+          const RadishGoblinBounceShort = 5
+          rem Short bounce height (5 pixels upward, from stick down release)
+
           rem Character system constants
           rem Only 16 characters are selectable (0-15), but code handles up to 32 entries (0-31)
           rem Number of character slots in generated data

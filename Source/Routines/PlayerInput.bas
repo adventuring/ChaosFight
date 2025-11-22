@@ -734,10 +734,15 @@ end
           rem Use goto to avoid branch out of range (target is 298+ bytes away)
           if temp5 = 8 then goto IHLP_FlyingMovement
           if temp5 = 2 then goto IHLP_FlyingMovement
+          rem Radish Goblin (12) uses bounce movement system
+          if temp5 = CharacterRadishGoblin then goto IHLP_RadishGoblinMovement
 
           rem Standard horizontal movement (modifies velocity, not position)
           gosub HandleStandardHorizontalMovement
 DoneLeftPortMovement
+IHLP_RadishGoblinMovement
+          gosub RadishGoblinHandleInput bank12
+          goto DoneLeftPortMovement
 IHLP_FlyingMovement
           gosub HandleFlyingCharacterMovement bank12
 IHLP_DoneFlyingLeftRight
@@ -766,6 +771,11 @@ HGI_HandleDownPressed1
           if temp4 = CharacterHarpy then goto HarpyDown
           if temp4 = CharacterFrooty then goto FrootyDown
           if temp4 = CharacterRoboTito then goto DCD_HandleRoboTitoDown1
+          if temp4 = CharacterRadishGoblin then goto HGI_HandleRadishGoblinDown1
+          goto StandardGuard
+HGI_HandleRadishGoblinDown1
+          rem Radish Goblin: drop momentum + normal guarding
+          gosub RadishGoblinHandleStickDown bank12
           goto StandardGuard
 DCD_HandleRoboTitoDown1
           gosub RoboTitoDown
@@ -774,12 +784,15 @@ DCD_HandleRoboTitoDown1
 HGI_CheckGuardRelease1
           let temp2 = playerState[temp1] & 2
           rem DOWN released - check for early guard release
-          if !temp2 then goto HGI_Done1
-          rem Not guarding, nothing to do
-          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          if !temp2 then goto HGI_CheckRadishGoblinRelease1
+          rem Not guarding, check for Radish Goblin short bounce
           rem Stop guard early and start cooldown
+          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           let playerTimers_W[temp1] = GuardTimerMaxFrames
           rem Start cooldown timer
+HGI_CheckRadishGoblinRelease1
+          rem Check if Radish Goblin and apply short bounce on stick down release
+          if playerCharacter[temp1] = CharacterRadishGoblin then gosub RadishGoblinHandleStickDownRelease bank12
 HGI_Done1
 
           rem Process attack input
@@ -835,10 +848,15 @@ end
           rem Use goto to avoid branch out of range (target is 302+ bytes away)
           if temp5 = CharacterFrooty then goto IHRP_FlyingMovement
           if temp5 = CharacterDragonOfStorms then goto IHRP_FlyingMovement
+          rem Radish Goblin (12) uses bounce movement system
+          if temp5 = CharacterRadishGoblin then goto IHRP_RadishGoblinMovement
 
           rem Standard horizontal movement (no collision check)
           gosub HandleStandardHorizontalMovement
 DoneRightPortMovement
+IHRP_RadishGoblinMovement
+          gosub RadishGoblinHandleInput bank12
+          goto DoneRightPortMovement
 IHRP_FlyingMovement
           gosub HandleFlyingCharacterMovement bank12
 IHRP_DoneFlyingLeftRight
@@ -867,6 +885,11 @@ HGI_HandleDownPressed2
           if temp4 = CharacterHarpy then goto HarpyDown
           if temp4 = CharacterFrooty then goto FrootyDown
           if temp4 = CharacterRoboTito then goto DCD_HandleRoboTitoDown2
+          if temp4 = CharacterRadishGoblin then goto HGI_HandleRadishGoblinDown2
+          goto StandardGuard
+HGI_HandleRadishGoblinDown2
+          rem Radish Goblin: drop momentum + normal guarding
+          gosub RadishGoblinHandleStickDown bank12
           goto StandardGuard
 DCD_HandleRoboTitoDown2
           gosub RoboTitoDown
@@ -875,12 +898,15 @@ DCD_HandleRoboTitoDown2
 HGI_CheckGuardRelease2
           let temp2 = playerState[temp1] & 2
           rem DOWN released - check for early guard release
-          if !temp2 then goto HGI_Done2
-          rem Not guarding, nothing to do
-          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          if !temp2 then goto HGI_CheckRadishGoblinRelease2
+          rem Not guarding, check for Radish Goblin short bounce
           rem Stop guard early and start cooldown
+          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           let playerTimers_W[temp1] = GuardTimerMaxFrames
           rem Start cooldown timer
+HGI_CheckRadishGoblinRelease2
+          rem Check if Radish Goblin and apply short bounce on stick down release
+          if playerCharacter[temp1] = CharacterRadishGoblin then gosub RadishGoblinHandleStickDownRelease bank12
 HGI_Done2
 
           rem Process attack input

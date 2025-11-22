@@ -137,6 +137,9 @@ CheckQuadtariSkip
           goto GameMainLoopQuadtariSkip
 ProcessCollision
           gosub CheckPlayfieldCollisionAllDirections bank10
+          rem Check for Radish Goblin bounce movement (ground and wall bounces)
+          if playerCharacter[currentPlayer] = CharacterRadishGoblin then gosub RadishGoblinCheckGroundBounce bank12
+          if playerCharacter[currentPlayer] = CharacterRadishGoblin then gosub RadishGoblinCheckWallBounce bank12
           next
 GameMainLoopQuadtariSkip
           rem Skip 4-player collision checks (not in 4-player mode)

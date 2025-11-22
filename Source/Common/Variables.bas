@@ -720,6 +720,26 @@
           rem       and never used simultaneously (cachedHitbox only during attack processing)
           dim characterStateFlags_R = r124
 
+          rem Radish Goblin bounce movement state tracking (SCRAM - Game Mode only)
+          rem Tracks bounce state and contact positions for Radish Goblin character
+          rem Uses w078-w081, w082-w085, w086-w089 (12 bytes total for 3 arrays of 4 players each)
+          rem NOTE: Overlaps with Admin Mode variables - safe since Admin and Game Mode never run simultaneously
+          rem NOTE: w085 overlaps with currentAnimationSeq - safe since Radish Goblin movement only active in Game Mode
+          dim radishGoblinBounceState_W = w078
+          rem Bounce state: 0=no bounce yet on current contact, 1=bounced
+          rem Array accessible as radishGoblinBounceState[0] through radishGoblinBounceState[3]
+          dim radishGoblinBounceState_R = r078
+          dim radishGoblinLastContactY_W = w082
+          rem Last Y position where ground contact occurred (for detecting when player leaves ground)
+          rem Array accessible as radishGoblinLastContactY[0] through radishGoblinLastContactY[3]
+          rem NOTE: w082-w085 overlaps with currentAnimationFrame (w081-w084) - safe since only one active at a time
+          dim radishGoblinLastContactY_R = r082
+          dim radishGoblinLastContactX_W = w086
+          rem Last X position where wall contact occurred (for detecting when player leaves wall)
+          rem Array accessible as radishGoblinLastContactX[0] through radishGoblinLastContactX[3]
+          rem NOTE: w086-w089 overlaps with currentAnimationSeq (w085-w088) and characterSpecialAbility (w089) - safe since only one active at a time
+          dim radishGoblinLastContactX_R = r086
+
           rem Missile angular velocity for curling stone rotation
           rem   (SCRAM)
           rem Moved from w097 to avoid conflict with missileY (w097-w100)

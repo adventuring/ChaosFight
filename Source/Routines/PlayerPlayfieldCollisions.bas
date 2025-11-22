@@ -82,7 +82,10 @@ end
           goto PFCheckRight
 
 PFBlockLeft
+          rem Skip zeroing velocity for Radish Goblin (bounce system handles it)
+          if playerCharacter[currentPlayer] = CharacterRadishGoblin then goto PFBlockLeftClamp
           if playerVelocityX[currentPlayer] & $80 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
+PFBlockLeftClamp
           let rowYPosition_W = temp6 + 1
           asm
             lda rowYPosition_R
@@ -135,7 +138,10 @@ end
           goto PFCheckUp
 
 PFBlockRight
+          rem Skip zeroing velocity for Radish Goblin (bounce system handles it)
+          if playerCharacter[currentPlayer] = CharacterRadishGoblin then goto PFBlockRightClamp
           if playerVelocityX[currentPlayer] > 0 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
+PFBlockRightClamp
           let rowYPosition_W = temp6 - 1
           asm
             lda rowYPosition_R
@@ -180,7 +186,10 @@ PFCheckUp_CheckRight
           goto PFCheckDown_Body
 
 PFBlockUp
+          rem Skip zeroing velocity for Radish Goblin (bounce system handles it)
+          if playerCharacter[currentPlayer] = CharacterRadishGoblin then goto PFBlockUpClamp
           if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
+PFBlockUpClamp
           let rowYPosition_W = playfieldRow + 1
           asm
             lda rowYPosition_R
@@ -194,6 +203,8 @@ end
           if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_W[currentPlayer] = rowYPosition_R
           if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_WL[currentPlayer] = 0
 PFBlockDown
+          rem Skip zeroing velocity for Radish Goblin (bounce system handles it)
+          if playerCharacter[currentPlayer] = CharacterRadishGoblin then return
           if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           return
 

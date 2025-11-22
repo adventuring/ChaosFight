@@ -30,6 +30,10 @@ end
           asm
 Bank12AfterHandleGuardInput
 end
+#include "Source/Routines/RadishGoblinMovement.bas"
+          asm
+Bank12AfterRadishGoblinMovement
+end
 #include "Source/Routines/CharacterControlsJump.bas"
           asm
 Bank12AfterCharacterControlsJump
@@ -49,7 +53,8 @@ Bank12CodeEnds
            echo "// Bank 12: ", [Bank12AfterCharacterDamage - Bank12AfterUpdateAttackCooldowns]d, " bytes = CharacterDamage"
            echo "// Bank 12: ", [Bank12AfterHandleFlyingCharacterMovement - Bank12AfterCharacterDamage]d, " bytes = HandleFlyingCharacterMovement"
            echo "// Bank 12: ", [Bank12AfterHandleGuardInput - Bank12AfterHandleFlyingCharacterMovement]d, " bytes = HandleGuardInput"
-           echo "// Bank 12: ", [Bank12AfterCharacterControlsJump - Bank12AfterHandleGuardInput]d, " bytes = CharacterControlsJump"
+           echo "// Bank 12: ", [Bank12AfterRadishGoblinMovement - Bank12AfterHandleGuardInput]d, " bytes = RadishGoblinMovement"
+           echo "// Bank 12: ", [Bank12AfterCharacterControlsJump - Bank12AfterRadishGoblinMovement]d, " bytes = CharacterControlsJump"
            echo "// Bank 12: ", [Bank12AfterAnimationSystem - Bank12AfterCharacterControlsJump]d, " bytes = AnimationSystem"
            echo "// Bank 12: ", [Bank12AfterDeactivatePlayerMissiles - Bank12AfterAnimationSystem]d, " bytes = DeactivatePlayerMissiles"
 end

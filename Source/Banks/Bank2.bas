@@ -8,13 +8,12 @@
           bank 2
 
           asm
+            ORG $1100
+            RORG $F100
             if . != $F100
               echo "Bank 2 not starting at $f100"
               err
             endif
-
-            ORG $1100
-            RORG $F100
 Bank2DataStart
 BernieDataStart
 end

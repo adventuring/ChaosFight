@@ -802,7 +802,7 @@ Standardize on "Arena" consistently (not "Level" or "Map"):
   Revontuli, Grizzards, MagicalFairyForce) alongside the shared sound-effect
   tables
 
-- Bank 16 carries MainLoop, drawscreen, ArenaLoader, FontRendering, and
+- Bank 16 carries MainLoop, drawscreen, ArenaLoader, SetPlayerGlyphFromFont, and
   the
   `game` entry point because the multisprite kernel insists the hot loop
   lives

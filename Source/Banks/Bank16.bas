@@ -70,10 +70,6 @@ end
           asm
 Bank16AfterSetPlayerGlyphFromFont
 end
-#include "Source/Routines/FontRendering.bas"
-          asm
-Bank16AfterFontRendering
-end
 #include "Source/Routines/DisplayWinScreen.bas"
           rem None of these modules above may be moved to other banks.
           asm
@@ -86,6 +82,5 @@ Bank16CodeEnds
            echo "// Bank 16: ", [Bank16AfterPlayfieldRead - Bank16AfterSpriteLoader]d, " bytes = PlayfieldRead"
            echo "// Bank 16: ", [Bank16AfterCopyGlyphToPlayer - Bank16AfterPlayfieldRead]d, " bytes = CopyGlyphToPlayer"
            echo "// Bank 16: ", [Bank16AfterSetPlayerGlyphFromFont - Bank16AfterCopyGlyphToPlayer]d, " bytes = SetPlayerGlyphFromFont"
-           echo "// Bank 16: ", [Bank16AfterFontRendering - Bank16AfterSetPlayerGlyphFromFont]d, " bytes = FontRendering"
-           echo "// Bank 16: ", [Bank16CodeEnds - Bank16AfterFontRendering]d, " bytes = DisplayWinScreen"
+           echo "// Bank 16: ", [Bank16CodeEnds - Bank16AfterSetPlayerGlyphFromFont]d, " bytes = DisplayWinScreen"
 end

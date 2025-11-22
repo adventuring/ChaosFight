@@ -80,7 +80,13 @@ end
           if temp2 > 31 then temp2 = 31
           let temp6 = temp2
           rem Calculate feet row
-          let temp2 = (playerY[temp1] + PlayerSpriteHeight) / 16
+          let temp2 = playerY[temp1] + PlayerSpriteHeight
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+          end
           if temp2 >= pfrows then goto RGBGB_ClearCheck
           let temp5 = temp2 + 1
           if temp5 >= pfrows then goto RGBGB_ClearCheck

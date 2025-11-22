@@ -25,17 +25,20 @@ end
           rem   include (BASIC statement) so BUILD_DATE_STRING expands correctly
           asm
 Bank1DataStart
+            echo "Bank 1 data starts at $", .
 BuildInfoStart
 end
           include "Source/Common/BuildInfo.s"
           asm
 BuildInfoEnd
+            echo "// Bank 1: ", [BuildInfoEnd - BuildInfoStart]d, " bytes = BuildInfo"
 SongPointers1Start
 end
 
 #include "Source/Data/SongPointers1.bas"
           asm
 SongPointers1End
+            echo "// Bank 1: ", [SongPointers1End - SongPointers1Start]d, " bytes = SongPointers1"
 end
 
           rem Song Data (Bank 1)
@@ -54,6 +57,7 @@ end
 #endif
           asm
 LowResSongEnd
+            echo "// Bank 1: ", [LowResSongEnd - LowResSongStart]d, " bytes = Song.LowRes"
 RoboTitoSongStart
 end
 
@@ -64,6 +68,7 @@ end
 #endif
           asm
 RoboTitoSongEnd
+            echo "// Bank 1: ", [RoboTitoSongEnd - RoboTitoSongStart]d, " bytes = Song.RoboTito"
 SongOfTheBearSongStart
 end
 
@@ -74,6 +79,7 @@ end
 #endif
           asm
 SongOfTheBearSongEnd
+            echo "// Bank 1: ", [SongOfTheBearSongEnd - SongOfTheBearSongStart]d, " bytes = Song.SongOfTheBear"
 DucksAwaySongStart
 end
 
@@ -84,6 +90,7 @@ end
 #endif
           asm
 DucksAwaySongEnd
+            echo "// Bank 1: ", [DucksAwaySongEnd - DucksAwaySongStart]d, " bytes = Song.DucksAway"
 Character16ThemeSongStart
 end
 
@@ -94,6 +101,7 @@ end
 #endif
           asm
 Character16ThemeSongEnd
+            echo "// Bank 1: ", [Character16ThemeSongEnd - Character16ThemeSongStart]d, " bytes = Song.Character16Theme"
 Character17ThemeSongStart
 end
 
@@ -104,6 +112,7 @@ end
 #endif
           asm
 Character17ThemeSongEnd
+            echo "// Bank 1: ", [Character17ThemeSongEnd - Character17ThemeSongStart]d, " bytes = Song.Character17Theme"
 Character18ThemeSongStart
 end
 
@@ -114,6 +123,7 @@ end
 #endif
           asm
 Character18ThemeSongEnd
+            echo "// Bank 1: ", [Character18ThemeSongEnd - Character18ThemeSongStart]d, " bytes = Song.Character18Theme"
 Character19ThemeSongStart
 end
 
@@ -124,7 +134,9 @@ end
 #endif
           asm
 Character19ThemeSongEnd
+            echo "// Bank 1: ", [Character19ThemeSongEnd - Character19ThemeSongStart]d, " bytes = Song.Character19Theme"
 Character20ThemeSongStart
+            echo "Character20ThemeSong starts at", .
 end
 
 #ifdef TV_NTSC
@@ -134,6 +146,7 @@ end
 #endif
           asm
 Character20ThemeSongEnd
+            echo "// Bank 1: ", [Character20ThemeSongEnd - Character20ThemeSongStart]d, " bytes = Song.Character20Theme"
 Character21ThemeSongStart
 end
 
@@ -144,6 +157,7 @@ end
 #endif
           asm
 Character21ThemeSongEnd
+            echo "// Bank 1: ", [Character21ThemeSongEnd - Character21ThemeSongStart]d, " bytes = Song.Character21Theme"
 Character22ThemeSongStart
 end
 
@@ -154,6 +168,7 @@ end
 #endif
           asm
 Character22ThemeSongEnd
+            echo "// Bank 1: ", [Character22ThemeSongEnd - Character22ThemeSongStart]d, " bytes = Song.Character22Theme"
 Character23ThemeSongStart
 end
 
@@ -275,6 +290,7 @@ end
 #endif
           asm
 InterworldlySongEnd
+            echo "// Bank 1: ", [InterworldlySongEnd - InterworldlySongStart]d, " bytes = Song.Interworldly"
 Bank1DataEnds
 end
 
@@ -284,36 +300,12 @@ end
 #include "Source/Routines/MusicBankHelpers.bas"
           asm
 MusicBankHelpersEnd
+            echo "// Bank 1: ", [MusicBankHelpersEnd - MusicBankHelpersStart]d, " bytes = MusicBankHelpers"
 MusicSystemStart
 end
 #include "Source/Routines/MusicSystem.bas"
           asm
 MusicSystemEnd
+            echo "// Bank 1: ", [MusicSystemEnd - MusicSystemStart]d, " bytes = MusicSystem"
 Bank1CodeEnds
-           echo "// Bank 1: ", [BuildInfoEnd - BuildInfoStart]d, " bytes = BuildInfo"
-           echo "// Bank 1: ", [SongPointers1End - SongPointers1Start]d, " bytes = SongPointers1"
-           echo "// Bank 1: ", [LowResSongEnd - LowResSongStart]d, " bytes = Song.LowRes"
-           echo "// Bank 1: ", [RoboTitoSongEnd - RoboTitoSongStart]d, " bytes = Song.RoboTito"
-           echo "// Bank 1: ", [SongOfTheBearSongEnd - SongOfTheBearSongStart]d, " bytes = Song.SongOfTheBear"
-           echo "// Bank 1: ", [DucksAwaySongEnd - DucksAwaySongStart]d, " bytes = Song.DucksAway"
-           echo "// Bank 1: ", [Character16ThemeSongEnd - Character16ThemeSongStart]d, " bytes = Song.Character16Theme"
-           echo "// Bank 1: ", [Character17ThemeSongEnd - Character17ThemeSongStart]d, " bytes = Song.Character17Theme"
-           echo "// Bank 1: ", [Character18ThemeSongEnd - Character18ThemeSongStart]d, " bytes = Song.Character18Theme"
-           echo "// Bank 1: ", [Character19ThemeSongEnd - Character19ThemeSongStart]d, " bytes = Song.Character19Theme"
-           echo "// Bank 1: ", [Character20ThemeSongEnd - Character20ThemeSongStart]d, " bytes = Song.Character20Theme"
-           echo "// Bank 1: ", [Character21ThemeSongEnd - Character21ThemeSongStart]d, " bytes = Song.Character21Theme"
-           echo "// Bank 1: ", [Character22ThemeSongEnd - Character22ThemeSongStart]d, " bytes = Song.Character22Theme"
-           echo "// Bank 1: ", [Character23ThemeSongEnd - Character23ThemeSongStart]d, " bytes = Song.Character23Theme"
-           echo "// Bank 1: ", [Character24ThemeSongEnd - Character24ThemeSongStart]d, " bytes = Song.Character24Theme"
-           echo "// Bank 1: ", [Character25ThemeSongEnd - Character25ThemeSongStart]d, " bytes = Song.Character25Theme"
-           echo "// Bank 1: ", [Character26ThemeSongEnd - Character26ThemeSongStart]d, " bytes = Song.Character26Theme"
-           echo "// Bank 1: ", [Character27ThemeSongEnd - Character27ThemeSongStart]d, " bytes = Song.Character27Theme"
-           echo "// Bank 1: ", [Character28ThemeSongEnd - Character28ThemeSongStart]d, " bytes = Song.Character28Theme"
-           echo "// Bank 1: ", [Character29ThemeSongEnd - Character29ThemeSongStart]d, " bytes = Song.Character29Theme"
-           echo "// Bank 1: ", [Character30ThemeSongEnd - Character30ThemeSongStart]d, " bytes = Song.Character30Theme"
-           echo "// Bank 1: ", [ChaoticaSongEnd - ChaoticaSongStart]d, " bytes = Song.Chaotica"
-           echo "// Bank 1: ", [AtariTodaySongEnd - AtariTodaySongStart]d, " bytes = Song.AtariToday"
-           echo "// Bank 1: ", [InterworldlySongEnd - InterworldlySongStart]d, " bytes = Song.Interworldly"
-           echo "// Bank 1: ", [MusicBankHelpersEnd - MusicBankHelpersStart]d, " bytes = MusicBankHelpers"
-           echo "// Bank 1: ", [MusicSystemEnd - MusicSystemStart]d, " bytes = MusicSystem"
 end

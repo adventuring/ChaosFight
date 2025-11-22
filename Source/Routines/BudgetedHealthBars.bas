@@ -22,12 +22,10 @@ BudgetedHealthBarUpdate
           rem              CheckPlayer3HealthUpdate, DonePlayer3HealthUpdate,
           rem              UpdateHealthBarPlayer0-3 (all called via goto or gosub)
           rem Determine which player to update based on frame phase
-          rem tail call
           if framePhase = 0 then goto BudgetedHealthBarPlayer0
-          rem tail call
           if framePhase = 1 then goto BudgetedHealthBarPlayer1
           if framePhase = 2 then CheckPlayer2HealthUpdate
-          goto DonePlayer2HealthUpdate
+          goto CheckPlayer3HealthUpdate
 BudgetedHealthBarPlayer0
           rem Local trampoline so branch stays in range; tail-calls target
           goto UpdateHealthBarPlayer0
@@ -88,7 +86,6 @@ DonePlayer2HealthUpdate
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate
-          if framePhase = 3 then CheckPlayer3HealthUpdate
           goto DonePlayer3HealthUpdate
 CheckPlayer3HealthUpdate
           rem Check if Player 4 health bar should be updated (4-player mode, active player)

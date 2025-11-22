@@ -93,7 +93,9 @@ Reset:
           ; $fffc-$fffd: Reset vector
           ; $fffe-$ffff: IRQ/BRK vector
           ; Both point to Reset handler
-          ; Calculate ORG from current_bank: ORG = (current_bank * $1000) | $0FFC
+          ; CRITICAL: Set ORG to Bank N's reset vector location
+          ; Calculate file offset: (current_bank * $1000) | $0FFC
+          ; This ensures reset vectors are in Bank N's file space, not Bank N+1's
           ORG ((current_bank * $1000) | $0FFC)
           RORG $fffc
           .word Reset

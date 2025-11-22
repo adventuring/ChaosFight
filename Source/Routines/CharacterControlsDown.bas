@@ -277,30 +277,8 @@ RoboTitoVoluntaryDrop
           rem Clear stretch missile height when dropping
           return
 
-StandardJump
-          asm
-StandardJump
-end
-          rem
-          rem Standard Behaviors
-          rem Standard jump behavior for most characters
-          rem
-          rem INPUT: temp1 = player index
-          rem USES: playerY[temp1], playerState[temp1]
-          rem Standard jump behavior used by most characters (default
-          rem jump impulse)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Upward velocity applied, jumping flag set
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
-          rem arrays) = vertical velocity, playerState[] (global array)
-          rem = player states (jumping flag set)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
+          rem StandardJump is defined in CharacterControlsJump.bas (bank 12)
+          rem This duplicate definition has been removed to fix label conflict
           rem Apply upward velocity impulse (input applies impulse to
           let playerVelocityY[temp1] = 246
           rem   rigid body)

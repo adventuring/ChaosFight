@@ -7,7 +7,7 @@
           rem Non-zero = standard jump velocity
           data CharacterJumpVelocities
           0, 254, 0, 244, 248, 254, 0, 248, 0, 254, 243, 248, 243, 0, 248, 245
-          end
+end
 
 StandardJump
           asm

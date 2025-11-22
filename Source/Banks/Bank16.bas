@@ -6,6 +6,13 @@
 
           bank 16
 
+          asm
+            ;; Align Bank 16 data section to $F100 to skip any batariBASIC auto-generated data
+            ;; This ensures user data starts at the expected location
+            ORG $F100
+            RORG $F100
+          end
+
           rem First — data. Must come first. Cannot be moved.
 #include "Source/Data/Arenas.bas"
           rem Bank16AfterArenas label is defined at end of Arenas.bas
@@ -29,7 +36,7 @@ Bank16DataEnds
            echo "// Bank 16: ", [BlankPlayfieldEnd - BlankPlayfieldStart]d, " bytes = BlankPlayfield"
            echo "// Bank 16: ", [BlankPlayfieldColorsEnd - BlankPlayfieldColorsStart]d, " bytes = BlankPlayfieldColors"
            echo "// Bank 16: ", [Arena31PlayfieldEnd - Arena0PlayfieldStart]d, " bytes = 32 Arenas (Arena0-31)"
-           echo "// Bank 16: ", [Bank16AfterArenas - $F100]d, " bytes = Total Arenas section"
+           echo "// Bank 16: ", [Bank16AfterArenas - ArenaColorsBWStart]d, " bytes = Total Arenas section"
            echo "// Bank 16: ", [Bank16AfterNumbers - Bank16AfterArenas]d, " bytes = Numbers"
            echo "// Bank 16: ", [Bank16AfterPlayerColors - Bank16AfterNumbers]d, " bytes = PlayerColors"
            echo "// Bank 16: ", [Bank16DataEnds - Bank16AfterPlayerColors]d, " bytes = WinnerScreen"

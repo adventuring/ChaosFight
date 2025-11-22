@@ -8,9 +8,7 @@
 
           rem First — data. Must come first. Cannot be moved.
 #include "Source/Data/Arenas.bas"
-          asm
-Bank16AfterArenas
-end
+          rem Bank16AfterArenas label is defined at end of Arenas.bas
 
 #include "Source/Generated/Numbers.bas"
           asm
@@ -27,7 +25,11 @@ end
           asm
 Bank16DataEnds
           if Bank16DataEnds > $F100
-           echo "// Bank 16: ", [Bank16AfterArenas - $F100]d, " bytes = Arenas"
+           echo "// Bank 16: ", [ArenaColorsBWEnd - ArenaColorsBWStart]d, " bytes = ArenaColorsBW"
+           echo "// Bank 16: ", [BlankPlayfieldEnd - BlankPlayfieldStart]d, " bytes = BlankPlayfield"
+           echo "// Bank 16: ", [BlankPlayfieldColorsEnd - BlankPlayfieldColorsStart]d, " bytes = BlankPlayfieldColors"
+           echo "// Bank 16: ", [Arena31PlayfieldEnd - Arena0PlayfieldStart]d, " bytes = 32 Arenas (Arena0-31)"
+           echo "// Bank 16: ", [Bank16AfterArenas - $F100]d, " bytes = Total Arenas section"
            echo "// Bank 16: ", [Bank16AfterNumbers - Bank16AfterArenas]d, " bytes = Numbers"
            echo "// Bank 16: ", [Bank16AfterPlayerColors - Bank16AfterNumbers]d, " bytes = PlayerColors"
            echo "// Bank 16: ", [Bank16DataEnds - Bank16AfterPlayerColors]d, " bytes = WinnerScreen"

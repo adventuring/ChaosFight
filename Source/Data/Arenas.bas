@@ -18,6 +18,9 @@
           rem Suppress pointer-setting code to maintain 24-byte alignment
           rem LoadArenaByIndex routine handles pointer calculation dynamically
           const _suppress_pf_pointer_code = 1
+          asm
+ArenaColorsBWStart
+end
           data ArenaColorsBW
             ColGrey(14),
             ColGrey(14),
@@ -28,12 +31,18 @@
             ColGrey(14),
             ColGrey(14)
 end
+          asm
+ArenaColorsBWEnd
+end
 
           rem
           rem Blank playfield for score/transition frames.
           rem This does not participate in the indexed Arena0-31 system and is
           rem loaded explicitly when we want a neutral background behind the
           rem score/kernel.
+          asm
+BlankPlayfieldStart
+end
 BlankPlayfield
           asm
 BlankPlayfield
@@ -48,6 +57,12 @@ end
           ................
           ................
 end
+          asm
+BlankPlayfieldEnd
+end
+          asm
+BlankPlayfieldColorsStart
+end
 BlankPlayfieldColors
           data BlankPlayfieldColors
             ColGrey(14),
@@ -58,6 +73,10 @@ BlankPlayfieldColors
             ColGrey(14),
             ColGrey(14),
             ColGrey(14)
+end
+          asm
+BlankPlayfieldColorsEnd
+Arena0PlayfieldStart
 end
 
           rem
@@ -797,4 +816,8 @@ Arena31Colors
             ColGrey(4),
             ColGrey(6),
             ColGrey(8)
+end
+          asm
+Arena31PlayfieldEnd
+Bank16AfterArenas
 end

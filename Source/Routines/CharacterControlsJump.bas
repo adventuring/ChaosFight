@@ -1,6 +1,33 @@
           rem ChaosFight - Source/Routines/CharacterControls.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
+          rem Character jump velocity lookup table (for StandardJump)
+          rem Values are 8-bit twos complement upward velocities
+          rem 0 = special jump (use character-specific function)
+          rem Non-zero = standard jump velocity
+          data CharacterJumpVelocities
+          0, 254, 0, 244, 248, 254, 0, 248, 0, 254, 243, 248, 243, 0, 248, 245
+          end
+
+StandardJump
+          asm
+StandardJump
+end
+          rem Shared standard jump function with velocity lookup
+          rem Input: temp1 = player index (0-3), playerCharacter[] (global array)
+          rem Output: Upward velocity applied, jumping flag set
+          rem Mutates: playerVelocityY[], playerVelocityYL[], playerState[]
+          rem Called Routines: None
+          rem Constraints: Only for characters with standard jumps (non-zero velocity in table)
+          let temp2 = playerCharacter[temp1]
+          let temp2 = CharacterJumpVelocities(temp2)
+          if temp2 = 0 then return
+          rem Special jump (should use character-specific function)
+          let playerVelocityY[temp1] = temp2
+          let playerVelocityYL[temp1] = 0
+          let playerState[temp1] = playerState[temp1] | 4
+          return
+
 CCJ_ConvertPlayerXToPlayfieldColumn
           asm
 CCJ_ConvertPlayerXToPlayfieldColumn
@@ -199,52 +226,16 @@ ZoeRyenJump
           asm
 ZoeRyenJump
 end
-          rem ZOE RYEN (3) - STANDARD JUMP (light weight, high jump)
-          rem Light character with high jump (stronger upward impulse)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Upward velocity applied, jumping flag set
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
-          rem arrays) = vertical velocity, playerState[] (global array)
-          rem = player states (jumping flag set)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Apply upward velocity impulse (lighter character, higher
-          let playerVelocityY[temp1] = 244
-          rem   jump)
-          rem -12 in 8-bit twos complement: 256 - 12 = 244
-          let playerVelocityYL[temp1] = 0
-          let playerState[temp1] = playerState[temp1] | 4
+          rem ZOE RYEN (3) - STANDARD JUMP (use shared StandardJump)
+          gosub StandardJump
           return
 
 FatTonyJump
           asm
 FatTonyJump
 end
-          rem FAT TONY (4) - STANDARD JUMP (heavy weight, lower jump)
-          rem Heavy character with lower jump (weaker upward impulse)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Upward velocity applied, jumping flag set
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
-          rem arrays) = vertical velocity, playerState[] (global array)
-          rem = player states (jumping flag set)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Apply upward velocity impulse (heavier character, lower
-          let playerVelocityY[temp1] = 248
-          rem   jump)
-          rem -8 in 8-bit twos complement: 256 - 8 = 248
-          let playerVelocityYL[temp1] = 0
-          let playerState[temp1] = playerState[temp1] | 4
+          rem FAT TONY (4) - STANDARD JUMP (use shared StandardJump)
+          gosub StandardJump
           return
 
 HarpyJump
@@ -350,26 +341,8 @@ KnightGuyJump
           asm
 KnightGuyJump
 end
-          rem KNIGHT GUY (7) - STANDARD JUMP (heavy weight)
-          rem Heavy character with lower jump (weaker upward impulse)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Upward velocity applied, jumping flag set
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
-          rem arrays) = vertical velocity, playerState[] (global array)
-          rem = player states (jumping flag set)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Apply upward velocity impulse (heavier character, lower
-          let playerVelocityY[temp1] = 248
-          rem   jump)
-          rem -8 in 8-bit twos complement: 256 - 8 = 248
-          let playerVelocityYL[temp1] = 0
-          let playerState[temp1] = playerState[temp1] | 4
+          rem KNIGHT GUY (7) - STANDARD JUMP (use shared StandardJump)
+          gosub StandardJump
           return
 
 FrootyJump
@@ -448,80 +421,24 @@ NinjishGuyJump
           asm
 NinjishGuyJump
 end
-          rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
-          rem Very light character with highest jump (strongest upward
-          rem impulse)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Upward velocity applied, jumping flag set
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
-          rem arrays) = vertical velocity, playerState[] (global array)
-          rem = player states (jumping flag set)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Apply upward velocity impulse (very light character,
-          let playerVelocityY[temp1] = 243
-          rem   highest jump)
-          rem -13 in 8-bit twos complement: 256 - 13 = 243
-          let playerVelocityYL[temp1] = 0
-          let playerState[temp1] = playerState[temp1] | 4
+          rem NINJISH GUY (10) - STANDARD JUMP (use shared StandardJump)
+          gosub StandardJump
           return
 
 PorkChopJump
           asm
 PorkChopJump
 end
-          rem PORK CHOP (11) - STANDARD JUMP (heavy weight)
-          rem Heavy character with lower jump (weaker upward impulse)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Upward velocity applied, jumping flag set
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
-          rem arrays) = vertical velocity, playerState[] (global array)
-          rem = player states (jumping flag set)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Apply upward velocity impulse (heavy character, lower
-          let playerVelocityY[temp1] = 248
-          rem   jump)
-          rem -8 in 8-bit twos complement: 256 - 8 = 248
-          let playerVelocityYL[temp1] = 0
-          let playerState[temp1] = playerState[temp1] | 4
+          rem PORK CHOP (11) - STANDARD JUMP (use shared StandardJump)
+          gosub StandardJump
           return
 
 RadishGoblinJump
           asm
 RadishGoblinJump
 end
-          rem RADISH GOBLIN (12) - STANDARD JUMP (very light, high jump)
-          rem Very light character with highest jump (strongest upward
-          rem impulse)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Upward velocity applied, jumping flag set
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
-          rem arrays) = vertical velocity, playerState[] (global array)
-          rem = player states (jumping flag set)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Apply upward velocity impulse (very light character,
-          let playerVelocityY[temp1] = 243
-          rem   highest jump)
-          rem -13 in 8-bit twos complement: 256 - 13 = 243
-          let playerVelocityYL[temp1] = 0
-          let playerState[temp1] = playerState[temp1] | 4
+          rem RADISH GOBLIN (12) - STANDARD JUMP (use shared StandardJump)
+          gosub StandardJump
           return
 
 RoboTitoJump
@@ -799,49 +716,14 @@ UrsuloJump
           asm
 UrsuloJump
 end
-          rem URSULO (14) - STANDARD JUMP (heavy weight)
-          rem Heavy character with lower jump (weaker upward impulse)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Upward velocity applied, jumping flag set
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
-          rem arrays) = vertical velocity, playerState[] (global array)
-          rem = player states (jumping flag set)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Apply upward velocity impulse (heavy character, lower
-          let playerVelocityY[temp1] = 248
-          rem   jump)
-          rem -8 in 8-bit twos complement: 256 - 8 = 248
-          let playerVelocityYL[temp1] = 0
-          let playerState[temp1] = playerState[temp1] | 4
+          rem URSULO (14) - STANDARD JUMP (use shared StandardJump)
+          gosub StandardJump
           return
 
 ShamoneJump
           asm
 ShamoneJump
 end
-          rem SHAMONE (15) - STANDARD JUMP (light weight)
-          rem Light character with good jump (strong upward impulse)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Upward velocity applied, jumping flag set
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
-          rem arrays) = vertical velocity, playerState[] (global array)
-          rem = player states (jumping flag set)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          let playerVelocityY[temp1] = 245
-          rem Apply upward velocity impulse (light character, good jump)
-          rem -11 in 8-bit twos complement: 256 - 11 = 245
-          let playerVelocityYL[temp1] = 0
-          let playerState[temp1] = playerState[temp1] | 4
+          rem SHAMONE (15) - STANDARD JUMP (use shared StandardJump)
+          gosub StandardJump
           return

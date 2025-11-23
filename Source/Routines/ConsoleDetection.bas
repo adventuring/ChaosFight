@@ -20,7 +20,6 @@
 ConsoleDetHW
           asm
 ConsoleDetHW
-
 end
           rem Detect whether running on Atari 2600 or 7800 console
           rem
@@ -99,7 +98,7 @@ end
 end
           if temp1 = 0 then goto Is2600
 
-          goto Is7800
+          rem fall through to Is7800
           rem CDFJ driver detected 7800
 
 Is7800
@@ -114,7 +113,7 @@ Is7800
           rem Called Routines: None
           rem Constraints: Must be colocated with ConsoleDetHW
           let systemFlags = systemFlags | SystemFlag7800
-          return
+          goto ConsoleDetected
 
 Is2600
           rem 2600 console detected
@@ -128,63 +127,5 @@ Is2600
           rem Called Routines: None
           rem Constraints: Must be colocated with ConsoleDetHW
           let systemFlags = systemFlags & ClearSystemFlag7800
-          return
 
-          rem
-          rem Console Feature Detection
-          rem Entry point after base detection; applies console-specific features.
-
-CheckConsoleFeatures
-          rem
-          rem Input: systemFlags (global) = system flags (SystemFlag7800
-          rem indicates 7800)
-          rem
-          rem Output: None (no console-specific initialization needed)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with Done7800Features,
-          rem ConsoleFeaturesDone
-          rem Check if running on 7800 (bit 7 of systemFlags)
-          if (systemFlags & SystemFlag7800) = 0 then Done7800Features
-
-          rem 7800-specific features
-          rem Note: 7800 pause button handling is implemented in
-          rem   ControllerDetection.bas (Check7800Pause) and called
-          rem   from ConsoleHandling.bas during the game loop
-          rem Note: Controller detection works for both 2600 and 7800
-          rem   via ControllerDetection.bas (DetectPads)
-          goto ConsoleFeaturesDone
-          rem   No console-specific initialization needed
-
-Done7800Features
-ConsoleFeaturesDone
-          rem 2600-specific features (label only, no execution)
-          rem
-          rem Input: None (label only, no execution)
-          rem
-          rem Output: None (label only)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with CheckConsoleFeatures
-          rem 2600-specific features
-          rem Note: Controller detection works for both 2600 and 7800
-          rem   via ControllerDetection.bas (DetectPads)
-          rem   No console-specific initialization needed
-          return
-          rem Console features check complete (label only, no execution)
-          rem
-          rem Input: None (label only, no execution)
-          rem
-          rem Output: None (label only)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with CheckConsoleFeatures
+ConsoleDetected

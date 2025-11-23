@@ -44,8 +44,11 @@ end
           rem
           rem Constraints: Must be entry point for cold start (called
           rem from Bank1)
-          gosub ConsoleDetHW
-
+          rem
+          rem CRITICAL: Console detection MUST run inline (not as subroutine)
+          rem because the stack is not yet initialized. It must execute
+          rem before any code modifies $D0/$D1 registers.
+#include "Source/Routines/ConsoleDetection.bas"
           rem After console detection, we need to initialize:
           rem   - RAM clearing (all RAM set to 0)
           rem   - Stack initialization (SP = $FF)

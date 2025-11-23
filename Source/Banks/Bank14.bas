@@ -29,10 +29,6 @@ end
           asm
 Bank14AfterPublisherPrelude
 end
-#include "Source/Routines/ConsoleDetection.bas"
-          asm
-Bank14AfterConsoleDetection
-end
 #include "Source/Routines/ChangeGameMode.bas"
           asm
 Bank14AfterChangeGameMode
@@ -136,8 +132,7 @@ Bank14CodeEnds
            echo "// Bank 14: ", [Bank14AfterBeginTitleScreen - Bank14AfterRandomize]d, " bytes = BeginTitleScreen"
            echo "// Bank 14: ", [Bank14AfterBeginPublisherPrelude - Bank14AfterBeginTitleScreen]d, " bytes = BeginPublisherPrelude"
            echo "// Bank 14: ", [Bank14AfterPublisherPrelude - Bank14AfterBeginPublisherPrelude]d, " bytes = PublisherPrelude"
-           echo "// Bank 14: ", [Bank14AfterConsoleDetection - Bank14AfterPublisherPrelude]d, " bytes = ConsoleDetection"
-           echo "// Bank 14: ", [Bank14AfterChangeGameMode - Bank14AfterConsoleDetection]d, " bytes = ChangeGameMode"
+           echo "// Bank 14: ", [Bank14AfterChangeGameMode - Bank14AfterPublisherPrelude]d, " bytes = ChangeGameMode"
            echo "// Bank 14: ", [Bank14AfterBeginAuthorPrelude - Bank14AfterChangeGameMode]d, " bytes = BeginAuthorPrelude"
            echo "// Bank 14: ", [Bank14AfterBeginAttractMode - Bank14AfterBeginAuthorPrelude]d, " bytes = BeginAttractMode"
            echo "// Bank 14: ", [Bank14AfterColdStart - Bank14AfterBeginAttractMode]d, " bytes = ColdStart"

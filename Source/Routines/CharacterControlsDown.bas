@@ -1,7 +1,7 @@
           rem DOWN BUTTON HANDLERS (Called via on goto from PlayerInput)
 DragonOfStormsDown
           asm
-DragonOfStormsDown
+DragonOfStormsDown = .DragonOfStormsDown
 end
           rem DRAGON OF STORMS (2) - FLY DOWN (no guard action)
           rem Dragon of Storms flies down instead of guarding
@@ -69,7 +69,7 @@ end
 
 HarpyDown
           asm
-HarpyDown
+HarpyDown = .HarpyDown
 end
           rem HARPY (6) - FLY DOWN (no guard action)
           rem Harpy flies down instead of guarding
@@ -186,7 +186,7 @@ HarpyNormalDown
 
 FrootyDown
           asm
-FrootyDown
+FrootyDown = .FrootyDown
 end
           rem FROOTY (8) - FLY DOWN (no guard action)
           rem Frooty flies down instead of guarding
@@ -299,7 +299,7 @@ RoboTitoVoluntaryDrop
 
 StandardGuard
           asm
-StandardGuard
+StandardGuard = .StandardGuard
 end
           rem Standard guard behavior
           rem

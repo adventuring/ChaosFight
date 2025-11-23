@@ -41,6 +41,13 @@ begin_bscode SUBROUTINE
           tax
           pla
           rts
+          
+; Global aliases for external code (RETURN macro, etc.)
+; Each bank defines its own aliases pointing to its local labels
+; Using SET instead of EQU allows redefinition in each bank
+; Labels must be at column 0 for DASM to recognize them as labels
+BS_return          SET .BS_return
+BS_jsr             SET .BS_jsr
 
           if (($fff & .) > ($fff & bankswitch_hotspot))
           echo "WARNING: size parameter in BankSwitching.s too small - the program probably will not work."
@@ -82,9 +89,9 @@ begin_bscode SUBROUTINE
           byte $25,current_bank
 
           ; Reset code at $fff0 - must be identical in every bank
-          ; CRITICAL: Set ORG to Bank N's reset code location before setting RORG
+          ; CRITICAL: Set ORG to Bank N’s reset code location before setting RORG
           ; Calculate file offset: (current_bank * $1000) | $0FF0
-          ; This ensures reset code is in Bank N's file space, not Bank N+1's
+          ; This ensures reset code is in Bank N’s file space, not Bank N+1’s
           ; File offset will be different for each bank, but CPU address ($fff0) is the same
           ORG ((current_bank * $1000) | $0FF0)
           RORG $fff0
@@ -103,9 +110,9 @@ begin_bscode SUBROUTINE
           ; $fffc-$fffd: Reset vector
           ; $fffe-$ffff: IRQ/BRK vector
           ; Both point to Reset handler
-          ; CRITICAL: Set ORG to Bank N's reset vector location
+          ; CRITICAL: Set ORG to Bank N’s reset vector location
           ; Calculate file offset: (current_bank * $1000) | $0FFC
-          ; This ensures reset vectors are in Bank N's file space, not Bank N+1's
+          ; This ensures reset vectors are in Bank N’s file space, not Bank N+1’s
           ORG ((current_bank * $1000) | $0FFC)
           RORG $fffc
           .word .Reset

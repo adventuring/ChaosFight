@@ -8,6 +8,16 @@
           bank 2
 
           asm
+            ;; Global aliases for BankSwitching.s local labels
+            ;; These must be defined in Bank 2 (after Bank 1’s BankSwitching.s has been processed)
+            ;; because the local labels (.BS_return, .BS_jsr) are only visible after Bank 1 is complete.
+            ;; Each bank has its own .BS_return and .BS_jsr local labels, but these global aliases
+            ;; allow external code (like the RETURN macro) to reference the current bank’s entry points.
+            BS_return = .BS_return
+            BS_jsr = .BS_jsr
+end
+
+          asm
             ORG $1100
             RORG $F100
 end

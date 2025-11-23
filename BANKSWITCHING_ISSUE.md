@@ -91,11 +91,31 @@ The LST shows data IS being written at $FFFC-$FFFF (reset vectors), so the file 
 
 ## Current Status
 
-- **LST shows**: File offsets correctly reaching $10000, CPU addresses to $10000
-- **Binary file**: Only 61184 bytes (0xEF00), missing 4352 bytes
-- **Root cause**: ORG directives are working in assembly (LST confirms), but binary file is not being written to those addresses
-- **Attempted fix**: Added DS directive to pad to $10000 - did not resolve issue
-- **Next**: Need to investigate why DASM isn't writing binary data to addresses beyond 0xEF00 even though LST shows them
+✅ **FIXED**: All issues resolved!
+
+- **Binary file**: Now 65536 bytes (0x10000) ✓
+- **Bank 15 bankswitching code**: Now at correct address 0xEFB6 ✓
+- **Bank 16 bankswitching code**: Now at correct address 0xFFB6 ✓
+
+## Root Cause and Fix
+
+**Root Cause**: DASM bug where static `org` variable in `generate()` could get out of sync with actual file position. When ORG directives were set to jump forward (e.g., from 0xEF00 to 0xEFB6), the static `org` variable wasn't synced with the actual file position (`ftell(FI_temp)`), causing padding to fail.
+
+**Fix**: Modified `Tools/dasm/src/ops.c` to sync static `org` variable with actual file position (`ftell(FI_temp)`) before padding. This ensures that when ORG jumps forward, the padding logic correctly fills the gap.
+
+**Code Change**: Added sync logic in `generate()` function before padding:
+```c
+if (Csegment->org > org)
+{
+    long actual_file_pos = ftell(FI_temp);
+    if (actual_file_pos != (long)org)
+    {
+        org = (unsigned long)actual_file_pos;
+    }
+}
+```
+
+This fix ensures that the static `org` variable always matches the actual file position, allowing padding to work correctly when ORG directives jump forward.
 
 ## Files Modified
 - `Tools/batariBASIC/statements.c`: Step 0 bankswitching code generation

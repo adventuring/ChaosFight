@@ -6,7 +6,7 @@
 ; note: lines not starting with a space are not placed in all banks
 ;
 
-begin_bscode SUBROUTINE
+.begin_bscode SUBROUTINE
           ldx #$ff
           txs
           lda #(>(start-1) & $0F)

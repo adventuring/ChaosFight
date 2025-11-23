@@ -20,15 +20,15 @@ HGI_HandleDownPressed
           let temp4 = playerCharacter[temp1]
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           if temp4 >= 32 then return
-          if temp4 = 2 then goto DragonOfStormsDown
-          if temp4 = 6 then goto HarpyDown
-          if temp4 = 8 then goto FrootyDown
+          if temp4 = 2 then goto DragonOfStormsDown bank13
+          if temp4 = 6 then goto HarpyDown bank13
+          if temp4 = 8 then goto FrootyDown bank13
           if temp4 = 13 then goto DCD_HandleRoboTitoDown_HGI
-          goto StandardGuard
+          goto StandardGuard bank13
 DCD_HandleRoboTitoDown_HGI
-          gosub RoboTitoDown
+          gosub RoboTitoDown bank13
           if temp2 = 1 then return
-          goto StandardGuard
+          goto StandardGuard bank13
 HGI_CheckGuardRelease
           let temp2 = playerState[temp1] & 2
           rem DOWN released - check for early guard release

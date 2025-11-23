@@ -235,15 +235,15 @@ HGI_HandleDownPressed
           let temp4 = playerCharacter[temp1]
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           if temp4 >= 32 then return
-          if temp4 = CharacterDragonOfStorms then goto DragonOfStormsDown
-          if temp4 = CharacterHarpy then goto HarpyDown
-          if temp4 = CharacterFrooty then goto FrootyDown
+          if temp4 = CharacterDragonOfStorms then goto DragonOfStormsDown bank13
+          if temp4 = CharacterHarpy then goto HarpyDown bank13
+          if temp4 = CharacterFrooty then goto FrootyDown bank13
           if temp4 = CharacterRoboTito then goto DCD_HandleRoboTitoDown
-          goto StandardGuard
+          goto StandardGuard bank13
 DCD_HandleRoboTitoDown
-          gosub RoboTitoDown
+          gosub RoboTitoDown bank13
           if temp2 = 1 then return
-          goto StandardGuard
+          goto StandardGuard bank13
 HGI_CheckGuardRelease
           let temp2 = playerState[temp1] & 2
           rem DOWN released - check for early guard release
@@ -767,20 +767,20 @@ HGI_HandleDownPressed1
           let temp4 = playerCharacter[temp1]
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           if temp4 >= 32 then goto HGI_Done1
-          if temp4 = CharacterDragonOfStorms then goto DragonOfStormsDown
-          if temp4 = CharacterHarpy then goto HarpyDown
-          if temp4 = CharacterFrooty then goto FrootyDown
+          if temp4 = CharacterDragonOfStorms then goto DragonOfStormsDown bank13
+          if temp4 = CharacterHarpy then goto HarpyDown bank13
+          if temp4 = CharacterFrooty then goto FrootyDown bank13
           if temp4 = CharacterRoboTito then goto DCD_HandleRoboTitoDown1
           if temp4 = CharacterRadishGoblin then goto HGI_HandleRadishGoblinDown1
-          goto StandardGuard
+          goto StandardGuard bank13
 HGI_HandleRadishGoblinDown1
           rem Radish Goblin: drop momentum + normal guarding
           gosub RadishGoblinHandleStickDown bank12
-          goto StandardGuard
+          goto StandardGuard bank13
 DCD_HandleRoboTitoDown1
-          gosub RoboTitoDown
+          gosub RoboTitoDown bank13
           if temp2 = 1 then goto HGI_Done1
-          goto StandardGuard
+          goto StandardGuard bank13
 HGI_CheckGuardRelease1
           let temp2 = playerState[temp1] & 2
           rem DOWN released - check for early guard release
@@ -881,20 +881,20 @@ HGI_HandleDownPressed2
           let temp4 = playerCharacter[temp1]
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           if temp4 >= 32 then goto HGI_Done2
-          if temp4 = CharacterDragonOfStorms then goto DragonOfStormsDown
-          if temp4 = CharacterHarpy then goto HarpyDown
-          if temp4 = CharacterFrooty then goto FrootyDown
+          if temp4 = CharacterDragonOfStorms then goto DragonOfStormsDown bank13
+          if temp4 = CharacterHarpy then goto HarpyDown bank13
+          if temp4 = CharacterFrooty then goto FrootyDown bank13
           if temp4 = CharacterRoboTito then goto DCD_HandleRoboTitoDown2
           if temp4 = CharacterRadishGoblin then goto HGI_HandleRadishGoblinDown2
-          goto StandardGuard
+          goto StandardGuard bank13
 HGI_HandleRadishGoblinDown2
           rem Radish Goblin: drop momentum + normal guarding
           gosub RadishGoblinHandleStickDown bank12
-          goto StandardGuard
+          goto StandardGuard bank13
 DCD_HandleRoboTitoDown2
-          gosub RoboTitoDown
+          gosub RoboTitoDown bank13
           if temp2 = 1 then goto HGI_Done2
-          goto StandardGuard
+          goto StandardGuard bank13
 HGI_CheckGuardRelease2
           let temp2 = playerState[temp1] & 2
           rem DOWN released - check for early guard release

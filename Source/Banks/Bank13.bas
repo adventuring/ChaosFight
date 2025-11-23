@@ -7,6 +7,14 @@
           bank 13
 
           asm
+            ;; Global aliases for BankSwitching.s local labels
+            ;; Each bank has its own .BS_return and .BS_jsr local labels, but these global aliases
+            ;; allow external code (like the RETURN macro) to reference the current bank's entry points.
+            BS_return = .BS_return
+            BS_jsr = .BS_jsr
+end
+
+          asm
 Bank13DataEnds
 end
 

@@ -231,8 +231,10 @@
           rem   acceptable)
           dim musicVoice1Frame_R = r065
           rem Music system frame counter aliases (shared naming with sound system)
-          dim voice0Frame = musicVoice0Frame_W
-          dim voice1Frame = musicVoice1Frame_W
+          rem NOTE: voice0Frame and voice1Frame are defined as EQU in 2600bas.c (before ORG)
+          rem to avoid duplicate definitions. Do not dim them here.
+          rem dim voice0Frame = musicVoice0Frame_W
+          rem dim voice1Frame = musicVoice1Frame_W
 
           rem Music System Current Song ID and Loop Pointers (SCRAM -
           rem   used in Admin Mode)

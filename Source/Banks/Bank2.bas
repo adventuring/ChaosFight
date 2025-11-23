@@ -10,6 +10,8 @@
           asm
             ORG $1100
             RORG $F100
+end
+          asm
             if . != $F100
               echo "Bank 2 not starting at $f100"
               err
@@ -69,7 +71,7 @@ end
           asm
             ;; Character art lookup routines for Bank 2 (characters 0-7)
 CharacterArtBank2Start
-#include "Source/Routines/CharacterArtBank2.s"
+            #include "Source/Routines/CharacterArtBank2.s"
 CharacterArtBank2End
             echo "// Bank 2: ", [CharacterArtBank2End - CharacterArtBank2Start]d, " bytes = Character Art lookup routines"
 Bank2CodeEnds

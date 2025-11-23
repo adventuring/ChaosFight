@@ -89,6 +89,14 @@ The LST shows data IS being written at $FFFC-$FFFF (reset vectors), so the file 
 4. **Check Bank 16 assembly**: Verify that Bank 16's content is being assembled and the bankswitching code ORG is being reached
 5. **Investigate binary truncation**: Why is the binary file only 0xEF00 bytes when LST shows data at $10000?
 
+## Current Status
+
+- **LST shows**: File offsets correctly reaching $10000, CPU addresses to $10000
+- **Binary file**: Only 61184 bytes (0xEF00), missing 4352 bytes
+- **Root cause**: ORG directives are working in assembly (LST confirms), but binary file is not being written to those addresses
+- **Attempted fix**: Added DS directive to pad to $10000 - did not resolve issue
+- **Next**: Need to investigate why DASM isn't writing binary data to addresses beyond 0xEF00 even though LST shows them
+
 ## Files Modified
 - `Tools/batariBASIC/statements.c`: Step 0 bankswitching code generation
 - `Tools/batariBASIC/2600bas.c`: Bank 16 bankswitching code generation and memory footprint reporting

@@ -37,7 +37,7 @@ Bank15MaxSongID      EQU 6
 Bank1MinSongID       EQU 7     ; Bank15MaxSongID + 1
             ;; NOTE: Variables like missile0height, missile1height, playfieldRow, rand16
             ;; are memory addresses (defined with = in MultiSpriteSuperChip.s), not constants.
-            ;; They don't need EQU definitions - they're resolved by DASM when used as addresses.
+            ;; They don’t need EQU definitions - they’re resolved by DASM when used as addresses.
             ;; NOT is also a memory address, not a constant, and should not be used as an operator.
 end
 

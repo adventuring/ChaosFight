@@ -25,7 +25,7 @@ end
           rem   include (BASIC statement) so BUILD_DATE_STRING expands correctly
           asm
 Bank1DataStart
-            echo "Bank 1 data starts at $", .
+            rem echo "Bank 1 data starts at $", .  ; Removed: program counter . not resolvable in echo
 BuildInfoStart
 end
           include "Source/Common/BuildInfo.s"
@@ -136,7 +136,7 @@ end
 Character19ThemeSongEnd
             echo "// Bank 1: ", [Character19ThemeSongEnd - Character19ThemeSongStart]d, " bytes = Song.Character19Theme"
 Character20ThemeSongStart
-            echo "Character20ThemeSong starts at", .
+            rem echo "Character20ThemeSong starts at", .  ; Removed: program counter . not resolvable in echo
 end
 
 #ifdef TV_NTSC

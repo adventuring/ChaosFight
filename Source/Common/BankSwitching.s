@@ -1,3 +1,5 @@
+          ; CRITICAL: Ensure ORG is set for bankswitch code placement
+          ; batariBASIC sets ORG before include, but DASM may need it here too
 .begin_bscode SUBROUTINE
           ldx #$ff
           txs
@@ -74,7 +76,8 @@ BS_jsr             SET .BS_jsr
           ; batariBASIC has already set ORG to the bankswitch code location
           ; We just need to set RORG and place the EFSC header
           ; Do NOT set ORG here - batariBASIC handles all ORG positioning
-          RORG bankswitch_hotspot
+          ; CRITICAL: EFSC header must be at $FFE0-$FFEF, not at bankswitch_hotspot ($FFF8)
+          RORG $FFE0
 .EFSC_Header
           byte "EFSC",0
           byte "BRPocock",0

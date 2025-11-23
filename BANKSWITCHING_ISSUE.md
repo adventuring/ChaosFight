@@ -60,12 +60,34 @@ BankSwitching.s has multiple ORG directives:
 
 **Key Issue**: The `.begin_bscode` section (lines 9-85) assembles at the current file offset when included. If the ORG set before the include isn't taking effect, this section will assemble at the wrong location.
 
+## Critical Discovery: LST vs Binary Mismatch
+
+**Key Finding**: The LST listing shows file offsets correctly reaching $10000, but the binary file is only 61184 bytes (0xEF00).
+
+- **LST shows**: CPU addresses (RORG) correctly go to $10000
+- **LST shows**: File offsets (ORG) correctly show $FFFC, $FFFE, $10000
+- **Binary file**: Only 61184 bytes (0xEF00), missing 4352 bytes
+
+This indicates:
+1. **ORG directives ARE working** - LST shows correct file offsets
+2. **RORG directives ARE working** - LST shows correct CPU addresses  
+3. **Binary file is not being written** to those file offsets, OR is being truncated
+
+### DASM Behavior
+According to DASM documentation: "NOTE that no filler is generated until the first data-generating opcode/pseudoop is encountered after this one."
+
+The LST shows data IS being written at $FFFC-$FFFF (reset vectors), so the file should be at least $10000 bytes. The fact that it's not suggests:
+- The file is being truncated
+- ORG is set but the file isn't being extended to those addresses
+- The binary output format may require explicit padding
+
 ## Next Steps
 
 1. **Verify ORG behavior**: Check if `ORG $EFB6` is actually advancing the file offset when set
 2. **Check file offset at ORG time**: Determine what the file offset is when `ORG $EFB6` is set
 3. **Investigate BankSwitching.s ORG directives**: The ORG at line 96 may be interfering with the bankswitching code placement
 4. **Check Bank 16 assembly**: Verify that Bank 16's content is being assembled and the bankswitching code ORG is being reached
+5. **Investigate binary truncation**: Why is the binary file only 0xEF00 bytes when LST shows data at $10000?
 
 ## Files Modified
 - `Tools/batariBASIC/statements.c`: Step 0 bankswitching code generation

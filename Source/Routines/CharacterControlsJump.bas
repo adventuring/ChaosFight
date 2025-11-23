@@ -222,21 +222,9 @@ end
           rem Set jumping flag for animation
           return
 
-ZoeRyenJump
-          asm
-ZoeRyenJump
-end
-          rem ZOE RYEN (3) - STANDARD JUMP (use shared StandardJump)
-          gosub StandardJump
-          return
-
-FatTonyJump
-          asm
-FatTonyJump
-end
-          rem FAT TONY (4) - STANDARD JUMP (use shared StandardJump)
-          gosub StandardJump
-          return
+          rem ZOE RYEN (3) - STANDARD JUMP (dispatched directly to StandardJump)
+          rem FAT TONY (4) - STANDARD JUMP (dispatched directly to StandardJump)
+          rem Removed redundant wrapper functions - DispatchCharacterJump calls StandardJump directly
 
 HarpyJump
           asm
@@ -337,13 +325,8 @@ HarpyFlapRecord
 
           return
 
-KnightGuyJump
-          asm
-KnightGuyJump
-end
-          rem KNIGHT GUY (7) - STANDARD JUMP (use shared StandardJump)
-          gosub StandardJump
-          return
+          rem KNIGHT GUY (7) - STANDARD JUMP (dispatched directly to StandardJump)
+          rem Removed redundant wrapper function - DispatchCharacterJump calls StandardJump directly
 
 FrootyJump
           asm
@@ -376,17 +359,10 @@ end
           rem Called Routines: None
           rem
           rem Constraints: Only moves up if row above is clear. Cannot
-          rem move if already at top row. Uses inline coordinate
-          rem conversion (not shared subroutine)
+          rem move if already at top row. Uses shared coordinate conversion
           rem Fly up with playfield collision check
-          let temp2 = playerX[temp1]
-          rem Check collision before moving
-          let temp2 = temp2 - ScreenInsetX
-          let temp2 = temp2 / 4
-          rem pfColumn = playfield column (0-31)
-          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
-          if temp2 & $80 then temp2 = 0
-          if temp2 > 31 then temp2 = 31
+          rem Check collision before moving - use shared coordinate conversion
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn
 
           let temp3 = playerY[temp1]
           rem Check row above player (top of sprite)
@@ -417,29 +393,10 @@ end
           rem Set jumping flag for animation
           return
 
-NinjishGuyJump
-          asm
-NinjishGuyJump
-end
-          rem NINJISH GUY (10) - STANDARD JUMP (use shared StandardJump)
-          gosub StandardJump
-          return
-
-PorkChopJump
-          asm
-PorkChopJump
-end
-          rem PORK CHOP (11) - STANDARD JUMP (use shared StandardJump)
-          gosub StandardJump
-          return
-
-RadishGoblinJump
-          asm
-RadishGoblinJump
-end
-          rem RADISH GOBLIN (12) - STANDARD JUMP (use shared StandardJump)
-          gosub StandardJump
-          return
+          rem NINJISH GUY (10) - STANDARD JUMP (dispatched directly to StandardJump)
+          rem PORK CHOP (11) - STANDARD JUMP (dispatched directly to StandardJump)
+          rem RADISH GOBLIN (12) - STANDARD JUMP (dispatched directly to StandardJump)
+          rem Removed redundant wrapper functions - DispatchCharacterJump calls StandardJump directly
 
 RoboTitoJump
           asm
@@ -636,13 +593,8 @@ RoboTitoCheckCeiling
           rem
           rem Constraints: Internal helper for RoboTitoJump, only called
           rem when at top of screen
-          let temp2 = playerX[temp1]
-          rem Check if ceiling contact using playfield collision
-          let temp2 = temp2 - ScreenInsetX
-          let temp2 = temp2 / 4
-          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
-          if temp2 & $80 then temp2 = 0
-          if temp2 > 31 then temp2 = 31
+          rem Check if ceiling contact using playfield collision - use shared coordinate conversion
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn
 
           let temp3 = playerY[temp1]
           rem Check row above player for ceiling
@@ -712,18 +664,6 @@ RTL_ReduceHeight
 RTL_HeightCleared
           return
 
-UrsuloJump
-          asm
-UrsuloJump
-end
-          rem URSULO (14) - STANDARD JUMP (use shared StandardJump)
-          gosub StandardJump
-          return
-
-ShamoneJump
-          asm
-ShamoneJump
-end
-          rem SHAMONE (15) - STANDARD JUMP (use shared StandardJump)
-          gosub StandardJump
-          return
+          rem URSULO (14) - STANDARD JUMP (dispatched directly to StandardJump)
+          rem SHAMONE (15) - STANDARD JUMP (dispatched directly to StandardJump)
+          rem Removed redundant wrapper functions - DispatchCharacterJump calls StandardJump directly

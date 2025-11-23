@@ -1,11 +1,3 @@
-; Provided under the CC0 license. See the included LICENSE.txt for details.
-
-; every bank has this stuff at the same place
-; this code can switch to/from any bank at any entry point
-; and can preserve register values
-; note: lines not starting with a space are not placed in all banks
-;
-
 .begin_bscode SUBROUTINE
           ldx #$ff
           txs

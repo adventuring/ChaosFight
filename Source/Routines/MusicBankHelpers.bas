@@ -10,6 +10,7 @@
 LoadSongPointer
           asm
 LoadSongPointer
+LoadSongPointer_RouteToBank1
 end
           rem Lookup 16-bit song pointer for Bank 1 songs.
           rem Input: temp1 = song ID (Bank1MinSongID-28), SongPointers1L[]/SongPointers1H[]
@@ -47,6 +48,7 @@ LSP_InvalidSong
 LoadSongVoice1PointerBank1
           asm
 LoadSongVoice1PointerBank1
+LoadSongVoice1PointerBank1_RouteToBank1
 end
 
           rem Lookup Voice 1 song pointer from tables (Bank 1 songs)

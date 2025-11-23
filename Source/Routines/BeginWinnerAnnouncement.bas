@@ -67,7 +67,7 @@ end
           rem   song ID constants)
 
           rem Start winner’s character theme song
-          gosub StartMusic bank1
+          gosub StartMusic bank15
 
           return
 

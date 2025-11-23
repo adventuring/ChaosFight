@@ -249,3 +249,51 @@ LoadMusicNote1EndOfTrack
           AUDV1 = 0
           return
 
+          rem Routing functions for Bank 1 helpers
+          rem These functions route calls from Bank 15 to Bank 1 functions
+          rem They provide entry points in Bank 15 that forward to Bank 1
+          
+LoadSongPointer
+          asm
+LoadSongPointer
+end
+          rem Route to Bank 1 LoadSongPointer
+          rem Input: temp1 = song ID
+          rem Output: songPointer set via Bank 1 function
+          rem Forward reference: Bank 15 calls Bank 1 (Bank 1 comes before Bank 15 in file)
+          gosub LoadSongPointer bank1
+          return
+
+LoadSongVoice1PointerBank1
+          asm
+LoadSongVoice1PointerBank1
+end
+          rem Route to Bank 1 LoadSongVoice1PointerBank1
+          rem Input: temp1 = song ID, songPointer = Voice 0 pointer
+          rem Output: songPointer updated to Voice 1 pointer via Bank 1 function
+          rem Forward reference: Bank 15 calls Bank 1
+          gosub LoadSongVoice1PointerBank1 bank1
+          return
+
+LoadMusicNote0
+          asm
+LoadMusicNote0
+end
+          rem Route to Bank 1 LoadMusicNote0
+          rem Input: musicVoice0Pointer = current pointer
+          rem Output: Next note loaded via Bank 1 function
+          rem Forward reference: Bank 15 calls Bank 1
+          gosub LoadMusicNote0 bank1
+          return
+
+LoadMusicNote1
+          asm
+LoadMusicNote1
+end
+          rem Route to Bank 1 LoadMusicNote1
+          rem Input: musicVoice1Pointer = current pointer
+          rem Output: Next note loaded via Bank 1 function
+          rem Forward reference: Bank 15 calls Bank 1
+          gosub LoadMusicNote1 bank1
+          return
+

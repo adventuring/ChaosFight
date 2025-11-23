@@ -296,5 +296,11 @@ end
           asm
 MusicBankHelpers15End
             echo "// Bank 15: ", [MusicBankHelpers15End - MusicBankHelpers15Start]d, " bytes = MusicBankHelpers15"
+MusicSystemStart
+end
+#include "Source/Routines/MusicSystem.bas"
+          asm
+MusicSystemEnd
+            echo "// Bank 15: ", [MusicSystemEnd - MusicSystemStart]d, " bytes = MusicSystem"
 Bank15CodeEnds
 end

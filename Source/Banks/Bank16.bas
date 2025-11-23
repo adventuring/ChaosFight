@@ -11,7 +11,7 @@
             ;; This ensures user data starts at the expected location
             ORG $F100
             RORG $F100
-          end
+end
 
           rem First — data. Must come first. Cannot be moved.
 #include "Source/Data/Arenas.bas"

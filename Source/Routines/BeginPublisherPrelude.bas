@@ -45,7 +45,7 @@ end
 
           rem Start AtariToday music
           let temp1 = MusicAtariToday
-          gosub StartMusic bank1
+          gosub StartMusic bank15
           return
 
 

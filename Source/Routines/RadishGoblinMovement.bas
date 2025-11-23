@@ -76,7 +76,7 @@ end
           asm
             lsr temp2
             lsr temp2
-          end
+end
           if temp2 > 31 then temp2 = 31
           let temp6 = temp2
           rem Calculate feet row
@@ -86,7 +86,7 @@ end
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           if temp2 >= pfrows then goto RGBGB_ClearCheck
           let temp5 = temp2 + 1
           if temp5 >= pfrows then goto RGBGB_ClearCheck
@@ -120,15 +120,17 @@ RGBGB_CalcBounce
 RGBGB_CheckEnhanced0
           if (enhancedButtonStates_R & 1) then let temp3 = 1
 RGBGB_CheckStick
-          if temp1 & 2 = 0 then goto RGBGB_StickJoy0
+          if temp1 & 2 = 0 then RGBGB_StickJoy0
           if joy1up then let temp3 = 1
           goto RGBGB_Apply
 RGBGB_StickJoy0
           if joy0up then let temp3 = 1
 RGBGB_Apply
-          if temp3 then asm
+          if !temp3 then RGBGB_DoneApply
+          asm
             asl temp2
-          end
+end
+RGBGB_DoneApply
           let playerVelocityY[temp1] = 0 - temp2
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping

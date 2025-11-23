@@ -75,7 +75,7 @@ end
           let temp1 = controllerStatus & SetRightPortJoy2bPlus
           if temp1 then if !INPT3{7} then goto PublisherPreludeComplete
 
-          gosub UpdateMusic bank1
+          gosub UpdateMusic bank15
 
           rem Auto-advance after music completes + 0.5s
           rem Long branch - use goto (generates JMP) instead of if-then (generates branch)

@@ -34,7 +34,7 @@ end
 
           rem Start Interworldly music
           let temp1 = MusicInterworldly
-          gosub StartMusic bank1
+          gosub StartMusic bank15
 
           gosub SetAuthorWindowValues bank14
           rem Set window values for Author screen (Interworldly only)

@@ -301,11 +301,7 @@ end
           asm
 MusicBankHelpersEnd
             echo "// Bank 1: ", [MusicBankHelpersEnd - MusicBankHelpersStart]d, " bytes = MusicBankHelpers"
-MusicSystemStart
-end
-#include "Source/Routines/MusicSystem.bas"
-          asm
-MusicSystemEnd
-            echo "// Bank 1: ", [MusicSystemEnd - MusicSystemStart]d, " bytes = MusicSystem"
+          rem MusicSystem moved to Bank 15 to fix cross-bank label resolution
+          rem (Bank 14 calls Bank 15 = forward reference, works with DASM)
 Bank1CodeEnds
 end

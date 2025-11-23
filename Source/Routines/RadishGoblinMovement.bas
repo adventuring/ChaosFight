@@ -19,7 +19,8 @@ end
 RGHI_Joy0
           if !joy0left then goto RGHI_CheckRight
 RGHI_Left
-          let temp6 = CharacterMovementSpeed[playerCharacter[temp1]]
+          let temp4 = playerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp4]
           let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
           let playerVelocityXL[temp1] = 0
           if (playerState[temp1] & 8) then goto RGHI_AfterLeft
@@ -37,7 +38,8 @@ RGHI_CheckRight
 RGHI_CheckRightJoy0
           if !joy0right then return
 RGHI_Right
-          let temp6 = CharacterMovementSpeed[playerCharacter[temp1]]
+          let temp4 = playerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp4]
           let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
           let playerVelocityXL[temp1] = 0
           if (playerState[temp1] & 8) then return

@@ -82,14 +82,11 @@ end
           rem Missiles are available for projectiles since participants
           rem   use proper sprites
 
-          rem Set Participant 3 position (array [2] → P2 sprite)
+          rem Set Participant 3 & 4 positions (arrays [2] & [3] → P2 & P3 sprites)
+          rem temp1 = participant index (also equals sprite index)
           let temp1 = 2
-          let temp2 = 2
           gosub CopyParticipantSpritePosition
-
-          rem Set Participant 4 position (array [3] → P3 sprite)
           let temp1 = 3
-          let temp2 = 3
           gosub CopyParticipantSpritePosition
 
 
@@ -175,17 +172,27 @@ end
           dim RMF_mask = temp3
           dim RMF_active = temp4
           dim RMF_character = temp5
-          if RMF_select = 0 then goto RMF_HandleMissile0
-
-RMF_HandleMissile1
+          rem Disable selected missile and clear height (unified code path)
+          if RMF_select = 0 then goto RMF_DisableMissile0
           ENAM1 = 0
           missile1height = 0
+          goto RMF_CheckActive
+
+RMF_DisableMissile0
+          ENAM0 = 0
+          missile0height = 0
+
+RMF_CheckActive
           let RMF_active = missileActive & RMF_mask
-          if RMF_active then goto RMF_Missile1Active
+          if RMF_active then goto RMF_MissileActive
+          rem No active missile - render RoboTito stretch if applicable
           gosub RenderRoboTitoStretchMissile bank8
           return
 
-RMF_Missile1Active
+RMF_MissileActive
+          rem Unified missile register assignment based on RMF_select
+          if RMF_select = 0 then goto RMF_WriteMissile0
+          rem Missile1 registers
           missile1x = missileX[RMF_participant]
           missile1y = missileY_R[RMF_participant]
           ENAM1 = 1
@@ -194,15 +201,8 @@ RMF_Missile1Active
           missile1height = CharacterMissileHeights[RMF_character]
           return
 
-RMF_HandleMissile0
-          ENAM0 = 0
-          missile0height = 0
-          let RMF_active = missileActive & RMF_mask
-          if RMF_active then goto RMF_Missile0Active
-          gosub RenderRoboTitoStretchMissile bank8
-          return
-
-RMF_Missile0Active
+RMF_WriteMissile0
+          rem Missile0 registers
           missile0x = missileX[RMF_participant]
           missile0y = missileY_R[RMF_participant]
           ENAM0 = 1
@@ -217,16 +217,15 @@ CopyParticipantSpritePosition
 end
           rem Copy participant position into multisprite hardware registers
           rem
-          rem Input: temp1 = participant index (2 or 3)
-          rem        temp2 = hardware sprite index (2 or 3)
+          rem Input: temp1 = participant index (2 or 3, also equals sprite index)
           rem
           rem Output: player2/3 registers updated if participant is active
           rem
           if (controllerStatus & SetQuadtariDetected) = 0 then return
           if playerCharacter[temp1] = NoCharacter then return
           if ! playerHealth[temp1] then return
-          if temp2 = 2 then goto CPS_WritePlayer2
-
+          rem Unified sprite position assignment (temp1 = 2 → player2, temp1 = 3 → player3)
+          if temp1 = 2 then goto CPS_WritePlayer2
           player3x = playerX[temp1]
           player3y = playerY[temp1]
           return
@@ -268,9 +267,9 @@ RRTM_CheckStretch
 RRTM_ReadStretchHeight
           let temp4 = missileStretchHeight_R[temp1]
           if temp4 <= 0 then return
+          rem Unified missile register assignment based on temp2 (hardware missile select)
           if temp2 = 0 then goto RRTM_WriteMissile0
-
-RRTM_WriteMissile1
+          rem Missile1 registers
           missile1x = playerX[temp1]
           missile1y = playerY[temp1]
           missile1height = temp4
@@ -279,6 +278,7 @@ RRTM_WriteMissile1
           return
 
 RRTM_WriteMissile0
+          rem Missile0 registers
           missile0x = playerX[temp1]
           missile0y = playerY[temp1]
           missile0height = temp4

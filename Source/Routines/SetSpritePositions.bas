@@ -1,6 +1,11 @@
           rem ChaosFight - Source/Routines/SetSpritePositions.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
+          rem Missile active mask lookup for participants 0-3
+          data SetSpriteMissileMask
+            1, 2, 4, 8
+end
+
 SetSpritePositions
           asm
 SetSpritePositions
@@ -81,14 +86,12 @@ end
           rem   COLUP3)
           rem Missiles are available for projectiles since participants
           rem   use proper sprites
-
           rem Set Participant 3 & 4 positions (arrays [2] & [3] → P2 & P3 sprites)
           rem temp1 = participant index (also equals sprite index)
           let temp1 = 2
           gosub CopyParticipantSpritePosition
           let temp1 = 3
           gosub CopyParticipantSpritePosition
-
 
           rem Set missile positions for projectiles
           rem Hardware missiles: missile0 and missile1 (only 2 physical
@@ -111,45 +114,37 @@ end
           rem   multiplexing
           rem because we only need to multiplex when participants 3 or 4
           rem   are actually in the game
-          if (controllerStatus & SetPlayers34Active) = 0 then goto RenderMissiles2Player
+          ENAM0 = 0
+          ENAM1 = 0
+          missile0height = 0
+          missile1height = 0
+          gosub SetSpritePositionsRenderMissiles
+          return
 
-          rem 4-player mode: Use frame multiplexing
+SetSpritePositionsRenderMissiles
+          asm
+SetSpritePositionsRenderMissiles
+end
+          if (controllerStatus & SetPlayers34Active) = 0 then goto RenderMissilesTwoPlayer
           let temp6 = frame & 1
-          rem 0 = even frame (Participants 1-2), 1 = odd frame (Participants 3-4)
-
-          if temp6 = 0 then goto RenderMissilesEvenFrame
-
+          if temp6 then goto RenderMissilesOddFrame
+          let temp1 = 0
+          goto RenderMissilePair
 RenderMissilesOddFrame
           let temp1 = 2
-          let temp2 = 0
-          let temp3 = 4
-          gosub RenderMissileForParticipant
-          let temp1 = 3
-          let temp2 = 1
-          let temp3 = 8
-          gosub RenderMissileForParticipant
+          goto RenderMissilePair
+RenderMissilesTwoPlayer
+          let temp1 = 0
+RenderMissilePair
+          gosub SetSpritePositionsRenderPair
           return
 
-RenderMissilesEvenFrame
-          let temp1 = 0
-          let temp2 = 0
-          let temp3 = 1
+SetSpritePositionsRenderPair
+          asm
+SetSpritePositionsRenderPair
+end
           gosub RenderMissileForParticipant
-          let temp1 = 1
-          let temp2 = 1
-          let temp3 = 2
-          gosub RenderMissileForParticipant
-          return
-
-RenderMissiles2Player
-          rem 2-player mode: No multiplexing needed, assign missiles directly
-          let temp1 = 0
-          let temp2 = 0
-          let temp3 = 1
-          gosub RenderMissileForParticipant
-          let temp1 = 1
-          let temp2 = 1
-          let temp3 = 2
+          let temp1 = temp1 + 1
           gosub RenderMissileForParticipant
           return
 
@@ -160,8 +155,6 @@ end
           rem Render projectile or RoboTito stretch missile for a participant
           rem
           rem Input: temp1 = participant index (0-3)
-          rem        temp2 = hardware missile select (0 = missile0, 1 = missile1)
-          rem        temp3 = missileActive bit mask (1,2,4,8)
           rem
           rem Output: missile registers updated for the selected participant
           rem
@@ -170,34 +163,24 @@ end
           dim RMF_participant = temp1
           dim RMF_select = temp2
           dim RMF_mask = temp3
-          dim RMF_active = temp4
-          dim RMF_character = temp5
-          rem Disable selected missile and clear height (unified code path)
-          if RMF_select = 0 then goto RMF_DisableMissile0
-          ENAM1 = 0
-          missile1height = 0
-          goto RMF_CheckActive
-
-RMF_DisableMissile0
-          ENAM0 = 0
-          missile0height = 0
-
-RMF_CheckActive
+          dim RMF_character = temp4
+          dim RMF_active = temp5
+          let RMF_select = RMF_participant & 1
+          let RMF_mask = SetSpriteMissileMask[RMF_participant]
           let RMF_active = missileActive & RMF_mask
           if RMF_active then goto RMF_MissileActive
-          rem No active missile - render RoboTito stretch if applicable
+          let temp2 = RMF_select
           gosub RenderRoboTitoStretchMissile bank8
           return
 
 RMF_MissileActive
-          rem Unified missile register assignment based on RMF_select
+          let RMF_character = playerCharacter[RMF_participant]
           if RMF_select = 0 then goto RMF_WriteMissile0
           rem Missile1 registers
           missile1x = missileX[RMF_participant]
           missile1y = missileY_R[RMF_participant]
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ_R[RMF_participant]
-          let RMF_character = playerCharacter[RMF_participant]
           missile1height = CharacterMissileHeights[RMF_character]
           return
 
@@ -207,7 +190,6 @@ RMF_WriteMissile0
           missile0y = missileY_R[RMF_participant]
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ_R[RMF_participant]
-          let RMF_character = playerCharacter[RMF_participant]
           missile0height = CharacterMissileHeights[RMF_character]
           return
 

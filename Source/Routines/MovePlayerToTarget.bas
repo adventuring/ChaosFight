@@ -14,78 +14,30 @@ end
           rem Output: Player moved closer to target, or at target
           rem Mutates: playerX[], playerY[], temp4-temp6, distanceUp_W
 
-          rem Calculate X distances (inlined)
-          rem CalcDeltaXRight: temp4 = distance right (0 if at or left of target)
-          let temp4 = temp2 - playerX[temp1]
-          if temp4 < 0 then temp4 = 0
-          rem CalcDeltaXLeft: temp5 = distance left (0 if at or right of target)
-          let temp5 = playerX[temp1] - temp2
-          if temp5 < 0 then temp5 = 0
-
-          rem Calculate Y distances (inlined)
-          rem CalcDeltaYDown: temp6 = distance down (0 if at or above target)
-          let temp6 = temp3 - playerY[temp1]
-          if temp6 < 0 then temp6 = 0
-          rem CalcDeltaYUp: distanceUp_W = distance up (0 if at or below target)
-          let distanceUp_W = playerY[temp1] - temp3
-          if distanceUp_W < 0 then distanceUp_W = 0
-
-          rem Move in X direction first
-          if temp4 > 0 then gosub MoveRight
-          if temp5 > 0 then gosub MoveLeft
-
-          rem Then move in Y direction
-          if temp6 > 0 then gosub MoveDown
-          if distanceUp_W > 0 then gosub MoveUp
-
+          rem Update X axis (one pixel per frame)
+          let temp4 = playerX[temp1]
+          if temp4 < temp2 then goto MovePlayerRight
+          if temp4 > temp2 then goto MovePlayerLeft
+          goto MovePlayerCheckVertical
+MovePlayerRight
+          let playerX[temp1] = temp4 + 1
+          goto MovePlayerCheckVertical
+MovePlayerLeft
+          let playerX[temp1] = temp4 - 1
+MovePlayerCheckVertical
+          rem Update Y axis (one pixel per frame)
+          let temp4 = playerY[temp1]
+          if temp4 < temp3 then goto MovePlayerDown
+          if temp4 > temp3 then goto MovePlayerUp
+          goto MovePlayerCheckTarget
+MovePlayerDown
+          let playerY[temp1] = temp4 + 1
+          goto MovePlayerCheckTarget
+MovePlayerUp
+          let playerY[temp1] = temp4 - 1
+MovePlayerCheckTarget
           rem Check if at target
           gosub AtTarget
-          return
-
-
-MoveRight
-          asm
-MoveRight
-
-end
-          rem Move player right by 1 pixel
-          rem Input: temp1 = player index
-          rem Output: playerX[temp1] incremented
-          let playerX[temp1] = playerX[temp1] + 1
-HorizontalDone
-          return
-
-MoveLeft
-          asm
-MoveLeft
-
-end
-          rem Move player left by 1 pixel
-          rem Input: temp1 = player index
-          rem Output: playerX[temp1] decremented
-          let playerX[temp1] = playerX[temp1] - 1
-          return
-
-MoveDown
-          asm
-MoveDown
-
-end
-          rem Move player down by 1 pixel
-          rem Input: temp1 = player index
-          rem Output: playerY[temp1] incremented
-          let playerY[temp1] = playerY[temp1] + 1
-VerticalDone
-          return
-
-MoveUp
-          asm
-MoveUp
-end
-          rem Move player up by 1 pixel
-          rem Input: temp1 = player index
-          rem Output: playerY[temp1] decremented
-          let playerY[temp1] = playerY[temp1] - 1
           return
 
 AtTarget

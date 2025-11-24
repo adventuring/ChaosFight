@@ -22,24 +22,19 @@ end
 SelectDrawScreen
           asm
 SelectDrawScreen
-
 end
           rem Character Select drawing (sprites and HUD)
           rem Shared preview renderer used by Character Select and Arena Select flows
           rem Playfield layout is static; no runtime register writes
+          let temp6 = 2
+          if controllerStatus & SetQuadtariDetected then let temp6 = 4
           let temp1 = 0
+SelectDrawScreenLoop
           gosub SelectRenderPlayerPreview
-          let temp1 = 1
-          gosub SelectRenderPlayerPreview
-          if controllerStatus & SetQuadtariDetected then goto SelectDrawLowerPlayers
-          gosub SelectHideLowerPlayerPreviews
-          goto SelectDrawScreenDone
-SelectDrawLowerPlayers
-          let temp1 = 2
-          gosub SelectRenderPlayerPreview
-          let temp1 = 3
-          gosub SelectRenderPlayerPreview
-SelectDrawScreenDone
+          let temp1 = temp1 + 1
+          if temp1 < temp6 then goto SelectDrawScreenLoop
+          if temp6 = 4 then return
+          gosub SelectHideLowerPlayerPreviews bank6
           return
 
 SelectRenderPlayerPreview
@@ -49,10 +44,10 @@ SelectRenderPlayerPreview
 end
           rem Draw character preview for the specified player and apply lock tinting
           rem Optimized: Combined duplicate conditionals, early return for common case
-          gosub PlayerPreviewSetPosition
-          gosub RenderPlayerPreview
+          gosub PlayerPreviewSetPosition bank6
+          gosub RenderPlayerPreview bank6
           let temp1 = currentPlayer
-          gosub GetPlayerLocked
+          gosub GetPlayerLocked bank6
           let temp5 = temp2
           if !temp5 then gosub SelectSetPlayerColorUnlocked : return
           rem Unlocked state (most common) - set color and return early
@@ -114,7 +109,7 @@ end
           if currentCharacter >= RandomCharacter then goto RenderPlayerPreviewDefault
           let temp4 = characterSelectPlayerAnimationFrame_R[currentPlayer]
           let temp1 = currentPlayer
-          gosub GetPlayerLocked
+          gosub GetPlayerLocked bank6
           let temp5 = temp2
           let temp2 = temp4
           let temp3 = ActionIdle
@@ -176,28 +171,17 @@ SelectUpdateAnimations
 end
           rem Update character select animations for all players
           rem Optimized: Compact inline version to reduce code size
-          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer0Animation
-          if playerCharacter[0] >= RandomCharacter then goto SelectDonePlayer0Animation
-          let temp1 = 0 : gosub SelectUpdatePlayerAnimation
-SelectDonePlayer0Animation
-          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer1Animation
-          if playerCharacter[1] >= RandomCharacter then goto SelectDonePlayer1Animation
-          let temp1 = 1 : gosub SelectUpdatePlayerAnimation
-SelectDonePlayer1Animation
-          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer2Animation
-          goto SelectDonePlayer23Animation
-ProcessPlayer2Animation
-          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer2Animation
-          if playerCharacter[2] >= RandomCharacter then goto SelectDonePlayer2Animation
-          let temp1 = 2 : gosub SelectUpdatePlayerAnimation
-SelectDonePlayer2Animation
-          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer3Animation
-          goto SelectDonePlayer23Animation
-ProcessPlayer3Animation
-          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer23Animation
-          if playerCharacter[3] >= RandomCharacter then goto SelectDonePlayer23Animation
-          let temp1 = 3 : gosub SelectUpdatePlayerAnimation
-SelectDonePlayer23Animation
+          let temp6 = 2
+          if controllerStatus & SetQuadtariDetected then let temp6 = 4
+          let temp1 = 0
+SelectUpdateAnimationLoop
+          gosub GetPlayerLocked bank6
+          if temp2 then goto SelectUpdateAnimationNext
+          if playerCharacter[temp1] >= RandomCharacter then goto SelectUpdateAnimationNext
+          gosub SelectUpdatePlayerAnimation
+SelectUpdateAnimationNext
+          let temp1 = temp1 + 1
+          if temp1 < temp6 then goto SelectUpdateAnimationLoop
           return
 
 SelectUpdatePlayerAnimation

@@ -44,4 +44,4 @@ end
           rem This is handled by the main collision detection system
           rem For now, collision will be handled in UpdateAllMissiles
 
-          return
+          return otherbank

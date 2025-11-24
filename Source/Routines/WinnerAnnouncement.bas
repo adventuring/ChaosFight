@@ -24,7 +24,7 @@ end
           rem Display win screen and continue loop
           gosub DisplayWinScreen bank16
           rem drawscreen called by MainLoop
-          return
+          return otherbank
 
 WinnerAdvanceToCharacterSelect
           rem Transition to title screen (per issue #483 requirement)

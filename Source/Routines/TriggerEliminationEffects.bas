@@ -49,5 +49,5 @@ end
           if currentPlayer = 2 then let missileActive = missileActive & $FB
           if currentPlayer = 3 then let missileActive = missileActive & $F7
 
-          return
+          return otherbank
 

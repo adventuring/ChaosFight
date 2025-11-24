@@ -89,7 +89,7 @@ end
 
           rem Drawing handled by MainLoop (titledrawscreen for admin
           rem   screens)
-          return
+          return otherbank
 
 PublisherPreludeComplete
           rem Transition to Author Prelude mode

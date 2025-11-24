@@ -39,5 +39,5 @@ end
           rem Set animation state to attacking
           rem Set animation state 14 (attack execution)
 
-          return
+          return otherbank
 

@@ -56,5 +56,5 @@ end
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           rem Restore original facing (XOR again to flip back)
           let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
-          return
+          return otherbank
 

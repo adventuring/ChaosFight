@@ -45,7 +45,7 @@ end
           rem feetY = feet Y position
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
-          if temp4 >= pfrows then return
+          if temp4 >= pfrows then return otherbank
           rem At bottom, cannot move down
           rem Check if playfield pixel is clear
           let temp5 = 0
@@ -56,7 +56,7 @@ end
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp6
-          if temp5 = 1 then return
+          if temp5 = 1 then return otherbank
           rem Blocked, cannot move down
 
           let playerVelocityY[temp1] = 2
@@ -65,7 +65,7 @@ end
           rem +2 pixels/frame downward
           let playerState[temp1] = playerState[temp1] & !2
           rem Ensure guard bit clear
-          return
+          return otherbank
 
 HarpyDown
           asm
@@ -232,7 +232,7 @@ end
           rem feetY = feet Y position
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
-          if temp4 >= pfrows then return
+          if temp4 >= pfrows then return otherbank
           rem At bottom, cannot move down
           rem Check if playfield pixel is clear
           let temp5 = 0
@@ -243,7 +243,7 @@ end
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp6
-          if temp5 = 1 then return
+          if temp5 = 1 then return otherbank
           rem Blocked, cannot move down
 
           let playerVelocityY[temp1] = 2
@@ -252,7 +252,7 @@ end
           rem +2 pixels/frame downward
           let playerState[temp1] = playerState[temp1] & !2
           rem Ensure guard bit clear
-          return
+          return otherbank
 
 RoboTitoDown
           asm

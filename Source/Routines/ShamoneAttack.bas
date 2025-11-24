@@ -35,5 +35,5 @@ end
           rem Then execute the attack (inline former PerformMeleeAttack)
           gosub SpawnMissile bank12
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
-          return
+          return otherbank
 

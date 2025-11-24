@@ -79,7 +79,7 @@ end
 
           let preambleTimer = preambleTimer + 1
 
-          return
+          return otherbank
 
 AuthorPreludeComplete
           rem Transition to Title Screen mode

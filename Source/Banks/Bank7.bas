@@ -68,5 +68,11 @@ end
           asm
 PerformMeleeAttackEnd
             echo "// Bank 7: ", [PerformMeleeAttackEnd - PerformMeleeAttackStart]d, " bytes = PerformMeleeAttack"
+FlyingMovementHelpersStart
+end
+#include "Source/Routines/FlyingMovementHelpers.bas"
+          asm
+FlyingMovementHelpersEnd
+            echo "// Bank 7: ", [FlyingMovementHelpersEnd - FlyingMovementHelpersStart]d, " bytes = FlyingMovementHelpers"
 Bank7CodeEnds
 end

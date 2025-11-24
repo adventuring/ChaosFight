@@ -59,18 +59,6 @@ end
           asm
 ProcessStandardMovementEnd
             echo "// Bank 13: ", [ProcessStandardMovementEnd - ProcessStandardMovementStart]d, " bytes = ProcessStandardMovement"
-CharacterControlsDownStart
-end
-#include "Source/Routines/CharacterControlsDown.bas"
-          asm
-CharacterControlsDownEnd
-            echo "// Bank 13: ", [CharacterControlsDownEnd - CharacterControlsDownStart]d, " bytes = CharacterControlsDown"
-FlyingMovementHelpersStart
-end
-#include "Source/Routines/FlyingMovementHelpers.bas"
-          asm
-FlyingMovementHelpersEnd
-            echo "// Bank 13: ", [FlyingMovementHelpersEnd - FlyingMovementHelpersStart]d, " bytes = FlyingMovementHelpers"
 ConsoleHandlingStart
 end
 #include "Source/Routines/ConsoleHandling.bas"

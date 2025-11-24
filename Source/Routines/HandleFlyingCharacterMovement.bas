@@ -29,7 +29,7 @@ end
 HFCM_CheckLeftJoy0
           if !joy0left then goto HFCM_CheckRight
 HFCM_DoLeft
-          gosub HFCM_AttemptMoveLeft bank13
+          gosub HFCM_AttemptMoveLeft bank7
           goto HFCM_CheckRight
 HFCM_CheckRight
           rem Check right movement
@@ -39,7 +39,7 @@ HFCM_CheckRight
 HFCM_CheckRightJoy0
           if !joy0right then goto HFCM_CheckVertical
 HFCM_DoRight
-          gosub HFCM_AttemptMoveRight bank13
+          gosub HFCM_AttemptMoveRight bank7
           goto HFCM_CheckVertical
 HFCM_CheckVertical
           rem Vertical control for flying characters: UP/DOWN

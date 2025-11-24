@@ -42,14 +42,7 @@ GroundSearchLoop
           goto GroundSearchLoop
 
 GroundFound
-          asm
-            LDA temp5
-            ASL
-            ASL
-            ASL
-            ASL
-            STA temp2
-end
+          let temp2 = temp5 / 16
           goto GroundSearchDone
 
 GroundSearchBottom

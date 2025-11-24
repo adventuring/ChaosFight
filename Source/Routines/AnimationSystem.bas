@@ -1,12 +1,12 @@
           rem ChaosFight - Source/Routines/AnimationSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-data CharacterWindupNextAction
-255, 15, 255, 255, 14, 14, 255, 255, 255, 14, 255, 14, 255, 255, 255, 255
+          data CharacterWindupNextAction
+          255, 15, 255, 255, 14, 14, 255, 255, 255, 14, 255, 14, 255, 255, 255, 255
 end
 
-data CharacterExecuteNextAction
-1, 255, 1, 1, 15, 1, 1, 1, 1, 1, 1, 15, 1, 1, 1, 1
+          data CharacterExecuteNextAction
+          1, 255, 1, 1, 15, 1, 1, 1, 1, 1, 1, 15, 1, 1, 1, 1
 end
 
 UpdateCharacterAnimations
@@ -25,9 +25,7 @@ end
           dim UCA_quadtariActive = temp5
           let UCA_quadtariActive = controllerStatus & SetQuadtariDetected
           for currentPlayer = 0 to 3
-            if currentPlayer < 2 then goto AnimationProcessPlayer
-            if !UCA_quadtariActive then goto AnimationNextPlayer
-AnimationProcessPlayer
+            if currentPlayer >= 2 && !UCA_quadtariActive then goto AnimationNextPlayer
             gosub UpdatePlayerAnimation
 AnimationNextPlayer
           next

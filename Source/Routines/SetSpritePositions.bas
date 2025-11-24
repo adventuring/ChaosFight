@@ -2,8 +2,8 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem Missile active mask lookup for participants 0-3
-          data SetSpriteMissileMask
-            1, 2, 4, 8
+data SetSpriteMissileMask
+1, 2, 4, 8
 end
 
 SetSpritePositions
@@ -203,9 +203,9 @@ end
           rem
           rem Output: player2/3 registers updated if participant is active
           rem
-          if (controllerStatus & SetQuadtariDetected) = 0 then return
-          if playerCharacter[temp1] = NoCharacter then return
-          if ! playerHealth[temp1] then return
+          if (controllerStatus & SetQuadtariDetected) = 0 then return otherbank
+          if playerCharacter[temp1] = NoCharacter then return otherbank
+          if ! playerHealth[temp1] then return otherbank
           rem Unified sprite position assignment (temp1 = 2 → player2, temp1 = 3 → player3)
           if temp1 = 2 then goto CPS_WritePlayer2
           player3x = playerX[temp1]
@@ -239,7 +239,7 @@ end
           return otherbank
 
 RRTM_CheckStretch
-          if (characterStateFlags_R[temp1] & 1) then return
+          if (characterStateFlags_R[temp1] & 1) then return otherbank
           let temp3 = playerState[temp1]
           let temp3 = temp3 & 240
           let temp3 = temp3 / 16
@@ -248,7 +248,7 @@ RRTM_CheckStretch
 
 RRTM_ReadStretchHeight
           let temp4 = missileStretchHeight_R[temp1]
-          if temp4 <= 0 then return
+          if temp4 <= 0 then return otherbank
           rem Unified missile register assignment based on temp2 (hardware missile select)
           if temp2 = 0 then goto RRTM_WriteMissile0
           rem Missile1 registers

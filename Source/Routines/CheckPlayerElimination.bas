@@ -52,7 +52,7 @@ end
           let temp2 = playerHealth[currentPlayer]
           rem Check if health has reached 0
 
-          if temp2 then return
+          if temp2 then return otherbank
           rem Still alive
 
           rem Player health reached 0 - trigger elimination effects

@@ -16,7 +16,7 @@ end
 CollisionSkipElse
           let temp1 = 0
 CollisionOuterLoop
-          if temp1 >= temp6 then return
+          if temp1 >= temp6 then return otherbank
           if temp1 >= 2 then CollisionCheckP1Active
           goto CollisionInnerLoop
 CollisionCheckP1Active

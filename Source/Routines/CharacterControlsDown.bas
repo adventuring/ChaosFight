@@ -335,13 +335,13 @@ end
           rem Dragon of Storms (2): DOWN = fly down (no gravity)
           rem Harpy (6): DOWN = fly down (reduced gravity)
           let temp4 = playerCharacter[temp1]
-          if temp4 = CharacterFrooty then return
-          if temp4 = CharacterDragonOfStorms then return
-          if temp4 = CharacterHarpy then return
+          if temp4 = CharacterFrooty then return otherbank
+          if temp4 = CharacterDragonOfStorms then return otherbank
+          if temp4 = CharacterHarpy then return otherbank
 
           rem Check if guard is allowed (not in cooldown)
           gosub CheckGuardCooldown bank6
-          if temp2 = 0 then return
+          if temp2 = 0 then return otherbank
           rem Guard blocked by cooldown
 
           rem Activate guard state - inlined (StartGuard)
@@ -349,5 +349,5 @@ end
           rem Set guard bit in playerState
           let playerTimers_W[temp1] = GuardTimerMaxFrames
           rem Set guard duration timer
-          return
+          return otherbank
 

@@ -392,12 +392,12 @@ end
           let temp4 = musicVoice0Frame_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
           let musicVoice0Frame_W = temp4
-          if temp4 then return
+          if temp4 then return otherbank
           rem Frame counter reached 0 - load next note from appropriate
           rem bank
           rem Check which bank this song is in (Bank 15: songs 0-Bank15MaxSongID, Bank
           rem 1: others)
-          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote0Bank15 bank15 : return
+          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote0Bank15 bank15 : return otherbank
           gosub LoadMusicNote0 bank1
           rem Song in Bank 1
           return otherbank
@@ -447,12 +447,12 @@ end
           let temp5 = musicVoice1Frame_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
           let musicVoice1Frame_W = temp5
-          if temp5 then return
+          if temp5 then return otherbank
           rem Frame counter reached 0 - load next note from appropriate
           rem bank
           rem Check which bank this song is in (Bank 15: songs 0-Bank15MaxSongID, Bank
           rem 1: others)
-          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote1Bank15 bank15 : return
+          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote1Bank15 bank15 : return otherbank
           gosub LoadMusicNote1 bank1
           rem Song in Bank 1
           return otherbank

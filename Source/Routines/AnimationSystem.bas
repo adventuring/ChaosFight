@@ -1,11 +1,11 @@
           rem ChaosFight - Source/Routines/AnimationSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          data CharacterWindupNextAction
+data CharacterWindupNextAction
 255, 15, 255, 255, 14, 14, 255, 255, 255, 14, 255, 14, 255, 255, 255, 255
 end
 
-          data CharacterExecuteNextAction
+data CharacterExecuteNextAction
 1, 255, 1, 1, 15, 1, 1, 1, 1, 1, 1, 15, 1, 1, 1, 1
 end
 
@@ -100,7 +100,7 @@ end
           rem DoneAdvance, HandleFrame7Transition,
           rem              UpdateSprite (all called via goto)
           rem Skip if player is eliminated (health = 0)
-          if playerHealth[currentPlayer] = 0 then return
+          if playerHealth[currentPlayer] = 0 then return otherbank
 
           rem Increment this sprite 10fps animation counter (NOT global
           rem   frame counter)
@@ -253,7 +253,7 @@ end
           rem Called Routines: LoadPlayerSprite (bank16) - loads
           rem character sprite graphics
           rem Constraints: None
-          if temp2 >= AnimationSequenceCount then return
+          if temp2 >= AnimationSequenceCount then return otherbank
 
           let currentAnimationSeq_W[currentPlayer] = temp2
           rem SCRAM write to currentAnimationFrame_W
@@ -372,22 +372,22 @@ HandleAttackTransition
 HandleWindupEnd
           dim HAT_characterIndex = temp3
           let temp1 = playerCharacter[currentPlayer]
-          if temp1 >= 32 then return
+          if temp1 >= 32 then return otherbank
           let HAT_characterIndex = temp1
           if HAT_characterIndex >= 16 then let HAT_characterIndex = 0
           let temp2 = CharacterWindupNextAction(HAT_characterIndex)
-          if temp2 = 255 then return
+          if temp2 = 255 then return otherbank
           goto SetPlayerAnimation bank11
 
 HandleExecuteEnd
           let temp1 = playerCharacter[currentPlayer]
-          if temp1 >= 32 then return
+          if temp1 >= 32 then return otherbank
           if temp1 = 6 then goto HarpyExecute
           dim HEE_lookupIndex = temp3
           let HEE_lookupIndex = temp1
           if HEE_lookupIndex >= 16 then let HEE_lookupIndex = 0
           let temp2 = CharacterExecuteNextAction(HEE_lookupIndex)
-          if temp2 = 255 then return
+          if temp2 = 255 then return otherbank
           goto SetPlayerAnimation bank11
 
 HarpyExecute

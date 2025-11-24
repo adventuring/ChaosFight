@@ -27,7 +27,7 @@ end
           rem Constraints: Must remain in bank14 (called from SetPlayerSprites bank2)
 
           rem Guard state takes priority over hurt state
-          if temp3 then let temp6 = ColCyan(12) : return
+          if temp3 then let temp6 = ColCyan(12) : return otherbank
 
           rem Hurt state handling
           if !temp2 then goto NormalColorState

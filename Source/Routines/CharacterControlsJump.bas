@@ -5,8 +5,8 @@
           rem Values are 8-bit twos complement upward velocities
           rem 0 = special jump (use character-specific function)
           rem Non-zero = standard jump velocity
-          data CharacterJumpVelocities
-          0, 254, 0, 244, 248, 254, 0, 248, 0, 254, 243, 248, 243, 0, 248, 245
+data CharacterJumpVelocities
+0, 254, 0, 244, 248, 254, 0, 248, 0, 254, 243, 248, 243, 0, 248, 245
 end
 
 StandardJump
@@ -18,7 +18,7 @@ end
           rem Output: Upward velocity applied, jumping flag set
           let temp2 = playerCharacter[temp1]
           let temp2 = CharacterJumpVelocities(temp2)
-          if temp2 = 0 then return
+          if temp2 = 0 then return otherbank
           let playerVelocityY[temp1] = temp2
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -55,7 +55,7 @@ end
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           let temp1 = temp3
-          if temp4 = 0 then return
+          if temp4 = 0 then return otherbank
           if temp6 >= pfrows - 1 then goto BernieCheckBottomWrap
           let temp4 = temp6 + 1
           let temp5 = 0
@@ -65,7 +65,7 @@ end
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp3
-          if temp5 = 1 then return
+          if temp5 = 1 then return otherbank
           let playerY[temp1] = playerY[temp1] + 1
           return otherbank
 
@@ -80,7 +80,7 @@ BernieCheckBottomWrap
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp3
-          if temp5 = 1 then return
+          if temp5 = 1 then return otherbank
           let playerY[temp1] = 0
           return otherbank
 
@@ -94,7 +94,7 @@ end
           rem Mutates: temp3-temp6, playerVelocityY[], playerVelocityYL[], playerState[]
           let temp3 = playerY[temp1]
           let temp4 = temp3 / 16
-          if temp4 <= 0 then return
+          if temp4 <= 0 then return otherbank
           let temp4 = temp4 - 1
           let temp5 = 0
           let temp6 = temp1
@@ -103,7 +103,7 @@ end
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp6
-          if temp5 = 1 then return
+          if temp5 = 1 then return otherbank
           let playerVelocityY[temp1] = 254
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -131,10 +131,10 @@ end
           rem Input: temp1 = player index
           rem Output: Upward velocity if energy available and cooldown expired
           dim HJ_stateFlags = temp3
-          if characterSpecialAbility_R[temp1] = 0 then return
+          if characterSpecialAbility_R[temp1] = 0 then return otherbank
           let temp2 = frame - harpyLastFlapFrame_R[temp1]
           if temp2 > 127 then temp2 = 127
-          if temp2 < HarpyFlapCooldownFrames then return
+          if temp2 < HarpyFlapCooldownFrames then return otherbank
           if playerY[temp1] <= 5 then goto HarpyFlapRecord
           let playerVelocityY[temp1] = 254
           let playerVelocityYL[temp1] = 0
@@ -173,7 +173,7 @@ end
           rem ROBO TITO (13) - Stretch to ceiling
           rem Input: temp1 = player index
           rem Output: Moves up 3px/frame, latches on ceiling contact
-          if (characterStateFlags_R[temp1] & 1) then return
+          if (characterStateFlags_R[temp1] & 1) then return otherbank
           if (playerState[temp1] & 4) then goto RoboTitoCannotStretch
           if characterSpecialAbility_R[temp1] = 0 then goto RoboTitoCannotStretch
           goto RoboTitoCanStretch

@@ -32,7 +32,7 @@ end
           if temp1 = 0 then HCSF_CheckJoy0
           if temp1 = 2 then HCSF_CheckJoy0
           rem Players 1,3 use joy1
-          if !joy1fire then return
+          if !joy1fire then return otherbank
           let temp2 = 1
           if joy1down then temp4 = 1 : goto HCSF_HandleFire
           let temp4 = 0
@@ -52,7 +52,7 @@ HCSF_CheckJoy0
           rem Constraints: Must be colocated with
           rem HandleCharacterSelectFire
           rem Players 0,2 use joy0
-          if !joy0fire then return
+          if !joy0fire then return otherbank
           let temp2 = 1
           if joy0down then temp4 = 1 : goto HCSF_HandleFire
           let temp4 = 0

@@ -38,7 +38,7 @@ end
           let temp4 = MissileHitNotFound
           let temp6 = BitMask[temp1]
           let temp5 = missileActive & temp6
-          if temp5 = 0 then return
+          if temp5 = 0 then return otherbank
           rem No active missile
 
           let characterIndex = playerCharacter[temp1]
@@ -159,7 +159,7 @@ end
           rem Bernie swings both directions every frame
           gosub CacheAOERightHitbox
           gosub CheckPlayersAgainstCachedHitbox
-          if temp4 <> MissileHitNotFound then return
+          if temp4 <> MissileHitNotFound then return otherbank
 
           gosub CacheAOELeftHitbox
           gosub CheckPlayersAgainstCachedHitbox
@@ -331,7 +331,7 @@ end
           let temp1 = temp6
           let temp2 = temp3
           gosub PlayfieldRead bank16
-          if temp1 then let temp4 = $80 : return
+          if temp1 then let temp4 = $80 : return otherbank
           rem pfread(column, row) returns 0 if clear, non-zero if set
           rem Clear
           return otherbank

@@ -56,8 +56,8 @@ end
           rem Constraints: Only songs 0-Bank15MaxSongID are in Bank 15. Index mapping:
           rem song ID maps directly (index = songID). Returns songPointer = 0 if song not in this bank
           rem Bounds check: Only songs 0-Bank15MaxSongID are in Bank 15
-          if temp1 < 0 then let songPointer = 0 : return
-          if temp1 > Bank15MaxSongID then let songPointer = 0 : return
+          if temp1 < 0 then let songPointer = 0 : return otherbank
+          if temp1 > Bank15MaxSongID then let songPointer = 0 : return otherbank
           rem Calculate compact index: index = songID
           let temp2 = temp1
           let songPointer = SongPointers2SecondH[temp2]

@@ -21,15 +21,15 @@
           asm
 ArenaColorsBWStart
 end
-          data ArenaColorsBW
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14)
+data ArenaColorsBW
+ColGrey(14),
+ColGrey(14),
+ColGrey(14),
+ColGrey(14),
+ColGrey(14),
+ColGrey(14),
+ColGrey(14),
+ColGrey(14)
 end
           asm
 ArenaColorsBWEnd
@@ -64,15 +64,15 @@ end
 BlankPlayfieldColorsStart
 end
 BlankPlayfieldColors
-          data BlankPlayfieldColors
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14),
-            ColGrey(14)
+data BlankPlayfieldColors
+ColGrey(14),
+ColGrey(14),
+ColGrey(14),
+ColGrey(14),
+ColGrey(14),
+ColGrey(14),
+ColGrey(14),
+ColGrey(14)
 end
           asm
 BlankPlayfieldColorsEnd
@@ -94,15 +94,15 @@ Arena0Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena0Colors
-          data Arena0Colors
-            ColBrown(2),
-            ColBrown(4),
-            ColBrown(6),
-            ColBrown(8),
-            ColBrown(10),
-            ColBrown(12),
-            ColBrown(14),
-            ColBrown(0)
+data Arena0Colors
+ColBrown(2),
+ColBrown(4),
+ColBrown(6),
+ColBrown(8),
+ColBrown(10),
+ColBrown(12),
+ColBrown(14),
+ColBrown(0)
 end
 Arena1Playfield
           playfield:
@@ -116,15 +116,15 @@ Arena1Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena1Colors
-          data Arena1Colors
-            ColTurquoise(4),
-            ColTurquoise(4),
-            ColTurquoise(6),
-            ColTurquoise(4),
-            ColTurquoise(6),
-            ColTurquoise(4),
-            ColTurquoise(4),
-            ColTurquoise(2)
+data Arena1Colors
+ColTurquoise(4),
+ColTurquoise(4),
+ColTurquoise(6),
+ColTurquoise(4),
+ColTurquoise(6),
+ColTurquoise(4),
+ColTurquoise(4),
+ColTurquoise(2)
 end
 Arena2Playfield
           playfield:
@@ -138,15 +138,15 @@ Arena2Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena2Colors
-          data Arena2Colors
-            ColTurquoise(4),
-            ColTurquoise(4),
-            ColTurquoise(6),
-            ColTurquoise(4),
-            ColTurquoise(6),
-            ColTurquoise(4),
-            ColTurquoise(4),
-            ColTurquoise(2)
+data Arena2Colors
+ColTurquoise(4),
+ColTurquoise(4),
+ColTurquoise(6),
+ColTurquoise(4),
+ColTurquoise(6),
+ColTurquoise(4),
+ColTurquoise(4),
+ColTurquoise(2)
 end
 Arena3Playfield
           playfield:
@@ -160,15 +160,15 @@ Arena3Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena3Colors
-          data Arena3Colors
-            ColSeafoam(2),
-            ColSeafoam(2),
-            ColSeafoam(4),
-            ColSeafoam(4),
-            ColSeafoam(4),
-            ColSeafoam(2),
-            ColSeafoam(2),
-            ColSeafoam(6)
+data Arena3Colors
+ColSeafoam(2),
+ColSeafoam(2),
+ColSeafoam(4),
+ColSeafoam(4),
+ColSeafoam(4),
+ColSeafoam(2),
+ColSeafoam(2),
+ColSeafoam(6)
 end
 Arena4Playfield
           playfield:
@@ -182,15 +182,15 @@ Arena4Playfield
           ................
 end
 Arena4Colors
-          data Arena4Colors
-            ColYellow(12),
-            ColYellow(12),
-            ColYellow(12),
-            ColYellow(14),
-            ColYellow(14),
-            ColYellow(12),
-            ColYellow(12),
-            ColYellow(12)
+data Arena4Colors
+ColYellow(12),
+ColYellow(12),
+ColYellow(12),
+ColYellow(14),
+ColYellow(14),
+ColYellow(12),
+ColYellow(12),
+ColYellow(12)
 end
 Arena5Playfield
           playfield:
@@ -204,15 +204,15 @@ Arena5Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena5Colors
-          data Arena5Colors
-            ColBlue(4),
-            ColBlue(4),
-            ColBlue(4),
-            ColBlue(4),
-            ColBlue(4),
-            ColBlue(4),
-            ColBlue(4),
-            ColBlue(4)
+data Arena5Colors
+ColBlue(4),
+ColBlue(4),
+ColBlue(4),
+ColBlue(4),
+ColBlue(4),
+ColBlue(4),
+ColBlue(4),
+ColBlue(4)
 end
 Arena6Playfield
           rem Arena 6: Multi-Platform (multiple small platforms)
@@ -227,15 +227,15 @@ Arena6Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena6Colors
-          data Arena6Colors
-            ColRed(2),
-            ColRed(4),
-            ColRed(2),
-            ColRed(6),
-            ColRed(2),
-            ColRed(4),
-            ColRed(2),
-            ColRed(8)
+data Arena6Colors
+ColRed(2),
+ColRed(4),
+ColRed(2),
+ColRed(6),
+ColRed(2),
+ColRed(4),
+ColRed(2),
+ColRed(8)
 end
 Arena7Playfield
           rem Arena 7: The Gauntlet (maze-like walls)
@@ -250,15 +250,15 @@ Arena7Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena7Colors
-          data Arena7Colors
-            ColGold(2),
-            ColGold(2),
-            ColGold(2),
-            ColGold(4),
-            ColGold(2),
-            ColGold(4),
-            ColGold(2),
-            ColGold(6)
+data Arena7Colors
+ColGold(2),
+ColGold(2),
+ColGold(2),
+ColGold(4),
+ColGold(2),
+ColGold(4),
+ColGold(2),
+ColGold(6)
 end
 Arena8Playfield
           playfield:
@@ -272,15 +272,15 @@ Arena8Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena8Colors
-          data Arena8Colors
-            ColPurple(2),
-            ColPurple(4),
-            ColPurple(6),
-            ColPurple(4),
-            ColPurple(6),
-            ColPurple(4),
-            ColPurple(6),
-            ColPurple(2)
+data Arena8Colors
+ColPurple(2),
+ColPurple(4),
+ColPurple(6),
+ColPurple(4),
+ColPurple(6),
+ColPurple(4),
+ColPurple(6),
+ColPurple(2)
 end
 Arena9Playfield
           playfield:
@@ -294,15 +294,15 @@ Arena9Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena9Colors
-          data Arena9Colors
-            ColRed(2),
-            ColRed(4),
-            ColRed(6),
-            ColRed(4),
-            ColRed(4),
-            ColRed(6),
-            ColRed(4),
-            ColRed(2)
+data Arena9Colors
+ColRed(2),
+ColRed(4),
+ColRed(6),
+ColRed(4),
+ColRed(4),
+ColRed(6),
+ColRed(4),
+ColRed(2)
 end
 Arena10Playfield
           rem Arena 10: Sky Battlefield (variant of Arena 2 with
@@ -318,15 +318,15 @@ Arena10Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena10Colors
-          data Arena10Colors
-            ColCyan(4),
-            ColCyan(2),
-            ColCyan(6),
-            ColCyan(2),
-            ColCyan(4),
-            ColCyan(2),
-            ColCyan(2),
-            ColCyan(8)
+data Arena10Colors
+ColCyan(4),
+ColCyan(2),
+ColCyan(6),
+ColCyan(2),
+ColCyan(4),
+ColCyan(2),
+ColCyan(2),
+ColCyan(8)
 end
           rem Arena color/playfield pointers computed at runtime to save ROM
 Arena11Playfield
@@ -343,15 +343,15 @@ Arena11Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena11Colors
-          data Arena11Colors
-            ColGreen(2),
-            ColGreen(4),
-            ColGreen(4),
-            ColGreen(6),
-            ColGreen(6),
-            ColGreen(2),
-            ColGreen(2),
-            ColGreen(8)
+data Arena11Colors
+ColGreen(2),
+ColGreen(4),
+ColGreen(4),
+ColGreen(6),
+ColGreen(6),
+ColGreen(2),
+ColGreen(2),
+ColGreen(8)
 end
 Arena12Playfield
           rem Arena 12: The Chasm (variant of Arena 4 with wider bridge)
@@ -366,15 +366,15 @@ Arena12Playfield
           ................
 end
 Arena12Colors
-          data Arena12Colors
-            ColBrown(12),
-            ColBrown(12),
-            ColBrown(14),
-            ColBrown(14),
-            ColBrown(14),
-            ColBrown(12),
-            ColBrown(12),
-            ColBrown(12)
+data Arena12Colors
+ColBrown(12),
+ColBrown(12),
+ColBrown(14),
+ColBrown(14),
+ColBrown(14),
+ColBrown(12),
+ColBrown(12),
+ColBrown(12)
 end
 Arena13Playfield
           rem Arena 13: Fortress Walls (variant of Arena 5 with
@@ -390,15 +390,15 @@ Arena13Playfield
           XXX..XXXXXXX..XX
 end
 Arena13Colors
-          data Arena13Colors
-            ColTurquoise(4),
-            ColTurquoise(4),
-            ColTurquoise(6),
-            ColTurquoise(2),
-            ColTurquoise(2),
-            ColTurquoise(6),
-            ColTurquoise(4),
-            ColTurquoise(4)
+data Arena13Colors
+ColTurquoise(4),
+ColTurquoise(4),
+ColTurquoise(6),
+ColTurquoise(2),
+ColTurquoise(2),
+ColTurquoise(6),
+ColTurquoise(4),
+ColTurquoise(4)
 end
 Arena14Playfield
           rem Arena 14: Floating Islands (variant of Arena 6 with more
@@ -414,15 +414,15 @@ Arena14Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena14Colors
-          data Arena14Colors
-            ColMagenta(2),
-            ColMagenta(0),
-            ColMagenta(4),
-            ColMagenta(0),
-            ColMagenta(2),
-            ColMagenta(0),
-            ColMagenta(4),
-            ColMagenta(8)
+data Arena14Colors
+ColMagenta(2),
+ColMagenta(0),
+ColMagenta(4),
+ColMagenta(0),
+ColMagenta(2),
+ColMagenta(0),
+ColMagenta(4),
+ColMagenta(8)
 end
 Arena15Playfield
           rem Arena 15: The Labyrinth (variant of Arena 7 with more
@@ -438,15 +438,15 @@ Arena15Playfield
           XXXX..XXXX..XXXX
 end
 Arena15Colors
-          data Arena15Colors
-            ColSpringGreen(2),
-            ColSpringGreen(2),
-            ColSpringGreen(4),
-            ColSpringGreen(6),
-            ColSpringGreen(6),
-            ColSpringGreen(4),
-            ColSpringGreen(2),
-            ColSpringGreen(8)
+data Arena15Colors
+ColSpringGreen(2),
+ColSpringGreen(2),
+ColSpringGreen(4),
+ColSpringGreen(6),
+ColSpringGreen(6),
+ColSpringGreen(4),
+ColSpringGreen(2),
+ColSpringGreen(8)
 end
 Arena16Playfield
           rem Arena 16: Danger Zone (variant of Arena 8 with alternating
@@ -462,15 +462,15 @@ Arena16Playfield
           XX.X.X.X.X.X.X.X
 end
 Arena16Colors
-          data Arena16Colors
-            ColIndigo(2),
-            ColIndigo(4),
-            ColIndigo(6),
-            ColIndigo(4),
-            ColIndigo(6),
-            ColIndigo(4),
-            ColIndigo(6),
-            ColIndigo(8)
+data Arena16Colors
+ColIndigo(2),
+ColIndigo(4),
+ColIndigo(6),
+ColIndigo(4),
+ColIndigo(6),
+ColIndigo(4),
+ColIndigo(6),
+ColIndigo(8)
 end
 Arena17Playfield
           rem Arena 17: The Spire (vertical tower platforms)
@@ -485,15 +485,15 @@ Arena17Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena17Colors
-          data Arena17Colors
-            ColGreen(2),
-            ColGreen(4),
-            ColGreen(6),
-            ColGreen(4),
-            ColGreen(6),
-            ColGreen(4),
-            ColGreen(2),
-            ColGreen(8)
+data Arena17Colors
+ColGreen(2),
+ColGreen(4),
+ColGreen(6),
+ColGreen(4),
+ColGreen(6),
+ColGreen(4),
+ColGreen(2),
+ColGreen(8)
 end
 Arena18Playfield
           rem Arena 18: The Bridge (wide center platform)
@@ -508,15 +508,15 @@ Arena18Playfield
           ................
 end
 Arena18Colors
-          data Arena18Colors
-            ColTeal(12),
-            ColTeal(12),
-            ColTeal(12),
-            ColTeal(14),
-            ColTeal(14),
-            ColTeal(12),
-            ColTeal(12),
-            ColTeal(12)
+data Arena18Colors
+ColTeal(12),
+ColTeal(12),
+ColTeal(12),
+ColTeal(14),
+ColTeal(14),
+ColTeal(12),
+ColTeal(12),
+ColTeal(12)
 end
 Arena19Playfield
           rem Arena 19: The Pits (narrow platforms with gaps)
@@ -531,15 +531,15 @@ Arena19Playfield
           XXXX........XXXX
 end
 Arena19Colors
-          data Arena19Colors
-            ColRed(2),
-            ColRed(2),
-            ColRed(0),
-            ColRed(2),
-            ColRed(2),
-            ColRed(0),
-            ColRed(2),
-            ColRed(4)
+data Arena19Colors
+ColRed(2),
+ColRed(2),
+ColRed(0),
+ColRed(2),
+ColRed(2),
+ColRed(0),
+ColRed(2),
+ColRed(4)
 end
 Arena20Playfield
           rem Arena 20: The Stairs (stepped platforms)
@@ -554,15 +554,15 @@ Arena20Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena20Colors
-          data Arena20Colors
-            ColBlue(4),
-            ColBlue(4),
-            ColBlue(4),
-            ColBlue(6),
-            ColBlue(6),
-            ColBlue(8),
-            ColBlue(8),
-            ColBlue(2)
+data Arena20Colors
+ColBlue(4),
+ColBlue(4),
+ColBlue(4),
+ColBlue(6),
+ColBlue(6),
+ColBlue(8),
+ColBlue(8),
+ColBlue(2)
 end
 Arena21Playfield
           rem Arena 21: The Grid (checkerboard pattern)
@@ -577,15 +577,15 @@ Arena21Playfield
           ..XX..XX..XX..XX
 end
 Arena21Colors
-          data Arena21Colors
-            ColBrown(4),
-            ColBrown(4),
-            ColBrown(6),
-            ColBrown(6),
-            ColBrown(4),
-            ColBrown(4),
-            ColBrown(6),
-            ColBrown(6)
+data Arena21Colors
+ColBrown(4),
+ColBrown(4),
+ColBrown(6),
+ColBrown(6),
+ColBrown(4),
+ColBrown(4),
+ColBrown(6),
+ColBrown(6)
 end
 Arena22Playfield
           rem Arena 22: The Columns (vertical pillars)
@@ -600,15 +600,15 @@ Arena22Playfield
           X..X..X..X..X..X
 end
 Arena22Colors
-          data Arena22Colors
-            ColRed(4),
-            ColRed(4),
-            ColRed(4),
-            ColRed(4),
-            ColRed(4),
-            ColRed(4),
-            ColRed(4),
-            ColRed(6)
+data Arena22Colors
+ColRed(4),
+ColRed(4),
+ColRed(4),
+ColRed(4),
+ColRed(4),
+ColRed(4),
+ColRed(4),
+ColRed(6)
 end
 Arena23Playfield
           rem Arena 23: The Waves (curved platforms)
@@ -623,15 +623,15 @@ Arena23Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena23Colors
-          data Arena23Colors
-            ColCyan(2),
-            ColCyan(4),
-            ColCyan(4),
-            ColCyan(2),
-            ColCyan(4),
-            ColCyan(4),
-            ColCyan(2),
-            ColCyan(6)
+data Arena23Colors
+ColCyan(2),
+ColCyan(4),
+ColCyan(4),
+ColCyan(2),
+ColCyan(4),
+ColCyan(4),
+ColCyan(2),
+ColCyan(6)
 end
 Arena24Playfield
           rem Arena 24: The Cross (cross-shaped platform)
@@ -646,15 +646,15 @@ Arena24Playfield
           XXXX....XXXX....
 end
 Arena24Colors
-          data Arena24Colors
-            ColGrey(4),
-            ColGrey(4),
-            ColGrey(4),
-            ColGrey(6),
-            ColGrey(6),
-            ColGrey(4),
-            ColGrey(4),
-            ColGrey(4)
+data Arena24Colors
+ColGrey(4),
+ColGrey(4),
+ColGrey(4),
+ColGrey(6),
+ColGrey(6),
+ColGrey(4),
+ColGrey(4),
+ColGrey(4)
 end
 Arena25Playfield
           rem Arena 25: The Maze (complex wall pattern)
@@ -669,15 +669,15 @@ Arena25Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena25Colors
-          data Arena25Colors
-            ColPurple(2),
-            ColPurple(4),
-            ColPurple(6),
-            ColPurple(8),
-            ColPurple(8),
-            ColPurple(6),
-            ColPurple(4),
-            ColPurple(2)
+data Arena25Colors
+ColPurple(2),
+ColPurple(4),
+ColPurple(6),
+ColPurple(8),
+ColPurple(8),
+ColPurple(6),
+ColPurple(4),
+ColPurple(2)
 end
 Arena26Playfield
           rem Arena 26: The Islands (scattered platforms)
@@ -692,15 +692,15 @@ Arena26Playfield
           XX............XX
 end
 Arena26Colors
-          data Arena26Colors
-            ColOrange(2),
-            ColOrange(2),
-            ColOrange(0),
-            ColOrange(4),
-            ColOrange(4),
-            ColOrange(0),
-            ColOrange(2),
-            ColOrange(2)
+data Arena26Colors
+ColOrange(2),
+ColOrange(2),
+ColOrange(0),
+ColOrange(4),
+ColOrange(4),
+ColOrange(0),
+ColOrange(2),
+ColOrange(2)
 end
 Arena27Playfield
           rem Arena 27: The Rings (concentric platforms)
@@ -715,15 +715,15 @@ Arena27Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena27Colors
-          data Arena27Colors
-            ColYellow(2),
-            ColYellow(4),
-            ColYellow(6),
-            ColYellow(8),
-            ColYellow(8),
-            ColYellow(6),
-            ColYellow(4),
-            ColYellow(2)
+data Arena27Colors
+ColYellow(2),
+ColYellow(4),
+ColYellow(6),
+ColYellow(8),
+ColYellow(8),
+ColYellow(6),
+ColYellow(4),
+ColYellow(2)
 end
 Arena28Playfield
           rem Arena 28: The Slopes (diagonal platforms)
@@ -738,15 +738,15 @@ Arena28Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena28Colors
-          data Arena28Colors
-            ColGreen(2),
-            ColGreen(4),
-            ColGreen(6),
-            ColGreen(8),
-            ColGreen(8),
-            ColGreen(6),
-            ColGreen(4),
-            ColGreen(2)
+data Arena28Colors
+ColGreen(2),
+ColGreen(4),
+ColGreen(6),
+ColGreen(8),
+ColGreen(8),
+ColGreen(6),
+ColGreen(4),
+ColGreen(2)
 end
 Arena29Playfield
           rem Arena 29: The Zigzag (zigzag pattern)
@@ -761,15 +761,15 @@ Arena29Playfield
           XXXX........XXXX
 end
 Arena29Colors
-          data Arena29Colors
-            ColMagenta(2),
-            ColMagenta(4),
-            ColMagenta(6),
-            ColMagenta(4),
-            ColMagenta(4),
-            ColMagenta(6),
-            ColMagenta(4),
-            ColMagenta(2)
+data Arena29Colors
+ColMagenta(2),
+ColMagenta(4),
+ColMagenta(6),
+ColMagenta(4),
+ColMagenta(4),
+ColMagenta(6),
+ColMagenta(4),
+ColMagenta(2)
 end
 Arena30Playfield
           rem Arena 30: The Ladder (vertical rungs)
@@ -784,15 +784,15 @@ Arena30Playfield
           X..X..X..X..X..X
 end
 Arena30Colors
-          data Arena30Colors
-            ColSpringGreen(4),
-            ColSpringGreen(4),
-            ColSpringGreen(4),
-            ColSpringGreen(4),
-            ColSpringGreen(4),
-            ColSpringGreen(4),
-            ColSpringGreen(4),
-            ColSpringGreen(6)
+data Arena30Colors
+ColSpringGreen(4),
+ColSpringGreen(4),
+ColSpringGreen(4),
+ColSpringGreen(4),
+ColSpringGreen(4),
+ColSpringGreen(4),
+ColSpringGreen(4),
+ColSpringGreen(6)
 end
 Arena31Playfield
           rem Arena 31: The Final Battle (complex multi-platform)
@@ -807,15 +807,15 @@ Arena31Playfield
           XXXXXXXXXXXXXXXX
 end
 Arena31Colors
-          data Arena31Colors
-            ColGrey(2),
-            ColGrey(4),
-            ColGrey(4),
-            ColGrey(6),
-            ColGrey(4),
-            ColGrey(4),
-            ColGrey(6),
-            ColGrey(8)
+data Arena31Colors
+ColGrey(2),
+ColGrey(4),
+ColGrey(4),
+ColGrey(6),
+ColGrey(4),
+ColGrey(4),
+ColGrey(6),
+ColGrey(8)
 end
           asm
 Arena31PlayfieldEnd

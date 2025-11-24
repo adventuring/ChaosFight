@@ -34,7 +34,7 @@ end
           let temp4 = soundEffectFrame_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
           let soundEffectFrame_W = temp4
-          if temp4 then return
+          if temp4 then return otherbank
 
           gosub LoadSoundNote bank15
           rem Frame counter reached 0 - load next note from Sounds bank

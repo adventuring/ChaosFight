@@ -32,13 +32,13 @@ end
           rem Check Genesis/Joy2b+ Button C/II
           
           rem If enhanced button not pressed, return (no jump)
-          if temp3 = 0 then return
+          if temp3 = 0 then return otherbank
           
           rem For characters with special UP behaviors, enhanced button acts as UP
           rem Check Shamone form switching first (Shamone <-> MethHound)
-          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : return
+          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : return otherbank
           rem Switch Shamone -> MethHound
-          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : return
+          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : return otherbank
           rem Switch MethHound -> Shamone
 
           rem Robo Tito: Hold enhanced button to ascend; auto-latch on ceiling contact
@@ -54,7 +54,7 @@ end
           rem Allow Zoe Ryen a single mid-air double-jump
           if playerCharacter[temp1] = CharacterZoeRyen then goto PJI_ZoeJumpCheck
           rem Use cached animation state - block jump during attack animations (states 13-15)
-          if temp2 >= 13 then return
+          if temp2 >= 13 then return otherbank
           rem Block jump during attack windup/execute/recovery
           let temp4 = playerCharacter[temp1]
           gosub DispatchCharacterJump bank10
@@ -64,9 +64,9 @@ PJI_ZoeJumpCheck
           let temp6 = 0
           if (playerState[temp1] & 4) then temp6 = 1
           rem Use goto to avoid branch out of range
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return otherbank
           rem Use cached animation state - block jump during attack animations (states 13-15)
-          if temp2 >= 13 then return
+          if temp2 >= 13 then return otherbank
           let temp4 = playerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank10

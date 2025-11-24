@@ -43,7 +43,7 @@ end
 end
 
           rem Check for end of sound (Duration = 0)
-          if temp4 = 0 then let soundEffectPointer1 = 0 : AUDV1 = 0 : return
+          if temp4 = 0 then let soundEffectPointer1 = 0 : AUDV1 = 0 : return otherbank
 
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           let temp6 = temp2 & %11110000

@@ -52,7 +52,7 @@ end
           rem Increment parade timer
 
           rem Start parade after ~4 seconds (TitleParadeDelayFrames frames)
-          if titleParadeTimer < TitleParadeDelayFrames then return
+          if titleParadeTimer < TitleParadeDelayFrames then return otherbank
 
           rem Check if we need to start a new character
           if !titleParadeActive then StartNewParadeCharacter

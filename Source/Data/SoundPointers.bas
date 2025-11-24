@@ -12,11 +12,11 @@
           rem 5=MenuSelect, 6=SpecialMove, 7=Powerup, 8=LandingSafe,
           rem   9=LandingDamage
 
-          data SoundPointersL
-            <Sound_SoundAttackHit, <Sound_SoundGuardBlock, <Sound_SoundJump, <Sound_SoundPlayerEliminated, <Sound_SoundMenuNavigate,
-            <Sound_SoundMenuSelect, <Sound_SoundSpecialMove, <Sound_SoundPowerup, <Sound_SoundLandingSafe, <Sound_SoundLandingDamage
+data SoundPointersL
+<Sound_SoundAttackHit, <Sound_SoundGuardBlock, <Sound_SoundJump, <Sound_SoundPlayerEliminated, <Sound_SoundMenuNavigate,
+<Sound_SoundMenuSelect, <Sound_SoundSpecialMove, <Sound_SoundPowerup, <Sound_SoundLandingSafe, <Sound_SoundLandingDamage
 end
-          data SoundPointersH
-            >Sound_SoundAttackHit, >Sound_SoundGuardBlock, >Sound_SoundJump, >Sound_SoundPlayerEliminated, >Sound_SoundMenuNavigate,
-            >Sound_SoundMenuSelect, >Sound_SoundSpecialMove, >Sound_SoundPowerup, >Sound_SoundLandingSafe, >Sound_SoundLandingDamage
+data SoundPointersH
+>Sound_SoundAttackHit, >Sound_SoundGuardBlock, >Sound_SoundJump, >Sound_SoundPlayerEliminated, >Sound_SoundMenuNavigate,
+>Sound_SoundMenuSelect, >Sound_SoundSpecialMove, >Sound_SoundPowerup, >Sound_SoundLandingSafe, >Sound_SoundLandingDamage
 end

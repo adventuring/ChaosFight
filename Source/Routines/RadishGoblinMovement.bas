@@ -11,7 +11,7 @@ end
           rem Handle joystick input for Radish Goblin bounce movement
           rem Input: temp1 = player index (0-3)
           rem Output: Horizontal momentum added based on stick direction (only when on ground)
-          if (playerState[temp1] & PlayerStateBitJumping) then return
+          if (playerState[temp1] & PlayerStateBitJumping) then return otherbank
           rem Determine joy port (temp1 & 2 = 0 for players 0,2 use joy0)
           if temp1 & 2 = 0 then goto RGHI_Joy0
           if !joy1left then goto RGHI_CheckRight
@@ -33,16 +33,16 @@ RGHI_SPF_No1
 RGHI_AfterLeft
 RGHI_CheckRight
           if temp1 & 2 = 0 then goto RGHI_CheckRightJoy0
-          if !joy1right then return
+          if !joy1right then return otherbank
           goto RGHI_Right
 RGHI_CheckRightJoy0
-          if !joy0right then return
+          if !joy0right then return otherbank
 RGHI_Right
           let temp4 = playerCharacter[temp1]
           let temp6 = CharacterMovementSpeed[temp4]
           let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
           let playerVelocityXL[temp1] = 0
-          if (playerState[temp1] & 8) then return
+          if (playerState[temp1] & 8) then return otherbank
           gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then goto RGHI_SPF_No2
           if temp2 > 9 then goto RGHI_SPF_No2
@@ -70,7 +70,7 @@ end
           rem Check for ground contact and apply bounce for Radish Goblin
           rem Input: currentPlayer = player index (0-3) (global)
           let temp1 = currentPlayer
-          if playerCharacter[temp1] <> CharacterRadishGoblin then return
+          if playerCharacter[temp1] <> CharacterRadishGoblin then return otherbank
           if playerVelocityY[temp1] <= 0 then goto RGBGB_ClearCheck
           rem Convert X to playfield column
           let temp2 = playerX[temp1] - ScreenInsetX
@@ -140,7 +140,7 @@ RGBGB_DoneApply
           let radishGoblinLastContactY_W[temp1] = playerY[temp1]
           return otherbank
 RGBGB_ClearCheck
-          if radishGoblinBounceState_R[temp1] = 0 then return
+          if radishGoblinBounceState_R[temp1] = 0 then return otherbank
           let temp2 = playerY[temp1]
           let temp3 = radishGoblinLastContactY_R[temp1]
           if temp2 < temp3 then goto RGBGB_ClearState2
@@ -157,7 +157,7 @@ RadishGoblinCheckWallBounce
 end
           rem Wall bounce placeholder (horizontal only, to be enhanced)
           rem Input: currentPlayer = player index (0-3) (global)
-          if playerCharacter[currentPlayer] <> CharacterRadishGoblin then return
+          if playerCharacter[currentPlayer] <> CharacterRadishGoblin then return otherbank
           return otherbank
 
 RadishGoblinHandleStickDownRelease
@@ -166,7 +166,7 @@ RadishGoblinHandleStickDownRelease
 end
           rem Handle stick down release for Radish Goblin (short bounce if on ground)
           rem Input: temp1 = player index (0-3)
-          if (playerState[temp1] & PlayerStateBitJumping) then return
+          if (playerState[temp1] & PlayerStateBitJumping) then return otherbank
           let playerVelocityY[temp1] = 0 - RadishGoblinBounceShort
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping

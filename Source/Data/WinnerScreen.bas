@@ -27,13 +27,13 @@ WinnerScreenPlayfield
 end
 
 WinnerScreenColorsColor
-          data WinnerScreenColorsColor
-          ColGold(14)
-          ColGold(12)
-          ColGold(10)
-          ColGold(8)
-          ColGold(6)
-          ColGold(4)
-          ColGold(2)
-          ColGold(2)
+data WinnerScreenColorsColor
+ColGold(14)
+ColGold(12)
+ColGold(10)
+ColGold(8)
+ColGold(6)
+ColGold(4)
+ColGold(2)
+ColGold(2)
 end

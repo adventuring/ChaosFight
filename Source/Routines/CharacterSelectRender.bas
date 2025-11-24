@@ -2,21 +2,21 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem Player preview coordinate tables
-          data SelectPreviewX
-            56, 104, 56, 104
+data SelectPreviewX
+56, 104, 56, 104
 end
 
-          data SelectPreviewY
-            40, 40, 80, 80
+data SelectPreviewY
+40, 40, 80, 80
 end
 
           rem Player color tables for normal and handicap lock states
-          data SelectPlayerColorNormal
-            ColIndigo(12), ColRed(12), ColYellow(12), ColTurquoise(12)
+data SelectPlayerColorNormal
+ColIndigo(12), ColRed(12), ColYellow(12), ColTurquoise(12)
 end
 
-          data SelectPlayerColorHandicap
-            ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
+data SelectPlayerColorHandicap
+ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
 end
 
 SelectDrawScreen
@@ -33,7 +33,7 @@ SelectDrawScreenLoop
           gosub SelectRenderPlayerPreview
           let temp1 = temp1 + 1
           if temp1 < temp6 then goto SelectDrawScreenLoop
-          if temp6 = 4 then return
+          if temp6 = 4 then return otherbank
           gosub SelectHideLowerPlayerPreviews bank6
           return otherbank
 
@@ -49,9 +49,9 @@ end
           let temp1 = currentPlayer
           gosub GetPlayerLocked bank6
           let temp5 = temp2
-          if !temp5 then gosub SelectSetPlayerColorUnlocked : return
+          if !temp5 then gosub SelectSetPlayerColorUnlocked : return otherbank
           rem Unlocked state (most common) - set color and return early
-          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return
+          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return otherbank
           rem Handicap state - set dimmed color and return
           rem Normal locked state - color already set by RenderPlayerPreview
           return otherbank
@@ -207,7 +207,7 @@ end
           rem Constraints: Admin-only usage sharing SCRAM with game mode
           let temp2 = characterSelectPlayerAnimationTimer_R[temp1] + 1
           let characterSelectPlayerAnimationTimer_W[temp1] = temp2
-          if temp2 < AnimationFrameDelay then return
+          if temp2 < AnimationFrameDelay then return otherbank
           let characterSelectPlayerAnimationTimer_W[temp1] = 0
           let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
           let characterSelectPlayerAnimationFrame_W[temp1] = temp3

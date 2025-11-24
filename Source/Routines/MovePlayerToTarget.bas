@@ -50,7 +50,7 @@ end
           if playerX[temp1] = temp2 then goto CheckY
           gosub NudgePlayerFromPlayfield
 CheckY
-          if playerY[temp1] = temp3 then return
+          if playerY[temp1] = temp3 then return otherbank
           gosub NudgePlayerFromPlayfield
           return otherbank
 

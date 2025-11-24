@@ -7,7 +7,7 @@ end
           rem MethHound uses ShamoneAttack handler
           rem Direct cross-bank gotos route to character-specific logic or the
           rem shared PerformMeleeAttack/PerformRangedAttack helpers
-          if temp4 >= 32 then return
+          if temp4 >= 32 then return otherbank
 
           rem Characters 0-15: Implemented attacks
           rem Bernie: dual-direction ground thump

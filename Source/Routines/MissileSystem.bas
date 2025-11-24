@@ -250,7 +250,7 @@ end
           rem Check if this missile is active
           gosub GetPlayerMissileBitFlag
           let temp4 = missileActive & temp6
-          if temp4  = 0 then return
+          if temp4  = 0 then return otherbank
           rem Not active, skip
 
           rem Preserve player index since GetMissileFlags uses temp1
@@ -538,7 +538,7 @@ MissileSysPF
           let temp1 = temp6
           let temp2 = temp3
           gosub PlayfieldRead bank16
-          if temp1 then let temp4 = 1 : return
+          if temp1 then let temp4 = 1 : return otherbank
           rem Default: no collision detected
           return otherbank
 

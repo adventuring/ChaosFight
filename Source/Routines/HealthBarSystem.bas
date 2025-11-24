@@ -284,7 +284,7 @@ end
           if (controllerStatus & SetQuadtariDetected) = 0 then goto DisplayCF2025
           rem If no Quadtari, display CF2025 instead of player health
 
-          if (controllerStatus & SetPlayers34Active) = 0 then return
+          if (controllerStatus & SetPlayers34Active) = 0 then return otherbank
           rem Only update player health if players 3 or 4 are active
 
           rem Get Player 3 health (0-100), clamp to 99

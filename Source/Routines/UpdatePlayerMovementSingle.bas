@@ -15,7 +15,7 @@ end
           rem Notes: temp2-temp4 are clobbered; caller must not reuse them afterward.
           rem 16-bit accumulator for proper carry detection
           rem Skip if player is eliminated
-          if playerHealth[currentPlayer] = 0 then return
+          if playerHealth[currentPlayer] = 0 then return otherbank
 
           rem Apply X Velocity To X Position (8.8 fixed-point)
           rem Use batariBASIC’s built-in 16-bit addition for carry detection

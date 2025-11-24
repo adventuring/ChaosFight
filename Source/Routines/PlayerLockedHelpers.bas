@@ -26,7 +26,7 @@ end
 
           rem Invalid index check (temp1 should be 0-3)
           rem if temp1 < 0 then temp2 = 0 : return
-          if temp1 > 3 then temp2 = 0 : GPL_lockedState = temp2 : return
+          if temp1 > 3 then temp2 = 0 : GPL_lockedState = temp2 : return otherbank
 
           rem Extract 2 bits for this player
           rem Optimized: Use on...goto jump table for O(1) dispatch
@@ -82,10 +82,10 @@ SetPlayerLockedApply
           let currentPlayer = temp3
 
           rem Clear the 2 bits for this player and set the new value
-          if temp3 = 0 then playerLocked = (playerLocked & 252) | temp2 : return
-          if temp3 = 1 then playerLocked = (playerLocked & 243) | (temp2 * 4) : return
-          if temp3 = 2 then playerLocked = (playerLocked & 207) | (temp2 * 16) : return
-          if temp3 = 3 then playerLocked = (playerLocked & 63) | (temp2 * 64) : return
+          if temp3 = 0 then playerLocked = (playerLocked & 252) | temp2 : return otherbank
+          if temp3 = 1 then playerLocked = (playerLocked & 243) | (temp2 * 4) : return otherbank
+          if temp3 = 2 then playerLocked = (playerLocked & 207) | (temp2 * 16) : return otherbank
+          if temp3 = 3 then playerLocked = (playerLocked & 63) | (temp2 * 64) : return otherbank
 
           return otherbank
 

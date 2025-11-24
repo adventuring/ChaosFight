@@ -133,7 +133,7 @@ end
           rem Default to no pause button pressed
 
           rem Always check Game Select switch first (works with any controller)
-          if switchselect then temp1 = 1 : return
+          if switchselect then temp1 = 1 : return otherbank
 
           rem Then check enhanced pause buttons for the specified player
           rem Joy2B+ Button III uses different registers than Button II/C

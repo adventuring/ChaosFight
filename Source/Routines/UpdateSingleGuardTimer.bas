@@ -48,7 +48,7 @@ end
           rem Player not guarding - decrement cooldown timer
           let temp3 = playerTimers_R[temp1]
           rem Fix RMW: Read from _R, modify, write to _W
-          if temp3 = 0 then return
+          if temp3 = 0 then return otherbank
           let temp3 = temp3 - 1
           rem No cooldown active
           let playerTimers_W[temp1] = temp3

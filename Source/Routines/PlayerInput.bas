@@ -221,7 +221,7 @@ end
           rem Uses: joy0down for players 0,2; joy1down for players 1,3
           rem Determine which joy port to use based on player index
           rem Frooty cannot guard
-          if playerCharacter[temp1] = CharacterFrooty then return
+          if playerCharacter[temp1] = CharacterFrooty then return otherbank
           rem Players 0,2 use joy0; Players 1,3 use joy1
           if temp1 = 0 then goto HGI_CheckJoy0
           if temp1 = 2 then goto HGI_CheckJoy0
@@ -234,7 +234,7 @@ HGI_CheckJoy0
 HGI_HandleDownPressed
           let temp4 = playerCharacter[temp1]
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
-          if temp4 >= 32 then return
+          if temp4 >= 32 then return otherbank
           if temp4 = CharacterDragonOfStorms then goto DragonOfStormsDown bank13
           if temp4 = CharacterHarpy then goto HarpyDown bank13
           if temp4 = CharacterFrooty then goto FrootyDown bank13
@@ -242,12 +242,12 @@ HGI_HandleDownPressed
           goto StandardGuard bank13
 DCD_HandleRoboTitoDown
           gosub RoboTitoDown bank13
-          if temp2 = 1 then return
+          if temp2 = 1 then return otherbank
           goto StandardGuard bank13
 HGI_CheckGuardRelease
           let temp2 = playerState[temp1] & 2
           rem DOWN released - check for early guard release
-          if !temp2 then return
+          if !temp2 then return otherbank
           rem Not guarding, nothing to do
           let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           rem Stop guard early and start cooldown
@@ -278,9 +278,9 @@ HUIEB_UseJoy0
           if !joy0up then goto HUIEB_CheckEnhanced
 HUIEB_HandleUp
           rem Check Shamone form switching first (Shamone <-> MethHound)
-          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : let temp3 = 0 : return
+          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : let temp3 = 0 : return otherbank
           rem Switch Shamone -> MethHound
-          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : let temp3 = 0 : return
+          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : let temp3 = 0 : return otherbank
           rem Switch MethHound -> Shamone
           rem Robo Tito: Hold UP to ascend; auto-latch on ceiling contact
           if playerCharacter[temp1] = CharacterRoboTito then goto HUIEB_RoboTitoAscend
@@ -366,29 +366,29 @@ HUIEB_EnhancedCheck
           gosub CheckEnhancedJumpButton
           rem Check Genesis/Joy2b+ Button C/II for alternative UP for any characters
           rem For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
-          if playerCharacter[temp1] = CharacterShamone then if temp3 then let playerCharacter[temp1] = CharacterMethHound : return
-          if playerCharacter[temp1] = CharacterMethHound then if temp3 then let playerCharacter[temp1] = CharacterShamone : return
-          if temp3 = 0 then return
+          if playerCharacter[temp1] = CharacterShamone then if temp3 then let playerCharacter[temp1] = CharacterMethHound : return otherbank
+          if playerCharacter[temp1] = CharacterMethHound then if temp3 then let playerCharacter[temp1] = CharacterShamone : return otherbank
+          if temp3 = 0 then return otherbank
           goto HUIEB_ExecuteJump
 HUIEB_StandardEnhancedCheck
           gosub CheckEnhancedJumpButton
           rem Check Genesis/Joy2b+ Button C/II
-          if temp3 = 0 then return
+          if temp3 = 0 then return otherbank
 HUIEB_ExecuteJump
           rem Execute jump if pressed and not already jumping
           rem Allow Zoe Ryen a single mid-air double-jump
           if playerCharacter[temp1] = CharacterZoeRyen then goto HUIEB_ZoeJumpCheck
-          if (playerState[temp1] & 4) then return
+          if (playerState[temp1] & 4) then return otherbank
           rem Already jumping, cannot jump again
           goto HUIEB_JumpProceed
 HUIEB_ZoeJumpCheck
           let temp6 = 0
           if (playerState[temp1] & 4) then temp6 = 1
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return otherbank
           rem Zoe already used double-jump
 HUIEB_JumpProceed
           rem Use cached animation state - block jump during attack animations (states 13-15)
-          if temp2 >= 13 then return
+          if temp2 >= 13 then return otherbank
           rem Block jump during attack windup/execute/recovery
           let temp4 = playerCharacter[temp1]
           rem Dispatch character jump via dispatcher (proper cross-bank handling)
@@ -450,11 +450,11 @@ HSHM_CheckRight
           if temp1 = 0 then goto HSHM_CheckRightJoy0
           if temp1 = 2 then goto HSHM_CheckRightJoy0
           rem Players 1,3 use joy1
-          if !joy1right then return
+          if !joy1right then return otherbank
           goto HSHM_HandleRight
 HSHM_CheckRightJoy0
           rem Players 0,2 use joy0
-          if !joy0right then return
+          if !joy0right then return otherbank
 HSHM_HandleRight
           rem Right movement: set positive velocity
           if playerCharacter[temp1] = CharacterFrooty then goto HSHM_RightMomentum
@@ -598,11 +598,11 @@ HFCM_CheckRightMovement
           if temp1 = 0 then goto HFCM_CheckRightJoy0
           if temp1 = 2 then goto HFCM_CheckRightJoy0
           rem Players 1,3 use joy1
-          if !joy1right then return
+          if !joy1right then return otherbank
           goto HFCM_DoRightMovement
 HFCM_CheckRightJoy0
           rem Players 0,2 use joy0
-          if !joy0right then return
+          if !joy0right then return otherbank
 HFCM_DoRightMovement
           rem Convert player position to playfield coordinates
           let temp2 = playerX[temp1]
@@ -616,7 +616,7 @@ end
 
           rem Check column to the right
 
-          if temp2 >= 31 then return
+          if temp2 >= 31 then return otherbank
           let temp3 = temp2 + 1
           rem Already at right edge
           rem checkColumn = column to the right
@@ -641,7 +641,7 @@ end
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
-          if temp5 = 1 then return
+          if temp5 = 1 then return otherbank
           rem Blocked, cannot move right
           let temp4 = temp4 + 16
           rem Also check bottom row (feet)
@@ -660,7 +660,7 @@ end
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = currentPlayer
-          if temp5 = 1 then return
+          if temp5 = 1 then return otherbank
 HFCM_MoveRightOK
           rem Blocked at bottom too
           if temp5 = 8 then goto HFCM_RightMomentumApply
@@ -699,12 +699,12 @@ HFCM_VertJoy0
           if joy0down then goto HFCM_VertDown
           return otherbank
 HFCM_VertUp
-          if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] - CharacterMovementSpeed[temp5] : return
-          if temp5 = 2 then let playerY[temp1] = playerY[temp1] - CharacterMovementSpeed[temp5] : return
+          if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] - CharacterMovementSpeed[temp5] : return otherbank
+          if temp5 = 2 then let playerY[temp1] = playerY[temp1] - CharacterMovementSpeed[temp5] : return otherbank
           return otherbank
 HFCM_VertDown
-          if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] + CharacterMovementSpeed[temp5] : return
-          if temp5 = 2 then let playerY[temp1] = playerY[temp1] + CharacterMovementSpeed[temp5] : return
+          if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] + CharacterMovementSpeed[temp5] : return otherbank
+          if temp5 = 2 then let playerY[temp1] = playerY[temp1] + CharacterMovementSpeed[temp5] : return otherbank
           return otherbank
 
 InputHandleLeftPortPlayerFunction

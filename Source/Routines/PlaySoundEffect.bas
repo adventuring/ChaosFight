@@ -48,8 +48,8 @@ end
           rem active). No queuing - sound forgotten if both voices busy.
           rem Voice 0 tried first, Voice 1 as fallback
           rem Check if music is active (music takes priority)
-          if musicVoice0Pointer then return
-          if musicVoice1Pointer then return
+          if musicVoice0Pointer then return otherbank
+          if musicVoice1Pointer then return otherbank
 
           gosub LoadSoundPointer bank15
           rem Lookup sound pointer from Sounds bank (Bank15)
@@ -81,7 +81,7 @@ TryVoice1
           rem Constraints: Internal helper for PlaySoundEffect, only
           rem called when Voice 0 is busy
           rem Try Voice 1
-          if soundEffectPointer1 then return
+          if soundEffectPointer1 then return otherbank
 
           let soundEffectPointer1 = soundPointer
           rem Voice 1 is free - use it

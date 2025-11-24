@@ -59,7 +59,7 @@ end
           rem   CheckGameEndCondition)
           gosub CountRemainingPlayers bank14
           rem Game ends when 1 or fewer players remain
-          if playersRemaining_R > 0 then return
+          if playersRemaining_R > 0 then return otherbank
           rem If players still remain, no game end yet
 
           gosub FindWinner bank14

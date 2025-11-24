@@ -24,11 +24,11 @@ end
           rem Inputs are trusted in internal context; skip range validation
 
           rem Handle special sprite cases first
-          if currentCharacter = NoCharacter then let temp3 = currentPlayer : let temp4 = SpriteNo : gosub CopyGlyphToPlayer bank16 : return
+          if currentCharacter = NoCharacter then let temp3 = currentPlayer : let temp4 = SpriteNo : gosub CopyGlyphToPlayer bank16 : return otherbank
 
-          if currentCharacter = CPUCharacter then let temp3 = currentPlayer : let temp4 = SpriteCPU : gosub CopyGlyphToPlayer bank16 : return
+          if currentCharacter = CPUCharacter then let temp3 = currentPlayer : let temp4 = SpriteCPU : gosub CopyGlyphToPlayer bank16 : return otherbank
 
-          if currentCharacter = RandomCharacter then let temp3 = currentPlayer : let temp4 = SpriteQuestionMark : gosub CopyGlyphToPlayer bank16 : return
+          if currentCharacter = RandomCharacter then let temp3 = currentPlayer : let temp4 = SpriteQuestionMark : gosub CopyGlyphToPlayer bank16 : return otherbank
 
           rem Normal character sprite loading
           let temp4 = currentPlayer

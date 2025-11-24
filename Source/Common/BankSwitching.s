@@ -7,14 +7,12 @@
           tsx
           lda 6,x ; get encoded high byte of return address from stack (account for saved A/X)
           tay ; save encoded byte for restoration
-          and #$f0 ; extract bank number from high nibble
-          lsr ; shift right once
-          lsr ; shift right twice
-          lsr ; shift right three times
-          lsr ; shift right four times - bank now in low nibble
+          lsr
+          lsr
+          lsr
+          lsr ; bank now in low nibble
           pha ; save bank number temporarily
           tya ; get saved encoded byte
-          and #$0F ; mask low nibble with original address info
           ora #$F0 ; restore to $Fx format
           sta 6,x ; store restored address back to stack (X still has stack pointer)
           pla ; restore bank number

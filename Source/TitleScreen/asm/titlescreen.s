@@ -1,6 +1,6 @@
 
 #include "TitleScreen/asm/layoutmacros.s"
-#include "TitleScreen/titlescreen_layout.s.backup"
+#include "TitleScreen/titlescreen_layout.s"
 
 ; Optional bitmap index offsets (all are 0)
 bmp_48x2_1_index_value

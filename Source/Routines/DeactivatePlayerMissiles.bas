@@ -15,7 +15,7 @@ end
           return
 
           rem AND masks to clear player missile bits (inverted BitMask values)
-data PlayerANDMask
-$FE, $FD, $FB, $F7
+          data PlayerANDMask
+            $FE, $FD, $FB, $F7
 end
 

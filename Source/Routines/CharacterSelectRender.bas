@@ -2,21 +2,21 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem Player preview coordinate tables
-data SelectPreviewX
-56, 104, 56, 104
+          data SelectPreviewX
+            56, 104, 56, 104
 end
 
-data SelectPreviewY
-40, 40, 80, 80
+          data SelectPreviewY
+            40, 40, 80, 80
 end
 
           rem Player color tables for normal and handicap lock states
-data SelectPlayerColorNormal
-ColIndigo(12), ColRed(12), ColYellow(12), ColTurquoise(12)
+          data SelectPlayerColorNormal
+            ColIndigo(12), ColRed(12), ColYellow(12), ColTurquoise(12)
 end
 
-data SelectPlayerColorHandicap
-ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
+          data SelectPlayerColorHandicap
+            ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
 end
 
 SelectDrawScreen
@@ -40,7 +40,6 @@ SelectDrawScreenLoop
 SelectRenderPlayerPreview
           asm
 SelectRenderPlayerPreview
-
 end
           rem Draw character preview for the specified player and apply lock tinting
           rem Optimized: Combined duplicate conditionals, early return for common case

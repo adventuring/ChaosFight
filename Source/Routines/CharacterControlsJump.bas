@@ -5,8 +5,8 @@
           rem Values are 8-bit twos complement upward velocities
           rem 0 = special jump (use character-specific function)
           rem Non-zero = standard jump velocity
-data CharacterJumpVelocities
-0, 254, 0, 244, 248, 254, 0, 248, 0, 254, 243, 248, 243, 0, 248, 245
+          data CharacterJumpVelocities
+            0, 254, 0, 244, 248, 254, 0, 248, 0, 254, 243, 248, 243, 0, 248, 245
 end
 
 StandardJump

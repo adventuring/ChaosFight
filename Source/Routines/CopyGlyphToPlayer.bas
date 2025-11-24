@@ -2,8 +2,8 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem Glyph lookup table: sprite type (0-2) -> glyph index
-data GlyphLookupTable
-GlyphQuestionMark, GlyphCPU, GlyphNo
+          data GlyphLookupTable
+            GlyphQuestionMark, GlyphCPU, GlyphNo
 end
 
           rem Helper: CopyGlyphToPlayer

@@ -2,8 +2,8 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem Missile active mask lookup for participants 0-3
-data SetSpriteMissileMask
-1, 2, 4, 8
+          data SetSpriteMissileMask
+            1, 2, 4, 8
 end
 
 SetSpritePositions

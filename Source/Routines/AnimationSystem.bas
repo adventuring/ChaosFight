@@ -2,11 +2,11 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           data CharacterWindupNextAction
-          255, 15, 255, 255, 14, 14, 255, 255, 255, 14, 255, 14, 255, 255, 255, 255
+            255, 15, 255, 255, 14, 14, 255, 255, 255, 14, 255, 14, 255, 255, 255, 255
 end
 
           data CharacterExecuteNextAction
-          1, 255, 1, 1, 15, 1, 1, 1, 1, 1, 1, 15, 1, 1, 1, 1
+            1, 255, 1, 1, 15, 1, 1, 1, 1, 1, 1, 15, 1, 1, 1, 1
 end
 
 UpdateCharacterAnimations

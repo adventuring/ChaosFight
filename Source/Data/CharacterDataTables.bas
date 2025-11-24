@@ -6,8 +6,8 @@
 
 
           rem Character heights (in pixels)
-data CharacterHeights
-10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
+          data CharacterHeights
+            10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
 end
 
           rem Global label for cross-bank access to CharacterHeights data table
@@ -15,11 +15,11 @@ end
 CharacterHeights = CharacterHeights
 end
 
-data CharacterAttackTypes
-MeleeAttack, RangedAttack, RangedAttack, RangedAttack
-MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
-RangedAttack, MeleeAttack, MeleeAttack, MeleeAttack
-MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
+          data CharacterAttackTypes
+            MeleeAttack, RangedAttack, RangedAttack, RangedAttack
+            MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
+            RangedAttack, MeleeAttack, MeleeAttack, MeleeAttack
+            MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
 end
 
           rem Global label for cross-bank access to CharacterAttackTypes data table
@@ -28,14 +28,14 @@ CharacterAttackTypes = CharacterAttackTypes
 end
 
           rem Area-of-effect offsets
-data CharacterAOEOffsets
- 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+          data CharacterAOEOffsets
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
           rem Per-character movement speeds (pixels/frame or momentum units)
           rem Index 0-15: Bernie, Curler, Dragon, Zoe, FatTony, Megax, Harpy, Knight,
           rem                Frooty, Nefertem, Ninjish, PorkChop, Radish, RoboTito, Ursulo, Shamone
-data CharacterMovementSpeed
-1, 1, 2, 2, 1, 1, 2, 1,
-2, 1, 2, 1, 2, 1, 1, 2
+          data CharacterMovementSpeed
+            1, 1, 2, 2, 1, 1, 2, 1,
+            2, 1, 2, 1, 2, 1, 1, 2
 end

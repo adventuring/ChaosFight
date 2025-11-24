@@ -18,12 +18,12 @@
           ora #$F0 ; restore to $Fx format
           sta 6,x ; store restored address back to stack (X still has stack pointer)
           pla ; restore bank number
-          tax ; bank number (0-F) now in X
-          inx ; convert to 1-based index (bank 0 -> 1, bank 1 -> 2, etc.) to match batariBASIC
+          tax ; bank number (0-F) now in X, already 0-based from batariBASIC
 .BS_jsr
-          ; EFSC 64k bankswitch: hotspot is $FFE0, access $FFE0 + (bank_number - 1)
-          ; With 1-based X: $FFE0 + X - 1 = $FFDF + X
-          nop $ffdf,x ; equivalent to bankswitch_hotspot-1,x where hotspot=$FFE0
+          ; EFSC 64k bankswitch: hotspot is $FFE0, access $FFE0 + bank_number
+          ; X contains 0-based bank number (0-15), so $FFE0 + X directly
+          ; Ensure x ∈ (0..$f) - batariBASIC guarantees this via "ldx #(bank-1)"
+          nop $ffe0,x ; bankswitch_hotspot + X where X is 0-based bank number
           pla
           tax
           pla

@@ -206,9 +206,9 @@ DonePlayer4Move
           rem Set sprite positions and load character sprites
           rem   dynamically
           rem Use dynamic sprite setting instead of relying on player
-          gosub SetSpritePositions bank2
+          gosub SetSpritePositions bank6
           rem   declarations
-          gosub SetPlayerSprites bank2
+          gosub SetPlayerSprites bank6
 
           rem drawscreen called by MainLoop
           return

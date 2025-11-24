@@ -26,88 +26,56 @@ BudgetedCollisionCheck
           if (controllerStatus & SetQuadtariDetected) = 0 then return
 
           rem Check additional pairs based on frame phase
-          if framePhase = 0 then CheckPhase0Collisions
-          if framePhase = 1 then CheckPhase1Collisions
-          goto DonePhase0And1Collisions
-CheckPhase0Collisions
-          if playerCharacter[2] = NoCharacter then DoneFramePhaseChecks
+          if framePhase = 0 then BPC_Phase0
+          if framePhase = 1 then BPC_Phase1
+          if framePhase = 2 then BPC_Phase2
+          return
+BPC_Phase0
+          if playerCharacter[2] = NoCharacter then return
           gosub CheckCollisionP1vsP3
-          goto DoneFramePhaseChecks
-CheckPhase1Collisions
-          if playerCharacter[3] = NoCharacter then CheckPhase1P3
-          gosub CheckCollisionP1vsP4
-CheckPhase1P3
-          if playerCharacter[2] = NoCharacter then DoneFramePhaseChecks
+          return
+BPC_Phase1
+          if playerCharacter[3] <> NoCharacter then gosub CheckCollisionP1vsP4
+          if playerCharacter[2] = NoCharacter then return
           gosub CheckCollisionP2vsP3
-          goto DoneFramePhaseChecks
-DonePhase0And1Collisions
-          if framePhase = 2 then CheckPhase2Collisions
-          goto DonePhase2Collisions
-CheckPhase2Collisions
-          if playerCharacter[3] = NoCharacter then DoneCheckP2vsP4
-          gosub CheckCollisionP2vsP4
-DoneCheckP2vsP4
-          if playerCharacter[2] = NoCharacter then DoneCheckP3vsP4
-          if playerCharacter[3] = NoCharacter then DoneCheckP3vsP4
+          return
+BPC_Phase2
+          if playerCharacter[3] <> NoCharacter then gosub CheckCollisionP2vsP4
+          if playerCharacter[2] = NoCharacter then return
+          if playerCharacter[3] = NoCharacter then return
           gosub CheckCollisionP3vsP4
-DoneCheckP3vsP4
-DonePhase2Collisions
-DoneFramePhaseChecks
+          return
           return
 
 CheckCollisionP1vsP2
           asm
 CheckCollisionP1vsP2
 end
-          rem Individual collision check routines
-          if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff
-          let temp2 = playerX[1] - playerX[0]
-          goto DoneCalcP1vsP2Diff
-CalcP1vsP2AbsDiff
-          let temp2 = playerX[0] - playerX[1]
-DoneCalcP1vsP2Diff
-          if temp2 >= CollisionSeparationDistance then DonePlayerSeparation
-
-          rem Separate players based on their relative positions
-          rem If P0 is left of P1, move P0 left and P1 right
-          if playerX[0] < playerX[1] then SeparateP0Left
-
-          let playerX[0] = playerX[0] + 1
-          rem Else P0 is right of P1, move P0 right and P1 left
-          let playerX[1] = playerX[1] - 1
-          goto DonePlayerSeparation
-
-SeparateP0Left
-          let playerX[0] = playerX[0] - 1
-          let playerX[1] = playerX[1] + 1
-DonePlayerSeparation
+          let temp3 = 0
+          let temp4 = 1
+          gosub CheckCollisionPair
           return
 
-          rem Shared collision check helper
+CheckCollisionPair
+          asm
+CheckCollisionPair
+end
           rem Input: temp3 = player 1 index, temp4 = player 2 index
-          rem Uses: temp2 for calculations
-CheckCollisionPair
-          asm
-CheckCollisionPair
-end
-          if playerX[temp3] >= playerX[temp4] then CheckCollisionPairCalcDiff
+          rem Output: separates players if collision detected
+          if playerX[temp3] >= playerX[temp4] then BPC_CalcDiff
           let temp2 = playerX[temp4] - playerX[temp3]
-          goto CheckCollisionPairCheckSep
-CheckCollisionPairCalcDiff
+          goto BPC_CheckSep
+BPC_CalcDiff
           let temp2 = playerX[temp3] - playerX[temp4]
-CheckCollisionPairCheckSep
+BPC_CheckSep
           if temp2 >= 16 then return
-          rem Separate players
-          if playerX[temp3] < playerX[temp4] then CheckCollisionPairSepLeft
+          if playerX[temp3] < playerX[temp4] then BPC_SepLeft
           let playerX[temp3] = playerX[temp3] + 1
           let playerX[temp4] = playerX[temp4] - 1
           return
-CheckCollisionPairSepLeft
+BPC_SepLeft
           let playerX[temp3] = playerX[temp3] - 1
           let playerX[temp4] = playerX[temp4] + 1
-          if playerX[temp3] < playerX[temp4] then return
-          let playerX[temp3] = playerX[temp3] + 1
-          let playerX[temp4] = playerX[temp4] - 1
           return
 
 CheckCollisionP1vsP3

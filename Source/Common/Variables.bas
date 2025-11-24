@@ -889,80 +889,62 @@
           rem Each variable has a semantically meaningful name based on
           rem   its usage context
 
-          dim oldHealthValue_W = var1
+          dim oldHealthValue = var1
           rem Old health value for byte-safe clamp checks (used in
           rem   damage calculations)
-          dim oldHealthValue_R = var1
 
-          dim recoveryFramesCalc_W = var2
+          dim recoveryFramesCalc = var2
           rem Recovery frames calculation value (used in fall damage and
           rem   hit processing)
-          dim recoveryFramesCalc_R = var2
 
-          dim playerStateTemp_W = var3
+          dim playerStateTemp = var3
           rem Temporary player state value for bit manipulation
           rem   operations
-          dim playerStateTemp_R = var3
 
-          dim playfieldRow_W = var5
+          dim playfieldRow = var5
           rem Playfield row index for collision calculations
-          dim playfieldRow_R = var5
 
-          dim playfieldColumn_W = var6
+          dim playfieldColumn = var6
           rem Playfield column index for collision calculations
-          dim playfieldColumn_R = var6
 
-          dim rowYPosition_W = var7
+          dim rowYPosition = var7
           rem Game Mode: Y position of playfield row (used in gravity calculations)
-          dim rowYPosition_R = var7
-          dim winScreenCandidateOrder_W = var7
+          dim winScreenCandidateOrder = var7
           rem Admin Mode: Winner screen elimination order candidate
           rem (shares rowYPosition RAM in Admin Mode)
-          dim winScreenCandidateOrder_R = var7
 
-          dim rowCounter_W = var9
+          dim rowCounter = var9
           rem Game Mode: Loop counter for row calculations
-          dim rowCounter_R = var9
-          dim winScreenThirdPlaceOrder_W = var9
+          dim winScreenThirdPlaceOrder = var9
           rem Admin Mode: Winner screen third-place elimination order
           rem (shares rowCounter RAM in Admin Mode)
-          dim winScreenThirdPlaceOrder_R = var9
 
-          dim characterHeight_W = var10
+          dim characterHeight = var10
           rem Character height value from CharacterHeights table
-          dim characterHeight_R = var10
 
-          dim characterWeight_W = var11
+          dim characterWeight = var11
           rem Character weight value from CharacterWeights table
-          dim characterWeight_R = var11
 
-          dim yDistance_W = var13
+          dim yDistance = var13
           rem Y distance between players for collision calculations
-          dim yDistance_R = var13
 
-          dim halfHeight1_W = var14
+          dim halfHeight1 = var14
           rem Half height of first player for collision overlap calculation
-          dim halfHeight1_R = var14
 
-          dim halfHeight2_W = var15
+          dim halfHeight2 = var15
           rem Half height of second player for collision overlap calculation
-          dim halfHeight2_R = var15
 
-          dim totalHeight_W = var17
+          dim totalHeight = var17
           rem Total height for collision overlap check (halfHeight1 + halfHeight2)
-          dim totalHeight_R = var17
 
-          dim totalWeight_W = var18
+          dim totalWeight = var18
           rem Total weight of both players for momentum calculations
-          dim totalWeight_R = var18
 
-          dim weightDifference_W = var19
+          dim weightDifference = var19
           rem Weight difference between players for impulse calculation
-          dim weightDifference_R = var19
 
-          dim impulseStrength_W = var40
+          dim impulseStrength = var40
           rem Impulse strength for knockback momentum calculation
-          dim impulseStrength_R = var40
 
           rem Original player positions and distance for collision nudging (SCRAM)
           rem Moved from w114-w116 to avoid conflict with missileNUSIZ (w114-w117)
@@ -984,44 +966,39 @@
           rem       is only a single byte and eliminationOrder is an array. Verify no conflict.
           dim distanceUp_R = r105
 
-          dim gravityRate_W = var42
+          dim gravityRate = var42
           rem Gravity acceleration rate (normal or reduced)
-          dim gravityRate_R = var42
 
-          dim damageWeightProduct_W = var44
+          dim damageWeightProduct = var44
           rem Intermediate value: damage × weight (used in fall damage
           rem   calculations)
-          dim damageWeightProduct_R = var44
 
-          dim missileLifetimeValue_W = g
+          dim missileLifetimeValue = g
           rem Missile lifetime value from CharacterMissileLifetime table
-          dim missileLifetimeValue_R = g
 
           dim characterMovementSpeed = k
           rem Character movement speed value from CharacterMovementSpeed table
           rem (temporary calculation variable for movement routines)
 
-          dim missileVelocityXCalc_W = l
+          dim missileVelocityXCalc = l
           rem Missile X velocity for friction calculations (temporary
           rem   calculation variable)
-          dim missileVelocityXCalc_R = l
 
-          dim soundEffectID_W = z
+          dim velocityCalculation = j
+          rem Velocity calculation temporary variable for friction and impulse calculations
+
+          dim soundEffectID = z
           rem Sound effect ID for playback
-          dim soundEffectID_R = z
 
-          dim characterIndex_W = m
+          dim characterIndex = m
           rem Character index for table lookups
-          dim characterIndex_R = m
 
-          dim aoeOffset_W = r
+          dim aoeOffset = r
           rem AOE offset value from CharacterAOEOffsets table
-          dim aoeOffset_R = r
 
-          dim healthBarRemainder_W = s
+          dim healthBarRemainder = s
           rem Health bar remainder calculation (for displaying partial
           rem   bars)
-          dim healthBarRemainder_R = s
 
           rem Cached hitbox for current attacker (SCRAM) - calculated
           rem once

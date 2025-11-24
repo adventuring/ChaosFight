@@ -46,12 +46,12 @@ end
 
           if temp6 = 0 then goto PFCheckRight
 
-          let playfieldColumn_W = temp6 - 1
-          if playfieldColumn_R & $80 then goto PFCheckRight
+          let playfieldColumn = temp6 - 1
+          if playfieldColumn & $80 then goto PFCheckRight
 
           let temp4 = 0
-          let temp1 = playfieldColumn_R
-          let temp2 = playfieldRow_R
+          let temp1 = playfieldColumn
+          let temp2 = playfieldRow
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
@@ -63,18 +63,18 @@ end
             lsr
             sta temp2
 end
-          let rowCounter_W = playfieldRow_R + temp2
-          if rowCounter_R >= pfrows then goto PFCheckRight
-          let temp1 = playfieldColumn_R
-          let temp2 = rowCounter_R
+          let rowCounter = playfieldRow + temp2
+          if rowCounter >= pfrows then goto PFCheckRight
+          let temp1 = playfieldColumn
+          let temp2 = rowCounter
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
           let temp2 = temp5 / 16
-          let rowCounter_W = playfieldRow_R + temp2
-          if rowCounter_R >= pfrows then goto PFCheckRight
-          let temp1 = playfieldColumn_R
-          let temp2 = rowCounter_R
+          let rowCounter = playfieldRow + temp2
+          if rowCounter >= pfrows then goto PFCheckRight
+          let temp1 = playfieldColumn
+          let temp2 = rowCounter
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
@@ -86,27 +86,27 @@ PFBlockLeft
           if playerCharacter[currentPlayer] = CharacterRadishGoblin then goto PFBlockLeftClamp
           if playerVelocityX[currentPlayer] & $80 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
 PFBlockLeftClamp
-          let rowYPosition_W = temp6 + 1
+          let rowYPosition = temp6 + 1
           asm
-            lda rowYPosition_R
+            lda rowYPosition
             asl
             asl
             clc
             adc #ScreenInsetX
-            sta rowYPosition_W
+            sta rowYPosition
 end
-          if playerX[currentPlayer] < rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R
-          if playerX[currentPlayer] < rowYPosition_R then let playerSubpixelX_W[currentPlayer] = rowYPosition_R
-          if playerX[currentPlayer] < rowYPosition_R then let playerSubpixelX_WL[currentPlayer] = 0
+          if playerX[currentPlayer] < rowYPosition then let playerX[currentPlayer] = rowYPosition
+          if playerX[currentPlayer] < rowYPosition then let playerSubpixelX_W[currentPlayer] = rowYPosition
+          if playerX[currentPlayer] < rowYPosition then let playerSubpixelX_WL[currentPlayer] = 0
 
 PFCheckRight
           if temp6 >= 31 then goto PFCheckUp
 
-          let playfieldColumn_W = temp6 + 4
-          if playfieldColumn_R > 31 then goto PFCheckUp
+          let playfieldColumn = temp6 + 4
+          if playfieldColumn > 31 then goto PFCheckUp
 
           let temp4 = 0
-          let temp1 = playfieldColumn_R
+          let temp1 = playfieldColumn
           let temp2 = playfieldRow
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
@@ -119,18 +119,18 @@ PFCheckRight
             lsr a
             sta temp2
 end
-          let rowCounter_W = playfieldRow + temp2
-          if rowCounter_R >= pfrows then goto PFCheckUp
-          let temp1 = playfieldColumn_R
-          let temp2 = rowCounter_R
+          let rowCounter = playfieldRow + temp2
+          if rowCounter >= pfrows then goto PFCheckUp
+          let temp1 = playfieldColumn
+          let temp2 = rowCounter
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockRight
           let temp2 = temp5 / 16
-          let rowCounter_W = playfieldRow + temp2
-          if rowCounter_R >= pfrows then goto PFCheckUp
-          let temp1 = playfieldColumn_R
-          let temp2 = rowCounter_R
+          let rowCounter = playfieldRow + temp2
+          if rowCounter >= pfrows then goto PFCheckUp
+          let temp1 = playfieldColumn
+          let temp2 = rowCounter
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockRight
@@ -142,43 +142,43 @@ PFBlockRight
           if playerCharacter[currentPlayer] = CharacterRadishGoblin then goto PFBlockRightClamp
           if playerVelocityX[currentPlayer] > 0 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
 PFBlockRightClamp
-          let rowYPosition_W = temp6 - 1
+          let rowYPosition = temp6 - 1
           asm
-            lda rowYPosition_R
+            lda rowYPosition
             asl a
             asl a
             clc
             adc #ScreenInsetX
-            sta rowYPosition_W
+            sta rowYPosition
 end
-          if playerX[currentPlayer] > rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R
-          if playerX[currentPlayer] > rowYPosition_R then let playerSubpixelX_W[currentPlayer] = rowYPosition_R
-          if playerX[currentPlayer] > rowYPosition_R then let playerSubpixelX_WL[currentPlayer] = 0
+          if playerX[currentPlayer] > rowYPosition then let playerX[currentPlayer] = rowYPosition
+          if playerX[currentPlayer] > rowYPosition then let playerSubpixelX_W[currentPlayer] = rowYPosition
+          if playerX[currentPlayer] > rowYPosition then let playerSubpixelX_WL[currentPlayer] = 0
 
 PFCheckUp
           if playfieldRow = 0 then goto PFCheckDown_Body
 
-          let rowCounter_W = playfieldRow - 1
-          if rowCounter_R & $80 then goto PFCheckDown_Body
+          let rowCounter = playfieldRow - 1
+          if rowCounter & $80 then goto PFCheckDown_Body
 
           let temp4 = 0
           let temp1 = temp6
-          let temp2 = rowCounter_R
+          let temp2 = rowCounter
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockUp
           if temp6 = 0 then goto PFCheckUp_CheckRight
-          let playfieldColumn_W = temp6 - 1
-          let temp1 = playfieldColumn_R
-          let temp2 = rowCounter_R
+          let playfieldColumn = temp6 - 1
+          let temp1 = playfieldColumn
+          let temp2 = rowCounter
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockUp
 PFCheckUp_CheckRight
           if temp6 >= 31 then goto PFCheckDown_Body
-          let playfieldColumn_W = temp6 + 1
-          let temp1 = playfieldColumn_R
-          let temp2 = rowCounter_R
+          let playfieldColumn = temp6 + 1
+          let temp1 = playfieldColumn
+          let temp2 = rowCounter
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockUp
@@ -190,18 +190,18 @@ PFBlockUp
           if playerCharacter[currentPlayer] = CharacterRadishGoblin then goto PFBlockUpClamp
           if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
 PFBlockUpClamp
-          let rowYPosition_W = playfieldRow + 1
+          let rowYPosition = playfieldRow + 1
           asm
-            lda rowYPosition_R
+            lda rowYPosition
             asl a
             asl a
             asl a
             asl a
-            sta rowYPosition_W
+            sta rowYPosition
 end
-          if playerY[currentPlayer] < rowYPosition_R then let playerY[currentPlayer] = rowYPosition_R
-          if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_W[currentPlayer] = rowYPosition_R
-          if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_WL[currentPlayer] = 0
+          if playerY[currentPlayer] < rowYPosition then let playerY[currentPlayer] = rowYPosition
+          if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_W[currentPlayer] = rowYPosition
+          if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_WL[currentPlayer] = 0
 PFBlockDown
           rem Skip zeroing velocity for Radish Goblin (bounce system handles it)
           if playerCharacter[currentPlayer] = CharacterRadishGoblin then return
@@ -210,10 +210,10 @@ PFBlockDown
 
 PFCheckDown_Body
           let temp2 = temp5 / 16
-          let rowCounter_W = playfieldRow + temp2
-          if rowCounter_R >= pfrows then return
+          let rowCounter = playfieldRow + temp2
+          if rowCounter >= pfrows then return
 
-          let playfieldRow = rowCounter_R + 1
+          let playfieldRow = rowCounter + 1
           if playfieldRow >= pfrows then return
 
           let temp4 = 0
@@ -223,16 +223,16 @@ PFCheckDown_Body
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockDown
           if temp6 = 0 then goto PFCheckDown_CheckRight
-          let playfieldColumn_W = temp6 - 1
-          let temp1 = playfieldColumn_R
+          let playfieldColumn = temp6 - 1
+          let temp1 = playfieldColumn
           let temp2 = playfieldRow
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockDown
 PFCheckDown_CheckRight
           if temp6 >= 31 then return
-          let playfieldColumn_W = temp6 + 1
-          let temp1 = playfieldColumn_R
+          let playfieldColumn = temp6 + 1
+          let temp1 = playfieldColumn
           let temp2 = playfieldRow
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1

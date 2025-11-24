@@ -115,10 +115,10 @@ WeightMultDone
           if temp4 > 50 then temp4 = 50
 
           rem Apply fall damage (byte-safe clamp)
-          let oldHealthValue_W = playerHealth[currentPlayer]
+          let oldHealthValue = playerHealth[currentPlayer]
           rem Use oldHealthValue for byte-safe clamp check
           let playerHealth[currentPlayer] = playerHealth[currentPlayer] - temp4
-          if playerHealth[currentPlayer] > oldHealthValue_R then let playerHealth[currentPlayer] = 0
+          if playerHealth[currentPlayer] > oldHealthValue then let playerHealth[currentPlayer] = 0
 
           rem Set recovery frames (proportional to damage, min 10, max
           rem   30)
@@ -128,7 +128,7 @@ WeightMultDone
           rem Divide by 2 using BASIC division
           if temp2 < 10 then temp2 = 10
           if temp2 > 30 then temp2 = 30
-          let recoveryFramesCalc_W = temp2
+          let recoveryFramesCalc = temp2
           let playerRecoveryFrames[currentPlayer] = temp2
 
           let playerState[currentPlayer] = playerState[currentPlayer] | 8
@@ -146,7 +146,7 @@ WeightMultDone
           rem Use temp2 for state manipulation
           let temp2 = temp2 | MaskAnimationRecovering
           rem Keep lower 5 bits
-          let playerStateTemp_W = temp2
+          let playerStateTemp = temp2
           let playerState[currentPlayer] = temp2
           rem Set animation to 9 (1001 in bits 7-4)
 
@@ -310,11 +310,11 @@ FrootyFallDamage
 
           rem Clamp to screen bounds
           rem Byte-safe clamp: if wrapped below 0, the new value will
-          let oldHealthValue_W = playerY[currentPlayer]
+          let oldHealthValue = playerY[currentPlayer]
           rem   exceed the old
           rem Reuse oldHealthValue for byte-safe clamp check (not
           rem actually health, but same pattern)
-          if playerY[currentPlayer] > oldHealthValue_R then let playerY[currentPlayer] = 0
+          if playerY[currentPlayer] > oldHealthValue then let playerY[currentPlayer] = 0
           if playerY[currentPlayer] > 176 then let playerY[currentPlayer] = 176
 
           return

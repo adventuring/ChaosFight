@@ -56,13 +56,13 @@ XDistanceDone
           let temp5 = playerY[temp2]
 
           rem Fetch character half-height values using shared SCRAM scratch variables
-          let characterIndex_W = playerCharacter[temp1]
-          let characterHeight_W = CharacterHeights[characterIndex_R]
-          let halfHeight1_W = characterHeight_R / 2
+          let characterIndex = playerCharacter[temp1]
+          let characterHeight = CharacterHeights[characterIndex]
+          let halfHeight1 = characterHeight / 2
 
-          let characterIndex_W = playerCharacter[temp2]
-          let characterHeight_W = CharacterHeights[characterIndex_R]
-          let halfHeight2_W = characterHeight_R / 2
+          let characterIndex = playerCharacter[temp2]
+          let characterHeight = CharacterHeights[characterIndex]
+          let halfHeight2 = characterHeight / 2
 
           rem Compute absolute Y distance between player centers
           if temp4 >= temp5 then CalcYDistanceDown
@@ -71,8 +71,8 @@ XDistanceDone
 CalcYDistanceDown
           let temp6 = temp4 - temp5
 YDistanceDone
-          let totalHeight_W = halfHeight1_R + halfHeight2_R
-          if temp6 >= totalHeight_R then NoCollision
+          let totalHeight = halfHeight1 + halfHeight2
+          if temp6 >= totalHeight then NoCollision
 
           let temp3 = 1
           rem Collision detected

@@ -113,15 +113,15 @@ GravityCheckCharacter
           rem Determine gravity acceleration rate based on character
           rem   (8.8 fixed-point subpixel)
           rem Uses tunable constants from Constants.bas for easy
-          let gravityRate_W = GravityNormal
+          let gravityRate = GravityNormal
           rem   adjustment
           rem Default gravity acceleration (normal rate)
-          if temp6 = CharacterHarpy then let gravityRate_W = GravityReduced
+          if temp6 = CharacterHarpy then let gravityRate = GravityReduced
           rem Harpy: reduced gravity rate
 
           rem Apply gravity acceleration to velocity subpixel part
           rem Use optimized inline addition instead of subroutine call
-          let subpixelAccumulator = playerVelocityYL[temp1] + gravityRate_R
+          let subpixelAccumulator = playerVelocityYL[temp1] + gravityRate
           let playerVelocityYL[temp1] = temp2
           if temp3 > 0 then let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
 
@@ -184,18 +184,18 @@ end
 
           rem Calculate Y position for top of ground row using repeated
           rem   addition
-          let rowYPosition_W = 0
+          let rowYPosition = 0
           rem Loop to add pfrowheight to rowYPosition, rowBelow times
-          let rowCounter_W = temp5
-          if rowCounter_R = 0 then goto GravityRowCalcDone
+          let rowCounter = temp5
+          if rowCounter = 0 then goto GravityRowCalcDone
 GravityRowCalcLoop
-          let rowYPosition_W = rowYPosition_R + pfrowheight
-          let rowCounter_W = rowCounter_R - 1
-          if rowCounter_R > 0 then goto GravityRowCalcLoop
+          let rowYPosition = rowYPosition + pfrowheight
+          let rowCounter = rowCounter - 1
+          if rowCounter > 0 then goto GravityRowCalcLoop
 GravityRowCalcDone
           rem rowYPosition now contains rowBelow × pfrowheight (Y
           rem   position of top of ground row)
-          let playerY[temp1] = rowYPosition_R - PlayerSpriteHeight
+          let playerY[temp1] = rowYPosition - PlayerSpriteHeight
           rem Clamp playerY so feet are at top of ground row
           let playerSubpixelY_W[temp1] = playerY[temp1]
           rem Also sync subpixel position
@@ -251,16 +251,16 @@ GravityCheckBottom
 
           rem Bottom row is always ground - clamp to bottom
           rem Calculate (pfrows - 1) × pfrowheight using repeated
-          let rowYPosition_W = 0
+          let rowYPosition = 0
           rem   addition
-          let rowCounter_W = pfrows - 1
-          if rowCounter_R = 0 then goto GravityBottomCalcDone
+          let rowCounter = pfrows - 1
+          if rowCounter = 0 then goto GravityBottomCalcDone
 GravityBottomCalcLoop
-          let rowYPosition_W = rowYPosition_R + pfrowheight
-          let rowCounter_W = rowCounter_R - 1
-          if rowCounter_R > 0 then goto GravityBottomCalcLoop
+          let rowYPosition = rowYPosition + pfrowheight
+          let rowCounter = rowCounter - 1
+          if rowCounter > 0 then goto GravityBottomCalcLoop
 GravityBottomCalcDone
-          let playerY[temp1] = rowYPosition_R - PlayerSpriteHeight
+          let playerY[temp1] = rowYPosition - PlayerSpriteHeight
           let playerState[temp1] = playerState[temp1] & ($FF ^ 4)
           rem Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
           if temp6 = 3 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)

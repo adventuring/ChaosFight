@@ -41,11 +41,11 @@ end
           if temp5 = 0 then return
           rem No active missile
 
-          let characterIndex_W = playerCharacter[temp1]
+          let characterIndex = playerCharacter[temp1]
           rem Cache character index for downstream routines
 
           rem Visible missile when width > 0, otherwise treat as AOE
-          let temp6 = CharacterMissileWidths[characterIndex_R]
+          let temp6 = CharacterMissileWidths[characterIndex]
           if temp6 = 0 then goto CheckAOECollision
           goto CheckVisibleMissileCollision
           rem tail call
@@ -84,16 +84,16 @@ end
           rem
           rem Called Routines: CheckPlayersAgainstCachedHitbox - scans defenders
           rem Constraints: None
-          let characterIndex_W = playerCharacter[temp1]
+          let characterIndex = playerCharacter[temp1]
           rem Ensure character index matches current attacker
 
           let cachedHitboxLeft_W = missileX[temp1]
           let cachedHitboxTop_W = missileY_R[temp1]
 
           rem Derive hitbox bounds from missile dimensions
-          let temp6 = CharacterMissileWidths[characterIndex_R]
+          let temp6 = CharacterMissileWidths[characterIndex]
           let cachedHitboxRight_W = cachedHitboxLeft_R + temp6
-          let temp6 = CharacterMissileHeights[characterIndex_R]
+          let temp6 = CharacterMissileHeights[characterIndex]
           let cachedHitboxBottom_W = cachedHitboxTop_R + temp6
 
           gosub CheckPlayersAgainstCachedHitbox
@@ -138,8 +138,8 @@ end
           rem AOE collision facing left, CheckBernieAOE - special case
           rem for Bernie (hits both directions)
           rem Constraints: Bernie (character 0) hits both left AND right simultaneously
-          let characterIndex_W = playerCharacter[temp1]
-          let temp5 = characterIndex_R
+          let characterIndex = playerCharacter[temp1]
+          let temp5 = characterIndex
           rem Get attacker character type
 
           rem Check if this is Bernie (character 0)
@@ -240,10 +240,10 @@ CacheAOERightHitbox
 CacheAOERightHitbox
 end
           rem Cache right-facing AOE bounds for current attacker
-          rem Input: temp1 = attacker index, characterIndex_R = character ID
+          rem Input: temp1 = attacker index, characterIndex = character ID
           rem Output: cachedHitboxLeft/Right/Top/Bottom populated
-          let aoeOffset_W = CharacterAOEOffsets[characterIndex_R]
-          let cachedHitboxLeft_W = playerX[temp1] + aoeOffset_R
+          let aoeOffset = CharacterAOEOffsets[characterIndex]
+          let cachedHitboxLeft_W = playerX[temp1] + aoeOffset
           let cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
           let cachedHitboxTop_W = playerY[temp1]
           let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
@@ -254,10 +254,10 @@ CacheAOELeftHitbox
 CacheAOELeftHitbox
 end
           rem Cache left-facing AOE bounds for current attacker
-          rem Input: temp1 = attacker index, characterIndex_R = character ID
+          rem Input: temp1 = attacker index, characterIndex = character ID
           rem Output: cachedHitboxLeft/Right/Top/Bottom populated
-          let aoeOffset_W = CharacterAOEOffsets[characterIndex_R]
-          let cachedHitboxRight_W = playerX[temp1] + PlayerSpriteWidth - 1 - aoeOffset_R
+          let aoeOffset = CharacterAOEOffsets[characterIndex]
+          let cachedHitboxRight_W = playerX[temp1] + PlayerSpriteWidth - 1 - aoeOffset
           let cachedHitboxLeft_W = cachedHitboxRight_R - PlayerSpriteHalfWidth
           let cachedHitboxTop_W = playerY[temp1]
           let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight

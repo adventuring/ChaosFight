@@ -29,12 +29,12 @@ CRTSMC_IsRoboTito
           rem Latched to ceiling, no stretch missile
           let temp5 = characterStateFlags_R[temp1] & 1
           if temp5 then goto CRTSMC_NextPlayer
-          let playerStateTemp_W = playerState[temp1]
+          let playerStateTemp = playerState[temp1]
           rem Mask bits 4-7 (animation state)
-          let playerStateTemp_W = playerStateTemp_W & MaskPlayerStateAnimation
+          let playerStateTemp = playerStateTemp & MaskPlayerStateAnimation
           rem Shift right by 4 to get animation state
-          let playerStateTemp_W = playerStateTemp_W / 16
-          if playerStateTemp_W = 10 then CRTSMC_IsStretching
+          let playerStateTemp = playerStateTemp / 16
+          if playerStateTemp = 10 then CRTSMC_IsStretching
           goto CRTSMC_NextPlayer
 
 CRTSMC_IsStretching

@@ -83,10 +83,13 @@ SeparateP0Left
 DonePlayerSeparation
           return
 
-rem Shared collision check helper
-rem Input: temp3 = player 1 index, temp4 = player 2 index
-rem Uses: temp2 for calculations
+          rem Shared collision check helper
+          rem Input: temp3 = player 1 index, temp4 = player 2 index
+          rem Uses: temp2 for calculations
 CheckCollisionPair
+          asm
+CheckCollisionPair
+end
           if playerX[temp3] >= playerX[temp4] then CheckCollisionPairCalcDiff
           let temp2 = playerX[temp4] - playerX[temp3]
           goto CheckCollisionPairCheckSep

@@ -6,7 +6,7 @@
 ; These must be defined before any code that uses them
 missile1height = $A4
 missile0height = $A5
-playfieldRow = $5C
+; playfieldRow is now defined via dim in Variables.bas, not here
 rand16 = $00F2
 
 #include "vcs.h"
@@ -814,8 +814,9 @@ BANK16_END = $F000 + $FC0
           MS_ASSIGN  stack4, $F9
 
 ; --- Zero-page utility aliases ------------------------------------------------
-          ; NOTE: missile1height, missile0height, playfieldRow, rand16 are now defined at the top of this file
+          ; NOTE: missile1height, missile0height, rand16 are now defined at the top of this file
           ; to allow DASM to resolve forward references
+          ; playfieldRow is defined via dim in Variables.bas, not here
           MS_ASSIGN  ballheight, $92
           MS_ASSIGN  currentpaddle, $90
           MS_ASSIGN  paddle, $91
@@ -978,7 +979,7 @@ var47 EQU $D3
           MS_ASSIGN  no_blank_lines, 0
           MS_ASSIGN  PFmaskvalue, 0
   ; NOT is a batariBASIC keyword (bitwise NOT operator), not a constant - do not define
-          ; NOTE: playfieldRow is now defined at the top of this file to allow DASM to resolve forward references
+          ; NOTE: playfieldRow is defined via dim in Variables.bas, not here
   ; FontData is defined in Source/Generated/Numbers.bas - do not define here
   ; Forward assignments are not supported - use the actual label from Numbers.bas
           MS_ASSIGN  gamenumber, $00

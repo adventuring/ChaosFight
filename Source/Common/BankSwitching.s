@@ -16,21 +16,19 @@
 
           lda 4,x ; get encoded high byte of return address from stack
           tay ; save encoded byte for restoration
-          and #$F0 ; extract bank number from high nibble
+          and #$f0 ; extract bank number from high nibble
           lsr ; shift right once
           lsr ; shift right twice
           lsr ; shift right three times
           lsr ; shift right four times - bank now in low nibble
           pha ; save bank number temporarily
           tya ; get saved encoded byte
-          and #$0F ; mask low nibble with original address info
-          ora #$F0 ; restore to $Fx format
+          ora #$f0 ; restore actual address
           sta 4,x ; store restored address back to stack (X still has stack pointer)
           pla ; restore bank number
           tax ; bank number (0-F) now in X
-          inx ; convert to 1-based index (bank 0 -> 1, bank 1 -> 2, etc.)
 .BS_jsr
-          lda bankswitch_hotspot-1,x
+          lda bankswitch_hotspot,x
           pla
           tax
           pla

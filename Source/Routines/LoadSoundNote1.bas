@@ -49,12 +49,12 @@ end
           let temp6 = temp2 & %11110000
           rem   AUDCV
           let temp6 = temp6 / 16
-          let soundEffectID_W = temp2 & %00001111
+          let soundEffectID = temp2 & %00001111
 
           rem Write to TIA registers (use Voice 1 for sound effects)
           AUDC1 = temp6
           AUDF1 = temp3
-          AUDV1 = soundEffectID_R
+          AUDV1 = soundEffectID
 
           let soundEffectFrame1_W = temp4 + temp5
           rem Set frame counter = Duration + Delay

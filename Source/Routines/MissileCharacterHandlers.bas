@@ -43,9 +43,9 @@ HarpyBoostDiveVelocity
           asm
             lda temp6
             lsr
-            sta velocityCalculation_W
+            sta velocityCalculation
 end
-          let temp6 = temp6 + velocityCalculation_R
+          let temp6 = temp6 + velocityCalculation
 VelocityDone
           let missileVelocityY[temp1] = temp6
 
@@ -199,25 +199,25 @@ end
 
 KnightGuyAttackActive
           rem Get current animation frame within Execute sequence (0-7)
-          let velocityCalculation_W = currentAnimationFrame_R[temp1]
+          let velocityCalculation = currentAnimationFrame_R[temp1]
           rem Read from SCRAM and calculate offset immediately
 
           rem Calculate sword swing offset based on animation frame
           rem Frames 0-3: Move away from player (sword swing out)
           rem Frames 4-7: Return to start (sword swing back)
           rem Maximum swing distance: 4 pixels
-          if velocityCalculation_R < 4 then KnightGuySwingOut
+          if velocityCalculation < 4 then KnightGuySwingOut
           rem Frames 4-7: Returning to start
           rem Calculate return offset: (7 - frame) pixels
           rem Frame 4: 3 pixels away, Frame 5: 2 pixels, Frame 6: 1
           rem pixel, Frame 7: 0 pixels
-          let velocityCalculation_W = 7 - velocityCalculation_R
+          let velocityCalculation = 7 - velocityCalculation
           goto KnightGuySetPosition
 
 KnightGuySwingOut
           rem Frames 0-3: Moving away from player
           rem Calculate swing offset: (frame + 1) pixels
-          let velocityCalculation_W = velocityCalculation_R + 1
+          let velocityCalculation = velocityCalculation + 1
           rem Frame 0: 1 pixel, Frame 1: 2 pixels, Frame 2: 3 pixels, Frame 3: 4 pixels
 
 KnightGuySetPosition
@@ -231,12 +231,12 @@ KnightGuySetPosition
           rem Apply swing offset in facing direction
 
           if temp4 = 0 then KnightGuySwingLeft
-          let temp2 = temp2 + velocityCalculation_R
+          let temp2 = temp2 + velocityCalculation
           rem Facing right: move right (positive offset)
           goto KnightGuySetY
 
 KnightGuySwingLeft
-          let temp2 = temp2 - velocityCalculation_R
+          let temp2 = temp2 - velocityCalculation
           rem Facing left: move left (negative offset)
 
 KnightGuySetY

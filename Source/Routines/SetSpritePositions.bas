@@ -175,23 +175,30 @@ end
 
 RMF_MissileActive
           let RMF_character = playerCharacter[RMF_participant]
-          if RMF_select = 0 then goto RMF_WriteMissile0
-          rem Missile1 registers
+          let temp5 = RMF_select
+          gosub SSP_WriteMissileRegisters
+          return otherbank
+
+SSP_WriteMissileRegisters
+          asm
+SSP_WriteMissileRegisters
+end
+          rem Write missile registers for selected hardware slot
+          rem Input: temp5 = missile select (0=missile0, 1=missile1), RMF_participant, RMF_character
+          if temp5 = 0 then goto SSP_WriteMissile0
           missile1x = missileX[RMF_participant]
           missile1y = missileY_R[RMF_participant]
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ_R[RMF_participant]
           missile1height = CharacterMissileHeights[RMF_character]
-          return otherbank
-
-RMF_WriteMissile0
-          rem Missile0 registers
+          return
+SSP_WriteMissile0
           missile0x = missileX[RMF_participant]
           missile0y = missileY_R[RMF_participant]
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ_R[RMF_participant]
           missile0height = CharacterMissileHeights[RMF_character]
-          return otherbank
+          return
 
 CopyParticipantSpritePosition
           asm
@@ -249,22 +256,28 @@ RRTM_CheckStretch
 RRTM_ReadStretchHeight
           let temp4 = missileStretchHeight_R[temp1]
           if temp4 <= 0 then return otherbank
-          rem Unified missile register assignment based on temp2 (hardware missile select)
-          if temp2 = 0 then goto RRTM_WriteMissile0
-          rem Missile1 registers
+          let temp5 = temp2
+          gosub SSP_WriteStretchMissile
+          return otherbank
+
+SSP_WriteStretchMissile
+          asm
+SSP_WriteStretchMissile
+end
+          rem Write stretch missile registers for selected hardware slot
+          rem Input: temp5 = missile select (0=missile0, 1=missile1), temp1 = participant, temp4 = height
+          if temp5 = 0 then goto SSP_WriteStretch0
           missile1x = playerX[temp1]
           missile1y = playerY[temp1]
           missile1height = temp4
           ENAM1 = 1
           NUSIZ1 = 0
-          return otherbank
-
-RRTM_WriteMissile0
-          rem Missile0 registers
+          return
+SSP_WriteStretch0
           missile0x = playerX[temp1]
           missile0y = playerY[temp1]
           missile0height = temp4
           ENAM0 = 1
           NUSIZ0 = 0
-          return otherbank
+          return
 

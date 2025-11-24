@@ -997,10 +997,9 @@
           rem Missile lifetime value from CharacterMissileLifetime table
           dim missileLifetimeValue_R = g
 
-          dim velocityCalculation_W = k
-          rem Intermediate velocity calculation (e.g., velocity ÷ 2,
-          rem   velocity ÷ 4)
-          dim velocityCalculation_R = k
+          dim characterMovementSpeed = k
+          rem Character movement speed value from CharacterMovementSpeed table
+          rem (temporary calculation variable for movement routines)
 
           dim missileVelocityXCalc_W = l
           rem Missile X velocity for friction calculations (temporary

@@ -14,12 +14,16 @@
           lsr ; shift right four times - bank now in low nibble
           pha ; save bank number temporarily
           tya ; get saved encoded byte
-          ora #$f0 ; restore actual address
+          and #$0F ; mask low nibble with original address info
+          ora #$F0 ; restore to $Fx format
           sta 6,x ; store restored address back to stack (X still has stack pointer)
           pla ; restore bank number
           tax ; bank number (0-F) now in X
+          inx ; convert to 1-based index (bank 0 -> 1, bank 1 -> 2, etc.) to match batariBASIC
 .BS_jsr
-          nop $ffe0,x
+          ; EFSC 64k bankswitch: hotspot is $FFE0, access $FFE0 + (bank_number - 1)
+          ; With 1-based X: $FFE0 + X - 1 = $FFDF + X
+          nop $ffdf,x ; equivalent to bankswitch_hotspot-1,x where hotspot=$FFE0
           pla
           tax
           pla
@@ -32,6 +36,10 @@
 BS_return          SET .BS_return
 BS_jsr             SET .BS_jsr
 
+          ; EFSC 64k bankswitch hotspot is $FFE0 (not $FFF8 like other schemes)
+          ifnconst bankswitch_hotspot
+bankswitch_hotspot = $FFE0
+          endif
           if (($fff & .) > ($fff & bankswitch_hotspot))
           echo "WARNING: size parameter in BankSwitching.s too small - the program probably will not work."
           echo "Change to ", [($fff & .) - ($fff & bankswitch_hotspot)]d, " and try again."

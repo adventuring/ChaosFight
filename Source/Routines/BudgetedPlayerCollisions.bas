@@ -83,109 +83,73 @@ SeparateP0Left
 DonePlayerSeparation
           return
 
+rem Shared collision check helper
+rem Input: temp3 = player 1 index, temp4 = player 2 index
+rem Uses: temp2 for calculations
+CheckCollisionPair
+          if playerX[temp3] >= playerX[temp4] then CheckCollisionPairCalcDiff
+          let temp2 = playerX[temp4] - playerX[temp3]
+          goto CheckCollisionPairCheckSep
+CheckCollisionPairCalcDiff
+          let temp2 = playerX[temp3] - playerX[temp4]
+CheckCollisionPairCheckSep
+          if temp2 >= 16 then return
+          rem Separate players
+          if playerX[temp3] < playerX[temp4] then CheckCollisionPairSepLeft
+          let playerX[temp3] = playerX[temp3] + 1
+          let playerX[temp4] = playerX[temp4] - 1
+          return
+CheckCollisionPairSepLeft
+          let playerX[temp3] = playerX[temp3] - 1
+          let playerX[temp4] = playerX[temp4] + 1
+          if playerX[temp3] < playerX[temp4] then return
+          let playerX[temp3] = playerX[temp3] + 1
+          let playerX[temp4] = playerX[temp4] - 1
+          return
+
 CheckCollisionP1vsP3
           asm
 CheckCollisionP1vsP3
 end
-          if playerX[0] >= playerX[2] then CalcP1vsP3AbsDiff
-          let temp2 = playerX[2] - playerX[0]
-          goto DoneCalcP1vsP3Diff
-CalcP1vsP3AbsDiff
-          let temp2 = playerX[0] - playerX[2]
-DoneCalcP1vsP3Diff
-          if temp2 < 16 then CheckCollisionP1vsP3Aux
-          return
-
-CheckCollisionP1vsP3Aux
-          if playerX[0] < playerX[2] then let playerX[0] = playerX[0] - 1
-          if playerX[0] < playerX[2] then let playerX[2] = playerX[2] + 1
-          if playerX[0] < playerX[2] then return
-          let playerX[0] = playerX[0] + 1
-          let playerX[2] = playerX[2] - 1
+          let temp3 = 0
+          let temp4 = 2
+          gosub CheckCollisionPair
           return
 
 CheckCollisionP1vsP4
           asm
 CheckCollisionP1vsP4
 end
-          if playerX[0] >= playerX[3] then CalcP1vsP4AbsDiff
-          let temp2 = playerX[3] - playerX[0]
-          goto DoneCalcP1vsP4Diff
-CalcP1vsP4AbsDiff
-          let temp2 = playerX[0] - playerX[3]
-DoneCalcP1vsP4Diff
-          if temp2 < 16 then CheckCollisionP1vsP4Aux
-          return
-
-CheckCollisionP1vsP4Aux
-          if playerX[0] < playerX[3] then let playerX[0] = playerX[0] - 1
-          if playerX[0] < playerX[3] then let playerX[3] = playerX[3] + 1
-          if playerX[0] < playerX[3] then return
-          let playerX[0] = playerX[0] + 1
-          let playerX[3] = playerX[3] - 1
+          let temp3 = 0
+          let temp4 = 3
+          gosub CheckCollisionPair
           return
 
 CheckCollisionP2vsP3
           asm
 CheckCollisionP2vsP3
 end
-          if playerX[1] >= playerX[2] then CalcP2vsP3AbsDiff
-          let temp2 = playerX[2] - playerX[1]
-          goto DoneCalcP2vsP3Diff
-CalcP2vsP3AbsDiff
-          let temp2 = playerX[1] - playerX[2]
-DoneCalcP2vsP3Diff
-          if temp2 < 16 then CheckCollisionP2vsP3Aux
-          return
-
-CheckCollisionP2vsP3Aux
-          if playerX[1] < playerX[2] then let playerX[1] = playerX[1] - 1
-          if playerX[1] < playerX[2] then let playerX[2] = playerX[2] + 1
-          if playerX[1] < playerX[2] then return
-          let playerX[1] = playerX[1] + 1
-          let playerX[2] = playerX[2] - 1
+          let temp3 = 1
+          let temp4 = 2
+          gosub CheckCollisionPair
           return
 
 CheckCollisionP2vsP4
           asm
 CheckCollisionP2vsP4
 end
-          if playerX[1] >= playerX[3] then CalcP2vsP4AbsDiff
-          let temp2 = playerX[3] - playerX[1]
-          goto DoneCalcP2vsP4Diff
-CalcP2vsP4AbsDiff
-          let temp2 = playerX[1] - playerX[3]
-DoneCalcP2vsP4Diff
-          if temp2 < 16 then CheckCollisionP2vsP4Aux
-          return
-
-CheckCollisionP2vsP4Aux
-          if playerX[1] < playerX[3] then let playerX[1] = playerX[1] - 1
-          if playerX[1] < playerX[3] then let playerX[3] = playerX[3] + 1
-          if playerX[1] < playerX[3] then return
-          let playerX[1] = playerX[1] + 1
-          let playerX[3] = playerX[3] - 1
+          let temp3 = 1
+          let temp4 = 3
+          gosub CheckCollisionPair
           return
 
 CheckCollisionP3vsP4
           asm
 CheckCollisionP3vsP4
 end
-          if playerX[2] >= playerX[3] then CalcP3vsP4AbsDiff
-          let temp2 = playerX[3] - playerX[2]
-          goto DoneCalcP3vsP4Diff
-CalcP3vsP4AbsDiff
-          let temp2 = playerX[2] - playerX[3]
-DoneCalcP3vsP4Diff
-          if temp2 < 16 then CheckCollisionP3vsP4Aux
-          return
-
-CheckCollisionP3vsP4Aux
-          if playerX[2] < playerX[3] then let playerX[2] = playerX[2] - 1
-          if playerX[2] < playerX[3] then let playerX[3] = playerX[3] + 1
-          if playerX[2] < playerX[3] then return
-          let playerX[2] = playerX[2] + 1
-          let playerX[3] = playerX[3] - 1
+          let temp3 = 2
+          let temp4 = 3
+          gosub CheckCollisionPair
           return
 
 

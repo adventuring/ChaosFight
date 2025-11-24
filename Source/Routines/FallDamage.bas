@@ -99,18 +99,6 @@ mult5:      sta temp3
             clc
             adc temp3
             sta temp4
-            jmp multdone
-multstart:  lda temp4
-            ldx temp2
-            cpx #2
-            beq mult2
-            cpx #3
-            beq mult3
-            cpx #4
-            beq mult4
-            cpx #5
-            beq mult5
-            sta temp4
 multdone:
 end
 WeightMultDone

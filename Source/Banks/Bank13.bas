@@ -65,6 +65,12 @@ end
           asm
 CharacterControlsDownEnd
             echo "// Bank 13: ", [CharacterControlsDownEnd - CharacterControlsDownStart]d, " bytes = CharacterControlsDown"
+FlyingMovementHelpersStart
+end
+#include "Source/Routines/FlyingMovementHelpers.bas"
+          asm
+FlyingMovementHelpersEnd
+            echo "// Bank 13: ", [FlyingMovementHelpersEnd - FlyingMovementHelpersStart]d, " bytes = FlyingMovementHelpers"
 ConsoleHandlingStart
 end
 #include "Source/Routines/ConsoleHandling.bas"

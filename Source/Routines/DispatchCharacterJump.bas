@@ -51,7 +51,7 @@ end
           rem Character 12: StandardJump (RadishGoblin - removed wrapper function)
           if temp4 = 12 then gosub StandardJump bank12 : return otherbank
           rem Character 13: RoboTitoJump
-          if temp4 = 13 then gosub RoboTitoJump bank12 : return otherbank
+          if temp4 = 13 then gosub RoboTitoJump : return otherbank
           rem Character 14: StandardJump (Ursulo - removed wrapper function)
           if temp4 = 14 then gosub StandardJump bank12 : return otherbank
           rem Character 15: StandardJump (Shamone - removed wrapper function)

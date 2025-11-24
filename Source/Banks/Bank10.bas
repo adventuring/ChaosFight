@@ -73,6 +73,12 @@ end
           asm
 DispatchCharacterJumpEnd
             echo "// Bank 10: ", [DispatchCharacterJumpEnd - DispatchCharacterJumpStart]d, " bytes = DispatchCharacterJump"
+RoboTitoJumpStart
+end
+#include "Source/Routines/RoboTitoJump.bas"
+          asm
+RoboTitoJumpEnd
+            echo "// Bank 10: ", [RoboTitoJumpEnd - RoboTitoJumpStart]d, " bytes = RoboTitoJump"
           asm
 CheckRoboTitoStretchMissileCollisionsStart
 end

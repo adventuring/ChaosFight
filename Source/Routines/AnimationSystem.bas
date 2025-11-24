@@ -364,18 +364,16 @@ TransitionHandleFallBack_HitWall
 
 HandleAttackTransition
           let temp1 = currentAnimationSeq_R[currentPlayer]
-          if ActionAttackWindup = temp1 then goto HandleWindupEnd
-          if ActionAttackExecute = temp1 then goto HandleExecuteEnd
-          if ActionAttackRecovery = temp1 then goto HandleRecoveryEnd
+          if temp1 < ActionAttackWindup then return otherbank
+          let temp1 = temp1 - ActionAttackWindup
+          on temp1 goto HandleWindupEnd HandleExecuteEnd HandleRecoveryEnd
           return otherbank
 
 HandleWindupEnd
-          dim HAT_characterIndex = temp3
           let temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then return otherbank
-          let HAT_characterIndex = temp1
-          if HAT_characterIndex >= 16 then let HAT_characterIndex = 0
-          let temp2 = CharacterWindupNextAction(HAT_characterIndex)
+          if temp1 >= 16 then let temp1 = 0
+          let temp2 = CharacterWindupNextAction(temp1)
           if temp2 = 255 then return otherbank
           goto SetPlayerAnimation bank11
 
@@ -383,10 +381,8 @@ HandleExecuteEnd
           let temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then return otherbank
           if temp1 = 6 then goto HarpyExecute
-          dim HEE_lookupIndex = temp3
-          let HEE_lookupIndex = temp1
-          if HEE_lookupIndex >= 16 then let HEE_lookupIndex = 0
-          let temp2 = CharacterExecuteNextAction(HEE_lookupIndex)
+          if temp1 >= 16 then let temp1 = 0
+          let temp2 = CharacterExecuteNextAction(temp1)
           if temp2 = 255 then return otherbank
           goto SetPlayerAnimation bank11
 

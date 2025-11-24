@@ -29,12 +29,24 @@ end
           if temp1 > 3 then temp2 = 0 : GPL_lockedState = temp2 : return
 
           rem Extract 2 bits for this player
+          rem Optimized: Use on...goto jump table for O(1) dispatch
           rem Use division and masking operations compatible with batariBASIC
-          if temp1 = 0 then temp2 = playerLocked & 3 : GPL_lockedState = temp2 : return
-          if temp1 = 1 then temp2 = (playerLocked / 4) & 3 : GPL_lockedState = temp2 : return
-          if temp1 = 2 then temp2 = (playerLocked / 16) & 3 : GPL_lockedState = temp2 : return
-          if temp1 = 3 then temp2 = (playerLocked / 64) & 3 : GPL_lockedState = temp2 : return
-
+          on temp1 goto GetPlayerLockedP0 GetPlayerLockedP1 GetPlayerLockedP2 GetPlayerLockedP3
+GetPlayerLockedP0
+          temp2 = playerLocked & 3
+          GPL_lockedState = temp2
+          return
+GetPlayerLockedP1
+          temp2 = (playerLocked / 4) & 3
+          GPL_lockedState = temp2
+          return
+GetPlayerLockedP2
+          temp2 = (playerLocked / 16) & 3
+          GPL_lockedState = temp2
+          return
+GetPlayerLockedP3
+          temp2 = (playerLocked / 64) & 3
+          GPL_lockedState = temp2
           return
 
 SetPlayerLocked

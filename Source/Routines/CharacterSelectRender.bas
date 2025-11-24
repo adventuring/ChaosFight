@@ -48,15 +48,17 @@ SelectRenderPlayerPreview
 
 end
           rem Draw character preview for the specified player and apply lock tinting
+          rem Optimized: Combined duplicate conditionals, early return for common case
           gosub PlayerPreviewSetPosition
           gosub RenderPlayerPreview
           let temp1 = currentPlayer
           gosub GetPlayerLocked
           let temp5 = temp2
-          if !temp5 then gosub SelectSetPlayerColorUnlocked
-          if !temp5 then return
-          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap
-          if temp5 = PlayerHandicapped then return
+          if !temp5 then gosub SelectSetPlayerColorUnlocked : return
+          rem Unlocked state (most common) - set color and return early
+          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return
+          rem Handicap state - set dimmed color and return
+          rem Normal locked state - color already set by RenderPlayerPreview
           return
 
 PlayerPreviewSetPosition
@@ -74,10 +76,8 @@ SelectApplyPreviewPosition
 SelectApplyPreviewPosition
 end
           rem Input: temp1 = player index, temp2 = x position, temp3 = y position
-          if temp1 = 0 then goto SelectApplyPreviewPositionP0
-          if temp1 = 1 then goto SelectApplyPreviewPositionP1
-          if temp1 = 2 then goto SelectApplyPreviewPositionP2
-          goto SelectApplyPreviewPositionP3
+          rem Optimized: Use on...goto jump table for O(1) dispatch
+          on temp1 goto SelectApplyPreviewPositionP0 SelectApplyPreviewPositionP1 SelectApplyPreviewPositionP2 SelectApplyPreviewPositionP3
 SelectApplyPreviewPositionP0
           player0x = temp2
           player0y = temp3
@@ -136,12 +136,18 @@ SelectApplyPlayerColor
 SelectApplyPlayerColor
 end
           rem Input: currentPlayer selects target register, temp2 = color value
-          if currentPlayer = 0 then COLUP0 = temp2
-          if currentPlayer = 0 then return
-          if currentPlayer = 1 then _COLUP1 = temp2
-          if currentPlayer = 1 then return
-          if currentPlayer = 2 then COLUP2 = temp2
-          if currentPlayer = 2 then return
+          rem Optimized: Use on...goto jump table for O(1) dispatch
+          on currentPlayer goto SelectApplyPlayerColorP0 SelectApplyPlayerColorP1 SelectApplyPlayerColorP2 SelectApplyPlayerColorP3
+SelectApplyPlayerColorP0
+          COLUP0 = temp2
+          return
+SelectApplyPlayerColorP1
+          _COLUP1 = temp2
+          return
+SelectApplyPlayerColorP2
+          COLUP2 = temp2
+          return
+SelectApplyPlayerColorP3
           COLUP3 = temp2
           return
 
@@ -169,33 +175,28 @@ SelectUpdateAnimations
 SelectUpdateAnimations
 end
           rem Update character select animations for all players
-          let temp1 = 0
-          gosub GetPlayerLocked
-          if temp2 then goto SelectDonePlayer0Animation
+          rem Optimized: Compact inline version to reduce code size
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer0Animation
           if playerCharacter[0] >= RandomCharacter then goto SelectDonePlayer0Animation
-          let temp1 = 0
-          gosub SelectUpdatePlayerAnimation
+          let temp1 = 0 : gosub SelectUpdatePlayerAnimation
 SelectDonePlayer0Animation
           let temp1 = 1 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer1Animation
           if playerCharacter[1] >= RandomCharacter then goto SelectDonePlayer1Animation
-          let temp1 = 1
-          gosub SelectUpdatePlayerAnimation
+          let temp1 = 1 : gosub SelectUpdatePlayerAnimation
 SelectDonePlayer1Animation
           if controllerStatus & SetQuadtariDetected then goto ProcessPlayer2Animation
           goto SelectDonePlayer23Animation
 ProcessPlayer2Animation
           let temp1 = 2 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer2Animation
           if playerCharacter[2] >= RandomCharacter then goto SelectDonePlayer2Animation
-          let temp1 = 2
-          gosub SelectUpdatePlayerAnimation
+          let temp1 = 2 : gosub SelectUpdatePlayerAnimation
 SelectDonePlayer2Animation
           if controllerStatus & SetQuadtariDetected then goto ProcessPlayer3Animation
           goto SelectDonePlayer23Animation
 ProcessPlayer3Animation
           let temp1 = 3 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer23Animation
           if playerCharacter[3] >= RandomCharacter then goto SelectDonePlayer23Animation
-          let temp1 = 3
-          gosub SelectUpdatePlayerAnimation
+          let temp1 = 3 : gosub SelectUpdatePlayerAnimation
 SelectDonePlayer23Animation
           return
 

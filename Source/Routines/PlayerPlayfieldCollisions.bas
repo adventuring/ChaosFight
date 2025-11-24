@@ -43,21 +43,21 @@ end
 
           let temp1 = temp6 - 1
           let temp3 = 0
-          gosub PF_ProcessHorizontalCollision
+          gosub PF_ProcessHorizontalCollision bank10
 
 PFCheckRight
           if temp6 >= 31 then goto PFCheckUp
 
           let temp1 = temp6 + 4
           let temp3 = 1
-          gosub PF_ProcessHorizontalCollision
+          gosub PF_ProcessHorizontalCollision bank10
 
 PFCheckUp
           if playfieldRow = 0 then goto PFCheckDown_Body
 
           let rowCounter = playfieldRow - 1
           let temp2 = rowCounter
-          gosub PF_CheckRowColumns
+          gosub PF_CheckRowColumns bank10
           if temp4 then goto PFBlockUp
           goto PFCheckDown_Body
 
@@ -78,6 +78,9 @@ PFBlockDown
           return otherbank
 
 PF_CheckColumnSpan
+          asm
+PF_CheckColumnSpan
+end
           rem Helper: sample a column at up to three row offsets (top/mid/bottom)
           rem Input: playfieldColumn (global), playfieldRow (global top row), temp3 = row span
           rem Output: temp4 = 1 if any solid pixel encountered
@@ -105,6 +108,9 @@ PFCS_Done
           return otherbank
 
 PF_CheckRowColumns
+          asm
+PF_CheckRowColumns
+end
           rem Helper: test current row for center/side collisions
           rem Input: temp2 = row index, temp6 = center column
           rem Output: temp4 = 1 if any column collides
@@ -137,6 +143,9 @@ PRC_Done
           return otherbank
 
 PF_ProcessHorizontalCollision
+          asm
+PF_ProcessHorizontalCollision
+end
           rem Helper: evaluate horizontal collision for given column and clamp
           rem Input: temp1 = column index, temp3 = direction (0=left, 1=right)
           dim PHC_column = temp1
@@ -183,7 +192,7 @@ PFCheckDown_Body
           if playfieldRow >= pfrows then return otherbank
 
           let temp2 = playfieldRow
-          gosub PF_CheckRowColumns
+          gosub PF_CheckRowColumns bank10
           if temp4 then goto PFBlockDown
           return otherbank
 

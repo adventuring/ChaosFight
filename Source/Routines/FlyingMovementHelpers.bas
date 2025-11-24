@@ -2,6 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 HFCM_AttemptMoveLeft
+          asm
+HFCM_AttemptMoveLeft
+end
           let temp1 = currentPlayer
           let temp2 = playerX[temp1]
           let temp2 = temp2 - ScreenInsetX
@@ -67,6 +70,9 @@ HFCM_SetFacingLeft
           return otherbank
 
 HFCM_AttemptMoveRight
+          asm
+HFCM_AttemptMoveRight
+end
           let temp1 = currentPlayer
           let temp2 = playerX[temp1]
           let temp2 = temp2 - ScreenInsetX

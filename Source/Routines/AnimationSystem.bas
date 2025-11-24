@@ -371,7 +371,7 @@ HandleWindupEnd
           let temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then return otherbank
           if temp1 >= 16 then let temp1 = 0
-          let temp2 = CharacterWindupNextAction(temp1)
+          let temp2 = CharacterWindupNextAction[temp1]
           if temp2 = 255 then return otherbank
           goto SetPlayerAnimation bank11
 
@@ -380,7 +380,7 @@ HandleExecuteEnd
           if temp1 >= 32 then return otherbank
           if temp1 = 6 then goto HarpyExecute
           if temp1 >= 16 then let temp1 = 0
-          let temp2 = CharacterExecuteNextAction(temp1)
+          let temp2 = CharacterExecuteNextAction[temp1]
           if temp2 = 255 then return otherbank
           goto SetPlayerAnimation bank11
 

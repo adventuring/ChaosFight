@@ -17,7 +17,7 @@ end
           rem Input: temp1 = player index
           rem Output: Upward velocity applied, jumping flag set
           let temp2 = playerCharacter[temp1]
-          let temp2 = CharacterJumpVelocities(temp2)
+          let temp2 = CharacterJumpVelocities[temp2]
           if temp2 = 0 then return otherbank
           let playerVelocityY[temp1] = temp2
           let playerVelocityYL[temp1] = 0

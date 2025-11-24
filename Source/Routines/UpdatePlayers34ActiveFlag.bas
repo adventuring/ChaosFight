@@ -31,5 +31,5 @@ UpdatePlayers34ActiveDone
           asm
 UpdatePlayers34ActiveDone
 end
-          return
+          return otherbank
 

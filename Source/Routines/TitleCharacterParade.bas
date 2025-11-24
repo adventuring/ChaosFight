@@ -82,7 +82,7 @@ Roll
           let titleParadeX = 246
           rem Start off-screen left
           let titleParadeActive = 1
-          return
+          return otherbank
 
 MoveParadeCharacter
           rem Move character across screen
@@ -101,7 +101,7 @@ MoveParadeCharacter
 
           if titleParadeX > 170 then ParadeCharacterLeft
           rem Check if character has left screen
-          return
+          return otherbank
 
 ParadeCharacterLeft
           rem Character has left - wait 1 second (FramesPerSecond frames) before next
@@ -120,7 +120,7 @@ ParadeCharacterLeft
           let titleParadeActive = 0
           let titleParadeTimer = titleParadeTimer - FramesPerSecond
           rem Reset timer for next character
-          return
+          return otherbank
 
 DrawParadeCharacter
           asm
@@ -168,5 +168,5 @@ DrawParadeCharacterSprite
           let temp2 = titleParadeTimer & 7
           let temp3 = ActionWalking
           gosub LoadCharacterSprite bank16
-          return
+          return otherbank
 

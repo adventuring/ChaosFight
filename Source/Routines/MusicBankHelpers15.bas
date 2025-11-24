@@ -30,11 +30,11 @@ end
           let songPointer = SongPointers2H[temp2]
           let songPointer = songPointer * 256
           let songPointer = songPointer + SongPointers2L[temp2]
-          return
+          return otherbank
 
 LSP15_InvalidSong
           let songPointer = 0
-          return
+          return otherbank
 
 LoadSongVoice1PointerBank15
           asm
@@ -63,7 +63,7 @@ end
           let songPointer = SongPointers2SecondH[temp2]
           let songPointer = songPointer * 256
           let songPointer = songPointer + SongPointers2SecondL[temp2]
-          return
+          return otherbank
 
 LoadMusicNote0Bank15
           asm
@@ -129,7 +129,7 @@ end
           rem Advance pointer by 4 bytes (16-bit addition)
           let musicVoice0Pointer = musicVoice0Pointer + 4
 
-          return
+          return otherbank
 
 LoadMusicNote0EndOfTrack
           rem Helper: Handle end of track for Voice 0 (Bank 15)
@@ -153,7 +153,7 @@ LoadMusicNote0EndOfTrack
           let musicVoice0Pointer = 0
           rem   only)
           AUDV0 = 0
-          return
+          return otherbank
 
 LoadMusicNote1Bank15
           asm
@@ -223,7 +223,7 @@ end
           rem Advance pointer by 4 bytes
           let musicVoice1Pointer = musicVoice1Pointer + 4
 
-          return
+          return otherbank
 
 LoadMusicNote1EndOfTrack
           rem Helper: Handle end of track for Voice 1 (Bank 15)
@@ -247,7 +247,7 @@ LoadMusicNote1EndOfTrack
           let musicVoice1Pointer = 0
           rem   only)
           AUDV1 = 0
-          return
+          return otherbank
 
           rem Routing functions for Bank 1 helpers
           rem These functions route calls from Bank 15 to Bank 1 functions
@@ -262,7 +262,7 @@ end
           rem Output: songPointer set via Bank 1 function
           rem Forward reference: Bank 15 calls Bank 1 (Bank 1 comes before Bank 15 in file)
           gosub LoadSongPointer bank1
-          return
+          return otherbank
 
 LoadSongVoice1PointerBank1
           asm
@@ -273,7 +273,7 @@ end
           rem Output: songPointer updated to Voice 1 pointer via Bank 1 function
           rem Forward reference: Bank 15 calls Bank 1
           gosub LoadSongVoice1PointerBank1 bank1
-          return
+          return otherbank
 
 LoadMusicNote0
           asm
@@ -284,7 +284,7 @@ end
           rem Output: Next note loaded via Bank 1 function
           rem Forward reference: Bank 15 calls Bank 1
           gosub LoadMusicNote0 bank1
-          return
+          return otherbank
 
 LoadMusicNote1
           asm
@@ -295,5 +295,5 @@ end
           rem Output: Next note loaded via Bank 1 function
           rem Forward reference: Bank 15 calls Bank 1
           gosub LoadMusicNote1 bank1
-          return
+          return otherbank
 

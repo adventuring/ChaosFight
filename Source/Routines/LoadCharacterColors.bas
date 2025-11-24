@@ -37,10 +37,10 @@ end
 #else
           let temp6 = PlayerColors6[currentPlayer]
 #endif
-          return
+          return otherbank
 
 NormalColorState
           rem Normal color state
           let temp6 = PlayerColors12[currentPlayer]
-          return
+          return otherbank
 

@@ -55,7 +55,7 @@ end
           rem Step 5: Reset game mode to startup sequence
           gosub ChangeGameMode bank14
 
-          return
+          return otherbank
           rem Reset complete - return to MainLoop which will dispatch to
           rem   new mode
 
@@ -72,14 +72,14 @@ end
           gosub CheckEnhancedPause
           rem Check Player 1 buttons
           if !temp1 then DonePlayer1Pause
-          gosub DetectPads
+          gosub DetectPads bank13
           rem Re-detect controllers when Select is pressed
           if (systemFlags & SystemFlagGameStatePaused) = 0 then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player1PauseDone
           rem Debounce - wait for button release (drawscreen called by
           rem MainLoop)
-          return
+          return otherbank
 DonePlayer1Pause
 
 
@@ -87,14 +87,14 @@ DonePlayer1Pause
           gosub CheckEnhancedPause
           rem Check Player 2 buttons
           if !temp1 then DonePlayer2Pause
-          gosub DetectPads
+          gosub DetectPads bank13
           rem Re-detect controllers when Select is pressed
           if (systemFlags & SystemFlagGameStatePaused) = 0 then let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player2PauseDone
           rem Debounce - wait for button release (drawscreen called by
           rem MainLoop)
-          return
+          return otherbank
 DonePlayer2Pause
 
 
@@ -107,7 +107,7 @@ DonePlayer2Pause
           rem tail call
 #endif
 
-          return
+          return otherbank
 
 CheckEnhancedPause
           asm
@@ -140,19 +140,19 @@ end
 
           if temp2 = 0 then goto CEP_CheckPlayer1
           if temp2 = 1 then goto CEP_CheckPlayer2
-          return
+          return otherbank
 
 CEP_CheckPlayer1
           rem Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
           if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then temp1 = 1
           if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then temp1 = 1
-          return
+          return otherbank
 
 CEP_CheckPlayer2
           rem Player 2: Check Genesis Button C (INPT2) or Joy2B+ Button III (INPT3)
           if controllerStatus & SetRightPortGenesis then if (INPT2 & $80) = 0 then temp1 = 1
           if controllerStatus & SetRightPortJoy2bPlus then if (INPT3 & $80) = 0 then temp1 = 1
-          return
+          return otherbank
 
           rem
           rem Color/B&W switch change detection (triggers controller re-detect)
@@ -182,7 +182,7 @@ end
           let temp6 = 0
           if switchbw then temp6 = 1
           if temp6 = colorBWPrevious_R then DoneSwitchChange
-          gosub DetectPads
+          gosub DetectPads bank13
           let colorBWPrevious_W = temp6
 DoneSwitchChange
           rem Color/B&W switch change check complete (label only, no
@@ -215,9 +215,9 @@ DoneSwitchChange
           rem Check7800PauseButton
           rem   (NTSC/PAL only, not SECAM)
 
-          return
+          return otherbank
 
 ReloadArenaColorsNow
           gosub ReloadArenaColors bank14
           rem Reload arena colors with current switch state
-          return
+          return otherbank

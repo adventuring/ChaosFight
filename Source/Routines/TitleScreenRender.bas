@@ -60,7 +60,7 @@ end
             jsr titledrawscreen
 end
 
-          return
+          return otherbank
 
 
           rem
@@ -76,7 +76,7 @@ LoadTitleBitmap
           asm
 LoadTitleBitmap
 end
-          return
+          return otherbank
           rem Configure titlescreen kernel to show Title (ChaosFight)
           rem   bitmap
           rem Uses 48x2_3 minikernel - set window/height via assembly

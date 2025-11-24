@@ -48,7 +48,7 @@ PBC_ProcessPlayer
               gosub CheckPlayerBoundary
 PBC_NextPlayer
           next
-          return
+          return otherbank
 
 CheckPlayerBoundary
           asm
@@ -78,9 +78,9 @@ end
           if playerY[temp1] <= ScreenBottom then return
           if playerCharacter[temp1] = CharacterBernie then goto CheckPlayerBoundary_BernieWrap
           let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank14
-          return
+          return otherbank
 CheckPlayerBoundary_BernieWrap
           let playerY[temp1] = 0 : let playerSubpixelY_W[temp1] = 0 : let playerSubpixelY_WL[temp1] = 0
-          return
+          return otherbank
 
 

@@ -79,7 +79,7 @@ InputHandlePlayer1
           gosub InputHandleRightPortPlayerFunction
 InputDonePlayer1Input
           rem Player 1 uses Joy1
-          return
+          return otherbank
 InputHandleQuadtariPlayers
           rem Skip Player 1 input (label only, no execution)
           rem
@@ -157,5 +157,5 @@ InputDonePlayer4Input
 
           qtcontroller = 0
           rem Switch back to even frame
-          return
+          return otherbank
 

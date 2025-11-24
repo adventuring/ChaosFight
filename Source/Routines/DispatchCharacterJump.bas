@@ -58,5 +58,5 @@ end
           if temp4 = 15 then gosub StandardJump bank12 : return
           rem Fallback to StandardJump for any unhandled case
           gosub StandardJump bank12
-          return
+          return otherbank
 

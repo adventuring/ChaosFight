@@ -38,8 +38,8 @@ end
           if temp4 = CharacterRadishGoblin then goto PerformMeleeAttack bank7
           rem Robo Tito: melee trunk slam
           if temp4 = CharacterRoboTito then goto PerformMeleeAttack bank7
-          rem Ursulo: claw swipe with melee tables
-          if temp4 = CharacterUrsulo then goto UrsuloAttack bank7
+          rem Ursulo: claw swipe with melee tables - inlined (UrsuloAttack)
+          if temp4 = CharacterUrsulo then goto PerformMeleeAttack bank7
           rem Shamone: jump + melee special
           if temp4 = CharacterShamone then goto ShamoneAttack bank7
 
@@ -50,7 +50,7 @@ end
           rem MethHound uses ShamoneAttack handler
           if temp4 = CharacterMethHound then goto ShamoneAttack bank7
 
-          return
+          return otherbank
 
 CheckEnhancedJumpButton
           asm
@@ -100,4 +100,4 @@ CEJB_CheckPlayer2Joy2bPlus
           goto CEJB_ReadButton2
 CEJB_Done
           rem Enhanced jump button check complete
-          return
+          return otherbank

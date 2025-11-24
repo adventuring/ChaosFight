@@ -20,5 +20,5 @@ end
           if playerHealth[3] > 0 then let temp1 = 1 + temp1
 
           let playersRemaining_W = temp1
-          return
+          return otherbank
 

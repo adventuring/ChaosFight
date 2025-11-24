@@ -234,7 +234,7 @@ GameEndCheckDone
           rem Check RoboTito stretch missile collisions (bank 7)
 
           rem Set sprite positions (now handled by movement system)
-          rem gosub SetSpritePositions
+          rem Call SetSpritePositions
           rem Replaced by UpdatePlayerMovement
 
           gosub SetPlayerSprites bank6

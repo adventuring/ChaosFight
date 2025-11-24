@@ -212,7 +212,7 @@ DonePlayer4Move
 
           rem drawscreen called by MainLoop
           return
-          goto FallingAnimation1
+          goto FallingAnimation1 bank11
 
 FallingComplete1
           rem All players have reached row 2 positions

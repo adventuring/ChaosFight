@@ -38,7 +38,7 @@ MovePlayerUp
 MovePlayerCheckTarget
           rem Check if at target
           gosub AtTarget
-          return
+          return otherbank
 
 AtTarget
           asm
@@ -52,7 +52,7 @@ end
 CheckY
           if playerY[temp1] = temp3 then return
           gosub NudgePlayerFromPlayfield
-          return
+          return otherbank
 
 NudgePlayerFromPlayfield
           asm
@@ -63,7 +63,7 @@ end
           rem Input: temp1 = player index
           rem Output: Player position adjusted to avoid playfield
           gosub NudgeFromPF
-          return
+          return otherbank
 
 NudgeFromPF
           asm
@@ -81,7 +81,7 @@ end
           rem Check left nudge needed
           gosub NudgeLeft
 NudgeHorizontalDone
-          return
+          return otherbank
 
 NudgeRight
           asm
@@ -137,7 +137,7 @@ end
 
           rem If collision detected, revert position
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
-          return
+          return otherbank
 
 NudgeLeft
           asm
@@ -194,5 +194,5 @@ end
 
           rem If collision detected, revert position
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
-          return
+          return otherbank
 

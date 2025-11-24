@@ -472,7 +472,7 @@ end
 NextAttacker
           next
           rem Helper: End of attacker loop iteration (label only)
-          return
+          return otherbank
           rem Input: None (label only)
           rem
           rem Output: None (label only)
@@ -485,7 +485,7 @@ NextAttacker
 
 CombatShowDamageIndicator
           rem Damage indicator system (handled inline)
-          return
+          return otherbank
 PlayDamageSound
           rem Damage sound effect handler (no-op placeholder)
           rem
@@ -512,5 +512,5 @@ PlayDamageSound
           rem Constraints: None
           let temp1 = SoundAttackHit
           gosub PlaySoundEffect bank15
-          return
+          return otherbank
 

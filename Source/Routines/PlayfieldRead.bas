@@ -57,7 +57,7 @@ end
 ReadZero
           sta temp1          ; Store result
 end
-          return
+          return otherbank
 
           rem Bit mask lookup table for playfield column bits
           asm

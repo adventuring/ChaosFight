@@ -22,7 +22,7 @@ end
           let playerVelocityY[temp1] = temp2
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
-          return
+          return otherbank
 
 CCJ_ConvertPlayerXToPlayfieldColumn
           asm
@@ -31,10 +31,11 @@ end
           rem Convert player X to playfield column (0-31)
           rem Input: temp1 = player index
           rem Output: temp2 = playfield column
+          rem FIXME: This should be inlined.
           let temp2 = playerX[temp1]
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
-          return
+          return otherbank
 
 BernieJump
           asm
@@ -43,7 +44,7 @@ end
           rem BERNIE (0) - Drop through single-row platforms
           rem Input: temp1 = player index
           rem Output: playerY[] updated when falling through
-          gosub CCJ_ConvertPlayerXToPlayfieldColumn
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
           let temp3 = playerY[temp1]
           let temp5 = temp3 + 16
           let temp6 = temp5 / 16
@@ -66,7 +67,7 @@ end
           let temp1 = temp3
           if temp5 = 1 then return
           let playerY[temp1] = playerY[temp1] + 1
-          return
+          return otherbank
 
 BernieCheckBottomWrap
           rem Helper: Wrap Bernie to top row if clear
@@ -81,7 +82,7 @@ BernieCheckBottomWrap
           let temp1 = temp3
           if temp5 = 1 then return
           let playerY[temp1] = 0
-          return
+          return otherbank
 
 CCJ_FreeFlightUp
           asm
@@ -106,7 +107,7 @@ end
           let playerVelocityY[temp1] = 254
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
-          return
+          return otherbank
 
 DragonOfStormsJump
           asm
@@ -115,9 +116,9 @@ end
           rem DRAGON OF STORMS (2) - FREE FLIGHT
           rem Input: temp1 = player index
           rem Output: Upward velocity if clear above
-          gosub CCJ_ConvertPlayerXToPlayfieldColumn
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
           gosub CCJ_FreeFlightUp
-          return
+          return otherbank
 
           rem ZOE RYEN (3) - STANDARD JUMP (dispatched directly to StandardJump)
           rem FAT TONY (4) - STANDARD JUMP (dispatched directly to StandardJump)
@@ -144,7 +145,7 @@ end
 HarpyFlapRecord
           if characterSpecialAbility_R[temp1] > 0 then let characterSpecialAbility_W[temp1] = characterSpecialAbility_R[temp1] - 1
           let harpyLastFlapFrame_W[temp1] = frame
-          return
+          return otherbank
 
           rem KNIGHT GUY (7) - STANDARD JUMP (dispatched directly to StandardJump)
           rem Removed redundant wrapper function - DispatchCharacterJump calls StandardJump directly
@@ -156,9 +157,9 @@ end
           rem FROOTY (8) - PERMANENT FREE FLIGHT
           rem Input: temp1 = player index
           rem Output: Upward velocity if clear above
-          gosub CCJ_ConvertPlayerXToPlayfieldColumn
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
           gosub CCJ_FreeFlightUp
-          return
+          return otherbank
 
           rem NINJISH GUY (10) - STANDARD JUMP (dispatched directly to StandardJump)
           rem PORK CHOP (11) - STANDARD JUMP (dispatched directly to StandardJump)
@@ -179,12 +180,12 @@ end
 
 RoboTitoCannotStretch
           let missileStretchHeight_W[temp1] = 0
-          return
+          return otherbank
 
 RoboTitoCanStretch
 RoboTitoStretching
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
-          gosub CCJ_ConvertPlayerXToPlayfieldColumn
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
           let temp4 = temp2
           let temp2 = playerY[temp1] + 16
           let temp5 = temp2 / 16
@@ -225,10 +226,10 @@ GroundSearchDone
           let characterSpecialAbility_W[temp1] = 0
           if playerY[temp1] <= 5 then goto RoboTitoCheckCeiling
           let playerY[temp1] = playerY[temp1] - 3
-          return
+          return otherbank
 
 RoboTitoCheckCeiling
-          gosub CCJ_ConvertPlayerXToPlayfieldColumn
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
           let temp3 = playerY[temp1]
           if temp3 <= 0 then goto RoboTitoLatch
           let temp4 = temp3 / 16
@@ -241,7 +242,7 @@ RoboTitoCheckCeiling
           if temp1 then goto RoboTitoLatch
           let temp1 = temp5
           let playerY[temp1] = playerY[temp1] - 3
-          return
+          return otherbank
 
 RoboTitoLatch
           dim RTL_stateFlags = temp5
@@ -257,7 +258,7 @@ RTL_ReduceHeight
           let temp2 = temp2 - 25
           let missileStretchHeight_W[temp1] = temp2
 RTL_HeightCleared
-          return
+          return otherbank
 
           rem URSULO (14) - STANDARD JUMP (dispatched directly to StandardJump)
           rem SHAMONE (15) - STANDARD JUMP (dispatched directly to StandardJump)

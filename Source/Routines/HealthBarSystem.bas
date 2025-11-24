@@ -272,7 +272,7 @@ ConvertToBCDLoop
             cld          ; clear decimal mode
             sta temp1    ; store result (packed BCD, e.g., $75 for 75)
           end
-          return
+          return otherbank
 
 UpdatePlayer34HealthBars
           asm
@@ -364,7 +364,7 @@ end
           rem COLUPF = ColIndigo(12) (for pfscore mode)
           rem (Issue #600 - completed)
 
-          return
+          return otherbank
 
 DisplayCF2025
           rem No Quadtari detected - display CF2025 using bad BCD
@@ -386,4 +386,4 @@ end
           rem Score colors are set directly in MultiSpriteKernel.s
           rem (Issue #600 - completed)
 
-          return
+          return otherbank

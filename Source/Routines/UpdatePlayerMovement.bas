@@ -50,5 +50,5 @@ end
           gosub UpdatePlayerMovementSingle bank8
           next
 UpdatePlayerMovementQuadtariSkip
-          return
+          return otherbank
 

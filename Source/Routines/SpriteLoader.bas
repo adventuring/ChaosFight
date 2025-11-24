@@ -34,7 +34,7 @@ end
           let temp4 = currentPlayer
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank9
-          return
+          return otherbank
 
 LoadPlayerSprite
           asm
@@ -78,5 +78,5 @@ end
           rem Inline dispatch to save size (same-bank)
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank9
-          return
+          return otherbank
 

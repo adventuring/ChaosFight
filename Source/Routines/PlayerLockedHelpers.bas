@@ -35,19 +35,19 @@ end
 GetPlayerLockedP0
           temp2 = playerLocked & 3
           GPL_lockedState = temp2
-          return
+          return otherbank
 GetPlayerLockedP1
           temp2 = (playerLocked / 4) & 3
           GPL_lockedState = temp2
-          return
+          return otherbank
 GetPlayerLockedP2
           temp2 = (playerLocked / 16) & 3
           GPL_lockedState = temp2
-          return
+          return otherbank
 GetPlayerLockedP3
           temp2 = (playerLocked / 64) & 3
           GPL_lockedState = temp2
-          return
+          return otherbank
 
 SetPlayerLocked
           asm
@@ -87,5 +87,5 @@ SetPlayerLockedApply
           if temp3 = 2 then playerLocked = (playerLocked & 207) | (temp2 * 16) : return
           if temp3 = 3 then playerLocked = (playerLocked & 63) | (temp2 * 64) : return
 
-          return
+          return otherbank
 

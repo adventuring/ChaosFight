@@ -55,8 +55,9 @@ end
           rem              gosub)
           rem Called from WinnerAnnouncementLoop per-frame loop
 
-          gosub SetGameScreenLayout bank8
-          rem Set screen layout (32×8 for character display)
+          rem Set screen layout (32×8 for character display) - inlined
+          pfrowheight = ScreenPfRowHeight
+          pfrows = ScreenPfRows
 
           rem Load winner screen playfield pattern
           rem Set playfield pointers to WinnerScreenPlayfield data (optimized: load once, store twice)
@@ -198,7 +199,7 @@ end
           let temp2 = 0
           let temp3 = 0
           gosub LoadCharacterSprite bank16
-          return
+          return otherbank
 
 DWS_Position1Player
           rem 1 player: Winner centered on podium
@@ -225,7 +226,7 @@ DWS_Position1Player
           gosub DWS_LoadIdleSprite
           rem Player 0
           gosub DWS_HidePlayers123
-          return
+          return otherbank
 
 DWS_Position2Players
           rem 2 players: Winner centered, runner-up left
@@ -289,7 +290,7 @@ DWS_Hide2PlayerDone
           rem
           rem Constraints: Must be colocated with DisplayWinScreen
           gosub DWS_HidePlayers123
-          return
+          return otherbank
 
 DWS_Position3Players
           rem 3+ players: Winner centered high, 2nd left, 3rd right
@@ -392,7 +393,7 @@ DWS_Hide3Player3Done
           rem Constraints: Must be colocated with DisplayWinScreen
           let playerX[3] = 0
           rem Hide unused player
-          return
+          return otherbank
 
 DWS_HidePlayers123
           asm
@@ -402,7 +403,7 @@ end
           let playerX[1] = 0
           let playerX[2] = 0
           let playerX[3] = 0
-          return
+          return otherbank
 
 DWS_GetBWMode
           asm
@@ -422,7 +423,7 @@ end
           rem Constraints: Must reside in bank 15 (DisplayWinScreen.bas)
           let temp2 = systemFlags & SystemFlagColorBWOverride
           if temp2 then temp2 = 1
-          return
+          return otherbank
 
 DWS_LoadColorColors
           asm
@@ -450,5 +451,5 @@ end
             lda #>WinnerScreenColorsColor
             sta pfcolortable+1
 end
-          return
+          return otherbank
 

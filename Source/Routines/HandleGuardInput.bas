@@ -38,5 +38,5 @@ HGI_CheckGuardRelease
           rem Stop guard early and start cooldown
           let playerTimers_W[temp1] = GuardTimerMaxFrames
           rem Start cooldown timer
-          return
+          return otherbank
 

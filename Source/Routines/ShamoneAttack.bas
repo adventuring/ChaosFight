@@ -32,7 +32,8 @@ end
           let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           rem Light character, good jump
           rem Set jumping flag
-          rem Then execute the attack (PerformMeleeAttack sets animation state)
-          gosub PerformMeleeAttack bank7
+          rem Then execute the attack (inline former PerformMeleeAttack)
+          gosub SpawnMissile bank12
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           return
 

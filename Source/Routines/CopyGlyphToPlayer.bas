@@ -47,7 +47,7 @@ end
             lda #16
             sta player3height
 end
-          return
+          return otherbank
           
 CopyGlyphP0
           asm
@@ -58,7 +58,7 @@ CopyGlyphP0
             lda #16
             sta player0height
 end
-          return
+          return otherbank
 
 CopyGlyphP1
           asm
@@ -69,7 +69,7 @@ CopyGlyphP1
             lda #16
             sta player1height
 end
-          return
+          return otherbank
 
 CopyGlyphP2
           asm
@@ -80,4 +80,4 @@ CopyGlyphP2
             lda #16
             sta player2height
 end
-          return
+          return otherbank

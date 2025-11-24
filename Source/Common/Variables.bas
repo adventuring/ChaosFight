@@ -332,12 +332,9 @@
           rem   preview (REDIMMED - Game Mode uses var37 for
           rem ADMIN: Character select variables moved to SCRAM to free var37-var40 for playerCharacter (COMMON)
           rem NOTE: Overlaps with Game Mode characterSpecialAbility/enhancedButtonStates (w089-w090) - safe since Admin and Game never run simultaneously
-          rem Primary alias for reads (most common access pattern)
-          dim characterSelectCharacterIndex = r122
           dim characterSelectCharacterIndex_W = w122
           dim characterSelectCharacterIndex_R = r122
           rem ADMIN: Which player is currently selecting (1-4)
-          dim characterSelectPlayer = r123
           dim characterSelectPlayer_W = w123
           dim characterSelectPlayer_R = r123
 
@@ -345,14 +342,14 @@
           rem NOTE: These are REDIMMED in Game Mode for animationCounter
           rem   (var24-var27)
           rem ADMIN: Arena preview state (REDIMMED - Game Mode uses
-          dim arenaPreviewData = var24
           rem   var24 for animationCounter[0])
+          dim arenaPreviewData = var24
           rem ADMIN: Scroll position (REDIMMED - Game Mode uses var25
-          dim arenaScrollOffset = var25
           rem   for animationCounter[1])
+          dim arenaScrollOffset = var25
           rem ADMIN: Cursor position (REDIMMED - Game Mode uses var26
-          dim arenaCursorPos = var26
           rem   for animationCounter[2])
+          dim arenaCursorPos_W = var26
           rem ADMIN: Confirmation timer (REDIMMED - Game Mode uses var27
           rem   for animationCounter[3])
           dim arenaConfirmTimer = var27

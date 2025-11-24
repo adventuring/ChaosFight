@@ -61,7 +61,7 @@ end
           if temp1 < Bank1MinSongID then goto LoadSongFromBank15
           gosub LoadSongPointer bank1
           rem Song in Bank 1
-          gosub LoadSongVoice1PointerBank1
+          gosub LoadSongVoice1PointerBank1 bank1
           goto LoadSongPointersDone
 LoadSongFromBank15
           rem Helper: Loads song pointers from Bank 15
@@ -122,7 +122,7 @@ LoadSongPointersDone
           let musicVoice1Frame_W = 1
 
           rem Start first notes
-          goto UpdateMusic
+          goto UpdateMusic bank15
           rem tail call
 
 UpdateMusic
@@ -206,10 +206,10 @@ IsChaotica
           rem Initialize frame counters to trigger first note load
           let musicVoice1Frame_W = 1
           rem Tail call to reload first notes
-          goto UpdateMusic
+          goto UpdateMusic bank15
           rem tail call
 MusicUpdateDone
-          return
+          return otherbank
 CalculateMusicVoiceEnvelope
           asm
 CalculateMusicVoiceEnvelope
@@ -289,7 +289,7 @@ CMVE_CalcElapsed
           rem Check if in decay phase (last NoteDecayFrames frames)
           if temp3 <= NoteDecayFrames then CMVE_ApplyDecay
           rem Sustain phase - use target AUDV (already set)
-          return
+          return otherbank
 CMVE_ApplyAttack
           rem Helper: Applies attack envelope (ramps up volume)
           rem
@@ -317,7 +317,7 @@ CMVE_ApplyAttack
           rem Set voice-specific AUDV
           if temp1 = 0 then CMVE_SetAUDV0
           let AUDV1 = temp6
-          return
+          return otherbank
 CMVE_SetAUDV0
           rem Helper: Sets AUDV0 for Voice 0
           rem
@@ -332,7 +332,7 @@ CMVE_SetAUDV0
           rem Constraints: Internal helper for CMVE_ApplyAttack and
           rem CMVE_ApplyDecay, only called for voice 0
           let AUDV0 = temp6
-          return
+          return otherbank
 CMVE_ApplyDecay
           rem Helper: Applies decay envelope (ramps down volume)
           rem
@@ -360,7 +360,7 @@ CMVE_ApplyDecay
           rem Set voice-specific AUDV
           if temp1 = 0 then CMVE_SetAUDV0
           let AUDV1 = temp6
-          return
+          return otherbank
 
 UpdateMusicVoice0
           asm
@@ -400,7 +400,7 @@ end
           if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote0Bank15 bank15 : return
           gosub LoadMusicNote0 bank1
           rem Song in Bank 1
-          return
+          return otherbank
 
 UpdateMusicVoice1
           asm
@@ -455,7 +455,7 @@ end
           if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote1Bank15 bank15 : return
           gosub LoadMusicNote1 bank1
           rem Song in Bank 1
-          return
+          return otherbank
 
 StopMusic
           rem
@@ -487,4 +487,4 @@ StopMusic
           let musicVoice0Frame_W = 0
           rem Reset frame counters
           let musicVoice1Frame_W = 0
-          return
+          return otherbank

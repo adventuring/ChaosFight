@@ -32,7 +32,7 @@ end
 
           let temp2 = 1
           rem Cooldown expired, guard allowed
-          return
+          return otherbank
 
 GuardCooldownBlocked
           rem Currently guarding or in cooldown - not allowed to start
@@ -49,5 +49,5 @@ GuardCooldownBlocked
           rem Currently guarding or in cooldown - not allowed to start
           let temp2 = 0
           rem   new guard
-          return
+          return otherbank
 

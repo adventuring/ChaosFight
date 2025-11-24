@@ -45,13 +45,14 @@ end
           rem Initialize fire hold timer (for returning to Character
           rem   Select)
 
-          gosub SetGameScreenLayout bank8
-          rem Set screen layout (32×8 for character display)
+          rem Set screen layout (32×8 for character display) - inlined
+          pfrowheight = ScreenPfRowHeight
+          pfrows = ScreenPfRows
 
           COLUBK = ColGray(0)
           rem Set background color (B&W safe)
 
           rem Playfield layout is static; ArenaSelect renders via playfield data
-          return
+          return otherbank
 
 

@@ -119,7 +119,7 @@ end
           missile0height = 0
           missile1height = 0
           gosub SetSpritePositionsRenderMissiles
-          return
+          return otherbank
 
 SetSpritePositionsRenderMissiles
           asm
@@ -137,7 +137,7 @@ RenderMissilesTwoPlayer
           let temp1 = 0
 RenderMissilePair
           gosub SetSpritePositionsRenderPair
-          return
+          return otherbank
 
 SetSpritePositionsRenderPair
           asm
@@ -146,7 +146,7 @@ end
           gosub RenderMissileForParticipant
           let temp1 = temp1 + 1
           gosub RenderMissileForParticipant
-          return
+          return otherbank
 
 RenderMissileForParticipant
           asm
@@ -171,7 +171,7 @@ end
           if RMF_active then goto RMF_MissileActive
           let temp2 = RMF_select
           gosub RenderRoboTitoStretchMissile bank8
-          return
+          return otherbank
 
 RMF_MissileActive
           let RMF_character = playerCharacter[RMF_participant]
@@ -182,7 +182,7 @@ RMF_MissileActive
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ_R[RMF_participant]
           missile1height = CharacterMissileHeights[RMF_character]
-          return
+          return otherbank
 
 RMF_WriteMissile0
           rem Missile0 registers
@@ -191,7 +191,7 @@ RMF_WriteMissile0
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ_R[RMF_participant]
           missile0height = CharacterMissileHeights[RMF_character]
-          return
+          return otherbank
 
 CopyParticipantSpritePosition
           asm
@@ -210,12 +210,12 @@ end
           if temp1 = 2 then goto CPS_WritePlayer2
           player3x = playerX[temp1]
           player3y = playerY[temp1]
-          return
+          return otherbank
 
 CPS_WritePlayer2
           player2x = playerX[temp1]
           player2y = playerY[temp1]
-          return
+          return otherbank
 
 RenderRoboTitoStretchMissile
           asm
@@ -236,7 +236,7 @@ end
           rem Constraints: Caller supplies participant/missile pairing so this
           rem               routine does not perform frame-parity dispatch.
           if playerCharacter[temp1] = CharacterRoboTito then RRTM_CheckStretch
-          return
+          return otherbank
 
 RRTM_CheckStretch
           if (characterStateFlags_R[temp1] & 1) then return
@@ -244,7 +244,7 @@ RRTM_CheckStretch
           let temp3 = temp3 & 240
           let temp3 = temp3 / 16
           if temp3 = 10 then RRTM_ReadStretchHeight
-          return
+          return otherbank
 
 RRTM_ReadStretchHeight
           let temp4 = missileStretchHeight_R[temp1]
@@ -257,7 +257,7 @@ RRTM_ReadStretchHeight
           missile1height = temp4
           ENAM1 = 1
           NUSIZ1 = 0
-          return
+          return otherbank
 
 RRTM_WriteMissile0
           rem Missile0 registers
@@ -266,5 +266,5 @@ RRTM_WriteMissile0
           missile0height = temp4
           ENAM0 = 1
           NUSIZ0 = 0
-          return
+          return otherbank
 

@@ -62,5 +62,5 @@ end
           rem Advance pointer by 4 bytes (16-bit addition)
           let soundEffectPointer1 = soundEffectPointer1 + 4
 
-          return
+          return otherbank
 

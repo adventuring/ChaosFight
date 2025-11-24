@@ -72,8 +72,9 @@ end
           gosub InitializeSpritePointers bank14
           rem Ensure pointers are set before loading any sprite data
 
-          gosub SetGameScreenLayout bank8
-          rem Set screen layout for gameplay (32×8 game layout)
+          rem Set screen layout for gameplay (32×8 game layout) - inlined
+          pfrowheight = ScreenPfRowHeight
+          pfrows = ScreenPfRows
           rem SuperChip variables var0-var15 available in gameplay
 
           rem Initialize player positions
@@ -231,7 +232,7 @@ SkipPlayer4
           gosub LoadArena bank16
           rem Load arena data
 
-          return
+          return otherbank
           rem Gameplay state initialized - return to ChangeGameMode
           rem MainLoop will dispatch to GameMainLoop based on gameMode =
           rem   ModeGame

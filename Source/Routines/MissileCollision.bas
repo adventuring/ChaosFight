@@ -97,7 +97,7 @@ end
           let cachedHitboxBottom_W = cachedHitboxTop_R + temp6
 
           gosub CheckPlayersAgainstCachedHitbox
-          return
+          return otherbank
 
 CheckAOECollision
           asm
@@ -163,7 +163,7 @@ end
 
           gosub CacheAOELeftHitbox
           gosub CheckPlayersAgainstCachedHitbox
-          return
+          return otherbank
           
 CheckAOEDirection_Right
           asm
@@ -198,7 +198,7 @@ end
           rem Constraints: None
           gosub CacheAOERightHitbox
           gosub CheckPlayersAgainstCachedHitbox
-          return
+          return otherbank
 
 CheckAOEDirection_Left
           asm
@@ -233,7 +233,7 @@ end
           rem Constraints: None
           gosub CacheAOELeftHitbox
           gosub CheckPlayersAgainstCachedHitbox
-          return
+          return otherbank
 
 CacheAOERightHitbox
           asm
@@ -247,7 +247,7 @@ end
           let cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
           let cachedHitboxTop_W = playerY[temp1]
           let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
-          return
+          return otherbank
 
 CacheAOELeftHitbox
           asm
@@ -261,7 +261,7 @@ end
           let cachedHitboxLeft_W = cachedHitboxRight_R - PlayerSpriteHalfWidth
           let cachedHitboxTop_W = playerY[temp1]
           let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
-          return
+          return otherbank
 
 CheckPlayersAgainstCachedHitbox
           asm
@@ -279,10 +279,10 @@ end
           if playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R then CPB_NextPlayer
           if playerY[temp2] >= cachedHitboxBottom_R then CPB_NextPlayer
           let temp4 = temp2
-          return
+          return otherbank
 CPB_NextPlayer
           next
-          return
+          return otherbank
 
 MissileCollPF
           asm
@@ -334,5 +334,5 @@ end
           if temp1 then let temp4 = $80 : return
           rem pfread(column, row) returns 0 if clear, non-zero if set
           rem Clear
-          return
+          return otherbank
 

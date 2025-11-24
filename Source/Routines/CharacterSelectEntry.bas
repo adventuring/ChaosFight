@@ -49,7 +49,7 @@ CharacterSelectEntry
           let characterSelectAnimationTimer  = 0
           let characterSelectAnimationState  = 0
           rem Start with idle animation
-          let characterSelectCharacterIndex  = 0
+          let characterSelectCharacterIndex_W = 0
           rem Start with first character
           let characterSelectAnimationFrame  = 0
 

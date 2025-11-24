@@ -20,5 +20,5 @@ end
           for temp1 = 0 to 3
           gosub UpdateSingleGuardTimer bank10
           next
-          return
+          return otherbank
 

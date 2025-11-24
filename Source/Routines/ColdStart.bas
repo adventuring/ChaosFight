@@ -80,11 +80,6 @@ end
           rem Player 4: green
           COLUP3 = ColGreen(12)
 
-          rem Step 4: Initialize audio channels (silent on cold start)
-          AUDC0 = 0
-          AUDV0 = 0
-          AUDC1 = 0
-          AUDV1 = 0
 
           rem Step 5: Initialize game state and transition to first mode
           rem Set initial game mode (Publisher Prelude)

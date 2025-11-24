@@ -44,7 +44,7 @@ end
           let titlescreenWindow2 = 42  ; AtariAgeText visible
           let titlescreenWindow3 = 0   ; ChaosFight hidden
           let titlescreenWindow4 = 0   ; BRP hidden
-          return
+          return otherbank
 
 SetAuthorWindowValues
           asm
@@ -71,7 +71,7 @@ end
           let titlescreenWindow2 = 0   ; AtariAgeText hidden
           let titlescreenWindow3 = 0   ; ChaosFight hidden
           let titlescreenWindow4 = 42  ; BRP visible
-          return
+          return otherbank
 
 SetTitleWindowValues
           asm
@@ -97,5 +97,5 @@ end
           let titlescreenWindow2 = 0   ; AtariAgeText hidden
           let titlescreenWindow3 = 42  ; ChaosFight visible
           let titlescreenWindow4 = 0   ; Interworldly hidden
-          return
+          return otherbank
 

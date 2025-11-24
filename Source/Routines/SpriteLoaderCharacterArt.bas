@@ -90,7 +90,7 @@ Bank2Dispatch
           rem Bank routine expects: temp6=char, temp2=frame,
           gosub SetPlayerCharacterArtBank2 bank2
           rem temp3=action, temp5=player
-          return
+          return otherbank
 
 Bank3Dispatch
           rem Load character art from Bank 3
@@ -119,7 +119,7 @@ Bank3Dispatch
           rem Bank routine expects: temp6=char, temp2=frame,
           gosub SetPlayerCharacterArtBank3 bank3
           rem temp3=action, temp5=player
-          return
+          return otherbank
 
 Bank4Dispatch
           rem Load character art from Bank 4
@@ -148,7 +148,7 @@ Bank4Dispatch
           rem Bank routine expects: temp6=char, temp2=frame,
           gosub SetPlayerCharacterArtBank4 bank4
           rem temp3=action, temp5=player
-          return
+          return otherbank
 
 Bank5Dispatch
           rem Load character art from Bank 5
@@ -177,5 +177,5 @@ Bank5Dispatch
           rem Bank routine expects: temp6=char, temp2=frame,
           gosub SetPlayerCharacterArtBank5 bank5
           rem temp3=action, temp5=player
-          return
+          return otherbank
 

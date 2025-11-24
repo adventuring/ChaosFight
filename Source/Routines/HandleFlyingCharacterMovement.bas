@@ -183,17 +183,17 @@ HFCM_CheckVertical
           if temp6 = 0 then HFCM_VertJoy0
           if joy1up then goto HFCM_VertUp
           if joy1down then goto HFCM_VertDown
-          return
+          return otherbank
 HFCM_VertJoy0
           if joy0up then goto HFCM_VertUp
           if joy0down then goto HFCM_VertDown
-          return
+          return otherbank
 HFCM_VertUp
           if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] - characterMovementSpeed : return
           if temp5 = 2 then let playerY[temp1] = playerY[temp1] - characterMovementSpeed : return
-          return
+          return otherbank
 HFCM_VertDown
           if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] + characterMovementSpeed : return
           if temp5 = 2 then let playerY[temp1] = playerY[temp1] + characterMovementSpeed : return
-          return
+          return otherbank
 

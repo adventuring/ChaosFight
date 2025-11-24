@@ -46,14 +46,14 @@ end
 LoadArenaDispatch
           gosub DWS_GetBWMode bank15
           let temp6 = temp2
-          gosub LoadArenaByIndex
+          gosub LoadArenaByIndex bank16
           if temp6 then goto LA_LoadBWColors
           rem Load color color table - fall through to LoadArenaColorsColor
           goto LA_LoadColorColors
 LA_LoadBWColors
           rem Load B&W color table (shared routine)
           gosub LoadArenaColorsBW
-          return
+          return otherbank
 LA_LoadColorColors
 
 LoadArenaColorsColor
@@ -84,7 +84,7 @@ end
 
 .SetArenaColorPointerDone
 end
-          return
+          return otherbank
 
 LoadArenaColorsBW
           asm
@@ -107,7 +107,7 @@ end
             lda #>ArenaColorsBW
             sta pfcolortable+1
 end
-          return
+          return otherbank
 
 LoadArenaRandom
           rem Select random arena (0-31) using proper random number
@@ -132,12 +132,12 @@ LoadArenaRandom
           rem Fall through to LoadArenaDispatch logic (inline to avoid goto)
           gosub DWS_GetBWMode bank15
           let temp6 = temp2
-          gosub LoadArenaByIndex
+          gosub LoadArenaByIndex bank16
           if temp6 then goto LAR_LoadBWColors
           rem Load color color table (use gosub to avoid goto)
-          gosub LoadArenaColorsColor
-          return
+          gosub LoadArenaColorsColor bank16
+          return otherbank
 LAR_LoadBWColors
           rem Load B&W color table (shared routine)
           gosub LoadArenaColorsBW
-          return
+          return otherbank

@@ -82,11 +82,11 @@ HCSF_HandleFire
           let temp3 = temp1
           let temp1 = temp3
           let temp2 = PlayerLockedNormal
-          gosub SetPlayerLocked
+          gosub SetPlayerLocked bank6
           let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
-          return
+          return otherbank
 HCSF_HandleHandicap
           rem Handle handicap mode selection (75% health)
           rem
@@ -102,11 +102,11 @@ HCSF_HandleHandicap
           let temp3 = temp1
           let temp1 = temp3
           let temp2 = PlayerHandicapped
-          gosub SetPlayerLocked
+          gosub SetPlayerLocked bank6
           let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
-          return
+          return otherbank
 
 HCSF_HandleRandom
           rem Handle random character selection
@@ -137,5 +137,5 @@ HCSF_HandleRandomSound
           gosub PlaySoundEffect bank15
           rem Fall through - character will stay as RandomCharacter
           rem until roll succeeds
-          return
+          return otherbank
 

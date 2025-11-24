@@ -237,7 +237,7 @@ PAG_SetRoboTitoStretchPermission
           rem Grant stretch permission on landing
           let missileStretchHeight_W[temp1] = 0
           rem Clear stretch missile height on landing (not stretching)
-          return
+          return otherbank
 
 GravityCheckBottom
           rem At bottom of playfield - treat as ground if feet are at
@@ -274,5 +274,5 @@ GravityNextPlayer
           rem Move to next player
           if temp1 < 4 then goto GravityLoop
 
-          return
+          return otherbank
 

@@ -1,6 +1,14 @@
           rem ChaosFight - Source/Routines/AnimationSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
+          data CharacterWindupNextAction
+255, 15, 255, 255, 14, 14, 255, 255, 255, 14, 255, 14, 255, 255, 255, 255
+end
+
+          data CharacterExecuteNextAction
+1, 255, 1, 1, 15, 1, 1, 1, 1, 1, 1, 15, 1, 1, 1, 1
+end
+
 UpdateCharacterAnimations
           asm
 UpdateCharacterAnimations
@@ -14,19 +22,14 @@ end
           rem Mutates: currentPlayer (0-3), animationCounter_W[], currentAnimationFrame_W[]
           rem Calls: UpdatePlayerAnimation (bank10), LoadPlayerSprite (bank16)
           rem Constraints: None
-
-          rem Optimized: Loop through all players instead of individual calls
+          dim UCA_quadtariActive = temp5
+          let UCA_quadtariActive = controllerStatus & SetQuadtariDetected
           for currentPlayer = 0 to 3
-            rem Skip players 2-3 if Quadtari not detected (2-player mode)
-            if currentPlayer >= 2 then goto CheckQuadtari
-            goto AnimationProcessPlayer
-CheckQuadtari
-            if controllerStatus & SetQuadtariDetected then goto AnimationProcessPlayer
-            goto AnimationNextPlayer
+            if currentPlayer < 2 then goto AnimationProcessPlayer
+            if !UCA_quadtariActive then goto AnimationNextPlayer
 AnimationProcessPlayer
             gosub UpdatePlayerAnimation
 AnimationNextPlayer
-            rem Continue to next player
           next
 UpdatePlayerAnimation
           asm
@@ -146,7 +149,7 @@ AdvanceFrame
           if temp4 >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
 DoneAdvance
-          return
+          return otherbank
 
 HandleFrame7Transition
           rem Frame 7 completed, handle action-specific transitions
@@ -211,7 +214,7 @@ UpdateSprite
           let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
           gosub LoadPlayerSprite bank16
-          return
+          return otherbank
 
 SetPlayerAnimation
           asm
@@ -270,7 +273,7 @@ end
           let temp4 = currentPlayer
           gosub LoadPlayerSprite bank16
 
-          return
+          return otherbank
 
 InitializeAnimationSystem
           rem Initialize animation system for all players
@@ -285,9 +288,9 @@ InitializeAnimationSystem
           rem Initialize all players to idle animation
           let temp2 = ActionIdle
           for currentPlayer = 0 to 3
-            gosub SetPlayerAnimation
+            gosub SetPlayerAnimation bank11
           next
-          return
+          return otherbank
 
 HandleAnimationTransition
           asm
@@ -301,16 +304,16 @@ end
 TransitionLoopAnimation
           rem SCRAM write to currentAnimationFrame_W
           let currentAnimationFrame_W[currentPlayer] = 0
-          return
+          return otherbank
 
 TransitionToIdle
           let temp2 = ActionIdle
-          goto SetPlayerAnimation
+          goto SetPlayerAnimation bank11
           rem tail call
 
 TransitionToFallen
           let temp2 = ActionFallen
-          goto SetPlayerAnimation
+          goto SetPlayerAnimation bank11
           rem tail call
 
 TransitionHandleJump
@@ -320,12 +323,12 @@ TransitionHandleJump
           if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
           let temp2 = ActionJumping
           rem Still ascending (negative or zero Y velocity), stay in jump
-          goto SetPlayerAnimation
+          goto SetPlayerAnimation bank11
           rem tail call
 TransitionHandleJump_TransitionToFalling
           let temp2 = ActionFalling
           rem Falling (positive Y velocity), transition to falling
-          goto SetPlayerAnimation
+          goto SetPlayerAnimation bank11
           rem tail call
 
 TransitionHandleFallBack
@@ -347,12 +350,12 @@ TransitionHandleFallBack
           if temp1 then TransitionHandleFallBack_HitWall
           let temp2 = ActionFallen
           rem No wall collision, transition to fallen
-          goto SetPlayerAnimation
+          goto SetPlayerAnimation bank11
           rem tail call
 TransitionHandleFallBack_HitWall
           let temp2 = ActionIdle
           rem Hit wall, transition to idle
-          goto SetPlayerAnimation
+          goto SetPlayerAnimation bank11
           rem tail call
 
           rem
@@ -364,39 +367,28 @@ HandleAttackTransition
           if ActionAttackWindup = temp1 then goto HandleWindupEnd
           if ActionAttackExecute = temp1 then goto HandleExecuteEnd
           if ActionAttackRecovery = temp1 then goto HandleRecoveryEnd
-          return
+          return otherbank
 
 HandleWindupEnd
+          dim HAT_characterIndex = temp3
           let temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then return
-          if temp1 >= 16 then goto PlaceholderWindup
-
-          let temp2 = 255
-          rem Curler: Windup → Recovery
-          if temp1 = 1 then let temp2 = ActionAttackRecovery
-          rem FatTony, Megax, Nefertem, PorkChop: Windup → Execute
-          if temp1 = 4 then let temp2 = ActionAttackExecute
-          if temp1 = 5 then let temp2 = ActionAttackExecute
-          if temp1 = 9 then let temp2 = ActionAttackExecute
-          if temp1 = 11 then let temp2 = ActionAttackExecute
-          rem No matching transition: leave animation unchanged
+          let HAT_characterIndex = temp1
+          if HAT_characterIndex >= 16 then let HAT_characterIndex = 0
+          let temp2 = CharacterWindupNextAction(HAT_characterIndex)
           if temp2 = 255 then return
-          goto SetPlayerAnimation
-
-PlaceholderWindup
-          if temp1 <= 30 then return
-          return
+          goto SetPlayerAnimation bank11
 
 HandleExecuteEnd
           let temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then return
           if temp1 = 6 then goto HarpyExecute
-          if temp1 = 1 then return
-          let temp2 = ActionIdle
-          rem FatTony and PorkChop fall into recovery after Execute phase
-          if temp1 = 4 then let temp2 = ActionAttackRecovery
-          if temp1 = 11 then let temp2 = ActionAttackRecovery
-          goto SetPlayerAnimation
+          dim HEE_lookupIndex = temp3
+          let HEE_lookupIndex = temp1
+          if HEE_lookupIndex >= 16 then let HEE_lookupIndex = 0
+          let temp2 = CharacterExecuteNextAction(HEE_lookupIndex)
+          if temp2 = 255 then return
+          goto SetPlayerAnimation bank11
 
 HarpyExecute
           rem Harpy: Execute → Idle
@@ -424,16 +416,15 @@ HarpyExecute
           rem   from attack, keep it
           let temp2 = ActionIdle
           rem Transition to Idle
-          goto SetPlayerAnimation
+          goto SetPlayerAnimation bank11
           rem tail call
-          rem
-          rem PLACEHOLDER CHARACTER ANIMATION HANDLERS (16-30)
-          rem Placeholder indices share PlaceholderWindup (return) and
-          rem ExecuteToIdle to keep the table dense until bespoke logic
+          rem Placeholder characters (16-30) reuse the table entries for
+          rem Bernie (0) so they no-op on windup and fall to Idle on
+          rem execute, keeping the jump tables dense until bespoke logic
           rem arrives.
 
 HandleRecoveryEnd
           let temp2 = ActionIdle
           rem All characters: Recovery → Idle
-          goto SetPlayerAnimation
+          goto SetPlayerAnimation bank11
           rem tail call

@@ -46,10 +46,10 @@ RGHI_Right
           gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then goto RGHI_SPF_No2
           if temp2 > 9 then goto RGHI_SPF_No2
-          return
+          return otherbank
 RGHI_SPF_No2
           let playerState[temp1] = playerState[temp1] | 1
-          return
+          return otherbank
 
 RadishGoblinHandleStickDown
           asm
@@ -61,7 +61,7 @@ end
           let playerVelocityXL[temp1] = 0
           let playerVelocityY[temp1] = 0
           let playerVelocityYL[temp1] = 0
-          return
+          return otherbank
 
 RadishGoblinCheckGroundBounce
           asm
@@ -138,7 +138,7 @@ RGBGB_DoneApply
           let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           let radishGoblinBounceState_W[temp1] = 1
           let radishGoblinLastContactY_W[temp1] = playerY[temp1]
-          return
+          return otherbank
 RGBGB_ClearCheck
           if radishGoblinBounceState_R[temp1] = 0 then return
           let temp2 = playerY[temp1]
@@ -146,10 +146,10 @@ RGBGB_ClearCheck
           if temp2 < temp3 then goto RGBGB_ClearState2
           let temp4 = temp2 - temp3
           if temp4 > 8 then goto RGBGB_ClearState2
-          return
+          return otherbank
 RGBGB_ClearState2
           let radishGoblinBounceState_W[temp1] = 0
-          return
+          return otherbank
 
 RadishGoblinCheckWallBounce
           asm
@@ -158,7 +158,7 @@ end
           rem Wall bounce placeholder (horizontal only, to be enhanced)
           rem Input: currentPlayer = player index (0-3) (global)
           if playerCharacter[currentPlayer] <> CharacterRadishGoblin then return
-          return
+          return otherbank
 
 RadishGoblinHandleStickDownRelease
           asm
@@ -171,4 +171,4 @@ end
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           let radishGoblinBounceState_W[temp1] = 0
-          return
+          return otherbank

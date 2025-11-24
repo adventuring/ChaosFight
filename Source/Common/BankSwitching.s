@@ -1,20 +1,11 @@
           ; CRITICAL: Ensure ORG is set for bankswitch code placement
           ; batariBASIC sets ORG before include, but DASM may need it here too
-.begin_bscode SUBROUTINE
-          ldx #$ff
-          txs
-          lda #(>(start-1) & $0F)
-          ora #(current_bank << 4)
-          pha
-          lda #<(start-1)
-          pha
-.BS_return
+.BS_return SUBROUTINE
           pha
           txa
           pha
           tsx
-
-          lda 4,x ; get encoded high byte of return address from stack
+          lda 6,x ; get encoded high byte of return address from stack (account for saved A/X)
           tay ; save encoded byte for restoration
           and #$f0 ; extract bank number from high nibble
           lsr ; shift right once
@@ -24,11 +15,11 @@
           pha ; save bank number temporarily
           tya ; get saved encoded byte
           ora #$f0 ; restore actual address
-          sta 4,x ; store restored address back to stack (X still has stack pointer)
+          sta 6,x ; store restored address back to stack (X still has stack pointer)
           pla ; restore bank number
           tax ; bank number (0-F) now in X
 .BS_jsr
-          lda bankswitch_hotspot,x
+          nop $ffe0,x
           pla
           tax
           pla

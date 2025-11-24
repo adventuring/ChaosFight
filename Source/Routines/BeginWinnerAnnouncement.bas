@@ -45,8 +45,9 @@ end
           rem winnerPlayerIndex should already be set by game end logic
           rem   (FindWinner.bas)
 
-          gosub SetGameScreenLayout bank8
-          rem Set screen layout (32×8 for character display)
+          rem Set screen layout (32×8 for character display) - inlined
+          pfrowheight = ScreenPfRowHeight
+          pfrows = ScreenPfRows
 
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)
@@ -69,5 +70,5 @@ end
           rem Start winner’s character theme song
           gosub StartMusic bank15
 
-          return
+          return otherbank
 

@@ -64,7 +64,7 @@ CDP_MergeStatus
           let controllerStatus = temp1 | temp2
           rem   never downgrades
 
-          return
+          return otherbank
 
 CDP_DetectGenesis
           asm
@@ -125,7 +125,7 @@ CDP_NoGenesisLeft
           rem Set RightPortGenesis bit
 
 CDP_NoGenesisRight
-          return
+          return otherbank
 
 CDP_DetectJoy2bPlus
           asm
@@ -182,7 +182,7 @@ CDP_NoJoy2Left
           rem Set RightPortJoy2bPlus bit
 
 CDP_NoJoy2Right
-          return
+          return otherbank
 
 
           rem
@@ -238,7 +238,7 @@ ToggleBWDone
           gosub ReloadArenaColors bank14
 #endif
 
-          return
+          return otherbank
 
           rem
           rem Quadtari Multiplexing
@@ -270,7 +270,7 @@ UpdateQuadIn
           rem fall through to ReadPlayers12
 
 ReadPlayers12
-          return
+          return otherbank
           rem Read players 1 & 2 (even frames, qtcontroller=0)
           rem
           rem Input: qtcontroller (global) = multiplexing state (0 for
@@ -292,7 +292,7 @@ ReadPlayers12
           rem   correct
 
 ReadPlayers34
-          return
+          return otherbank
           rem Read players 3 & 4 (odd frames, qtcontroller=1)
           rem
           rem Input: qtcontroller (global) = multiplexing state (1 for
@@ -317,6 +317,6 @@ ReadPlayers34
 PauseNotPressed
           let systemFlags = systemFlags | SystemFlagPauseButtonPrev
           rem Button not pressed, update previous state (set bit 5)
-          return
+          return otherbank
 
 

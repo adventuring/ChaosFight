@@ -206,7 +206,7 @@ PFBlockDown
           rem Skip zeroing velocity for Radish Goblin (bounce system handles it)
           if playerCharacter[currentPlayer] = CharacterRadishGoblin then return
           if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
-          return
+          return otherbank
 
 PFCheckDown_Body
           let temp2 = temp5 / 16
@@ -238,9 +238,9 @@ PFCheckDown_CheckRight
           if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockDown
 
-          return
+          return otherbank
 
 CheckPlayfieldCollisionUpDone
-          return
+          return otherbank
 
 

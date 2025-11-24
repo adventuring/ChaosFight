@@ -89,5 +89,5 @@ MomentumRecoveryNext
           rem Re-enable smart branching optimization
           rem smartbranching on
 
-          return
+          return otherbank
 

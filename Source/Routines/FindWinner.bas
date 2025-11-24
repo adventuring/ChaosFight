@@ -25,5 +25,5 @@ end
           rem If no winner found (all eliminated), pick last eliminated
           rem tail call
           if winnerPlayerIndex_R = 255 then goto FindLastEliminated bank14
-          return
+          return otherbank
 

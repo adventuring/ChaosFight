@@ -47,5 +47,5 @@ PAI_ExecuteAttack
           if (playerState[temp1] & PlayerStateBitFacing) then return
           let temp4 = playerCharacter[temp1]
           gosub DispatchCharacterAttack bank10
-          return
+          return otherbank
 

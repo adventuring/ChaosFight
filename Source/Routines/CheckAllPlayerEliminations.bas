@@ -65,5 +65,5 @@ end
           gosub FindWinner bank14
           let gameEndTimer_W = 180
           let systemFlags = systemFlags | SystemFlagGameStateEnding
-          return
+          return otherbank
 

@@ -39,11 +39,11 @@ LSP_Lookup
           let songPointer = SongPointers1H[temp2]
           let songPointer = songPointer * 256
           let songPointer = songPointer + SongPointers1L[temp2]
-          return
+          return otherbank
 
 LSP_InvalidSong
           let songPointer = 0
-          return
+          return otherbank
 
 LoadSongVoice1PointerBank1
           asm
@@ -90,11 +90,11 @@ LSV1P_Lookup
           let songPointer = SongPointers1SecondH[temp2]
           let songPointer = songPointer * 256
           let songPointer = songPointer + SongPointers1SecondL[temp2]
-          return
+          return otherbank
 
 LSV1P_InvalidSong
           let songPointer = 0
-          return
+          return otherbank
 
 LoadMusicNote0
           asm
@@ -160,7 +160,7 @@ end
           rem Advance pointer by 4 bytes (16-bit addition)
           let musicVoice0Pointer = musicVoice0Pointer + 4
 
-          return
+          return otherbank
 
 LoadMusicNote0EndOfTrack
           rem Helper: Handle end of track for Voice 0
@@ -184,7 +184,7 @@ LoadMusicNote0EndOfTrack
           let musicVoice0Pointer = 0
           rem   only)
           AUDV0 = 0
-          return
+          return otherbank
 
 LoadMusicNote1
           asm
@@ -254,7 +254,7 @@ end
           rem Advance pointer by 4 bytes
           let musicVoice1Pointer = musicVoice1Pointer + 4
 
-          return
+          return otherbank
 
 LoadMusicNote1EndOfTrack
           rem Helper: Handle end of track for Voice 1
@@ -278,4 +278,4 @@ LoadMusicNote1EndOfTrack
           let musicVoice1Pointer = 0
           rem   only)
           AUDV1 = 0
-          return
+          return otherbank

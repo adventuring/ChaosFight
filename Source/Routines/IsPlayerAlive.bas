@@ -16,5 +16,5 @@ end
           rem Mutates: temp2
           rem Calls: None
           let temp2 = playerHealth[currentPlayer]
-          return
+          return otherbank
 

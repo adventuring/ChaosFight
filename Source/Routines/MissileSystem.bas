@@ -158,7 +158,7 @@ end
           goto VelocityDone
           rem VelocityDone label is in MissileCharacterHandlers.bas
 
-          return
+          return otherbank
 
 UpdateAllMissiles
           asm
@@ -185,7 +185,7 @@ end
           for temp1 = 0 to 3
           gosub UpdateOneMissile
           next
-          return
+          return otherbank
 
 UpdateOneMissile
           asm
@@ -473,11 +473,11 @@ MissileSystemNoHit
           let missileLifetime_W[temp1] = missileLifetimeValue
 MissileUpdateComplete
 
-          return
+          return otherbank
 
 HandleMissileBounceTail
           gosub HandleMissileBounce
-          return
+          return otherbank
 
           rem Character handlers extracted to MissileCharacterHandlers.bas
 
@@ -540,7 +540,7 @@ MissileSysPF
           gosub PlayfieldRead bank16
           if temp1 then let temp4 = 1 : return
           rem Default: no collision detected
-          return
+          return otherbank
 
 CheckMissilePlayerCollision
           rem
@@ -607,7 +607,7 @@ CheckMissilePlayerCollision
 MissileCheckNextPlayer
           next
 MissileCollisionReturn
-          return
+          return otherbank
 
 HandleMissileHit
           asm
@@ -777,7 +777,7 @@ KnockbackDone
 
           rem Spawn damage indicator visual (handled inline)
 
-          return
+          return otherbank
 
 HandleMissileBounce
           asm
@@ -843,7 +843,7 @@ BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc
 
           rem Continue bouncing (do not deactivate)
-          return
+          return otherbank
 
 DeactivateMissile
           rem
@@ -871,6 +871,6 @@ DeactivateMissile
           let temp6 = MaxByteValue - temp6
           let missileActive  = missileActive & temp6
           rem Invert bits
-          return
+          return otherbank
 
 

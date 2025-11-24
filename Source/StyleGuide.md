@@ -458,6 +458,33 @@ All source files should begin with:
 - **Inline very small subroutines** directly into calling code when
   appropriate
 
+### The 20-Byte Rule for Far Calls
+
+**CRITICAL**: Routines smaller than 20 bytes should NOT be far-called
+across banks. Far calls incur 15-20 bytes of overhead (bank switch,
+BS_jsr, BS_return scaffolding), which often exceeds the routine size
+itself.
+
+**Rule**: If a routine is **strictly less than 20 bytes** and is
+far-called, it should be:
+1. **Inlined** at every call site if it's a simple helper (one-liner or
+   trivial)
+2. **Made local** by creating a local copy in each consumer bank if it
+   needs to be shared but is too small for far-call overhead
+
+**Examples**:
+- `SetGameScreenLayout` (11 bytes, 5 call sites): Inlined at all call
+  sites
+- `DeactivatePlayerMissiles` (16 bytes, 1 call site): Inlined at call
+  site
+- `UrsuloAttack` (18 bytes, 1 call site): Inlined as tail call to
+  `PerformMeleeAttack`
+- `StartGuard` (20 bytes, 1 call site): Inlined at call site
+
+**Rationale**: Wasting more ROM on the trampoline than on the actual
+routine defeats the purpose of code sharing. Inlining small routines
+saves ROM and improves performance by eliminating bank switch overhead.
+
 **Acceptable grouping examples:**
 
 - `SpriteLoader.bas`: Contains multiple sprite loading functions

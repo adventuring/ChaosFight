@@ -14,7 +14,7 @@ end
           let currentPlayer = temp1
           rem Cache animation state at start (used for movement, jump,
           rem and attack checks)
-          gosub GetPlayerAnimationStateFunction
+          let temp2 = playerState[temp1] / 16
           rem   block movement during attack animations (states 13-15)
           if temp2 >= 13 then goto DoneLeftPortMovement
           rem Block movement during attack windup/execute/recovery

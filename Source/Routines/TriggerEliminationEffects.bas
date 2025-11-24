@@ -42,10 +42,12 @@ end
           if currentPlayer = 3 then player3x = 200
           rem Player 4 uses player3 sprite (multisprite)
 
-          rem Stop any active missiles for this player
-          goto DeactivatePlayerMissiles bank12
-          rem tail call
-
+          rem Stop any active missiles for this player - inlined
+          rem Clear missile active bit for this player (DeactivatePlayerMissiles)
+          if currentPlayer = 0 then let missileActive = missileActive & $FE
+          if currentPlayer = 1 then let missileActive = missileActive & $FD
+          if currentPlayer = 2 then let missileActive = missileActive & $FB
+          if currentPlayer = 3 then let missileActive = missileActive & $F7
 
           return
 

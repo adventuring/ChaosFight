@@ -41,5 +41,5 @@ end
           rem Sync integer position for rendering
           let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
 
-          return
+          return otherbank
 

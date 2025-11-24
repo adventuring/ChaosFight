@@ -28,7 +28,7 @@ end
           rem (called via if...goto)
           rem Optimized: Use on...goto instead of if-else chain
           on gameMode goto SetupPublisherPrelude SetupAuthorPrelude SetupTitle SetupCharacterSelect SetupFallingAnimation SetupArenaSelect SetupGame SetupWinner SetupAttract
-          return
+          return otherbank
 
 SetupPublisherPrelude
           rem Setup Publisher Prelude mode
@@ -44,7 +44,7 @@ SetupPublisherPrelude
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginPublisherPrelude
-          return
+          return otherbank
 
 SetupAuthorPrelude
           rem Setup Author Prelude mode
@@ -60,7 +60,7 @@ SetupAuthorPrelude
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginAuthorPrelude
-          return
+          return otherbank
 
 SetupTitle
           rem Setup Title Screen mode
@@ -76,10 +76,10 @@ SetupTitle
           rem screen state
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginTitleScreen
-          return
+          return otherbank
 
 SetupCharacterSelect
-          return
+          return otherbank
 SetupFallingAnimation
           rem Character select uses its own internal flow
           rem No separate Begin function needed - setup is handled
@@ -107,7 +107,7 @@ SetupFallingAnimation
           rem animation state
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginFallingAnimation bank12
-          return
+          return otherbank
 
 SetupArenaSelect
           rem Setup Arena Select mode
@@ -123,7 +123,7 @@ SetupArenaSelect
           rem arena select state
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginArenaSelect bank12
-          return
+          return otherbank
 
 SetupGame
           rem Setup Game mode
@@ -141,7 +141,7 @@ SetupGame
           rem BeginGameLoop resets gameplay state and returns
           rem MainLoop will dispatch to GameMainLoop when gameMode = ModeGame
           gosub BeginGameLoop bank11
-          return
+          return otherbank
 
 SetupWinner
           rem Setup Winner Announcement mode
@@ -157,7 +157,7 @@ SetupWinner
           rem accesses winner state
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginWinnerAnnouncement bank12
-          return
+          return otherbank
 
 SetupAttract
           rem Setup Attract Mode
@@ -173,4 +173,4 @@ SetupAttract
           rem attract mode state
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginAttractMode
-          return
+          return otherbank

@@ -269,7 +269,7 @@ end
           let temp2 = 0
           if (characterStateFlags_R[temp1] & 1) = 0 then RoboTitoInitiateDrop
           rem Not latched, dispatcher will fall through to StandardGuard
-          return
+          return otherbank
 RoboTitoInitiateDrop
           let temp2 = 1
           rem Signal dispatcher to skip guard after voluntary drop
@@ -284,7 +284,7 @@ RoboTitoVoluntaryDrop
           rem Set falling animation
           let missileStretchHeight_W[temp1] = 0
           rem Clear stretch missile height when dropping
-          return
+          return otherbank
 
           rem StandardJump is defined in CharacterControlsJump.bas (bank 12)
           rem This duplicate definition has been removed to fix label conflict
@@ -295,7 +295,7 @@ RoboTitoVoluntaryDrop
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping bit
-          return
+          return otherbank
 
 StandardGuard
           asm
@@ -344,5 +344,10 @@ end
           if temp2 = 0 then return
           rem Guard blocked by cooldown
 
-          goto StartGuard bank6
+          rem Activate guard state - inlined (StartGuard)
+          let playerState[temp1] = playerState[temp1] | 2
+          rem Set guard bit in playerState
+          let playerTimers_W[temp1] = GuardTimerMaxFrames
+          rem Set guard duration timer
+          return
 

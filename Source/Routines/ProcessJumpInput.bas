@@ -58,7 +58,7 @@ end
           rem Block jump during attack windup/execute/recovery
           let temp4 = playerCharacter[temp1]
           gosub DispatchCharacterJump bank10
-          return
+          return otherbank
 
 PJI_ZoeJumpCheck
           let temp6 = 0
@@ -71,17 +71,17 @@ PJI_ZoeJumpCheck
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank10
           if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
-          return
+          return otherbank
 
 PJI_BernieFallThrough
           rem Bernie enhanced button handled in BernieJump routine (fall through 1-row floors)
           gosub BernieJump bank12
-          return
+          return otherbank
 
 PJI_HarpyFlap
           gosub HarpyJump bank12
           rem Harpy enhanced button handled in HarpyJump routine (flap to fly)
-          return
+          return otherbank
 
 PJI_RoboTitoAscend
           rem Ascend toward ceiling (same logic as ProcessUpInput)
@@ -118,11 +118,11 @@ end
           rem Clear latch if DOWN pressed (check appropriate port)
           if temp1 & 2 = 0 then goto PJI_CheckJoy0Down
           if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
-          return
+          return otherbank
 PJI_CheckJoy0Down
           if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
-          return
+          return otherbank
 PJI_RoboTitoLatch
           let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
-          return
+          return otherbank
 

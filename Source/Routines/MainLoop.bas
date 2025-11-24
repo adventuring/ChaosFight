@@ -4,7 +4,6 @@
 MainLoop
           asm
 MainLoop
-
 end
           rem Dispatches game modes and handles reset entry point
           rem Inputs: switchreset (hardware), gameMode (global 0-7)
@@ -81,4 +80,4 @@ MainLoopDrawScreen
           rem Titlescreen graphics and kernel reside in bank9
           if gameMode < 3 then gosub DrawTitleScreen bank9
           if gameMode >= 3 then drawscreen
-          goto MainLoop
+          goto MainLoop bank16

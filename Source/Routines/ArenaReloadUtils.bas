@@ -32,7 +32,7 @@ end
           if temp6 then goto RAU_LoadBWColors
           rem Load color color table
           gosub LoadArenaColorsColor bank16
-          return
+          return otherbank
 RAU_LoadBWColors
           rem Load B&W color table
           asm
@@ -41,6 +41,6 @@ RAU_LoadBWColors
             lda #>ArenaColorsBW
             sta pfcolortable + 1
 end
-          return
+          return otherbank
 
 

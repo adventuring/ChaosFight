@@ -14,7 +14,7 @@ SelectStickLeft
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
-          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           return
 
 SelectStickRight
@@ -30,5 +30,5 @@ SelectStickRight
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
-          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           return

@@ -46,7 +46,7 @@ end
             lda #16
             sta player5height
 end
-          return
+          return otherbank
 SetGlyphP0
           asm
             lda temp4
@@ -56,7 +56,7 @@ SetGlyphP0
             lda #16
             sta player0height
 end
-          return
+          return otherbank
 SetGlyphP1
           asm
             lda temp4
@@ -66,7 +66,7 @@ SetGlyphP1
             lda #16
             sta player1height
 end
-          return
+          return otherbank
 SetGlyphP2
           asm
             lda temp4
@@ -76,7 +76,7 @@ SetGlyphP2
             lda #16
             sta player2height
 end
-          return
+          return otherbank
 SetGlyphP3
           asm
             lda temp4
@@ -86,7 +86,7 @@ SetGlyphP3
             lda #16
             sta player3height
 end
-          return
+          return otherbank
 SetGlyphP4
           asm
             lda temp4
@@ -96,6 +96,6 @@ SetGlyphP4
             lda #16
             sta player4height
 end
-          return
+          return otherbank
 
 

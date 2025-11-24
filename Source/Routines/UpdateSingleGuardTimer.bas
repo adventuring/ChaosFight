@@ -52,7 +52,7 @@ end
           let temp3 = temp3 - 1
           rem No cooldown active
           let playerTimers_W[temp1] = temp3
-          return
+          return otherbank
 
 UpdateGuardTimerActive
           rem Player is guarding - decrement guard duration timer
@@ -78,7 +78,7 @@ UpdateGuardTimerActive
           rem Decrement guard duration timer
           let playerTimers_W[temp1] = temp3
           if temp3 = 0 then GuardTimerExpired
-          return
+          return otherbank
 
 GuardTimerExpired
           rem Guard duration expired - clear guard bit and start
@@ -99,5 +99,5 @@ GuardTimerExpired
           let playerState[temp1] = playerState[temp1] & MaskClearGuard
           rem Start cooldown timer (same duration as guard)
           let playerTimers_W[temp1] = GuardTimerMaxFrames
-          return
+          return otherbank
 

@@ -35,7 +35,7 @@ SelectDrawScreenLoop
           if temp1 < temp6 then goto SelectDrawScreenLoop
           if temp6 = 4 then return
           gosub SelectHideLowerPlayerPreviews bank6
-          return
+          return otherbank
 
 SelectRenderPlayerPreview
           asm
@@ -54,7 +54,7 @@ end
           if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return
           rem Handicap state - set dimmed color and return
           rem Normal locked state - color already set by RenderPlayerPreview
-          return
+          return otherbank
 
 PlayerPreviewSetPosition
           asm
@@ -64,7 +64,7 @@ end
           let temp2 = SelectPreviewX[temp1]
           let temp3 = SelectPreviewY[temp1]
           gosub SelectApplyPreviewPosition
-          return
+          return otherbank
 
 SelectApplyPreviewPosition
           asm
@@ -76,19 +76,19 @@ end
 SelectApplyPreviewPositionP0
           player0x = temp2
           player0y = temp3
-          return
+          return otherbank
 SelectApplyPreviewPositionP1
           player1x = temp2
           player1y = temp3
-          return
+          return otherbank
 SelectApplyPreviewPositionP2
           player2x = temp2
           player2y = temp3
-          return
+          return otherbank
 SelectApplyPreviewPositionP3
           player3x = temp2
           player3y = temp3
-          return
+          return otherbank
 
 SelectHideLowerPlayerPreviews
           asm
@@ -97,7 +97,7 @@ end
           rem Move lower-player previews off-screen when Quadtari is absent
           player2y = 200
           player3y = 200
-          return
+          return otherbank
 
 RenderPlayerPreview
           asm
@@ -124,7 +124,7 @@ RenderPlayerPreviewInvoke
           gosub SelectApplyPlayerColor
           let temp2 = 0
           let temp3 = 0
-          return
+          return otherbank
 
 SelectApplyPlayerColor
           asm
@@ -135,16 +135,16 @@ end
           on currentPlayer goto SelectApplyPlayerColorP0 SelectApplyPlayerColorP1 SelectApplyPlayerColorP2 SelectApplyPlayerColorP3
 SelectApplyPlayerColorP0
           COLUP0 = temp2
-          return
+          return otherbank
 SelectApplyPlayerColorP1
           _COLUP1 = temp2
-          return
+          return otherbank
 SelectApplyPlayerColorP2
           COLUP2 = temp2
-          return
+          return otherbank
 SelectApplyPlayerColorP3
           COLUP3 = temp2
-          return
+          return otherbank
 
 SelectSetPlayerColorUnlocked
           asm
@@ -153,7 +153,7 @@ end
           rem Override sprite color to indicate unlocked state (white)
           let temp2 = ColGrey(14)
           gosub SelectApplyPlayerColor
-          return
+          return otherbank
 
 SelectSetPlayerColorHandicap
           asm
@@ -163,7 +163,7 @@ end
           rem Override sprite color to indicate handicap lock (dim player color)
           let temp2 = SelectPlayerColorHandicap[currentPlayer]
           gosub SelectApplyPlayerColor
-          return
+          return otherbank
 
 SelectUpdateAnimations
           asm
@@ -182,7 +182,7 @@ SelectUpdateAnimationLoop
 SelectUpdateAnimationNext
           let temp1 = temp1 + 1
           if temp1 < temp6 then goto SelectUpdateAnimationLoop
-          return
+          return otherbank
 
 SelectUpdatePlayerAnimation
           asm
@@ -211,7 +211,7 @@ end
           let characterSelectPlayerAnimationTimer_W[temp1] = 0
           let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
           let characterSelectPlayerAnimationFrame_W[temp1] = temp3
-          return
+          return otherbank
 
 CharacterSelectCheckControllerRescan
           asm
@@ -227,6 +227,6 @@ end
 CharacterSelectDoRescan
           gosub DetectPads bank13
 CharacterSelectRescanDone
-          return
+          return otherbank
 
 

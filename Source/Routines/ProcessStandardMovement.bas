@@ -50,7 +50,7 @@ PSM_LeftMomentum1
 PSM_AfterLeftSet1
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then PSM_InlineYesLeft
-          gosub GetPlayerAnimationStateFunction
+          let temp2 = playerState[temp1] / 16
           if temp2 < 5 then PSM_InlineNoLeft
           if temp2 > 9 then PSM_InlineNoLeft
 PSM_InlineYesLeft
@@ -77,7 +77,7 @@ PSM_RightMomentum1
 PSM_AfterRightSet1
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then PSM_InlineYesRight1
-          gosub GetPlayerAnimationStateFunction
+          let temp2 = playerState[temp1] / 16
           if temp2 < 5 then PSM_InlineNoRight1
           if temp2 > 9 then PSM_InlineNoRight1
 PSM_InlineYesRight1
@@ -110,7 +110,7 @@ PSM_LeftMomentum0
 PSM_AfterLeftSet0
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then PSM_InlineYesLeft0
-          gosub GetPlayerAnimationStateFunction
+          let temp2 = playerState[temp1] / 16
           if temp2 < 5 then PSM_InlineNoLeft0
           if temp2 > 9 then PSM_InlineNoLeft0
 PSM_InlineYesLeft0
@@ -138,7 +138,7 @@ PSM_RightMomentum0
 PSM_AfterRightSet0
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then PSM_InlineYesRight0
-          gosub GetPlayerAnimationStateFunction
+          let temp2 = playerState[temp1] / 16
           if temp2 < 5 then PSM_InlineNoRight0
           if temp2 > 9 then PSM_InlineNoRight0
 PSM_InlineYesRight0

@@ -47,7 +47,7 @@ end
           rem Mask bits 4-7 (value 240 = %11110000)
           rem Shift right by 4 (divide by 16) to get animation state
           rem   (0-15)
-          return
+          return otherbank
 
 InputHandleAllPlayers
           asm
@@ -128,7 +128,7 @@ InputHandlePlayer1
           gosub InputHandleRightPortPlayerFunction
 InputDonePlayer1Input
           rem Player 1 uses Joy1
-          return
+          return otherbank
 InputHandleQuadtariPlayers
           rem Skip Player 1 input (label only, no execution)
           rem
@@ -206,7 +206,7 @@ InputDonePlayer4Input
 
           qtcontroller = 0
           rem Switch back to even frame
-          return
+          return otherbank
 
 HandleGuardInput
           asm
@@ -253,7 +253,7 @@ HGI_CheckGuardRelease
           rem Stop guard early and start cooldown
           let playerTimers_W[temp1] = GuardTimerMaxFrames
           rem Start cooldown timer
-          return
+          return otherbank
 
 HandleUpInputAndEnhancedButton
           rem Unified handler for UP input and enhanced button (Button II) handling
@@ -334,23 +334,23 @@ HUIEB_RoboTitoCheckJoy0
           if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
 HUIEB_RoboTitoDone
           let temp3 = 0
-          return
+          return otherbank
 HUIEB_RoboTitoLatch
           rem Restore cached animation state
           let temp2 = temp5
           let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
           let temp3 = 0
-          return
+          return otherbank
 HUIEB_BernieFallThrough
           rem Bernie UP input handled in BernieJump routine (fall through 1-row floors)
           gosub BernieJump bank12
           let temp3 = 0
-          return
+          return otherbank
 HUIEB_HarpyFlap
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
           gosub HarpyJump bank12
           let temp3 = 0
-          return
+          return otherbank
 HUIEB_CheckEnhanced
           rem Process jump input from enhanced buttons (Genesis/Joy2b+ Button C/II)
           rem Note: For Shamone/MethHound, UP is form switch, so jump via enhanced buttons only
@@ -396,7 +396,7 @@ HUIEB_JumpProceed
 HUIEB_JumpDone
           rem Set Zoe Ryen double-jump flag if applicable
           if playerCharacter[temp1] = CharacterZoeRyen then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
-          return
+          return otherbank
 
 HandleStandardHorizontalMovement
           rem Unified handler for standard horizontal movement
@@ -435,7 +435,7 @@ HSHM_LeftMomentum
 HSHM_AfterLeftSet
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto HSHM_SPF_Yes1
-          gosub GetPlayerAnimationStateFunction
+          gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then goto HSHM_SPF_No1
           if temp2 > 9 then goto HSHM_SPF_No1
 HSHM_SPF_Yes1
@@ -471,7 +471,7 @@ HSHM_RightMomentum
 HSHM_AfterRightSet
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto HSHM_SPF_Yes2
-          gosub GetPlayerAnimationStateFunction
+          gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then goto HSHM_SPF_No2
           if temp2 > 9 then goto HSHM_SPF_No2
 HSHM_SPF_Yes2
@@ -481,7 +481,7 @@ HSHM_SPF_No2
           let temp3 = 0
 HSHM_SPF_Done2
           if !temp3 then let playerState[temp1] = playerState[temp1] | 1
-          return
+          return otherbank
 
 HandleFlyingCharacterMovement
           asm
@@ -583,7 +583,7 @@ HFCM_LeftApplyDone
           rem Preserve facing during hurt/recovery states (knockback, hitstun)
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto SPF_InlineYes1
-          gosub GetPlayerAnimationStateFunction
+          gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then goto SPF_InlineNo1
           if temp2 > 9 then goto SPF_InlineNo1
 SPF_InlineYes1
@@ -679,7 +679,7 @@ HFCM_RightApplyDone
           rem Preserve facing during hurt/recovery states while processing right movement
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto SPF_InlineYes2
-          gosub GetPlayerAnimationStateFunction
+          gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then goto SPF_InlineNo2
           if temp2 > 9 then goto SPF_InlineNo2
 SPF_InlineYes2
@@ -693,19 +693,19 @@ SPF_InlineDone2
           if temp1 & 2 = 0 then goto HFCM_VertJoy0
           if joy1up then goto HFCM_VertUp
           if joy1down then goto HFCM_VertDown
-          return
+          return otherbank
 HFCM_VertJoy0
           if joy0up then goto HFCM_VertUp
           if joy0down then goto HFCM_VertDown
-          return
+          return otherbank
 HFCM_VertUp
           if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] - CharacterMovementSpeed[temp5] : return
           if temp5 = 2 then let playerY[temp1] = playerY[temp1] - CharacterMovementSpeed[temp5] : return
-          return
+          return otherbank
 HFCM_VertDown
           if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] + CharacterMovementSpeed[temp5] : return
           if temp5 = 2 then let playerY[temp1] = playerY[temp1] + CharacterMovementSpeed[temp5] : return
-          return
+          return otherbank
 
 InputHandleLeftPortPlayerFunction
           asm
@@ -720,7 +720,7 @@ end
           let currentPlayer = temp1
           rem Cache animation state at start (used for movement, jump,
           rem and attack checks)
-          gosub GetPlayerAnimationStateFunction
+          gosub GetPlayerAnimationStateFunction bank13
           rem   block movement during attack animations (states 13-15)
           rem Use goto to avoid branch out of range (target is 310+ bytes away)
           if temp2 >= 13 then goto DoneLeftPortMovement
@@ -813,7 +813,7 @@ HGI_Done1
 InputDoneLeftPortAttack
 
 
-          return
+          return otherbank
 
 InputHandleRightPortPlayerFunction
           asm
@@ -828,7 +828,7 @@ end
           let currentPlayer = temp1
           rem Cache animation state at start (used for movement, jump,
           rem and attack checks)
-          gosub GetPlayerAnimationStateFunction
+          gosub GetPlayerAnimationStateFunction bank13
           rem   block movement during attack animations (states 13-15)
           rem Use goto to avoid branch out of range (target is 327+ bytes away)
           if temp2 >= 13 then goto DoneRightPortMovement
@@ -923,7 +923,7 @@ HGI_Done2
           let temp4 = playerCharacter[temp1]
           gosub DispatchCharacterAttack bank10
 InputDoneRightPortAttack
-          return
+          return otherbank
 
 HandlePauseInput
           rem
@@ -956,5 +956,5 @@ DonePauseToggle
           if temp1 then systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
           rem Update previous button state for next frame
 
-          return
+          return otherbank
 

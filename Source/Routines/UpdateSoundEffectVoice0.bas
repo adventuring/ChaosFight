@@ -47,5 +47,5 @@ end
           rem   - Advance SoundEffectPointer by 4 bytes
           rem - Handle end-of-sound: set soundEffectPointer = 0, AUDV0
           rem   = 0, free voice
-          return
+          return otherbank
 

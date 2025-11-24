@@ -12,7 +12,7 @@ start     SET ColdStart          ; Alias for bankswitch return mechanism
 
           ldx #$7f
           lda # 0                    ; A = 0
-          tay                    ; Y = 0
+          ldy systemFlags
 clearmem
           sta $00,x              ; Clear TIA registers (and then some)
           sta $80,x              ; Clear zero page RAM
@@ -20,6 +20,7 @@ clearmem
           dex                    ; Decrement X
           bpl clearmem           ; Loop until X wraps to 0
 
+          sty systemFlags
           sta SWACNT             ; Port A DDR = 0 (INPUT mode)
           sta SWBCNT             ; Port B DDR = 0 (INPUT mode)
 
@@ -34,8 +35,8 @@ clearmem
           ldx # 4                 ; Initialize sprite graphics indices
 StartupSetCopyHeight
           txa
-          sta SpriteGfxIndex, x
-          sta spritesort, x
+          sta SpriteGfxIndex,x
+          sta spritesort,x
           dex
           bpl StartupSetCopyHeight
 
@@ -47,4 +48,7 @@ StartupSetCopyHeight
           sta PF2pointer
           sta PF1pointer
 
-          jmp MainLoop
+          ; NOTE: Do NOT jump to MainLoop here - ColdStart.bas handles the
+          ; transition to MainLoop in Bank 16 using proper bank switching.
+          ; This file is included in Bank 14, but MainLoop is in Bank 16.
+          ; ColdStart.bas line 99 does: goto MainLoop bank16

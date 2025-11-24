@@ -811,6 +811,24 @@ Standardize on "Arena" consistently (not "Level" or "Map"):
 - Reserve 4 banks for character art (2,3,4,5)
 - Reserve slots for 32 characters and 32 arenas
 
+## Far Call Optimization (20-Byte Rule)
+
+Routines smaller than 20 bytes should NOT be far-called across banks.
+Far calls add 15-20 bytes of overhead (bank switch, BS_jsr,
+BS_return), which often exceeds the routine size itself.
+
+**Rule**: Routines strictly less than 20 bytes that are far-called
+should be:
+- **Inlined** at call sites if trivial (one-liner helpers)
+- **Made local** by creating copies in each consumer bank if sharing is
+  needed but overhead is too high
+
+**Rationale**: Burning more ROM on the trampoline than on the actual
+routine wastes space and hurts performance. Small helpers should be
+inlined or made local rather than far-called.
+
+See `Source/StyleGuide.md` for detailed guidelines.
+
 ## SCRAM Variable Access Rules
 
 SuperChip RAM (SCRAM) variables have separate read (`r000`-`r127`) and

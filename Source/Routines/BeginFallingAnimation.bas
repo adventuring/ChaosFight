@@ -53,8 +53,9 @@ end
           let fallComplete = 0
           let activePlayers = 0
 
-          gosub SetGameScreenLayout bank8
-          rem Set game screen layout (32×8 for playfield scanning)
+          rem Set game screen layout (32×8 for playfield scanning) - inlined
+          pfrowheight = ScreenPfRowHeight
+          pfrows = ScreenPfRows
 
           COLUBK = ColGray(0)
           rem Set background color
@@ -134,7 +135,7 @@ DonePlayer3Init
           let activePlayers = activePlayers + 1
           rem Bottom-right Y position (near bottom)
 DonePlayer4Init
-          return
+          return otherbank
           rem Player 4 initialization complete (skipped if not in
           rem 4-player mode or not active)
           rem

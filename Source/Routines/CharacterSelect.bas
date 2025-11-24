@@ -38,7 +38,7 @@ CharacterSelectEntry
           let characterSelectAnimationTimer  = 0
           rem Initialize character select animations
           let characterSelectAnimationState  = 0
-          let characterSelectCharacterIndex  = 0
+          let characterSelectCharacterIndex_W  = 0
           rem Start with idle animation
           let characterSelectAnimationFrame  = 0
           rem Start with first character
@@ -144,7 +144,7 @@ SelectStickLeft
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
-          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           return
 
 SelectStickRight
@@ -160,7 +160,7 @@ SelectStickRight
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = CharacterBernie
-          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           return
 
 CharacterSelectHandleComplete
@@ -171,23 +171,23 @@ CharacterSelectHandleComplete
 
           rem Count locked players
 
-          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
-          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked bank6 : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked bank6 : if temp2 then let readyCount = readyCount + 1
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
 
           goto CharacterSelectDoneQuadtariPlayersInline
 
 CharacterSelectQuadtariPlayersInline
-          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
-          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked bank6 : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked bank6 : if temp2 then let readyCount = readyCount + 1
 CharacterSelectDoneQuadtariPlayersInline
           rem Check if enough players are ready
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline
 
           rem Need at least 1 player ready for 2-player mode
-          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
+          let temp1 = 0 : gosub GetPlayerLocked bank6 : if temp2 then goto CharacterSelectCompleted
 
-          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
+          let temp1 = 1 : gosub GetPlayerLocked bank6 : if temp2 then goto CharacterSelectCompleted
 
           goto CharacterSelectDoneQuadtariReadyInline
 

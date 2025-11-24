@@ -23,5 +23,5 @@ end
           let playerAttackCooldown_W[temp1] = temp2
 UpdateAttackCooldownSkip
           next
-          return
+          return otherbank
 

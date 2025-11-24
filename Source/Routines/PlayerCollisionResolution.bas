@@ -320,4 +320,4 @@ CollisionNextInner
 CollisionNextOuter
           let temp1 = temp1 + 1
           if temp1 < temp6 then goto CollisionOuterLoop
-          return
+          return otherbank

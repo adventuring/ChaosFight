@@ -1,6 +1,6 @@
 
 #include "TitleScreen/asm/layoutmacros.s"
-#include "TitleScreen/titlescreen_layout.s"
+; titlescreen_layout.s macro expanded inline below (line 85-88) - include removed to avoid macro definition processing
 
 ; Optional bitmap index offsets (all are 0)
 bmp_48x2_1_index_value

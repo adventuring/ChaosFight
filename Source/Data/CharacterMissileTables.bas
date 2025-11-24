@@ -5,8 +5,10 @@
           rem Character missile data tables for Bank 7.
 
           rem Character weights (needed for missile calculations)
+          rem Issue #1194: Extended to 32 entries, entry 31 (Meth Hound) duplicates entry 15 (Shamone)
           data CharacterWeights
             5, 53, 100, 48, 57, 100, 23, 57, 45, 66, 47, 57, 31, 60, 55, 35
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35
 end
 
           rem Missile widths per character

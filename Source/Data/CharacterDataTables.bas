@@ -15,10 +15,15 @@ end
 CharacterHeights = CharacterHeights
 end
 
+          rem Issue #1194: Extended to 32 entries, entry 31 (Meth Hound) duplicates entry 15 (Shamone)
           data CharacterAttackTypes
             MeleeAttack, RangedAttack, RangedAttack, RangedAttack
             MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
             RangedAttack, MeleeAttack, MeleeAttack, MeleeAttack
+            MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
+            MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
+            MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
+            MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
             MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
 end
 
@@ -35,7 +40,9 @@ end
           rem Per-character movement speeds (pixels/frame or momentum units)
           rem Index 0-15: Bernie, Curler, Dragon, Zoe, FatTony, Megax, Harpy, Knight,
           rem                Frooty, Nefertem, Ninjish, PorkChop, Radish, RoboTito, Ursulo, Shamone
+          rem Issue #1194: Extended to 32 entries, entry 31 (Meth Hound) duplicates entry 15 (Shamone)
           data CharacterMovementSpeed
             1, 1, 2, 2, 1, 1, 2, 1,
             2, 1, 2, 1, 2, 1, 1, 2
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 end

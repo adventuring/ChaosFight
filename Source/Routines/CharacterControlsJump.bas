@@ -5,8 +5,10 @@
           rem Values are 8-bit twos complement upward velocities
           rem 0 = special jump (use character-specific function)
           rem Non-zero = standard jump velocity
+          rem Issue #1194: Extended to 32 entries, entry 31 (Meth Hound) duplicates entry 15 (Shamone)
           data CharacterJumpVelocities
             0, 254, 0, 244, 248, 254, 0, 248, 0, 254, 243, 248, 243, 0, 248, 245
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 245
 end
 
 StandardJump

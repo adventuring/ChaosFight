@@ -95,7 +95,7 @@ AuthorPreludeComplete
           rem Constraints: Must be colocated with AuthorPrelude
           let gameMode = ModeTitle
           gosub ChangeGameMode bank14
-          return
+          return otherbank
 
           rem
           rem Bitmap Loading

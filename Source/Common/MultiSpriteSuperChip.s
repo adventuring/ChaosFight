@@ -51,8 +51,7 @@ COLUP3 = $9A
 COLUP4 = $9B
 COLUP5 = $9C
 SpriteGfxIndex = $9D
-aux2 = $F1
-pfcolortable = $F0
+; aux2 and pfcolortable moved to safe zero-page locations (see below)
 player0pointer = $A2
 player0pointerlo = $A2
 player0pointerhi = $A3
@@ -109,67 +108,62 @@ temp5 = $CF
 temp6 = $D0
 temp7 = $D1
 score = $D2
-scorecolor = $D5
-rand = $D6
+; Kernel variables moved from stack space ($f0-$ff) to safe zero-page locations
+pfcolortable = $D3
+aux2 = $D4
+spritesort = $D5
+spritesort2 = $D6
+spritesort3 = $D7
+spritesort4 = $D8
+spritesort5 = $D9
+scorecolor = $DA
+rand = $DB
 ; Multisprite letter variables (different addresses than standard batariBASIC)
-A = $d7
-a = $d7
-B = $d8
-b = $d8
-C = $d9
-c = $d9
-D = $da
-d = $da
-E = $db
-e = $db
-F = $dc
-f = $dc
-G = $dd
-g = $dd
-H = $de
-h = $de
-I = $df
-i = $df
-J = $e0
-j = $e0
-K = $e1
-k = $e1
-L = $e2
-l = $e2
-M = $e3
-m = $e3
-N = $e4
-n = $e4
-O = $e5
-o = $e5
-P = $e6
-p = $e6
-Q = $e7
-q = $e7
+A = $dc
+a = $dc
+B = $dd
+b = $dd
+C = $de
+c = $de
+D = $df
+d = $df
+E = $e0
+e = $e0
+F = $e1
+f = $e1
+G = $e2
+g = $e2
+H = $e3
+h = $e3
+I = $e4
+i = $e4
+J = $e5
+j = $e5
+K = $e6
+k = $e6
+L = $e7
+l = $e7
 qtcontroller = $e7
-R = $e8
-r = $e8
-S = $e9
-s = $e9
-T = $ea
-t = $ea
-U = $eb
-u = $eb
-V = $ec
-v = $ec
-W = $ed
-w = $ed
-X = $ee
-x = $ee
-Y = $ef
-y = $ef
-Z = $f0
-z = $f0
-spritesort = $f1
-spritesort2 = $f2
-spritesort3 = $f3
-spritesort4 = $f4
-spritesort5 = $f5
+M = $e8
+m = $e8
+N = $e9
+n = $e9
+O = $ea
+o = $ea
+P = $eb
+p = $eb
+Q = $ec
+q = $ec
+R = $ed
+r = $ed
+S = $ee
+s = $ee
+T = $ef
+t = $ef
+; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
+; Z/z removed - use SCRAM for any variables that were using z
+; stack1-4 are stack addresses ($f6-$f9) - defined as constants for kernel code
+; but they are NOT variables - they are stack space that kernel may use directly
 stack1 = $f6
 stack2 = $f7
 stack3 = $f8
@@ -745,69 +739,61 @@ BANK16_END = $F000 + $FC0
           MS_ASSIGN  temp7, $D1
 
           MS_ASSIGN  score, $D2
-; relocated to preserve kernel workspace
-          MS_ASSIGN  scorecolor, $D5
-          MS_ASSIGN  rand, $D6
+; Kernel variables moved from stack space ($f0-$ff) to safe zero-page locations
+          MS_ASSIGN  pfcolortable, $D3
+          MS_ASSIGN  aux2, $D4
+          MS_ASSIGN  spritesort, $D5
+          MS_ASSIGN  spritesort2, $D6
+          MS_ASSIGN  spritesort3, $D7
+          MS_ASSIGN  spritesort4, $D8
+          MS_ASSIGN  spritesort5, $D9
+          MS_ASSIGN  scorecolor, $DA
+          MS_ASSIGN  rand, $DB
 
-          MS_ASSIGN  A, $D7
-          MS_ASSIGN  a, $D7
-          MS_ASSIGN  B, $D8
-          MS_ASSIGN  b, $D8
-          MS_ASSIGN  C, $D9
-          MS_ASSIGN  c, $D9
-          MS_ASSIGN  D, $DA
-          MS_ASSIGN  d, $DA
-          MS_ASSIGN  E, $DB
-          MS_ASSIGN  e, $DB
-          MS_ASSIGN  F, $DC
-          MS_ASSIGN  f, $DC
-          MS_ASSIGN  G, $DD
-          MS_ASSIGN  g, $DD
-          MS_ASSIGN  H, $DE
-          MS_ASSIGN  h, $DE
-          MS_ASSIGN  I, $DF
-          MS_ASSIGN  i, $DF
-          MS_ASSIGN  J, $E0
-          MS_ASSIGN  j, $E0
-          MS_ASSIGN  K, $E1
-          MS_ASSIGN  k, $E1
-          MS_ASSIGN  L, $E2
-          MS_ASSIGN  l, $E2
-          MS_ASSIGN  M, $E3
-          MS_ASSIGN  m, $E3
-          MS_ASSIGN  N, $E4
-          MS_ASSIGN  n, $E4
-          MS_ASSIGN  O, $E5
-          MS_ASSIGN  o, $E5
-          MS_ASSIGN  P, $E6
-          MS_ASSIGN  p, $E6
-          MS_ASSIGN  Q, $E7
-          MS_ASSIGN  q, $E7
-          MS_ASSIGN  R, $E8
-          MS_ASSIGN  r, $E8
-          MS_ASSIGN  S, $E9
-          MS_ASSIGN  s, $E9
-          MS_ASSIGN  T, $EA
-          MS_ASSIGN  t, $EA
-          MS_ASSIGN  U, $EB
-          MS_ASSIGN  u, $EB
-          MS_ASSIGN  V, $EC
-          MS_ASSIGN  v, $EC
-          MS_ASSIGN  W, $ED
-          MS_ASSIGN  w, $ED
-          MS_ASSIGN  X, $EE
-          MS_ASSIGN  x, $EE
-          MS_ASSIGN  Y, $EF
-          MS_ASSIGN  y, $EF
-          MS_ASSIGN  Z, $F0
-          MS_ASSIGN  z, $F0
-
-          MS_ASSIGN  spritesort, $F1
-          MS_ASSIGN  spritesort2, $F2
-          MS_ASSIGN  spritesort3, $F3
-          MS_ASSIGN  spritesort4, $F4
-          MS_ASSIGN  spritesort5, $F5
-
+          MS_ASSIGN  A, $DC
+          MS_ASSIGN  a, $DC
+          MS_ASSIGN  B, $DD
+          MS_ASSIGN  b, $DD
+          MS_ASSIGN  C, $DE
+          MS_ASSIGN  c, $DE
+          MS_ASSIGN  D, $DF
+          MS_ASSIGN  d, $DF
+          MS_ASSIGN  E, $E0
+          MS_ASSIGN  e, $E0
+          MS_ASSIGN  F, $E1
+          MS_ASSIGN  f, $E1
+          MS_ASSIGN  G, $E2
+          MS_ASSIGN  g, $E2
+          MS_ASSIGN  H, $E3
+          MS_ASSIGN  h, $E3
+          MS_ASSIGN  I, $E4
+          MS_ASSIGN  i, $E4
+          MS_ASSIGN  J, $E5
+          MS_ASSIGN  j, $E5
+          MS_ASSIGN  K, $E6
+          MS_ASSIGN  k, $E6
+          MS_ASSIGN  L, $E7
+          MS_ASSIGN  l, $E7
+          MS_ASSIGN  M, $E8
+          MS_ASSIGN  m, $E8
+          MS_ASSIGN  N, $E9
+          MS_ASSIGN  n, $E9
+          MS_ASSIGN  O, $EA
+          MS_ASSIGN  o, $EA
+          MS_ASSIGN  P, $EB
+          MS_ASSIGN  p, $EB
+          MS_ASSIGN  Q, $EC
+          MS_ASSIGN  q, $EC
+          MS_ASSIGN  R, $ED
+          MS_ASSIGN  r, $ED
+          MS_ASSIGN  S, $EE
+          MS_ASSIGN  s, $EE
+          MS_ASSIGN  T, $EF
+          MS_ASSIGN  t, $EF
+; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
+; Z/z removed - use SCRAM for any variables that were using z
+; stack1-4 are stack addresses ($f6-$f9) - defined as constants for kernel code
+; but they are NOT variables - they are stack space that kernel may use directly
           MS_ASSIGN  stack1, $F6
           MS_ASSIGN  stack2, $F7
           MS_ASSIGN  stack3, $F8
@@ -824,10 +810,10 @@ BANK16_END = $F000 + $FC0
           MS_ASSIGN  player0color, $90
           MS_ASSIGN  player1color, $87
           MS_ASSIGN  player9height, $BC
-          MS_ASSIGN  aux1, $F0
-          MS_ASSIGN  aux2, $F1
-          MS_ASSIGN  pfcolortable, $F0
-          MS_ASSIGN  pfheighttable, $F0
+          MS_ASSIGN  aux1, $D3
+          MS_ASSIGN  aux2, $D4
+          MS_ASSIGN  pfcolortable, $D3
+          MS_ASSIGN  pfheighttable, $D3
 
 ; --- Zero-page variable labels ------------------------------------------------
 ; Explicit EQU definitions for var variables to ensure DASM can resolve

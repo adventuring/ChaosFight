@@ -151,8 +151,8 @@ X = $ee
 x = $ee
 Y = $ef
 y = $ef
-Z = $f0
-z = $f0
+; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
+; Z/z removed - use SCRAM for any variables that were using z
 end
 
 #include "Source/Common/Colors.h"

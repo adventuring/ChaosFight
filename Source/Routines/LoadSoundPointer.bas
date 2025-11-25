@@ -12,22 +12,24 @@ end
           rem SoundPointersH[] (global data tables) = sound pointer
           rem tables
           rem
-          rem Output: soundPointer = pointer to Sound_Voice0 stream
+          rem Output: soundEffectPointer = pointer to Sound_Voice0 stream
           rem
-          rem Mutates: temp1 (used for sound ID), soundPointer
+          rem Mutates: temp1 (used for sound ID), soundEffectPointer (var41.var42)
           rem
           rem Called Routines: None
           rem
           rem Constraints: Only 10 sounds (0-9) available. Returns
-          rem soundPointer = 0 if sound ID out of bounds
+          rem soundEffectPointer = 0 if sound ID out of bounds
           rem Bounds check: only 10 sounds (0-9)
           if temp1 > 9 then goto LoadSoundPointerOutOfRange
-          let soundPointer = SoundPointersH[temp1]
-          let soundPointer = soundPointer * 256
-          let soundPointer = soundPointer + SoundPointersL[temp1]
+          rem Build 16-bit pointer: var41 = high byte, var42 = low byte
+          let var41 = SoundPointersH[temp1]
+          let var42 = SoundPointersL[temp1]
           goto LoadSoundPointerReturn
 LoadSoundPointerOutOfRange
-          let soundPointer = 0
+          rem Set pointer to 0 (var41.var42 = 0.0)
+          let var41 = 0
+          let var42 = 0
           rem Out of range - mark sound pointer inactive
 LoadSoundPointerReturn
           return otherbank

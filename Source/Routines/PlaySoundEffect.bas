@@ -31,7 +31,7 @@ end
           rem Output: Sound effect started on available voice (Voice 0
           rem preferred, Voice 1 fallback)
           rem
-          rem Mutates: temp1 (used for sound ID), soundPointer (global 16-bit)
+          rem Mutates: temp1 (used for sound ID), soundEffectPointer (global 16-bit)
           rem = sound pointer (via LoadSoundPointer), soundEffectPointer,
           rem soundEffectFrame_W (global SCRAM) = Voice 0 sound state (if Voice 0 used),
           rem soundEffectPointer1,
@@ -58,8 +58,7 @@ end
 
           if soundEffectPointer then TryVoice1
 
-          let soundEffectPointer = soundPointer
-          rem Voice 0 is free - use it
+          rem Voice 0 is free - LoadSoundPointer already set soundEffectPointer
           let soundEffectFrame_W = 1
           goto UpdateSoundEffectVoice0 bank15
           rem tail call
@@ -67,7 +66,7 @@ end
 TryVoice1
           rem Helper: Tries Voice 1 if Voice 0 is busy
           rem
-          rem Input: soundPointer (global 16-bit) = sound pointer,
+          rem Input: soundEffectPointer (global 16-bit) = sound pointer (set by LoadSoundPointer),
           rem soundEffectPointer1 (global 16-bit) = Voice 1 pointer
           rem
           rem Output: Sound effect started on Voice 1 if free
@@ -83,7 +82,9 @@ TryVoice1
           rem Try Voice 1
           if soundEffectPointer1 then return otherbank
 
-          let soundEffectPointer1 = soundPointer
+          rem Copy soundEffectPointer (var41.var42) to soundEffectPointer1 (var43.var44)
+          let var43 = var41
+          let var44 = var42
           rem Voice 1 is free - use it
           let soundEffectFrame1_W = 1
           goto UpdateSoundEffectVoice1 bank15

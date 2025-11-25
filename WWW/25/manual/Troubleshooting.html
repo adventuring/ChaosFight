@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Chaos Fight Game Manual
+
+Copyright © 2025 Interworldly Adventuring, LLC.
+
+This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/
+or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+You are free to:
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material
+
+Under the following terms:
+- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+- NonCommercial — You may not use the material for commercial purposes.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits. -->
+<title>Troubleshooting (Chaos Fight Game Manual)</title>
+
+<meta name="description" content="Troubleshooting (Chaos Fight Game Manual)">
+<meta name="keywords" content="Troubleshooting (Chaos Fight Game Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Credits.html" rel="next" title="Credits">
+<link href="Console-Switches.html" rel="prev" title="Console Switches">
+<style type="text/css">
+<!--
+/* Chaos Fight 2025 TeXinfo Manual Stylesheet */
+/* Matches website color scheme: pastel olive, olive drab, and tan */
+
+
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+:root {
+    /* Pastel color palette - matching website */
+    --olive-pastel: #b8c5a0;
+    --olive-drab-pastel: #9fa889;
+    --tan-pastel: #d4c4a8;
+    --tan-light: #e8ddd0;
+    --olive-light: #d1d9c0;
+    --shadow-color: rgba(0, 0, 0, 0.15);
+    --text-dark: #000000;
+    --text-medium: #000000;
+    --link-color: #014421;
+    --link-hover: #0b5d2a;
+}
+
+/* Base body styling matching website */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(to bottom, 
+        var(--olive-light) 0%,
+        var(--tan-light) 50%,
+        var(--olive-light) 100%);
+    background-attachment: fixed;
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Subtle horizontal striping like website */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.07),
+        rgba(0, 0, 0, 0.07) 1.6667px,
+        rgba(255, 255, 255, 0) 1.6667px,
+        rgba(255, 255, 255, 0) 17.6667px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Container matching website */
+body > * {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    background: var(--tan-pastel);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+    margin-bottom: 20px;
+}
+
+/* Headings matching website style */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 2em;
+    border-bottom: 2px solid var(--olive-drab-pastel);
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.6em;
+}
+
+h3 {
+    font-size: 1.3em;
+}
+
+/* Character subsection boxes - matching website character-bio style */
+.subsection {
+    background: var(--olive-pastel);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 30px 0;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+}
+
+/* Display blocks (character stats) - matching website character-links style */
+.display {
+    background: var(--tan-pastel);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+}
+
+/* Paragraphs */
+p {
+    margin: 15px 0;
+    line-height: 1.8;
+}
+
+/* Links matching website */
+a {
+    color: var(--link-color);
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+/* Lists matching website */
+ul, ol {
+    margin: 15px 0;
+    padding-left: 30px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+/* Tables matching website */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+td, th {
+    padding: 8px 12px;
+    border: 1px solid var(--olive-drab-pastel);
+}
+
+th {
+    background: var(--olive-pastel);
+    font-weight: 600;
+}
+
+/* Code blocks matching website */
+code, pre {
+    background: var(--olive-light);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+pre {
+    padding: 15px;
+    overflow-x: auto;
+    margin: 15px 0;
+}
+
+/* Menu styling */
+.menu-comment {
+    color: var(--olive-drab-pastel);
+}
+
+/* Navigation menu if present */
+.menu {
+    background: var(--olive-pastel);
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin-bottom: 30px;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+}
+
+/* Title page styling */
+.titlepage {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+/* Contents page */
+.contents {
+    background: var(--tan-pastel);
+}
+
+/* Chapter and section dividers */
+.chapter, .section {
+    margin-top: 40px;
+    padding-top: 20px;
+}
+
+/* Group blocks (used in character descriptions) */
+.group {
+    line-height: 1.8;
+}
+
+/* Quotations */
+.quotation {
+    background: var(--olive-light);
+    border-left: 4px solid var(--olive-drab-pastel);
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+/* Index styling */
+.index-entry {
+    margin: 5px 0;
+}
+
+/* Print-specific adjustments */
+@media print {
+    body {
+        background: white;
+    }
+    
+    body::before {
+        display: none;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    body > * {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    h2 {
+        font-size: 1.4em;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="Troubleshooting">
+<div class="nav-panel">
+<p>
+Next: <a href="Credits.html" accesskey="n" rel="next">Credits</a>, Previous: <a href="Console-Switches.html" accesskey="p" rel="prev">Console Switches</a>, Up: <a href="index.html" accesskey="u" rel="up">Chaos Fight 2025</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Troubleshooting-1"><span>9 Troubleshooting<a class="copiable-link" href="#Troubleshooting-1"> &para;</a></span></h2>
+
+<a class="index-entry-id" id="index-troubleshooting"></a>
+<a class="index-entry-id" id="index-problems"></a>
+<a class="index-entry-id" id="index-issues"></a>
+
+<ul class="mini-toc">
+<li><a href="#Common-Issues" accesskey="1">Common Issues</a></li>
+<li><a href="#Getting-Help" accesskey="2">Getting Help</a></li>
+</ul>
+<div class="section-level-extent" id="Common-Issues">
+<h3 class="section"><span>9.1 Common Issues<a class="copiable-link" href="#Common-Issues"> &para;</a></span></h3>
+
+<ul class="mini-toc">
+<li><a href="#Controllers-Not-Responding" accesskey="1">Controllers Not Responding</a></li>
+<li><a href="#Four-Players-Not-Working" accesskey="2">Four Players Not Working</a></li>
+<li><a href="#Game-Won_0027t-Start-from-Multicart" accesskey="3">Game Won&rsquo;t Start from Multicart</a></li>
+</ul>
+<div class="subsection-level-extent" id="Controllers-Not-Responding">
+<h4 class="subsection"><span>9.1.1 Controllers Not Responding<a class="copiable-link" href="#Controllers-Not-Responding"> &para;</a></span></h4>
+
+<p><strong class="strong">Problem:</strong> Additional controller buttons (C, II, III) are not detected.
+</p>
+<p><strong class="strong">Solutions:</strong>
+</p><ol class="enumerate">
+<li> Check that controllers are firmly connected to the correct ports
+
+</li><li> Try pressing Game Select at the Title screen to trigger detection
+
+</li><li> Extra buttons are not supported through the Quadtari.
+</li></ol>
+
+</div>
+<div class="subsection-level-extent" id="Four-Players-Not-Working">
+<h4 class="subsection"><span>9.1.2 Four Players Not Working<a class="copiable-link" href="#Four-Players-Not-Working"> &para;</a></span></h4>
+
+<p><strong class="strong">Problem:</strong> Only 2 players are active despite Quadtari being connected.
+</p>
+<p><strong class="strong">Solutions:</strong>
+</p><ol class="enumerate">
+<li> Press GAME SELECT on the Title or Character Select screen
+to re-detect the Quadtari
+
+</li></ol>
+
+</div>
+<div class="subsection-level-extent" id="Game-Won_0027t-Start-from-Multicart">
+<h4 class="subsection"><span>9.1.3 Game Won&rsquo;t Start from Multicart<a class="copiable-link" href="#Game-Won_0027t-Start-from-Multicart"> &para;</a></span></h4>
+
+<p><strong class="strong">Problem:</strong> ChaosFight doesn&rsquo;t launch from multicart menu.
+</p>
+<p><strong class="strong">Solutions:</strong>
+</p><ol class="enumerate">
+<li> Ensure you have the correct ROM version for your multicart
+
+</li><li> Some multicarts may require the &quot;.a26&quot; extension to be renamed to &quot;.EFSC&quot;
+for proper detection.
+
+</li><li> When launching from a multicart on Atari 7800, your console may not be
+detected as a 7800, and &quot;Black &amp; White&quot; mode will be only enabled while
+you hold down the &quot;Pause&quot; button. There is no workaround for this at present.
+</li></ol>
+
+</div>
+</div>
+<div class="section-level-extent" id="Getting-Help">
+<h3 class="section"><span>9.2 Getting Help<a class="copiable-link" href="#Getting-Help"> &para;</a></span></h3>
+
+<p>If you continue to experience issues:
+</p>
+<ol class="enumerate">
+<li> Check for ROM updates at <a class="url" href="https://interworldly.com/">https://interworldly.com/</a>
+or the AtariAge Homebrew forums.
+
+</li><li> Watch ZeroPage Homebrew on Twitch and YouTube for news and updates about 
+Atari VCS homebrew games including Chaos Fight.
+
+</li><li> Consult AtariAge community forums for technical support
+(Homebrew Chat forum)
+
+</li><li> Contact Interworldly Adventuring at support@interworldly.com
+
+</li><li> Contact Bruce-Robert Pocock in the AtariAge Discord (Homebrew Chat forum)
+</li></ol>
+
+
+</div>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Credits.html">Credits</a>, Previous: <a href="Console-Switches.html">Console Switches</a>, Up: <a href="index.html">Chaos Fight 2025</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

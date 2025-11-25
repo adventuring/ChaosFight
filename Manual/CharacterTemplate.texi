@@ -1,0 +1,68 @@
+@c Character Template for Chaos Fight Manual
+@c This template ensures consistent formatting matching the website style
+@c
+@c Usage: Copy this template and fill in the character-specific information
+@c All fields marked with @var{...} should be replaced with actual values
+@c
+@c Variables:
+@c   NAME - Character name (e.g., "Bernie")
+@c   WEIGHT - Weight in kg and lbs (e.g., "5 kg (10 lbs)")
+@c   ATTACK - Attack type and description (e.g., "Ground Thump (Mêlée, BOTH DIRECTIONS!)")
+@c   SPECIAL - Special abilities (e.g., "No jumping; wraps from bottom to top of screen; fall damage immunity")
+@c   ORIGINAL_GAME - Original game name (e.g., "Bernie and the Towers of Doom (Atari 7800)")
+@c   AUTHOR - Author name and optional link (e.g., "Lewis \"Muddyfunster\" Hill of Muddyvision @url{https://muddyvision.com,Muddyvision}")
+@c   PURCHASE_URL - Purchase link URL
+@c   PURCHASE_TEXT - Purchase link text
+@c   VCS_STORE_URL - VCS eShop URL (if applicable)
+@c   VCS_STORE_TEXT - VCS eShop link text (if applicable)
+@c   DOWNLOAD_URL - Download link URL (if applicable)
+@c   DOWNLOAD_TEXT - Download link text (if applicable)
+@c   FORUM_URL - Forum thread URL
+@c   FORUM_TEXT - Forum thread link text
+@c   DESCRIPTION - Character description paragraph(s)
+@c   ADDITIONAL_FIELDS - Any additional fields (Background, Nature, Species, Mission, etc.)
+
+@subsection @var{NAME}
+@display
+@group
+    Weight: @var{WEIGHT}
+    Attack: @var{ATTACK}
+    Special: @var{SPECIAL}
+    Original Game: @var{ORIGINAL_GAME}
+    Author: @var{AUTHOR}
+    @var{ADDITIONAL_FIELDS}
+    Purchase: @url{@var{PURCHASE_URL},@var{PURCHASE_TEXT}}@var{VCS_STORE}
+    @var{DOWNLOAD_LINE}
+    Forum: @url{@var{FORUM_URL},@var{FORUM_TEXT}}
+@end group
+@end display
+
+@var{DESCRIPTION}
+
+@c Example filled template:
+@c
+@c @subsection Bernie
+@c @display
+@c @group
+@c     Weight: 5 kg (10 lbs)
+@c     Attack: Ground Thump (Mêlée, BOTH DIRECTIONS!)
+@c     Special: No jumping; wraps from bottom to top of screen; fall damage immunity
+@c     Original Game: Bernie and the Towers of Doom (Atari 7800)
+@c     Author: Lewis "Muddyfunster" Hill of Muddyvision @url{https://muddyvision.com,Muddyvision}
+@c     Purchase: @url{https://store.atariage.com/products/bernie-and-the-tower-of-doom-atari-7800,Bernie and the Tower of Doom at AtariAge Store}; @url{https://atari.com/pages/atari-vcs-store,Bernie and the Tower of Doom on Atari VCS eShop}
+@c     Download: @url{https://muddyvision.com,Bernie and the Tower of Doom free download}
+@c     Forum: @url{https://forums.atariage.com/topic/345295-bernie-the-tower-of-doom-done/,Bernie and the Tower of Doom release thread}
+@c @end group
+@c @end display
+@c
+@c Bernie cannot jump, but he can fall off the bottom of the screen and reappear
+@c at the top!
+@c
+@c His unique "Ground Thump" attack hits both in front AND behind simultaneously,
+@c making him dangerous in crowds.
+@c He thumps the ground so hard that it affects anyone to either side of him,
+@c shoving them rapidly away!
+@c
+@c Bernie's tough constitution grants complete
+@c immunity to fall damage.
+

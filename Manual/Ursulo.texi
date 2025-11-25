@@ -7,7 +7,7 @@
     Species: Bear (1.67m tall walking polar bear)
     Nemeses: Wizards, robots, and penguins (who keep abducting him)
     Original Game: Game of the Bear, Game of the Bear 2: 2 Much 2 Bear, and Game of the Bear 3: Polar Opposites (all vhzc)
-    Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.itch.io,VHZC Games}
+    Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.games/,VHZC Games}
     Purchase: @url{https://store.atariage.com/products/game-of-the-bear-atari-2600,Game of the Bear at AtariAge Store}; @url{https://store.atariage.com/products/game-of-the-bear-2-much-to-bear-atari-2600-pre-order,Game of the Bear 2 at AtariAge Store}; @url{https://vhzc.itch.io/game-of-the-bear-3-polar-opposites,Game of the Bear 3 at itch.io}
     Download: @url{https://vhzc.itch.io/game-of-the-bear,Game of the Bear free download}; @url{https://vhzc.itch.io/game-of-the-bear-2-much-to-bear,Game of the Bear 2 free download}; @url{https://vhzc.itch.io/game-of-the-bear-3-polar-opposites,Game of the Bear 3 free download}
     Forum: @url{https://forums.atariage.com/topic/325262-game-of-the-bear/,Game of the Bear release thread}; @url{https://forums.atariage.com/topic/331618-game-of-the-bear-2-much-to-bear/,Game of the Bear 2 release thread}; @url{https://forums.atariage.com/topic/345257-game-of-the-bear-polar-opposites/,Game of the Bear 3 release thread}

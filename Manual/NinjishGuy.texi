@@ -5,7 +5,7 @@
     Attack: Mêlée
     Special: (none - high jumps, fast movement, and shuriken are normal abilities)
     Original Game: Ninjish Guy in Low-Res World and other vhzc games
-    Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.itch.io,VHZC Games}
+    Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.games/,VHZC Games}
     Purchase: @url{https://store.atariage.com/products/ninjish-guy-in-low-res-world-atari-2600,Ninjish Guy in Low-Res World at AtariAge Store}
     Download: @url{https://vhzc.itch.io/ninjish-guy-in-low-res-world,Ninjish Guy free download}
     Forum: @url{https://forums.atariage.com/topic/,Ninjish Guy release thread}

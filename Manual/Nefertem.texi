@@ -4,11 +4,10 @@
     Weight: 200 kg (440 lbs)
     Attack: Mêlée
     Special: (none)
-    Original Game: Phantasia
+    Original Game: Phantasia (in development)
     Author: Zephyr & Bruce-Robert Pocock (Interworldly Adventuring, LLC) @url{https://interworldly.com,Interworldly.com}
-    Purchase: @url{https://store.atariage.com/store_search?q=phantasia,Phantasia at AtariAge Store}; @url{https://phantasiagame.com,Phantasia Official Website}; @url{https://atari.com/pages/atari-vcs-store,Phantasia on Atari VCS eShop}
-    Download: @url{https://phantasiagame.com,Phantasia free download}
-    Forum: @url{https://forums.atariage.com/topic/,Phantasia release thread}
+    Website: @url{https://phantasiagame.com,Phantasia Official Website} (no downloads available yet)
+    Forum: @url{https://forums.atariage.com/topic/,Phantasia development thread}
 @end group
 @end display
 

@@ -3,6 +3,7 @@
 @setfilename ChaosFight.info
 @settitle Chaos Fight Game Manual
 @documentencoding UTF-8
+@documentlanguage en
 @c %**end of header
 
 @copying
@@ -41,10 +42,10 @@ No additional restrictions — You may not apply legal terms or technological me
 
 @ifnottex
 @node Top
-@top ChaosFight
+@top Chaos Fight 2025
 
-This manual describes ChaosFight, a multiplayer fighting game for the Atari 2600
-Video Computer System.
+This manual describes Chaos Fight, a multiplayer fighting game for the Atari 2600
+Video Computer System featuring 16 unique characters from AtariAge homebrew games.
 
 @insertcopying
 @end ifnottex

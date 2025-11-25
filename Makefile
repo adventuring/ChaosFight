@@ -159,7 +159,14 @@ game: \
 MANUAL_PDF = Dist/$(GAME)$(GAMEYEAR).pdf
 MANUAL_HTML = Dist/$(GAME)$(GAMEYEAR).html
 
-doc: $(MANUAL_PDF) $(MANUAL_HTML) | Object/
+doc: $(MANUAL_PDF) $(MANUAL_HTML) WWW/25/manual/index.html | Object/
+
+# Copy manual HTML to WWW directory for local viewing
+WWW/25/manual/index.html: $(MANUAL_HTML) | WWW/25/manual/
+	@echo "Copying manual HTML to WWW directory..."
+	@rm -rf WWW/25/manual/*
+	@cp -r $(MANUAL_HTML)/* WWW/25/manual/
+	@echo "Manual HTML copied to WWW/25/manual/"
 
 # Character sprite sheet names (32 characters: 16 main + 16 future)
 CHARACTER_NAMES = \
@@ -762,8 +769,8 @@ Dist/$(GAME)$(GAMEYEAR).pdf: Manual/ChaosFight.texi | Object/ Dist/
 	cd Object && makeinfo --pdf --output=$(GAME)$(GAMEYEAR).pdf ../$<
 	cp Object/$(GAME)$(GAMEYEAR).pdf $@
 
-Dist/$(GAME)$(GAMEYEAR).html: Manual/ChaosFight.texi | Dist/
-	makeinfo --html --output=$@ $<
+Dist/$(GAME)$(GAMEYEAR).html: Manual/ChaosFight.texi Manual/texinfo.css | Dist/
+	makeinfo --html --css-include=Manual/texinfo.css --output=$@ $<
 
 nowready: $(READYFILE)
 

@@ -87,11 +87,10 @@ end
           rem Missiles are available for projectiles since participants
           rem   use proper sprites
           rem Set Participant 3 & 4 positions (arrays [2] & [3] → P2 & P3 sprites)
-          rem temp1 = participant index (also equals sprite index)
-          let temp1 = 2
-          gosub CopyParticipantSpritePosition
-          let temp1 = 3
-          gosub CopyParticipantSpritePosition
+          rem Loop over participants 2-3 instead of duplicate calls
+          for temp1 = 2 to 3
+            gosub CopyParticipantSpritePosition
+          next
 
           rem Set missile positions for projectiles
           rem Hardware missiles: missile0 and missile1 (only 2 physical
@@ -185,19 +184,38 @@ SSP_WriteMissileRegisters
 end
           rem Write missile registers for selected hardware slot
           rem Input: temp5 = missile select (0=missile0, 1=missile1), RMF_participant, RMF_character
-          if temp5 = 0 then goto SSP_WriteMissile0
-          missile1x = missileX[RMF_participant]
-          missile1y = missileY_R[RMF_participant]
-          ENAM1 = 1
-          NUSIZ1 = missileNUSIZ_R[RMF_participant]
-          missile1height = CharacterMissileHeights[RMF_character]
+          rem Use unified helper to write missile registers
+          rem Save values to temp variables for unified helper (temp2-temp4 already used by caller, use temp6)
+          let temp6 = missileX[RMF_participant]
+          rem temp2 will be Y position (overwrite RMF_select, no longer needed)
+          let temp2 = missileY_R[RMF_participant]
+          rem temp3 will be NUSIZ (overwrite RMF_mask, no longer needed)
+          let temp3 = missileNUSIZ_R[RMF_participant]
+          rem temp4 will be height (overwrite RMF_character after reading it)
+          let temp4 = CharacterMissileHeights[RMF_character]
+          gosub SSP_WriteMissileRegistersUnified
           return
-SSP_WriteMissile0
-          missile0x = missileX[RMF_participant]
-          missile0y = missileY_R[RMF_participant]
+
+SSP_WriteMissileRegistersUnified
+          asm
+SSP_WriteMissileRegistersUnified
+end
+          rem Unified helper to write missile registers for either missile0 or missile1
+          rem Input: temp5 = missile select (0=missile0, 1=missile1)
+          rem        temp6 = X position, temp2 = Y position, temp3 = NUSIZ, temp4 = height
+          if temp5 = 0 then goto SSP_WriteUnified0
+          missile1x = temp6
+          missile1y = temp2
+          ENAM1 = 1
+          NUSIZ1 = temp3
+          missile1height = temp4
+          return
+SSP_WriteUnified0
+          missile0x = temp6
+          missile0y = temp2
           ENAM0 = 1
-          NUSIZ0 = missileNUSIZ_R[RMF_participant]
-          missile0height = CharacterMissileHeights[RMF_character]
+          NUSIZ0 = temp3
+          missile0height = temp4
           return
 
 CopyParticipantSpritePosition
@@ -266,18 +284,11 @@ SSP_WriteStretchMissile
 end
           rem Write stretch missile registers for selected hardware slot
           rem Input: temp5 = missile select (0=missile0, 1=missile1), temp1 = participant, temp4 = height
-          if temp5 = 0 then goto SSP_WriteStretch0
-          missile1x = playerX[temp1]
-          missile1y = playerY[temp1]
-          missile1height = temp4
-          ENAM1 = 1
-          NUSIZ1 = 0
-          return
-SSP_WriteStretch0
-          missile0x = playerX[temp1]
-          missile0y = playerY[temp1]
-          missile0height = temp4
-          ENAM0 = 1
-          NUSIZ0 = 0
+          rem Use unified helper with stretch-specific parameters (NUSIZ=0, position from player)
+          let temp6 = playerX[temp1]
+          let temp2 = playerY[temp1]
+          let temp3 = 0
+          rem temp4 already set to height
+          gosub SSP_WriteMissileRegistersUnified
           return
 

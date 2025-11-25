@@ -423,19 +423,8 @@ end
 
 NextDefender
           next
-          rem Helper: End of defender loop iteration (label only)
           return
-          rem Input: None (label only)
-          rem
-          rem Output: None (label only)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal label for ProcessAttackerAttacks FOR
-          rem loop
-
+        
 ProcessAllAttacks
           asm
 ProcessAllAttacks

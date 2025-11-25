@@ -69,13 +69,9 @@ end
           asm
 Bank16AfterPlayfieldRead
 end
-#include "Source/Routines/CopyGlyphToPlayer.bas"
+#include "Source/Routines/SetPlayerGlyph.bas"
           asm
-Bank16AfterCopyGlyphToPlayer
-end
-#include "Source/Routines/SetPlayerGlyphFromFont.bas"
-          asm
-Bank16AfterSetPlayerGlyphFromFont
+Bank16AfterSetPlayerGlyph
 end
 #include "Source/Routines/DisplayWinScreen.bas"
           rem None of these modules above may be moved to other banks.
@@ -87,7 +83,6 @@ Bank16CodeEnds
            echo "// Bank 16: ", [Bank16AfterMainLoop - Bank16AfterLoadArenaByIndex]d, " bytes = MainLoop"
            echo "// Bank 16: ", [Bank16AfterSpriteLoader - Bank16AfterMainLoop]d, " bytes = SpriteLoader"
            echo "// Bank 16: ", [Bank16AfterPlayfieldRead - Bank16AfterSpriteLoader]d, " bytes = PlayfieldRead"
-           echo "// Bank 16: ", [Bank16AfterCopyGlyphToPlayer - Bank16AfterPlayfieldRead]d, " bytes = CopyGlyphToPlayer"
-           echo "// Bank 16: ", [Bank16AfterSetPlayerGlyphFromFont - Bank16AfterCopyGlyphToPlayer]d, " bytes = SetPlayerGlyphFromFont"
-           echo "// Bank 16: ", [Bank16CodeEnds - Bank16AfterSetPlayerGlyphFromFont]d, " bytes = DisplayWinScreen"
+           echo "// Bank 16: ", [Bank16AfterSetPlayerGlyph - Bank16AfterPlayfieldRead]d, " bytes = SetPlayerGlyph (unified)"
+           echo "// Bank 16: ", [Bank16CodeEnds - Bank16AfterSetPlayerGlyph]d, " bytes = DisplayWinScreen"
 end

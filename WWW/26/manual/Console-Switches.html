@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Chaos Fight Game Manual
+
+Copyright © 2025 Interworldly Adventuring, LLC.
+
+This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/
+or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+You are free to:
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material
+
+Under the following terms:
+- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+- NonCommercial — You may not use the material for commercial purposes.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits. -->
+<title>Console Switches (Chaos Fight Game Manual)</title>
+
+<meta name="description" content="Console Switches (Chaos Fight Game Manual)">
+<meta name="keywords" content="Console Switches (Chaos Fight Game Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Troubleshooting.html" rel="next" title="Troubleshooting">
+<link href="Game-Modes.html" rel="prev" title="Game Modes">
+<style type="text/css">
+<!--
+/* Chaos Fight 2026 TeXinfo Manual Stylesheet */
+/* Matches website color scheme: pastel olive, olive drab, and tan */
+
+
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+:root {
+    /* Pastel color palette - matching website */
+    --olive-pastel: #b8c5a0;
+    --olive-drab-pastel: #9fa889;
+    --tan-pastel: #d4c4a8;
+    --tan-light: #e8ddd0;
+    --olive-light: #d1d9c0;
+    --shadow-color: rgba(0, 0, 0, 0.15);
+    --text-dark: #000000;
+    --text-medium: #000000;
+    --link-color: #014421;
+    --link-hover: #0b5d2a;
+}
+
+/* Base body styling matching website */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(to bottom, 
+        var(--olive-light) 0%,
+        var(--tan-light) 50%,
+        var(--olive-light) 100%);
+    background-attachment: fixed;
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Subtle horizontal striping like website */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.07),
+        rgba(0, 0, 0, 0.07) 1.6667px,
+        rgba(255, 255, 255, 0) 1.6667px,
+        rgba(255, 255, 255, 0) 17.6667px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Container matching website */
+body > * {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    background: var(--tan-pastel);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+    margin-bottom: 20px;
+}
+
+/* Headings matching website style */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 2em;
+    border-bottom: 2px solid var(--olive-drab-pastel);
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.6em;
+}
+
+h3 {
+    font-size: 1.3em;
+}
+
+/* Character subsection boxes - matching website character-bio style */
+.subsection {
+    background: var(--olive-pastel);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 30px 0;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+}
+
+/* Display blocks (character stats) - matching website character-links style */
+.display {
+    background: var(--tan-pastel);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+}
+
+/* Paragraphs */
+p {
+    margin: 15px 0;
+    line-height: 1.8;
+}
+
+/* Links matching website */
+a {
+    color: var(--link-color);
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+/* Lists matching website */
+ul, ol {
+    margin: 15px 0;
+    padding-left: 30px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+/* Tables matching website */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+td, th {
+    padding: 8px 12px;
+    border: 1px solid var(--olive-drab-pastel);
+}
+
+th {
+    background: var(--olive-pastel);
+    font-weight: 600;
+}
+
+/* Code blocks matching website */
+code, pre {
+    background: var(--olive-light);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+pre {
+    padding: 15px;
+    overflow-x: auto;
+    margin: 15px 0;
+}
+
+/* Menu styling */
+.menu-comment {
+    color: var(--olive-drab-pastel);
+}
+
+/* Navigation menu if present */
+.menu {
+    background: var(--olive-pastel);
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin-bottom: 30px;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+}
+
+/* Title page styling */
+.titlepage {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+/* Contents page */
+.contents {
+    background: var(--tan-pastel);
+}
+
+/* Chapter and section dividers */
+.chapter, .section {
+    margin-top: 40px;
+    padding-top: 20px;
+}
+
+/* Group blocks (used in character descriptions) */
+.group {
+    line-height: 1.8;
+}
+
+/* Quotations */
+.quotation {
+    background: var(--olive-light);
+    border-left: 4px solid var(--olive-drab-pastel);
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+/* Index styling */
+.index-entry {
+    margin: 5px 0;
+}
+
+/* Print-specific adjustments */
+@media print {
+    body {
+        background: white;
+    }
+    
+    body::before {
+        display: none;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    body > * {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    h2 {
+        font-size: 1.4em;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="Console-Switches">
+<div class="nav-panel">
+<p>
+Next: <a href="Troubleshooting.html" accesskey="n" rel="next">Troubleshooting</a>, Previous: <a href="Game-Modes.html" accesskey="p" rel="prev">Game Modes</a>, Up: <a href="index.html" accesskey="u" rel="up">Chaos Fight 2026</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Console-Switches-1"><span>8 Console Switches<a class="copiable-link" href="#Console-Switches-1"> &para;</a></span></h2>
+
+<a class="index-entry-id" id="index-console-switches"></a>
+<a class="index-entry-id" id="index-reset"></a>
+<a class="index-entry-id" id="index-select"></a>
+<a class="index-entry-id" id="index-difficulty-1"></a>
+
+<p>The console switches provide additional game control:
+</p>
+<ul class="mini-toc">
+<li><a href="#GAME-RESET-Switch" accesskey="1">GAME RESET Switch</a></li>
+<li><a href="#GAME-SELECT-Switch" accesskey="2">GAME SELECT Switch</a></li>
+<li><a href="#TV-TYPE-Switch-_0028COLOR_002fB_0026W_0029" accesskey="3">TV TYPE Switch (COLOR/B&amp;W)</a></li>
+<li><a href="#DIFFICULTY-Switches" accesskey="4">DIFFICULTY Switches</a></li>
+</ul>
+<div class="section-level-extent" id="GAME-RESET-Switch">
+<h3 class="section"><span>8.1 GAME RESET Switch<a class="copiable-link" href="#GAME-RESET-Switch"> &para;</a></span></h3>
+
+<p>Pressing the RESET switch immediately starts the game over.
+</p>
+</div>
+<div class="section-level-extent" id="GAME-SELECT-Switch">
+<h3 class="section"><span>8.2 GAME SELECT Switch<a class="copiable-link" href="#GAME-SELECT-Switch"> &para;</a></span></h3>
+
+<p>Pressing the SELECT switch:
+</p>
+<ol class="enumerate">
+<li> Re-detects controller configuration
+</li><li> Pauses the game
+</li></ol>
+
+<p>Note, you cannot remove a Quadtari and re-detect from within the game;
+perform detection on the Title or Character Select screens.
+</p>
+</div>
+<div class="section-level-extent" id="TV-TYPE-Switch-_0028COLOR_002fB_0026W_0029">
+<h3 class="section"><span>8.3 TV TYPE Switch (COLOR/B&amp;W)<a class="copiable-link" href="#TV-TYPE-Switch-_0028COLOR_002fB_0026W_0029"> &para;</a></span></h3>
+
+<p>On NTSC or PAL systems, when in &quot;COLOR&quot; mode, the playfield will be
+colorful.
+</p>
+<p>On SECAM systems, or when in &quot;B&amp;W&quot; mode on NTSC or PAL, the playfield will
+be white on black.
+</p>
+<p>On a 7800, press Pause to toggle between color and black &amp; white modes.<a class="footnote" id="DOCF15" href="#FOOT15"><sup>15</sup></a>
+</p>
+<p>Characters are always colored based on player number.
+</p>
+</div>
+<div class="section-level-extent" id="DIFFICULTY-Switches">
+<h3 class="section"><span>8.4 DIFFICULTY Switches<a class="copiable-link" href="#DIFFICULTY-Switches"> &para;</a></span></h3>
+
+<p>The RIGHT DIFFICULTY switch in A (Advanced) position will cause the
+CPU player to play at full health in a 1-player game. In the B (Novice)
+position, the CPU player will play handicapped (with 75% health)
+</p>
+<p>The LEFT DIFFICULTY switch is NOT used.
+</p>
+
+
+
+
+</div>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT15" href="#DOCF15">(15)</a></h5>
+<p>On Atari 7800, the pause button occupies the same hardware pin as the Color/B&amp;W switch, so it toggles the playfield color mode instead of using the switch position.</p>
+</div>
+
+
+
+</body>
+</html>

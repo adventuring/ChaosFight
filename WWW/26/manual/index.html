@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Chaos Fight Game Manual
+
+Copyright © 2025 Interworldly Adventuring, LLC.
+
+This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/
+or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+You are free to:
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material
+
+Under the following terms:
+- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+- NonCommercial — You may not use the material for commercial purposes.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits. -->
+<title>Top (Chaos Fight Game Manual)</title>
+
+<meta name="description" content="Top (Chaos Fight Game Manual)">
+<meta name="keywords" content="Top (Chaos Fight Game Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="#Top" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Introduction.html" rel="next" title="Introduction">
+<style type="text/css">
+<!--
+/* Chaos Fight 2026 TeXinfo Manual Stylesheet */
+/* Matches website color scheme: pastel olive, olive drab, and tan */
+
+
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+ul.toc-numbered-mark {list-style: none}
+:root {
+    /* Pastel color palette - matching website */
+    --olive-pastel: #b8c5a0;
+    --olive-drab-pastel: #9fa889;
+    --tan-pastel: #d4c4a8;
+    --tan-light: #e8ddd0;
+    --olive-light: #d1d9c0;
+    --shadow-color: rgba(0, 0, 0, 0.15);
+    --text-dark: #000000;
+    --text-medium: #000000;
+    --link-color: #014421;
+    --link-hover: #0b5d2a;
+}
+
+/* Base body styling matching website */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(to bottom, 
+        var(--olive-light) 0%,
+        var(--tan-light) 50%,
+        var(--olive-light) 100%);
+    background-attachment: fixed;
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Subtle horizontal striping like website */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.07),
+        rgba(0, 0, 0, 0.07) 1.6667px,
+        rgba(255, 255, 255, 0) 1.6667px,
+        rgba(255, 255, 255, 0) 17.6667px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Container matching website */
+body > * {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    background: var(--tan-pastel);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+    margin-bottom: 20px;
+}
+
+/* Headings matching website style */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 2em;
+    border-bottom: 2px solid var(--olive-drab-pastel);
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.6em;
+}
+
+h3 {
+    font-size: 1.3em;
+}
+
+/* Character subsection boxes - matching website character-bio style */
+.subsection {
+    background: var(--olive-pastel);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 30px 0;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+}
+
+/* Display blocks (character stats) - matching website character-links style */
+.display {
+    background: var(--tan-pastel);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+}
+
+/* Paragraphs */
+p {
+    margin: 15px 0;
+    line-height: 1.8;
+}
+
+/* Links matching website */
+a {
+    color: var(--link-color);
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+/* Lists matching website */
+ul, ol {
+    margin: 15px 0;
+    padding-left: 30px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+/* Tables matching website */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+td, th {
+    padding: 8px 12px;
+    border: 1px solid var(--olive-drab-pastel);
+}
+
+th {
+    background: var(--olive-pastel);
+    font-weight: 600;
+}
+
+/* Code blocks matching website */
+code, pre {
+    background: var(--olive-light);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+pre {
+    padding: 15px;
+    overflow-x: auto;
+    margin: 15px 0;
+}
+
+/* Menu styling */
+.menu-comment {
+    color: var(--olive-drab-pastel);
+}
+
+/* Navigation menu if present */
+.menu {
+    background: var(--olive-pastel);
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin-bottom: 30px;
+    box-shadow: 
+        2px 2px 8px var(--shadow-color),
+        -2px -2px 8px var(--shadow-color),
+        2px -2px 8px var(--shadow-color),
+        -2px 2px 8px var(--shadow-color);
+}
+
+/* Title page styling */
+.titlepage {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+/* Contents page */
+.contents {
+    background: var(--tan-pastel);
+}
+
+/* Chapter and section dividers */
+.chapter, .section {
+    margin-top: 40px;
+    padding-top: 20px;
+}
+
+/* Group blocks (used in character descriptions) */
+.group {
+    line-height: 1.8;
+}
+
+/* Quotations */
+.quotation {
+    background: var(--olive-light);
+    border-left: 4px solid var(--olive-drab-pastel);
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+/* Index styling */
+.index-entry {
+    margin: 5px 0;
+}
+
+/* Print-specific adjustments */
+@media print {
+    body {
+        background: white;
+    }
+    
+    body::before {
+        display: none;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    body > * {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    h2 {
+        font-size: 1.4em;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+
+
+
+
+<div class="top-level-extent" id="Top">
+<div class="nav-panel">
+<p>
+Next: <a href="Introduction.html" accesskey="n" rel="next">Introduction</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h1 class="top" id="Chaos-Fight-2026"><span>Chaos Fight 2026<a class="copiable-link" href="#Chaos-Fight-2026"> &para;</a></span></h1>
+
+<p>This manual describes Chaos Fight, a multiplayer fighting game for the Atari 2600
+Video Computer System featuring 16 unique characters from AtariAge homebrew games.
+</p>
+<p>Chaos Fight Game Manual
+</p>
+<p>Copyright &copy; 2025 Interworldly Adventuring, LLC.
+</p>
+<blockquote class="quotation">
+<p>This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/
+or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+</p>
+<p>You are free to:
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material
+</p>
+<p>Under the following terms:
+- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+- NonCommercial — You may not use the material for commercial purposes.
+</p>
+<p>No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+</p></blockquote>
+
+
+<div class="region-contents" id="SEC_Contents">
+<h2 class="contents-heading">Table of Contents</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Introduction" href="Introduction.html">1 Introduction</a></li>
+  <li><a id="toc-Getting-Started" href="Getting-Started.html">2 Getting Started</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Equipment-Required" href="Getting-Started.html#Equipment-Required">2.1 Equipment Required</a></li>
+    <li><a id="toc-Setup-Instructions" href="Getting-Started.html#Setup-Instructions">2.2 Setup Instructions</a></li>
+  </ul></li>
+  <li><a id="toc-Controller-Configuration" href="Controller-Configuration.html">3 Controller Configuration</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Standard-joystick-controllers" href="Controller-Configuration.html#Standard-joystick-controllers">3.1 Standard joystick controllers</a></li>
+    <li><a id="toc-Genesis_002fMega-Drive-Controllers" href="Controller-Configuration.html#Genesis_002fMega-Drive-Controllers">3.2 Genesis/Mega Drive Controllers</a></li>
+    <li><a id="toc-Joy2b_002b-Enhanced-Controllers" href="Controller-Configuration.html#Joy2b_002b-Enhanced-Controllers">3.3 Joy2b+ Enhanced Controllers</a></li>
+    <li><a id="toc-Four_002dPlayer-Mode-with-Quadtari" href="Controller-Configuration.html#Four_002dPlayer-Mode-with-Quadtari">3.4 Four-Player Mode with Quadtari</a></li>
+  </ul></li>
+  <li><a id="toc-Character-Selection" href="Character-Selection.html">4 Character Selection</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-The-Character-Selection-Screen" href="Character-Selection.html#The-Character-Selection-Screen">4.1 The Character Selection Screen</a></li>
+    <li><a id="toc-Selection-Controls" href="Character-Selection.html#Selection-Controls">4.2 Selection Controls</a></li>
+    <li><a id="toc-Starting-the-Game" href="Character-Selection.html#Starting-the-Game">4.3 Starting the Game</a></li>
+    <li><a id="toc-Handicapping-for-Advanced-Players" href="Character-Selection.html#Handicapping-for-Advanced-Players">4.4 Handicapping for Advanced Players</a></li>
+  </ul></li>
+  <li><a id="toc-Game-Controls" href="Game-Controls.html">5 Game Controls</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Basic-Movement" href="Game-Controls.html#Basic-Movement">5.1 Basic Movement</a></li>
+    <li><a id="toc-Guarding" href="Game-Controls.html#Guarding">5.2 Guarding</a></li>
+    <li><a id="toc-Health-and-Damage" href="Game-Controls.html#Health-and-Damage">5.3 Health and Damage</a></li>
+    <li><a id="toc-Victory" href="Game-Controls.html#Victory">5.4 Victory</a></li>
+  </ul></li>
+  <li><a id="toc-Character-Roster" href="Characters.html">6 Character Roster</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Character-Descriptions" href="Characters.html#Character-Descriptions">6.1 Character Descriptions</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Bernie" href="Characters.html#Bernie">6.1.1 Bernie</a></li>
+      <li><a id="toc-Curling-Sweeper" href="Characters.html#Curling-Sweeper">6.1.2 Curling Sweeper</a></li>
+      <li><a id="toc-DragonOfStorms" href="Characters.html#DragonOfStorms">6.1.3 DragonOfStorms</a></li>
+      <li><a id="toc-Zoe-Ryen" href="Characters.html#Zoe-Ryen">6.1.4 Zoe Ryen</a></li>
+      <li><a id="toc-Fat-Tony" href="Characters.html#Fat-Tony">6.1.5 Fat Tony</a></li>
+      <li><a id="toc-Megax" href="Characters.html#Megax">6.1.6 Megax</a></li>
+      <li><a id="toc-Harpy" href="Characters.html#Harpy">6.1.7 Harpy</a></li>
+      <li><a id="toc-Knight-Guy" href="Characters.html#Knight-Guy">6.1.8 Knight Guy</a></li>
+      <li><a id="toc-Frooty" href="Characters.html#Frooty">6.1.9 Frooty</a></li>
+      <li><a id="toc-Nefertem" href="Characters.html#Nefertem">6.1.10 Nefertem</a></li>
+      <li><a id="toc-Ninjish-Guy" href="Characters.html#Ninjish-Guy">6.1.11 Ninjish Guy</a></li>
+      <li><a id="toc-Pork-Chop" href="Characters.html#Pork-Chop">6.1.12 Pork Chop</a></li>
+      <li><a id="toc-Radish-Goblin" href="Characters.html#Radish-Goblin">6.1.13 Radish Goblin</a></li>
+      <li><a id="toc-Robo-Tito" href="Characters.html#Robo-Tito">6.1.14 Robo Tito</a></li>
+      <li><a id="toc-Ursulo" href="Characters.html#Ursulo">6.1.15 Ursulo</a></li>
+      <li><a id="toc-Shamone" href="Characters.html#Shamone">6.1.16 Shamone</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a id="toc-Game-Modes" href="Game-Modes.html">7 Game Modes</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Two_002dPlayer-Battle" href="Game-Modes.html#Two_002dPlayer-Battle">7.1 Two-Player Battle</a></li>
+    <li><a id="toc-Four_002dPlayer-Chaos" href="Game-Modes.html#Four_002dPlayer-Chaos">7.2 Four-Player Chaos</a></li>
+    <li><a id="toc-Battle-Arenas" href="Game-Modes.html#Battle-Arenas">7.3 Battle Arenas</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Arena-Selection" href="Game-Modes.html#Arena-Selection">7.3.1 Arena Selection</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a id="toc-Console-Switches" href="Console-Switches.html">8 Console Switches</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-GAME-RESET-Switch" href="Console-Switches.html#GAME-RESET-Switch">8.1 GAME RESET Switch</a></li>
+    <li><a id="toc-GAME-SELECT-Switch" href="Console-Switches.html#GAME-SELECT-Switch">8.2 GAME SELECT Switch</a></li>
+    <li><a id="toc-TV-TYPE-Switch-_0028COLOR_002fB_0026W_0029" href="Console-Switches.html#TV-TYPE-Switch-_0028COLOR_002fB_0026W_0029">8.3 TV TYPE Switch (COLOR/B&amp;W)</a></li>
+    <li><a id="toc-DIFFICULTY-Switches" href="Console-Switches.html#DIFFICULTY-Switches">8.4 DIFFICULTY Switches</a></li>
+  </ul></li>
+  <li><a id="toc-Troubleshooting" href="Troubleshooting.html">9 Troubleshooting</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Common-Issues" href="Troubleshooting.html#Common-Issues">9.1 Common Issues</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Controllers-Not-Responding" href="Troubleshooting.html#Controllers-Not-Responding">9.1.1 Controllers Not Responding</a></li>
+      <li><a id="toc-Four-Players-Not-Working" href="Troubleshooting.html#Four-Players-Not-Working">9.1.2 Four Players Not Working</a></li>
+      <li><a id="toc-Game-Won_0027t-Start-from-Multicart" href="Troubleshooting.html#Game-Won_0027t-Start-from-Multicart">9.1.3 Game Won&rsquo;t Start from Multicart</a></li>
+    </ul></li>
+    <li><a id="toc-Getting-Help" href="Troubleshooting.html#Getting-Help">9.2 Getting Help</a></li>
+  </ul></li>
+  <li><a id="toc-Credits" href="Credits.html">10 Credits</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Development-Team" href="Credits.html#Development-Team">10.1 Development Team</a></li>
+    <li><a id="toc-Special-Thanks" href="Credits.html#Special-Thanks">10.2 Special Thanks</a></li>
+    <li><a id="toc-Tools-Used" href="Credits.html#Tools-Used">10.3 Tools Used</a></li>
+    <li><a id="toc-Copyright-and-License" href="Credits.html#Copyright-and-License">10.4 Copyright and License</a></li>
+    <li><a id="toc-Version-Information" href="Credits.html#Version-Information">10.5 Version Information</a></li>
+  </ul></li>
+  <li><a id="toc-Index" href="Index.html" rel="index">Index</a></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Introduction.html" accesskey="n" rel="next">Introduction</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

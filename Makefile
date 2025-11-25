@@ -168,6 +168,10 @@ WWW/26/manual/index.html: $(MANUAL_HTML) | WWW/26/manual/
 	@cp -r $(MANUAL_HTML)/* WWW/26/manual/
 	@echo "Manual HTML copied to WWW/26/manual/"
 
+# Create WWW/26/manual/ directory if it doesn't exist
+WWW/26/manual/:
+	@mkdir -p WWW/26/manual
+
 # Character sprite sheet names (32 characters: 16 main + 16 future)
 CHARACTER_NAMES = \
 	Bernie Curler DragonOfStorms ZoeRyen FatTony Megax Harpy KnightGuy \

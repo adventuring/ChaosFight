@@ -953,7 +953,17 @@ stack4 EQU $F9
   
           MS_ASSIGN  interlaced, 0
           MS_ASSIGN  shakescreen, 0
-          MS_ASSIGN  vblank_time, 43
+          ifnconst vblank_time
+            ifconst _TV_PAL
+              MS_ASSIGN  vblank_time, 58
+            else
+              ifconst _TV_SECAM
+                MS_ASSIGN  vblank_time, 58
+              else
+                MS_ASSIGN  vblank_time, 43
+              endif
+            endif
+          endif
           MS_ASSIGN  scorefade, 0
           MS_ASSIGN  NO_ILLEGAL_OPCODES, 0
           MS_ASSIGN  DPC_kernel_options, 0

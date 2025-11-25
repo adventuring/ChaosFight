@@ -1,6 +1,8 @@
 /* PAL color palette - pre-calculated hex value macros (even luminances only) */
 /* Each hue supports 8 luminance levels: 0, 2, 4, 6, 8, 10, 12, 14 */
 /* Color ordering and nomenclature matches SkylineTool +vcs-pal-palette+ */
+/* Verified against SkylineTool/src/graphics.lisp +vcs-pal-palette+ (Issue #601) */
+/* PAL color register values differ from NTSC due to different TV standard hue phases */
 #define _COL_Grey_L0 $00
 #define _COL_Grey_L2 $02
 #define _COL_Grey_L4 $04

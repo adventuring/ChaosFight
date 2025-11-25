@@ -22,9 +22,9 @@ end
           rem Calculate compact index: songID - Bank1MinSongID (song Bank1MinSongID → 0)
           let temp2 = temp1 - Bank1MinSongID
           rem Lookup pointer from tables and combine into 16-bit value
-          let songPointer = SongPointers1H[temp2]
-          let songPointer = songPointer * 256
-          let songPointer = songPointer + SongPointers1L[temp2]
+          rem Fix: Assign directly to high/low bytes instead of broken * 256 multiplication
+          let var40 = SongPointers1H[temp2]
+          let songPointer = SongPointers1L[temp2]
           return otherbank
 
 LSP_InvalidSong
@@ -59,8 +59,9 @@ end
           rem Calculate compact index: songID - Bank1MinSongID (song Bank1MinSongID → 0)
           let temp2 = temp1 - Bank1MinSongID
           rem Lookup Voice 1 pointer from tables
-          let songPointer = SongPointers1SecondH[temp2] * 256
-          let songPointer = songPointer + SongPointers1SecondL[temp2]
+          rem Fix: Assign directly to high/low bytes instead of broken * 256 multiplication
+          let var40 = SongPointers1SecondH[temp2]
+          let songPointer = SongPointers1SecondL[temp2]
           return otherbank
 
 LSV1P_InvalidSong

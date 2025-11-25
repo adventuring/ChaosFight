@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 135 kg (300 lbs)
-    Attack: Melée
+    Attack: Melee
     Special: Can stretch vertically to ceiling (press UP to latch, DOWN to release); takes limited fall damage
     Original Game: Tito el robotito contra los fantasmas (jumpless platformer)
     Programming Error: Allergic to scary things (zombies, ghosts, bats, skulls)

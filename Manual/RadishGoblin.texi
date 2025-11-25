@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 25 kg (50 lbs)
-    Attack: Melée (bouncing bite attacks)
+    Attack: Melee (bouncing bite attacks)
     Special: Bounces when moving (note: there is an open issue about hopping)
     Origins: Terrible pests from Syrex, ancient Rome (Karpoi), and Aclypt
     Nature: Vegetable spirits known for their bouncing and biting

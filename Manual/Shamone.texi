@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 30 kg (65 lbs)
-    Attack: Melée
+    Attack: Melee
     Special: Press UP to transform
     Mission: Protect vegetable gardens from nasty ducks
     Motivation: Dedicated guardian against persistent duck attacks
@@ -18,7 +18,7 @@ but they won't stop attacking. This loyal guardian has developed fierce fighting
 skills through constant battles to defend precious vegetables from relentless 
 waterfowl invaders.
 
-Despite being a light melée fighter, Shamone's dedication to garden protection 
+Despite being a light melee fighter, Shamone's dedication to garden protection 
 has made them surprisingly tenacious in combat.
 
 Shamone has a unique transformation ability - press UP to transform into a 

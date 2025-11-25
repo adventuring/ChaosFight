@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 115 kg (250 lbs)
-    Attack: Melée (sword)
+    Attack: Melee (sword)
     Special: (none - armor and sword are normal abilities)
     Original Game: Knight Guy: Escapes from Castle, In Another Castle, and 30 Squares of Fate
     Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.itch.io,VHZC Games}
@@ -12,5 +12,5 @@
 @end group
 @end display
 
-Knight Guy combines heavy armor with a powerful melée attack. His sword
+Knight Guy combines heavy armor with a powerful melee attack. His sword
 strikes adjacent enemies, making him a formidable close-combat fighter!

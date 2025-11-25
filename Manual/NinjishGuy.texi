@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 60 kg (130 lbs)
-    Attack: Melée
+    Attack: Melee
     Special: (none - high jumps, fast movement, and shuriken are normal abilities)
     Original Game: Ninjish Guy in Low-Res World and other vhzc games
     Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.itch.io,VHZC Games}

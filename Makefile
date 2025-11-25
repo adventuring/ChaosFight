@@ -748,7 +748,7 @@ Dist/$(GAME)$(GAMEYEAR).%.$(RELEASE_TAG).zip: Dist/$(GAME)$(GAMEYEAR).%.a26 Dist
 	rm -f $@
 	zip -j $@ $^
 
-web: $(ZIP_ARCHIVES) $(MANUAL_HTML) $(MANUAL_PDF)
+web: doc $(ZIP_ARCHIVES) $(MANUAL_HTML) $(MANUAL_PDF)
 	@echo "Deploying website to $(WEB_REMOTE)..."
 	ssh interworldly.com 'mkdir -p interworldly.com/games/ChaosFight/25/downloads interworldly.com/games/ChaosFight/25/manual'
 	rsync -av WWW/ $(WEB_REMOTE)/

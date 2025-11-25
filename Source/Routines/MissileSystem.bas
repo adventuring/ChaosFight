@@ -339,7 +339,7 @@ FrictionDone
           let missileY_W[temp1] = temp4
 
           rem Issue #1177: Frooty lollipop ricochet - check before wrap/deactivate
-          rem Frooty's projectile bounces off arena bounds instead of wrapping/deactivating
+          rem Frooty’s projectile bounces off arena bounds instead of wrapping/deactivating
           let temp6 = playerCharacter[temp1]
           if temp6 = CharacterFrooty then goto FrootyRicochetCheck
 

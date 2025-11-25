@@ -96,7 +96,12 @@ end
           let temp2 = ActionHit
           gosub SetPlayerAnimation bank11
 
-          let temp4 = temp1 / 2
+          rem Use bit shift instead of division (optimized for Atari 2600)
+          asm
+            lda temp1
+            lsr
+            sta temp4
+          end
           rem Calculate recovery frames (damage ÷ 2, clamped 10-30)
           if temp4 < 10 then temp4 = 10
           if temp4 > 30 then temp4 = 30
@@ -107,7 +112,7 @@ end
           rem   are set
 
           rem Issue #1180: Ursulo uppercut knock-up scaling with target weight
-          rem Ursulo's punches toss opponents upward with launch height proportional to target weight
+          rem Ursulo’s punches toss opponents upward with launch height proportional to target weight
           rem Lighter characters travel higher than heavyweights
           let temp1 = playerCharacter[attackerID]
           if temp1 = CharacterUrsulo then goto ApplyUrsuloKnockUp
@@ -132,19 +137,17 @@ ApplyUrsuloKnockUp
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with ApplyDamage
-          rem Get defender's weight
+          rem Get defender’s weight
           let temp1 = playerCharacter[defenderID]
-          let temp2 = CharacterWeights[temp1]
           rem Weight values range 5-100 (lightest to heaviest)
           rem Calculate upward velocity: lighter = higher launch (inverse relationship)
           rem Formula: launch_velocity = max_launch - (weight / weight_scale_factor)
           rem Max launch: 12 pixels/frame upward (244 in signed 8-bit = -12) for lightest
           rem Min launch: 4 pixels/frame (252 in signed 8-bit = -4) for heaviest
           rem Weight scale: divide weight by 12 to get velocity reduction (0-8 range)
-          rem Convert weight to velocity reduction (weight / 12, clamped to 0-8)
-          let temp3 = temp2 / 12
-          rem Clamp reduction to 0-8 range (ensures launch stays in 244-252 range)
-          if temp3 > 8 then temp3 = 8
+          rem Use precomputed lookup table (avoids expensive division on Atari 2600)
+          let temp3 = CharacterWeightDiv12[temp1]
+          rem Values already clamped to 0-8 range in lookup table
           rem Calculate upward velocity: max_launch - reduction
           rem 244 = -12 (highest), 245 = -11, ..., 252 = -4 (lowest)
           let temp4 = 244 + temp3

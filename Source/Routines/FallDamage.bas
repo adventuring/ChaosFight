@@ -152,7 +152,7 @@ CheckBernieStun
           rem Constraints: Must be colocated with CheckFallDamage
           rem Check if fall velocity exceeds safe threshold (would trigger fall damage)
           let temp3 = SafeFallVelocityThresholds[CharacterBernie]
-          rem Bernie's safe fall velocity threshold
+          rem Bernie’s safe fall velocity threshold
           if temp2 <= temp3 then return
           rem Safe landing, no stun needed
           rem Fall velocity exceeds threshold - trigger stun

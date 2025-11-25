@@ -54,7 +54,7 @@ FrootyButtonHeld
           let temp4 = 0
           rem Increment charge timer (0-30 range, 30 = 3 seconds at 10 Hz)
           if frootyChargeTimer_R[temp1] >= 30 then goto FrootyUpdateFrameCounter
-          rem At max charge, don't increment further, but still update frame counter
+          rem At max charge, don’t increment further, but still update frame counter
           let frootyChargeTimer_W[temp1] = frootyChargeTimer_R[temp1] + 1
 FrootyUpdateFrameCounter
           rem Update charge state: set charging flag (bit 7) and frame counter (bits 0-2)
@@ -86,7 +86,7 @@ FrootyButtonReleased
           if temp3 < 6 then temp3 = 6
           if temp3 > 180 then temp3 = 180
           let missileLifetime_W[temp1] = temp3
-          rem Set ricochet velocity - Frooty's missile will bounce off bounds
+          rem Set ricochet velocity - Frooty’s missile will bounce off bounds
           rem Ricochet logic handled in UpdateOneMissile via bounds checking
           rem Set animation state
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted

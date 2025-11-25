@@ -56,8 +56,8 @@ XDistanceDone
 
           rem Fetch character half-height values using shared SCRAM scratch variables
           let characterIndex = playerCharacter[temp1]
-          let characterHeight = CharacterHeights[characterIndex]
           rem Use bit shift instead of division (optimized for Atari 2600)
+          let characterHeight = CharacterHeights[characterIndex]
           asm
             lda characterHeight
             lsr
@@ -65,8 +65,8 @@ XDistanceDone
 end
 
           let characterIndex = playerCharacter[temp2]
-          let characterHeight = CharacterHeights[characterIndex]
           rem Use bit shift instead of division (optimized for Atari 2600)
+          let characterHeight = CharacterHeights[characterIndex]
           asm
             lda characterHeight
             lsr
@@ -83,8 +83,8 @@ YDistanceDone
           let totalHeight = halfHeight1 + halfHeight2
           if temp6 >= totalHeight then NoCollision
 
-          let temp3 = 1
           rem Collision detected
+          let temp3 = 1
           return otherbank
 
 NoCollision

@@ -30,8 +30,8 @@ end
           if temp3 then let temp6 = ColCyan(12) : return otherbank
 
           rem Hurt state handling
-          if !temp2 then goto NormalColorState
           rem Hurt state - SECAM uses magenta, others use dimmed colors
+          if !temp2 then goto NormalColorState
 #ifdef TV_SECAM
           let temp6 = ColMagenta(12)
 #else

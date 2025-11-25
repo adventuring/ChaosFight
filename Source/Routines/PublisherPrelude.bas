@@ -84,8 +84,8 @@ end
           let preambleTimer = preambleTimer + 1
 
           rem Set window values for Publisher screen (AtariAge logo +
-          gosub SetPublisherWindowValues bank14
           rem   AtariAge text)
+          gosub SetPublisherWindowValues bank14
 
           rem Drawing handled by MainLoop (titledrawscreen for admin
           rem   screens)

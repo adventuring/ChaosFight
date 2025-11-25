@@ -42,19 +42,19 @@ end
           rem Area-of-effect attack: hits both left AND right
           rem simultaneously
           rem Save original facing direction
-          let temp3 = playerState[temp1] & PlayerStateBitFacing
           rem Set animation state (PerformMeleeAttack also sets it, but
+          let temp3 = playerState[temp1] & PlayerStateBitFacing
           rem we need it set first)
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           rem Attack in facing direction (inline former PerformMeleeAttack)
-          gosub SpawnMissile bank7
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          gosub SpawnMissile bank7
           rem Flip facing (XOR with bit 0)
-          let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
-          rem Attack in opposite direction (inline former PerformMeleeAttack)
-          gosub SpawnMissile bank7
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          rem Attack in opposite direction (inline former PerformMeleeAttack)
+          let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
+          gosub SpawnMissile bank7
           rem Restore original facing (XOR again to flip back)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
           return otherbank
 

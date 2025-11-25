@@ -16,8 +16,8 @@ end
           rem Called Routines: None
           rem
           rem Constraints: None
-          let temp2 = playerState[temp1] / 16
           rem Shift right by 4 (divide by 16) to get animation state
+          let temp2 = playerState[temp1] / 16
           rem   (0-15)
           return otherbank
 

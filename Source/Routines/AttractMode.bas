@@ -30,7 +30,7 @@ AttractMode
           rem
           rem Constraints: Entry point for attract mode (called from
           rem MainLoop)
-          let gameMode = ModePublisherPrelude : gosub ChangeGameMode bank14
           rem Only reachable via gosub from MainLoop
+          let gameMode = ModePublisherPrelude : gosub ChangeGameMode bank14
           return
 

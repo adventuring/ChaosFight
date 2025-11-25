@@ -47,8 +47,8 @@ end
           rem TitleScreenComplete
           rem              Called from MainLoop each frame (gameMode 2)
           rem Update random number generator (use local Randomize routine)
-          gosub randomize
           rem Handle input - any button press goes to character select
+          gosub randomize
           rem Check standard controllers (Player 1 & 2)
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then TitleScreenComplete

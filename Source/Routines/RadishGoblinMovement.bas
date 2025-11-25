@@ -11,8 +11,8 @@ end
           rem Handle joystick input for Radish Goblin bounce movement
           rem Input: temp1 = player index (0-3)
           rem Output: Horizontal momentum added based on stick direction (only when on ground)
-          if (playerState[temp1] & PlayerStateBitJumping) then return otherbank
           rem Determine joy port (temp1 & 2 = 0 for players 0,2 use joy0)
+          if (playerState[temp1] & PlayerStateBitJumping) then return otherbank
           if temp1 & 2 = 0 then goto RGHI_Joy0
           if !joy1left then goto RGHI_CheckRight
           goto RGHI_Left
@@ -71,8 +71,8 @@ end
           rem Input: currentPlayer = player index (0-3) (global)
           let temp1 = currentPlayer
           if playerCharacter[temp1] <> CharacterRadishGoblin then return otherbank
-          if playerVelocityY[temp1] <= 0 then goto RGBGB_ClearCheck
           rem Convert X to playfield column
+          if playerVelocityY[temp1] <= 0 then goto RGBGB_ClearCheck
           let temp2 = playerX[temp1] - ScreenInsetX
           if temp2 & $80 then temp2 = 0
           asm
@@ -80,8 +80,8 @@ end
             lsr temp2
 end
           if temp2 > 31 then temp2 = 31
-          let temp6 = temp2
           rem Calculate feet row
+          let temp6 = temp2
           let temp2 = playerY[temp1] + PlayerSpriteHeight
           asm
             lsr temp2
@@ -91,16 +91,16 @@ end
 end
           if temp2 >= pfrows then goto RGBGB_ClearCheck
           let temp5 = temp2 + 1
-          if temp5 >= pfrows then goto RGBGB_ClearCheck
           rem Check ground pixel
+          if temp5 >= pfrows then goto RGBGB_ClearCheck
           let temp4 = temp1
           let temp1 = temp6
           gosub PlayfieldRead bank16
           let temp1 = temp4
-          if !temp1 then goto RGBGB_ClearCheck
           rem Ground detected - check bounce state
-          if radishGoblinBounceState_R[temp1] = 1 then goto RGBGB_ClearCheck
+          if !temp1 then goto RGBGB_ClearCheck
           rem Check if moved away from contact
+          if radishGoblinBounceState_R[temp1] = 1 then goto RGBGB_ClearCheck
           let temp2 = playerY[temp1]
           let temp3 = radishGoblinLastContactY_R[temp1]
           if temp2 < temp3 then goto RGBGB_ClearState
@@ -112,8 +112,8 @@ RGBGB_ClearState
 RGBGB_CalcBounce
           rem Calculate bounce height
           let temp2 = RadishGoblinBounceNormal
-          if playerVelocityY[temp1] >= TerminalVelocity then let temp2 = RadishGoblinBounceHighSpeed
           rem Check jump button (enhanced button or stick up)
+          if playerVelocityY[temp1] >= TerminalVelocity then let temp2 = RadishGoblinBounceHighSpeed
           let temp3 = 0
           if temp1 >= 2 then goto RGBGB_CheckStick
           if temp1 = 0 then goto RGBGB_CheckEnhanced0

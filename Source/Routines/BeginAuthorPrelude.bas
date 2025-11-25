@@ -26,8 +26,8 @@ end
           rem Initialize Author Prelude mode
           rem Note: pfres is defined globally in AssemblyConfig.bas
 
-          let preambleTimer = 0
           rem Initialize timer
+          let preambleTimer = 0
 
           rem Background: black (COLUBK starts black, no need to set)
 
@@ -35,8 +35,8 @@ end
           let temp1 = MusicInterworldly
           gosub StartMusic bank15
 
-          gosub SetAuthorWindowValues bank14
           rem Set window values for Author screen (Interworldly only)
+          gosub SetAuthorWindowValues bank14
 
           rem Note: Bitmap data is loaded automatically by titlescreen
           rem   kernel via includes

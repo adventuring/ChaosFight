@@ -37,8 +37,8 @@ end
           rem
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModePublisherPrelude
-          let preambleTimer = 0
           rem Initialize prelude timer
+          let preambleTimer = 0
 
           rem Background: black (COLUBK starts black, no need to set)
 

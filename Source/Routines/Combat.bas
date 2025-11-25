@@ -70,32 +70,32 @@ end
           gosub GetWeightBasedDamage
           let temp4 = temp2
           let temp1 = playerCharacter[defenderID]
-          gosub GetWeightBasedDamage
           rem Calculate damage (considering defender state)
-          let temp1 = temp4 - temp2
+          gosub GetWeightBasedDamage
           rem Minimum damage
+          let temp1 = temp4 - temp2
           if temp1 < 1 then temp1 = 1
 
-          let temp2 = playerHealth[defenderID]
           rem Check if player will die from this damage
-          let temp3 = 0
+          let temp2 = playerHealth[defenderID]
           rem Will die
+          let temp3 = 0
           if temp2 < temp1 then temp3 = 1
 
           rem If player will die, instantly vanish (eliminate)
 
           if temp3 then goto PlayerDies
 
-          let playerHealth[defenderID] = temp2 - temp1
           rem Player survives - apply damage and enter hurt state
+          let playerHealth[defenderID] = temp2 - temp1
 
-          let currentPlayer = defenderID
           rem Set hurt animation (ActionHit = 5)
+          let currentPlayer = defenderID
           let temp2 = ActionHit
           gosub SetPlayerAnimation bank12
 
-          let temp4 = temp1 / 2
           rem Calculate recovery frames (damage ÷ 2, clamped 10-30)
+          let temp4 = temp1 / 2
           if temp4 < 10 then temp4 = 10
           if temp4 > 30 then temp4 = 30
           let playerRecoveryFrames[defenderID] = temp4
@@ -129,25 +129,25 @@ ApplyUrsuloKnockUp
           rem
           rem Constraints: Must be colocated with ApplyDamage
           rem Get defender’s weight
-          let temp1 = playerCharacter[defenderID]
           rem Weight values range 5-100 (lightest to heaviest)
+          let temp1 = playerCharacter[defenderID]
           rem Calculate upward velocity: lighter = higher launch (inverse relationship)
           rem Formula: launch_velocity = max_launch - (weight / weight_scale_factor)
           rem Max launch: 12 pixels/frame upward (244 in signed 8-bit = -12) for lightest
           rem Min launch: 4 pixels/frame (252 in signed 8-bit = -4) for heaviest
           rem Weight scale: divide weight by 12 to get velocity reduction (0-8 range)
           rem Use precomputed lookup table (avoids expensive division on Atari 2600)
-          let temp3 = CharacterWeightDiv12[temp1]
           rem Values already clamped to 0-8 range in lookup table
+          let temp3 = CharacterWeightDiv12[temp1]
           rem Calculate upward velocity: max_launch - reduction
           rem 244 = -12 (highest), 245 = -11, ..., 252 = -4 (lowest)
-          let temp4 = 244 + temp3
           rem Clamp to valid range (244-252)
-          if temp4 > 252 then temp4 = 252
+          let temp4 = 244 + temp3
           rem Apply upward velocity to defender (negative value = upward)
+          if temp4 > 252 then temp4 = 252
           let playerVelocityY[defenderID] = temp4
-          let playerVelocityYL[defenderID] = 0
           rem Set jumping flag so gravity applies correctly and animation system handles airborne state
+          let playerVelocityYL[defenderID] = 0
           let playerState[defenderID] = playerState[defenderID] | PlayerStateBitJumping
 
           rem Sound effect (tail call)
@@ -176,13 +176,13 @@ PlayerDies
 
           rem Trigger elimination immediately (instantly vanish)
           rem CheckPlayerElimination will hide sprite and handle
-          let currentPlayer = defenderID
           rem   elimination effects
+          let currentPlayer = defenderID
           gosub CheckPlayerElimination bank14
 
           rem Sound effect
-          goto PlayDamageSound
           rem tail call
+          goto PlayDamageSound
 
 
 CheckAttackHit
@@ -231,17 +231,17 @@ end
           rem   defender_left < cachedHitboxRight_R
           rem AND defender_bottom > hitboxTop AND defender_top <
           rem hitboxBottom
-          if playerX[defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R then NoHit
           rem Defender right edge <= hitbox left edge (no overlap)
-          if playerX[defenderID] >= cachedHitboxRight_R then NoHit
+          if playerX[defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R then NoHit
           rem Defender left edge >= hitbox right edge (no overlap)
-          if playerY[defenderID] + PlayerSpriteHeight <= cachedHitboxTop_R then NoHit
+          if playerX[defenderID] >= cachedHitboxRight_R then NoHit
           rem Defender bottom edge <= hitbox top edge (no overlap)
-          if playerY[defenderID] >= cachedHitboxBottom_R then NoHit
+          if playerY[defenderID] + PlayerSpriteHeight <= cachedHitboxTop_R then NoHit
           rem Defender top edge >= hitbox bottom edge (no overlap)
+          if playerY[defenderID] >= cachedHitboxBottom_R then NoHit
 
-          let hit = 1
           rem All bounds checked - defender is inside hitbox
+          let hit = 1
           return otherbank
 
 NoHit
@@ -324,8 +324,8 @@ FacingRight
           rem MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
-          let cachedHitboxLeft_W = playerX[attackerID] + PlayerSpriteWidth
           rem Hitbox: [playerX+16, playerX+32] x [playerY, playerY+16]
+          let cachedHitboxLeft_W = playerX[attackerID] + PlayerSpriteWidth
           let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth + PlayerSpriteWidth
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
@@ -348,8 +348,8 @@ FacingLeft
           rem MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
-          let cachedHitboxLeft_W = playerX[attackerID] - PlayerSpriteWidth
           rem Hitbox: [playerX-16, playerX] x [playerY, playerY+16]
+          let cachedHitboxLeft_W = playerX[attackerID] - PlayerSpriteWidth
           let cachedHitboxRight_W = playerX[attackerID]
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
@@ -397,18 +397,18 @@ AreaHitbox
           rem Constraints: Must be colocated with CalculateAttackHitbox
           rem Area radius: 24 pixels (1.5× sprite width) centered on attacker
           rem Calculate attacker center (sprite midpoint)
-          let temp2 = playerX[attackerID] + 8
           rem Center X = playerX + half sprite width
-          let cachedHitboxLeft_W = temp2 - 24
+          let temp2 = playerX[attackerID] + 8
           rem Left edge: center - radius
-          let cachedHitboxRight_W = temp2 + 24
+          let cachedHitboxLeft_W = temp2 - 24
           rem Right edge: center + radius
-          let temp2 = playerY[attackerID] + 8
+          let cachedHitboxRight_W = temp2 + 24
           rem Center Y = playerY + half sprite height
-          let cachedHitboxTop_W = temp2 - 24
+          let temp2 = playerY[attackerID] + 8
           rem Top edge: center - radius
-          let cachedHitboxBottom_W = temp2 + 24
+          let cachedHitboxTop_W = temp2 - 24
           rem Bottom edge: center + radius
+          let cachedHitboxBottom_W = temp2 + 24
           return otherbank
 
 ProcessAttackerAttacks
@@ -444,15 +444,15 @@ end
           rem defender and dead players
           rem Issue #1148: Skip ranged attackers (handled by missile system)
           let temp1 = playerAttackType_R[attackerID]
-          if temp1 = RangedAttack then return otherbank
           rem Cache hitbox for this attacker (calculated once, used for
+          if temp1 = RangedAttack then return otherbank
           rem all
-          gosub CalculateAttackHitbox
           rem   defenders)
+          gosub CalculateAttackHitbox
           rem Hitbox values are already written into cachedHitbox*_W via aliasing
 
-          for defenderID = 0 to 3
           rem Attack each defender
+          for defenderID = 0 to 3
               rem Skip if defender is attacker
           if defenderID = attackerID then NextDefender
 
@@ -460,8 +460,8 @@ end
 
           if playerHealth[defenderID] <= 0 then NextDefender
 
-          gosub CheckAttackHit
           rem Check if attack hits (uses cached hitbox)
+          gosub CheckAttackHit
           if hit then gosub ApplyDamage
 
 NextDefender
@@ -494,16 +494,16 @@ end
               rem Skip if attacker is dead
           if playerHealth[attackerID] <= 0 then NextAttacker
 
-          let temp1 = playerState[attackerID] & MaskPlayerStateAnimation
           rem Issue #1147: Only evaluate live attacks (windup-through-recovery window)
+          let temp1 = playerState[attackerID] & MaskPlayerStateAnimation
           if temp1 < ActionAttackWindupShifted then NextAttacker
           if temp1 > ActionAttackRecoveryShifted then NextAttacker
 
           gosub ProcessAttackerAttacks
 
 NextAttacker
-          next
           rem Helper: End of attacker loop iteration (label only)
+          next
           return otherbank
           rem Input: None (label only)
           rem

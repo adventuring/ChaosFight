@@ -11,8 +11,8 @@ CheckFallDamage
           rem Calls: PlaySoundEffect (bank15)
           rem Constraints: Must remain colocated with fall-damage helpers that reuse temp scratch bytes
 
-          let currentCharacter = playerCharacter[currentPlayer]
           rem Get character type for this player
+          let currentCharacter = playerCharacter[currentPlayer]
 
           rem Issue #1178: Bernie post-fall stun - check before immunity
           rem Bernie is immune to fall damage but still gets stunned from high falls
@@ -25,14 +25,14 @@ CheckFallDamage
           rem Calculate safe fall velocity threshold
           rem Formula: safe_velocity = 120 ÷ weight
           rem Use lookup table to avoid variable division
-          let temp3 = SafeFallVelocityThresholds[currentCharacter]
           rem Pre-computed values in SafeFallVelocityThresholds table
+          let temp3 = SafeFallVelocityThresholds[currentCharacter]
           rem Safe fall velocity threshold
 
           rem Check if fall velocity exceeds safe threshold
 
-          if temp2 <= temp3 then return otherbank
           rem Safe landing, no damage
+          if temp2 <= temp3 then return otherbank
 
           rem Check if player is guarding - guard does NOT block fall
           rem   damage
@@ -44,8 +44,8 @@ CheckFallDamage
           rem Base damage = (velocity - safe_velocity) ×
           rem   base_damage_multiplier
           rem Base damage multiplier: 2 (so 1 extra velocity = 2 × base
-          let temp4 = temp2 - temp3
           rem   damage)
+          let temp4 = temp2 - temp3
           rem Multiply by 2 to double the base damage
           let temp4 = temp4 * 2
 
@@ -57,11 +57,11 @@ CheckFallDamage
           rem Using integer math: damage = damage × (weight ÷ 20)
           rem Use lookup table for weight÷20, then multiply by damage
           rem temp2 = weight ÷ 20 from lookup table
-          let temp2 = WeightDividedBy20[currentCharacter]
           rem Apply weight-based damage multiplier (temp2 = 0-5)
+          let temp2 = WeightDividedBy20[currentCharacter]
           if temp2 = 0 then temp4 = 0 : goto WeightMultDone
-          if temp2 = 1 then goto WeightMultDone
           rem temp2 is 2-5: multiply temp4 by temp2 using compact ASM
+          if temp2 = 1 then goto WeightMultDone
           asm
             lda temp4
             ldx temp2
@@ -109,8 +109,8 @@ WeightMultDone
           if temp4 > 50 then temp4 = 50
 
           rem Apply fall damage (byte-safe clamp)
-          let oldHealthValue = playerHealth[currentPlayer]
           rem Use oldHealthValue for byte-safe clamp check
+          let oldHealthValue = playerHealth[currentPlayer]
           let playerHealth[currentPlayer] = playerHealth[currentPlayer] - temp4
           if playerHealth[currentPlayer] > oldHealthValue then let playerHealth[currentPlayer] = 0
 
@@ -120,8 +120,8 @@ WeightMultDone
           if temp2 > 30 then temp2 = 30
           let playerRecoveryFrames[currentPlayer] = temp2
 
-          let playerState[currentPlayer] = playerState[currentPlayer] | 8
           rem Synchronize playerState bit 3 with recovery frames
+          let playerState[currentPlayer] = playerState[currentPlayer] | 8
           rem Set bit 3 (recovery flag) when recovery frames are set
 
           rem Set animation state to recovering (state 9)
@@ -151,19 +151,19 @@ CheckBernieStun
           rem
           rem Constraints: Must be colocated with CheckFallDamage
           rem Check if fall velocity exceeds safe threshold (would trigger fall damage)
-          let temp3 = SafeFallVelocityThresholds[CharacterBernie]
           rem Bernie’s safe fall velocity threshold
-          if temp2 <= temp3 then return otherbank
+          let temp3 = SafeFallVelocityThresholds[CharacterBernie]
           rem Safe landing, no stun needed
+          if temp2 <= temp3 then return otherbank
           rem Fall velocity exceeds threshold - trigger stun
           rem Set stun timer to 1 second (frame-rate independent: 60fps NTSC, 50fps PAL/SECAM)
-          let playerRecoveryFrames[currentPlayer] = FramesPerSecond
           rem Set recovery flag to prevent movement during stun
-          let playerState[currentPlayer] = playerState[currentPlayer] | PlayerStateBitRecovery
+          let playerRecoveryFrames[currentPlayer] = FramesPerSecond
           rem Set animation state to "Fallen down" (state 8, shifted = 128)
+          let playerState[currentPlayer] = playerState[currentPlayer] | PlayerStateBitRecovery
           let temp3 = playerState[currentPlayer] & MaskPlayerStateFlags
-          let playerState[currentPlayer] = temp3 | ActionFallenDownShifted
           rem Animation state 8 (Fallen down) << 4 = 128
+          let playerState[currentPlayer] = temp3 | ActionFallenDownShifted
           return otherbank
 
 FallDamageApplyGravity
@@ -193,8 +193,8 @@ FallDamageApplyGravity
           rem
           rem Called Routines: None
           rem Constraints: None
-          let currentCharacter = playerCharacter[currentPlayer]
           rem Get character type
+          let currentCharacter = playerCharacter[currentPlayer]
 
           rem Check for no-gravity characters (Frooty, DragonOfStorms)
           if currentCharacter = CharacterFrooty then return otherbank
@@ -204,8 +204,8 @@ FallDamageApplyGravity
           let temp6 = 2
           if currentCharacter = CharacterHarpy then temp6 = 1
 
-          let temp2 = temp2 + temp6
           rem Apply gravity acceleration
+          let temp2 = temp2 + temp6
 
           if temp2 > TerminalVelocity then temp2 = TerminalVelocity
 
@@ -247,8 +247,8 @@ CheckGroundCollision
           rem              update but BEFORE momentum is cleared
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
-          let temp3 = playerY[currentPlayer]
           rem Get player Y position
+          let temp3 = playerY[currentPlayer]
 
           if temp3 < 176 then return otherbank
           let playerY[currentPlayer] = 176
@@ -269,8 +269,8 @@ HandleFrootyVertical
           rem This should be called from PlayerInput.bas when processing
           rem joystick up/down for Frooty.
           let currentPlayer = temp1
-          let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
+          let currentCharacter = playerCharacter[currentPlayer]
           if currentCharacter = CharacterFrooty then goto FrootyFallDamage
           return otherbank
 FrootyFallDamage
@@ -288,8 +288,8 @@ FrootyFallDamage
 
           rem Clamp to screen bounds
           rem Byte-safe clamp: if wrapped below 0, the new value will
-          let oldHealthValue = playerY[currentPlayer]
           rem   exceed the old
+          let oldHealthValue = playerY[currentPlayer]
           rem Reuse oldHealthValue for byte-safe clamp check (not
           rem actually health, but same pattern)
           if playerY[currentPlayer] > oldHealthValue then let playerY[currentPlayer] = 0
@@ -310,27 +310,27 @@ HandleHarpySwoopAttack
           rem OUTPUT:
           rem Sets player momentum for diagonal downward swoop
           let currentPlayer = temp1
-          let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
+          let currentCharacter = playerCharacter[currentPlayer]
           if currentCharacter = CharacterHarpy then goto HarpyDive
           return otherbank
 HarpyDive
           rem Harpy dive
 
-          let temp6 = playerState[currentPlayer] & PlayerStateBitFacing
           rem Get facing direction from playerState bit 0
+          let temp6 = playerState[currentPlayer] & PlayerStateBitFacing
 
           rem Set diagonal momentum at ~45° angle
           rem Horizontal: 4 pixels/frame (in facing direction)
           rem Vertical: 4 pixels/frame (downward)
-          if temp6 = 0 then goto SetHorizontalMomentumRight
           rem Facing left: set negative momentum (252 = -4 in signed
-          let playerVelocityX[currentPlayer] = 252
+          if temp6 = 0 then goto SetHorizontalMomentumRight
           rem   8-bit)
+          let playerVelocityX[currentPlayer] = 252
           goto SetVerticalMomentum
 SetHorizontalMomentumRight
-          let playerVelocityX[currentPlayer] = 4
           rem Facing right: set positive momentum
+          let playerVelocityX[currentPlayer] = 4
 SetVerticalMomentum
           rem Set downward momentum (using temp variable for now)
           rem Integrate with vertical momentum system
@@ -340,11 +340,11 @@ SetVerticalMomentum
 
           rem Set animation state to swooping attack
           rem This could be animation state 10 or special attack
-          let temp6 = playerState[currentPlayer] & MaskPlayerStateLower
           rem   animation
+          let temp6 = playerState[currentPlayer] & MaskPlayerStateLower
           let temp6 = temp6 | MaskAnimationFalling
-          let playerState[currentPlayer] = temp6
           rem Animation state 10
+          let playerState[currentPlayer] = temp6
 
           rem Spawn mêlée attack missile for swoop hit detection
           let temp1 = currentPlayer

@@ -26,13 +26,13 @@ end
           rem Check if player is guarding - guard blocks movement (right port only)
           rem Left port does not check guard here (may be bug, but preserving behavior)
           rem Right port handler should check guard before calling this
-          
           rem Determine which joy port to use based on player index
-          rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
-          if temp1 & 2 = 0 then goto PSM_UseJoy0
-          rem Players 1,3 use joy1
           
+          rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
+          rem Players 1,3 use joy1
+          if temp1 & 2 = 0 then goto PSM_UseJoy0
           rem Left movement: set negative velocity
+          
           if !joy1left then goto PSM_CheckRightJoy1
           if playerCharacter[temp1] = CharacterFrooty then PSM_LeftMomentum1
           let temp6 = playerCharacter[temp1]
@@ -91,8 +91,8 @@ PSM_InlineDoneRight1
           
 PSM_UseJoy0
           rem Players 0,2 use joy0
-          
           rem Left movement: set negative velocity
+          
           if !joy0left then goto PSM_CheckRightJoy0
           if playerCharacter[temp1] = CharacterFrooty then PSM_LeftMomentum0
           let temp6 = playerCharacter[temp1]

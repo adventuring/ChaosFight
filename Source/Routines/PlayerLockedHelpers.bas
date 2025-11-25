@@ -70,13 +70,13 @@ end
           rem        legacy callers
 
           rem Determine player index from currentPlayer when valid
-          let temp3 = currentPlayer
           rem if temp3 > 3 then goto SetPlayerLockedUseTemp
+          let temp3 = currentPlayer
           goto SetPlayerLockedApply
 
 SetPlayerLockedUseTemp
-          let temp3 = temp1
           rem if temp3 > 3 then return
+          let temp3 = temp1
 
 SetPlayerLockedApply
           let currentPlayer = temp3

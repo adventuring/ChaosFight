@@ -7,7 +7,7 @@ GetCharacterAttackType
           rem Output: temp2 = attack type (0=mêlée, 1=ranged)
           rem Mutates: temp2 (result register - attack type)
           rem Constraints: None (table lookup - attack type)
-          let temp2 = CharacterAttackTypes[temp1]
           rem Use direct array access for O(1) lookup
+          let temp2 = CharacterAttackTypes[temp1]
           return
 

@@ -42,8 +42,8 @@ end
           rem              registers
           rem              Entry point for console detection (called
           rem              from ColdStart)
-          let systemFlags = 0
           rem Initialize systemFlags to 0 (assume 2600 console initially)
+          let systemFlags = 0
           rem No need to read prior value since it contains random garbage at startup
 
           rem Check $D0 value
@@ -65,8 +65,8 @@ CheckD1
           sta temp1
 end
           if temp1 = ConsoleDetectD1 then goto Is7800
-          goto Is2600
           rem 7800 detected: $D0=$2C and $D1=$A9
+          goto Is2600
 
 CheckFlashed
           rem Check if game was flashed to Harmony/Melody (both $D0 and

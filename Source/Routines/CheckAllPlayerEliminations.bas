@@ -50,17 +50,17 @@ end
           rem PlaySoundEffect (bank15, via TriggerEliminationEffects)
           rem
           rem Constraints: None
-          for currentPlayer = 0 to 3
           rem Check each player for elimination using FOR loop
+          for currentPlayer = 0 to 3
           gosub CheckPlayerElimination bank14
           next
 
           rem Count remaining players and check game end (inline
           rem   CheckGameEndCondition)
-          gosub CountRemainingPlayers bank14
           rem Game ends when 1 or fewer players remain
-          if playersRemaining_R > 0 then return otherbank
+          gosub CountRemainingPlayers bank14
           rem If players still remain, no game end yet
+          if playersRemaining_R > 0 then return otherbank
 
           gosub FindWinner bank14
           let gameEndTimer_W = 180

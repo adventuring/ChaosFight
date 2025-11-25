@@ -41,16 +41,16 @@ end
           rem EFFECTS: If guarding: decrements guard duration timer,
           rem   clears guard and starts cooldown when expired
           rem If not guarding: decrements cooldown timer (if active)
-          let temp2 = playerState[temp1] & 2
           rem Check if player is guarding
+          let temp2 = playerState[temp1] & 2
           if temp2 then UpdateGuardTimerActive
 
           rem Player not guarding - decrement cooldown timer
-          let temp3 = playerTimers_R[temp1]
           rem Fix RMW: Read from _R, modify, write to _W
+          let temp3 = playerTimers_R[temp1]
           if temp3 = 0 then return otherbank
-          let temp3 = temp3 - 1
           rem No cooldown active
+          let temp3 = temp3 - 1
           let playerTimers_W[temp1] = temp3
           return otherbank
 
@@ -68,14 +68,14 @@ UpdateGuardTimerActive
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with UpdateSingleGuardTimer, GuardTimerExpired
-          let temp3 = playerTimers_R[temp1]
           rem Player is guarding - decrement guard duration timer
-          if temp3 = 0 then GuardTimerExpired
+          let temp3 = playerTimers_R[temp1]
           rem Guard timer already expired (shouldn’t happen, but safety
+          if temp3 = 0 then GuardTimerExpired
           rem   check)
 
-          let temp3 = temp3 - 1
           rem Decrement guard duration timer
+          let temp3 = temp3 - 1
           let playerTimers_W[temp1] = temp3
           if temp3 = 0 then GuardTimerExpired
           return otherbank
@@ -96,8 +96,8 @@ GuardTimerExpired
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with UpdateSingleGuardTimer, UpdateGuardTimerActive
-          let playerState[temp1] = playerState[temp1] & MaskClearGuard
           rem Start cooldown timer (same duration as guard)
+          let playerState[temp1] = playerState[temp1] & MaskClearGuard
           let playerTimers_W[temp1] = GuardTimerMaxFrames
           return otherbank
 

@@ -52,19 +52,19 @@ end
           rem Background: black (COLUBK starts black, no need to set)
 
           rem Initialize display rank (starts at 0, may be updated by
-          let displayRank_W = 0
           rem   DisplayWinScreen if implemented)
+          let displayRank_W = 0
 
-          let temp1 = winnerPlayerIndex_R
           rem Get winner’s character index
+          let temp1 = winnerPlayerIndex_R
           if temp1 = 0 then temp2 = playerCharacter[0]
           if temp1 = 1 then temp2 = playerCharacter[1]
           if temp1 = 2 then temp2 = playerCharacter[2]
           if temp1 = 3 then temp2 = playerCharacter[3]
 
           rem Look up full song ID from mapping table (table contains
-          let temp1 = CharacterThemeSongIndices[temp2]
           rem   song ID constants)
+          let temp1 = CharacterThemeSongIndices[temp2]
 
           rem Start winner’s character theme song
           gosub StartMusic bank15

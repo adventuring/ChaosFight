@@ -25,8 +25,8 @@ end
           rem Constraints: Must be colocated with PUI_UseJoy0, PUI_RoboTitoAscend helpers
           rem Determine which joy port to use based on player index
           rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
-          if temp1 & 2 = 0 then goto PUI_UseJoy0
           rem Players 1,3 use joy1
+          if temp1 & 2 = 0 then goto PUI_UseJoy0
           if !joy1up then goto PUI_DoneUpInputHandling
           goto PUI_ProcessUp
           
@@ -36,10 +36,10 @@ PUI_UseJoy0
           
 PUI_ProcessUp
           rem Check Shamone form switching first (Shamone <-> MethHound)
-          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : goto PUI_DoneJumpInput
           rem Switch Shamone -> MethHound
-          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : goto PUI_DoneJumpInput
+          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : goto PUI_DoneJumpInput
           rem Switch MethHound -> Shamone
+          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : goto PUI_DoneJumpInput
 
           rem Robo Tito: Hold UP to ascend; auto-latch on ceiling contact
           if playerCharacter[temp1] = CharacterRoboTito then goto PUI_RoboTitoAscend
@@ -50,8 +50,8 @@ PUI_ProcessUp
           rem Check Harpy flap
           if playerCharacter[temp1] = CharacterHarpy then goto PUI_HarpyFlap
 
-          goto PUI_NormalJumpInput
           rem For all other characters, UP is jump
+          goto PUI_NormalJumpInput
 
 PUI_BernieFallThrough
           rem Bernie UP input handled in BernieJump routine (fall through 1-row floors)
@@ -59,16 +59,16 @@ PUI_BernieFallThrough
           goto PUI_DoneJumpInput
 
 PUI_HarpyFlap
-          gosub HarpyJump bank12
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
+          gosub HarpyJump bank12
           goto PUI_DoneJumpInput
 
 PUI_RoboTitoAscend
           rem Ascend toward ceiling
           let temp6 = playerCharacter[temp1]
           let temp6 = CharacterMovementSpeed[temp6]
-          let playerY[temp1] = playerY[temp1] - temp6
           rem Compute playfield column
+          let playerY[temp1] = playerY[temp1] - temp6
           let temp2 = playerX[temp1]
           let temp2 = temp2 - ScreenInsetX
           asm
@@ -77,8 +77,8 @@ PUI_RoboTitoAscend
 end
           if temp2 > 31 then temp2 = 31
           if temp2 & $80 then temp2 = 0
-          let temp4 = temp2
           rem Save playfield column (temp2 will be overwritten)
+          let temp4 = temp2
           rem Compute head row and check ceiling contact
           let temp2 = playerY[temp1]
           asm
@@ -94,8 +94,8 @@ end
           let temp2 = temp3
           gosub PlayfieldRead bank16
           if temp1 then goto PUI_RoboTitoLatch
-          let temp1 = currentPlayer
           rem Clear latch if DOWN pressed (check appropriate port)
+          let temp1 = currentPlayer
           if temp1 & 2 = 0 then goto PUI_CheckJoy0Down
           if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
           goto PUI_DoneJumpInput
@@ -107,14 +107,14 @@ PUI_RoboTitoLatch
           goto PUI_DoneJumpInput
           
 PUI_NormalJumpInput
-          let temp3 = 1
           rem Process jump input (UP + enhanced buttons)
-          goto PUI_DoneUpInputHandling
+          let temp3 = 1
           rem Jump pressed flag (UP pressed)
+          goto PUI_DoneUpInputHandling
 
 PUI_DoneJumpInput
-          let temp3 = 0
           rem No jump (UP used for special ability)
+          let temp3 = 0
 
 PUI_DoneUpInputHandling
           return

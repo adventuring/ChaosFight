@@ -48,10 +48,10 @@ end
           let temp1 = currentPlayer
           gosub GetPlayerLocked bank6
           let temp5 = temp2
-          if !temp5 then gosub SelectSetPlayerColorUnlocked : return otherbank
           rem Unlocked state (most common) - set color and return early
-          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return otherbank
+          if !temp5 then gosub SelectSetPlayerColorUnlocked : return otherbank
           rem Handicap state - set dimmed color and return
+          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return otherbank
           rem Normal locked state - color already set by RenderPlayerPreview
           return otherbank
 

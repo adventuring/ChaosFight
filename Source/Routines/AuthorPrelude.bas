@@ -4,8 +4,8 @@
           rem Author Prelude Screen
           rem Displays the Interworldly author logo/artwork with music.
           rem This is the second screen shown at cold start.
-          
           rem FLOW:
+          
           rem 1. Display 48×42 bitmap from Source/Art/Interworldly.xcf
           rem   (via titlescreen kernel)
           rem   2. Play Interworldly music

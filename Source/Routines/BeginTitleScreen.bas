@@ -29,18 +29,18 @@ end
           rem Initialize Title Screen mode
           rem Note: pfres is defined globally in AssemblyConfig.bas
 
-          let titleParadeTimer = 0
           rem Initialize title parade state
+          let titleParadeTimer = 0
           let titleParadeActive = 0
 
           rem Background: black (COLUBK starts black, no need to set)
 
-          let temp1 = MusicChaotica
           rem Start Chaotica title music
+          let temp1 = MusicChaotica
           gosub StartMusic bank15
 
-          gosub SetTitleWindowValues bank14
           rem Set window values for Title screen (ChaosFight only)
+          gosub SetTitleWindowValues bank14
 
           rem Note: Bitmap data is loaded automatically by titlescreen
           rem   kernel via includes

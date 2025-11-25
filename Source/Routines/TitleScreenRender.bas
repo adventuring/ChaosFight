@@ -81,8 +81,8 @@ end
           rem   bitmap
           rem Uses 48x2_3 minikernel - set window/height via assembly
           rem   constants
-              rem Bitmap data in: Source/Generated/Art.ChaosFight.s
           rem Other screens’ minikernels should have window=0 in their
+              rem Bitmap data in: Source/Generated/Art.ChaosFight.s
           rem   image files
           rem
           rem Input: None
@@ -98,7 +98,7 @@ end
           rem runtime changes
           rem The titlescreen kernel uses fixed labels
           rem   (bmp_48x2_3_window, etc.)
-              rem These are set as constants in the .s image files
           rem Title screen: bmp_48x2_3_window = 42, others = 0
+              rem These are set as constants in the .s image files
 
 

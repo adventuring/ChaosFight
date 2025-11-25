@@ -42,20 +42,20 @@ end
           rem              DonePlayer4Move, FallingComplete1 (all called
           rem              via goto)
           rem Entry point for falling animation mode (called from MainLoop)
-          let fallFrame = fallFrame + 1
           rem Update animation frame
+          let fallFrame = fallFrame + 1
           if fallFrame > 3 then let fallFrame = 0
 
           rem Move Player 1 from quadrant to target (if active)
 
-          if playerCharacter[0] = NoCharacter then DonePlayer1Move
           rem playerIndex = 0 (player index), targetX = target X,
-          let temp1 = 0
+          if playerCharacter[0] = NoCharacter then DonePlayer1Move
           rem targetY = target Y (24)
+          let temp1 = 0
           rem Check if 4-player mode for target X
           if controllerStatus & SetQuadtariDetected then Player1Target4P
-          let temp2 = 53
           rem 2-player mode: target X = 53
+          let temp2 = 53
           goto Player1TargetDone
 Player1Target4P
           rem Set Player 1 target X for 4-player mode
@@ -70,8 +70,8 @@ Player1Target4P
           rem
           rem Constraints: Must be colocated with FallingAnimation1,
           rem Player1TargetDone
-          let temp2 = 32
           rem 4-player mode: target X = 32
+          let temp2 = 32
 Player1TargetDone
           rem Player 1 target calculation complete
           rem
@@ -103,11 +103,11 @@ DonePlayer1Move
           rem Move Player 2 from quadrant to target (if active)
 
           if playerCharacter[1] = NoCharacter then DonePlayer2Move
-          let temp1 = 1
           rem Check if 4-player mode for target X
+          let temp1 = 1
           if controllerStatus & SetQuadtariDetected then Player2Target4P
-          let temp2 = 107
           rem 2-player mode: target X = 107
+          let temp2 = 107
           goto Player2TargetDone
 Player2Target4P
           rem Set Player 2 target X for 4-player mode
@@ -122,8 +122,8 @@ Player2Target4P
           rem
           rem Constraints: Must be colocated with FallingAnimation1,
           rem Player2TargetDone
-          let temp2 = 128
           rem 4-player mode: target X = 128
+          let temp2 = 128
 Player2TargetDone
           rem Player 2 target calculation complete
           rem
@@ -156,8 +156,8 @@ DonePlayer2Move
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer3Move
           if playerCharacter[2] = NoCharacter then DonePlayer3Move
           let temp1 = 2
-          let temp2 = 64
           rem 4-player mode: target X = 64
+          let temp2 = 64
           let temp3 = 24
           gosub MovePlayerToTarget bank6
           if temp4 then let fallComplete = fallComplete + 1
@@ -180,8 +180,8 @@ DonePlayer3Move
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer4Move
           if playerCharacter[3] = NoCharacter then DonePlayer4Move
           let temp1 = 3
-          let temp2 = 96
           rem 4-player mode: target X = 96
+          let temp2 = 96
           let temp3 = 24
           gosub MovePlayerToTarget bank6
           if temp4 then let fallComplete = fallComplete + 1
@@ -206,8 +206,8 @@ DonePlayer4Move
           rem Set sprite positions and load character sprites
           rem   dynamically
           rem Use dynamic sprite setting instead of relying on player
-          gosub SetSpritePositions bank6
           rem   declarations
+          gosub SetSpritePositions bank6
           gosub SetPlayerSprites bank6
 
           rem drawscreen called by MainLoop
@@ -233,10 +233,10 @@ FallingComplete1
           rem Call BeginGameLoop to initialize game state before
           rem   switching modes
           rem Note: BeginGameLoop will use final positions from falling
-          gosub BeginGameLoop bank11
           rem   animation
-          let gameMode = ModeGame
+          gosub BeginGameLoop bank11
           rem Transition to Game Mode
+          let gameMode = ModeGame
           gosub ChangeGameMode bank14
           return
 

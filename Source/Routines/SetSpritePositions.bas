@@ -186,12 +186,12 @@ end
           rem Input: temp5 = missile select (0=missile0, 1=missile1), RMF_participant, RMF_character
           rem Use unified helper to write missile registers
           rem Save values to temp variables for unified helper (temp2-temp4 already used by caller, use temp6)
-          let temp6 = missileX[RMF_participant]
           rem temp2 = Y position
-          let temp2 = missileY_R[RMF_participant]
+          let temp6 = missileX[RMF_participant]
           rem temp3 = NUSIZ value
-          let temp3 = missileNUSIZ_R[RMF_participant]
+          let temp2 = missileY_R[RMF_participant]
           rem temp4 = height (overwrite RMF_character after reading it)
+          let temp3 = missileNUSIZ_R[RMF_participant]
           let temp4 = CharacterMissileHeights[RMF_character]
           gosub SSP_WriteMissileRegistersUnified
           return
@@ -230,8 +230,8 @@ end
           rem
           if (controllerStatus & SetQuadtariDetected) = 0 then return otherbank
           if playerCharacter[temp1] = NoCharacter then return otherbank
-          if ! playerHealth[temp1] then return otherbank
           rem Unified sprite position assignment (temp1 = 2 → player2, temp1 = 3 → player3)
+          if ! playerHealth[temp1] then return otherbank
           if temp1 = 2 then goto CPS_WritePlayer2
           player3x = playerX[temp1]
           player3y = playerY[temp1]
@@ -287,8 +287,8 @@ end
           rem Use unified helper with stretch-specific parameters (NUSIZ=0, position from player)
           let temp6 = playerX[temp1]
           let temp2 = playerY[temp1]
-          let temp3 = 0
           rem temp4 already set to height
+          let temp3 = 0
           gosub SSP_WriteMissileRegistersUnified
           return
 

@@ -27,10 +27,10 @@ end
           rem
           rem Constraints: None
           rem Special attack: jumps while attacking simultaneously
-          let playerY[temp1] = playerY[temp1] - 11
           rem First, execute the jump
-          let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
+          let playerY[temp1] = playerY[temp1] - 11
           rem Light character, good jump
+          let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           rem Set jumping flag
           rem Then execute the attack (inline former PerformMeleeAttack)
           gosub SpawnMissile bank7

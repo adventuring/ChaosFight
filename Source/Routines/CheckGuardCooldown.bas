@@ -20,18 +20,18 @@ end
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with GuardCooldownBlocked (called via goto)
-          let temp3 = playerState[temp1] & 2
           rem Check if player is currently guarding
+          let temp3 = playerState[temp1] & 2
           if temp3 then GuardCooldownBlocked
 
           rem Check cooldown timer (stored in playerTimers array)
-          let temp3 = playerTimers_R[temp1]
           rem playerTimers stores frames remaining in cooldown
+          let temp3 = playerTimers_R[temp1]
 
           if temp3 > 0 then GuardCooldownBlocked
 
-          let temp2 = 1
           rem Cooldown expired, guard allowed
+          let temp2 = 1
           return otherbank
 
 GuardCooldownBlocked
@@ -47,7 +47,7 @@ GuardCooldownBlocked
           rem Called Routines: None
           rem Constraints: Must be colocated with CheckGuardCooldown
           rem Currently guarding or in cooldown - not allowed to start
-          let temp2 = 0
           rem   new guard
+          let temp2 = 0
           return otherbank
 

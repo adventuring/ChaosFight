@@ -25,32 +25,32 @@ CharacterSelectEntry
           rem              Per-frame loop is handled by CharacterSelectInputEntry
           rem              (in CharacterSelectMain.bas, called from MainLoop)
           rem Player 1: RandomCharacter (not locked)
-          let playerCharacter[0] = RandomCharacter
           rem Player 2: CPUCharacter (locked)
-          let playerCharacter[1] = CPUCharacter
+          let playerCharacter[0] = RandomCharacter
           rem Player 3: NoCharacter (locked)
-          let playerCharacter[2] = NoCharacter
+          let playerCharacter[1] = CPUCharacter
           rem Player 4: NoCharacter (locked)
-          let playerCharacter[3] = NoCharacter
+          let playerCharacter[2] = NoCharacter
           rem Initialize playerLocked (bit-packed)
-          let playerLocked = 0
+          let playerCharacter[3] = NoCharacter
           rem Lock Player 2 (CPUCharacter)
-          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+          let playerLocked = 0
           rem Lock Player 3 (NoCharacter)
-          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
           rem Lock Player 4 (NoCharacter)
-          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic
+          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
           rem   detection (upgrades only)
           rem Controller detection is handled by DetectPads with
           rem   monotonic state machine
 
           rem Initialize character select animations
           let characterSelectAnimationTimer  = 0
-          let characterSelectAnimationState  = 0
           rem Start with idle animation
-          let characterSelectCharacterIndex_W = 0
+          let characterSelectAnimationState  = 0
           rem Start with first character
+          let characterSelectCharacterIndex_W = 0
           let characterSelectAnimationFrame  = 0
 
           rem Check for Quadtari adapter (inlined for performance)
@@ -59,8 +59,8 @@ CharacterSelectEntry
           if INPT0{7} then goto CharacterSelectQuadtariAbsent
           if !INPT1{7} then goto CharacterSelectQuadtariAbsent
           if INPT2{7} then goto CharacterSelectQuadtariAbsent
-          if !INPT3{7} then goto CharacterSelectQuadtariAbsent
           rem All checks passed - Quadtari detected
+          if !INPT3{7} then goto CharacterSelectQuadtariAbsent
           let controllerStatus = controllerStatus | SetQuadtariDetected
 CharacterSelectQuadtariAbsent
 

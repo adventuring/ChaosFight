@@ -31,13 +31,13 @@ end
           rem LoadSoundNote1 handles end-of-sound by setting
           rem soundEffectPointer1 = 0 and AUDV1 = 0
           rem Decrement frame counter
-          let temp5 = soundEffectFrame1_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
+          let temp5 = soundEffectFrame1_R - 1
           let soundEffectFrame1_W = temp5
           if temp5 then return otherbank
 
-          gosub LoadSoundNote1 bank15
           rem Frame counter reached 0 - load next note from Sounds bank
+          gosub LoadSoundNote1 bank15
           rem LoadSoundNote1 will:
           rem - Load 4-byte note from Sound_Voice0[pointer]: AUDCV,
           rem   AUDF, Duration, Delay

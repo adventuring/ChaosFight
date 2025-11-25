@@ -17,12 +17,12 @@ end
           rem Update X axis (one pixel per frame)
           let temp4 = playerX[temp1]
           if temp4 < temp2 then let playerX[temp1] = temp4 + 1
-          if temp4 > temp2 then let playerX[temp1] = temp4 - 1
           rem Update Y axis (one pixel per frame)
+          if temp4 > temp2 then let playerX[temp1] = temp4 - 1
           let temp4 = playerY[temp1]
           if temp4 < temp3 then let playerY[temp1] = temp4 + 1
-          if temp4 > temp3 then let playerY[temp1] = temp4 - 1
           rem Check if at target and nudge if needed
+          if temp4 > temp3 then let playerY[temp1] = temp4 - 1
           if playerX[temp1] <> temp2 then gosub NudgePlayerFromPlayfield
           if playerY[temp1] <> temp3 then gosub NudgePlayerFromPlayfield
           return otherbank

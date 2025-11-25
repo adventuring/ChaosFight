@@ -44,8 +44,8 @@ CheckPlayer2HealthUpdate
           rem Called Routines: (inlined UpdateHealthBarPlayer2)
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer2HealthUpdate
-          if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
           rem Update Player 3 health bar (inlined from UpdateHealthBarPlayer2)
+          if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
           rem Input: playerHealth[] (global array) = player health values
           rem        HealthBarMaxLength (constant) = maximum health bar length
           rem Output: Score colors set for health digit display
@@ -99,8 +99,8 @@ CheckPlayer3HealthUpdate
           rem Called Routines: (inlined UpdateHealthBarPlayer3)
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer3HealthUpdate
-          if playerCharacter[3] = NoCharacter then DonePlayer3HealthUpdate
           rem Update Player 4 health bar (inlined from UpdateHealthBarPlayer3)
+          if playerCharacter[3] = NoCharacter then DonePlayer3HealthUpdate
           rem Input: playerHealth[] (global array) = player health values
           rem        HealthBarMaxLength (constant) = maximum health bar length
           rem Output: Score colors set for health digit display
@@ -131,8 +131,8 @@ end
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGray(14)
           COLUP0 = ColGray(14)
-          COLUP1 = ColGray(14)
           rem Score minikernel requires all three color registers set to same color
+          COLUP1 = ColGray(14)
           rem Players 3/4 health displayed as digits in score area
           return
 DonePlayer3HealthUpdate
@@ -173,8 +173,8 @@ end
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGray(14)
           COLUP0 = ColGray(14)
-          COLUP1 = ColGray(14)
           rem Score minikernel requires all three color registers set to same color
+          COLUP1 = ColGray(14)
           rem Health bars for players 1/2 are displayed using score registers (pfscore/pfscore2)
           return
 
@@ -214,8 +214,8 @@ end
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGray(14)
           COLUP0 = ColGray(14)
-          COLUP1 = ColGray(14)
           rem Score minikernel requires all three color registers set to same color
+          COLUP1 = ColGray(14)
           rem Health bars for players 1/2 are displayed using score registers (pfscore/pfscore2)
           return
 

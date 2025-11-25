@@ -43,8 +43,8 @@ end
           if temp4 = 0 then let soundEffectPointer = 0 : AUDV0 = 0 : return otherbank
 
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-          let temp6 = temp2 & %11110000
           rem   AUDCV
+          let temp6 = temp2 & %11110000
           let temp6 = temp6 / 16
           let soundEffectID_W = temp2 & %00001111
 
@@ -53,8 +53,8 @@ end
           AUDF0 = temp3
           AUDV0 = soundEffectID_R
 
-          let soundEffectFrame_W = temp4 + temp5
           rem Set frame counter = Duration + Delay
+          let soundEffectFrame_W = temp4 + temp5
 
           rem Advance pointer by 4 bytes (16-bit addition)
           let soundEffectPointer = soundEffectPointer + 4

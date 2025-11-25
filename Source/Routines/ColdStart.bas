@@ -67,21 +67,21 @@ end
           rem Prevents undefined colors on cold start
           rem Background: black (COLUBK starts black, no need to set)
           rem Playfield: white
-          COLUPF = ColGrey(14)
           rem Player 1 (P0): indigo
-          COLUP0 = ColIndigo(12)
+          COLUPF = ColGrey(14)
           rem Player 2: bright red (multisprite kernel requires _COLUP1)
-          _COLUP1 = ColRed(12)
+          COLUP0 = ColIndigo(12)
           rem Player 3: yellow
-          COLUP2 = ColYellow(12)
+          _COLUP1 = ColRed(12)
           rem Player 4: green
+          COLUP2 = ColYellow(12)
           COLUP3 = ColGreen(12)
 
 
           rem Step 5: Initialize game state and transition to first mode
           rem Set initial game mode (Publisher Prelude)
-          let gameMode = ModePublisherPrelude
           rem ChangeGameMode calls SetupPublisherPrelude and sets up
+          let gameMode = ModePublisherPrelude
           rem   music
           gosub ChangeGameMode bank14
 

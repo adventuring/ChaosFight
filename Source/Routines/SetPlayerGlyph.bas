@@ -35,8 +35,8 @@ end
           rem Mode 2 (lookup): temp3 = player index, temp4 = sprite type (0-2)
           rem Detect mode: if temp4 is valid sprite type (0-2), use lookup mode
           rem Otherwise assume temp1 already contains glyph index
-          if temp4 > 2 then goto SetPlayerGlyphDirectMode
           rem temp4 is 0-2, so this is sprite type lookup mode
+          if temp4 > 2 then goto SetPlayerGlyphDirectMode
           rem Look up glyph index from table (overwrites temp1)
           temp1 = GlyphLookupTable[temp4]
 SetPlayerGlyphDirectMode
@@ -55,8 +55,8 @@ SetPlayerGlyphDirectMode
             sta temp5
 end
           rem Store to appropriate player pointer based on temp3 (using on...goto for efficiency)
-          on temp3 goto SetPlayerGlyphP0 SetPlayerGlyphP1 SetPlayerGlyphP2 SetPlayerGlyphP3 SetPlayerGlyphP4 SetPlayerGlyphP5
           rem Fall through to P5 if temp3 > 4
+          on temp3 goto SetPlayerGlyphP0 SetPlayerGlyphP1 SetPlayerGlyphP2 SetPlayerGlyphP3 SetPlayerGlyphP4 SetPlayerGlyphP5
 SetPlayerGlyphP5
           asm
             lda temp4

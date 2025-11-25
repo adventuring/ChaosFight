@@ -18,8 +18,8 @@ end
           rem
           rem Constraints: Must be in Bank 10. Jump functions are in Bank 12.
           rem Handle out-of-range characters (>= 32)
-          if temp4 >= 32 then goto DCJ_StandardJump
           rem Characters 16-30 (unused) and Meth Hound mirror Shamone
+          if temp4 >= 32 then goto DCJ_StandardJump
           if temp4 >= 16 then goto DCJ_StandardJump
           if temp4 = CharacterBernie then goto DCJ_BernieJump
           if temp4 = CharacterDragonOfStorms then goto DCJ_DragonJump

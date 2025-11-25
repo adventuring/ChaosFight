@@ -157,7 +157,7 @@ InputDonePlayer4Input
           rem InputHandleQuadtariPlayers
 
 
-          qtcontroller = 0
           rem Switch back to even frame
+          qtcontroller = 0
           return otherbank
 

@@ -21,16 +21,16 @@ end
           rem Constraints: Only 10 sounds (0-9) available. Returns
           rem soundEffectPointer = 0 if sound ID out of bounds
           rem Bounds check: only 10 sounds (0-9)
-          if temp1 > 9 then goto LoadSoundPointerOutOfRange
           rem Build 16-bit pointer: var41 = high byte, var42 = low byte
+          if temp1 > 9 then goto LoadSoundPointerOutOfRange
           let var41 = SoundPointersH[temp1]
           let var42 = SoundPointersL[temp1]
           goto LoadSoundPointerReturn
 LoadSoundPointerOutOfRange
           rem Set pointer to 0 (var41.var42 = 0.0)
           let var41 = 0
-          let var42 = 0
           rem Out of range - mark sound pointer inactive
+          let var42 = 0
 LoadSoundPointerReturn
           return otherbank
 

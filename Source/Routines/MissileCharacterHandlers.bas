@@ -88,37 +88,37 @@ HandleMegaxMissile
           rem zero velocity. Deactivates when animation state !=
           rem ActionAttackExecute (14)
 
-          let temp4 = playerState[temp1] & PlayerStateBitFacing
           rem Get facing direction (bit 0: 0=left, 1=right)
+          let temp4 = playerState[temp1] & PlayerStateBitFacing
 
-          let temp5 = CharacterMissileEmissionHeights[temp5]
           rem Get emission height from character data
+          let temp5 = CharacterMissileEmissionHeights[temp5]
 
           rem Lock missile position to player position (adjacent, no
           rem movement)
-          let temp2 = playerX[temp1]
           rem Calculate X position based on player position and facing
-          if temp4 = 0 then temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
+          let temp2 = playerX[temp1]
           rem Facing left, spawn left
-          if temp4 = 1 then temp2 = temp2 + CharacterMissileSpawnOffsetRight[temp5]
+          if temp4 = 0 then temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
           rem Facing right, spawn right
+          if temp4 = 1 then temp2 = temp2 + CharacterMissileSpawnOffsetRight[temp5]
 
-          let temp3 = playerY[temp1] + temp5
           rem Calculate Y position (player Y + emission height)
+          let temp3 = playerY[temp1] + temp5
 
-          let missileX[temp1] = temp2
           rem Update missile position (locked to player)
+          let missileX[temp1] = temp2
           let missileY_W[temp1] = temp3
 
-          let missileVelocityX[temp1] = 0
           rem Zero velocities to prevent any movement
+          let missileVelocityX[temp1] = 0
           let missileVelocityY[temp1] = 0
 
           rem Check if attack animation is complete
           rem Animation state is in bits 4-7 of playerState
           rem ActionAttackExecute = 14 (0xE)
-          let temp6 = playerState[temp1]
           rem Extract animation state (bits 4-7)
+          let temp6 = playerState[temp1]
           rem Extract animation state (bits 4-7) using bit shift
           asm
             lsr temp6
@@ -131,8 +131,8 @@ end
           rem   deactivate
           rem ActionAttackExecute = 14, so if animationState != 14,
           if temp6 = 14 then MegaxMissileActive
-          goto DeactivateMissile
           rem Attack complete - deactivate missile
+          goto DeactivateMissile
 
 MegaxMissileActive
           rem Attack still active - missile stays visible
@@ -176,15 +176,15 @@ HandleKnightGuyMissile
           rem (frames 0-3) then returns (frames 4-7). Deactivates when
           rem animation state != ActionAttackExecute (14)
 
-          let temp4 = playerState[temp1] & PlayerStateBitFacing
           rem Get facing direction (bit 0: 0=left, 1=right)
+          let temp4 = playerState[temp1] & PlayerStateBitFacing
 
-          let temp5 = CharacterMissileEmissionHeights[temp5]
           rem Get emission height from character data
+          let temp5 = CharacterMissileEmissionHeights[temp5]
 
           rem Check if attack animation is complete
-          let temp6 = playerState[temp1]
           rem Extract animation state (bits 4-7)
+          let temp6 = playerState[temp1]
           rem Extract animation state (bits 4-7) using bit shift
           asm
             lsr temp6
@@ -194,20 +194,20 @@ HandleKnightGuyMissile
 end
           rem If animation state is not ActionAttackExecute (14), attack is complete
           if temp6 = 14 then KnightGuyAttackActive
-          goto DeactivateMissile
           rem Attack complete - deactivate missile
+          goto DeactivateMissile
 
 KnightGuyAttackActive
           rem Get current animation frame within Execute sequence (0-7)
-          let velocityCalculation = currentAnimationFrame_R[temp1]
           rem Read from SCRAM and calculate offset immediately
+          let velocityCalculation = currentAnimationFrame_R[temp1]
 
           rem Calculate sword swing offset based on animation frame
           rem Frames 0-3: Move away from player (sword swing out)
           rem Frames 4-7: Return to start (sword swing back)
           rem Maximum swing distance: 4 pixels
-          if velocityCalculation < 4 then KnightGuySwingOut
           rem Frames 4-7: Returning to start
+          if velocityCalculation < 4 then KnightGuySwingOut
           rem Calculate return offset: (7 - frame) pixels
           rem Frame 4: 3 pixels away, Frame 5: 2 pixels, Frame 6: 1
           rem pixel, Frame 7: 0 pixels
@@ -217,40 +217,40 @@ KnightGuyAttackActive
 KnightGuySwingOut
           rem Frames 0-3: Moving away from player
           rem Calculate swing offset: (frame + 1) pixels
-          let velocityCalculation = velocityCalculation + 1
           rem Frame 0: 1 pixel, Frame 1: 2 pixels, Frame 2: 3 pixels, Frame 3: 4 pixels
+          let velocityCalculation = velocityCalculation + 1
 
 KnightGuySetPosition
           rem Calculate base X position (partially overlapping player)
           rem Start position: player X + 8 pixels (halfway through
           rem player sprite)
-          let temp2 = playerX[temp1] + 8
           rem Then apply swing offset in facing direction
+          let temp2 = playerX[temp1] + 8
           rem Base position: center of player sprite
 
           rem Apply swing offset in facing direction
 
           if temp4 = 0 then KnightGuySwingLeft
-          let temp2 = temp2 + velocityCalculation
           rem Facing right: move right (positive offset)
+          let temp2 = temp2 + velocityCalculation
           goto KnightGuySetY
 
 KnightGuySwingLeft
-          let temp2 = temp2 - velocityCalculation
           rem Facing left: move left (negative offset)
+          let temp2 = temp2 - velocityCalculation
 
 KnightGuySetY
-          let temp3 = playerY[temp1] + temp5
           rem Calculate Y position (player Y + emission height)
+          let temp3 = playerY[temp1] + temp5
 
-          let missileX[temp1] = temp2
           rem Update missile position
+          let missileX[temp1] = temp2
           let missileY_W[temp1] = temp3
 
           rem Zero velocities to prevent projectile movement
           rem   frame
-          let missileVelocityX[temp1] = 0
           rem Position is updated directly each frame based on animation
+          let missileVelocityX[temp1] = 0
           let missileVelocityY[temp1] = 0
 
           rem Skip normal movement and collision checks

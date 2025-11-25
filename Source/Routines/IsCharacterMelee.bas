@@ -8,7 +8,7 @@ IsCharacterMelee
           rem Mutates: temp2 (return value - mêlée flag)
           rem Constraints: None (direct lookup - mêlée flag)
           let temp2 = CharacterAttackTypes[temp1]
-          let temp2 = temp2 ^ 1
           rem XOR to flip 0<->1
+          let temp2 = temp2 ^ 1
           return
 

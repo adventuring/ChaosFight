@@ -8,12 +8,12 @@ AddVelocitySubpixelY
           rem Mutates: temp2-temp4, playerVelocityY[], playerVelocityYL[]
           rem Constraints: Uses 16-bit accumulator; carry promotes to integer component
           rem Save subpixel amount before using temp2 for accumulator
-          let temp4 = temp2
           rem 16-bit accumulator for proper carry detection
-          let subpixelAccumulator = playerVelocityYL[temp1] + temp4
+          let temp4 = temp2
           rem Use saved amount in accumulator
-          if temp3 > 0 then VelocityYCarry
+          let subpixelAccumulator = playerVelocityYL[temp1] + temp4
           rem No carry: temp3 = 0, use low byte directly
+          if temp3 > 0 then VelocityYCarry
           let playerVelocityYL[temp1] = temp2
           return
 VelocityYCarry
@@ -32,8 +32,8 @@ VelocityYCarry
           rem
           rem Constraints: Internal helper for AddVelocitySubpixelY,
           rem only called when carry detected
-          let playerVelocityYL[temp1] = temp2
           rem Carry detected: temp3 > 0, extract wrapped low byte
+          let playerVelocityYL[temp1] = temp2
           let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
           return
 

@@ -11,36 +11,36 @@ end
 
           rem Characters 0-15: Implemented attacks
           rem Bernie: dual-direction ground thump
-          if temp4 = CharacterBernie then goto BernieAttack bank10
           rem Curler: ranged curling stone along ground
-          if temp4 = CharacterCurler then goto PerformRangedAttack bank7
+          if temp4 = CharacterBernie then goto BernieAttack bank10
           rem Dragon of Storms: ranged ballistic fireball
-          if temp4 = CharacterDragonOfStorms then goto PerformRangedAttack bank7
+          if temp4 = CharacterCurler then goto PerformRangedAttack bank7
           rem Zoe Ryen: rapid laser blast
-          if temp4 = CharacterZoeRyen then goto PerformRangedAttack bank7
+          if temp4 = CharacterDragonOfStorms then goto PerformRangedAttack bank7
           rem Fat Tony: stationary magic ring laser
-          if temp4 = CharacterFatTony then goto PerformRangedAttack bank7
+          if temp4 = CharacterZoeRyen then goto PerformRangedAttack bank7
           rem Megax: heavy mêlée breath strike (generic mêlée tables)
-          if temp4 = CharacterMegax then goto PerformMeleeAttack bank7
+          if temp4 = CharacterFatTony then goto PerformRangedAttack bank7
           rem Harpy: diagonal swoop attack
-          if temp4 = CharacterHarpy then goto HarpyAttack bank10
+          if temp4 = CharacterMegax then goto PerformMeleeAttack bank7
           rem Knight Guy: sword mêlée swing
-          if temp4 = CharacterKnightGuy then goto PerformMeleeAttack bank7
+          if temp4 = CharacterHarpy then goto HarpyAttack bank10
           rem Frooty: charge-and-bounce lollipop projectile (Issue #1177)
-          if temp4 = CharacterFrooty then goto FrootyAttack bank8
+          if temp4 = CharacterKnightGuy then goto PerformMeleeAttack bank7
           rem Nefertem: mêlée paw strike
-          if temp4 = CharacterNefertem then goto PerformMeleeAttack bank7
+          if temp4 = CharacterFrooty then goto FrootyAttack bank8
           rem Ninjish Guy: ranged shuriken
-          if temp4 = CharacterNinjishGuy then goto PerformRangedAttack bank7
+          if temp4 = CharacterNefertem then goto PerformMeleeAttack bank7
           rem Pork Chop: mêlée
-          if temp4 = CharacterPorkChop then goto PerformMeleeAttack bank7
+          if temp4 = CharacterNinjishGuy then goto PerformRangedAttack bank7
           rem Radish Goblin: mêlée bite lunge
-          if temp4 = CharacterRadishGoblin then goto PerformMeleeAttack bank7
+          if temp4 = CharacterPorkChop then goto PerformMeleeAttack bank7
           rem Robo Tito: mêlée trunk slam
-          if temp4 = CharacterRoboTito then goto PerformMeleeAttack bank7
+          if temp4 = CharacterRadishGoblin then goto PerformMeleeAttack bank7
           rem Ursulo: claw swipe with mêlée tables - inlined (UrsuloAttack)
-          if temp4 = CharacterUrsulo then goto PerformMeleeAttack bank7
+          if temp4 = CharacterRoboTito then goto PerformMeleeAttack bank7
           rem Shamone: jump + mêlée special
+          if temp4 = CharacterUrsulo then goto PerformMeleeAttack bank7
           if temp4 = CharacterShamone then goto ShamoneAttack bank7
 
           rem Characters 16-30: Basic mêlée attacks
@@ -66,14 +66,14 @@ end
           rem OUTPUT: temp3 = 1 if jump button pressed, 0 otherwise
           rem Uses: INPT0 for players 0; INPT2 for players 1
           rem Players 2-3 cannot have enhanced controllers
-          let temp3 = 0
           rem Initialize to no jump
+          let temp3 = 0
 
           rem Only players 0-1 can have enhanced controllers
           rem Players 2-3 (Quadtari players) cannot have enhanced controllers
           if currentPlayer = 0 then CEJB_CheckPlayer0
-          if currentPlayer = 1 then CEJB_CheckPlayer2
           rem Players 2-3 skip enhanced controller checks
+          if currentPlayer = 1 then CEJB_CheckPlayer2
           goto CEJB_Done
 CEJB_CheckPlayer0
           rem Player 0: Check Genesis controller first

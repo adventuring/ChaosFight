@@ -99,7 +99,7 @@ LSV1P_InvalidSong
 LoadMusicNote0
           asm
 LoadMusicNote0
-
+LoadMusicNote0_RouteToBank1
 end
           rem Load next note from Voice 0 stream (assembly pointer access).
           rem Input: musicVoice0Pointer (global 16-bit) = current Song_Voice0 pointer
@@ -188,8 +188,7 @@ LoadMusicNote0EndOfTrack
 
 LoadMusicNote1
           asm
-LoadMusicNote1
-
+LoadMusicNote1_RouteToBank1
 end
           rem Load next note from Voice 1 stream using assembly for pointer access
           rem

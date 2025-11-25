@@ -40,15 +40,15 @@ end
 
           if selectedArena_R = RandomArena then LoadArenaRandom
 
-          let temp1 = selectedArena_R
           rem Get arena index (0-15)
+          let temp1 = selectedArena_R
 
 LoadArenaDispatch
           gosub DWS_GetBWMode bank15
           let temp6 = temp2
           gosub LoadArenaByIndex bank16
-          if temp6 then goto LA_LoadBWColors
           rem Load color color table - fall through to LoadArenaColorsColor
+          if temp6 then goto LA_LoadBWColors
           goto LA_LoadColorColors
 LA_LoadBWColors
           rem Load B&W color table (shared routine)
@@ -128,13 +128,13 @@ LoadArenaRandom
           rem Get random value (0-255)
           let temp1 = rand
           let temp1 = temp1 & 31
-          if temp1 > MaxArenaID then LoadArenaRandom
           rem Fall through to LoadArenaDispatch logic (inline to avoid goto)
+          if temp1 > MaxArenaID then LoadArenaRandom
           gosub DWS_GetBWMode bank15
           let temp6 = temp2
           gosub LoadArenaByIndex bank16
-          if temp6 then goto LAR_LoadBWColors
           rem Load color color table (use gosub to avoid goto)
+          if temp6 then goto LAR_LoadBWColors
           gosub LoadArenaColorsColor bank16
           return otherbank
 LAR_LoadBWColors

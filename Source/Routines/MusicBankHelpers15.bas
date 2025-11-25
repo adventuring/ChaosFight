@@ -252,10 +252,12 @@ LoadMusicNote1EndOfTrack
           rem Routing functions for Bank 1 helpers
           rem These functions route calls from Bank 15 to Bank 1 functions
           rem They provide entry points in Bank 15 that forward to Bank 1
+          rem CRITICAL: These routing functions have unique names to avoid label collision
+          rem with Bank 1's functions of the same name
           
-LoadSongPointer
+RouteLoadSongPointer
           asm
-LoadSongPointer
+RouteLoadSongPointer
 end
           rem Route to Bank 1 LoadSongPointer
           rem Input: temp1 = song ID
@@ -264,9 +266,9 @@ end
           gosub LoadSongPointer bank1
           return otherbank
 
-LoadSongVoice1PointerBank1
+RouteLoadSongVoice1PointerBank1
           asm
-LoadSongVoice1PointerBank1
+RouteLoadSongVoice1PointerBank1
 end
           rem Route to Bank 1 LoadSongVoice1PointerBank1
           rem Input: temp1 = song ID, songPointer = Voice 0 pointer
@@ -275,9 +277,9 @@ end
           gosub LoadSongVoice1PointerBank1 bank1
           return otherbank
 
-LoadMusicNote0
+RouteLoadMusicNote0
           asm
-LoadMusicNote0
+RouteLoadMusicNote0
 end
           rem Route to Bank 1 LoadMusicNote0
           rem Input: musicVoice0Pointer = current pointer
@@ -286,9 +288,9 @@ end
           gosub LoadMusicNote0 bank1
           return otherbank
 
-LoadMusicNote1
+RouteLoadMusicNote1
           asm
-LoadMusicNote1
+RouteLoadMusicNote1
 end
           rem Route to Bank 1 LoadMusicNote1
           rem Input: musicVoice1Pointer = current pointer

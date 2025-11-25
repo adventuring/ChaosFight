@@ -28,8 +28,8 @@ end
           goto CDP_QuadtariFound
 CDP_CheckRightSide
           if INPT2{7} then goto CDP_CheckGenesis
-          if !INPT3{7} then goto CDP_CheckGenesis
           rem fall through to CDP_QuadtariFound
+          if !INPT3{7} then goto CDP_CheckGenesis
 
 CDP_QuadtariFound
           let temp2 = temp2 | SetQuadtariDetected
@@ -45,8 +45,8 @@ CDP_CheckGenesis
           rem Genesis controllers pull INPT0 and INPT1 HIGH when idle
           rem Method: Ground paddle ports via VBLANK, wait a frame,
           rem   check levels
-          gosub CDP_DetectGenesis
           rem Detect Genesis/MegaDrive controllers using correct method
+          gosub CDP_DetectGenesis
 
           rem Detect Joy2b+ controllers (if no Genesis detected)
           rem Skip Joy2B+ detection if Genesis already exists (existing
@@ -61,8 +61,8 @@ CDP_MergeStatus
           rem Merge new detections with existing capabilities (monotonic
           rem   upgrade)
           rem OR new status with existing - this ensures upgrades only,
-          let controllerStatus = temp1 | temp2
           rem   never downgrades
+          let controllerStatus = temp1 | temp2
 
           return otherbank
 
@@ -111,8 +111,8 @@ end
           if !INPT0{7} then CDP_NoGenesisLeft
           if !INPT1{7} then CDP_NoGenesisLeft
 
-          let temp2 = temp2 | SetLeftPortGenesis
           rem Genesis detected on left port
+          let temp2 = temp2 | SetLeftPortGenesis
           rem Set LeftPortGenesis bit
 
 CDP_NoGenesisLeft
@@ -120,8 +120,8 @@ CDP_NoGenesisLeft
           if !INPT2{7} then CDP_NoGenesisRight
           if !INPT3{7} then CDP_NoGenesisRight
 
-          let temp2 = temp2 | SetRightPortGenesis
           rem Genesis detected on right port
+          let temp2 = temp2 | SetRightPortGenesis
           rem Set RightPortGenesis bit
 
 CDP_NoGenesisRight
@@ -167,8 +167,8 @@ end
           if !INPT1{7} then CDP_NoJoy2Left
           if !INPT4{7} then CDP_NoJoy2Left
 
-          let temp2 = temp2 | SetLeftPortJoy2bPlus
           rem Joy2b+ detected on left port
+          let temp2 = temp2 | SetLeftPortJoy2bPlus
           rem Set LeftPortJoy2bPlus bit
 
 CDP_NoJoy2Left
@@ -177,8 +177,8 @@ CDP_NoJoy2Left
           if !INPT3{7} then CDP_NoJoy2Right
           if !INPT5{7} then CDP_NoJoy2Right
 
-          let temp2 = temp2 | SetRightPortJoy2bPlus
           rem Joy2b+ detected on right port
+          let temp2 = temp2 | SetRightPortJoy2bPlus
           rem Set RightPortJoy2bPlus bit
 
 CDP_NoJoy2Right
@@ -266,8 +266,8 @@ UpdateQuadIn
 
           rem Alternate between reading players 1-2 and players 3-4
           rem Use qtcontroller to determine which pair to read
-          if qtcontroller then ReadPlayers34
           rem fall through to ReadPlayers12
+          if qtcontroller then ReadPlayers34
 
 ReadPlayers12
           return otherbank
@@ -315,8 +315,8 @@ ReadPlayers34
           rem   correct
 
 PauseNotPressed
-          let systemFlags = systemFlags | SystemFlagPauseButtonPrev
           rem Button not pressed, update previous state (set bit 5)
+          let systemFlags = systemFlags | SystemFlagPauseButtonPrev
           return otherbank
 
 

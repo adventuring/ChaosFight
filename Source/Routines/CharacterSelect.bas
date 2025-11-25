@@ -23,25 +23,25 @@ CharacterSelectEntry
           rem initialization
           rem              Must be colocated with CharacterSelectLoop (called
           rem              via goto)
-          let playerCharacter[0] = CharacterBernie
           rem Initialize character selections
+          let playerCharacter[0] = CharacterBernie
           let playerCharacter[1] = CharacterBernie
           let playerCharacter[2] = CharacterBernie
           let playerCharacter[3] = CharacterBernie
-          let playerLocked = 0
           rem Initialize playerLocked (bit-packed, all unlocked)
+          let playerLocked = 0
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic
           rem   detection (upgrades only)
           rem Controller detection is handled by DetectPads with
           rem   monotonic state machine
 
-          let characterSelectAnimationTimer  = 0
           rem Initialize character select animations
+          let characterSelectAnimationTimer  = 0
           let characterSelectAnimationState  = 0
-          let characterSelectCharacterIndex_W  = 0
           rem Start with idle animation
-          let characterSelectAnimationFrame  = 0
+          let characterSelectCharacterIndex_W  = 0
           rem Start with first character
+          let characterSelectAnimationFrame  = 0
 
           rem Check for Quadtari adapter (inlined for performance)
           rem CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
@@ -49,8 +49,8 @@ CharacterSelectEntry
           if INPT0{7} then goto CharacterSelectQuadtariAbsent
           if !INPT1{7} then goto CharacterSelectQuadtariAbsent
           if INPT2{7} then goto CharacterSelectQuadtariAbsent
-          if !INPT3{7} then goto CharacterSelectQuadtariAbsent
           rem All checks passed - Quadtari detected
+          if !INPT3{7} then goto CharacterSelectQuadtariAbsent
           let controllerStatus = controllerStatus | SetQuadtariDetected
 CharacterSelectQuadtariAbsent
 
@@ -104,8 +104,8 @@ end
           rem Handle Player 2 input (joy1 on even frames)
           let temp1 = 1
           gosub HandleCharacterSelectPlayerInput
-          qtcontroller = 1
           rem Switch to odd frame mode for next iteration
+          qtcontroller = 1
           goto CharacterSelectHandleComplete
 
 CharacterSelectHandleQuadtari
@@ -127,8 +127,8 @@ CharacterSelectHandlePlayer4
           gosub HandleCharacterSelectPlayerInput
 
 CharacterSelectHandleQuadtariDone
-          qtcontroller = 0
           rem Switch back to even frame mode for next iteration
+          qtcontroller = 0
 
 SelectStickLeft
           rem Handle stick-left navigation for the active player
@@ -165,8 +165,8 @@ SelectStickRight
 CharacterSelectHandleComplete
 
           rem Check if all players are ready to start (inline
-          let readyCount  = 0
           rem   SelAllReady)
+          let readyCount  = 0
 
           rem Count locked players
 
@@ -195,8 +195,8 @@ CharacterSelectQuadtariReadyInline
           if readyCount>= 2 then goto CharacterSelectCompleted
 CharacterSelectDoneQuadtariReadyInline
 
-          gosub CharacterSelectDrawScreen
           rem Draw character selection screen
+          gosub CharacterSelectDrawScreen
 
           rem drawscreen called by MainLoop
           return
@@ -226,26 +226,26 @@ HandleCharacterSelectPlayerInput
           rem
           rem Constraints: Must determine joy port based on player index
           rem (players 0,2 use joy0; players 1,3 use joy1)
-          let currentPlayer = temp1
           rem Determine which joy port to use based on player index
+          let currentPlayer = temp1
           rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
           if temp1 = 0 then goto HCSPI_UseJoy0
-          if temp1 = 2 then goto HCSPI_UseJoy0
           rem Players 1,3 use joy1
+          if temp1 = 2 then goto HCSPI_UseJoy0
           if joy1left then gosub SelectStickLeft
-          if joy1right then gosub SelectStickRight
           rem Unlock by moving up
-          if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if joy1right then gosub SelectStickRight
           rem Handle fire button (selection)
+          if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           gosub HandleCharacterSelectFire bank6
           return
 HCSPI_UseJoy0
           rem Players 0,2 use joy0
           if joy0left then gosub SelectStickLeft
-          if joy0right then gosub SelectStickRight
           rem Unlock by moving up
-          if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if joy0right then gosub SelectStickRight
           rem Handle fire button (selection)
+          if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           gosub HandleCharacterSelectFire bank6
           return
 
@@ -315,18 +315,18 @@ CharacterSelectDetectQuadtari
 
           rem Check left side: if INPT0 is HIGH then not detected
 
-          if INPT0{7} then CharacterSelectQuadtariAbsent
           rem Check left side: if INPT1 is LOW then not detected
+          if INPT0{7} then CharacterSelectQuadtariAbsent
           if !INPT1{7} then CharacterSelectQuadtariAbsent
 
           rem Check right side: if INPT2 is HIGH then not detected
 
-          if INPT2{7} then CharacterSelectQuadtariAbsent
           rem Check right side: if INPT3 is LOW then not detected
+          if INPT2{7} then CharacterSelectQuadtariAbsent
           if !INPT3{7} then CharacterSelectQuadtariAbsent
 
-          goto CharacterSelectQuadtariDetected
           rem All checks passed - Quadtari detected
+          goto CharacterSelectQuadtariDetected
 
 CharacterSelectQuadtariAbsent
           return
@@ -366,6 +366,6 @@ CharacterSelectQuadtariDetected
           rem downgrades)
           rem Quadtari detected - use monotonic merge to preserve
           rem   existing capabilities
-          let controllerStatus  = controllerStatus | SetQuadtariDetected
           rem OR merge ensures upgrades only, never downgrades
+          let controllerStatus  = controllerStatus | SetQuadtariDetected
           return

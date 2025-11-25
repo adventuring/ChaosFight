@@ -9,14 +9,14 @@ end
           rem state
           rem Uses same logic as LoadArenaColors (consolidated to avoid duplication)
 
-          let temp1 = selectedArena_R
           rem Get current arena index
+          let temp1 = selectedArena_R
           rem Handle random arena (use stored random selection)
           if temp1 = RandomArena then temp1 = rand & 31
 
           rem Get B&W mode state (same logic as GetBWMode)
-          let temp2 = switchbw
           rem Check switchbw and colorBWOverride
+          let temp2 = switchbw
           if systemFlags & SystemFlagColorBWOverride then temp2 = 1
 
 ReloadArenaColorsDispatch
@@ -29,8 +29,8 @@ end
           gosub DWS_GetBWMode bank15
           let temp6 = temp2
           gosub LoadArenaByIndex bank16
-          if temp6 then goto RAU_LoadBWColors
           rem Load color color table
+          if temp6 then goto RAU_LoadBWColors
           gosub LoadArenaColorsColor bank16
           return otherbank
 RAU_LoadBWColors

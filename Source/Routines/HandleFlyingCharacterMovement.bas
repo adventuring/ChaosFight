@@ -16,12 +16,12 @@ end
           rem joy1left/joy1right
           rem for players 1,3
           let temp5 = playerCharacter[temp1]
-          let currentPlayer = temp1
           rem Save player index to global variable
+          let currentPlayer = temp1
           rem Determine which joy port to use based on player index
           rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
-          let temp6 = temp1 & 2
           rem temp6 = 0 for players 0,2 (joy0), 2 for players 1,3 (joy1)
+          let temp6 = temp1 & 2
           rem Check left movement
           if temp6 = 0 then HFCM_CheckLeftJoy0
           if !joy1left then goto HFCM_CheckRight

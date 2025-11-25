@@ -25,8 +25,8 @@ end
           dim UCA_quadtariActive = temp5
           let UCA_quadtariActive = controllerStatus & SetQuadtariDetected
           for currentPlayer = 0 to 3
-            if currentPlayer >= 2 && !UCA_quadtariActive then goto AnimationNextPlayer
-            gosub UpdatePlayerAnimation
+          if currentPlayer >= 2 && !UCA_quadtariActive then goto AnimationNextPlayer
+          gosub UpdatePlayerAnimation
 AnimationNextPlayer
           next
 UpdatePlayerAnimation
@@ -129,8 +129,8 @@ AdvanceFrame
           rem
           rem Constraints: Must be colocated with UpdatePlayerAnimation,
           rem DoneAdvance, HandleFrame7Transition,
-          let animationCounter_W[currentPlayer] = 0
           rem              UpdateSprite
+          let animationCounter_W[currentPlayer] = 0
           rem Inline AdvanceAnimationFrame
           rem Advance to next frame in current animation action
           rem Frame is from sprite 10fps counter
@@ -166,8 +166,8 @@ HandleFrame7Transition
           rem
           rem Constraints: Must be colocated with UpdatePlayerAnimation,
           rem AdvanceAnimationFrame, UpdateSprite
-          gosub HandleAnimationTransition
           rem fall through to UpdateSprite
+          gosub HandleAnimationTransition
 
 UpdateSprite
           rem Update character sprite with current animation frame and
@@ -207,8 +207,8 @@ UpdateSprite
           rem Frame is from this sprite 10fps counter
           rem   (currentAnimationFrame), not global frame counter
           rem SCRAM read: Read from r081
-          let temp2 = currentAnimationFrame_R[currentPlayer]
           rem   where dim entries concatenate with subsequent constants
+          let temp2 = currentAnimationFrame_R[currentPlayer]
           let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
           gosub LoadPlayerSprite bank16
@@ -253,20 +253,20 @@ end
           rem Constraints: None
           if temp2 >= AnimationSequenceCount then return otherbank
 
-          let currentAnimationSeq_W[currentPlayer] = temp2
           rem SCRAM write to currentAnimationFrame_W
-          let currentAnimationFrame_W[currentPlayer] = 0
+          let currentAnimationSeq_W[currentPlayer] = temp2
           rem Start at first frame
+          let currentAnimationFrame_W[currentPlayer] = 0
           rem SCRAM write to animationCounter_W
-          let animationCounter_W[currentPlayer] = 0
           rem Reset animation counter
+          let animationCounter_W[currentPlayer] = 0
 
           rem Update character sprite immediately
           rem Frame is from this sprite 10fps counter, action from
           rem   currentAnimationSeq
           rem Set up parameters for LoadPlayerSprite
-          let temp2 = 0
           rem SCRAM read: Read from r081 (we just wrote 0, so this is 0)
+          let temp2 = 0
           let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
           gosub LoadPlayerSprite bank16
@@ -306,55 +306,55 @@ TransitionLoopAnimation
 
 TransitionToIdle
           let temp2 = ActionIdle
-          goto SetPlayerAnimation
           rem tail call
+          goto SetPlayerAnimation
 
 TransitionToFallen
           let temp2 = ActionFallen
-          goto SetPlayerAnimation
           rem tail call
+          goto SetPlayerAnimation
 
 TransitionHandleJump
           rem Stay on frame 7 until Y velocity goes negative
           rem Check if player is falling (positive Y velocity =
           rem downward)
+          rem Still ascending (negative or zero Y velocity), stay in jump
           if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
           let temp2 = ActionJumping
-          rem Still ascending (negative or zero Y velocity), stay in jump
-          goto SetPlayerAnimation
           rem tail call
+          goto SetPlayerAnimation
 TransitionHandleJump_TransitionToFalling
-          let temp2 = ActionFalling
           rem Falling (positive Y velocity), transition to falling
-          goto SetPlayerAnimation
+          let temp2 = ActionFalling
           rem tail call
+          goto SetPlayerAnimation
 
 TransitionHandleFallBack
           rem Check wall collision using pfread
           rem If hit wall: goto idle, else: goto fallen
-          let temp5 = playerX[currentPlayer]
           rem Convert player X position to playfield column (0-31)
+          let temp5 = playerX[currentPlayer]
           let temp5 = temp5 - ScreenInsetX
           let temp5 = temp5 / 4
-          let temp6 = playerY[currentPlayer]
           rem Convert player Y position to playfield row (0-7)
-          let temp6 = temp6 / 8
+          let temp6 = playerY[currentPlayer]
           rem Check if player hit a wall (playfield pixel is set)
+          let temp6 = temp6 / 8
           let temp1 = temp5
           let temp3 = temp2
           let temp2 = temp6
           gosub PlayfieldRead bank16
           let temp2 = temp3
           if temp1 then TransitionHandleFallBack_HitWall
-          let temp2 = ActionFallen
           rem No wall collision, transition to fallen
-          goto SetPlayerAnimation
+          let temp2 = ActionFallen
           rem tail call
+          goto SetPlayerAnimation
 TransitionHandleFallBack_HitWall
-          let temp2 = ActionIdle
           rem Hit wall, transition to idle
-          goto SetPlayerAnimation
+          let temp2 = ActionIdle
           rem tail call
+          goto SetPlayerAnimation
 
           rem
           rem Attack Transition Handling
@@ -388,37 +388,37 @@ HarpyExecute
           rem Harpy: Execute → Idle
           rem Clear dive flag and stop diagonal movement when attack
           rem   completes
-          let temp1 = currentPlayer
           rem Also apply upward wing flap momentum after swoop attack
+          let temp1 = currentPlayer
           rem Clear dive flag (bit 4 in characterStateFlags)
-          let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
           rem Fix RMW: Read from _R, modify, write to _W
-          let characterStateFlags_W[temp1] = C6E_stateFlags
+          let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
           rem Clear bit 4 (239 = 0xEF = ~0x10)
-          let playerVelocityX[temp1] = 0
+          let characterStateFlags_W[temp1] = C6E_stateFlags
           rem Stop horizontal velocity (zero X velocity)
-          let playerVelocityXL[temp1] = 0
+          let playerVelocityX[temp1] = 0
           rem Apply upward wing flap momentum after swoop attack
+          let playerVelocityXL[temp1] = 0
           rem   (equivalent to HarpyJump)
           rem Same as normal flap: -2 pixels/frame upward (254 in twos
-          let playerVelocityY[temp1] = 254
           rem   complement)
+          let playerVelocityY[temp1] = 254
           rem -2 in 8-bit twos complement: 256 - 2 = 254
-          let playerVelocityYL[temp1] = 0
           rem Keep jumping flag set to allow vertical movement
+          let playerVelocityYL[temp1] = 0
           rem playerState[temp1] bit 2 (jumping) already set
           rem   from attack, keep it
-          let temp2 = ActionIdle
           rem Transition to Idle
-          goto SetPlayerAnimation
+          let temp2 = ActionIdle
           rem tail call
+          goto SetPlayerAnimation
           rem Placeholder characters (16-30) reuse the table entries for
           rem Bernie (0) so they no-op on windup and fall to Idle on
           rem execute, keeping the jump tables dense until bespoke logic
           rem arrives.
 
 HandleRecoveryEnd
-          let temp2 = ActionIdle
           rem All characters: Recovery → Idle
-          goto SetPlayerAnimation
+          let temp2 = ActionIdle
           rem tail call
+          goto SetPlayerAnimation

@@ -19,8 +19,8 @@ BudgetedCollisionCheck
           rem   Frame 1: Pairs 2, 3 (P1 vs P4, P2 vs P3)
           rem   Frame 2: Pairs 4, 5 (P2 vs P4, P3 vs P4)
           rem   Frame 3: Pairs 0, 1 (repeat)
-          gosub CheckCollisionP1vsP2
           rem Always check P1 vs P2 (most important)
+          gosub CheckCollisionP1vsP2
 
           rem Skip other checks if not Quadtari
           if (controllerStatus & SetQuadtariDetected) = 0 then return

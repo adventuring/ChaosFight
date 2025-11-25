@@ -69,13 +69,13 @@ end
           rem              PlayerHealthSet (all called via goto)
           rem              Entry point for game loop initialization
           rem Initialize sprite pointers to RAM addresses
-          gosub InitializeSpritePointers bank14
           rem Ensure pointers are set before loading any sprite data
+          gosub InitializeSpritePointers bank14
 
           rem Set screen layout for gameplay (32×8 game layout) - inlined
           pfrowheight = ScreenPfRowHeight
-          pfrows = ScreenPfRows
           rem SuperChip variables var0-var15 available in gameplay
+          pfrows = ScreenPfRows
 
           rem Initialize player positions
           rem 2-Player Game: P1 at 1/3 width (53), P2 at 2/3 width (107)
@@ -86,11 +86,11 @@ end
           rem Check if 4-player mode (Quadtari detected)
           if controllerStatus & SetQuadtariDetected then Init4PlayerPositions
 
-          let playerX[0] = 53 : playerY[0] = 24
           rem 2-player mode positions
+          let playerX[0] = 53 : playerY[0] = 24
           let playerX[1] = 107 : playerY[1] = 24
-          let playerX[2] = 53 : playerY[2] = 24
           rem Players 3 & 4 use same as P1/P2 if not in 4-player mode
+          let playerX[2] = 53 : playerY[2] = 24
           let playerX[3] = 107 : playerY[3] = 24
           goto InitPositionsDone
 
@@ -107,14 +107,14 @@ Init4PlayerPositions
           rem
           rem Constraints: Must be colocated with BeginGameLoop,
           rem InitPositionsDone
-          let playerX[0] = 32 : playerY[0] = 24
           rem 4-player mode positions
-          let playerX[2] = 64 : playerY[2] = 24
+          let playerX[0] = 32 : playerY[0] = 24
           rem Player 1: 1/5 width
-          let playerX[3] = 96 : playerY[3] = 24
+          let playerX[2] = 64 : playerY[2] = 24
           rem Player 3: 2/5 width
-          let playerX[1] = 128 : playerY[1] = 24
+          let playerX[3] = 96 : playerY[3] = 24
           rem Player 4: 3/5 width
+          let playerX[1] = 128 : playerY[1] = 24
           rem Player 2: 4/5 width
 
 InitPositionsDone
@@ -131,14 +131,14 @@ InitPositionsDone
           rem Constraints: Must be colocated with BeginGameLoop
 
           rem Initialize player states (facing direction)
-          let playerState[0] = 0
           rem Player 1 facing right
-          let playerState[1] = 1
+          let playerState[0] = 0
           rem Player 2 facing left
-          let playerState[2] = 0
+          let playerState[1] = 1
           rem Player 3 facing right
-          let playerState[3] = 1
+          let playerState[2] = 0
           rem Player 4 facing left
+          let playerState[3] = 1
 
           rem Initialize player health (apply handicap if selected)
           rem PlayerLocked value: 0=unlocked, 1=normal (100% health),
@@ -151,8 +151,8 @@ InitPositionsDone
 PlayerHealthInitDone
           next
 
-          for currentPlayer = 0 to 3
           rem Initialize player timers
+          for currentPlayer = 0 to 3
           let playerTimers_W[currentPlayer] = 0
           let playerVelocityX[currentPlayer] = 0
           let playerVelocityXL[currentPlayer] = 0
@@ -175,27 +175,27 @@ skip_activation3
           rem   Player 1, bit 2 = Player 2, bit 3 = Player 3
           let missileActive  = 0
 
-          let playersRemaining_W = 1
           rem Initialize remaining players count
+          let playersRemaining_W = 1
           rem CharacterSelectCheckReady guarantees Player 1 is active; seed count with P1
-          let gameEndTimer_W = 0
           rem Will be calculated
-          let eliminationCounter_W = 0
+          let gameEndTimer_W = 0
           rem No game end countdown
+          let eliminationCounter_W = 0
           rem Reset elimination order counter
 
-          let eliminationOrder_W[0] = 0
           rem Initialize elimination order tracking
+          let eliminationOrder_W[0] = 0
           let eliminationOrder_W[1] = 0
           let eliminationOrder_W[2] = 0
           let eliminationOrder_W[3] = 0
 
-          let winnerPlayerIndex_W = 255
           rem Initialize win screen variables
-          let displayRank_W = 0
+          let winnerPlayerIndex_W = 255
           rem No winner yet
-          let winScreenTimer_W = 0
+          let displayRank_W = 0
           rem No rank being displayed
+          let winScreenTimer_W = 0
           rem Reset win screen timer
 
           rem Count additional human/CPU players beyond Player 1
@@ -212,25 +212,25 @@ SkipPlayer4
           rem Frame counter is automatically initialized and incremented
           rem by batariBASIC kernel
 
-          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
           rem Clear paused flag in systemFlags (initialize to normal play)
+          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 
           rem Initialize player sprite NUSIZ registers (double width)
           rem NUSIZ = 5: double width, single copy
-          NUSIZ0 = 5
           rem Player 0 (Player 1)
-          _NUSIZ1 = 5
+          NUSIZ0 = 5
           rem Player 1 (Player 2) - multisprite kernel uses _NUSIZ1
-          NUSIZ2 = 5
+          _NUSIZ1 = 5
           rem Player 2 (Player 3) - multisprite kernel
-          NUSIZ3 = 5
+          NUSIZ2 = 5
           rem Player 3 (Player 4) - multisprite kernel
+          NUSIZ3 = 5
 
-          gosub InitializeHealthBars bank6
           rem Initialize health bars
+          gosub InitializeHealthBars bank6
 
-          gosub LoadArena bank16
           rem Load arena data
+          gosub LoadArena bank16
 
           return otherbank
           rem Gameplay state initialized - return to ChangeGameMode

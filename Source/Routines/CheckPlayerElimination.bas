@@ -49,11 +49,11 @@ end
           rem Constraints: WARNING - temp2 is mutated during
           rem execution. Do not use these temp variables after calling
           rem this subroutine.
-          let temp2 = playerHealth[currentPlayer]
           rem Check if health has reached 0
+          let temp2 = playerHealth[currentPlayer]
 
-          if temp2 then return otherbank
           rem Still alive
+          if temp2 then return otherbank
 
           rem Player health reached 0 - trigger elimination effects
 
@@ -69,12 +69,12 @@ UpdatePlayers34Done
 UpdatePlayers34Done
 end
 
-          let temp2 = eliminationCounter_R + 1
           rem Record elimination order
+          let temp2 = eliminationCounter_R + 1
           let eliminationCounter_W = temp2
           let eliminationOrder_W[currentPlayer] = temp2
 
           rem Trigger elimination effects
-          goto TriggerEliminationEffects bank13
           rem tail call
+          goto TriggerEliminationEffects bank13
 

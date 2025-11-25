@@ -20,8 +20,8 @@ end
           rem
           rem Called Routines: None
           rem Constraints: None
-          let playerState[temp1] = playerState[temp1] | 2
           rem Set guard bit in playerState
+          let playerState[temp1] = playerState[temp1] | 2
 
           rem Set guard duration timer using GuardTimerMaxFrames (TV-standard aware)
           rem Store guard duration timer in playerTimers array

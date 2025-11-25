@@ -51,8 +51,8 @@ end
           if musicVoice0Pointer then return otherbank
           if musicVoice1Pointer then return otherbank
 
-          gosub LoadSoundPointer bank15
           rem Lookup sound pointer from Sounds bank (Bank15)
+          gosub LoadSoundPointer bank15
 
           rem Try Voice 0 first
 
@@ -60,8 +60,8 @@ end
 
           rem Voice 0 is free - LoadSoundPointer already set soundEffectPointer
           let soundEffectFrame_W = 1
-          goto UpdateSoundEffectVoice0 bank15
           rem tail call
+          goto UpdateSoundEffectVoice0 bank15
 
 TryVoice1
           rem Helper: Tries Voice 1 if Voice 0 is busy
@@ -84,9 +84,9 @@ TryVoice1
 
           rem Copy soundEffectPointer (var41.var42) to soundEffectPointer1 (var43.var44)
           let var43 = var41
-          let var44 = var42
           rem Voice 1 is free - use it
+          let var44 = var42
           let soundEffectFrame1_W = 1
-          goto UpdateSoundEffectVoice1 bank15
           rem tail call
+          goto UpdateSoundEffectVoice1 bank15
 

@@ -28,18 +28,18 @@ end
           rem Note: For Bernie, UP is fall-through, so jump via enhanced buttons only
           rem Note: For Harpy, UP is flap, so jump via enhanced buttons only
           rem Check enhanced button first (sets temp3 = 1 if pressed, 0 otherwise)
-          gosub CheckEnhancedJumpButton
           rem Check Genesis/Joy2b+ Button C/II
-          
+          gosub CheckEnhancedJumpButton
           rem If enhanced button not pressed, return (no jump)
-          if temp3 = 0 then return otherbank
           
+          if temp3 = 0 then return otherbank
           rem For characters with special UP behaviors, enhanced button acts as UP
+          
           rem Check Shamone form switching first (Shamone <-> MethHound)
-          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : return otherbank
           rem Switch Shamone -> MethHound
-          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : return otherbank
+          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : return otherbank
           rem Switch MethHound -> Shamone
+          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : return otherbank
 
           rem Robo Tito: Hold enhanced button to ascend; auto-latch on ceiling contact
           if playerCharacter[temp1] = CharacterRoboTito then goto PJI_RoboTitoAscend
@@ -52,23 +52,23 @@ end
 
           rem For all other characters, enhanced button is jump
           rem Allow Zoe Ryen a single mid-air double-jump
-          if playerCharacter[temp1] = CharacterZoeRyen then goto PJI_ZoeJumpCheck
           rem Use cached animation state - block jump during attack animations (states 13-15)
-          if temp2 >= 13 then return otherbank
+          if playerCharacter[temp1] = CharacterZoeRyen then goto PJI_ZoeJumpCheck
           rem Block jump during attack windup/execute/recovery
+          if temp2 >= 13 then return otherbank
           let temp4 = playerCharacter[temp1]
           gosub DispatchCharacterJump bank10
           return otherbank
 
 PJI_ZoeJumpCheck
           let temp6 = 0
-          if (playerState[temp1] & 4) then temp6 = 1
           rem Use goto to avoid branch out of range
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return otherbank
+          if (playerState[temp1] & 4) then temp6 = 1
           rem Use cached animation state - block jump during attack animations (states 13-15)
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return otherbank
           if temp2 >= 13 then return otherbank
-          let temp4 = playerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
+          let temp4 = playerCharacter[temp1]
           gosub DispatchCharacterJump bank10
           if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
           return otherbank
@@ -79,16 +79,16 @@ PJI_BernieFallThrough
           return otherbank
 
 PJI_HarpyFlap
-          gosub HarpyJump bank12
           rem Harpy enhanced button handled in HarpyJump routine (flap to fly)
+          gosub HarpyJump bank12
           return otherbank
 
 PJI_RoboTitoAscend
           rem Ascend toward ceiling (same logic as ProcessUpInput)
           let temp6 = playerCharacter[temp1]
           let temp6 = CharacterMovementSpeed[temp6]
-          let playerY[temp1] = playerY[temp1] - temp6
           rem Compute playfield column
+          let playerY[temp1] = playerY[temp1] - temp6
           let temp2 = playerX[temp1]
           let temp2 = temp2 - ScreenInsetX
           asm
@@ -97,8 +97,8 @@ PJI_RoboTitoAscend
 end
           if temp2 > 31 then temp2 = 31
           if temp2 & $80 then temp2 = 0
-          let temp4 = temp2
           rem Save playfield column (temp2 will be overwritten)
+          let temp4 = temp2
           rem Compute head row and check ceiling contact
           let temp2 = playerY[temp1]
           asm
@@ -114,8 +114,8 @@ end
           let temp2 = temp3
           gosub PlayfieldRead bank16
           if temp1 then goto PJI_RoboTitoLatch
-          let temp1 = currentPlayer
           rem Clear latch if DOWN pressed (check appropriate port)
+          let temp1 = currentPlayer
           if temp1 & 2 = 0 then goto PJI_CheckJoy0Down
           if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
           return otherbank

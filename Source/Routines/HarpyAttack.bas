@@ -39,8 +39,8 @@ end
           rem Set attack animation state
           rem Use temp1 directly for indexed addressing (batariBASIC
           rem does not resolve dim aliases)
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           rem Set animation state 14 (attack execution)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
 
           rem Get facing direction (bit 0: 0=left, 1=right)
           let temp2 = playerState[temp1] & PlayerStateBitFacing
@@ -89,8 +89,8 @@ HarpySetVerticalVelocity
           rem This allows vertical movement without being on ground
           rem Use temp1 directly for indexed addressing (batariBASIC
           rem does not resolve dim aliases)
-          let playerState[temp1] = playerState[temp1] | 4
           rem Set bit 2 (jumping flag)
+          let playerState[temp1] = playerState[temp1] | 4
 
           rem Set swoop attack flag for collision detection
           rem Bit 2 = swoop active (used to extend hitbox below

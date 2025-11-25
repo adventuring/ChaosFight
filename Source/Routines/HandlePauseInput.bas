@@ -7,8 +7,8 @@ HandlePauseInput
           rem Handles SELECT switch and Joy2b+ Button III with proper
           rem   debouncing
           rem Uses SystemFlagPauseButtonPrev bit in systemFlags for debouncing
-          let temp1 = 0
           rem Check SELECT switch (always available)
+          let temp1 = 0
           if switchselect then temp1 = 1
 
           rem Check Joy2b+ Button III (INPT1 for Player 1, INPT3 for
@@ -21,16 +21,16 @@ Joy2bPauseDone
           rem Debounce: only toggle if button just pressed (was 0, now
           rem 1)
           if temp1 = 0 then goto DonePauseToggle
-          if systemFlags & SystemFlagPauseButtonPrev then goto DonePauseToggle
           rem Toggle pause flag in systemFlags
+          if systemFlags & SystemFlagPauseButtonPrev then goto DonePauseToggle
           if systemFlags & SystemFlagGameStatePaused then systemFlags = systemFlags & ClearSystemFlagGameStatePaused else systemFlags = systemFlags | SystemFlagGameStatePaused
 DonePauseToggle
           rem Toggle pause (0<->1)
 
 
           rem Update pause button previous state in systemFlags
-          if temp1 then systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
           rem Update previous button state for next frame
+          if temp1 then systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
 
           return
 

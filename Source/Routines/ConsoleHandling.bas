@@ -23,21 +23,21 @@ end
           rem
           rem Constraints: Entry point for warm start/reset (called from
           rem MainLoop)
-          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
           rem Step 1: Clear critical game state variables
+          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
           rem Clear paused flag (0 = normal, not paused, not ending)
-          let frame = 0
           rem Initialize frame counter to 0 on warm start
+          let frame = 0
 
           rem Step 2: Reinitialize TIA color registers to safe defaults
           rem Match ColdStart initialization for consistency
           rem Background: black (COLUBK starts black, no need to set)
-          COLUPF = ColGrey(14)
           rem Playfield: white
-          COLUP0 = ColBlue(14)
+          COLUPF = ColGrey(14)
           rem Player 0: bright blue
-          _COLUP1 = ColRed(14)
+          COLUP0 = ColBlue(14)
           rem Player 1: bright red (multisprite kernel requires _COLUP1)
+          _COLUP1 = ColRed(14)
 
           rem Step 3: Initialize audio channels (silent on reset)
           AUDC0 = 0
@@ -50,8 +50,8 @@ end
           ENAM1 = 0
           ENABL = 0
 
-          let gameMode = ModePublisherPrelude
           rem Step 5: Reset game mode to startup sequence
+          let gameMode = ModePublisherPrelude
           gosub ChangeGameMode bank14
 
           return otherbank
@@ -66,13 +66,13 @@ end
           rem Main console switch handler
 
           rem Game Select switch or Joy2B+ Button III - toggle pause
-          let temp2 = 0
           rem   mode
-          gosub CheckEnhancedPause
+          let temp2 = 0
           rem Check Player 1 buttons
+          gosub CheckEnhancedPause
           if !temp1 then DonePlayer1Pause
-          gosub DetectPads bank13
           rem Re-detect controllers when Select is pressed
+          gosub DetectPads bank13
           if (systemFlags & SystemFlagGameStatePaused) = 0 then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player1PauseDone
@@ -83,11 +83,11 @@ DonePlayer1Pause
 
 
           let temp2 = 1
-          gosub CheckEnhancedPause
           rem Check Player 2 buttons
+          gosub CheckEnhancedPause
           if !temp1 then DonePlayer2Pause
-          gosub DetectPads bank13
           rem Re-detect controllers when Select is pressed
+          gosub DetectPads bank13
           if (systemFlags & SystemFlagGameStatePaused) = 0 then let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player2PauseDone
@@ -97,13 +97,13 @@ Player2PauseDone
 DonePlayer2Pause
 
 
-          gosub CheckColorBWToggle
           rem Color/B&W switch - re-detect controllers when toggled
+          gosub CheckColorBWToggle
 
 #ifndef TV_SECAM
           rem 7800 Pause button - toggle Color/B&W mode (not in SECAM)
-          goto Check7800Pause
           rem tail call
+          goto Check7800Pause
 #endif
 
           return otherbank
@@ -128,8 +128,8 @@ end
           rem Called Routines: None
           rem
           rem Constraints: None
-          let temp1 = 0
           rem Default to no pause button pressed
+          let temp1 = 0
 
           rem Always check Game Select switch first (works with any controller)
           if switchselect then temp1 = 1 : return otherbank
@@ -209,14 +209,14 @@ DoneSwitchChange
 
           rem Reload arena colors if switch or override changed
 
-          if temp1 then ReloadArenaColorsNow
           rem Note: colorBWOverride check handled in
+          if temp1 then ReloadArenaColorsNow
           rem Check7800PauseButton
           rem   (NTSC/PAL only, not SECAM)
 
           return otherbank
 
 ReloadArenaColorsNow
-          gosub ReloadArenaColors bank14
           rem Reload arena colors with current switch state
+          gosub ReloadArenaColors bank14
           return otherbank

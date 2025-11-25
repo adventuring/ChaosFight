@@ -20,27 +20,27 @@ end
           rem elimination sound, DeactivatePlayerMissiles (tail call) -
           rem removes player missiles
           rem Constraints: None
-          let temp5 = SoundPlayerEliminated
           rem Play elimination sound effect
+          let temp5 = SoundPlayerEliminated
           let temp1 = temp5
-          gosub PlaySoundEffect bank15
           rem PlaySoundEffect expects temp1 = sound ID
+          gosub PlaySoundEffect bank15
 
           rem Set elimination visual effect timer
-          let temp2 = 30
           rem This could trigger screen flash, particle effects, etc.
-          let eliminationEffectTimer_W[currentPlayer] = temp2
+          let temp2 = 30
           rem 30 frames of elimination effect
+          let eliminationEffectTimer_W[currentPlayer] = temp2
 
           rem Hide player sprite immediately
           rem Inline HideEliminatedPlayerSprite
-          if currentPlayer = 0 then player0x = 200
           rem Off-screen
+          if currentPlayer = 0 then player0x = 200
           if currentPlayer = 1 then player1x = 200
-          if currentPlayer = 2 then player2x = 200
           rem Player 3 uses player2 sprite (multisprite)
-          if currentPlayer = 3 then player3x = 200
+          if currentPlayer = 2 then player2x = 200
           rem Player 4 uses player3 sprite (multisprite)
+          if currentPlayer = 3 then player3x = 200
 
           rem Stop any active missiles for this player - inlined
           rem Clear missile active bit for this player (DeactivatePlayerMissiles)

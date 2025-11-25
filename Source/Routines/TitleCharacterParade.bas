@@ -48,8 +48,8 @@ end
           rem StartNewParadeCharacter, MoveParadeCharacter,
           rem              ParadeCharacterLeft (all called via goto)
           rem              Called every frame from TitleScreenMain
-          let titleParadeTimer = titleParadeTimer + 1
           rem Increment parade timer
+          let titleParadeTimer = titleParadeTimer + 1
 
           rem Start parade after ~4 seconds (TitleParadeDelayFrames frames)
           if titleParadeTimer < TitleParadeDelayFrames then return otherbank
@@ -77,10 +77,10 @@ StartNewParadeCharacter
           rem Constraints: Must be colocated with UpdateCharacterParade
 Roll
           let titleParadeCharacter = rand & $1f
-          if titleParadeCharacter > MaxCharacter then Roll
           rem Random character 0-MaxCharacter
-          let titleParadeX = 246
+          if titleParadeCharacter > MaxCharacter then Roll
           rem Start off-screen left
+          let titleParadeX = 246
           let titleParadeActive = 1
           return otherbank
 
@@ -96,11 +96,11 @@ MoveParadeCharacter
           rem
           rem Called Routines: None (dispatcher only)
           rem Constraints: Must be colocated with UpdateCharacterParade, ParadeCharacterLeft
-          let titleParadeX = titleParadeX + 2
           rem Move 2 pixels per frame
+          let titleParadeX = titleParadeX + 2
 
-          if titleParadeX > 170 then ParadeCharacterLeft
           rem Check if character has left screen
+          if titleParadeX > 170 then ParadeCharacterLeft
           return otherbank
 
 ParadeCharacterLeft
@@ -118,8 +118,8 @@ ParadeCharacterLeft
           rem Called Routines: None
           rem Constraints: Must be colocated with UpdateCharacterParade
           let titleParadeActive = 0
-          let titleParadeTimer = titleParadeTimer - FramesPerSecond
           rem Reset timer for next character
+          let titleParadeTimer = titleParadeTimer - FramesPerSecond
           return otherbank
 
 DrawParadeCharacter

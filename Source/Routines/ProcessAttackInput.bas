@@ -25,17 +25,17 @@ end
           rem Map MethHound (31) to ShamoneAttack handler
           rem Use cached animation state - block attack input during attack
           rem animations (states 13-15)
-          if temp2 >= 13 then return otherbank
           rem Block attack input during attack windup/execute/recovery
-          let temp2 = playerState[temp1] & 2
+          if temp2 >= 13 then return otherbank
           rem Check if player is guarding - guard blocks attacks
-          if temp2 then return otherbank
+          let temp2 = playerState[temp1] & 2
           rem Guarding - block attack input
-          
+          if temp2 then return otherbank
           rem Determine which joy port to use based on player index
+          
           rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
-          if temp1 & 2 = 0 then PAI_UseJoy0
           rem Players 1,3 use joy1
+          if temp1 & 2 = 0 then PAI_UseJoy0
           if !joy1fire then return otherbank
           goto PAI_ExecuteAttack
           

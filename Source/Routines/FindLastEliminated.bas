@@ -11,12 +11,12 @@ end
           rem Output: winnerPlayerIndex updated to last eliminated player
           rem Mutates: temp4, currentPlayer, winnerPlayerIndex
           let temp4 = 0
-          let winnerPlayerIndex_W = 0
           rem Highest elimination order found
+          let winnerPlayerIndex_W = 0
           rem Default winner
 
-          for currentPlayer = 0 to 3
           rem Check each player elimination order using FOR loop
+          for currentPlayer = 0 to 3
           let temp4 = eliminationOrder_R[currentPlayer]
           if temp4 > temp4 then let winnerPlayerIndex_W = currentPlayer
           next

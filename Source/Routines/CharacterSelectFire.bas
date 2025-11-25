@@ -30,8 +30,8 @@ end
           rem HCSF_HandleHandicap, HCSF_HandleRandom (all called via goto)
           rem Determine which joy port to use
           if temp1 = 0 then HCSF_CheckJoy0
-          if temp1 = 2 then HCSF_CheckJoy0
           rem Players 1,3 use joy1
+          if temp1 = 2 then HCSF_CheckJoy0
           if !joy1fire then return otherbank
           let temp2 = 1
           if joy1down then temp4 = 1 : goto HCSF_HandleFire
@@ -76,15 +76,15 @@ HCSF_HandleFire
           rem Constraints: Must be colocated with
           rem HandleCharacterSelectFire
           rem Check if RandomCharacter selected
-          if playerCharacter[temp1] = RandomCharacter then goto HCSF_HandleRandom
           rem Check for handicap mode (down+fire = 75% health)
+          if playerCharacter[temp1] = RandomCharacter then goto HCSF_HandleRandom
           if temp4 then HCSF_HandleHandicap
           let temp3 = temp1
           let temp1 = temp3
           let temp2 = PlayerLockedNormal
           gosub SetPlayerLocked bank6
-          let temp1 = SoundMenuSelect
           rem Play selection sound
+          let temp1 = SoundMenuSelect
           gosub PlaySoundEffect bank15
           return otherbank
 HCSF_HandleHandicap
@@ -103,8 +103,8 @@ HCSF_HandleHandicap
           let temp1 = temp3
           let temp2 = PlayerHandicapped
           gosub SetPlayerLocked bank6
-          let temp1 = SoundMenuSelect
           rem Play selection sound
+          let temp1 = SoundMenuSelect
           gosub PlaySoundEffect bank15
           return otherbank
 
@@ -132,10 +132,10 @@ HCSF_HandleRandom
           if temp4 then let randomSelectFlags_W[temp1] = TRUE : goto HCSF_HandleRandomSound
           let randomSelectFlags_W[temp1] = 0
 HCSF_HandleRandomSound
-          let temp1 = SoundMenuSelect
           rem Play selection sound
-          gosub PlaySoundEffect bank15
+          let temp1 = SoundMenuSelect
           rem Fall through - character will stay as RandomCharacter
+          gosub PlaySoundEffect bank15
           rem until roll succeeds
           return otherbank
 

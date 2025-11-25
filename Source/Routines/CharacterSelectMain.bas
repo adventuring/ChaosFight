@@ -128,12 +128,12 @@ end
           rem   PlaySoundEffect (bank15)
           rem
           rem Constraints: Must be colocated with
-          let temp4 = temp1
           rem Preserve player index for updates and lock handling
-          let temp1 = playerCharacter[temp4]
+          let temp4 = temp1
           rem Load current character selection
-          let temp3 = temp4
+          let temp1 = playerCharacter[temp4]
           rem temp3 stores the player index for inline cycling logic
+          let temp3 = temp4
           if temp2 = 0 then goto HCSC_CycleLeft
           goto HCSC_CycleRight
 HCSC_CycleLeft
@@ -207,8 +207,8 @@ HCSC_CycleDone
           let temp2 = PlayerLockedUnlocked
           let temp1 = temp3
           gosub SetPlayerLocked bank6
-          let temp1 = SoundMenuNavigate
           rem Play navigation sound
+          let temp1 = SoundMenuNavigate
           gosub PlaySoundEffect bank15
           return
 
@@ -221,8 +221,8 @@ end
 
           rem Consolidated input handling with Quadtari multiplexing
           let temp3 = 0
-          if controllerStatus & SetQuadtariDetected then temp3 = qtcontroller * 2
           rem Player offset: 0=P1/P2, 2=P3/P4
+          if controllerStatus & SetQuadtariDetected then temp3 = qtcontroller * 2
           gosub CharacterSelectHandleTwoPlayers
 
           if controllerStatus & SetQuadtariDetected then qtcontroller = qtcontroller ^ 1 else qtcontroller = 0
@@ -249,8 +249,8 @@ ProcessPlayerInput
           rem Handle Player 1/3 input (joy0)
           if joy0left then temp1 = temp3 : temp2 = 0 : gosub HandleCharacterSelectCycle
           if joy0right then temp1 = temp3 : temp2 = 1 : gosub HandleCharacterSelectCycle
-          if joy0up then temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           rem NOTE: DASM raises "Label mismatch" if multiple banks re-include HandleCharacterSelectFire
+          if joy0up then temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           if joy0fire then temp1 = temp3 : gosub HandleCharacterSelectFire bank7
 
           rem Handle Player 2/4 input (joy1) - only if active
@@ -264,14 +264,14 @@ ProcessPlayerInput
 
 
 CharacterSelectInputComplete
-          gosub CharacterSelectHandleRandomRolls
           rem Handle random character re-rolls if any players need it
+          gosub CharacterSelectHandleRandomRolls
 
-          gosub SelectUpdateAnimations bank6
           rem Update character select animations
+          gosub SelectUpdateAnimations bank6
           rem Draw selection screen
-          gosub SelectDrawScreen bank6
           rem Draw character selection screen
+          gosub SelectDrawScreen bank6
           return
 
           rem
@@ -307,10 +307,10 @@ end
           rem
           rem Called Routines: None
 CharacterSelectRollRandomPlayerReroll
-          let temp2 = rand & $1f
           rem if not valid, try next frame.
-          if temp2 >= NumCharacters then return
+          let temp2 = rand & $1f
           rem Valid roll - character ID updated, but not locked
+          if temp2 >= NumCharacters then return
           let playerCharacter[currentPlayer] = temp2
           return
 
@@ -323,10 +323,10 @@ CharacterSelectCheckReady
           rem 2-player mode: P1 must be locked AND (P2 locked OR P2 on
           rem CPU)
           if controllerStatus & SetQuadtariDetected then goto CharacterSelectQuadtariReady
-          let temp1 = 0 : gosub GetPlayerLocked bank6 : if !temp2 then goto CharacterSelectReadyDone
           rem P1 is locked, check P2
-          let temp1 = 1 : gosub GetPlayerLocked bank6 : if temp2 then goto CharacterSelectFinish
+          let temp1 = 0 : gosub GetPlayerLocked bank6 : if !temp2 then goto CharacterSelectReadyDone
           rem P2 not locked, check if on CPU
+          let temp1 = 1 : gosub GetPlayerLocked bank6 : if temp2 then goto CharacterSelectFinish
           if playerCharacter[1] = CPUCharacter then goto CharacterSelectFinish
           goto CharacterSelectReadyDone
 
@@ -369,8 +369,8 @@ CharacterSelectFinish
 CharacterSelectSkipFacing
           next
 
-          let gameMode = ModeFallingAnimation
           rem Transition to falling animation
+          let gameMode = ModeFallingAnimation
           gosub ChangeGameMode bank14
           return
 

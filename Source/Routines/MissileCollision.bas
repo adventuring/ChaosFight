@@ -38,17 +38,17 @@ end
           let temp4 = MissileHitNotFound
           let temp6 = BitMask[temp1]
           let temp5 = missileActive & temp6
-          if temp5 = 0 then return otherbank
           rem No active missile
+          if temp5 = 0 then return otherbank
 
-          let characterIndex = playerCharacter[temp1]
           rem Cache character index for downstream routines
+          let characterIndex = playerCharacter[temp1]
 
           rem Visible missile when width > 0, otherwise treat as AOE
           let temp6 = CharacterMissileWidths[characterIndex]
           if temp6 = 0 then goto CheckAOECollision
-          goto CheckVisibleMissileCollision
           rem tail call
+          goto CheckVisibleMissileCollision
 
 
 CheckVisibleMissileCollision
@@ -84,8 +84,8 @@ end
           rem
           rem Called Routines: CheckPlayersAgainstCachedHitbox - scans defenders
           rem Constraints: None
-          let characterIndex = playerCharacter[temp1]
           rem Ensure character index matches current attacker
+          let characterIndex = playerCharacter[temp1]
 
           let cachedHitboxLeft_W = missileX[temp1]
           let cachedHitboxTop_W = missileY_R[temp1]
@@ -139,16 +139,16 @@ end
           rem for Bernie (hits both directions)
           rem Constraints: Bernie (character 0) hits both left AND right simultaneously
           let characterIndex = playerCharacter[temp1]
-          let temp5 = characterIndex
           rem Get attacker character type
+          let temp5 = characterIndex
 
           rem Check if this is Bernie (character 0)
           rem Bernie attacks both left AND right, so check both
           rem directions
           if temp5 = CharacterBernie then CheckBernieAOE
 
-          let temp6 = playerState[temp1] & PlayerStateBitFacing
           rem Normal character: Check only facing direction
+          let temp6 = playerState[temp1] & PlayerStateBitFacing
           if temp6 = 0 then goto CheckAOEDirection_Left
           goto CheckAOEDirection_Right
 
@@ -314,25 +314,25 @@ end
           rem Called Routines: None
           rem
           rem Constraints: None
-          let temp2 = missileX[temp1]
           rem Get missile X/Y position
+          let temp2 = missileX[temp1]
           let temp3 = missileY_R[temp1]
 
           rem Convert X to playfield coordinates
-          
           rem Playfield is 32 pf-pixels wide (4px wide each, so 128 screen pixels)
+          
           rem Convert X pixel to playfield column
           let temp6 = temp2 - 16
           let temp6 = temp6 / 4
 
           rem Check if playfield pixel is set at missile position
-          let temp4 = 0
           rem Assume clear until pfread says otherwise
+          let temp4 = 0
           let temp1 = temp6
           let temp2 = temp3
           gosub PlayfieldRead bank16
-          if temp1 then let temp4 = $80 : return otherbank
           rem pfread(column, row) returns 0 if clear, non-zero if set
+          if temp1 then let temp4 = $80 : return otherbank
           rem Clear
           return otherbank
 

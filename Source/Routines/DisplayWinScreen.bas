@@ -70,29 +70,29 @@ end
           sta PF2pointer+1
 end
 
-          gosub DWS_LoadColorColors
           rem Winner screen always uses color mode
+          gosub DWS_LoadColorColors
 
-          let temp1 = playersRemaining_R
           rem Get players remaining count (SCRAM read)
+          let temp1 = playersRemaining_R
 
           rem Get winner index (already set by FindWinner, SCRAM read)
-          let temp2 = winnerPlayerIndex_R
           rem Read after DWS_GetBWMode to avoid temp2 conflict
+          let temp2 = winnerPlayerIndex_R
 
           rem Calculate rankings from eliminationOrder
           rem Winner = not eliminated (already have winnerPlayerIndex)
           rem 2nd place = highest eliminationOrder (last eliminated)
           rem 3rd place = second highest eliminationOrder
 
-          let temp3 = 255
           rem Find 2nd and 3rd place rankings
+          let temp3 = 255
           let temp4 = 255
           let temp5 = 0
           let winScreenThirdPlaceOrder = 0
 
-          let temp1 = 0
           rem Check all players for ranking
+          let temp1 = 0
 DWS_RankLoop
           rem Ranking loop - check all players for 2nd and 3rd place
           rem
@@ -220,11 +220,11 @@ DWS_Position1Player
           rem Constraints: Must be colocated with DisplayWinScreen
           let playerX[0] = 80
           let playerY[0] = 192
-          let currentCharacter = playerCharacter[temp2]
           rem Load winner sprite
+          let currentCharacter = playerCharacter[temp2]
           let currentPlayer = 0
-          gosub DWS_LoadIdleSprite
           rem Player 0
+          gosub DWS_LoadIdleSprite
           gosub DWS_HidePlayers123
           return otherbank
 
@@ -247,8 +247,8 @@ DWS_Position2Players
           rem
           rem Constraints: Must be colocated with DisplayWinScreen,
           rem DWS_Hide2Player, DWS_Hide2PlayerDone
-          let playerX[0] = 80
           rem Winner (P0)
+          let playerX[0] = 80
           let playerY[0] = 192
           let currentCharacter = playerCharacter[temp2]
           let currentPlayer = 0
@@ -312,10 +312,10 @@ DWS_Position3Players
           rem Constraints: Must be colocated with DisplayWinScreen,
           rem DWS_Hide3Player2, DWS_Hide3Player2Done,
           rem              DWS_Hide3Player3, DWS_Hide3Player3Done
-          let playerX[0] = 80
           rem Winner (P0) - higher platform
-          let playerY[0] = 128
+          let playerX[0] = 80
           rem Row 16 = 128 pixels (16 × 8)
+          let playerY[0] = 128
           let currentCharacter = playerCharacter[temp2]
           let currentPlayer = 0
           gosub DWS_LoadIdleSprite
@@ -391,8 +391,8 @@ DWS_Hide3Player3Done
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with DisplayWinScreen
-          let playerX[3] = 0
           rem Hide unused player
+          let playerX[3] = 0
           return otherbank
 
 DWS_HidePlayers123

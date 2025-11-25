@@ -42,10 +42,10 @@ end
           rem Set Player 1 color and sprite
           rem Use LoadCharacterColors for consistent color handling
           rem Player index
-          let currentPlayer = 0
           rem Hurt flag (non-zero = recovering)
-          let temp2 = playerRecoveryFrames[0]
+          let currentPlayer = 0
           rem Guard flag (non-zero = guarding)
+          let temp2 = playerRecoveryFrames[0]
           let temp3 = playerState[0] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank14
           COLUP0 = temp6
@@ -60,22 +60,22 @@ Player1ColorDone
 
 end
 
-          let currentCharacter = playerCharacter[0]
           rem Load sprite data from character definition
-          let temp2 = 0
+          let currentCharacter = playerCharacter[0]
           rem Animation frame (0 = idle)
-          let temp3 = 0
+          let temp2 = 0
           rem Animation action (0 = idle)
+          let temp3 = 0
           gosub LoadCharacterSprite bank16
 
           rem Set Player 2 color and sprite
           rem Use LoadCharacterColors for consistent color handling
           rem NOTE: Multi-sprite kernel requires _COLUP1 (with
           rem Player index
-          let currentPlayer = 1
           rem Hurt flag (non-zero = recovering)
-          let temp2 = playerRecoveryFrames[1]
+          let currentPlayer = 1
           rem Guard flag (non-zero = guarding)
+          let temp2 = playerRecoveryFrames[1]
           let temp3 = playerState[1] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank14
           _COLUP1 = temp6
@@ -101,12 +101,12 @@ Player2ColorDone
 
 end
 
-          let currentCharacter = playerCharacter[1]
           rem Load sprite data from character definition
-          let temp2 = 0
+          let currentCharacter = playerCharacter[1]
           rem Animation frame (0 = idle)
-          let temp3 = 0
+          let temp2 = 0
           rem Animation action (0 = idle)
+          let temp3 = 0
           gosub LoadCharacterSprite bank16
 
           rem Set colors for Players 3 & 4 (multisprite kernel)
@@ -122,14 +122,14 @@ end
 
           rem Use LoadCharacterColors for consistent color handling
           rem Player index
-          let currentPlayer = 2
           rem Hurt flag (non-zero = recovering)
-          let temp2 = playerRecoveryFrames[2]
+          let currentPlayer = 2
           rem Guard flag (non-zero = guarding)
+          let temp2 = playerRecoveryFrames[2]
           let temp3 = playerState[2] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank14
-          COLUP2 = temp6
           rem fall through to Player3ColorDone
+          COLUP2 = temp6
 
 Player3ColorDone
 
@@ -150,12 +150,12 @@ Player3ColorDone
 
 end
 
-          let currentCharacter = playerCharacter[2]
           rem Load sprite data from character definition
-          let temp2 = 0
+          let currentCharacter = playerCharacter[2]
           rem Animation frame (0 = idle)
-          let temp3 = 0
+          let temp2 = 0
           rem Animation action (0 = idle)
+          let temp3 = 0
           gosub LoadCharacterSprite bank16
 
 DonePlayer3Sprite
@@ -169,10 +169,10 @@ DonePlayer3Sprite
           rem Use LoadCharacterColors for consistent color handling
           rem Player 4: Turquoise (player index color), hurt handled by
           rem Player index
-          let currentPlayer = 3
           rem Hurt flag (non-zero = recovering)
-          let temp2 = playerRecoveryFrames[3]
+          let currentPlayer = 3
           rem Guard flag (non-zero = guarding)
+          let temp2 = playerRecoveryFrames[3]
           let temp3 = playerState[3] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank14
           COLUP3 = temp6
@@ -196,12 +196,12 @@ Player4ColorDone
 
 end
 
-          let currentCharacter = playerCharacter[3]
           rem Load sprite data from character definition
-          let temp2 = 0
+          let currentCharacter = playerCharacter[3]
           rem Animation frame (0 = idle)
-          let temp3 = 0
+          let temp2 = 0
           rem Animation action (0 = idle)
+          let temp3 = 0
           gosub LoadCharacterSprite bank16
 
 DonePlayer4Sprite

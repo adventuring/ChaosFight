@@ -28,43 +28,43 @@ end
           rem move if already at bottom. Uses inline coordinate
           rem conversion (not shared subroutine)
           rem Fly down with playfield collision check
-          let temp2 = playerX[temp1]
           rem Check collision before moving
+          let temp2 = playerX[temp1]
           let temp2 = temp2 - ScreenInsetX
-          let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
+          let temp2 = temp2 / 4
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
           if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
 
-          let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
+          let temp3 = playerY[temp1]
           rem pfrowheight is always 16, so divide by 16
           let temp3 = temp3 + 16
-          let temp4 = temp3 / 16
           rem feetY = feet Y position
+          let temp4 = temp3 / 16
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
-          if temp4 >= pfrows then return otherbank
           rem At bottom, cannot move down
+          if temp4 >= pfrows then return otherbank
           rem Check if playfield pixel is clear
-          let temp5 = 0
           rem Track pfread result (1 = blocked)
+          let temp5 = 0
           let temp6 = temp1
           let temp1 = temp2
           let temp2 = temp4
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp6
-          if temp5 = 1 then return otherbank
           rem Blocked, cannot move down
+          if temp5 = 1 then return otherbank
 
-          let playerVelocityY[temp1] = 2
           rem Clear below - apply downward velocity impulse
-          let playerVelocityYL[temp1] = 0
+          let playerVelocityY[temp1] = 2
           rem +2 pixels/frame downward
-          let playerState[temp1] = playerState[temp1] & !2
+          let playerVelocityYL[temp1] = 0
           rem Ensure guard bit clear
+          let playerState[temp1] = playerState[temp1] & !2
           return otherbank
 
 HarpyDown
@@ -103,11 +103,11 @@ end
           rem conversion (not shared subroutine)
           rem Check if Harpy is airborne and set dive mode
           if (playerState[temp1] & 4) then HarpySetDive
-          let temp2 = playerY[temp1]
           rem Jumping bit set, airborne
+          let temp2 = playerY[temp1]
           if temp2 < 60 then HarpySetDive
-          goto HarpyNormalDown
           rem Above ground level, airborne
+          goto HarpyNormalDown
 HarpySetDive
           rem Helper: Sets dive mode flag for Harpy when airborne
           rem
@@ -123,8 +123,8 @@ HarpySetDive
           rem Constraints: Internal helper for HarpyDown, only called when airborne
           rem Set dive mode flag for increased damage and normal gravity
           dim HSD_stateFlags = temp5
-          let HSD_stateFlags = characterStateFlags_R[temp1] | 4
           rem Fix RMW: Read from _R, modify, write to _W
+          let HSD_stateFlags = characterStateFlags_R[temp1] | 4
           let characterStateFlags_W[temp1] = HSD_stateFlags
 HarpyNormalDown
           rem Set bit 2 (dive mode)
@@ -145,43 +145,43 @@ HarpyNormalDown
           rem Called Routines: None
           rem Constraints: Internal helper for HarpyDown, handles downward movement
           rem Fly down with playfield collision check
-          let temp2 = playerX[temp1]
           rem Check collision before moving
+          let temp2 = playerX[temp1]
           let temp2 = temp2 - ScreenInsetX
-          let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
+          let temp2 = temp2 / 4
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
           if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
 
-          let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
+          let temp3 = playerY[temp1]
           rem pfrowheight is always 16, so divide by 16
           let temp3 = temp3 + 16
-          let temp4 = temp3 / 16
           rem feetY = feet Y position
+          let temp4 = temp3 / 16
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
-          if temp4 >= pfrows then return
           rem At bottom, cannot move down
+          if temp4 >= pfrows then return
           rem Check if playfield pixel is clear
-          let temp5 = 0
           rem Track pfread result (1 = blocked)
+          let temp5 = 0
           let temp6 = temp1
           let temp1 = temp2
           let temp2 = temp4
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp6
-          if temp5 = 1 then return
           rem Blocked, cannot move down
+          if temp5 = 1 then return
 
-          let playerVelocityY[temp1] = 2
           rem Clear below - apply downward velocity impulse
-          let playerVelocityYL[temp1] = 0
+          let playerVelocityY[temp1] = 2
           rem +2 pixels/frame downward
-          let playerState[temp1] = playerState[temp1] & !2
+          let playerVelocityYL[temp1] = 0
           rem Ensure guard bit clear
+          let playerState[temp1] = playerState[temp1] & !2
           return
 
 FrootyDown
@@ -214,44 +214,44 @@ end
           rem move if already at bottom. Uses inline coordinate
           rem conversion (not shared subroutine)
           rem Fly down with playfield collision check
-          let temp2 = playerX[temp1]
           rem Check collision before moving
+          let temp2 = playerX[temp1]
           let temp2 = temp2 - ScreenInsetX
-          let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
+          let temp2 = temp2 / 4
           rem   result ≥ 128
           rem Check for wraparound: if subtraction wrapped negative,
           if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
 
-          let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
+          let temp3 = playerY[temp1]
           rem pfrowheight is always 16, so divide by 16
           let temp4 = temp3 / 16
-          let temp4 = temp4 - 1
           rem feetY = feet Y position
+          let temp4 = temp4 - 1
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
-          if temp4 >= pfrows then return otherbank
           rem At bottom, cannot move down
+          if temp4 >= pfrows then return otherbank
           rem Check if playfield pixel is clear
-          let temp5 = 0
           rem Track pfread result (1 = blocked)
+          let temp5 = 0
           let temp6 = temp1
           let temp1 = temp2
           let temp2 = temp4
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp6
-          if temp5 = 1 then return otherbank
           rem Blocked, cannot move down
+          if temp5 = 1 then return otherbank
 
-          let playerVelocityY[temp1] = 2
           rem Clear below - apply downward velocity impulse
-          let playerVelocityYL[temp1] = 0
+          let playerVelocityY[temp1] = 2
           rem +2 pixels/frame downward
-          let playerState[temp1] = playerState[temp1] & !2
+          let playerVelocityYL[temp1] = 0
           rem Ensure guard bit clear
+          let playerState[temp1] = playerState[temp1] & !2
           return otherbank
 
 RoboTitoDown
@@ -267,34 +267,34 @@ end
           rem Calls: StandardGuard if not latched via dispatcher helper
           rem If latched, drop; else guard
           let temp2 = 0
-          if (characterStateFlags_R[temp1] & 1) = 0 then RoboTitoInitiateDrop
           rem Not latched, dispatcher will fall through to StandardGuard
+          if (characterStateFlags_R[temp1] & 1) = 0 then RoboTitoInitiateDrop
           return otherbank
 RoboTitoInitiateDrop
-          let temp2 = 1
           rem Signal dispatcher to skip guard after voluntary drop
+          let temp2 = 1
           rem fall through to RoboTitoVoluntaryDrop
 
 RoboTitoVoluntaryDrop
           rem RoboTito drops from ceiling on DOWN; clears latched bit, sets falling, resets stretch height
           rem Fix RMW: Read from _R, modify, write to _W
           let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & ($ff ^ PlayerStateBitFacing)
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
           rem Clear latched bit (bit 0)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
           rem Set falling animation
-          let missileStretchHeight_W[temp1] = 0
           rem Clear stretch missile height when dropping
+          let missileStretchHeight_W[temp1] = 0
           return otherbank
 
           rem StandardJump is defined in CharacterControlsJump.bas (bank 12)
           rem This duplicate definition has been removed to fix label conflict
           rem Apply upward velocity impulse (input applies impulse to
-          let playerVelocityY[temp1] = 246
           rem   rigid body)
+          let playerVelocityY[temp1] = 246
           rem -10 in 8-bit two’s complement: 256 - 10 = 246
           let playerVelocityYL[temp1] = 0
-          let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping bit
+          let playerState[temp1] = playerState[temp1] | 4
           return otherbank
 
 StandardGuard
@@ -341,13 +341,13 @@ end
 
           rem Check if guard is allowed (not in cooldown)
           gosub CheckGuardCooldown bank6
-          if temp2 = 0 then return otherbank
           rem Guard blocked by cooldown
+          if temp2 = 0 then return otherbank
 
           rem Activate guard state - inlined (StartGuard)
-          let playerState[temp1] = playerState[temp1] | 2
           rem Set guard bit in playerState
-          let playerTimers_W[temp1] = GuardTimerMaxFrames
+          let playerState[temp1] = playerState[temp1] | 2
           rem Set guard duration timer
+          let playerTimers_W[temp1] = GuardTimerMaxFrames
           return otherbank
 

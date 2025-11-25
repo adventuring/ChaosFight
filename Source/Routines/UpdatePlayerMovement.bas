@@ -43,8 +43,8 @@ end
           rem Constraints: Must be colocated with UpdatePlayerMovementQuadtariSkip (goto target)
           for currentPlayer = 0 to 1
           gosub UpdatePlayerMovementSingle bank8
-          next
           rem Players 2-3 only if Quadtari detected
+          next
           if (controllerStatus & SetQuadtariDetected) = 0 then goto UpdatePlayerMovementQuadtariSkip
           for currentPlayer = 2 to 3
           gosub UpdatePlayerMovementSingle bank8

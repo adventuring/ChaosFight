@@ -22,8 +22,8 @@ end
           if switchselect then WinnerAdvanceToCharacterSelect
 
           rem Display win screen and continue loop
-          gosub DisplayWinScreen bank16
           rem drawscreen called by MainLoop
+          gosub DisplayWinScreen bank16
           return otherbank
 
 WinnerAdvanceToCharacterSelect

@@ -14,10 +14,10 @@ ApplyGuardColor
           rem Called Routines: None
           rem
           rem Constraints: Must remain colocated with GuardColor0-GuardColor3 jump table
-          let temp2 = playerState[temp1] & 2
           rem Check if player is guarding
-          if !temp2 then return
+          let temp2 = playerState[temp1] & 2
           rem Not guarding
+          if !temp2 then return
 
           rem set light cyan color
           rem Optimized: Apply guard color with computed assignment

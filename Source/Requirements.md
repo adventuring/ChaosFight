@@ -27,7 +27,7 @@ Then continues into warm start:
   (`MaxCharacter`, `ActionStanding`, `LoadCharacterSprite`) to telegraph
   their importance.
 - TIA registers (`player0x`, `COLUP0`, `pf0`-`pf2`, etc.) keep their
-  canonical lowercase spellings—do not “improve” them.
+  canonical-case spellings—do not “improve” them.
 - Never `dim` a built-in variable; batariBasic already reserved their
   seats and will throw shade if you double-book them.
 
@@ -850,3 +850,27 @@ aliases makes it unclear which port is accessed, which can lead to bugs
 where writes are attempted via read ports or reads via write ports.
 Explicit `_R`/`_W` usage makes the code intent clear and prevents
 errors.
+
+## Indentation
+
+**CRITICAL**: Failure to comply with these rules *will* break the game every time.
+
+- **Labels** at left margin (first column)
+- **"end" markers** at left margin (first column)
+- **All other statements**, including "rem", start after 10 spaces
+- **data, asm, and for loops**: indent 2 additional spaces (12 spaces total)
+
+## Remarks
+
+**CRITICAL**: Failure to comply with these rules *will* break the game every time.
+
+- **Remarks must precede code**: Remarks always precede the code that they describe. Code statements must not be followed by remarks on the same line or have remarks appear after the code they describe.
+
+## Calling Conventions
+
+**CRITICAL**: Failure to comply with these rules *will* break the game every time.
+
+- **Cross-bank calls**: When calling any routine that is ever called cross-bank, you MUST always use `gosub routine bankN` (far call) form, and end with `return otherbank`
+- **Same-bank calls**: When a routine is never called cross-bank, then you MUST always use `gosub routine` (near call) and end with just `return` — this is strongly preferred wherever possible
+- **Variable verification**: Verify variable use of called routine (or routines that it calls) do not interfere with the caller's
+- **Call depth**: Verify that no sequence of "gosubs" will ever nest more than 3 subroutines deep

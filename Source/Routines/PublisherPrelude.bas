@@ -45,7 +45,7 @@ end
           rem
           rem Mutates: preambleTimer (incremented)
           rem
-          rem Called Routines: UpdateMusic (bank1) - updates music
+          rem Called Routines: PlayMusic (bank1) - plays music
           rem playback, SetPublisherWindowValues (bank14) - accesses
           rem window state
           rem
@@ -75,7 +75,7 @@ end
           let temp1 = controllerStatus & SetRightPortJoy2bPlus
           if temp1 then if !INPT3{7} then goto PublisherPreludeComplete
 
-          gosub UpdateMusic bank15
+          gosub PlayMusic bank15
 
           rem Auto-advance after music completes + 0.5s
           rem Long branch - use goto (generates JMP) instead of if-then (generates branch)

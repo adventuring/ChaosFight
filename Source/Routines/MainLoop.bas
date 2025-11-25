@@ -13,7 +13,7 @@ end
           rem        TitleScreenMain bank14, CharacterSelectInputEntry bank9,
           rem        FallingAnimation1 bank11, ArenaSelect1 bank14,
           rem        GameMainLoop bank11, WinnerAnnouncementLoop bank12,
-          rem        UpdateMusic bank1, titledrawscreen bank9
+          rem        PlayMusic bank1, titledrawscreen bank9
           rem Constraints: Must remain colocated with MainLoopDrawScreen
 
           rem Entry point for entire game loop
@@ -62,12 +62,12 @@ MainLoopContinue
           rem Inputs: gameMode (global 0-7)
           rem Outputs: Falls through to MainLoopDrawScreen
           rem Mutates: None; dispatcher only
-          rem Calls: UpdateMusic bank1 (for modes < 3 and mode 7); colocated with MainLoop/MainLoopDrawScreen
+          rem Calls: PlayMusic bank1 (for modes < 3 and mode 7); colocated with MainLoop/MainLoopDrawScreen
           rem Notes: Modes 3-6 handle audio updates in their own routines
 
           rem Check if music update is needed for game modes < 3 or mode 7
-          if gameMode < 3 then goto UpdateMusic bank1
-          if gameMode = 7 then goto UpdateMusic bank1
+          if gameMode < 3 then goto PlayMusic bank1
+          if gameMode = 7 then goto PlayMusic bank1
 SkipMusicUpdate
 MainLoopDrawScreen
           rem Renders the appropriate screen for the current game mode

@@ -119,7 +119,7 @@ end
           rem AUDC/AUDV), AUDF, Duration, Delay. Extracts AUDC (upper 4
           rem bits) and AUDV (lower 4 bits) from AUDCV. End of track
           rem marked by Duration = 0. Chaotica loop handled in
-          rem UpdateMusic when both voices end
+          rem PlayMusic when both voices end
           asm
             ; Load 4 bytes from stream[pointer]
             ldy #0
@@ -176,11 +176,11 @@ LoadMusicNote0EndOfTrack
           rem
           rem Constraints: Internal helper for LoadMusicNote0, only
           rem called when Duration = 0. Chaotica loop handled in
-          rem UpdateMusic when both voices end
+          rem PlayMusic when both voices end
           rem End of track reached - mark voice as inactive (pointerH =
           rem 0)
           rem   (Chaotica
-          rem Loop will be handled in UpdateMusic when both voices end
+          rem Loop will be handled in PlayMusic when both voices end
           let musicVoice0Pointer = 0
           rem   only)
           AUDV0 = 0
@@ -214,7 +214,7 @@ end
           rem AUDC/AUDV), AUDF, Duration, Delay. Extracts AUDC (upper 4
           rem bits) and AUDV (lower 4 bits) from AUDCV. End of track
           rem marked by Duration = 0. Chaotica loop handled in
-          rem UpdateMusic when both voices end
+          rem PlayMusic when both voices end
           asm
             ; Load 4 bytes from stream[pointer]
             ldy #0
@@ -270,11 +270,11 @@ LoadMusicNote1EndOfTrack
           rem
           rem Constraints: Internal helper for LoadMusicNote1, only
           rem called when Duration = 0. Chaotica loop handled in
-          rem UpdateMusic when both voices end
+          rem PlayMusic when both voices end
           rem End of track reached - mark voice as inactive (pointerH =
           rem 0)
           rem   (Chaotica
-          rem Loop will be handled in UpdateMusic when both voices end
+          rem Loop will be handled in PlayMusic when both voices end
           let musicVoice1Pointer = 0
           rem   only)
           AUDV1 = 0

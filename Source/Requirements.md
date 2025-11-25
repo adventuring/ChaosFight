@@ -794,7 +794,7 @@ Standardize on "Arena" consistently (not "Level" or "Map"):
 
 - Reserve 1 full bank for sound effects
 - Reserve 1 full bank for music
-- Bank 1 now hosts the music system (StartMusic/UpdateMusic, song tables
+- Bank 1 now hosts the music system (StartMusic/PlayMusic, song tables
   for
   songs 6-28, build info)
 

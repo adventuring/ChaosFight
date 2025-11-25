@@ -37,7 +37,7 @@
           rem
           rem Mutates: preambleTimer (incremented)
           rem
-          rem Called Routines: UpdateMusic (bank1) - accesses music
+          rem Called Routines: PlayMusic (bank1) - plays music
           rem state variables
           rem
           rem Constraints: Must be colocated with AuthorPreludeComplete
@@ -71,7 +71,7 @@ end
           let temp1 = controllerStatus & SetRightPortJoy2bPlus
           if temp1 then if !INPT3{7} then AuthorPreludeComplete
 
-          gosub UpdateMusic bank15
+          gosub PlayMusic bank15
 
           rem Auto-advance after music completes + 0.5s
 

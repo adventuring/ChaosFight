@@ -39,7 +39,7 @@ end
           rem
           rem Called Routines: LoadSongPointer (bank15 or bank1) -
           rem looks up song pointer, LoadSongVoice1PointerBank15 or
-          rem LoadSongVoice1PointerBank1 - calculates Voice 1 pointer, UpdateMusic (tail
+          rem LoadSongVoice1PointerBank1 - calculates Voice 1 pointer, PlayMusic (tail
           rem call via goto) - starts first notes
           rem
           rem Constraints: Songs in Bank 15: Bernie (0), OCascadia (1),
@@ -97,7 +97,7 @@ LoadSongPointersDone
           rem ID, musicVoice0Frame_W, musicVoice1Frame_W (global SCRAM)
           rem = frame counters
           rem
-          rem Called Routines: UpdateMusic (tail call via goto) - starts
+          rem Called Routines: PlayMusic (tail call via goto) - starts
           rem first notes
           rem
           rem Constraints: Internal helper for StartMusic, completes
@@ -122,15 +122,15 @@ LoadSongPointersDone
           let musicVoice1Frame_W = 1
 
           rem Start first notes
-          goto UpdateMusic bank15
+          goto PlayMusic bank15
           rem tail call
 
-UpdateMusic
+PlayMusic
           asm
-UpdateMusic
+PlayMusic
 end
           rem
-          rem Updatemusic - Update Music Playback Each Frame
+          rem PlayMusic - Play Music Each Frame
           rem Called every frame from MainLoop for gameMode 0-2, 7
           rem Updates both voices if active (high byte ≠ 0)
           rem Update music playback each frame (called every frame from
@@ -191,10 +191,10 @@ IsChaotica
           rem musicVoice1Frame_W (global SCRAM) = frame counters (reset
           rem to 1)
           rem
-          rem Called Routines: UpdateMusic (tail call via goto) -
+          rem Called Routines: PlayMusic (tail call via goto) -
           rem reloads first notes
           rem
-          rem Constraints: Internal helper for UpdateMusic, only called
+          rem Constraints: Internal helper for PlayMusic, only called
           rem when both voices ended and song is Chaotica (26)
           rem Both voices ended and song is Chaotica - reset to song
           rem head
@@ -206,7 +206,7 @@ IsChaotica
           rem Initialize frame counters to trigger first note load
           let musicVoice1Frame_W = 1
           rem Tail call to reload first notes
-          goto UpdateMusic bank15
+          goto PlayMusic bank15
           rem tail call
 MusicUpdateDone
           return otherbank
@@ -215,7 +215,7 @@ CalculateMusicVoiceEnvelope
 CalculateMusicVoiceEnvelope
 
 end
-          rem Helper: End of UpdateMusic (label only)
+          rem Helper: End of PlayMusic (label only)
           rem
           rem Input: None (label only)
           rem
@@ -225,7 +225,7 @@ end
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal label for UpdateMusic, marks end of
+          rem Constraints: Internal label for PlayMusic, marks end of
           rem update
           rem
           rem Shared Music Voice Envelope Calculation

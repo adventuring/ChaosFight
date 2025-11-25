@@ -534,9 +534,9 @@ r127 = $F0FF
 pfres = 8
           endif
           ifnconst bscode_length
-; Match actual 64kSC bankswitch stub size (see Tools/batariBASIC/includes/banksw.asm ;size=42)
-; $2A = 42 bytes, so bankswitch code runs right up to $FFE0 before EFSC header
-bscode_length = $2A
+; Match actual 64kSC bankswitch stub size (BankSwitching.s: BS_return=16 bytes + BS_jsr=4 bytes = 20 bytes)
+; $14 = 20 bytes, so bankswitch code runs right up to $FFE0 before EFSC header
+bscode_length = $14
           endif
           ifnconst multisprite
 multisprite = 2

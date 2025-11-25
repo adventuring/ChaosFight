@@ -143,12 +143,15 @@
           rem   Bit 3: Game state ending (SystemFlagGameStateEnding = $08, 0=normal, 1=ending)
           rem   Bits 0-2: Reserved for future use
           dim gameMode = p
-          rem Packed controller status bits: $80=Quadtari,
-          rem   $01=LeftGenesis, $02=LeftJoy2b+, $04=RightGenesis,
-          rem   $08=RightJoy2b+
           dim systemFlags = f
-          rem HandicapMode - defined locally in CharacterSelect.bas as
-          rem   temp1 (local scope only)
+          rem Packed controller status bits (controller hardware detection):
+          rem   Bit 7: Quadtari adapter detected ($80)
+          rem   Bit 0: Genesis/MegaDrive controller on left port ($01)
+          rem   Bit 1: Joy2b+ controller on left port ($02)
+          rem   Bit 2: Genesis/MegaDrive controller on right port ($04)
+          rem   Bit 3: Joy2b+ controller on right port ($08)
+          rem   Bits 4-6: Reserved for future use
+          rem NOTE: 7800 console detection is in systemFlags (bit 7), not controllerStatus
           dim controllerStatus = h
 
           rem Frame phase counter (cycles 0-3 each frame for multi-frame operations)
@@ -207,9 +210,8 @@
 
           rem Sound Effect System Pointers (Game Mode: gameMode 6)
           rem   Sound system reuses music voice zero-page words; music takes priority
-          rem Scratch pointer populated by LoadSoundPointer (zero page helper)
-          rem Changed from y.z to x.y to avoid z in stack space ($f0)
-          dim soundPointer = x.y
+          rem NOTE: soundPointer removed - LoadSoundPointer now assigns directly to soundEffectPointer
+          rem       to avoid using zero-page variables in stack space ($f0-$ff)
           rem Voice 0 active sound effect pointer (shares ZP with musicVoice0Pointer)
           dim soundEffectPointer = var41.var42
           rem Voice 1 active sound effect pointer

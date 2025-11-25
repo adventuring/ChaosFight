@@ -322,7 +322,7 @@ Source/Generated/Numbers.bas: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/
 	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
 # Fonts are universal (not TV-specific)
-# Source/Generated/Numbers.bas is used directly by SetPlayerGlyphFromFont.bas
+# Source/Generated/Numbers.bas is used directly by SetPlayerGlyph.bas
 
 # Convert 48×42 PNG to titlescreen kernel assembly format
 # Uses compile-batari-48px with titlescreen-kernel-p flag for color-per-line + double-height
@@ -406,7 +406,7 @@ Source/Generated/Font.bas: Source/Art/Font.png bin/skyline-tool | Source/Generat
 # that are included via #include directives MUST exist before cpp runs.
 # Character files are dependencies of Bank2/3/4/5.bas (defined above).
 # Bitmap files are dependencies of Bank1.bas (defined above).
-# Numbers font is needed by SetPlayerGlyphFromFont.bas (in Bank16), must exist before cpp runs.
+# Numbers font is needed by SetPlayerGlyph.bas (in Bank16), must exist before cpp runs.
 # Bank15.bas includes Sound.*.bas files, so they must be dependencies here.
 # Bitmap .s files must exist before cpp runs, so they need PNG dependencies.
 # 2600basic_variable_redefs.h must exist before cpp preprocessing (MultiSpriteSuperChip.s includes it)
@@ -539,7 +539,7 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/ConsoleDetection.bas \
 	Source/Routines/ConsoleHandling.bas \
 	Source/Routines/ControllerDetection.bas \
-	Source/Routines/CopyGlyphToPlayer.bas \
+	Source/Routines/SetPlayerGlyph.bas \
 	Source/Routines/DisplayWinScreen.bas \
 	Source/Routines/FallDamage.bas \
 	Source/Routines/FallingAnimation.bas \
@@ -591,7 +591,6 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/DisplayHealth.bas \
 	Source/Routines/PublisherPrelude.bas \
 	Source/Routines/ScreenLayout.bas \
-	Source/Routines/SetPlayerGlyphFromFont.bas \
 	Source/Routines/LoadSoundPointer.bas \
 	Source/Routines/LoadSoundNote.bas \
 	Source/Routines/LoadSoundNote1.bas \

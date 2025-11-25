@@ -8,7 +8,7 @@
 
 #include "Source/Common/Preamble.bas"
 
-          const TVStandard = PAL
+          rem TVStandard is automatically set by batariBASIC based on "set tv pal"
           set tv pal
 #include "Source/Banks/Banks.bas"
 

@@ -8,7 +8,8 @@
 
 #include "Source/Common/Preamble.bas"
 
-          const TVStandard = SECAM
+          rem TVStandard is automatically set by batariBASIC based on "set tv pal"
           rem batariBASIC lacks SECAM timing keyword; use PAL timing with SECAM defines
+          rem Note: TVStandard will be 2 (PAL) but _TV_SECAM define distinguishes SECAM mode
           set tv pal
 #include "Source/Banks/Banks.bas"

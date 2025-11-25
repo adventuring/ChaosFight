@@ -49,8 +49,7 @@ end
           pfrowheight = ScreenPfRowHeight
           pfrows = ScreenPfRows
 
-          COLUBK = ColGray(0)
-          rem Set background color (B&W safe)
+          rem Background: black (COLUBK starts black, no need to set)
 
           rem Playfield layout is static; ArenaSelect renders via playfield data
           return otherbank

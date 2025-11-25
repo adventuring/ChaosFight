@@ -64,9 +64,7 @@ CharacterSelectEntry
           let controllerStatus = controllerStatus | SetQuadtariDetected
 CharacterSelectQuadtariAbsent
 
-          rem Set background color (B&W safe)
-          rem Always black background
-          COLUBK = ColGray(0)
+          rem Background: black (COLUBK starts black, no need to set)
 
           rem Initialization complete - per-frame loop handled by CharacterSelectInputEntry
           return

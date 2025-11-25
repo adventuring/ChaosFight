@@ -57,8 +57,7 @@ end
           pfrowheight = ScreenPfRowHeight
           pfrows = ScreenPfRows
 
-          COLUBK = ColGray(0)
-          rem Set background color
+          rem Background: black (COLUBK starts black, no need to set)
 
           rem Initialize player positions in quadrants
           rem Player 1: Top-left quadrant (unless NO)

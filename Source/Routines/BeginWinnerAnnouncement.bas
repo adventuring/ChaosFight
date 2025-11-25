@@ -49,8 +49,7 @@ end
           pfrowheight = ScreenPfRowHeight
           pfrows = ScreenPfRows
 
-          rem Set background color (B&W safe)
-          COLUBK = ColGray(0)
+          rem Background: black (COLUBK starts black, no need to set)
 
           rem Initialize display rank (starts at 0, may be updated by
           let displayRank_W = 0

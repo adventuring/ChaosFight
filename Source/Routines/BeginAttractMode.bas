@@ -31,8 +31,7 @@ end
           rem              Publisher Prelude (handled in AttractMode
           rem              loop)
           rem Initialize Attract Mode
-          rem Set background color (B&W safe)
-          COLUBK = ColGray(0)
+          rem Background: black (COLUBK starts black, no need to set)
 
           return
           rem Reset title screen timers for next cycle

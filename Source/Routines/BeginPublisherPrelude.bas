@@ -40,8 +40,7 @@ end
           let preambleTimer = 0
           rem Initialize prelude timer
 
-          rem Set background color
-          COLUBK = ColGray(0)
+          rem Background: black (COLUBK starts black, no need to set)
 
           rem Start AtariToday music
           let temp1 = MusicAtariToday

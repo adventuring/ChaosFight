@@ -67,8 +67,7 @@ end
 
           rem Step 3: Initialize TIA color registers to safe defaults
           rem Prevents undefined colors on cold start
-          rem Background: black
-          COLUBK = ColGray(0)
+          rem Background: black (COLUBK starts black, no need to set)
           rem Playfield: white
           COLUPF = ColGrey(14)
           rem Player 1 (P0): indigo

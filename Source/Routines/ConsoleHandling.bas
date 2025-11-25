@@ -31,8 +31,7 @@ end
 
           rem Step 2: Reinitialize TIA color registers to safe defaults
           rem Match ColdStart initialization for consistency
-          COLUBK = ColGray(0)
-          rem Background: black
+          rem Background: black (COLUBK starts black, no need to set)
           COLUPF = ColGrey(14)
           rem Playfield: white
           COLUP0 = ColBlue(14)

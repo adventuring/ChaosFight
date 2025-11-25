@@ -33,8 +33,7 @@ end
           rem Initialize title parade state
           let titleParadeActive = 0
 
-          rem Set background color
-          COLUBK = ColGray(0)
+          rem Background: black (COLUBK starts black, no need to set)
 
           let temp1 = MusicChaotica
           rem Start Chaotica title music

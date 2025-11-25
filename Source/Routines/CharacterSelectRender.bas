@@ -49,11 +49,11 @@ end
           gosub GetPlayerLocked bank6
           let temp5 = temp2
           rem Unlocked state (most common) - set color and return early
-          if !temp5 then gosub SelectSetPlayerColorUnlocked : return otherbank
+          if !temp5 then gosub SelectSetPlayerColorUnlocked : return
           rem Handicap state - set dimmed color and return
-          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return otherbank
+          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return
           rem Normal locked state - color already set by RenderPlayerPreview
-          return otherbank
+          return
 
 PlayerPreviewSetPosition
           asm
@@ -63,7 +63,7 @@ end
           let temp2 = SelectPreviewX[temp1]
           let temp3 = SelectPreviewY[temp1]
           gosub SelectApplyPreviewPosition
-          return otherbank
+          return
 
 SelectApplyPreviewPosition
           asm
@@ -75,19 +75,19 @@ end
 SelectApplyPreviewPositionP0
           player0x = temp2
           player0y = temp3
-          return otherbank
+          return
 SelectApplyPreviewPositionP1
           player1x = temp2
           player1y = temp3
-          return otherbank
+          return
 SelectApplyPreviewPositionP2
           player2x = temp2
           player2y = temp3
-          return otherbank
+          return
 SelectApplyPreviewPositionP3
           player3x = temp2
           player3y = temp3
-          return otherbank
+          return
 
 SelectHideLowerPlayerPreviews
           asm
@@ -134,16 +134,16 @@ end
           on currentPlayer goto SelectApplyPlayerColorP0 SelectApplyPlayerColorP1 SelectApplyPlayerColorP2 SelectApplyPlayerColorP3
 SelectApplyPlayerColorP0
           COLUP0 = temp2
-          return otherbank
+          return
 SelectApplyPlayerColorP1
           _COLUP1 = temp2
-          return otherbank
+          return
 SelectApplyPlayerColorP2
           COLUP2 = temp2
-          return otherbank
+          return
 SelectApplyPlayerColorP3
           COLUP3 = temp2
-          return otherbank
+          return
 
 SelectSetPlayerColorUnlocked
           asm
@@ -152,7 +152,7 @@ end
           rem Override sprite color to indicate unlocked state (white)
           let temp2 = ColGrey(14)
           gosub SelectApplyPlayerColor
-          return otherbank
+          return
 
 SelectSetPlayerColorHandicap
           asm
@@ -162,7 +162,7 @@ end
           rem Override sprite color to indicate handicap lock (dim player color)
           let temp2 = SelectPlayerColorHandicap[currentPlayer]
           gosub SelectApplyPlayerColor
-          return otherbank
+          return
 
 SelectUpdateAnimations
           asm
@@ -206,11 +206,11 @@ end
           rem Constraints: Admin-only usage sharing SCRAM with game mode
           let temp2 = characterSelectPlayerAnimationTimer_R[temp1] + 1
           let characterSelectPlayerAnimationTimer_W[temp1] = temp2
-          if temp2 < AnimationFrameDelay then return otherbank
+          if temp2 < AnimationFrameDelay then return
           let characterSelectPlayerAnimationTimer_W[temp1] = 0
           let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
           let characterSelectPlayerAnimationFrame_W[temp1] = temp3
-          return otherbank
+          return
 
 CharacterSelectCheckControllerRescan
           asm

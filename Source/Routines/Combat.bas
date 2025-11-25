@@ -106,6 +106,56 @@ end
           let playerState[defenderID] = playerState[defenderID] | 8
           rem   are set
 
+          rem Issue #1180: Ursulo uppercut knock-up scaling with target weight
+          rem Ursulo's punches toss opponents upward with launch height proportional to target weight
+          rem Lighter characters travel higher than heavyweights
+          let temp1 = playerCharacter[attackerID]
+          if temp1 = CharacterUrsulo then goto ApplyUrsuloKnockUp
+
+          rem Sound effect
+          goto PlayDamageSound
+          rem tail call
+
+ApplyUrsuloKnockUp
+          rem Issue #1180: Apply vertical knockback based on target weight
+          rem Lighter characters get launched higher (inverse relationship: lower weight = higher launch)
+          rem
+          rem Input: defenderID (global) = defender player index
+          rem        CharacterWeights[] (global data table) = character weights
+          rem        playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity
+          rem
+          rem Output: playerVelocityY[] set to upward velocity (negative value)
+          rem        Launch height inversely proportional to target weight
+          rem
+          rem Mutates: temp1-temp4 (used for weight lookup and velocity calculation)
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Must be colocated with ApplyDamage
+          rem Get defender's weight
+          let temp1 = playerCharacter[defenderID]
+          let temp2 = CharacterWeights[temp1]
+          rem Weight values range 5-100 (lightest to heaviest)
+          rem Calculate upward velocity: lighter = higher launch (inverse relationship)
+          rem Formula: launch_velocity = max_launch - (weight / weight_scale_factor)
+          rem Max launch: 12 pixels/frame upward (244 in signed 8-bit = -12) for lightest
+          rem Min launch: 4 pixels/frame (252 in signed 8-bit = -4) for heaviest
+          rem Weight scale: divide weight by 12 to get velocity reduction (0-8 range)
+          rem Convert weight to velocity reduction (weight / 12, clamped to 0-8)
+          let temp3 = temp2 / 12
+          rem Clamp reduction to 0-8 range (ensures launch stays in 244-252 range)
+          if temp3 > 8 then temp3 = 8
+          rem Calculate upward velocity: max_launch - reduction
+          rem 244 = -12 (highest), 245 = -11, ..., 252 = -4 (lowest)
+          let temp4 = 244 + temp3
+          rem Clamp to valid range (244-252)
+          if temp4 > 252 then temp4 = 252
+          rem Apply upward velocity to defender (negative value = upward)
+          let playerVelocityY[defenderID] = temp4
+          let playerVelocityYL[defenderID] = 0
+          rem Set jumping flag so gravity applies correctly and animation system handles airborne state
+          let playerState[defenderID] = playerState[defenderID] | PlayerStateBitJumping
+
           rem Sound effect
           goto PlayDamageSound
           rem tail call

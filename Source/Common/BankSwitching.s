@@ -21,6 +21,11 @@
           ; No need to restore A/X - caller doesn't use A/X after cross-bank call returns
           ; Stack now has return address at top, rts will return to original caller
           rts
+          ; Pad to 24 bytes total (20 bytes code + 4 bytes padding)
+          nop
+          nop
+          nop
+          nop
           
 ; Global aliases for external code (RETURN macro, etc.)
 ; Each bank defines its own aliases pointing to its local labels

@@ -865,6 +865,7 @@ errors.
 **CRITICAL**: Failure to comply with these rules *will* break the game every time.
 
 - **Remarks must precede code**: Remarks always precede the code that they describe. Code statements must not be followed by remarks on the same line or have remarks appear after the code they describe.
+- **Apostrophes in remarks**: U+0027 (regular apostrophe) is **NEVER** allowed in remarks/comments. **MUST** use U+2019 (typographic apostrophe) instead. This is a hard requirement to prevent C preprocessor errors. Examples: use "don't" (U+2019) not "don't" (U+0027), use "doesn't" (U+2019) not "doesn't" (U+0027), use "they're" (U+2019) not "they're" (U+0027).
 
 ## Calling Conventions
 

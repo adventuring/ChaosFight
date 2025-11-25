@@ -30,11 +30,11 @@ end
           let songPointer = SongPointers2H[temp2]
           let songPointer = songPointer * 256
           let songPointer = songPointer + SongPointers2L[temp2]
-          return otherbank
+          return
 
 LSP15_InvalidSong
           let songPointer = 0
-          return otherbank
+          return
 
 LoadSongVoice1PointerBank15
           asm
@@ -56,14 +56,14 @@ end
           rem Constraints: Only songs 0-Bank15MaxSongID are in Bank 15. Index mapping:
           rem song ID maps directly (index = songID). Returns songPointer = 0 if song not in this bank
           rem Bounds check: Only songs 0-Bank15MaxSongID are in Bank 15
-          if temp1 < 0 then let songPointer = 0 : return otherbank
-          if temp1 > Bank15MaxSongID then let songPointer = 0 : return otherbank
+          if temp1 < 0 then let songPointer = 0 : return
+          if temp1 > Bank15MaxSongID then let songPointer = 0 : return
           rem Calculate compact index: index = songID
           let temp2 = temp1
           let songPointer = SongPointers2SecondH[temp2]
           let songPointer = songPointer * 256
           let songPointer = songPointer + SongPointers2SecondL[temp2]
-          return otherbank
+          return
 
 LoadMusicNote0Bank15
           asm
@@ -106,11 +106,10 @@ end
 end
 
           rem Check for end of track (Duration = 0)
-          if temp4 = 0 then LoadMusicNote0EndOfTrack
+          if temp4 = 0 then let musicVoice0Pointer = 0 : AUDV0 = 0 : return
 
-          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
+          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
           let temp6 = temp2 & %11110000
-          rem   AUDCV
           let temp6 = temp6 / 16
           let musicVoice0TargetAUDV_W = temp2 & %00001111
 
@@ -129,31 +128,7 @@ end
           rem Advance pointer by 4 bytes (16-bit addition)
           let musicVoice0Pointer = musicVoice0Pointer + 4
 
-          return otherbank
-
-LoadMusicNote0EndOfTrack
-          rem Helper: Handle end of track for Voice 0 (Bank 15)
-          rem
-          rem Input: None
-          rem
-          rem Output: Voice 0 marked as inactive, volume zeroed
-          rem
-          rem Mutates: musicVoice0Pointer (global 16-bit) = voice pointer (set
-          rem to 0), AUDV0 (TIA register) = sound volume (set to 0)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for LoadMusicNote0, only
-          rem called when Duration = 0. Chaotica loop handled in
-          rem PlayMusic when both voices end
-          rem End of track reached - mark voice as inactive (pointerH =
-          rem 0)
-          rem   (Chaotica
-          rem Loop will be handled in PlayMusic when both voices end
-          let musicVoice0Pointer = 0
-          rem   only)
-          AUDV0 = 0
-          return otherbank
+          return
 
 LoadMusicNote1Bank15
           asm
@@ -201,7 +176,7 @@ end
 end
 
           rem Check for end of track (Duration = 0)
-          if temp4 = 0 then LoadMusicNote1EndOfTrack
+          if temp4 = 0 then let musicVoice1Pointer = 0 : AUDV1 = 0 : return
 
           let temp6 = temp2 & %11110000
           rem Extract AUDC and AUDV
@@ -223,79 +198,5 @@ end
           rem Advance pointer by 4 bytes
           let musicVoice1Pointer = musicVoice1Pointer + 4
 
-          return otherbank
-
-LoadMusicNote1EndOfTrack
-          rem Helper: Handle end of track for Voice 1 (Bank 15)
-          rem
-          rem Input: None
-          rem
-          rem Output: Voice 1 marked as inactive, volume zeroed
-          rem
-          rem Mutates: musicVoice1Pointer (global 16-bit) = voice pointer (set
-          rem to 0), AUDV1 (TIA register) = sound volume (set to 0)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for LoadMusicNote1, only
-          rem called when Duration = 0. Chaotica loop handled in
-          rem PlayMusic when both voices end
-          rem End of track reached - mark voice as inactive (pointerH =
-          rem 0)
-          rem   (Chaotica
-          rem Loop will be handled in PlayMusic when both voices end
-          let musicVoice1Pointer = 0
-          rem   only)
-          AUDV1 = 0
-          return otherbank
-
-          rem Routing functions for Bank 1 helpers
-          rem These functions route calls from Bank 15 to Bank 1 functions
-          rem They provide entry points in Bank 15 that forward to Bank 1
-          rem CRITICAL: These routing functions have unique names to avoid label collision
-          rem with Bank 1's functions of the same name
-          
-RouteLoadSongPointer
-          asm
-RouteLoadSongPointer
-end
-          rem Route to Bank 1 LoadSongPointer
-          rem Input: temp1 = song ID
-          rem Output: songPointer set via Bank 1 function
-          rem Forward reference: Bank 15 calls Bank 1 (Bank 1 comes before Bank 15 in file)
-          gosub LoadSongPointer bank1
-          return otherbank
-
-RouteLoadSongVoice1PointerBank1
-          asm
-RouteLoadSongVoice1PointerBank1
-end
-          rem Route to Bank 1 LoadSongVoice1PointerBank1
-          rem Input: temp1 = song ID, songPointer = Voice 0 pointer
-          rem Output: songPointer updated to Voice 1 pointer via Bank 1 function
-          rem Forward reference: Bank 15 calls Bank 1
-          gosub LoadSongVoice1PointerBank1 bank1
-          return otherbank
-
-RouteLoadMusicNote0
-          asm
-RouteLoadMusicNote0
-end
-          rem Route to Bank 1 LoadMusicNote0
-          rem Input: musicVoice0Pointer = current pointer
-          rem Output: Next note loaded via Bank 1 function
-          rem Forward reference: Bank 15 calls Bank 1
-          gosub LoadMusicNote0 bank1
-          return otherbank
-
-RouteLoadMusicNote1
-          asm
-RouteLoadMusicNote1
-end
-          rem Route to Bank 1 LoadMusicNote1
-          rem Input: musicVoice1Pointer = current pointer
-          rem Output: Next note loaded via Bank 1 function
-          rem Forward reference: Bank 15 calls Bank 1
-          gosub LoadMusicNote1 bank1
-          return otherbank
+          return
 

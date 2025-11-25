@@ -10,7 +10,6 @@
 LoadSongPointer
           asm
 LoadSongPointer
-LoadSongPointer_RouteToBank1
 end
           rem Lookup 16-bit song pointer for Bank 1 songs.
           rem Input: temp1 = song ID (Bank1MinSongID-28), SongPointers1L[]/SongPointers1H[]
@@ -22,20 +21,7 @@ end
           if temp1 < Bank1MinSongID then goto LSP_InvalidSong
           rem Calculate compact index: songID - Bank1MinSongID (song Bank1MinSongID → 0)
           let temp2 = temp1 - Bank1MinSongID
-LSP_Lookup
-          rem Helper: Lookup pointer from tables and combine into 16-bit value
-          rem
-          rem Input: temp2 (local variable) = table index,
-          rem SongPointers1L[], SongPointers1H[] (global data tables)
-          rem = song pointer tables (residing in Bank 1)
-          rem
-          rem Output: songPointer set from tables
-          rem
-          rem Mutates: songPointer (global 16-bit) = song pointer (set from tables)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for LoadSongPointer
+          rem Lookup pointer from tables and combine into 16-bit value
           let songPointer = SongPointers1H[temp2]
           let songPointer = songPointer * 256
           let songPointer = songPointer + SongPointers1L[temp2]
@@ -48,7 +34,6 @@ LSP_InvalidSong
 LoadSongVoice1PointerBank1
           asm
 LoadSongVoice1PointerBank1
-LoadSongVoice1PointerBank1_RouteToBank1
 end
 
           rem Lookup Voice 1 song pointer from tables (Bank 1 songs)
@@ -73,22 +58,8 @@ end
           if temp1 < Bank1MinSongID then goto LSV1P_InvalidSong
           rem Calculate compact index: songID - Bank1MinSongID (song Bank1MinSongID → 0)
           let temp2 = temp1 - Bank1MinSongID
-LSV1P_Lookup
-          rem Helper: Lookup Voice 1 pointer from tables
-          rem
-          rem Input: temp2 (local variable) = table index,
-          rem SongPointers1SecondL[], SongPointers1SecondH[] (global
-          rem data tables) = Voice 1 song pointer tables
-          rem
-          rem Output: songPointer set from Voice 1 tables
-          rem
-          rem Mutates: songPointer (global 16-bit) = song pointer (set from Voice 1 tables)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for LoadSongVoice1PointerBank1
-          let songPointer = SongPointers1SecondH[temp2]
-          let songPointer = songPointer * 256
+          rem Lookup Voice 1 pointer from tables
+          let songPointer = SongPointers1SecondH[temp2] * 256
           let songPointer = songPointer + SongPointers1SecondL[temp2]
           return otherbank
 
@@ -99,7 +70,6 @@ LSV1P_InvalidSong
 LoadMusicNote0
           asm
 LoadMusicNote0
-LoadMusicNote0_RouteToBank1
 end
           rem Load next note from Voice 0 stream (assembly pointer access).
           rem Input: musicVoice0Pointer (global 16-bit) = current Song_Voice0 pointer
@@ -137,11 +107,10 @@ end
 end
 
           rem Check for end of track (Duration = 0)
-          if temp4 = 0 then LoadMusicNote0EndOfTrack
+          if temp4 = 0 then let musicVoice0Pointer = 0 : AUDV0 = 0 : return otherbank
 
-          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
+          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
           let temp6 = temp2 & %11110000
-          rem   AUDCV
           let temp6 = temp6 / 16
           let musicVoice0TargetAUDV_W = temp2 & %00001111
 
@@ -162,33 +131,9 @@ end
 
           return otherbank
 
-LoadMusicNote0EndOfTrack
-          rem Helper: Handle end of track for Voice 0
-          rem
-          rem Input: None
-          rem
-          rem Output: Voice 0 marked as inactive, volume zeroed
-          rem
-          rem Mutates: musicVoice0Pointer (global 16-bit) = voice pointer (set
-          rem to 0), AUDV0 (TIA register) = sound volume (set to 0)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for LoadMusicNote0, only
-          rem called when Duration = 0. Chaotica loop handled in
-          rem PlayMusic when both voices end
-          rem End of track reached - mark voice as inactive (pointerH =
-          rem 0)
-          rem   (Chaotica
-          rem Loop will be handled in PlayMusic when both voices end
-          let musicVoice0Pointer = 0
-          rem   only)
-          AUDV0 = 0
-          return otherbank
-
 LoadMusicNote1
           asm
-LoadMusicNote1_RouteToBank1
+LoadMusicNote1
 end
           rem Load next note from Voice 1 stream using assembly for pointer access
           rem
@@ -231,10 +176,10 @@ end
 end
 
           rem Check for end of track (Duration = 0)
-          if temp4 = 0 then LoadMusicNote1EndOfTrack
+          if temp4 = 0 then let musicVoice1Pointer = 0 : AUDV1 = 0 : return otherbank
 
-          let temp6 = temp2 & %11110000
           rem Extract AUDC and AUDV
+          let temp6 = temp2 & %11110000
           let temp6 = temp6 / 16
           let musicVoice1TargetAUDV_W = temp2 & %00001111
 
@@ -253,28 +198,4 @@ end
           rem Advance pointer by 4 bytes
           let musicVoice1Pointer = musicVoice1Pointer + 4
 
-          return otherbank
-
-LoadMusicNote1EndOfTrack
-          rem Helper: Handle end of track for Voice 1
-          rem
-          rem Input: None
-          rem
-          rem Output: Voice 1 marked as inactive, volume zeroed
-          rem
-          rem Mutates: musicVoice1Pointer (global 16-bit) = voice pointer (set
-          rem to 0), AUDV1 (TIA register) = sound volume (set to 0)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for LoadMusicNote1, only
-          rem called when Duration = 0. Chaotica loop handled in
-          rem PlayMusic when both voices end
-          rem End of track reached - mark voice as inactive (pointerH =
-          rem 0)
-          rem   (Chaotica
-          rem Loop will be handled in PlayMusic when both voices end
-          let musicVoice1Pointer = 0
-          rem   only)
-          AUDV1 = 0
           return otherbank

@@ -25,7 +25,7 @@ end
           rem   include (BASIC statement) so BUILD_DATE_STRING expands correctly
           asm
 Bank1DataStart
-            rem echo "Bank 1 data starts at $", .  ; Removed: program counter . not resolvable in echo
+            ; Removed: program counter . not resolvable in echo
 BuildInfoStart
 end
           include "Source/Common/BuildInfo.s"
@@ -136,7 +136,7 @@ end
 Character19ThemeSongEnd
             echo "// Bank 1: ", [Character19ThemeSongEnd - Character19ThemeSongStart]d, " bytes = Song.Character19Theme"
 Character20ThemeSongStart
-            rem echo "Character20ThemeSong starts at", .  ; Removed: program counter . not resolvable in echo
+            ; Removed: program counter . not resolvable in echo
 end
 
 #ifdef TV_NTSC
@@ -301,7 +301,9 @@ end
           asm
 MusicBankHelpersEnd
             echo "// Bank 1: ", [MusicBankHelpersEnd - MusicBankHelpersStart]d, " bytes = MusicBankHelpers"
+end
           rem MusicSystem moved to Bank 15 to fix cross-bank label resolution
           rem (Bank 14 calls Bank 15 = forward reference, works with DASM)
+          asm
 Bank1CodeEnds
 end

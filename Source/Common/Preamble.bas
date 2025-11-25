@@ -42,117 +42,15 @@ Bank1MinSongID       EQU 7     ; Bank15MaxSongID + 1
 end
 
           asm
-;; CRITICAL: Define base variables (var0-var48, a-z) BEFORE redefs file
+;; CRITICAL: Base variables (var0-var47, a-z) are defined in MultiSpriteSuperChip.s
+;; which is included above. Do NOT redefine them here as that causes EQU value mismatch errors.
 ;; The Makefile inserts include "2600basic_variable_redefs.h" early (after processor 6502),
-;; so base variables must be defined before that point
-;; Multisprite memory layout (from multisprite.h)
-;; Note: These are also defined in MultiSpriteSuperChip.s, but we keep them here
-;; for compatibility and to ensure they&rsquo;re defined before the redefs file
-var0 = $A4
-var1 = $A5
-var2 = $A6
-var3 = $A7
-var4 = $A8
-var5 = $A9
-var6 = $AA
-var7 = $AB
-var8 = $AC
-var9 = $AD
-var10 = $AE
-var11 = $AF
-var12 = $B0
-var13 = $B1
-var14 = $B2
-var15 = $B3
-var16 = $B4
-var17 = $B5
-var18 = $B6
-var19 = $B7
-var20 = $B8
-var21 = $B9
-var22 = $BA
-var23 = $BB
-var24 = $BC
-var25 = $BD
-var26 = $BE
-var27 = $BF
-var28 = $C0
-var29 = $C1
-var30 = $C2
-var31 = $C3
-var32 = $C4
-var33 = $C5
-var34 = $C6
-var35 = $C7
-var36 = $C8
-var37 = $C9
-var38 = $CA
-var39 = $CB
-var40 = $CC
-var41 = $CD
-var42 = $CE
-var43 = $CF
-var44 = $D0
-var45 = $D1
-var46 = $D2
-var47 = $D3
+;; and MultiSpriteSuperChip.s is included before that point, so all base variables
+;; are available when the redefs file is processed.
 ;; var48-var127 don’t exist - SuperChip RAM accessed via r000-r127/w000-w127 only
 ;; playerCharacter is now in SCRAM (w111-w114), defined in Variables.bas
-;; Multisprite letter variables (different addresses than standard batariBASIC)
-;; Note: These are also defined in MultiSpriteSuperChip.s, but we keep them here
-;; for compatibility and to ensure they’re defined before the redefs file
-A = $d7
-a = $d7
-B = $d8
-b = $d8
-C = $d9
-c = $d9
-D = $da
-d = $da
-E = $db
-e = $db
-F = $dc
-f = $dc
-G = $dd
-g = $dd
-H = $de
-h = $de
-I = $df
-i = $df
-J = $e0
-j = $e0
-K = $e1
-k = $e1
-L = $e2
-l = $e2
-M = $e3
-m = $e3
-N = $e4
-n = $e4
-O = $e5
-o = $e5
-P = $e6
-p = $e6
-Q = $e7
-q = $e7
-R = $e8
-r = $e8
-S = $e9
-s = $e9
-T = $ea
-t = $ea
-U = $eb
-u = $eb
-V = $ec
-v = $ec
-W = $ed
-w = $ed
-X = $ee
-x = $ee
-Y = $ef
-y = $ef
-; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
-; Z/z removed - use SCRAM for any variables that were using z
+;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
+;; Z/z removed - use SCRAM for any variables that were using z
 end
 
 #include "Source/Common/Colors.h"

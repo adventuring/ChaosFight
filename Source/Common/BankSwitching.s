@@ -1,6 +1,7 @@
           ; CRITICAL: Ensure ORG is set for bankswitch code placement
           ; batariBASIC sets ORG before include, but DASM may need it here too
-.BS_return
+          ; Define as constants (SET allows redefinition per bank, EQU does not)
+BS_return SET .
           ; OPTIMIZATION: Don't save A/X - target routine is returning, so its A/X don't matter
           ; Original caller's A/X are already saved on stack from BS_jsr call
           tsx
@@ -16,7 +17,7 @@
           sta 2,x ; store restored address back to stack (X still has stack pointer)
           pla ; restore bank number
           tax ; bank number (0-F) now in X, already 0-based from batariBASIC
-.BS_jsr
+BS_jsr SET .
           nop $ffe0,x ; bankswitch_hotspot + X where X is 0-based bank number
           ; No need to restore A/X - caller doesn't use A/X after cross-bank call returns
           ; Stack now has return address at top, rts will return to original caller
@@ -26,13 +27,6 @@
           nop
           nop
           nop
-          
-; Global aliases for external code (RETURN macro, etc.)
-; Each bank defines its own aliases pointing to its local labels
-; Using SET instead of EQU allows redefinition in each bank
-; Labels must be at column 0 for DASM to recognize them as labels
-BS_return          SET .BS_return
-BS_jsr             SET .BS_jsr
 
           ; EFSC 64k bankswitch hotspot is $FFE0 (not $FFF8 like other schemes)
           ifnconst bankswitch_hotspot
@@ -73,7 +67,7 @@ bankswitch_hotspot = $FFE0
           ; Do NOT set ORG here - batariBASIC handles all ORG positioning
           ; CRITICAL: EFSC header must be at $FFE0-$FFEF, not at bankswitch_hotspot ($FFF8)
           RORG $FFE0
-.EFSC_Header
+EFSC_Header EQU .
           byte "EFSC",0
           byte "BRPocock",0
           byte $25,current_bank
@@ -85,7 +79,7 @@ bankswitch_hotspot = $FFE0
           ; File offset will be different for each bank, but CPU address ($fff0) is the same
           ORG ((current_bank * $1000) | $0FF0)
           RORG $fff0
-.Reset
+Reset EQU .
           ; CRITICAL: Switch to Bank 14 (1-based = 13, 0-based index) where startup code (ColdStart) is located
           ; ColdStart is in Bank 14 (1-based) per ColdStart.bas
           ; Bank switching occurs via accessing specific addresses
@@ -93,7 +87,7 @@ bankswitch_hotspot = $FFE0
           ; Bank N (0-based index) = $FFE0 + N
           ; Bank 14 (0-based index 13) = $FFE0 + 13 = $FFED
           ; Use NOP to access the address (triggers hardware bank switch)
-          nop $ffed  ; switch to Bank 14 (1-based = 13, 0-based index) where ColdStart is located
+          nop $ffed  ; switch to Bank 14 (14, 1-based = 13, 0-based index) where ColdStart is located
           jmp ColdStart
 
           ; Reset vectors at $fffc-$ffff
@@ -105,8 +99,8 @@ bankswitch_hotspot = $FFE0
           ; This ensures reset vectors are in Bank N’s file space, not Bank N+1’s
           ORG ((current_bank * $1000) | $0FFC)
           RORG $fffc
-          .word .Reset
-          .word .Reset
+          .word Reset
+          .word Reset
 
           ; CPU address space check: should end at exactly $10000
           ; After reset vectors at $fffc-$ffff, we should be at $10000

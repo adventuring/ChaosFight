@@ -175,14 +175,14 @@ SetPlayerCharacterArtBank3
           ; Copy 16 bytes from ROM (temp4/temp5) to playerFrameBuffer_W[offset to offset+15]
           ; Use X as base offset, Y as loop counter (countdown from 15 to 0)
           ldy #$0f            ; Start at 15 ($0F)
-.CopyLoop
+CopyLoopBank3
           lda (temp4),y       ; Read from ROM (indirect addressing via temp4/temp5)
           sta w000,x          ; Write to SCRAM (absolute indexed addressing with X base)
           inx                 ; Increment destination offset
           dey
-          bpl .CopyLoop
+          bpl CopyLoopBank3
 
-.SetHeight
+SetHeightBank3
           ; Set sprite height (all sprites are 16 bytes = 16 scanlines)
           ; Optimized: Use indexed addressing since player heights are consecutive ($B0-$B3)
           ; Restore player number from stack

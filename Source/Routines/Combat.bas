@@ -20,10 +20,10 @@ end
           rem Constraints: Must be colocated with ApplyDamage
           rem Weight tiers: <=15 = 12 damage, <=25 = 18 damage, >25 = 22 damage
           let temp3 = CharacterWeights[temp1]
-          if temp3 <= 15 then temp2 = 12 : return otherbank
-          if temp3 <= 25 then temp2 = 18 : return otherbank
+          if temp3 <= 15 then temp2 = 12 : return
+          if temp3 <= 25 then temp2 = 18 : return
           let temp2 = 22
-          return otherbank
+          return
 
 ApplyDamage
           asm
@@ -242,7 +242,7 @@ end
 
           rem All bounds checked - defender is inside hitbox
           let hit = 1
-          return otherbank
+          return
 
 NoHit
           rem Defender is outside hitbox bounds
@@ -256,7 +256,7 @@ NoHit
           rem Called Routines: None
           rem Constraints: Must be colocated with CheckAttackHit
           let hit = 0
-          return otherbank
+          return
 
 CalculateAttackHitbox
           asm
@@ -329,7 +329,7 @@ FacingRight
           let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth + PlayerSpriteWidth
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
-          return otherbank
+          return
 
 FacingLeft
           rem Hitbox extends 16 pixels forward from sprite left edge
@@ -353,7 +353,7 @@ FacingLeft
           let cachedHitboxRight_W = playerX[attackerID]
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
-          return otherbank
+          return
 
 ProjectileHitbox
           rem Projectile attacks handled by missile collision system
@@ -377,7 +377,7 @@ ProjectileHitbox
           let cachedHitboxRight_W = 0
           let cachedHitboxTop_W = 255
           let cachedHitboxBottom_W = 0
-          return otherbank
+          return
 
 AreaHitbox
           rem Area hitbox covers radius around attacker center
@@ -409,7 +409,7 @@ AreaHitbox
           let cachedHitboxTop_W = temp2 - 24
           rem Bottom edge: center + radius
           let cachedHitboxBottom_W = temp2 + 24
-          return otherbank
+          return
 
 ProcessAttackerAttacks
           asm
@@ -445,7 +445,7 @@ end
           rem Issue #1148: Skip ranged attackers (handled by missile system)
           let temp1 = playerAttackType_R[attackerID]
           rem Cache hitbox for this attacker (calculated once, used for
-          if temp1 = RangedAttack then return otherbank
+          if temp1 = RangedAttack then return
           rem all
           rem   defenders)
           gosub CalculateAttackHitbox
@@ -466,7 +466,7 @@ end
 
 NextDefender
           next
-          return otherbank
+          return
         
 ProcessAllAttacks
           asm
@@ -517,7 +517,7 @@ NextAttacker
 
 CombatShowDamageIndicator
           rem Damage indicator system (handled inline)
-          return otherbank
+          return
 PlayDamageSound
           rem Damage sound effect handler
           rem
@@ -543,5 +543,5 @@ PlayDamageSound
           rem Constraints: None
           let temp1 = SoundAttackHit
           gosub PlaySoundEffect bank15
-          return otherbank
+          return
 

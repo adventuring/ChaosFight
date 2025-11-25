@@ -74,5 +74,7 @@ end
           asm
 FlyingMovementHelpersEnd
             echo "// Bank 7: ", [FlyingMovementHelpersEnd - FlyingMovementHelpersStart]d, " bytes = FlyingMovementHelpers"
+end
+          asm
 Bank7CodeEnds
 end

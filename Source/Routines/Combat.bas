@@ -96,12 +96,7 @@ end
           let temp2 = ActionHit
           gosub SetPlayerAnimation bank11
 
-          rem Use bit shift instead of division (optimized for Atari 2600)
-          asm
-            lda temp1
-            lsr
-            sta temp4
-          end
+          let temp4 = temp1 / 2
           rem Calculate recovery frames (damage ÷ 2, clamped 10-30)
           if temp4 < 10 then temp4 = 10
           if temp4 > 30 then temp4 = 30
@@ -112,7 +107,7 @@ end
           rem   are set
 
           rem Issue #1180: Ursulo uppercut knock-up scaling with target weight
-          rem Ursulo’s punches toss opponents upward with launch height proportional to target weight
+          rem Ursulo’ punches toss opponents upward with launch height proportional to target weight
           rem Lighter characters travel higher than heavyweights
           let temp1 = playerCharacter[attackerID]
           if temp1 = CharacterUrsulo then goto ApplyUrsuloKnockUp
@@ -137,7 +132,7 @@ ApplyUrsuloKnockUp
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with ApplyDamage
-          rem Get defender’s weight
+          rem Get defende’s weight
           let temp1 = playerCharacter[defenderID]
           rem Weight values range 5-100 (lightest to heaviest)
           rem Calculate upward velocity: lighter = higher launch (inverse relationship)

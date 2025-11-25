@@ -41,9 +41,19 @@ PCR_CheckDistance
           let temp4 = playerY[temp2] - playerY[temp1]
           if temp4 < 0 then temp4 = 0 - temp4
           let characterHeight = CharacterHeights[temp1]
-          let halfHeight1 = characterHeight / 2
+          rem Use bit shift instead of division (optimized for Atari 2600)
+          asm
+            lda characterHeight
+            lsr
+            sta halfHeight1
+end
           let characterHeight = CharacterHeights[temp2]
-          let halfHeight2 = characterHeight / 2
+          rem Use bit shift instead of division (optimized for Atari 2600)
+          asm
+            lda characterHeight
+            lsr
+            sta halfHeight2
+end
           let totalHeight = halfHeight1 + halfHeight2
           if totalHeight = 0 then goto PCR_NextInner
           if temp4 >= totalHeight then goto PCR_NextInner

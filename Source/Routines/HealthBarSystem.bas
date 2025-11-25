@@ -271,7 +271,7 @@ ConvertToBCDLoop
             bpl ConvertToBCDLoop
             cld          ; clear decimal mode
             sta temp1    ; store result (packed BCD, e.g., $75 for 75)
-          end
+end
           return otherbank
 
 UpdatePlayer34HealthBars

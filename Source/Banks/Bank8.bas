@@ -86,5 +86,12 @@ end
           asm
 BudgetedPlayerCollisionsEnd
             echo "// Bank 8: ", [BudgetedPlayerCollisionsEnd - BudgetedPlayerCollisionsStart]d, " bytes = BudgetedPlayerCollisions"
+          asm
+FrootyAttackStart
+end
+#include "Source/Routines/FrootyAttack.bas"
+          asm
+FrootyAttackEnd
+            echo "// Bank 8: ", [FrootyAttackEnd - FrootyAttackStart]d, " bytes = FrootyAttack"
 Bank8CodeEnds
 end

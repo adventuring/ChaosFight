@@ -120,7 +120,7 @@ end
 FrootyChargeQuadtariCheck
             if (controllerStatus & SetQuadtariDetected) = 0 then goto FrootyChargeNext
 FrootyChargeUpdate
-            if playerCharacter[currentPlayer] = CharacterFrooty then gosub FrootyAttack bank7
+            if playerCharacter[currentPlayer] = CharacterFrooty then gosub FrootyAttack bank8
 FrootyChargeNext
           next
 

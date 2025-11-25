@@ -16,32 +16,11 @@
           sta 2,x ; store restored address back to stack (X still has stack pointer)
           pla ; restore bank number
           tax ; bank number (0-F) now in X, already 0-based from batariBASIC
+.BS_jsr
           nop $ffe0,x ; bankswitch_hotspot + X where X is 0-based bank number
           ; No need to restore A/X - caller doesn't use A/X after cross-bank call returns
           ; Stack now has return address at top, rts will return to original caller
           rts
-.BS_jsr
-          ; EFSC 64k bankswitch: hotspot is $FFE0, access $FFE0 + bank_number
-          ; X contains 0-based bank number (0-15), so $FFE0 + X directly
-          ; Ensure x ∈ (0..$f) - batariBASIC guarantees this via "ldx #(bank-1)"
-          ; Stack layout when entering BS_jsr (A/X already saved by caller):
-          ; SP+0: (next push location)
-          ; SP+1: Saved X (from caller)
-          ; SP+2: Saved A (from caller)
-          ; SP+3: Target address low
-          ; SP+4: Target address high
-          ; SP+5: Return address low (ret_point)
-          ; SP+6: Return address high (encoded with bank, ret_point)
-          ; Note: A/X are already saved by caller, but we don't need to restore them
-          ; Target routine can use A/X freely and doesn't need caller's A/X
-          ; This saves 2 bytes of stack space (A/X remain on stack, unused)
-          nop $ffe0,x ; bankswitch_hotspot + X where X is 0-based bank number
-          ; Stack has: [target_lo, target_hi, ret_lo, ret_hi]
-          ; batariBASIC no longer pushes A/X, so target address is already at top
-          ; Stack pointer is at target_lo, so rts will jump to target correctly
-          ; rts reads from SP+1/SP+2, which will be target address
-          ; Target was pushed as (target-1), so rts jumps to (target-1)+1 = target ✓
-          rts         ; Call target routine (target will return via BS_return)
           
 ; Global aliases for external code (RETURN macro, etc.)
 ; Each bank defines its own aliases pointing to its local labels

@@ -160,6 +160,17 @@ S = $ee
 s = $ee
 T = $ef
 t = $ef
+; U, V, W, X, Y aliased to P, Q, R, S, T (multisprite uses same addresses)
+U = $eb
+u = $eb
+V = $ec
+v = $ec
+W = $ed
+w = $ed
+X = $ee
+x = $ee
+Y = $ef
+y = $ef
 ; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
 ; Z/z removed - use SCRAM for any variables that were using z
 ; stack1-4 are stack addresses ($f6-$f9) - defined as constants for kernel code
@@ -790,6 +801,16 @@ BANK16_END = $F000 + $FC0
           MS_ASSIGN  s, $EE
           MS_ASSIGN  T, $EF
           MS_ASSIGN  t, $EF
+          MS_ASSIGN  U, $EB
+          MS_ASSIGN  u, $EB
+          MS_ASSIGN  V, $EC
+          MS_ASSIGN  v, $EC
+          MS_ASSIGN  W, $ED
+          MS_ASSIGN  w, $ED
+          MS_ASSIGN  X, $EE
+          MS_ASSIGN  x, $EE
+          MS_ASSIGN  Y, $EF
+          MS_ASSIGN  y, $EF
 ; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
 ; Z/z removed - use SCRAM for any variables that were using z
 ; stack1-4 are stack addresses ($f6-$f9) - defined as constants for kernel code
@@ -868,6 +889,22 @@ var44 EQU $D0
 var45 EQU $D1
 var46 EQU $D2
 var47 EQU $D3
+; Letter variables (u, v, w, x, y) for zero-page addressing
+u EQU $EB
+U EQU $EB
+v EQU $EC
+V EQU $EC
+w EQU $ED
+W EQU $ED
+x EQU $EE
+X EQU $EE
+y EQU $EF
+Y EQU $EF
+; Stack addresses (not variables - stack space $f6-$f9)
+stack1 EQU $F6
+stack2 EQU $F7
+stack3 EQU $F8
+stack4 EQU $F9
 ; var48-var127 don’t exist in multisprite - SuperChip RAM is accessed via r000-r127/w000-w127
 ; Variable aliases - ensure batariBASIC variable aliases are also assembly labels
 ; These are defined in Variables.bas as dim aliases, but assembler needs labels
@@ -945,6 +982,151 @@ var47 EQU $D3
   ; These are labels, not constants, but we forward-declare them here for symbol resolution
   ; Note: These are actual assembly routines, not variables
   ; randomize, setuppointers, ConvertToBCD, BlankPlayfield, PlayfieldRead, etc.
+  
+  ; Forward declarations for cross-bank function labels
+  ; These are defined in various banks but referenced from other banks
+  ; DASM needs forward declarations to resolve cross-bank references
+          ifndef ColdStart
+ColdStart = *
+          endif
+          ifndef WarmStart
+WarmStart = *
+          endif
+          ifndef randomize
+randomize = *
+          endif
+          ifndef start
+start = *
+          endif
+          ifndef FrootyAttack
+FrootyAttack = *
+          endif
+          ifndef PerformRangedAttack
+PerformRangedAttack = *
+          endif
+          ifndef PerformMeleeAttack
+PerformMeleeAttack = *
+          endif
+          ifndef InitializeHealthBars
+InitializeHealthBars = *
+          endif
+          ifndef CheckAllPlayerEliminations
+CheckAllPlayerEliminations = *
+          endif
+          ifndef CheckPlayerElimination
+CheckPlayerElimination = *
+          endif
+          ifndef ApplyMomentumAndRecovery
+ApplyMomentumAndRecovery = *
+          endif
+          ifndef UpdatePlayerMovement
+UpdatePlayerMovement = *
+          endif
+          ifndef InputHandleAllPlayers
+InputHandleAllPlayers = *
+          endif
+          ifndef SetPlayerAnimation
+SetPlayerAnimation = *
+          endif
+          ifndef UpdateCharacterAnimations
+UpdateCharacterAnimations = *
+          endif
+          ifndef UpdateAttackCooldowns
+UpdateAttackCooldowns = *
+          endif
+          ifndef ProcessAllAttacks
+ProcessAllAttacks = *
+          endif
+          ifndef CheckAllMissileCollisions
+CheckAllMissileCollisions = *
+          endif
+          ifndef MissileCollPF
+MissileCollPF = *
+          endif
+          ifndef DisplayHealth
+DisplayHealth = *
+          endif
+          ifndef InitializeSpritePointers
+InitializeSpritePointers = *
+          endif
+          ifndef UpdatePlayer12HealthBars
+UpdatePlayer12HealthBars = *
+          endif
+          ifndef UpdatePlayer34HealthBars
+UpdatePlayer34HealthBars = *
+          endif
+          ifndef ChangeGameMode
+ChangeGameMode = *
+          endif
+          ifndef TitleScreenMain
+TitleScreenMain = *
+          endif
+          ifndef WinnerAnnouncementLoop
+WinnerAnnouncementLoop = *
+          endif
+          ifndef ArenaSelect1
+ArenaSelect1 = *
+          endif
+          ifndef DrawParadeCharacter
+DrawParadeCharacter = *
+          endif
+          ifndef FallingAnimation1
+FallingAnimation1 = *
+          endif
+          ifndef AuthorPrelude
+AuthorPrelude = *
+          endif
+          ifndef PublisherPreludeMain
+PublisherPreludeMain = *
+          endif
+          ifndef HandleConsoleSwitches
+HandleConsoleSwitches = *
+          endif
+          ifndef DetectPads
+DetectPads = *
+          endif
+          ifndef LoadCharacterColors
+LoadCharacterColors = *
+          endif
+          ifndef PhysicsApplyGravity
+PhysicsApplyGravity = *
+          endif
+          ifndef StandardJump
+StandardJump = *
+          endif
+          ifndef BernieJump
+BernieJump = *
+          endif
+          ifndef HarpyJump
+HarpyJump = *
+          endif
+          ifndef FrootyJump
+FrootyJump = *
+          endif
+          ifndef DragonOfStormsJump
+DragonOfStormsJump = *
+          endif
+          ifndef RadishGoblinCheckWallBounce
+RadishGoblinCheckWallBounce = *
+          endif
+          ifndef RadishGoblinCheckGroundBounce
+RadishGoblinCheckGroundBounce = *
+          endif
+          ifndef CCJ_ConvertPlayerXToPlayfieldColumn
+CCJ_ConvertPlayerXToPlayfieldColumn = *
+          endif
+          ifndef PCR_NextInner
+PCR_NextInner = *
+          endif
+          ifndef PlayerDies
+PlayerDies = *
+          endif
+          ifndef goto
+goto = *
+          endif
+          ifndef then
+then = *
+          endif
 
           MS_ASSIGN  interlaced, 0
           MS_ASSIGN  shakescreen, 0

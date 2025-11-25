@@ -116,7 +116,10 @@ GetCharacterAttackTypeSub
           let temp5 = temp2
 GetCharacterAttackTypeSubShiftLoop
           if temp5 = 0 then goto GetCharacterAttackTypeSubShiftDone
-          let temp4 = temp4 / 2
+          rem Use bit shift instead of division (optimized for Atari 2600)
+          asm
+            lsr temp4
+end
           let temp5 = temp5 - 1
           goto GetCharacterAttackTypeSubShiftLoop
 GetCharacterAttackTypeSubShiftDone

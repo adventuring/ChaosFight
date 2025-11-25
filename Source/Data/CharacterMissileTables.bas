@@ -11,6 +11,15 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35
 end
 
+          rem Character weight divided by 12 (precomputed for Atari 2600 optimization)
+          rem Values are weight / 12, clamped to 0-8 range
+          rem Used for Ursulo knock-up velocity calculation (avoids expensive division)
+          rem Issue #1194: Extended to 32 entries matching CharacterWeights table
+          data CharacterWeightDiv12
+            0, 4, 8, 4, 4, 8, 1, 4, 3, 5, 3, 4, 2, 5, 4, 2
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
+end
+
           rem Missile widths per character
           data CharacterMissileWidths
             0, 4, 2, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0

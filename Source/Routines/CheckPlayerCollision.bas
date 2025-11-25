@@ -58,11 +58,21 @@ XDistanceDone
           rem Fetch character half-height values using shared SCRAM scratch variables
           let characterIndex = playerCharacter[temp1]
           let characterHeight = CharacterHeights[characterIndex]
-          let halfHeight1 = characterHeight / 2
+          rem Use bit shift instead of division (optimized for Atari 2600)
+          asm
+            lda characterHeight
+            lsr
+            sta halfHeight1
+end
 
           let characterIndex = playerCharacter[temp2]
           let characterHeight = CharacterHeights[characterIndex]
-          let halfHeight2 = characterHeight / 2
+          rem Use bit shift instead of division (optimized for Atari 2600)
+          asm
+            lda characterHeight
+            lsr
+            sta halfHeight2
+end
 
           rem Compute absolute Y distance between player centers
           if temp4 >= temp5 then CalcYDistanceDown

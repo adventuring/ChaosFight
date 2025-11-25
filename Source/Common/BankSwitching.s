@@ -36,13 +36,9 @@
           ; Target routine can use A/X freely and doesn't need caller's A/X
           ; This saves 2 bytes of stack space (A/X remain on stack, unused)
           nop $ffe0,x ; bankswitch_hotspot + X where X is 0-based bank number
-          ; Stack has: [saved X, saved A, target_lo, target_hi, ret_lo, ret_hi]
-          ; Skip restoring A/X - target doesn't need them, saves stack space
-          ; Stack pointer is already at saved X, so target address is at SP+3/SP+4
-          ; We need to adjust: pop saved X and A to get target address at top
-          pla         ; pop saved X (discard - target doesn't need it)
-          pla         ; pop saved A (discard - target doesn't need it)
-          ; Now stack has target address at top
+          ; Stack has: [target_lo, target_hi, ret_lo, ret_hi]
+          ; batariBASIC no longer pushes A/X, so target address is already at top
+          ; Stack pointer is at target_lo, so rts will jump to target correctly
           ; rts reads from SP+1/SP+2, which will be target address
           ; Target was pushed as (target-1), so rts jumps to (target-1)+1 = target ✓
           rts         ; Call target routine (target will return via BS_return)

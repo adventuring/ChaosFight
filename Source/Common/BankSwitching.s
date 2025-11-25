@@ -1,6 +1,6 @@
           ; CRITICAL: Ensure ORG is set for bankswitch code placement
           ; batariBASIC sets ORG before include, but DASM may need it here too
-.BS_return SUBROUTINE
+.BS_return
           ; OPTIMIZATION: Don't save A/X - target routine is returning, so its A/X don't matter
           ; Original caller's A/X are already saved on stack from BS_jsr call
           tsx

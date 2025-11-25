@@ -135,7 +135,6 @@ LocateCharacterArtBank4
 ; Note: Sprite pointers are already initialized to RAM addresses by InitializeSpritePointers
 ;       This routine copies sprite data from ROM to the appropriate RAM buffer
 SetPlayerCharacterArtBank4
-          SUBROUTINE
           ; Input: temp6 = bank-relative character index (0-7) - already set by dispatcher
           ;        temp2 = animation frame (0-7) - already set by caller
           ;        temp3 = action (0-15) - already set by caller

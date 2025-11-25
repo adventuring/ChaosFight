@@ -14,8 +14,11 @@ CheckFallDamage
           let currentCharacter = playerCharacter[currentPlayer]
           rem Get character type for this player
 
-          rem Check for fall damage immunity (Bernie, Frooty, DragonOfStorms)
-          if currentCharacter = CharacterBernie then return
+          rem Issue #1178: Bernie post-fall stun - check before immunity
+          rem Bernie is immune to fall damage but still gets stunned from high falls
+          if currentCharacter = CharacterBernie then goto CheckBernieStun
+
+          rem Check for fall damage immunity (Frooty, DragonOfStorms)
           if currentCharacter = CharacterFrooty then return
           if currentCharacter = CharacterDragonOfStorms then return
 
@@ -128,6 +131,39 @@ WeightMultDone
           let temp1 = SoundLandingDamage
           gosub PlaySoundEffect bank15
 
+          return
+
+CheckBernieStun
+          rem Issue #1178: Bernie post-fall stun animation
+          rem Bernie should enter stunned state after falling far enough to trigger fall damage threshold
+          rem Stays in "fallen from high" animation for 1 second (frame-rate independent)
+          rem
+          rem Input: currentPlayer (global) = player index (0-3)
+          rem        temp2 = landing velocity (positive downward)
+          rem        SafeFallVelocityThresholds[] (global data table)
+          rem
+          rem Output: playerRecoveryFrames[] set to FramesPerSecond (1 second stun)
+          rem        playerState[] updated with recovery flag and fallen animation
+          rem
+          rem Mutates: temp3 (used for threshold lookup)
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Must be colocated with CheckFallDamage
+          rem Check if fall velocity exceeds safe threshold (would trigger fall damage)
+          let temp3 = SafeFallVelocityThresholds[CharacterBernie]
+          rem Bernie's safe fall velocity threshold
+          if temp2 <= temp3 then return
+          rem Safe landing, no stun needed
+          rem Fall velocity exceeds threshold - trigger stun
+          rem Set stun timer to 1 second (frame-rate independent: 60fps NTSC, 50fps PAL/SECAM)
+          let playerRecoveryFrames[currentPlayer] = FramesPerSecond
+          rem Set recovery flag to prevent movement during stun
+          let playerState[currentPlayer] = playerState[currentPlayer] | PlayerStateBitRecovery
+          rem Set animation state to "Fallen down" (state 8, shifted = 128)
+          let temp3 = playerState[currentPlayer] & MaskPlayerStateFlags
+          let playerState[currentPlayer] = temp3 | ActionFallenDownShifted
+          rem Animation state 8 (Fallen down) << 4 = 128
           return
 
 FallDamageApplyGravity

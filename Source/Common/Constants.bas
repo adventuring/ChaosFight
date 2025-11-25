@@ -193,6 +193,9 @@
           const ActionFalling = 11
           const ActionFallingShifted = 176
           rem ActionFalling (11) << 4 = 176 (0xB0)
+          const ActionFallenDown = 8
+          const ActionFallenDownShifted = 128
+          rem ActionFallenDown (8) << 4 = 128 (0x80) - Issue #1178: Bernie post-fall stun
           const MaskAnimationRecovering = 144
           rem ActionRecovering (9) << 4 = 144 (0x90)
           const MaskAnimationFalling = 176

@@ -113,6 +113,17 @@ end
           gosub UpdateAttackCooldowns bank11
           rem Update attack cooldown timers
 
+          rem Issue #1177: Update Frooty charge system every frame
+          for currentPlayer = 0 to 3
+            if currentPlayer >= 2 then goto FrootyChargeQuadtariCheck
+            goto FrootyChargeUpdate
+FrootyChargeQuadtariCheck
+            if (controllerStatus & SetQuadtariDetected) = 0 then goto FrootyChargeNext
+FrootyChargeUpdate
+            if playerCharacter[currentPlayer] = CharacterFrooty then gosub FrootyAttack bank7
+FrootyChargeNext
+          next
+
           gosub UpdateCharacterAnimations bank13
           rem Update animation system (10fps character animation) (in Bank 14)
 

@@ -14,7 +14,7 @@ end
           rem   - Mêlée attack visual (sword, fist, kick sprite)
           rem MISSILE VARIABLES (from Variables.bas):
           rem   missileX[0-3] (a-d) - X positions
-          rem   missileY[0-3] (w-z) - Y positions
+          rem   missileY[0-3] (SCRAM w097-w100) - Y positions
           rem missileActive (i) - Bit flags for which missiles are
           rem   active
           rem   missileLifetime (e,f) - Packed nybble counters
@@ -338,6 +338,11 @@ FrictionDone
           let temp4 = missileY_R[temp1] + temp3
           let missileY_W[temp1] = temp4
 
+          rem Issue #1177: Frooty lollipop ricochet - check before wrap/deactivate
+          rem Frooty's projectile bounces off arena bounds instead of wrapping/deactivating
+          let temp6 = playerCharacter[temp1]
+          if temp6 = CharacterFrooty then goto FrootyRicochetCheck
+
           rem Wrap around horizontally using shared player thresholds
           let temp2 = missileX[temp1]
           if temp2 < PlayerLeftWrapThreshold then let missileX[temp1] = PlayerRightEdge : let temp2 = PlayerRightEdge
@@ -347,6 +352,41 @@ FrictionDone
           let temp3 = temp4
           if temp3 > ScreenBottom then goto DeactivateMissile
           if temp3 > ScreenTopWrapThreshold then goto DeactivateMissile
+          goto BoundsCheckDone
+
+FrootyRicochetCheck
+          rem Issue #1177: Frooty lollipop ricochets off arena bounds
+          rem Check horizontal bounds and reverse X velocity
+          let temp2 = missileX[temp1]
+          if temp2 < PlayerLeftWrapThreshold then goto FrootyRicochetLeft
+          if temp2 > PlayerRightWrapThreshold then goto FrootyRicochetRight
+          goto FrootyRicochetVerticalCheck
+FrootyRicochetLeft
+          rem Hit left wall - reverse X velocity and clamp position
+          let missileX[temp1] = PlayerLeftWrapThreshold
+          let missileVelocityX[temp1] = 0 - missileVelocityX[temp1]
+          goto FrootyRicochetVerticalCheck
+FrootyRicochetRight
+          rem Hit right wall - reverse X velocity and clamp position
+          let missileX[temp1] = PlayerRightWrapThreshold
+          let missileVelocityX[temp1] = 0 - missileVelocityX[temp1]
+FrootyRicochetVerticalCheck
+          rem Check vertical bounds and reverse Y velocity
+          rem Screen top is around 20 (visible area), bottom is 192
+          let temp3 = temp4
+          if temp3 < 20 then goto FrootyRicochetTop
+          if temp3 > ScreenBottom then goto FrootyRicochetBottom
+          goto BoundsCheckDone
+FrootyRicochetTop
+          rem Hit top wall - reverse Y velocity and clamp position
+          let missileY_W[temp1] = 20
+          let missileVelocityY[temp1] = 0 - missileVelocityY[temp1]
+          goto BoundsCheckDone
+FrootyRicochetBottom
+          rem Hit bottom wall - reverse Y velocity and clamp position
+          let missileY_W[temp1] = ScreenBottom
+          let missileVelocityY[temp1] = 0 - missileVelocityY[temp1]
+BoundsCheckDone
 
           rem Check collision with playfield if flag is set
           rem Reload cached missile flags (temp5 was overwritten with Y position above)
@@ -372,7 +412,7 @@ PlayfieldCollisionDone
           if temp6 = 0 then goto HandleMissileDamage
           rem Guarding - bounce instead of damage
           rem Guard bounce: play sound, invert velocity, reduce by 25%
-          let soundEffectID = SoundGuardBlock
+          let soundEffectID_W = SoundGuardBlock
           gosub PlaySoundEffect bank15
           let temp6 = 0 - missileVelocityX[temp1]
           rem Invert X velocity (bounce back)

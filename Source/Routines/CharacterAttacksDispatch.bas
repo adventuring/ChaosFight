@@ -26,8 +26,8 @@ end
           if temp4 = CharacterHarpy then goto HarpyAttack bank10
           rem Knight Guy: sword mêlée swing
           if temp4 = CharacterKnightGuy then goto PerformMeleeAttack bank7
-          rem Frooty: ranged sparkle projectile
-          if temp4 = CharacterFrooty then goto PerformRangedAttack bank7
+          rem Frooty: charge-and-bounce lollipop projectile (Issue #1177)
+          if temp4 = CharacterFrooty then goto FrootyAttack bank7
           rem Nefertem: mêlée paw strike
           if temp4 = CharacterNefertem then goto PerformMeleeAttack bank7
           rem Ninjish Guy: ranged shuriken

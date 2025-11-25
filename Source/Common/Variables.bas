@@ -78,8 +78,9 @@
           rem REDIMMED VARIABLES (different meaning per context):
           rem - var24-var40: Shared between Admin Mode and Game Mode
           rem   (intentional redim)
-          rem - var24-var27: Arena select (Admin) or playerVelocityXL
+          rem - var24-var26: Arena select (Admin) or playerVelocityXL[0-2]
           rem   (Game) - ZPRAM for physics
+          rem - var27: Arena select (Admin) or playerVelocityXL[3] (Game) - ZPRAM for physics
           rem - var28-var35: Prelude/music (Admin) or playerVelocityY
           rem   8.8 (Game, var28-var31=high, var32-var35=low) -
           rem   ZPRAM for physics
@@ -207,7 +208,8 @@
           rem Sound Effect System Pointers (Game Mode: gameMode 6)
           rem   Sound system reuses music voice zero-page words; music takes priority
           rem Scratch pointer populated by LoadSoundPointer (zero page helper)
-          dim soundPointer = y.z
+          rem Changed from y.z to x.y to avoid z in stack space ($f0)
+          dim soundPointer = x.y
           rem Voice 0 active sound effect pointer (shares ZP with musicVoice0Pointer)
           dim soundEffectPointer = var41.var42
           rem Voice 1 active sound effect pointer
@@ -339,20 +341,17 @@
           dim characterSelectPlayer_R = r123
 
           rem ADMIN: Arena select variables (var24-var27)
-          rem NOTE: These are REDIMMED in Game Mode for animationCounter
+          rem NOTE: These are REDIMMED in Game Mode for playerVelocityXL
           rem   (var24-var27)
           rem ADMIN: Arena preview state (REDIMMED - Game Mode uses
-          rem   var24 for animationCounter[0])
+          rem   var24 for playerVelocityXL[0])
           dim arenaPreviewData = var24
-          rem ADMIN: Scroll position (REDIMMED - Game Mode uses var25
-          rem   for animationCounter[1])
-          dim arenaScrollOffset = var25
-          rem ADMIN: Cursor position (REDIMMED - Game Mode uses var26
-          rem   for animationCounter[2])
-          dim arenaCursorPos_W = var26
-          rem ADMIN: Confirmation timer (REDIMMED - Game Mode uses var27
-          rem   for animationCounter[3])
-          dim arenaConfirmTimer = var27
+          rem ADMIN: Cursor position (REDIMMED - Game Mode uses var25
+          rem   for playerVelocityXL[1])
+          dim arenaCursorPos_W = var25
+          rem ADMIN: Confirmation timer (REDIMMED - Game Mode uses var26
+          rem   for playerVelocityXL[2])
+          dim arenaConfirmTimer = var26
 
           rem ADMIN: Prelude screen variables (var28-var32)
           rem NOTE: These are REDIMMED in Game Mode for playerVelocityY
@@ -603,6 +602,18 @@
           rem Game Mode: Winner screen countdown timer (SCRAM)
           rem
           rem Game Mode: Win screen display timer (SCRAM)
+
+          rem Issue #1177: Frooty lollipop charge system (SCRAM)
+          dim frootyChargeTimer_W = w104
+          dim frootyChargeTimer_R = r104
+          rem Frooty charge timer array [0-3] (0-30 ticks, 4 bytes: w104-w107)
+          rem NOTE: Partially overlaps with harpyLastFlapFrame[3] (w104), but Frooty and Harpy
+          rem       are different characters, so no conflict
+          dim frootyChargeState_W = w108
+          dim frootyChargeState_R = r108
+          rem Frooty charge state array [0-3] (packed: bit 7=charging, bits 0-2=frame counter 0-5, 4 bytes: w108-w111)
+          rem NOTE: Partially overlaps with displayRank (w108) and winScreenTimer (w109),
+          rem       but these are only used on win screen, Frooty charge is gameplay-only
 
           rem GAME MODE - Zero page RAM (a-z) - Sorted Alphabetically
 
@@ -984,8 +995,11 @@
           dim velocityCalculation = j
           rem Velocity calculation temporary variable for friction and impulse calculations
 
-          dim soundEffectID = z
-          rem Sound effect ID for playback
+          dim soundEffectID_W = w119
+          dim soundEffectID_R = r119
+          rem Sound effect ID for playback (SCRAM - moved from z to avoid stack space $f0)
+          rem NOTE: w119 is part of missileStretchHeight array (w118-w121) but soundEffectID
+          rem       is only used during sound playback, not during missile rendering, so safe to share
 
           dim characterIndex = m
           rem Character index for table lookups

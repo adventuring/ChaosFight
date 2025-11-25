@@ -1,4 +1,4 @@
-# ChaosFight 25 - Minimum Viable Product Requirements
+# ChaosFight 26 - Minimum Viable Product Requirements
 
 ## Cold Start Initialization
 
@@ -91,7 +91,7 @@ button press, advance to Title Screen.
 
 ## Title Screen
 
-- Chaos Fight 25 logo appears near top 1/3 of screen, centered
+- Chaos Fight 26 logo appears near top 1/3 of screen, centered
   horizontally
 - Copyright graphic appears below logo after 2 seconds.
 - After 5 seconds, copyright graphic vanishes and "parade" begins

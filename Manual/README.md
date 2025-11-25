@@ -27,8 +27,8 @@ make doc
 ```
 
 This generates:
-- `Dist/ChaosFight25.pdf` - PDF version
-- `Dist/ChaosFight25.html` - HTML version with CSS styling
+- `Dist/ChaosFight26.pdf` - PDF version
+- `Dist/ChaosFight26.html` - HTML version with CSS styling
 
 ## Character Template
 
@@ -52,8 +52,8 @@ The `texinfo.css` file is automatically included when generating HTML output via
 ## Website Integration
 
 The manual HTML output is designed to visually match the website pages at:
-- `/games/ChaosFight/25/manual/` - Manual HTML
-- `/games/ChaosFight/25/characters/` - Character pages (reference for styling)
+- `/games/ChaosFight/26/manual/` - Manual HTML
+- `/games/ChaosFight/26/characters/` - Character pages (reference for styling)
 
 Both use the same color palette and visual design language for consistency.
 

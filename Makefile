@@ -109,7 +109,7 @@ bin/buildapp: SkylineTool/prepare-system.lisp | bin/
 
 # Output files
 GAME = ChaosFight
-GAMEYEAR = 25
+GAMEYEAR = 26
 ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 PROJECT_JSON = Project.json
 PROJECT_VERSION := $(shell jq '.Version' $(PROJECT_JSON))
@@ -159,14 +159,14 @@ game: \
 MANUAL_PDF = Dist/$(GAME)$(GAMEYEAR).pdf
 MANUAL_HTML = Dist/$(GAME)$(GAMEYEAR).html
 
-doc: $(MANUAL_PDF) $(MANUAL_HTML) WWW/25/manual/index.html | Object/
+doc: $(MANUAL_PDF) $(MANUAL_HTML) WWW/26/manual/index.html | Object/
 
 # Copy manual HTML to WWW directory for local viewing
-WWW/25/manual/index.html: $(MANUAL_HTML) | WWW/25/manual/
+WWW/26/manual/index.html: $(MANUAL_HTML) | WWW/26/manual/
 	@echo "Copying manual HTML to WWW directory..."
-	@rm -rf WWW/25/manual/*
-	@cp -r $(MANUAL_HTML)/* WWW/25/manual/
-	@echo "Manual HTML copied to WWW/25/manual/"
+	@rm -rf WWW/26/manual/*
+	@cp -r $(MANUAL_HTML)/* WWW/26/manual/
+	@echo "Manual HTML copied to WWW/26/manual/"
 
 # Character sprite sheet names (32 characters: 16 main + 16 future)
 CHARACTER_NAMES = \
@@ -179,8 +179,8 @@ CHARACTER_NAMES = \
 TV_ARCHS = NTSC PAL SECAM
 ZIP_ARCHIVES = $(foreach arch,$(TV_ARCHS),Dist/$(GAME)$(GAMEYEAR).$(arch).$(RELEASE_TAG).zip)
 WEB_REMOTE = interworldly.com:interworldly.com/games/ChaosFight
-WEB_DOWNLOADS = $(WEB_REMOTE)/25/downloads/
-WEB_MANUAL = $(WEB_REMOTE)/25/manual/
+WEB_DOWNLOADS = $(WEB_REMOTE)/26/downloads/
+WEB_MANUAL = $(WEB_REMOTE)/26/manual/
 
 # Bitmap names (48×42 bitmaps for titlescreen kernel)
 BITMAP_NAMES = AtariAge AtariAgeText BRP ChaosFight
@@ -734,11 +734,11 @@ help:
 	@echo "  help         - Show this help message"
 	@echo ""
 	@echo "Output files:"
-	@echo "  Dist/ChaosFight25.pdf        - Game manual (PDF)"
-	@echo "  Dist/ChaosFight25.html       - Game manual (HTML)"
-	@echo "  Dist/ChaosFight25.NTSC.a26   - NTSC ROM"
-	@echo "  Dist/ChaosFight25.PAL.a26    - PAL ROM"
-	@echo "  Dist/ChaosFight25.SECAM.a26  - SECAM ROM"
+	@echo "  Dist/ChaosFight26.pdf        - Game manual (PDF)"
+	@echo "  Dist/ChaosFight26.html       - Game manual (HTML)"
+	@echo "  Dist/ChaosFight26.NTSC.a26   - NTSC ROM"
+	@echo "  Dist/ChaosFight26.PAL.a26    - PAL ROM"
+	@echo "  Dist/ChaosFight26.SECAM.a26  - SECAM ROM"
 
 # Generate Stella .pro files
 Dist/$(GAME)$(GAMEYEAR).NTSC.pro: Source/$(GAME)$(GAMEYEAR).pro Dist/$(GAME)$(GAMEYEAR).NTSC.a26 | Dist/
@@ -760,7 +760,7 @@ Dist/$(GAME)$(GAMEYEAR).%.$(RELEASE_TAG).zip: Dist/$(GAME)$(GAMEYEAR).%.a26 Dist
 
 web: doc $(ZIP_ARCHIVES) $(MANUAL_HTML) $(MANUAL_PDF)
 	@echo "Deploying website to $(WEB_REMOTE)..."
-	ssh interworldly.com 'mkdir -p interworldly.com/games/ChaosFight/25/downloads interworldly.com/games/ChaosFight/25/manual'
+	ssh interworldly.com 'mkdir -p interworldly.com/games/ChaosFight/26/downloads interworldly.com/games/ChaosFight/26/manual'
 	rsync -av WWW/ $(WEB_REMOTE)/
 	rsync -av $(MANUAL_HTML) $(WEB_MANUAL)
 	rsync -av $(MANUAL_PDF) $(WEB_DOWNLOADS)

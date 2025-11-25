@@ -277,8 +277,8 @@ UpdatePlayer34HealthBars
 end
 
           rem Check if Quadtari is present
-          rem If no Quadtari, display CF2025 instead of player health
-          if (controllerStatus & SetQuadtariDetected) = 0 then goto DisplayCF2025
+          rem If no Quadtari, display CF2026 instead of player health
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto DisplayCF2026
 
           rem Only update player health if players 3 or 4 are active
           if (controllerStatus & SetPlayers34Active) = 0 then return otherbank
@@ -362,20 +362,20 @@ end
 
           return otherbank
 
-DisplayCF2025
-          rem No Quadtari detected - display CF2025 using bad BCD
+DisplayCF2026
+          rem No Quadtari detected - display CF2026 using bad BCD
           rem   values
-          rem Format: CF2025 = $CF $20 $25 (bad BCD displays as hex
+          rem Format: CF2026 = $CF $20 $26 (bad BCD displays as hex
           rem   characters)
           rem score (digits 0-1) = $CF (CF)
           rem score+1 (digits 2-3) = $20 (20)
-          rem score+2 (digits 4-5) = $25 (25)
+          rem score+2 (digits 4-5) = $26 (26)
           asm
             LDA # $CF
             STA score
             LDA # $20
             STA score+1
-            LDA # $25
+            LDA # $26
             STA score+2
 end
 

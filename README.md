@@ -217,9 +217,9 @@ make emu
 ```
 
 ### Output Files
-- `Dist/ChaosFight25.{NTSC,PAL,SECAM}.a26` - ROM files
-- `Dist/ChaosFight25.{sym,lst,pro}` - Debug symbols/listings
-- `Dist/ChaosFight25.{pdf,html}` - Game manual
+- `Dist/ChaosFight26.{NTSC,PAL,SECAM}.a26` - ROM files
+- `Dist/ChaosFight26.{sym,lst,pro}` - Debug symbols/listings
+- `Dist/ChaosFight26.{pdf,html}` - Game manual
 
 ### Build Process
 1. Preprocess batariBASIC (C preprocessor with `-traditional` flag)

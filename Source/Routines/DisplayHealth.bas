@@ -78,5 +78,5 @@ FlashPlayer4
 DonePlayer4Flash
           rem Player 4 uses player3 sprite
 
-          return otherbank
+          return
 

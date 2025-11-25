@@ -687,6 +687,9 @@ Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)
 
 # Run emulator
 emu: $(ROM) Dist/$(GAME)$(GAMEYEAR).NTSC.pro
+	$(STELLA) -debug $(ROM)
+
+play: $(ROM) Dist/$(GAME)$(GAMEYEAR).NTSC.pro
 	$(STELLA) $(ROM)
 
 # Clean all generated files

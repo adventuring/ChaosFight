@@ -1,11 +1,10 @@
           ; CRITICAL: Ensure ORG is set for bankswitch code placement
           ; batariBASIC sets ORG before include, but DASM may need it here too
 .BS_return SUBROUTINE
-          pha
-          txa
-          pha
+          ; OPTIMIZATION: Don't save A/X - target routine is returning, so its A/X don't matter
+          ; Original caller's A/X are already saved on stack from BS_jsr call
           tsx
-          lda 6,x ; get encoded high byte of return address from stack (account for saved A/X)
+          lda 2,x ; get encoded high byte of return address from stack (no A/X save, so offset is 2)
           tay ; save encoded byte for restoration
           lsr
           lsr
@@ -14,18 +13,39 @@
           pha ; save bank number temporarily
           tya ; get saved encoded byte
           ora #$F0 ; restore to $Fx format
-          sta 6,x ; store restored address back to stack (X still has stack pointer)
+          sta 2,x ; store restored address back to stack (X still has stack pointer)
           pla ; restore bank number
           tax ; bank number (0-F) now in X, already 0-based from batariBASIC
+          nop $ffe0,x ; bankswitch_hotspot + X where X is 0-based bank number
+          ; No need to restore A/X - caller doesn't use A/X after cross-bank call returns
+          ; Stack now has return address at top, rts will return to original caller
+          rts
 .BS_jsr
           ; EFSC 64k bankswitch: hotspot is $FFE0, access $FFE0 + bank_number
           ; X contains 0-based bank number (0-15), so $FFE0 + X directly
           ; Ensure x ∈ (0..$f) - batariBASIC guarantees this via "ldx #(bank-1)"
+          ; Stack layout when entering BS_jsr (A/X already saved by caller):
+          ; SP+0: (next push location)
+          ; SP+1: Saved X (from caller)
+          ; SP+2: Saved A (from caller)
+          ; SP+3: Target address low
+          ; SP+4: Target address high
+          ; SP+5: Return address low (ret_point)
+          ; SP+6: Return address high (encoded with bank, ret_point)
+          ; Note: A/X are already saved by caller, but we don't need to restore them
+          ; Target routine can use A/X freely and doesn't need caller's A/X
+          ; This saves 2 bytes of stack space (A/X remain on stack, unused)
           nop $ffe0,x ; bankswitch_hotspot + X where X is 0-based bank number
-          pla
-          tax
-          pla
-          rts
+          ; Stack has: [saved X, saved A, target_lo, target_hi, ret_lo, ret_hi]
+          ; Skip restoring A/X - target doesn't need them, saves stack space
+          ; Stack pointer is already at saved X, so target address is at SP+3/SP+4
+          ; We need to adjust: pop saved X and A to get target address at top
+          pla         ; pop saved X (discard - target doesn't need it)
+          pla         ; pop saved A (discard - target doesn't need it)
+          ; Now stack has target address at top
+          ; rts reads from SP+1/SP+2, which will be target address
+          ; Target was pushed as (target-1), so rts jumps to (target-1)+1 = target ✓
+          rts         ; Call target routine (target will return via BS_return)
           
 ; Global aliases for external code (RETURN macro, etc.)
 ; Each bank defines its own aliases pointing to its local labels

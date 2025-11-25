@@ -27,13 +27,12 @@ end
           rem values
           rem        $80 (zero-page RAM) = CDFJ driver detection result
           rem        (if flashed)
-          rem        systemFlags (global) = system flags
           rem
-          rem Output: systemFlags updated with SystemFlag7800 if 7800
-          rem detected
+          rem Output: systemFlags initialized to 0, then updated with
+          rem SystemFlag7800 if 7800 detected
           rem
-          rem Mutates: systemFlags (SystemFlag7800 set or cleared),
-          rem temp1 (used for hardware register reads)
+          rem Mutates: systemFlags (initialized to 0, then SystemFlag7800
+          rem set or cleared), temp1 (used for hardware register reads)
           rem
           rem Called Routines: None (reads hardware registers directly)
           rem
@@ -43,8 +42,9 @@ end
           rem              registers
           rem              Entry point for console detection (called
           rem              from ColdStart)
-          let systemFlags = systemFlags & ClearSystemFlag7800
-          rem Assume 2600 console initially
+          let systemFlags = 0
+          rem Initialize systemFlags to 0 (assume 2600 console initially)
+          rem No need to read prior value since it contains random garbage at startup
 
           rem Check $D0 value
           asm
@@ -112,20 +112,9 @@ Is7800
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with ConsoleDetHW
-          let systemFlags = systemFlags | SystemFlag7800
+          let systemFlags = SystemFlag7800
           goto ConsoleDetected
 
 Is2600
           rem 2600 console detected
-          rem
-          rem Input: systemFlags (global) = system flags
-          rem
-          rem Output: systemFlags updated with SystemFlag7800 cleared
-          rem
-          rem Mutates: systemFlags (SystemFlag7800 cleared)
-          rem
-          rem Called Routines: None
-          rem Constraints: Must be colocated with ConsoleDetHW
-          let systemFlags = systemFlags & ClearSystemFlag7800
-
 ConsoleDetected

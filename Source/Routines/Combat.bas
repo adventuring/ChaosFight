@@ -20,10 +20,10 @@ end
           rem Constraints: Must be colocated with ApplyDamage
           rem Weight tiers: <=15 = 12 damage, <=25 = 18 damage, >25 = 22 damage
           let temp3 = CharacterWeights[temp1]
-          if temp3 <= 15 then temp2 = 12 : return
-          if temp3 <= 25 then temp2 = 18 : return
+          if temp3 <= 15 then temp2 = 12 : return otherbank
+          if temp3 <= 25 then temp2 = 18 : return otherbank
           let temp2 = 22
-          return
+          return otherbank
 
 ApplyDamage
           asm
@@ -31,16 +31,14 @@ ApplyDamage
 
 end
           rem Apply damage from attacker to defender
-          rem Inputs: attackerID, defenderID (must be set before
-          rem   calling)
+          rem
           rem Process:
           rem   1. Player begins hurt animation (ActionHit = 5)
-          rem 2. Player enters recovery frames count and color dims (or
-          rem   magenta on SECAM)
+          rem   2. Player enters recovery frames count and color dims (or
+          rem      magenta on SECAM)
           rem   3. If player health >= damage amount, decrement health
-          rem 4. If player health < damage amount, player dies
-          rem   (instantly vanishes)
-          rem Apply damage from attacker to defender
+          rem   4. If player health < damage amount, player dies
+          rem      (instantly vanishes)
           rem
           rem Input: attackerID (global) = attacker player index
           rem        defenderID (global) = defender player index
@@ -48,33 +46,33 @@ end
           rem        ActionHit (constant) = hurt animation action
           rem
           rem Output: playerHealth[] reduced, playerRecoveryFrames[]
-          rem set, playerState[] updated,
+          rem         set, playerState[] updated,
           rem         animation set to hurt, sound effect played, or
           rem         player eliminated
           rem
           rem Mutates: temp1-temp4 (used for calculations),
-          rem playerHealth[] (reduced or set to 0),
+          rem         playerHealth[] (reduced or set to 0),
           rem         playerRecoveryFrames[] (set), playerState[]
           rem         (recovery flag set),
           rem         currentPlayer (set to defenderID), temp2 (passed
           rem         to SetPlayerAnimation)
           rem
           rem Called Routines: GetCharacterDamage (bank12) - obtains base
-          rem   damage per character, SetPlayerAnimation (bank11) - sets
+          rem   damage per character, SetPlayerAnimation (bank12) - sets
           rem   hurt animation, CheckPlayerElimination - handles player
           rem   elimination, PlayDamageSound - plays damage sound effect
           rem
           rem Constraints: Must be colocated with PlayerDies,
-          rem PlayDamageSound, GetWeightBasedDamage (called via goto/gosub)
+          rem         PlayDamageSound, GetWeightBasedDamage (called via goto/gosub)
 
+          rem Issue #1149: Use shared helper instead of duplicated logic
           let temp1 = playerCharacter[attackerID]
           gosub GetWeightBasedDamage
-          rem Issue #1149: Use shared helper instead of duplicated logic
           let temp4 = temp2
           let temp1 = playerCharacter[defenderID]
           gosub GetWeightBasedDamage
-          let temp1 = temp4 - temp2
           rem Calculate damage (considering defender state)
+          let temp1 = temp4 - temp2
           rem Minimum damage
           if temp1 < 1 then temp1 = 1
 
@@ -94,7 +92,7 @@ end
           let currentPlayer = defenderID
           rem Set hurt animation (ActionHit = 5)
           let temp2 = ActionHit
-          gosub SetPlayerAnimation bank11
+          gosub SetPlayerAnimation bank12
 
           let temp4 = temp1 / 2
           rem Calculate recovery frames (damage ÷ 2, clamped 10-30)
@@ -102,19 +100,17 @@ end
           if temp4 > 30 then temp4 = 30
           let playerRecoveryFrames[defenderID] = temp4
 
-          rem Set playerState bit 3 (recovery flag) when recovery frames
+          rem Set playerState bit 3 (recovery flag) when recovery frames are set
           let playerState[defenderID] = playerState[defenderID] | 8
-          rem   are set
 
           rem Issue #1180: Ursulo uppercut knock-up scaling with target weight
-          rem Ursulo’ punches toss opponents upward with launch height proportional to target weight
+          rem Ursulo’s punches toss opponents upward with launch height proportional to target weight
           rem Lighter characters travel higher than heavyweights
           let temp1 = playerCharacter[attackerID]
           if temp1 = CharacterUrsulo then goto ApplyUrsuloKnockUp
 
-          rem Sound effect
+          rem Sound effect (tail call)
           goto PlayDamageSound
-          rem tail call
 
 ApplyUrsuloKnockUp
           rem Issue #1180: Apply vertical knockback based on target weight
@@ -132,7 +128,7 @@ ApplyUrsuloKnockUp
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with ApplyDamage
-          rem Get defende’s weight
+          rem Get defender’s weight
           let temp1 = playerCharacter[defenderID]
           rem Weight values range 5-100 (lightest to heaviest)
           rem Calculate upward velocity: lighter = higher launch (inverse relationship)
@@ -154,9 +150,8 @@ ApplyUrsuloKnockUp
           rem Set jumping flag so gravity applies correctly and animation system handles airborne state
           let playerState[defenderID] = playerState[defenderID] | PlayerStateBitJumping
 
-          rem Sound effect
+          rem Sound effect (tail call)
           goto PlayDamageSound
-          rem tail call
 
 
 PlayerDies
@@ -247,7 +242,7 @@ end
 
           let hit = 1
           rem All bounds checked - defender is inside hitbox
-          return
+          return otherbank
 
 NoHit
           rem Defender is outside hitbox bounds
@@ -261,7 +256,7 @@ NoHit
           rem Called Routines: None
           rem Constraints: Must be colocated with CheckAttackHit
           let hit = 0
-          return
+          return otherbank
 
 CalculateAttackHitbox
           asm
@@ -334,7 +329,7 @@ FacingRight
           let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth + PlayerSpriteWidth
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
-          return
+          return otherbank
 
 FacingLeft
           rem Hitbox extends 16 pixels forward from sprite left edge
@@ -358,7 +353,7 @@ FacingLeft
           let cachedHitboxRight_W = playerX[attackerID]
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
-          return
+          return otherbank
 
 ProjectileHitbox
           rem Projectile attacks handled by missile collision system
@@ -382,7 +377,7 @@ ProjectileHitbox
           let cachedHitboxRight_W = 0
           let cachedHitboxTop_W = 255
           let cachedHitboxBottom_W = 0
-          return
+          return otherbank
 
 AreaHitbox
           rem Area hitbox covers radius around attacker center
@@ -414,7 +409,7 @@ AreaHitbox
           rem Top edge: center - radius
           let cachedHitboxBottom_W = temp2 + 24
           rem Bottom edge: center + radius
-          return
+          return otherbank
 
 ProcessAttackerAttacks
           asm
@@ -449,7 +444,7 @@ end
           rem defender and dead players
           rem Issue #1148: Skip ranged attackers (handled by missile system)
           let temp1 = playerAttackType_R[attackerID]
-          if temp1 = RangedAttack then return
+          if temp1 = RangedAttack then return otherbank
           rem Cache hitbox for this attacker (calculated once, used for
           rem all
           gosub CalculateAttackHitbox
@@ -471,7 +466,7 @@ end
 
 NextDefender
           next
-          return
+          return otherbank
         
 ProcessAllAttacks
           asm
@@ -524,11 +519,11 @@ CombatShowDamageIndicator
           rem Damage indicator system (handled inline)
           return otherbank
 PlayDamageSound
-          rem Damage sound effect handler (no-op placeholder)
+          rem Damage sound effect handler
           rem
-          rem Input: None
+          rem Input: SoundAttackHit (global constant) = sound effect ID
           rem
-          rem Output: None (no-op)
+          rem Output: Sound effect played (if implemented)
           rem
           rem Mutates: None
           rem
@@ -536,7 +531,6 @@ PlayDamageSound
           rem
           rem Constraints: Damage indicators handled inline in damage calculation
           rem Visual feedback now handled inline in damage calculation
-          rem Play damage sound effect (attack hit sound)
           rem
           rem Input: SoundAttackHit (global constant) = sound effect ID
           rem

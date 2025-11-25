@@ -32,7 +32,7 @@ end
           rem visual for attack
           rem
           rem Constraints: None
-          gosub SpawnMissile bank12
+          gosub SpawnMissile bank7
           rem Spawn missile visual for this attack
 
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted

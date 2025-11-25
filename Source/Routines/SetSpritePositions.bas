@@ -187,11 +187,11 @@ end
           rem Use unified helper to write missile registers
           rem Save values to temp variables for unified helper (temp2-temp4 already used by caller, use temp6)
           let temp6 = missileX[RMF_participant]
-          rem temp2 will be Y position (overwrite RMF_select, no longer needed)
+          rem temp2 = Y position
           let temp2 = missileY_R[RMF_participant]
-          rem temp3 will be NUSIZ (overwrite RMF_mask, no longer needed)
+          rem temp3 = NUSIZ value
           let temp3 = missileNUSIZ_R[RMF_participant]
-          rem temp4 will be height (overwrite RMF_character after reading it)
+          rem temp4 = height (overwrite RMF_character after reading it)
           let temp4 = CharacterMissileHeights[RMF_character]
           gosub SSP_WriteMissileRegistersUnified
           return

@@ -40,9 +40,7 @@ end
           rem
           rem Called Routines: None (reads ROM data table)
           rem Constraints: Must be colocated with P1SetPattern (called via goto)
-          rem Clamp health to valid range
-          rem Note: < 0 check removed - unsigned bytes cannot be
-          rem negative
+          rem Clamp health to valid range (unsigned bytes cannot be negative)
           if temp1 > PlayerHealthMax then temp1 = PlayerHealthMax
 
           rem Compare health against thresholds starting from 83
@@ -90,7 +88,7 @@ P1SetPattern
           let pfscore1 = temp3
           rem Set pfscore1 to health bar pattern
 
-          return
+          return otherbank
 
 UpdatePlayer2HealthBar
           rem Update Player 2 health bar (pfscore2).
@@ -108,9 +106,7 @@ UpdatePlayer2HealthBar
           rem
           rem Called Routines: None (reads ROM data table)
           rem Constraints: Must be colocated with P2SetPattern (called via goto)
-          rem Clamp health to valid range
-          rem Note: < 0 check removed - unsigned bytes cannot be
-          rem negative
+          rem Clamp health to valid range (unsigned bytes cannot be negative)
           if temp1 > PlayerHealthMax then temp1 = PlayerHealthMax
 
           rem Compare health against thresholds starting from 83
@@ -158,7 +154,7 @@ P2SetPattern
           let pfscore2 = temp3
           rem Set pfscore2 to health bar pattern
 
-          return
+          return otherbank
 
 UpdatePlayer12HealthBars
           asm

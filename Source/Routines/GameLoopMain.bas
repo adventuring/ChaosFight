@@ -38,7 +38,7 @@ end
           rem Bits 2-3 remain 0
 
           let enhancedButtonStates_W = temp1
-          return
+          return otherbank
 
 GameMainLoop
           asm
@@ -75,13 +75,13 @@ end
           rem Called Routines: ReadEnhancedButtons,
           rem HandleConsoleSwitches (bank13),
           rem   InputHandleAllPlayers (bank8), UpdateGuardTimers (bank6),
-          rem   UpdateCharacterAnimations (bank11),
-          rem   UpdatePlayerMovement (bank8), PhysicsApplyGravity (bank10),
+          rem   UpdateCharacterAnimations (bank12),
+          rem   UpdatePlayerMovement (bank8), PhysicsApplyGravity (bank13),
           rem   ApplyMomentumAndRecovery (bank8),
           rem   CheckBoundaryCollisions (bank10),
           rem   CheckPlayfieldCollisionAllDirections (bank10),
           rem   CheckAllPlayerCollisions (bank8),
-          rem   ProcessAllAttacks (bank7), CheckAllPlayerEliminations,
+          rem   ProcessAllAttacks (bank7), CheckAllPlayerEliminations (bank14),
           rem   UpdateAllMissiles (bank7),
           rem   CheckRoboTitoStretchMissileCollisions (bank10), SetPlayerSprites (bank2),
           rem   DisplayHealth (bank6), UpdatePlayer12HealthBars (bank6),
@@ -110,8 +110,8 @@ end
           gosub UpdateGuardTimers bank6
           rem Update guard timers (duration and cooldown)
 
-          gosub UpdateAttackCooldowns bank11
-          rem Update attack cooldown timers
+          gosub UpdateAttackCooldowns bank12
+          rem Update attack cooldown timers (in Bank 12)
 
           rem Issue #1177: Update Frooty charge system every frame
           for currentPlayer = 0 to 3
@@ -124,14 +124,14 @@ FrootyChargeUpdate
 FrootyChargeNext
           next
 
-          gosub UpdateCharacterAnimations bank13
-          rem Update animation system (10fps character animation) (in Bank 14)
+          gosub UpdateCharacterAnimations bank12
+          rem Update animation system (10fps character animation) (in Bank 12)
 
-          gosub UpdatePlayerMovement bank8 :
-          rem Update movement system (full frame rate movement) (in Bank 11)
+          gosub UpdatePlayerMovement bank8
+          rem Update movement system (full frame rate movement) (in Bank 8)
 
-          gosub PhysicsApplyGravity bank10
-          rem Apply gravity and physics (in Bank 11)
+          gosub PhysicsApplyGravity bank13
+          rem Apply gravity and physics (in Bank 13)
 
           gosub ApplyMomentumAndRecovery bank8
           rem Apply momentum and recovery effects (in Bank 8)
@@ -220,7 +220,7 @@ TransitionToWinner
           rem Constraints: Must be colocated with GameMainLoop, CheckGameEndTransition
           let gameMode = ModeWinner
           gosub ChangeGameMode bank14
-          return
+          return otherbank
 GameEndCheckDone
           rem Game end check complete
           rem
@@ -269,5 +269,5 @@ GameEndCheckDone
 GameMainLoopPaused
           rem Game is paused - skip all movement/physics/animation updates
           rem but still allow console switch handling for unpause
-          return
+          return otherbank
 

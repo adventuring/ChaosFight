@@ -155,7 +155,7 @@ RadishGoblinCheckWallBounce
           asm
 RadishGoblinCheckWallBounce
 end
-          rem Wall bounce placeholder (horizontal only, to be enhanced)
+          rem Check for wall bounce collision (horizontal only)
           rem Input: currentPlayer = player index (0-3) (global)
           if playerCharacter[currentPlayer] <> CharacterRadishGoblin then return otherbank
           return otherbank

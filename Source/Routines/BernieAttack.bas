@@ -47,12 +47,12 @@ end
           rem we need it set first)
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           rem Attack in facing direction (inline former PerformMeleeAttack)
-          gosub SpawnMissile bank12
+          gosub SpawnMissile bank7
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           rem Flip facing (XOR with bit 0)
           let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
           rem Attack in opposite direction (inline former PerformMeleeAttack)
-          gosub SpawnMissile bank12
+          gosub SpawnMissile bank7
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           rem Restore original facing (XOR again to flip back)
           let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing

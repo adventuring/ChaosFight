@@ -232,8 +232,7 @@
           rem Bit 3: Joy2b+ on right port (subset of RightPortGenesis)
 
           rem Bit accessor aliases for controllerStatus
-          rem Bit accessor aliases removed to avoid compiler issues; use
-          rem   bit masks directly
+          rem Use bit masks directly (accessor aliases not available)
 
           const SystemFlag7800 = $80
           rem Console detection constants
@@ -327,9 +326,7 @@
           rem   1.56% per frame reduction)
           rem Used for curling stone near-perfect momentum (very low
           rem   friction, similar to ice)
-          rem Previous value: 32 (12.5% per frame) - too high for
           const KnockbackImpulse = 4
-          rem   ice-like sliding
           const HitstunFrames = 10
           rem Frames of hitstun after a missile hit
           const MissileAABBSize = 4

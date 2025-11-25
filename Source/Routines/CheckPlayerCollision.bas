@@ -42,7 +42,6 @@ CheckPlayerCollision
           let temp5 = playerX[temp2]
 
           rem Calculate absolute X distance between players
-          rem Primary holds player1 X initially
           if temp4 >= temp5 then CalcXDistanceRight
           let temp6 = temp5 - temp4
           goto XDistanceDone
@@ -86,9 +85,9 @@ YDistanceDone
 
           let temp3 = 1
           rem Collision detected
-          return
+          return otherbank
 
 NoCollision
           let temp3 = 0
-          return
+          return otherbank
 

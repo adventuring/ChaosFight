@@ -43,8 +43,7 @@ end
           rem Shamone: jump + mêlée special
           if temp4 = CharacterShamone then goto ShamoneAttack bank7
 
-          rem Characters 16-30: Placeholder attacks (basic mêlée)
-          rem Characters 16-30: placeholder mêlée entries
+          rem Characters 16-30: Basic mêlée attacks
           if temp4 >= 16 && temp4 <= 30 then goto PerformMeleeAttack bank7
 
           rem MethHound uses ShamoneAttack handler

@@ -11,10 +11,17 @@ end
           rem
           rem FIXME: Inline and remove calls to this routine.
           rem
-          rem Input: currentPlayer (0-3), playerHealth[]
-          rem Output: temp2 = 1 if alive, 0 if dead
-          rem Mutates: temp2
-          rem Calls: None
+          rem Input: currentPlayer (global) = player index (0-3)
+          rem        playerHealth[] (global array) = player health values
+          rem
+          rem Output: temp2 = player health value (0 if dead, >0 if alive)
+          rem         Caller should check if temp2 = 0 for dead, temp2 > 0 for alive
+          rem
+          rem Mutates: temp2 (set to health value)
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: None
           let temp2 = playerHealth[currentPlayer]
           return otherbank
 

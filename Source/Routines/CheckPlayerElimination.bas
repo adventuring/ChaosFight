@@ -41,8 +41,8 @@ end
           rem (global array) = effect timers (via
           rem TriggerEliminationEffects)
           rem
-          rem Called Routines: UpdatePlayers34ActiveFlag (if player 2 or
-          rem 3 eliminated), TriggerEliminationEffects (tail call),
+          rem Called Routines: UpdatePlayers34ActiveFlag (bank14, if player 2 or
+          rem 3 eliminated), TriggerEliminationEffects (bank13, tail call),
           rem DeactivatePlayerMissiles (via TriggerEliminationEffects),
           rem PlaySoundEffect (bank15, via TriggerEliminationEffects)
           rem
@@ -75,6 +75,6 @@ end
           let eliminationOrder_W[currentPlayer] = temp2
 
           rem Trigger elimination effects
-          goto TriggerEliminationEffects bank12
+          goto TriggerEliminationEffects bank13
           rem tail call
 

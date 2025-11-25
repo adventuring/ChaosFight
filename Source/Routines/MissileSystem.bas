@@ -41,7 +41,7 @@ end
           rem Calculate bit flag using O(1) array lookup:
           rem BitMask[playerIndex] (1, 2, 4, 8)
           let temp6 = BitMask[temp1]
-          return
+          return otherbank
 
 SpawnMissile
           asm
@@ -233,13 +233,13 @@ end
           rem (global) = sound effect ID (via guard bounce)
           rem
           rem Called Routines: GetPlayerMissileBitFlag - calculates bit
-          rem flag, GetMissileFlags (bank7) - gets missile flags,
-          rem HandleMegaxMissile - handles Megax stationary missile,
-          rem HandleKnightGuyMissile - handles Knight Guy sword swing,
-          rem MissileCollPF (bank7) - checks playfield collision,
-          rem CheckAllMissileCollisions (bank7) - checks player
+          rem flag, CharacterMissileFlags[] (global table) - missile flags
+          rem cached at spawn, HandleMegaxMissile - handles Megax stationary
+          rem missile, HandleKnightGuyMissile - handles Knight Guy sword swing,
+          rem MissileCollPF (bank8) - checks playfield collision,
+          rem CheckAllMissileCollisions (bank8) - checks player
           rem collisions, PlaySoundEffect (bank15) - plays guard bounce
-          rem sound, HandleMissileBounce - handles bounce physics,
+          rem sound, HandleMissileBounce (same-bank) - handles bounce physics,
           rem HandleMissileHit - handles damage application,
           rem DeactivateMissile - deactivates missile
           rem
@@ -393,7 +393,7 @@ BoundsCheckDone
           let temp5 = missileFlags_R[temp1]
           rem Get cached flags again (restore after temp5 was used for Y position)
           if (temp5 & MissileFlagHitBackground) = 0 then goto PlayfieldCollisionDone
-          gosub MissileCollPF bank7
+          gosub MissileCollPF bank8
           if !temp4 then goto PlayfieldCollisionDone
           rem Issue #1188: Collision detected - check if should bounce or deactivate
           if temp5 & MissileFlagBounce then gosub HandleMissileBounce : return otherbank

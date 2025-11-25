@@ -23,9 +23,10 @@ end
           rem currentPlayer (set to 0-3),
           rem         qtcontroller (toggled between 0 and 1)
           rem
-          rem Called Routines: IsPlayerAlive - checks if player is
-          rem alive,
-          rem   InputHandleLeftPortPlayerFunction, InputHandleRightPortPlayerFunction -
+          rem Called Routines: IsPlayerAlive (bank13) - checks if player is
+          rem alive (returns health in temp2),
+          rem   InputHandleLeftPortPlayerFunction (bank8, same-bank),
+          rem   InputHandleRightPortPlayerFunction (bank8, same-bank) -
           rem   handle input for left/right port players
           rem
           rem Constraints: Must be colocated with InputSkipPlayer0Input,
@@ -105,9 +106,10 @@ InputHandleQuadtariPlayers
           rem currentPlayer (set to 2-3),
           rem         qtcontroller (reset to 0)
           rem
-          rem Called Routines: IsPlayerAlive - checks if player is
-          rem alive,
-          rem   InputHandleLeftPortPlayerFunction, InputHandleRightPortPlayerFunction -
+          rem Called Routines: IsPlayerAlive (bank13) - checks if player is
+          rem alive (returns health in temp2),
+          rem   InputHandleLeftPortPlayerFunction (bank8, same-bank),
+          rem   InputHandleRightPortPlayerFunction (bank8, same-bank) -
           rem   handle input for left/right port players
           rem
           rem Constraints: Must be colocated with InputHandleAllPlayers,

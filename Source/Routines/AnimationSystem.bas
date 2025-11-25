@@ -286,7 +286,7 @@ InitializeAnimationSystem
           rem Initialize all players to idle animation
           let temp2 = ActionIdle
           for currentPlayer = 0 to 3
-            gosub SetPlayerAnimation bank11
+            gosub SetPlayerAnimation
           next
           return otherbank
 
@@ -306,12 +306,12 @@ TransitionLoopAnimation
 
 TransitionToIdle
           let temp2 = ActionIdle
-          goto SetPlayerAnimation bank11
+          goto SetPlayerAnimation
           rem tail call
 
 TransitionToFallen
           let temp2 = ActionFallen
-          goto SetPlayerAnimation bank11
+          goto SetPlayerAnimation
           rem tail call
 
 TransitionHandleJump
@@ -321,12 +321,12 @@ TransitionHandleJump
           if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
           let temp2 = ActionJumping
           rem Still ascending (negative or zero Y velocity), stay in jump
-          goto SetPlayerAnimation bank11
+          goto SetPlayerAnimation
           rem tail call
 TransitionHandleJump_TransitionToFalling
           let temp2 = ActionFalling
           rem Falling (positive Y velocity), transition to falling
-          goto SetPlayerAnimation bank11
+          goto SetPlayerAnimation
           rem tail call
 
 TransitionHandleFallBack
@@ -348,12 +348,12 @@ TransitionHandleFallBack
           if temp1 then TransitionHandleFallBack_HitWall
           let temp2 = ActionFallen
           rem No wall collision, transition to fallen
-          goto SetPlayerAnimation bank11
+          goto SetPlayerAnimation
           rem tail call
 TransitionHandleFallBack_HitWall
           let temp2 = ActionIdle
           rem Hit wall, transition to idle
-          goto SetPlayerAnimation bank11
+          goto SetPlayerAnimation
           rem tail call
 
           rem
@@ -373,7 +373,7 @@ HandleWindupEnd
           if temp1 >= 16 then let temp1 = 0
           let temp2 = CharacterWindupNextAction[temp1]
           if temp2 = 255 then return otherbank
-          goto SetPlayerAnimation bank11
+          goto SetPlayerAnimation
 
 HandleExecuteEnd
           let temp1 = playerCharacter[currentPlayer]
@@ -382,7 +382,7 @@ HandleExecuteEnd
           if temp1 >= 16 then let temp1 = 0
           let temp2 = CharacterExecuteNextAction[temp1]
           if temp2 = 255 then return otherbank
-          goto SetPlayerAnimation bank11
+          goto SetPlayerAnimation
 
 HarpyExecute
           rem Harpy: Execute → Idle
@@ -410,7 +410,7 @@ HarpyExecute
           rem   from attack, keep it
           let temp2 = ActionIdle
           rem Transition to Idle
-          goto SetPlayerAnimation bank11
+          goto SetPlayerAnimation
           rem tail call
           rem Placeholder characters (16-30) reuse the table entries for
           rem Bernie (0) so they no-op on windup and fall to Idle on
@@ -420,5 +420,5 @@ HarpyExecute
 HandleRecoveryEnd
           let temp2 = ActionIdle
           rem All characters: Recovery → Idle
-          goto SetPlayerAnimation bank11
+          goto SetPlayerAnimation
           rem tail call

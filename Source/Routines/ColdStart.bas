@@ -8,10 +8,8 @@ end
           rem Cold Start Initialization
           rem
           rem Proper cold start initialization sequence for batariBASIC.
-          rem Called from Bank1 via goto ColdStart bank14 - this is
-          rem   the
-          rem correct stanza format (Bank1 jumps to ColdStart in
-          rem   Bank14).
+          rem Called from Reset handler (BankSwitching.s) - Reset handler
+          rem   in every bank switches to Bank 14 and jumps to ColdStart.
           rem
           rem This routine handles game-specific initialization:
           rem   1. Hardware detection (console type)

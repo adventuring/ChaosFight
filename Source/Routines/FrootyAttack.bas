@@ -77,7 +77,7 @@ FrootyButtonReleased
           let frootyChargeTimer_W[temp1] = 0
           rem Spawn projectile with ricochet physics
           rem Use SpawnMissile but override lifetime
-          gosub SpawnMissile bank12
+          gosub SpawnMissile bank7
           rem Override missile lifetime with charge time (in frames)
           rem Charge is in 10 Hz ticks, convert to frames: charge * 6
           rem Lifetime = charge * 6 frames (each tick = 0.1s = 6 frames at 60fps)

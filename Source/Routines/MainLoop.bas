@@ -27,36 +27,52 @@ end
           ; fall through to continue
 
 MainLoopModePublisherPrelude
-          rem tail call
-          goto PublisherPreludeMain bank14
+          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
+          rem Must use gosub to preserve return address for return otherbank
+          gosub PublisherPreludeMain bank14
+          return
 
 MainLoopModeAuthorPrelude
-          rem tail call
-          goto AuthorPrelude bank14
+          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
+          rem Must use gosub to preserve return address for return otherbank
+          gosub AuthorPrelude bank14
+          return
 
 MainLoopModeTitleScreen
-          rem tail call
-          goto TitleScreenMain bank14
+          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
+          rem Must use gosub to preserve return address for return otherbank
+          gosub TitleScreenMain bank14
+          return
 
 MainLoopModeCharacterSelect
-          rem tail call
-          goto CharacterSelectInputEntry bank9
+          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
+          rem Must use gosub to preserve return address for return otherbank
+          gosub CharacterSelectInputEntry bank9
+          return
 
 MainLoopModeFallingAnimation
-          rem tail call
-          goto FallingAnimation1 bank11
+          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
+          rem Must use gosub to preserve return address for return otherbank
+          gosub FallingAnimation1 bank11
+          return
 
 MainLoopModeArenaSelect
-          rem tail call
-          goto ArenaSelect1 bank14
+          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
+          rem Must use gosub to preserve return address for return otherbank
+          gosub ArenaSelect1 bank14
+          return
 
 MainLoopModeGameMain
-          rem tail call
-          goto GameMainLoop bank11
+          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
+          rem Must use gosub to preserve return address for return otherbank
+          gosub GameMainLoop bank11
+          return
 
 MainLoopModeWinnerAnnouncement
-          rem tail call
-          goto WinnerAnnouncementLoop bank12
+          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
+          rem Must use gosub to preserve return address for return otherbank
+          gosub WinnerAnnouncementLoop bank12
+          return
 MainLoopContinue
           rem Routes audio updates after per-mode execution
           rem Inputs: gameMode (global 0-7)

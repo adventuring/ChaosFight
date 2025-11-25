@@ -658,36 +658,36 @@ games, for which we want to give thanks:
 
 @itemize
 @item
-Ryan Witmer (Magical Fairy Force, Rob 'N' Banks, RealSports Curling; graphics from Magical Fairy Force and Ratcatcher)
+Todd ``Revontuli'' Furmanski (Dragon's Cache, Dragon's Havoc, Dragon's Descent; graphics and music from Dragon's Descent)
 @item
 Lewis ``Muddyfunster'' Hill (EXO, Bernie and the Tower of Doom)
 @item
 Blake ``SmittyB'' Smith (Ducks Away)
 @item
-Vladimir ``vhzc'' Zúñiga (Game of the Bear, Knight Guy, Ninjish Guy)
+Ryan Witmer (Magical Fairy Force, Rob 'N' Banks, RealSports Curling; graphics from Magical Fairy Force and Ratcatcher)
 @item
-Todd ``Revontuli'' Furmanski (Dragon's Cache, Dragon's Havoc, Dragon's Descent; graphics and music from Dragon's Descent)
+Vladimir ``vhzc'' Zúñiga (Game of the Bear, Knight Guy, Ninjish Guy)
 @end itemize
 
 @itemize @bullet
 @item
-Fred @dfn{batari} Quimby (batariBasic compiler)
-@item
-Mike Saarna (aka @dfn{RevEng}) (Titlescreen Kernel for batariBasic)
-@item
-Zephyr Pocock (Grizzards, Phantasia; for additional art and music)
-@item
-Lloyd Vivola ("O! Cascadia" - Cascadian anthem)
+AtariAge and Atari community
 @item
 Philip ``Splendidnut'' Blackman (batariBasic assistance)
 @item
 James Earl O'Brian and Tanya O'Brian, and Darcy and Aerlan (ZeroPage Homebrew)
 @item
-AtariAge and Atari community
+@dfn{Omegamatrix} (for the BCD converter) and the AtariAge forum contributors sharing their wizardry
+@item
+Zephyr Pocock (Grizzards, Phantasia; for additional art and music)
+@item
+Fred @dfn{batari} Quimby (batariBasic compiler)
 @item
 Random Terrain (batariBasic documentation)
 @item
-@dfn{Omegamatrix} (for the BCD converter) and the AtariAge forum contributors sharing their wizardry
+Mike Saarna (aka @dfn{RevEng}) (Titlescreen Kernel for batariBasic)
+@item
+Lloyd Vivola ("O! Cascadia" - Cascadian anthem)
 @end itemize
 
 @section Tools Used
@@ -762,3 +762,4 @@ Any resemblance to actual persons, living or dead, is purely coincidental.
 @printindex cp
 
 @bye
+

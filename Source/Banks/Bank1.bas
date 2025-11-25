@@ -25,7 +25,7 @@ end
           rem   include (BASIC statement) so BUILD_DATE_STRING expands correctly
           asm
 Bank1DataStart
-            ; Removed: program counter . not resolvable in echo
+            echo "Bank 1 data starts at ", .
 BuildInfoStart
 end
           include "Source/Common/BuildInfo.s"

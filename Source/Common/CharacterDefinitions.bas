@@ -8,7 +8,7 @@
           rem   impact resistance/force)
           rem   - Animation graphics tables and frame counts
           rem
-          rem   - Attack type (melee or ranged)
+          rem   - Attack type (mêlée or ranged)
           rem   - Missile size (width × height)
           rem   - Missile emission height (on character sprite)
 
@@ -103,7 +103,7 @@ GetCharacterAttackTypeSub
           rem
           rem Input: temp1 = character index (0-15)
           rem
-          rem Output: temp4 = attack type (0=melee, 1=ranged)
+          rem Output: temp4 = attack type (0=mêlée, 1=ranged)
           rem
           rem Mutates: temp2-temp5
           rem

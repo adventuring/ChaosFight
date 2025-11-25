@@ -11,7 +11,7 @@ GetPlayerMissileBitFlag
 GetPlayerMissileBitFlag
 end
           rem   - Ranged projectile (bullet, arrow, magic spell)
-          rem   - Melee attack visual (sword, fist, kick sprite)
+          rem   - Mêlée attack visual (sword, fist, kick sprite)
           rem MISSILE VARIABLES (from Variables.bas):
           rem   missileX[0-3] (a-d) - X positions
           rem   missileY[0-3] (w-z) - Y positions

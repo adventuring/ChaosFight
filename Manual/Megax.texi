@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 1590 kg (3500 lbs)
-    Attack: Melee (fire breath)
+    Attack: Mêlée (fire breath)
     Special: (none - breathing fire is a normal ability)
     Original Game: Grizzards
     Author: Zephyr & Bruce-Robert Pocock (Interworldly Adventuring, LLC) @url{https://interworldly.com,Interworldly.com}

@@ -16,13 +16,13 @@ end
           rem        ActionAttackExecuteShifted (constant) = attack
           rem        execution animation state
           rem
-          rem Output: Player jumps 11 pixels up, melee attack executed
+          rem Output: Player jumps 11 pixels up, mêlée attack executed
           rem
           rem Mutates: temp1 (used for calculations), playerY[] (moved
           rem up 11 pixels), playerState[] (animation state set),
           rem missile state (via PerformMeleeAttack)
           rem
-          rem Called Routines: PerformMeleeAttack (bank7) - executes melee
+          rem Called Routines: PerformMeleeAttack (bank7) - executes mêlée
           rem attack, spawns missile
           rem
           rem Constraints: None

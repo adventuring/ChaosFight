@@ -158,7 +158,7 @@ GameMainLoopQuadtariSkip
           rem Check multi-player collisions (in Bank 11)
 
           gosub ProcessAllAttacks bank7
-          rem Process melee and area attack collisions (in Bank 7)
+          rem Process mêlée and area attack collisions (in Bank 7)
           rem WIP #1146: Hook present while attack-state gating is implemented
 
           gosub CheckAllPlayerEliminations bank14

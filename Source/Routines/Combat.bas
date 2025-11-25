@@ -243,7 +243,7 @@ end
           if temp1 = 2 then goto AreaHitbox
 
 MeleeHitbox
-          rem Melee hitbox extends PlayerSpriteWidth pixels in facing
+          rem Mêlée hitbox extends PlayerSpriteWidth pixels in facing
           rem direction
           rem
           rem Input: attackerID, playerState[] (from

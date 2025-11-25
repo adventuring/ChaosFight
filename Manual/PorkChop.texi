@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 115 kg (250 lbs)
-    Attack: Melee
+    Attack: Mêlée
     Special: (none)
     Career History: Fairy employee, bank guard, sewer cleaner, curling athlete
     Former Team: Team Koe (Edmonton) member@footnote{Team Koe is a professional curling team based in Calgary/Edmonton, Alberta. Curling team names and trademarks are property of their respective organizations.}
@@ -25,7 +25,7 @@ curling team (Team Koe) taught him precision and teamwork.
 From the delicate work with magical fairies to the rough-and-tumble world of 
 bank security, from the unpleasant but necessary sewer maintenance to the 
 precise sport of curling, Pork Chop has learned to adapt to any environment. 
-His heavy build and reliable melee attacks reflect the steady, dependable 
+His heavy build and reliable mêlée attacks reflect the steady, dependable 
 nature that has served him well across all his various careers. His diverse 
 work experience has given him a well-rounded skill set and the determination 
 to handle any situation thrown at him.

@@ -310,7 +310,7 @@ SetVerticalMomentum
           let playerState[currentPlayer] = temp6
           rem Animation state 10
 
-          rem Spawn melee attack missile for swoop hit detection
+          rem Spawn mêlée attack missile for swoop hit detection
           let temp1 = currentPlayer
           gosub SpawnMissile bank12
 

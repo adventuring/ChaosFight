@@ -329,7 +329,7 @@ brick" logic when he falls off the screen and resets at the top.
 - **Jump**: Vertical movement, character-specific jump heights based on
   weight
 - **Guard**: Block incoming attacks, reduces damage (stick Down)
-- **Attack**: Melee or ranged attacks based on character type (Fire/B/I
+- **Attack**: Mêlée or ranged attacks based on character type (Fire/B/I
   button)
 - **Special Moves**: Character-specific abilities (see Character
   Behaviors section)
@@ -351,7 +351,7 @@ brick" logic when he falls off the screen and resets at the top.
 
 ### Combat System
 
-- **Melee Attacks**: Close-range attacks with character-specific ranges
+- **Mêlée Attacks**: Close-range attacks with character-specific ranges
 - **Ranged Attacks**: Projectile attacks with character-specific
   properties
 - **Hit Detection**: AABB (axis-aligned bounding box) collision
@@ -392,7 +392,7 @@ brick" logic when he falls off the screen and resets at the top.
 
 #### Character Attack Types and Missile Dimensions
 
-- **Bernie**: Melee only - "Ground Thump" area-of-effect attack hits
+- **Bernie**: Mêlée only - "Ground Thump" area-of-effect attack hits
   both left and right simultaneously, shoving enemies away rapidly (no
   missile)
 - **Curler**: Ranged - 4×4 pixel wide, tall ground-based projectile
@@ -400,12 +400,12 @@ brick" logic when he falls off the screen and resets at the top.
   ballistic arc (gravity)
 - **Zoe Ryen**: Ranged - 4×1 pixel wide, low-height projectile
 - **Fat Tony**: Ranged - 4×1 pixel wide, low-height projectile
-- **Megax**: Melee - Uses missile to decorate melee attack (fire
+- **Megax**: Mêlée - Uses missile to decorate mêlée attack (fire
   breath). Missile never moves.
-- **Harpy**: Melee (diagonal swoop, special case) - No missile sprite,
+- **Harpy**: Mêlée (diagonal swoop, special case) - No missile sprite,
   character movement IS the attack
 - **Frooty**: Ranged - 1×1 pixel narrow projectile (magical sparkles)
-- **Other characters**: Melee attacks only (no projectiles)
+- **Other characters**: Mêlée attacks only (no projectiles)
 
 ### Missile Spawn Offsets
 
@@ -422,7 +422,7 @@ Per-character missile spawn offsets are defined in
 
 | Character | Facing Right Offset | Facing Left Offset | Vertical Offset | Notes |
 |-----------|--------------------:|-------------------:|----------------:|-------|
-| Bernie (0) | — | — | — | Melee only |
+| Bernie (0) | — | — | — | Mêlée only |
 | Curler (1) | +17 | −5 | +12 | Stone spawns with 1px horizontal gap, bottoms aligned |
 | Dragon of Storms (2) | +18 | −4 | +4 | Fireball spawns 2px ahead, 4px below sprite top |
 | Zoe Ryen (3) | +18 | −6 | +7 | Laser originates 2px ahead at shoulder height |
@@ -433,11 +433,11 @@ Per-character missile spawn offsets are defined in
 | Frooty (8) | +20 | −5 | +6 | Sparkle projectile with 4px horizontal gap |
 | Nefertem (9) | — | — | — | No missile |
 | Ninjish Guy (10) | +20 | −6 | +9 | Shuriken spawns 4px ahead |
-| Pork Chop (11) | — | — | — | Melee only |
-| Radish Goblin (12) | — | — | — | Melee only |
+| Pork Chop (11) | — | — | — | Mêlée only |
+| Radish Goblin (12) | — | — | — | Mêlée only |
 | Robo Tito (13) | +6 | +6 | +16 | Trunk drops vertically |
-| Ursulo (14) | — | — | — | Melee only |
-| Shamone (15) | — | — | — | Melee only |
+| Ursulo (14) | — | — | — | Mêlée only |
+| Shamone (15) | — | — | — | Mêlée only |
 
 Knight Guy's sword starts at −2px overlap and animates out to +1px gap,
 then back.
@@ -544,13 +544,13 @@ units (5-100 range):
 - Movement speed (higher weight = slower)
 - Momentum (higher weight = more momentum when moving)
 - Impact resistance (higher weight = less knocked back)
-- Melee force (higher weight = more damage/knockback to opponents)
+- Mêlée force (higher weight = more damage/knockback to opponents)
 
 ### Character 0: Bernie
 
 - **Weight**: 10 lbs (4.5 kg) - Game Unit: 5
-- **Attack Type**: Melee (hits BOTH DIRECTIONS - dual-direction AOE)
-- **Missile**: None (melee only, 4-frame lifetime for visual)
+- **Attack Type**: Mêlée (hits BOTH DIRECTIONS - dual-direction AOE)
+- **Missile**: None (mêlée only, 4-frame lifetime for visual)
 - **Special Moves**:
   - No jumping
   - **Fall abilities**:
@@ -670,13 +670,13 @@ units (5-100 range):
 ### Character 7: Knight Guy
 
 - **Weight**: 250 lbs (113.4 kg) - Game Unit: 57
-- **Attack Type**: Melee
-- **Missile**: None (melee only, 6-frame lifetime - longest melee
+- **Attack Type**: Mêlée
+- **Missile**: None (mêlée only, 6-frame lifetime - longest mêlée
   duration)
 - **Special Moves**:
-  - **Sword**: Melee weapon is a sword
+  - **Sword**: Mêlée weapon is a sword
   - Armored fighter with powerful sword attacks
-  - Longest melee attack duration (6 frames)
+  - Longest mêlée attack duration (6 frames)
 
 ### Character 8: Frooty
 
@@ -700,33 +700,33 @@ units (5-100 range):
 ### Character 9: Nefertem
 
 - **Weight**: 440 lbs (199.6 kg) - Game Unit: 66
-- **Attack Type**: Melee
-- **Missile**: None (melee only, 5-frame lifetime)
+- **Attack Type**: Mêlée
+- **Missile**: None (mêlée only, 5-frame lifetime)
 - **Special Moves**: Loyalist to the High Council, feline reflexes
 
 ### Character 10: Ninjish Guy
 
 - **Weight**: 130 lbs (59.0 kg) - Game Unit: 47
-- **Attack Type**: Melee
-- **Missile**: None (melee only, 4-frame lifetime)
+- **Attack Type**: Mêlée
+- **Missile**: None (mêlée only, 4-frame lifetime)
 - **Special Moves**:
   - Highest jumps
   - Fastest movement
   - 50% fall damage reduction
-  - Ninja mobility with melee attacks
+  - Ninja mobility with mêlée attacks
 
 ### Character 11: Pork Chop
 
 - **Weight**: 250 lbs (113.4 kg) - Game Unit: 57
-- **Attack Type**: Melee
-- **Missile**: None (melee only, 4-frame lifetime)
-- **Special Moves**: Standard heavy melee fighter
+- **Attack Type**: Mêlée
+- **Missile**: None (mêlée only, 4-frame lifetime)
+- **Special Moves**: Standard heavy mêlée fighter
 
 ### Character 12: Radish Goblin
 
 - **Weight**: 50 lbs (22.7 kg) - Game Unit: 31
-- **Attack Type**: Melee (bouncing bite attacks)
-- **Missile**: None (melee only, 3-frame lifetime)
+- **Attack Type**: Mêlée (bouncing bite attacks)
+- **Missile**: None (mêlée only, 3-frame lifetime)
 - **Special Moves**:
   - Highest jumps
   - Fastest movement
@@ -736,8 +736,8 @@ units (5-100 range):
 ### Character 13: Robo Tito
 
 - **Weight**: 300 lbs (136.1 kg) - Game Unit: 60
-- **Attack Type**: Melee
-- **Missile**: None (melee only, 5-frame lifetime)
+- **Attack Type**: Mêlée
+- **Missile**: None (mêlée only, 5-frame lifetime)
 - **Special Moves**:
   - No jumping
   - Stretches vertically to ceiling (press UP to stretch and grab
@@ -750,20 +750,20 @@ units (5-100 range):
 ### Character 14: Ursulo
 
 - **Weight**: 220 lbs (100 kg) - Game Unit: 55
-- **Attack Type**: Melee (claw swipe)
-- **Missile**: None (melee only, 5-frame lifetime)
+- **Attack Type**: Mêlée (claw swipe)
+- **Missile**: None (mêlée only, 5-frame lifetime)
 - **Missile Properties**:
-  - No missile (0×0) - melee attack uses character sprite
-  - Changed from ranged to melee (claw swipe attack)
+  - No missile (0×0) - mêlée attack uses character sprite
+  - Changed from ranged to mêlée (claw swipe attack)
 - **Special Moves**:
   - Strongest throw
-  - Melee claw swipe attack
+  - Mêlée claw swipe attack
 
 ### Character 15: Shamone
 
 - **Weight**: 65 lbs (29.5 kg) - Game Unit: 35
-- **Attack Type**: Melee
-- **Missile**: None (melee only, 4-frame lifetime)
+- **Attack Type**: Mêlée
+- **Missile**: None (mêlée only, 4-frame lifetime)
 - **Special Moves**:
   - Special upward attack/jump: When attacking, simultaneously jumps
     upward while performing

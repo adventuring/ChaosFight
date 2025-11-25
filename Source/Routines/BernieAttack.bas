@@ -28,7 +28,7 @@ end
           rem        PlayerStateBitFacing (constant) = facing direction
           rem        bit
           rem
-          rem Output: Two melee attacks executed (left and right),
+          rem Output: Two mêlée attacks executed (left and right),
           rem facing direction restored
           rem
           rem Mutates: temp1, temp3 (used for calculations),
@@ -36,7 +36,7 @@ end
           rem restored),
           rem         missile state (via PerformMeleeAttack)
           rem
-          rem Called Routines: PerformMeleeAttack (bank7) - executes melee
+          rem Called Routines: PerformMeleeAttack (bank7) - executes mêlée
           rem attack via shared tables
           rem Constraints: None
           rem Area-of-effect attack: hits both left AND right

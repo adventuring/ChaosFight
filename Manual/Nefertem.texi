@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 200 kg (440 lbs)
-    Attack: Melee
+    Attack: Mêlée
     Special: (none)
     Original Game: Phantasia
     Author: Zephyr & Bruce-Robert Pocock (Interworldly Adventuring, LLC) @url{https://interworldly.com,Interworldly.com}
@@ -14,5 +14,5 @@
 
 Nefertem is a mysterious cat, as big as a man, with gray and black stripes, white paws, and a white chest. He hails from the ancient realm of Aclypt, where he serves as a steadfast loyalist to the High Council. A dear friend of Elder Tranh, Nefertem combines feline grace with formidable strength.
 
-As a heavy melee fighter, Nefertem relies on powerful close-combat attacks and his substantial weight to overwhelm opponents. His feline reflexes and council training make him a dangerous adversary in any arena.
+As a heavy mêlée fighter, Nefertem relies on powerful close-combat attacks and his substantial weight to overwhelm opponents. His feline reflexes and council training make him a dangerous adversary in any arena.
 

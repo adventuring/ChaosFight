@@ -20,31 +20,31 @@ end
           if temp4 = CharacterZoeRyen then goto PerformRangedAttack bank7
           rem Fat Tony: stationary magic ring laser
           if temp4 = CharacterFatTony then goto PerformRangedAttack bank7
-          rem Megax: heavy melee breath strike (generic melee tables)
+          rem Megax: heavy mêlée breath strike (generic mêlée tables)
           if temp4 = CharacterMegax then goto PerformMeleeAttack bank7
           rem Harpy: diagonal swoop attack
           if temp4 = CharacterHarpy then goto HarpyAttack bank10
-          rem Knight Guy: sword melee swing
+          rem Knight Guy: sword mêlée swing
           if temp4 = CharacterKnightGuy then goto PerformMeleeAttack bank7
           rem Frooty: ranged sparkle projectile
           if temp4 = CharacterFrooty then goto PerformRangedAttack bank7
-          rem Nefertem: melee paw strike
+          rem Nefertem: mêlée paw strike
           if temp4 = CharacterNefertem then goto PerformMeleeAttack bank7
           rem Ninjish Guy: ranged shuriken
           if temp4 = CharacterNinjishGuy then goto PerformRangedAttack bank7
-          rem Pork Chop: melee
+          rem Pork Chop: mêlée
           if temp4 = CharacterPorkChop then goto PerformMeleeAttack bank7
-          rem Radish Goblin: melee bite lunge
+          rem Radish Goblin: mêlée bite lunge
           if temp4 = CharacterRadishGoblin then goto PerformMeleeAttack bank7
-          rem Robo Tito: melee trunk slam
+          rem Robo Tito: mêlée trunk slam
           if temp4 = CharacterRoboTito then goto PerformMeleeAttack bank7
-          rem Ursulo: claw swipe with melee tables - inlined (UrsuloAttack)
+          rem Ursulo: claw swipe with mêlée tables - inlined (UrsuloAttack)
           if temp4 = CharacterUrsulo then goto PerformMeleeAttack bank7
-          rem Shamone: jump + melee special
+          rem Shamone: jump + mêlée special
           if temp4 = CharacterShamone then goto ShamoneAttack bank7
 
-          rem Characters 16-30: Placeholder attacks (basic melee)
-          rem Characters 16-30: placeholder melee entries
+          rem Characters 16-30: Placeholder attacks (basic mêlée)
+          rem Characters 16-30: placeholder mêlée entries
           if temp4 >= 16 && temp4 <= 30 then goto PerformMeleeAttack bank7
 
           rem MethHound uses ShamoneAttack handler

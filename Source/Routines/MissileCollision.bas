@@ -9,15 +9,15 @@ end
           rem Handles all collision detection for missiles and
           rem   area-of-effect attacks.
           rem COLLISION TYPES:
-          rem 1. Missile-to-Player: Visible missiles (ranged or melee
+          rem 1. Missile-to-Player: Visible missiles (ranged or mêlée
           rem   visuals)
-          rem 2. AOE-to-Player: Melee attacks with no visible missile
+          rem 2. AOE-to-Player: Mêlée attacks with no visible missile
           rem   (0×0 size)
           rem 3. Missile-to-Playfield: For missiles that interact with
           rem   walls
           rem SPECIAL CASES:
           rem   - Bernie: AOE extends both left AND right simultaneously
-          rem   - Other melee: AOE only in facing direction
+          rem   - Other mêlée: AOE only in facing direction
           rem
           rem FACING DIRECTION FORMULA (for AOE attacks):
           rem   Facing right (bit 0 = 1): AOE_X = playerX + offset
@@ -105,7 +105,7 @@ CheckAOECollision
 end
           rem
           rem Check Aoe Collision
-          rem Checks collision for area-of-effect melee attacks (no
+          rem Checks collision for area-of-effect mêlée attacks (no
           rem   visible missile).
           rem AOE is relative to player position and facing direction.
           rem SPECIAL CASE: Bernie (character 0) Ground Thump attack
@@ -117,7 +117,7 @@ end
           rem
           rem OUTPUT:
           rem   temp4 = hit player index (0-3), or 255 if no hit
-          rem Checks collision for area-of-effect melee attacks (no
+          rem Checks collision for area-of-effect mêlée attacks (no
           rem visible missile)
           rem
           rem Input: temp1 = attacker player index (0-3), playerCharacter[]

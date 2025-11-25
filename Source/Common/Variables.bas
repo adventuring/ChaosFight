@@ -624,7 +624,7 @@
 
           rem Game Mode: Missile lifetime counters [0-3] - frames
           rem   remaining
-          rem For melee attacks: small value (2-8 frames)
+          rem For mêlée attacks: small value (2-8 frames)
           rem For ranged attacks: larger value or 255 for until
           rem   collision
           rem Placed in SCRAM because the values are accessed infrequently

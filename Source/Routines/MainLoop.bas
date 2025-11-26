@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/MainLoop.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 MainLoop
           asm
@@ -32,48 +32,49 @@ MainLoopModePublisherPrelude
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub PublisherPreludeMain bank14
-          return thisbank
+          return otherbank
 MainLoopModeAuthorPrelude
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub AuthorPrelude bank14
-          return thisbank
+          return otherbank
 MainLoopModeTitleScreen
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub TitleScreenMain bank14
-          return thisbank
+          return otherbank
 MainLoopModeCharacterSelect
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub CharacterSelectInputEntry bank9
-          return thisbank
+          return otherbank
 MainLoopModeFallingAnimation
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub FallingAnimation1 bank11
-          return thisbank
+          return otherbank
 MainLoopModeArenaSelect
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub ArenaSelect1 bank14
-          return thisbank
+          return otherbank
 MainLoopModeGameMain
           rem CRITICAL: Guard against being called when not in game mode
           rem This prevents crashes when gameMode is corrupted or incorrectly set
           rem Only call GameMainLoop when actually in game mode (ModeGame = 6)
           if gameMode = ModeGame then goto MainLoopModeGameMainContinue
-          return thisbank
+          return otherbank
 MainLoopModeGameMainContinue
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub GameMainLoop bank11
-          return thisbank
+          return otherbank
 MainLoopModeWinnerAnnouncement
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub WinnerAnnouncementLoop bank12
-          return thisbankMainLoopContinue
+          return otherbank
+MainLoopContinue
           rem Routes audio updates after per-mode execution
           rem Inputs: gameMode (global 0-7)
           rem Outputs: Falls through to MainLoopDrawScreen

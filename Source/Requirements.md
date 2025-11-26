@@ -65,14 +65,16 @@ In any mode, pressing Game Reset causes an instant hard reboot:
 - `return otherbank` expands to `JMP BS_return`, which expects the four-byte
   encoded return sequence pushed by `BS_jsr`. Any cross-bank routine must end
   with this form or we will corrupt the stack.
-- The current stack-underflow probe shows `MainLoopModePublisherPrelude`,
+- The stack-underflow probe previously showed `MainLoopModePublisherPrelude`,
   `MainLoopModeAuthorPrelude`, `MainLoopModeTitleScreen`, and cousins in
-  `Source/Routines/MainLoop.bas` still returning with `return thisbank` even
-  though the dispatcher just performed `gosub ... bank14`. The resulting
-  `RTS` at `$f:faaf` is exactly where the stack dropped to `$FF`.
-- Fix plan: convert those mode handlers to `return otherbank`, rebuild, and
-  re-check the far-call trampoline at `$f:fa5c` to confirm the stack grows
-  back to `$FD` after each trip through the mode table.
+  `Source/Routines/MainLoop.bas` returning with `return thisbank` even though
+  the dispatcher had just performed `gosub ... bank14`. The resulting `RTS`
+  at `$f:faaf` is exactly where the stack dropped to `$FF`.
+- Remediation completed 2025‑11‑26: all mode handlers now issue
+  `return otherbank`, preventing the bare `RTS` that corrupted the encoded
+  far-return sequence. Rebuilds must still re-check the far-call trampoline at
+  `$f:fa5c` to confirm the stack returns to `$FD` after each trip through the
+  mode table.
 
 ---
 

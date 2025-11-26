@@ -46,8 +46,10 @@ SetupPublisherPrelude
           rem Called Routines: BeginPublisherPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub BeginPublisherPrelude
-          return otherbank
+          return thisbank
 
 SetupAuthorPrelude
           rem Setup Author Prelude mode
@@ -62,8 +64,10 @@ SetupAuthorPrelude
           rem Called Routines: BeginAuthorPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub BeginAuthorPrelude
-          return otherbank
+          return thisbank
 
 SetupTitle
           rem Setup Title Screen mode
@@ -78,11 +82,15 @@ SetupTitle
           rem Called Routines: BeginTitleScreen (bank14) - accesses title
           rem screen state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub BeginTitleScreen
-          return otherbank
+          return thisbank
 
 SetupCharacterSelect
-          return otherbank
+          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
+          return thisbank
 SetupFallingAnimation
           rem Character select uses its own internal flow
           rem No separate Begin function needed - setup is handled
@@ -109,8 +117,10 @@ SetupFallingAnimation
           rem Called Routines: BeginFallingAnimation (bank12) - accesses
           rem animation state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub BeginFallingAnimation bank12
-          return otherbank
+          return thisbank
 
 SetupArenaSelect
           rem Setup Arena Select mode
@@ -125,8 +135,10 @@ SetupArenaSelect
           rem Called Routines: BeginArenaSelect (bank12) - accesses
           rem arena select state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub BeginArenaSelect bank12
-          return otherbank
+          return thisbank
 
 SetupGame
           rem Setup Game mode
@@ -143,8 +155,10 @@ SetupGame
           rem Constraints: Must be colocated with ChangeGameMode
           rem BeginGameLoop resets gameplay state and returns
           rem MainLoop will dispatch to GameMainLoop when gameMode = ModeGame
+          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub BeginGameLoop bank11
-          return otherbank
+          return thisbank
 
 SetupWinner
           rem Setup Winner Announcement mode
@@ -159,8 +173,10 @@ SetupWinner
           rem Called Routines: BeginWinnerAnnouncement (bank12) -
           rem accesses winner state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub BeginWinnerAnnouncement bank12
-          return otherbank
+          return thisbank
 
 SetupAttract
           rem Setup Attract Mode
@@ -175,8 +191,10 @@ SetupAttract
           rem Called Routines: BeginAttractMode (bank14) - accesses
           rem attract mode state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub BeginAttractMode
-          return otherbank
+          return thisbank
 
           rem ============================================================
           rem Near thunks for on...goto jump table

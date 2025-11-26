@@ -29,51 +29,52 @@ end
           ; Mode handlers return here after completing
 
 MainLoopModePublisherPrelude
-          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
-          rem Must use gosub to preserve return address for return otherbank
+          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
+          rem The far-called routines (PublisherPreludeMain, etc.) handle their own return otherbank
           gosub PublisherPreludeMain bank14
-          return otherbank
+          return thisbank
 MainLoopModeAuthorPrelude
-          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
-          rem Must use gosub to preserve return address for return otherbank
+          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub AuthorPrelude bank14
-          return otherbank
+          return thisbank
 MainLoopModeTitleScreen
-          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
-          rem Must use gosub to preserve return address for return otherbank
+          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub TitleScreenMain bank14
-          return otherbank
+          return thisbank
 MainLoopModeCharacterSelect
-          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
-          rem Must use gosub to preserve return address for return otherbank
+          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub CharacterSelectInputEntry bank9
-          return otherbank
+          return thisbank
 MainLoopModeFallingAnimation
-          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
-          rem Must use gosub to preserve return address for return otherbank
+          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub FallingAnimation1 bank11
-          return otherbank
+          return thisbank
 MainLoopModeArenaSelect
-          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
-          rem Must use gosub to preserve return address for return otherbank
+          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub ArenaSelect1 bank14
-          return otherbank
+          return thisbank
 MainLoopModeGameMain
           rem CRITICAL: Guard against being called when not in game mode
           rem This prevents crashes when gameMode is corrupted or incorrectly set
           rem Only call GameMainLoop when actually in game mode (ModeGame = 6)
           if gameMode = ModeGame then goto MainLoopModeGameMainContinue
-          return otherbank
+          return thisbank
 MainLoopModeGameMainContinue
-          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
-          rem Must use gosub to preserve return address for return otherbank
+          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub GameMainLoop bank11
-          return otherbank
+          return thisbank
 MainLoopModeWinnerAnnouncement
-          rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
-          rem Must use gosub to preserve return address for return otherbank
+          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return address)
+          rem Must use return thisbank to match the near call, not return otherbank
           gosub WinnerAnnouncementLoop bank12
-          return otherbank
+          return thisbank
 MainLoopContinue
           rem Routes audio updates after per-mode execution
           rem Inputs: gameMode (global 0-7)

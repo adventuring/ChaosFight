@@ -366,7 +366,7 @@ HUIEB_CheckEnhanced
           goto HUIEB_StandardEnhancedCheck
 HUIEB_EnhancedCheck
           rem Check Genesis/Joy2b+ Button C/II for alternative UP for any characters
-          gosub CheckEnhancedJumpButton
+          gosub CheckEnhancedJumpButton bank10
           rem For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
           if playerCharacter[temp1] = CharacterShamone then if temp3 then let playerCharacter[temp1] = CharacterMethHound : return thisbank
           if playerCharacter[temp1] = CharacterMethHound then if temp3 then let playerCharacter[temp1] = CharacterShamone : return thisbank
@@ -374,7 +374,7 @@ HUIEB_EnhancedCheck
           goto HUIEB_ExecuteJump
 HUIEB_StandardEnhancedCheck
           rem Check Genesis/Joy2b+ Button C/II
-          gosub CheckEnhancedJumpButton
+          gosub CheckEnhancedJumpButton bank10
           if temp3 = 0 then return thisbank
 HUIEB_ExecuteJump
           rem Execute jump if pressed and not already jumping

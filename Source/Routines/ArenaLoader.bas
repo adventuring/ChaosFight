@@ -107,7 +107,7 @@ end
             lda #>ArenaColorsBW
             sta pfcolortable+1
 end
-          return thisbank
+          return otherbank
 LoadArenaRandom
           rem Select random arena (0-31) using proper random number
           rem generator
@@ -135,8 +135,8 @@ LoadArenaRandom
           if temp6 then goto LAR_LoadBWColors
           rem Load color color table (use gosub to avoid goto)
           gosub LoadArenaColorsColor bank16
-          return thisbank
+          return otherbank
 LAR_LoadBWColors
           rem Load B&W color table (shared routine)
           gosub LoadArenaColorsBW
-          return thisbank
+          return otherbank

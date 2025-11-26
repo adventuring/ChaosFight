@@ -30,10 +30,14 @@ end
           rem Fix: Assign directly to high/low bytes instead of broken * 256 multiplication
           let var40 = SongPointers2H[temp2]
           let songPointer = SongPointers2L[temp2]
-          return thisbank
+          rem LoadSongPointerBank15 is called from StartMusic which is called cross-bank
+          rem Therefore it must always use return otherbank, even when called same-bank
+          return otherbank
 LSP15_InvalidSong
           let songPointer = 0
-          return thisbank
+          rem LoadSongPointerBank15 is called from StartMusic which is called cross-bank
+          rem Therefore it must always use return otherbank, even when called same-bank
+          return otherbank
 LoadSongVoice1PointerBank15
           asm
 LoadSongVoice1PointerBank15
@@ -54,14 +58,16 @@ end
           rem Constraints: Only songs 0-Bank15MaxSongID are in Bank 15. Index mapping:
           rem song ID maps directly (index = songID). Returns songPointer = 0 if song not in this bank
           rem Bounds check: Only songs 0-Bank15MaxSongID are in Bank 15
-          if temp1 < 0 then let songPointer = 0 : return
-          if temp1 > Bank15MaxSongID then let songPointer = 0 : return
+          if temp1 < 0 then let songPointer = 0 : return otherbank
+          if temp1 > Bank15MaxSongID then let songPointer = 0 : return otherbank
           rem Calculate compact index: index = songID
           let temp2 = temp1
           rem Fix: Assign directly to high/low bytes instead of broken * 256 multiplication
           let var40 = SongPointers2SecondH[temp2]
           let songPointer = SongPointers2SecondL[temp2]
-          return thisbank
+          rem LoadSongVoice1PointerBank15 is called from StartMusic which is called cross-bank
+          rem Therefore it must always use return otherbank, even when called same-bank
+          return otherbank
 LoadMusicNote0Bank15
           asm
 LoadMusicNote0Bank15
@@ -103,7 +109,7 @@ end
 end
 
           rem Check for end of track (Duration = 0)
-          if temp4 = 0 then let musicVoice0Pointer = 0 : AUDV0 = 0 : return
+          if temp4 = 0 then let musicVoice0Pointer = 0 : AUDV0 = 0 : return otherbank
 
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
           let temp6 = temp2 & %11110000
@@ -125,7 +131,9 @@ end
           rem Advance pointer by 4 bytes (16-bit addition)
           let musicVoice0Pointer = musicVoice0Pointer + 4
 
-          return thisbank
+          rem LoadMusicNote0Bank15 is called from UpdateMusicVoice0 which is reached via cross-bank call
+          rem (PlayMusic is called cross-bank from MainLoop). Therefore it must always use return otherbank.
+          return otherbank
 LoadMusicNote1Bank15
           asm
 LoadMusicNote1Bank15
@@ -172,7 +180,7 @@ end
 end
 
           rem Check for end of track (Duration = 0)
-          if temp4 = 0 then let musicVoice1Pointer = 0 : AUDV1 = 0 : return
+          if temp4 = 0 then let musicVoice1Pointer = 0 : AUDV1 = 0 : return otherbank
 
           let temp6 = temp2 & %11110000
           rem Extract AUDC and AUDV
@@ -194,4 +202,6 @@ end
           rem Advance pointer by 4 bytes
           let musicVoice1Pointer = musicVoice1Pointer + 4
 
-          return thisbank
+          rem LoadMusicNote1Bank15 is called from UpdateMusicVoice1 which is reached via cross-bank call
+          rem (PlayMusic is called cross-bank from MainLoop). Therefore it must always use return otherbank.
+          return otherbank

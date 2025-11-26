@@ -399,4 +399,5 @@ ArenaSelectDoneDrawP2
 ArenaSelectDoneDrawP23
           rem Skip Player 3/4 character drawing (not in 4-player mode or
           rem not selected)
-          return thisbank
+          rem ArenaSelect1 is called cross-bank, so all return paths must use return otherbank
+          return otherbank

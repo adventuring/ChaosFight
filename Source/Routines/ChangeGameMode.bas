@@ -46,10 +46,10 @@ SetupPublisherPrelude
           rem Called Routines: BeginPublisherPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
-          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
-          rem Must use return thisbank to match the near call, not return otherbank
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginPublisherPrelude
-          return thisbank
+          return otherbank
 
 SetupAuthorPrelude
           rem Setup Author Prelude mode
@@ -64,10 +64,10 @@ SetupAuthorPrelude
           rem Called Routines: BeginAuthorPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
-          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
-          rem Must use return thisbank to match the near call, not return otherbank
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginAuthorPrelude
-          return thisbank
+          return otherbank
 
 SetupTitle
           rem Setup Title Screen mode
@@ -82,15 +82,15 @@ SetupTitle
           rem Called Routines: BeginTitleScreen (bank14) - accesses title
           rem screen state
           rem Constraints: Must be colocated with ChangeGameMode
-          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
-          rem Must use return thisbank to match the near call, not return otherbank
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginTitleScreen
-          return thisbank
+          return otherbank
 
 SetupCharacterSelect
-          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
-          rem Must use return thisbank to match the near call, not return otherbank
-          return thisbank
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
+          return otherbank
 SetupFallingAnimation
           rem Character select uses its own internal flow
           rem No separate Begin function needed - setup is handled
@@ -117,10 +117,10 @@ SetupFallingAnimation
           rem Called Routines: BeginFallingAnimation (bank12) - accesses
           rem animation state
           rem Constraints: Must be colocated with ChangeGameMode
-          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
-          rem Must use return thisbank to match the near call, not return otherbank
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginFallingAnimation bank12
-          return thisbank
+          return otherbank
 
 SetupArenaSelect
           rem Setup Arena Select mode
@@ -135,10 +135,10 @@ SetupArenaSelect
           rem Called Routines: BeginArenaSelect (bank12) - accesses
           rem arena select state
           rem Constraints: Must be colocated with ChangeGameMode
-          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
-          rem Must use return thisbank to match the near call, not return otherbank
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginArenaSelect bank12
-          return thisbank
+          return otherbank
 
 SetupGame
           rem Setup Game mode
@@ -155,10 +155,10 @@ SetupGame
           rem Constraints: Must be colocated with ChangeGameMode
           rem BeginGameLoop resets gameplay state and returns
           rem MainLoop will dispatch to GameMainLoop when gameMode = ModeGame
-          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
-          rem Must use return thisbank to match the near call, not return otherbank
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginGameLoop bank11
-          return thisbank
+          return otherbank
 
 SetupWinner
           rem Setup Winner Announcement mode
@@ -173,10 +173,10 @@ SetupWinner
           rem Called Routines: BeginWinnerAnnouncement (bank12) -
           rem accesses winner state
           rem Constraints: Must be colocated with ChangeGameMode
-          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
-          rem Must use return thisbank to match the near call, not return otherbank
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginWinnerAnnouncement bank12
-          return thisbank
+          return otherbank
 
 SetupAttract
           rem Setup Attract Mode
@@ -191,10 +191,10 @@ SetupAttract
           rem Called Routines: BeginAttractMode (bank14) - accesses
           rem attract mode state
           rem Constraints: Must be colocated with ChangeGameMode
-          rem CRITICAL: on gameMode goto is a near call (pushes 2-byte return address)
-          rem Must use return thisbank to match the near call, not return otherbank
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginAttractMode
-          return thisbank
+          return otherbank
 
           rem ============================================================
           rem Near thunks for on...goto jump table

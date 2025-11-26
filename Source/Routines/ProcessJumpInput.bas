@@ -65,8 +65,8 @@ PJI_ZoeJumpCheck
           rem Use goto to avoid branch out of range
           if (playerState[temp1] & 4) then temp6 = 1
           rem Use cached animation state - block jump during attack animations (states 13-15)
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return
-          if temp2 >= 13 then return
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return otherbank
+          if temp2 >= 13 then return otherbank
           rem Block jump during attack windup/execute/recovery
           let temp4 = playerCharacter[temp1]
           gosub DispatchCharacterJump bank10

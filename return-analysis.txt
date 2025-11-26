@@ -1,0 +1,424 @@
+RETURN STATEMENT ANALYSIS FOR FAR-CALLED ROUTINES
+================================================================================
+
+ArenaSelect1:
+  Wrong returns (1):
+    Source/Routines/ArenaSelect.bas:402 - return thisbank
+  Correct returns (4):
+    Source/Routines/ArenaSelect.bas:229 - return otherbank
+    Source/Routines/ArenaSelect.bas:249 - return otherbank
+    Source/Routines/ArenaSelect.bas:266 - return otherbank
+    Source/Routines/ArenaSelect.bas:281 - return otherbank
+
+BernieJump:
+  Wrong returns (4):
+    Source/Routines/CharacterControlsJump.bas:85 - return plain
+    Source/Routines/CharacterControlsJump.bas:98 - return thisbank
+    Source/Routines/CharacterControlsJump.bas:107 - return thisbank
+    Source/Routines/CharacterControlsJump.bas:111 - return thisbank
+  Correct returns (4):
+    Source/Routines/CharacterControlsJump.bas:60 - return otherbank
+    Source/Routines/CharacterControlsJump.bas:70 - return otherbank
+    Source/Routines/CharacterControlsJump.bas:72 - return otherbank
+    Source/Routines/CharacterControlsJump.bas:87 - return otherbank
+
+ChangeGameMode:
+  Wrong returns (9):
+    Source/Routines/ChangeGameMode.bas:52 - return thisbank
+    Source/Routines/ChangeGameMode.bas:70 - return thisbank
+    Source/Routines/ChangeGameMode.bas:88 - return thisbank
+    Source/Routines/ChangeGameMode.bas:93 - return thisbank
+    Source/Routines/ChangeGameMode.bas:123 - return thisbank
+    Source/Routines/ChangeGameMode.bas:141 - return thisbank
+    Source/Routines/ChangeGameMode.bas:161 - return thisbank
+    Source/Routines/ChangeGameMode.bas:179 - return thisbank
+    Source/Routines/ChangeGameMode.bas:197 - return thisbank
+  Correct returns (10):
+    Source/Routines/ChangeGameMode.bas:34 - return otherbank
+    Source/Routines/ChangeGameMode.bas:50 - return otherbank
+    Source/Routines/ChangeGameMode.bas:68 - return otherbank
+    Source/Routines/ChangeGameMode.bas:86 - return otherbank
+    Source/Routines/ChangeGameMode.bas:92 - return otherbank
+    Source/Routines/ChangeGameMode.bas:121 - return otherbank
+    Source/Routines/ChangeGameMode.bas:139 - return otherbank
+    Source/Routines/ChangeGameMode.bas:159 - return otherbank
+    Source/Routines/ChangeGameMode.bas:177 - return otherbank
+    Source/Routines/ChangeGameMode.bas:195 - return otherbank
+
+CharacterSelectInputEntry:
+  Wrong returns (9):
+    Source/Routines/CharacterSelectMain.bas:245 - return thisbank
+    Source/Routines/CharacterSelectMain.bas:256 - return plain
+    Source/Routines/CharacterSelectMain.bas:261 - return thisbank
+    Source/Routines/CharacterSelectMain.bas:273 - return thisbank
+    Source/Routines/CharacterSelectMain.bas:310 - return plain
+    Source/Routines/CharacterSelectMain.bas:312 - return thisbank
+    Source/Routines/CharacterSelectMain.bas:314 - return thisbank
+    Source/Routines/CharacterSelectMain.bas:347 - return thisbank
+    Source/Routines/CharacterSelectMain.bas:369 - return thisbank
+
+CheckAllMissileCollisions:
+  Wrong returns (4):
+    Source/Routines/MissileCollision.bas:250 - return thisbank
+    Source/Routines/MissileCollision.bas:264 - return thisbank
+    Source/Routines/MissileCollision.bas:282 - return thisbank
+    Source/Routines/MissileCollision.bas:285 - return thisbank
+  Correct returns (6):
+    Source/Routines/MissileCollision.bas:42 - return otherbank
+    Source/Routines/MissileCollision.bas:100 - return otherbank
+    Source/Routines/MissileCollision.bas:162 - return otherbank
+    Source/Routines/MissileCollision.bas:166 - return otherbank
+    Source/Routines/MissileCollision.bas:201 - return otherbank
+    Source/Routines/MissileCollision.bas:236 - return otherbank
+
+CheckAllPlayerCollisions:
+  Wrong returns (1):
+    Source/Routines/PlayerCollisionResolution.bas:18 - return plain
+  Correct returns (1):
+    Source/Routines/PlayerCollisionResolution.bas:214 - return otherbank
+
+CheckBoundaryCollisions:
+  Wrong returns (3):
+    Source/Routines/PlayerBoundaryCollisions.bas:77 - return thisbank
+    Source/Routines/PlayerBoundaryCollisions.bas:80 - return thisbank
+    Source/Routines/PlayerBoundaryCollisions.bas:83 - return thisbank
+  Correct returns (1):
+    Source/Routines/PlayerBoundaryCollisions.bas:51 - return otherbank
+
+CheckPlayfieldCollisionAllDirections:
+  Wrong returns (1):
+    Source/Routines/PlayerPlayfieldCollisions.bas:76 - return plain
+  Correct returns (1):
+    Source/Routines/PlayerPlayfieldCollisions.bas:78 - return otherbank
+
+CheckRoboTitoStretchMissileCollisions:
+  Wrong returns (1):
+    Source/Routines/CheckRoboTitoStretchMissileCollisions.bas:143 - return thisbank
+  Correct returns (1):
+    Source/Routines/CheckRoboTitoStretchMissileCollisions.bas:94 - return otherbank
+
+DWS_GetBWMode:
+  Wrong returns (1):
+    Source/Routines/DisplayWinScreen.bas:451 - return thisbank
+  Correct returns (1):
+    Source/Routines/DisplayWinScreen.bas:423 - return otherbank
+
+DetectPads:
+  Wrong returns (13):
+    Source/Routines/ControllerDetection.bas:127 - return thisbank
+    Source/Routines/ControllerDetection.bas:156 - return thisbank
+    Source/Routines/ControllerDetection.bas:157 - return thisbank
+    Source/Routines/ControllerDetection.bas:158 - return thisbank
+    Source/Routines/ControllerDetection.bas:159 - return thisbank
+    Source/Routines/ControllerDetection.bas:183 - return thisbank
+    Source/Routines/ControllerDetection.bas:215 - return thisbank
+    Source/Routines/ControllerDetection.bas:225 - return thisbank
+    Source/Routines/ControllerDetection.bas:238 - return thisbank
+    Source/Routines/ControllerDetection.bas:262 - return plain
+    Source/Routines/ControllerDetection.bas:270 - return thisbank
+    Source/Routines/ControllerDetection.bas:291 - return thisbank
+    Source/Routines/ControllerDetection.bas:315 - return thisbank
+  Correct returns (1):
+    Source/Routines/ControllerDetection.bas:67 - return otherbank
+
+DisplayWinScreen:
+  Wrong returns (5):
+    Source/Routines/DisplayWinScreen.bas:202 - return thisbank
+    Source/Routines/DisplayWinScreen.bas:229 - return thisbank
+    Source/Routines/DisplayWinScreen.bas:292 - return thisbank
+    Source/Routines/DisplayWinScreen.bas:394 - return thisbank
+    Source/Routines/DisplayWinScreen.bas:403 - return thisbank
+
+GetPlayerLocked:
+  Wrong returns (1):
+    Source/Routines/PlayerLockedHelpers.bas:27 - return plain
+  Correct returns (5):
+    Source/Routines/PlayerLockedHelpers.bas:28 - return otherbank
+    Source/Routines/PlayerLockedHelpers.bas:37 - return otherbank
+    Source/Routines/PlayerLockedHelpers.bas:41 - return otherbank
+    Source/Routines/PlayerLockedHelpers.bas:45 - return otherbank
+    Source/Routines/PlayerLockedHelpers.bas:49 - return otherbank
+
+HFCM_AttemptMoveLeft:
+  Wrong returns (1):
+    Source/Routines/FlyingMovementHelpers.bas:63 - return plain
+  Correct returns (5):
+    Source/Routines/FlyingMovementHelpers.bas:17 - return otherbank
+    Source/Routines/FlyingMovementHelpers.bas:31 - return otherbank
+    Source/Routines/FlyingMovementHelpers.bas:44 - return otherbank
+    Source/Routines/FlyingMovementHelpers.bas:67 - return otherbank
+    Source/Routines/FlyingMovementHelpers.bas:70 - return otherbank
+
+HFCM_AttemptMoveRight:
+  Wrong returns (1):
+    Source/Routines/FlyingMovementHelpers.bas:130 - return plain
+  Correct returns (5):
+    Source/Routines/FlyingMovementHelpers.bas:84 - return otherbank
+    Source/Routines/FlyingMovementHelpers.bas:98 - return otherbank
+    Source/Routines/FlyingMovementHelpers.bas:111 - return otherbank
+    Source/Routines/FlyingMovementHelpers.bas:134 - return otherbank
+    Source/Routines/FlyingMovementHelpers.bas:137 - return otherbank
+
+HandleCharacterSelectFire:
+  Wrong returns (1):
+    Source/Routines/CharacterSelectFire.bas:55 - return plain
+  Correct returns (4):
+    Source/Routines/CharacterSelectFire.bas:35 - return otherbank
+    Source/Routines/CharacterSelectFire.bas:89 - return otherbank
+    Source/Routines/CharacterSelectFire.bas:109 - return otherbank
+    Source/Routines/CharacterSelectFire.bas:139 - return otherbank
+
+HandleConsoleSwitches:
+  Wrong returns (6):
+    Source/Routines/ConsoleHandling.bas:135 - return thisbank
+    Source/Routines/ConsoleHandling.bas:142 - return thisbank
+    Source/Routines/ConsoleHandling.bas:148 - return thisbank
+    Source/Routines/ConsoleHandling.bas:153 - return thisbank
+    Source/Routines/ConsoleHandling.bas:215 - return thisbank
+    Source/Routines/ConsoleHandling.bas:220 - return thisbank
+  Correct returns (3):
+    Source/Routines/ConsoleHandling.bas:81 - return otherbank
+    Source/Routines/ConsoleHandling.bas:96 - return otherbank
+    Source/Routines/ConsoleHandling.bas:109 - return otherbank
+
+HandleFlyingCharacterMovement:
+  Wrong returns (3):
+    Source/Routines/PlayerInput.bas:818 - return thisbank
+    Source/Routines/PlayerInput.bas:928 - return thisbank
+    Source/Routines/PlayerInput.bas:961 - return thisbank
+  Correct returns (21):
+    Source/Routines/HandleFlyingCharacterMovement.bas:51 - return otherbank
+    Source/Routines/HandleFlyingCharacterMovement.bas:55 - return otherbank
+    Source/Routines/HandleFlyingCharacterMovement.bas:57 - return otherbank
+    Source/Routines/HandleFlyingCharacterMovement.bas:58 - return otherbank
+    Source/Routines/HandleFlyingCharacterMovement.bas:59 - return otherbank
+    Source/Routines/HandleFlyingCharacterMovement.bas:61 - return otherbank
+    Source/Routines/HandleFlyingCharacterMovement.bas:62 - return otherbank
+    Source/Routines/HandleFlyingCharacterMovement.bas:63 - return otherbank
+    Source/Routines/PlayerInput.bas:603 - return otherbank
+    Source/Routines/PlayerInput.bas:607 - return otherbank
+    Source/Routines/PlayerInput.bas:621 - return otherbank
+    Source/Routines/PlayerInput.bas:647 - return otherbank
+    Source/Routines/PlayerInput.bas:665 - return otherbank
+    Source/Routines/PlayerInput.bas:698 - return otherbank
+    Source/Routines/PlayerInput.bas:702 - return otherbank
+    Source/Routines/PlayerInput.bas:704 - return otherbank
+    Source/Routines/PlayerInput.bas:705 - return otherbank
+    Source/Routines/PlayerInput.bas:706 - return otherbank
+    Source/Routines/PlayerInput.bas:708 - return otherbank
+    Source/Routines/PlayerInput.bas:709 - return otherbank
+    Source/Routines/PlayerInput.bas:710 - return otherbank
+
+HandleGuardInput:
+  Wrong returns (17):
+    Source/Routines/PlayerInput.bas:284 - return thisbank
+    Source/Routines/PlayerInput.bas:286 - return thisbank
+    Source/Routines/PlayerInput.bas:339 - return thisbank
+    Source/Routines/PlayerInput.bas:345 - return thisbank
+    Source/Routines/PlayerInput.bas:350 - return thisbank
+    Source/Routines/PlayerInput.bas:355 - return thisbank
+    Source/Routines/PlayerInput.bas:371 - return thisbank
+    Source/Routines/PlayerInput.bas:372 - return thisbank
+    Source/Routines/PlayerInput.bas:373 - return thisbank
+    Source/Routines/PlayerInput.bas:378 - return thisbank
+    Source/Routines/PlayerInput.bas:384 - return thisbank
+    Source/Routines/PlayerInput.bas:390 - return thisbank
+    Source/Routines/PlayerInput.bas:394 - return thisbank
+    Source/Routines/PlayerInput.bas:401 - return thisbank
+    Source/Routines/PlayerInput.bas:455 - return thisbank
+    Source/Routines/PlayerInput.bas:459 - return thisbank
+    Source/Routines/PlayerInput.bas:486 - return thisbank
+  Correct returns (9):
+    Source/Routines/HandleGuardInput.bas:22 - return otherbank
+    Source/Routines/HandleGuardInput.bas:30 - return otherbank
+    Source/Routines/HandleGuardInput.bas:36 - return otherbank
+    Source/Routines/HandleGuardInput.bas:41 - return otherbank
+    Source/Routines/PlayerInput.bas:227 - return otherbank
+    Source/Routines/PlayerInput.bas:239 - return otherbank
+    Source/Routines/PlayerInput.bas:247 - return otherbank
+    Source/Routines/PlayerInput.bas:253 - return otherbank
+    Source/Routines/PlayerInput.bas:258 - return otherbank
+
+InitializeHealthBars:
+  Wrong returns (1):
+    Source/Routines/HealthBarSystem.bas:269 - return thisbank
+
+LoadArenaColorsColor:
+  Wrong returns (1):
+    Source/Routines/ArenaLoader.bas:110 - return thisbank
+  Correct returns (3):
+    Source/Routines/ArenaLoader.bas:87 - return otherbank
+    Source/Routines/ArenaLoader.bas:138 - return otherbank
+    Source/Routines/ArenaLoader.bas:142 - return otherbank
+
+MovePlayerToTarget:
+  Wrong returns (4):
+    Source/Routines/MovePlayerToTarget.bas:41 - return thisbank
+    Source/Routines/MovePlayerToTarget.bas:50 - return thisbank
+    Source/Routines/MovePlayerToTarget.bas:58 - return thisbank
+    Source/Routines/MovePlayerToTarget.bas:82 - return thisbank
+  Correct returns (1):
+    Source/Routines/MovePlayerToTarget.bas:28 - return otherbank
+
+PF_ProcessHorizontalCollision:
+  Wrong returns (2):
+    Source/Routines/PlayerPlayfieldCollisions.bas:185 - return plain
+    Source/Routines/PlayerPlayfieldCollisions.bas:188 - return plain
+  Correct returns (6):
+    Source/Routines/PlayerPlayfieldCollisions.bas:150 - return otherbank
+    Source/Routines/PlayerPlayfieldCollisions.bas:151 - return otherbank
+    Source/Routines/PlayerPlayfieldCollisions.bas:156 - return otherbank
+    Source/Routines/PlayerPlayfieldCollisions.bas:174 - return otherbank
+    Source/Routines/PlayerPlayfieldCollisions.bas:182 - return otherbank
+    Source/Routines/PlayerPlayfieldCollisions.bas:193 - return otherbank
+
+PlayMusic:
+  Wrong returns (12):
+    Source/Routines/MusicSystem.bas:199 - return thisbank
+    Source/Routines/MusicSystem.bas:225 - return plain
+    Source/Routines/MusicSystem.bas:227 - return thisbank
+    Source/Routines/MusicSystem.bas:253 - return plain
+    Source/Routines/MusicSystem.bas:255 - return thisbank
+    Source/Routines/MusicSystem.bas:287 - return plain
+    Source/Routines/MusicSystem.bas:292 - return plain
+    Source/Routines/MusicSystem.bas:295 - return thisbank
+    Source/Routines/MusicSystem.bas:342 - return plain
+    Source/Routines/MusicSystem.bas:347 - return plain
+    Source/Routines/MusicSystem.bas:350 - return thisbank
+    Source/Routines/MusicSystem.bas:381 - return thisbank
+  Correct returns (3):
+    Source/Routines/MusicSystem.bas:138 - return otherbank
+    Source/Routines/MusicSystem.bas:140 - return otherbank
+    Source/Routines/MusicSystem.bas:143 - return otherbank
+
+PlayerPreviewSetPosition:
+  Wrong returns (4):
+    Source/Routines/CharacterSelectRender.bas:77 - return thisbank
+    Source/Routines/CharacterSelectRender.bas:81 - return thisbank
+    Source/Routines/CharacterSelectRender.bas:85 - return thisbank
+    Source/Routines/CharacterSelectRender.bas:89 - return thisbank
+  Correct returns (1):
+    Source/Routines/CharacterSelectRender.bas:65 - return otherbank
+
+ProcessJumpInput:
+  Wrong returns (2):
+    Source/Routines/ProcessJumpInput.bas:68 - return plain
+    Source/Routines/ProcessJumpInput.bas:69 - return plain
+  Correct returns (11):
+    Source/Routines/ProcessJumpInput.bas:35 - return otherbank
+    Source/Routines/ProcessJumpInput.bas:40 - return otherbank
+    Source/Routines/ProcessJumpInput.bas:42 - return otherbank
+    Source/Routines/ProcessJumpInput.bas:58 - return otherbank
+    Source/Routines/ProcessJumpInput.bas:61 - return otherbank
+    Source/Routines/ProcessJumpInput.bas:74 - return otherbank
+    Source/Routines/ProcessJumpInput.bas:78 - return otherbank
+    Source/Routines/ProcessJumpInput.bas:82 - return otherbank
+    Source/Routines/ProcessJumpInput.bas:118 - return otherbank
+    Source/Routines/ProcessJumpInput.bas:121 - return otherbank
+    Source/Routines/ProcessJumpInput.bas:124 - return otherbank
+
+RenderPlayerPreview:
+  Wrong returns (6):
+    Source/Routines/CharacterSelectRender.bas:136 - return thisbank
+    Source/Routines/CharacterSelectRender.bas:139 - return thisbank
+    Source/Routines/CharacterSelectRender.bas:142 - return thisbank
+    Source/Routines/CharacterSelectRender.bas:145 - return thisbank
+    Source/Routines/CharacterSelectRender.bas:154 - return thisbank
+    Source/Routines/CharacterSelectRender.bas:164 - return thisbank
+  Correct returns (1):
+    Source/Routines/CharacterSelectRender.bas:125 - return otherbank
+
+RenderRoboTitoStretchMissile:
+  Wrong returns (3):
+    Source/Routines/SetSpritePositions.bas:262 - return plain
+    Source/Routines/SetSpritePositions.bas:270 - return plain
+    Source/Routines/SetSpritePositions.bas:286 - return thisbank
+  Correct returns (3):
+    Source/Routines/SetSpritePositions.bas:259 - return otherbank
+    Source/Routines/SetSpritePositions.bas:267 - return otherbank
+    Source/Routines/SetSpritePositions.bas:273 - return otherbank
+
+SelectDrawScreen:
+  Wrong returns (4):
+    Source/Routines/CharacterSelectRender.bas:52 - return plain
+    Source/Routines/CharacterSelectRender.bas:53 - return plain
+    Source/Routines/CharacterSelectRender.bas:54 - return plain
+    Source/Routines/CharacterSelectRender.bas:56 - return thisbank
+  Correct returns (2):
+    Source/Routines/CharacterSelectRender.bas:36 - return otherbank
+    Source/Routines/CharacterSelectRender.bas:38 - return otherbank
+
+SelectUpdateAnimations:
+  Wrong returns (2):
+    Source/Routines/CharacterSelectRender.bas:208 - return plain
+    Source/Routines/CharacterSelectRender.bas:212 - return thisbank
+  Correct returns (1):
+    Source/Routines/CharacterSelectRender.bas:183 - return otherbank
+
+SetPlayerAnimation:
+  Wrong returns (7):
+    Source/Routines/AnimationSystem.bas:302 - return thisbank
+    Source/Routines/AnimationSystem.bas:361 - return plain
+    Source/Routines/AnimationSystem.bas:364 - return thisbank
+    Source/Routines/AnimationSystem.bas:367 - return plain
+    Source/Routines/AnimationSystem.bas:370 - return plain
+    Source/Routines/AnimationSystem.bas:375 - return plain
+    Source/Routines/AnimationSystem.bas:379 - return plain
+  Correct returns (3):
+    Source/Routines/AnimationSystem.bas:252 - return otherbank
+    Source/Routines/AnimationSystem.bas:272 - return otherbank
+    Source/Routines/AnimationSystem.bas:289 - return otherbank
+
+SetPlayerLocked:
+  Wrong returns (1):
+    Source/Routines/PlayerLockedHelpers.bas:77 - return plain
+  Correct returns (5):
+    Source/Routines/PlayerLockedHelpers.bas:84 - return otherbank
+    Source/Routines/PlayerLockedHelpers.bas:85 - return otherbank
+    Source/Routines/PlayerLockedHelpers.bas:86 - return otherbank
+    Source/Routines/PlayerLockedHelpers.bas:87 - return otherbank
+    Source/Routines/PlayerLockedHelpers.bas:89 - return otherbank
+
+SetSpritePositions:
+  Wrong returns (12):
+    Source/Routines/SetSpritePositions.bas:139 - return thisbank
+    Source/Routines/SetSpritePositions.bas:147 - return thisbank
+    Source/Routines/SetSpritePositions.bas:172 - return thisbank
+    Source/Routines/SetSpritePositions.bas:178 - return thisbank
+    Source/Routines/SetSpritePositions.bas:195 - return thisbank
+    Source/Routines/SetSpritePositions.bas:209 - return thisbank
+    Source/Routines/SetSpritePositions.bas:216 - return thisbank
+    Source/Routines/SetSpritePositions.bas:227 - return thisbank
+    Source/Routines/SetSpritePositions.bas:228 - return thisbank
+    Source/Routines/SetSpritePositions.bas:230 - return thisbank
+    Source/Routines/SetSpritePositions.bas:234 - return thisbank
+    Source/Routines/SetSpritePositions.bas:239 - return thisbank
+  Correct returns (1):
+    Source/Routines/SetSpritePositions.bas:121 - return otherbank
+
+StartMusic:
+  Wrong returns (1):
+    Source/Routines/MusicSystem.bas:90 - return plain
+  Correct returns (1):
+    Source/Routines/MusicSystem.bas:92 - return otherbank
+
+UpdateAllMissiles:
+  Wrong returns (9):
+    Source/Routines/MissileSystem.bas:254 - return plain
+    Source/Routines/MissileSystem.bas:399 - return plain
+    Source/Routines/MissileSystem.bas:453 - return thisbank
+    Source/Routines/MissileSystem.bas:514 - return plain
+    Source/Routines/MissileSystem.bas:515 - return thisbank
+    Source/Routines/MissileSystem.bas:581 - return thisbank
+    Source/Routines/MissileSystem.bas:724 - return thisbank
+    Source/Routines/MissileSystem.bas:789 - return thisbank
+    Source/Routines/MissileSystem.bas:816 - return thisbank
+  Correct returns (1):
+    Source/Routines/MissileSystem.bas:188 - return otherbank
+
+UpdateCharacterAnimations:
+  Wrong returns (3):
+    Source/Routines/AnimationSystem.bas:101 - return plain
+    Source/Routines/AnimationSystem.bas:150 - return thisbank
+    Source/Routines/AnimationSystem.bas:214 - return thisbank
+

@@ -78,7 +78,7 @@ HCSC_CheckJoy0
           rem HandleCharacterSelectCycle
           rem Players 0,2 use joy0
           if temp2 = 0 then HCSC_CheckJoy0Left
-          if !joy0right then return
+          if !joy0right then return otherbank
           goto HandleCharacterSelectCycle
 HCSC_CheckJoy0Left
           rem Check joy0 left button
@@ -187,7 +187,7 @@ HCSC_P2TailCheckP4
           if playerCharacter[3] = NoCharacter then goto HCSC_P2TailDone
           let temp6 = NoCharacter
 HCSC_P2TailDone
-          return thisbank
+          return otherbank
 HCSC_CycleDone
           rem Character cycling complete
           rem
@@ -210,7 +210,7 @@ HCSC_CycleDone
           rem Play navigation sound
           let temp1 = SoundMenuNavigate
           gosub PlaySoundEffect bank15
-          return thisbank
+          return otherbank
 CharacterSelectInputEntry
           asm
 CharacterSelectInputEntry
@@ -242,23 +242,23 @@ end
 
           if temp3 < 2 then goto ProcessPlayerInput
           if controllerStatus & SetQuadtariDetected then goto ProcessPlayerInput
-          return thisbank
+          return otherbank
 ProcessPlayerInput
 
           rem Handle Player 1/3 input (joy0)
           if joy0left then temp1 = temp3 : temp2 = 0 : gosub HandleCharacterSelectCycle
           if joy0right then temp1 = temp3 : temp2 = 1 : gosub HandleCharacterSelectCycle
-          rem NOTE: DASM raises ’Label mismatch’ if multiple banks re-include HandleCharacterSelectFire
+          rem NOTE: DASM raises 'Label mismatch' if multiple banks re-include HandleCharacterSelectFire
           if joy0up then temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           if joy0fire then temp1 = temp3 : gosub HandleCharacterSelectFire bank7
 
           rem Handle Player 2/4 input (joy1) - only if active
-          if !temp4 then return
+          if !temp4 then return otherbank
           if joy1left then temp1 = temp3 + 1 : temp2 = 0 : gosub HandleCharacterSelectCycle
           if joy1right then temp1 = temp3 + 1 : temp2 = 1 : gosub HandleCharacterSelectCycle
           if joy1up then temp1 = temp3 + 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           if joy1fire then temp1 = temp3 + 1 : gosub HandleCharacterSelectFire bank7
-          return thisbank
+          return otherbank
 
 
 CharacterSelectInputComplete
@@ -270,7 +270,7 @@ CharacterSelectInputComplete
           rem Draw selection screen
           rem Draw character selection screen
           gosub SelectDrawScreen bank6
-          return thisbank
+          return otherbank
           rem
           rem Random Character Roll Handler
           rem Re-roll random selections until valid (0-15), then lock
@@ -307,11 +307,11 @@ CharacterSelectRollRandomPlayerReroll
           rem if not valid, try next frame.
           let temp2 = rand & $1f
           rem Valid roll - character ID updated, but not locked
-          if temp2 >= NumCharacters then return
+          if temp2 >= NumCharacters then return otherbank
           let playerCharacter[currentPlayer] = temp2
-          return thisbank
+          return otherbank
 CharacterSelectRollsDone
-          return thisbank
+          return otherbank
 CharacterSelectCheckReady
           rem
           rem Check If Ready To Proceed
@@ -344,7 +344,7 @@ CharacterSelectQuadtariReadyNext
           if readyCount >= 2 then goto CharacterSelectFinish
 
 CharacterSelectReadyDone
-          return thisbank
+          return otherbank
 CharacterSelectFinish
           rem Finalize selections and transition to falling animation
           rem
@@ -366,4 +366,4 @@ CharacterSelectSkipFacing
           rem Transition to falling animation
           let gameMode = ModeFallingAnimation
           gosub ChangeGameMode bank14
-          return thisbank
+          return otherbank

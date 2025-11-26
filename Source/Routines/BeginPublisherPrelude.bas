@@ -43,6 +43,9 @@ end
           rem Background: black (COLUBK starts black, no need to set)
 
           rem Start AtariToday music
+          rem BeginPublisherPrelude is called same-bank from SetupPublisherPrelude (both in bank14)
+          rem SetupPublisherPrelude uses gosub (same-bank call, pushes 2 bytes), so return thisbank is correct
+          rem SetupPublisherPrelude itself returns with return otherbank to handle the cross-bank call to ChangeGameMode
           let temp1 = MusicAtariToday
           gosub StartMusic bank15
           return thisbank

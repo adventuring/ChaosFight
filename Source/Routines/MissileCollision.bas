@@ -247,7 +247,7 @@ end
           let cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
           let cachedHitboxTop_W = playerY[temp1]
           let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
-          return thisbank
+          return otherbank
 
 CacheAOELeftHitbox
           asm
@@ -261,7 +261,7 @@ end
           let cachedHitboxLeft_W = cachedHitboxRight_R - PlayerSpriteHalfWidth
           let cachedHitboxTop_W = playerY[temp1]
           let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
-          return thisbank
+          return otherbank
 
 CheckPlayersAgainstCachedHitbox
           asm
@@ -279,10 +279,10 @@ end
           if playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R then CPB_NextPlayer
           if playerY[temp2] >= cachedHitboxBottom_R then CPB_NextPlayer
           let temp4 = temp2
-          return thisbank
+          return otherbank
 CPB_NextPlayer
           next
-          return thisbank
+          return otherbank
 MissileCollPF
           asm
 MissileCollPF

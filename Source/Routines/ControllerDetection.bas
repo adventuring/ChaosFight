@@ -124,7 +124,7 @@ CDP_NoGenesisLeft
           rem Set RightPortGenesis bit
 
 CDP_NoGenesisRight
-          return thisbank
+          return otherbank
 CDP_DetectJoy2bPlus
           asm
 CDP_DetectJoy2bPlus
@@ -153,10 +153,10 @@ end
           rem   newly detected)
           rem This check is redundant since caller already checks, but
           rem kept for safety
-          if temp1 & SetLeftPortGenesis then return thisbank
-          if temp1 & SetRightPortGenesis then return thisbank
-          if temp2 & SetLeftPortGenesis then return thisbank
-          if temp2 & SetRightPortGenesis then return thisbank
+          if temp1 & SetLeftPortGenesis then return otherbank
+          if temp1 & SetRightPortGenesis then return otherbank
+          if temp2 & SetLeftPortGenesis then return otherbank
+          if temp2 & SetRightPortGenesis then return otherbank
 
           rem Joy2b+ controllers pull all three paddle ports HIGH when
           rem   idle
@@ -180,7 +180,7 @@ CDP_NoJoy2Left
           rem Set RightPortJoy2bPlus bit
 
 CDP_NoJoy2Right
-          return thisbank
+          return otherbank
 
           rem
           rem 7800 Pause Button Handler
@@ -212,7 +212,7 @@ end
           rem Constraints: Only processes on 7800 console
           rem (SystemFlag7800 set), not available on SECAM
           rem Only process if running on 7800 (bit 7 of systemFlags)
-          if (systemFlags & SystemFlag7800) = 0 then return thisbank
+          if (systemFlags & SystemFlag7800) = 0 then return otherbank
 
           rem 7800 Pause button detection via Color/B&W switch
           rem On 7800, Color/B&W switch becomes momentary pause button
@@ -222,7 +222,7 @@ end
           if switchbw then PauseNotPressed
 
           rem Button is pressed (low)
-          if (systemFlags & SystemFlagPauseButtonPrev) = 0 then return thisbank
+          if (systemFlags & SystemFlagPauseButtonPrev) = 0 then return otherbank
 
           rem Button just pressed! Toggle Color/B&W override (bit 6)
           let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
@@ -235,7 +235,7 @@ ToggleBWDone
           gosub ReloadArenaColors bank14
 #endif
 
-          return thisbank
+          return otherbank
 
           rem
           rem Quadtari Multiplexing
@@ -258,8 +258,9 @@ UpdateQuadIn
           rem ReadPlayers34 (if odd frame)
           rem
           rem Constraints: Only runs if Quadtari detected
+          rem DetectPads is called cross-bank, so all return paths must use return otherbank
           rem Only run if Quadtari detected
-          if !QuadtariDetected then return
+          if !QuadtariDetected then return otherbank
 
           rem Alternate between reading players 1-2 and players 3-4
           rem Use qtcontroller to determine which pair to read
@@ -267,7 +268,8 @@ UpdateQuadIn
           if qtcontroller then ReadPlayers34
 
 ReadPlayers12
-          return thisbank          rem Read players 1 & 2 (even frames, qtcontroller=0)
+          rem DetectPads is called cross-bank, so all return paths must use return otherbank
+          return otherbank          rem Read players 1 & 2 (even frames, qtcontroller=0)
           rem
           rem Input: qtcontroller (global) = multiplexing state (0 for
           rem P1/P2)
@@ -288,7 +290,8 @@ ReadPlayers12
           rem   correct
 
 ReadPlayers34
-          return thisbank          rem Read players 3 & 4 (odd frames, qtcontroller=1)
+          rem DetectPads is called cross-bank, so all return paths must use return otherbank
+          return otherbank          rem Read players 3 & 4 (odd frames, qtcontroller=1)
           rem
           rem Input: qtcontroller (global) = multiplexing state (1 for
           rem P3/P4)
@@ -312,5 +315,5 @@ ReadPlayers34
 PauseNotPressed
           rem Button not pressed, update previous state (set bit 5)
           let systemFlags = systemFlags | SystemFlagPauseButtonPrev
-          return thisbank
+          return otherbank
 

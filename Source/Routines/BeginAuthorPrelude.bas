@@ -40,6 +40,8 @@ end
 
           rem Note: Bitmap data is loaded automatically by titlescreen
           rem   kernel via includes
-
+          rem BeginAuthorPrelude is called same-bank from SetupAuthorPrelude (both in bank14)
+          rem SetupAuthorPrelude uses gosub (same-bank call, pushes 2 bytes), so return thisbank is correct
+          rem SetupAuthorPrelude itself returns with return otherbank to handle the cross-bank call to ChangeGameMode
           return thisbank
 

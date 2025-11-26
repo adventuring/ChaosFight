@@ -30,7 +30,8 @@ end
           rem Thunks ensure labels resolve correctly within same bank
           rem Thunks are placed at end of file to prevent fall-through
           on gameMode goto CGM_ThunkPublisherPrelude CGM_ThunkAuthorPrelude CGM_ThunkTitle CGM_ThunkCharacterSelect CGM_ThunkFallingAnimation CGM_ThunkArenaSelect CGM_ThunkGame CGM_ThunkWinner CGM_ThunkAttract
-          rem Unreachable - on...goto always jumps to a thunk
+          rem Safety exit if gameMode is invalid
+          return otherbank
 
 SetupPublisherPrelude
           rem Setup Publisher Prelude mode

@@ -103,8 +103,8 @@
           const SpriteNo = 2
 
           rem Unified font glyph indices (Source/Generated/Numbers.bas FontData)
-          rem 0-9: digits "0"-"9"
-          rem A: "?" (question mark), B: "No", C: "C", D: "CPU", E: " " (blank), F: "F"
+          rem 0-9: digits ’0’-’9’
+          rem A: ’?’ (question mark), B: ’No’, C: ’C’, D: ’CPU’, E: ’ ’ (blank), F: ’F’
           const GlyphQuestionMark = 10
           const GlyphNo = 11
           const GlyphC = 12

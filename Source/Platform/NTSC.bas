@@ -8,7 +8,7 @@
 
 #include "Source/Common/Preamble.bas"
 
-          rem TVStandard is automatically set by batariBASIC based on "set tv ntsc"
+          rem TVStandard is automatically set by batariBASIC based on ’set tv ntsc’
           set tv ntsc
 #include "Source/Banks/Banks.bas"
 

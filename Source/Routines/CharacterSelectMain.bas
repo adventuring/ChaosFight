@@ -248,7 +248,7 @@ ProcessPlayerInput
           rem Handle Player 1/3 input (joy0)
           if joy0left then temp1 = temp3 : temp2 = 0 : gosub HandleCharacterSelectCycle
           if joy0right then temp1 = temp3 : temp2 = 1 : gosub HandleCharacterSelectCycle
-          rem NOTE: DASM raises "Label mismatch" if multiple banks re-include HandleCharacterSelectFire
+          rem NOTE: DASM raises ’Label mismatch’ if multiple banks re-include HandleCharacterSelectFire
           if joy0up then temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           if joy0fire then temp1 = temp3 : gosub HandleCharacterSelectFire bank7
 

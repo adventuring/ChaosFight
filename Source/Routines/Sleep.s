@@ -7,7 +7,7 @@
 
           MAC SLEEP            ;usage: SLEEP n (n>1)
           IF {1} < 2
-              ECHO "MACRO ERROR: 'SLEEP': Duration must be > 1"
+              ECHO "MACRO ERROR: "SLEEP": Duration must be > 1"
               ERR
           ENDIF
           

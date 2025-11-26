@@ -94,6 +94,13 @@ end
           rem              called via goto)
           rem              Entry point for main gameplay loop (called
           rem              from MainLoop)
+          rem CRITICAL: Guard against being called in wrong game mode
+          rem This prevents crashes when gameMode is corrupted or incorrectly set
+          rem Only run game logic when actually in game mode (ModeGame = 6)
+          if gameMode = ModeGame then goto GameMainLoopContinue
+          return otherbank
+GameMainLoopContinue
+          
           rem Read enhanced controller buttons (Genesis Button C, Joy2B+
           rem   II/III)
           gosub ReadEnhancedButtons

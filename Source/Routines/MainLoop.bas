@@ -59,6 +59,12 @@ MainLoopModeArenaSelect
           gosub ArenaSelect1 bank14
           return thisbank
 MainLoopModeGameMain
+          rem CRITICAL: Guard against being called when not in game mode
+          rem This prevents crashes when gameMode is corrupted or incorrectly set
+          rem Only call GameMainLoop when actually in game mode (ModeGame = 6)
+          if gameMode = ModeGame then goto MainLoopModeGameMainContinue
+          return thisbank
+MainLoopModeGameMainContinue
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub GameMainLoop bank11

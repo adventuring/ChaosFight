@@ -135,7 +135,7 @@ WeightMultDone
 CheckBernieStun
           rem Issue #1178: Bernie post-fall stun animation
           rem Bernie should enter stunned state after falling far enough to trigger fall damage threshold
-          rem Stays in "fallen from high" animation for 1 second (frame-rate independent)
+          rem Stays in ’fallen from high’ animation for 1 second (frame-rate independent)
           rem
           rem Input: currentPlayer (global) = player index (0-3)
           rem        temp2 = landing velocity (positive downward)
@@ -158,7 +158,7 @@ CheckBernieStun
           rem Set stun timer to 1 second (frame-rate independent: 60fps NTSC, 50fps PAL/SECAM)
           rem Set recovery flag to prevent movement during stun
           let playerRecoveryFrames[currentPlayer] = FramesPerSecond
-          rem Set animation state to "Fallen down" (state 8, shifted = 128)
+          rem Set animation state to ’Fallen down’ (state 8, shifted = 128)
           let playerState[currentPlayer] = playerState[currentPlayer] | PlayerStateBitRecovery
           let temp3 = playerState[currentPlayer] & MaskPlayerStateFlags
           rem Animation state 8 (Fallen down) << 4 = 128

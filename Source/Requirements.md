@@ -860,12 +860,25 @@ errors.
 - **All other statements**, including "rem", start after 10 spaces
 - **data, asm, and for loops**: indent 2 additional spaces (12 spaces total)
 
-## Remarks
+## Remarks and Quotation Marks
 
 **CRITICAL**: Failure to comply with these rules *will* break the game every time.
 
 - **Remarks must precede code**: Remarks always precede the code that they describe. Code statements must not be followed by remarks on the same line or have remarks appear after the code they describe.
-- **Apostrophes in remarks**: U+0027 (regular apostrophe) is **NEVER** allowed in remarks/comments. **MUST** use U+2019 (typographic apostrophe) instead. This is a hard requirement to prevent C preprocessor errors. Examples: use "don't" (U+2019) not "don't" (U+0027), use "doesn't" (U+2019) not "doesn't" (U+0027), use "they're" (U+2019) not "they're" (U+0027).
+
+### Quotation Mark and Apostrophe Rules
+
+Different contexts require different quotation mark characters:
+
+- **`rem` statements**: **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes. U+0027 (straight apostrophe `'`) is **NEVER** allowed. Examples: use "don't" (U+2019) not "don't" (U+0027), use "doesn't" (U+2019) not "doesn't" (U+0027), use "they're" (U+2019) not "they're" (U+0027).
+
+- **`echo` statements**: **MUST** use U+0022 (straight double quotation mark `"`) for all string delimiters. U+2019, U+2018, U+201C, U+201D (typographic quotes) are **NEVER** allowed. Example: `echo "// Bank 14: ", [size]d, " bytes"`
+
+- **`#include` statements**: **MUST** use U+0022 (straight double quotation mark `"`) for all file paths. Example: `#include "Source/Routines/File.bas"`
+
+- **`asm` block comments (`;;`)**: **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes, same as `rem` statements. The C preprocessor processes these comments, but U+2019 prevents it from misinterpreting apostrophes as string delimiters. Example: `;; They don't need EQU definitions - they're resolved by DASM`
+
+**Rationale**: The C preprocessor (used by batariBASIC) interprets straight apostrophes (`'`) as string delimiters, causing "missing terminating ' character" errors. Using U+2019 in `rem` statements and `asm` block comments prevents these errors while maintaining readability. `echo` and `#include` statements are processed differently and require straight double quotes.
 
 ## Calling Conventions
 

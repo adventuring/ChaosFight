@@ -281,7 +281,7 @@ end
           if (controllerStatus & SetPlayers34Active) = 0 then return otherbank
 
           rem Get Player 3 health (0-100), clamp to 99
-          rem Use $ee ("  ") if inactive
+          rem Use $ee (’  ’) if inactive
           rem (playerCharacter = NoCharacter) or eliminated
           let temp1 = playerHealth[2]
           rem Check if Player 3 is eliminated (health = 0)
@@ -292,7 +292,7 @@ end
           goto P3ConvertHealth
 
 P3UseAA
-          rem Player 3 inactive/eliminated - use $ee (displays as "  ")
+          rem Player 3 inactive/eliminated - use $ee (displays as ’  ’)
           let temp4 = $ee
           goto P4GetHealth
 
@@ -304,7 +304,7 @@ P3ConvertHealth
 
 P4GetHealth
           rem Get Player 4 health (0-100), clamp to 99
-          rem Use $ee (displays as "  ") if inactive
+          rem Use $ee (displays as ’  ’) if inactive
           rem (playerCharacter = NoCharacter) or eliminated
           let temp2 = playerHealth[3]
           rem Check if Player 4 is eliminated (health = 0)
@@ -315,7 +315,7 @@ P4GetHealth
           goto P4ConvertHealth
 
 P4UseAA
-          rem Player 4 inactive/eliminated - use $ee (displays as "  ")
+          rem Player 4 inactive/eliminated - use $ee (displays as ’  ’)
           let temp5 = $ee
           goto SetScoreBytes
 

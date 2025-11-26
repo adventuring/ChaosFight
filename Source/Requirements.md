@@ -58,6 +58,24 @@ In any mode, pressing Game Reset causes an instant hard reboot:
 
 ---
 
+## Bankswitch Return Semantics (Investigations 2025‑11‑26)
+
+- `return thisbank` compiles to a bare `RTS`. Only routines that are *never*
+  invoked through `gosub ... bankN` may use it. Treat it as a near return.
+- `return otherbank` expands to `JMP BS_return`, which expects the four-byte
+  encoded return sequence pushed by `BS_jsr`. Any cross-bank routine must end
+  with this form or we will corrupt the stack.
+- The current stack-underflow probe shows `MainLoopModePublisherPrelude`,
+  `MainLoopModeAuthorPrelude`, `MainLoopModeTitleScreen`, and cousins in
+  `Source/Routines/MainLoop.bas` still returning with `return thisbank` even
+  though the dispatcher just performed `gosub ... bank14`. The resulting
+  `RTS` at `$f:faaf` is exactly where the stack dropped to `$FF`.
+- Fix plan: convert those mode handlers to `return otherbank`, rebuild, and
+  re-check the far-call trampoline at `$f:fa5c` to confirm the stack grows
+  back to `$FD` after each trip through the mode table.
+
+---
+
 ## Admin Mode Controller Redetection
 
 In any admin modes (title, preambles, arena select):

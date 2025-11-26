@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/SetPlayerGlyph.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem Unified helper: SetPlayerGlyph
           rem Sets player sprite pointer to point to 8×16 glyph in ROM FontData and sets height.

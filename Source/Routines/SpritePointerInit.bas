@@ -5,7 +5,7 @@ InitializeSpritePointers
 end
           rem
           rem ChaosFight - Source/Routines/SpritePointerInit.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem Sprite Pointer Initialization
           rem
           rem Sets all sprite pointers to point to SCRAM buffers

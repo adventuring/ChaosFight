@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Common/Constants.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           const GameVersionMajor=0
           const GameVersionMinor=1

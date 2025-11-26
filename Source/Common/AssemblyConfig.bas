@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Common/AssemblyConfig.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem Configuration for kernel, romsize, and other batariBASIC settings
 

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Banks/Bank1.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem ASSET BANK: Music/Sound Assets (separate memory budget)
           rem Character theme songs (IDs 6-28): LowRes, RoboTito, SongOfTheBear,

@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Data/CharacterThemeSongIndices.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem Character Theme Song Id Mapping Table
           rem

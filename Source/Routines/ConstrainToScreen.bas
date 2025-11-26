@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/ConstrainToScreen.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 ConstrainToScreen
           rem Clamp player position to on-screen bounds and clear subpixels at edges.

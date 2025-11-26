@@ -1,5 +1,5 @@
 ; ChaosFight - Source/Common/Startup.s
-; Copyright © 2025 Interworldly Adventuring, LLC.
+; Copyright © 2025 Bruce-Robert Pocock.
 ; Derived from Tools/batariBASIC/includes/startup.asm (CC0)
 ; Clean start initialization - clears registers, stack, and memory
 

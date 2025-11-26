@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/IsCharacterMelee.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 IsCharacterMelee
           rem Return 1 if character is mêlée, else 0.

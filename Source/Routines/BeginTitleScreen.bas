@@ -4,7 +4,7 @@ BeginTitleScreen
 
 end
           rem ChaosFight - Source/Routines/BeginTitleScreen.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem Setup routine for Title Screen. Sets initial state only.
 

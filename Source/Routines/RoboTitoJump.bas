@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/RoboTitoJump.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem Robo Tito stretch-and-latch jump routine relocated from Bank 12
           rem to Bank 10 to relieve pressure on CharacterControlsJump.

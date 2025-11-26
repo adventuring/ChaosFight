@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/MusicSystem.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem Local music-system scratch variables (using built-in temp4/temp5)
 

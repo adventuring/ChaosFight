@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Banks/Bank14.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
           rem Console handling (detection, controllers, game mode transitions,

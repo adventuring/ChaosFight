@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterSelectFire.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 HandleCharacterSelectFire
           asm

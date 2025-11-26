@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/SetPlayerPosition.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 SetPlayerPosition
           rem Set player position (integer coordinates, subpixels cleared).

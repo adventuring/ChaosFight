@@ -5,7 +5,7 @@ BeginPublisherPrelude
 end
           rem
           rem ChaosFight - Source/Routines/BeginPublisherPrelude.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem Begin Publisher Prelude - Setup Routine
           rem
           rem Initializes state for Publisher Prelude screen (gameMode

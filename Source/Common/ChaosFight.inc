@@ -1,5 +1,5 @@
 ; ChaosFight custom includes
-; Copyright 2025, Interworldly Adventuring, LLC
+; Copyright 2025, Bruce-Robert Pocock
 
 ; This is the entire source code, since we use cpp to bring
 ; everything together into one file. TODO: Fix the filename.

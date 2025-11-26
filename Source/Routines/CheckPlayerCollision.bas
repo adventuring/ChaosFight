@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CheckPlayerCollision.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 CheckPlayerCollision
           rem

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/FallingAnimation.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem Falling In Animation - Per-frame Loop
           rem Moves players from quadrant staging positions to arena row 2.
 

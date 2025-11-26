@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/SetSpritePositions.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem Missile active mask lookup for participants 0-3
           data SetSpriteMissileMask

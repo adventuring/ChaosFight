@@ -1,5 +1,5 @@
 ; ChaosFight - Source/TitleScreen/titlescreen_layout.s
-; Copyright (c) 2025 Interworldly Adventuring, LLC.
+; Copyright © 2025 Bruce-Robert Pocock.
 
 ; To use a minikernel, just list it below. They’ll be drawn on the screen
 ; in the order they were listed.
@@ -44,5 +44,6 @@ ENDM
 ;
 ; draw_space 10
 ;	A minikernel used to add blank space between other minikernels
+
 
 

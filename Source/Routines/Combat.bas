@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/Combat.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem COMBAT SYSTEM - Generic Subroutines Using Player Arrays
 GetWeightBasedDamage
           asm

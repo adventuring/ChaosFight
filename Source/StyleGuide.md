@@ -3,7 +3,7 @@
 
 **Version**: 1.0
 **Last Updated**: 2025
-**Copyright (c) 2025 Interworldly Adventuring, LLC.**
+**Copyright © 2025 Bruce-Robert Pocock.**
 
 This document defines the coding standards for the ChaosFight project.
 All code must conform to these standards to ensure consistency,
@@ -440,7 +440,7 @@ All source files should begin with:
 
 ```basic
           rem ChaosFight - Source/Path/To/File.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 ```
 
 ---
@@ -902,7 +902,7 @@ When reviewing code, check for:
 
 ```basic
           rem ChaosFight - Source/Routines/Example.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem =========================================================
           rem EXAMPLE SUBROUTINE

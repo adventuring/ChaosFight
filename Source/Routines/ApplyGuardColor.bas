@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/ApplyGuardColor.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 ApplyGuardColor
           rem Apply guard color effect (light cyan for NTSC/PAL, cyan for SECAM)

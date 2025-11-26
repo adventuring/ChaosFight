@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterSelectHelpers.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 SelectStickLeft
           rem Handle stick-left navigation for the active player

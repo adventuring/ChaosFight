@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/HealthBarSystem.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem HEALTH BAR SYSTEM USING PFSCORE
 

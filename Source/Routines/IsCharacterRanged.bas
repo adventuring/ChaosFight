@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/IsCharacterRanged.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 IsCharacterRanged
           rem Return 1 if character is ranged, else 0.

@@ -25,62 +25,62 @@ These links currently use `https://forums.atariage.com/topic/` without topic IDs
 
 1. **RealSports Curling** (Ryan Witmer)
    - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/curling-sweeper.html`, `25/manual/Characters.html`
+   - Location: `25/characters/curling-sweeper.html`, `26/manual/Characters.html`
    - Search: "RealSports Curling" Ryan Witmer Atari 5200
 
 2. **Grizzards** (Zephyr & Bruce-Robert Pocock)
    - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/fat-tony.html`, `25/characters/megax.html`, `25/characters/radish-goblin.html`, `25/manual/Characters.html`
+   - Location: `25/characters/fat-tony.html`, `25/characters/megax.html`, `25/characters/radish-goblin.html`, `26/manual/Characters.html`
    - Search: "Grizzards" Atari 2600 homebrew
 
 3. **Harpy's Curse** (Todd "Revontulli" Furmanski)
    - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/harpy.html`, `25/manual/Characters.html`
+   - Location: `25/characters/harpy.html`, `26/manual/Characters.html`
    - Search: "Harpy's Curse" Revontulli Atari 2600
 
 4. **Knight Guy** (Vladimir "vhzc" Zúñiga)
    - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/knight-guy.html`, `25/manual/Characters.html`
+   - Location: `25/characters/knight-guy.html`, `26/manual/Characters.html`
    - Search: "Knight Guy" "In Another Castle" vhzc
 
 5. **Magical Fairy Force** (Ryan Witmer)
    - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/frooty.html`, `25/characters/pork-chop.html`, `25/manual/Characters.html`
+   - Location: `25/characters/frooty.html`, `25/characters/pork-chop.html`, `26/manual/Characters.html`
    - Search: "Magical Fairy Force" Ryan Witmer Atari 2600
 
 6. **Fairy Drop** (Ryan Witmer)
    - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/frooty.html`, `25/characters/pork-chop.html`, `25/manual/Characters.html`
+   - Location: `25/characters/frooty.html`, `25/characters/pork-chop.html`, `26/manual/Characters.html`
    - Search: "Fairy Drop" Ryan Witmer Atari 2600
 
 7. **Ninjish Guy** (Vladimir "vhzc" Zúñiga)
    - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/ninjish-guy.html`, `25/manual/Characters.html`
+   - Location: `25/characters/ninjish-guy.html`, `26/manual/Characters.html`
    - Search: "Ninjish Guy" "Low-Res World" vhzc
 
 8. **Rob 'N' Banks** (Ryan Witmer)
    - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/pork-chop.html`, `25/manual/Characters.html`
+   - Location: `25/characters/pork-chop.html`, `26/manual/Characters.html`
    - Search: "Rob N Banks" Ryan Witmer Atari 2600
 
 9. **Ratcatcher** (Ryan Witmer)
    - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/pork-chop.html`, `25/manual/Characters.html`
+   - Location: `25/characters/pork-chop.html`, `26/manual/Characters.html`
    - Search: "Ratcatcher" Ryan Witmer Atari 2600
 
 10. **Robo Tito** (Author TBD)
     - Current: `https://forums.atariage.com/topic/`
-    - Location: `25/characters/robo-tito.html`, `25/manual/Characters.html`
+    - Location: `25/characters/robo-tito.html`, `26/manual/Characters.html`
     - Search: "Robo Tito" "Tito el robotito" Atari 2600
 
 11. **Phantasia** (Zephyr & Bruce-Robert Pocock - in development)
     - Current: `https://forums.atariage.com/topic/`
-    - Location: `25/characters/nefertem.html`, `25/characters/radish-goblin.html`, `25/manual/Characters.html`
+    - Location: `25/characters/nefertem.html`, `25/characters/radish-goblin.html`, `26/manual/Characters.html`
     - Search: "Phantasia" Zephyr Pocock development thread
 
 12. **Ducks Away** (Blake "SmittyB" Smith)
     - Current: `https://forums.atariage.com/topic/`
-    - Location: `25/characters/shamone.html`, `25/manual/Characters.html`
+    - Location: `25/characters/shamone.html`, `26/manual/Characters.html`
     - Search: "Ducks Away" SmittyB Blake Smith Atari 2600
 
 13. **Chaos Fight Forum Thread** (General support)
@@ -119,7 +119,7 @@ site:forums.atariage.com "Chaos Fight"
    - Location: 
      - `25/characters/frooty.html` (line 41)
      - `25/characters/pork-chop.html` (line 42)
-     - `25/manual/Characters.html` (line 542, 612)
+     - `26/manual/Characters.html` (line 542, 612)
    - Search: "Magical Fairy Force Championship Adventure" Steam store
 
 #### Suggested Search Query
@@ -194,6 +194,7 @@ Example:
 
 **Last Updated:** Link validation review  
 **Status:** Incomplete - requires manual verification and updates
+
 
 
 

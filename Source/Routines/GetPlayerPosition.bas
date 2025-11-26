@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/GetPlayerPosition.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 GetPlayerPosition
           rem Get player position (integer components only).

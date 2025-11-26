@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Common/Variables.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem MEMORY LAYOUT - MULTISPRITE KERNEL WITH SUPERCHIP:
           rem - Standard RAM: var0-var47 ($A4-$D3) = 48 bytes, a-z

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/AnimationSystem.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           data CharacterWindupNextAction
             255, 15, 255, 255, 14, 14, 255, 255, 255, 14, 255, 14, 255, 255, 255, 255

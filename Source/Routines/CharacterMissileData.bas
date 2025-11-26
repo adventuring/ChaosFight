@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterMissileData.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem Character Missile Data Lookup Routines
           rem Provides O(1) lookups for character missile and weight properties.
           rem

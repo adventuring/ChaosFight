@@ -1,5 +1,5 @@
 ; ChaosFight - Source/Routines/CharacterArtBank5.s
-; Copyright © 2025 Interworldly Adventuring, LLC.
+; Copyright © 2025 Bruce-Robert Pocock.
 ; Character artwork location system for Bank 5 (Characters 24-31)
 
 

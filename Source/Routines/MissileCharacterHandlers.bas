@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/MissileCharacterHandlers.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem Character-specific missile handlers extracted from MissileSystem.bas
           rem These handlers must be in the same bank as MissileSystem.bas
           rem (Bank 10) due to goto calls to DeactivateMissile

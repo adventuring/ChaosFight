@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/ApplyMomentumAndRecovery.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem Research 2025-11-11: Keeping this routine bank8-only after dasm shrieked about
           rem   duplicate .MomentumRecoveryNext labels trying to walk past $10000. One copy

@@ -282,4 +282,5 @@ make all
 
 ---
 
-**ChaosFight** - (c) 2025 Interworldly Adventuring, LLC.
+**ChaosFight** - Copyright 2025 Bruce-Robert Pocock
+

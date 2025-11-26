@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/PlayerPhysicsGravity.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem Disable smart branching optimization to prevent label mismatch errors
           rem smartbranching off

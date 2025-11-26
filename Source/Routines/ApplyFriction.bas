@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/ApplyFriction.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 ApplyFriction
           rem Apply friction to player X velocity (simple decrement/increment).

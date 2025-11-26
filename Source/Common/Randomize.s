@@ -1,5 +1,5 @@
 ; ChaosFight - Source/Common/Randomize.s
-; Copyright © 2025 Interworldly Adventuring, LLC.
+; Copyright © 2025 Bruce-Robert Pocock.
 ; Random number generator routine
 ; Local implementation - do not use std_routines.asm
 

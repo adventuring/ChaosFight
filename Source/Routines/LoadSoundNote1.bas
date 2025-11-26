@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/LoadSoundNote1.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 LoadSoundNote1
           asm

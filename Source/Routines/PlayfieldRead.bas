@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/PlayfieldRead.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 PlayfieldRead
           rem Read playfield pixel at specified column and row

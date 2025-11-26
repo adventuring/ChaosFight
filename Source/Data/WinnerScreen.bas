@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Data/WinnerScreen.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem Winner screen playfield data (pfres=8, 16×8 reflecting)
           rem MUST be in Bank16 - playfields always must be in Bank16
 

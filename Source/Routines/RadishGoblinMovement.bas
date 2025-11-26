@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/RadishGoblinMovement.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem Radish Goblin Bounce Movement System (Optimized)
           rem Complete replacement of standard movement for Radish Goblin character

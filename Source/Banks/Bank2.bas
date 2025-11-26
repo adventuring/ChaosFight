@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Banks/Bank2.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem ASSET BANK: Character Art Assets (separate memory budget)
           rem Character sprites (0-7): Bernie, Curler, DragonOfStorms, ZoeRyen,

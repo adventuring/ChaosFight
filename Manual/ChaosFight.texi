@@ -9,7 +9,7 @@
 @copying
 Chaos Fight Game Manual
 
-Copyright @copyright{} 2025 Interworldly Adventuring, LLC.
+Copyright @copyright{} 2025 Bruce-Robert Pocock.
 
 @quotation
 This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
@@ -31,7 +31,7 @@ No additional restrictions — You may not apply legal terms or technological me
 @titlepage
 @title Chaos Fight
 @subtitle Atari Video Computer System Game Manual
-@author Interworldly Adventuring, LLC
+@author Bruce-Robert Pocock
 
 @page
 @vskip 0pt plus 1filll
@@ -83,7 +83,7 @@ Video Computer System featuring 16 unique characters from AtariAge homebrew game
 @sp 1
 @center Portland, Oregon
 @sp 2
-@center @copyright{} 2025 Interworldly Adventuring, LLC
+@center @copyright{} 2025 Bruce-Robert Pocock
 
 @page
 
@@ -719,25 +719,25 @@ ChaosFight was created with:
 @display
 @group
 ChaosFight
-Copyright @copyright{} 2025 Interworldly Adventuring, LLC.
+Copyright @copyright{} 2025 Bruce-Robert Pocock.
 All rights reserved.
 
 @c Published by AtariAge
 @c @url{https://atariage.com}
 
-Developed by Interworldly Adventuring, LLC
+Developed by Bruce-Robert Pocock
 Portland, Oregon
 @url{https://interworldly.com}
 @end group
 @end display
 
 This game is published by AtariAge for the Atari Video Computer System.
-Distribution is subject to terms established by Interworldly Adventuring, LLC.
+Distribution is subject to terms established by Bruce-Robert Pocock.
 
 ATARI® is a registered trademark of Atari Interactive, Inc. This game is
 officially licensed to and may be published by AtariAge,
 a subsidiary of Atari Interactive, Inc. Commercial distribution of
-cartridges requires a license from Interworldly Adventuring, LLC.
+cartridges requires a license from Bruce-Robert Pocock.
 
 Character names and likenesses are the intellectual property of their 
 respective

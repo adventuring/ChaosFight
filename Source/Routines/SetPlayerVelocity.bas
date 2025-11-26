@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/SetPlayerVelocity.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 SetPlayerVelocity
           rem Set player velocity (integer component, reset subpixels).

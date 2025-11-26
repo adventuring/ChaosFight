@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterSelectRender.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem Player preview coordinate tables
           data SelectPreviewX

@@ -1,5 +1,5 @@
 ; ChaosFight - Source/Common/MultiSpriteKernel.s
-; Copyright © 2025 Interworldly Adventuring, LLC.
+; Copyright © 2025 Bruce-Robert Pocock.
 ; Derived from Tools/batariBASIC/includes/multisprite_kernel.asm (CC0)
 
     ;echo "Multi-sprite kernel starts at ", *

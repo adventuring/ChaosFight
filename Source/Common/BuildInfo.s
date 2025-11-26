@@ -1,5 +1,5 @@
 ; ChaosFight - Source/Common/BuildInfo.s
-; Copyright © 2025 Interworldly Adventuring, LLC.
+; Copyright © 2025 Bruce-Robert Pocock.
 ; Build info strings embedded in ROM
 
 ; Build date string in year.julian format (YYYY.JJJ)

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Banks/Bank15.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem ASSET BANK: Music/Sound Assets (separate memory budget)
           rem Sound effects + character theme songs (IDs 0-6): Bernie, OCascadia,

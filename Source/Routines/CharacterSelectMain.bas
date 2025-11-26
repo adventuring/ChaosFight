@@ -1,6 +1,6 @@
           rem ChaosFight - Source/Routines/CharacterSelectMain.bas
           rem
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem Character Select - Per-frame Loop
           rem
           rem Per-frame character selection screen with Quadtari

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Data/PlayerColors.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem Player color tables for indexed lookup (P1..P4)
           rem Bright (luminance 12) and dim (luminance 6)

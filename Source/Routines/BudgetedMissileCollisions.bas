@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/BudgetedMissileCollisions.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 BudgetedMissileCollisionCheck
           rem Budget Missile Collision Detection

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterControls.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
           rem Character jump velocity lookup table (for StandardJump)
           rem Values are 8-bit twos complement upward velocities

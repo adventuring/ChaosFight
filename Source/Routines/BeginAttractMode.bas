@@ -5,7 +5,7 @@ BeginAttractMode
 end
           rem
           rem ChaosFight - Source/Routines/BeginAttractMode.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem BEGIN ATTRACT MODE - Setup Routine
           rem
           rem Setup routine for Attract Mode. Sets initial state only.

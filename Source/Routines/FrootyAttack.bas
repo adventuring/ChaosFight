@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/FrootyAttack.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem Issue #1177: Frooty lollipop charge-and-bounce attack
 
 FrootyAttack

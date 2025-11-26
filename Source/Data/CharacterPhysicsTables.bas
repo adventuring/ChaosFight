@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Data/CharacterPhysicsTables.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem Character physics tables shared between banks.
 

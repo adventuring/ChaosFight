@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Banks/Bank16.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem SPECIAL PURPOSE BANK: Arenas + Drawscreen
           rem Main loop, drawscreen, arena data/loader, special sprites, numbers font, font rendering

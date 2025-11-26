@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Platform/SECAM.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem Licensed under Creative Commons Attribution-NonCommercial
           rem   4.0 International
           rem See LICENSE file for full terms

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/LoadCharacterColors.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem Player color loading function - colors are player-specific, not character-specific
 
 LoadCharacterColors

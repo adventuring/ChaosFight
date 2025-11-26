@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/FallDamage.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 CheckFallDamage
           rem Applies character-specific fall damage when players land

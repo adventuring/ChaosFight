@@ -1,5 +1,5 @@
 "Cart.MD5" "@@MD5@@"
-"Cart.Manufacturer" "Interworldly Adventuring & AtariAge"
+"Cart.Manufacturer" "Bruce-Robert Pocock & AtariAge"
 "Cart.ModelNo" "Chaos Fight (2026) @@TV@@"
 "Cart.Name" "Chaos Fight (2026 Edition)"
 "Cart.Rarity" "Homebrew"

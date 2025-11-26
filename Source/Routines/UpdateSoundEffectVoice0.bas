@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/UpdateSoundEffectVoice0.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
 
 UpdateSoundEffectVoice0
           asm

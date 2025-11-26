@@ -199,7 +199,7 @@ end
           let temp2 = 0
           let temp3 = 0
           gosub LoadCharacterSprite bank16
-          return otherbank
+          return thisbank
 
 DWS_Position1Player
           rem 1 player: Winner centered on podium
@@ -400,7 +400,7 @@ end
           let playerX[1] = 0
           let playerX[2] = 0
           let playerX[3] = 0
-          return otherbank
+          return thisbank
 
 DWS_GetBWMode
           asm
@@ -448,5 +448,5 @@ end
             lda #>WinnerScreenColorsColor
             sta pfcolortable+1
 end
-          return otherbank
+          return thisbank
 

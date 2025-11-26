@@ -40,5 +40,5 @@ WinnerAdvanceToCharacterSelect
           rem Constraints: Must be colocated with WinnerAnnouncementLoop
           let gameMode = ModeTitle
           gosub ChangeGameMode bank14
-          return thisbank
+          return otherbank
 

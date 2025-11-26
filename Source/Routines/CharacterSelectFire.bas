@@ -86,7 +86,7 @@ HCSF_HandleFire
           rem Play selection sound
           let temp1 = SoundMenuSelect
           gosub PlaySoundEffect bank15
-          return thisbank
+          return otherbank
 HCSF_HandleHandicap
           rem Handle handicap mode selection (75% health)
           rem
@@ -106,7 +106,7 @@ HCSF_HandleHandicap
           rem Play selection sound
           let temp1 = SoundMenuSelect
           gosub PlaySoundEffect bank15
-          return thisbank
+          return otherbank
 HCSF_HandleRandom
           rem Handle random character selection
           rem
@@ -136,4 +136,4 @@ HCSF_HandleRandomSound
           rem Fall through - character will stay as RandomCharacter
           gosub PlaySoundEffect bank15
           rem until roll succeeds
-          return thisbank
+          return otherbank

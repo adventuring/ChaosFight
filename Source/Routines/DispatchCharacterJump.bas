@@ -28,19 +28,19 @@ end
           if temp4 = CharacterRoboTito then goto DCJ_RoboTitoJump
 DCJ_StandardJump
           gosub StandardJump bank12
-          return thisbank
+          return otherbank
 DCJ_BernieJump
           gosub BernieJump bank12
-          return thisbank
+          return otherbank
 DCJ_DragonJump
           gosub DragonOfStormsJump bank12
-          return thisbank
+          return otherbank
 DCJ_HarpyJump
           gosub HarpyJump bank12
-          return thisbank
+          return otherbank
 DCJ_FrootyJump
           gosub FrootyJump bank12
-          return thisbank
+          return otherbank
 DCJ_RoboTitoJump
           gosub RoboTitoJump
-          return thisbank
+          return otherbank

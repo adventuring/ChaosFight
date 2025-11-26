@@ -132,14 +132,14 @@ end
           let temp1 = 0
 
           rem Always check Game Select switch first (works with any controller)
-          if switchselect then temp1 = 1 : return otherbank
+          if switchselect then temp1 = 1 : return thisbank
 
           rem Then check enhanced pause buttons for the specified player
           rem Joy2B+ Button III uses different registers than Button II/C
 
           if temp2 = 0 then goto CEP_CheckPlayer1
           if temp2 = 1 then goto CEP_CheckPlayer2
-          return otherbank
+          return thisbank
 
 CEP_CheckPlayer1
           rem Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
@@ -212,9 +212,9 @@ DoneSwitchChange
           rem Check7800PauseButton
           rem   (NTSC/PAL only, not SECAM)
 
-          return otherbank
+          return thisbank
 
 ReloadArenaColorsNow
           rem Reload arena colors with current switch state
           gosub ReloadArenaColors bank14
-          return otherbank
+          return thisbank

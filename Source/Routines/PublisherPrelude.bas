@@ -106,7 +106,7 @@ PublisherPreludeComplete
           rem Constraints: Must be colocated with PublisherPreludeMain
           let gameMode = ModeAuthorPrelude
           gosub ChangeGameMode bank14
-          return thisbank
+          return otherbank
           rem
           rem Bitmap Loading
           rem Bitmap data is loaded automatically by titlescreen kernel

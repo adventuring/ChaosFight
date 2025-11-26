@@ -38,7 +38,7 @@ end
           rem Bits 2-3 remain 0
 
           let enhancedButtonStates_W = temp1
-          return otherbank
+          return thisbank
 
 GameMainLoop
           asm
@@ -227,7 +227,7 @@ TransitionToWinner
           rem Constraints: Must be colocated with GameMainLoop, CheckGameEndTransition
           let gameMode = ModeWinner
           gosub ChangeGameMode bank14
-          return thisbank
+          return otherbank
 GameEndCheckDone
           rem Game end check complete
           rem
@@ -276,4 +276,4 @@ GameEndCheckDone
 GameMainLoopPaused
           rem Game is paused - skip all movement/physics/animation updates
           rem but still allow console switch handling for unpause
-          return thisbank
+          return otherbank

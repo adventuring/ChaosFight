@@ -286,7 +286,7 @@ InitializeAnimationSystem
           for currentPlayer = 0 to 3
             gosub SetPlayerAnimation bank12
           next
-          return thisbank
+          return otherbank
 HandleAnimationTransition
           asm
 HandleAnimationTransition

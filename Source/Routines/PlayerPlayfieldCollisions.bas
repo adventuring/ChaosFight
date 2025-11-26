@@ -75,7 +75,7 @@ PFBlockDown
           rem Skip zeroing velocity for Radish Goblin (bounce system handles it)
           if playerCharacter[currentPlayer] = CharacterRadishGoblin then return
           if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
-          return thisbank
+          return otherbank
 PF_CheckColumnSpan
           asm
 PF_CheckColumnSpan
@@ -104,7 +104,7 @@ PFCS_Advance
 
 PFCS_Done
           let temp4 = PCC_result
-          return thisbank
+          return otherbank
 PF_CheckRowColumns
           asm
 PF_CheckRowColumns
@@ -138,7 +138,7 @@ PRC_CheckRight
           if temp1 then let PRC_result = 1
 PRC_Done
           let temp4 = PRC_result
-          return thisbank
+          return otherbank
 PF_ProcessHorizontalCollision
           asm
 PF_ProcessHorizontalCollision
@@ -171,7 +171,7 @@ PHC_ClampOnly
           if playerX[temp1] < rowYPosition then let playerX[temp1] = rowYPosition
           if playerX[temp1] < rowYPosition then let playerSubpixelX_W[temp1] = rowYPosition
           if playerX[temp1] < rowYPosition then let playerSubpixelX_WL[temp1] = 0
-          return thisbank
+          return otherbank
 PHC_ClampRight
           let rowYPosition = rowYPosition - 1
           let rowYPosition = rowYPosition * 4
@@ -179,7 +179,7 @@ PHC_ClampRight
           if playerX[temp1] > rowYPosition then let playerX[temp1] = rowYPosition
           if playerX[temp1] > rowYPosition then let playerSubpixelX_W[temp1] = rowYPosition
           if playerX[temp1] > rowYPosition then let playerSubpixelX_WL[temp1] = 0
-          return thisbank
+          return otherbank
 PFCheckDown_Body
           let rowCounter = playfieldRow + temp5
           if rowCounter >= pfrows then return
@@ -190,5 +190,5 @@ PFCheckDown_Body
           let temp2 = playfieldRow
           gosub PF_CheckRowColumns bank10
           if temp4 then goto PFBlockDown
-          return thisbank
+          return otherbank
 

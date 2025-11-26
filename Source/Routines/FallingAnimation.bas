@@ -211,7 +211,7 @@ DonePlayer4Move
           gosub SetPlayerSprites bank6
 
           rem drawscreen called by MainLoop
-          return thisbank          goto FallingAnimation1 bank11
+          return otherbank          goto FallingAnimation1 bank11
 
 FallingComplete1
           rem All players have reached row 2 positions
@@ -237,4 +237,4 @@ FallingComplete1
           rem Transition to Game Mode
           let gameMode = ModeGame
           gosub ChangeGameMode bank14
-          return thisbank
+          return otherbank

@@ -226,7 +226,7 @@ ArenaSelectConfirm
 ArenaSelectDoneConfirm
 
           rem drawscreen called by MainLoop
-          return thisbank          goto ArenaSelect1Loop
+          return otherbank          goto ArenaSelect1Loop
 
 CheckQuadtariFireHold
           rem Check Player 3 and 4 fire buttons (Quadtari)
@@ -246,7 +246,7 @@ CheckQuadtariFireHold
           if !INPT0{7} then let temp1 = 1
           rem Player 4 fire button (right port, odd frame)
           if !INPT2{7} then let temp1 = 1
-          return thisbank
+          return otherbank
 ReturnToCharacterSelect
           rem Return to Character Select screen
           rem
@@ -263,7 +263,7 @@ ReturnToCharacterSelect
           let fireHoldTimer_W = 0
           let gameMode = ModeCharacterSelect
           gosub ChangeGameMode bank14
-          return thisbank
+          return otherbank
 StartGame1
           rem Start game with selected arena
           rem
@@ -278,7 +278,7 @@ StartGame1
           rem Constraints: Must be colocated with ArenaSelect1
           let gameMode = ModeGame
           gosub ChangeGameMode bank14
-          return thisbank
+          return otherbank
           rem
           rem Character Display And Animation
 

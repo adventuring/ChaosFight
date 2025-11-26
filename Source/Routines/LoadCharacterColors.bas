@@ -42,4 +42,4 @@ end
 NormalColorState
           rem Normal color state
           let temp6 = PlayerColors12[currentPlayer]
-          return thisbank
+          return otherbank

@@ -53,7 +53,7 @@ LoadArenaDispatch
 LA_LoadBWColors
           rem Load B&W color table (shared routine)
           gosub LoadArenaColorsBW
-          return thisbank
+          return otherbank
 LA_LoadColorColors
 
 LoadArenaColorsColor

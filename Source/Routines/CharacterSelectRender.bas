@@ -74,19 +74,19 @@ end
 SelectApplyPreviewPositionP0
           player0x = temp2
           player0y = temp3
-          return otherbank
+          return thisbank
 SelectApplyPreviewPositionP1
           player1x = temp2
           player1y = temp3
-          return otherbank
+          return thisbank
 SelectApplyPreviewPositionP2
           player2x = temp2
           player2y = temp3
-          return otherbank
+          return thisbank
 SelectApplyPreviewPositionP3
           player3x = temp2
           player3y = temp3
-          return otherbank
+          return thisbank
 
 SelectHideLowerPlayerPreviews
           asm
@@ -133,16 +133,16 @@ end
           on currentPlayer goto SelectApplyPlayerColorP0 SelectApplyPlayerColorP1 SelectApplyPlayerColorP2 SelectApplyPlayerColorP3
 SelectApplyPlayerColorP0
           COLUP0 = temp2
-          return otherbank
+          return thisbank
 SelectApplyPlayerColorP1
           _COLUP1 = temp2
-          return otherbank
+          return thisbank
 SelectApplyPlayerColorP2
           COLUP2 = temp2
-          return otherbank
+          return thisbank
 SelectApplyPlayerColorP3
           COLUP3 = temp2
-          return otherbank
+          return thisbank
 
 SelectSetPlayerColorUnlocked
           asm
@@ -151,7 +151,7 @@ end
           rem Override sprite color to indicate unlocked state (white)
           let temp2 = ColGrey(14)
           gosub SelectApplyPlayerColor
-          return otherbank
+          return thisbank
 
 SelectSetPlayerColorHandicap
           asm
@@ -161,7 +161,7 @@ end
           rem Override sprite color to indicate handicap lock (dim player color)
           let temp2 = SelectPlayerColorHandicap[currentPlayer]
           gosub SelectApplyPlayerColor
-          return otherbank
+          return thisbank
 
 SelectUpdateAnimations
           asm

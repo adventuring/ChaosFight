@@ -49,4 +49,4 @@ GuardCooldownBlocked
           rem Currently guarding or in cooldown - not allowed to start
           rem   new guard
           let temp2 = 0
-          return thisbank
+          return otherbank

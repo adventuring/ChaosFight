@@ -71,15 +71,15 @@ PJI_ZoeJumpCheck
           let temp4 = playerCharacter[temp1]
           gosub DispatchCharacterJump bank10
           if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
-          return thisbank
+          return otherbank
 PJI_BernieFallThrough
           rem Bernie enhanced button handled in BernieJump routine (fall through 1-row floors)
           gosub BernieJump bank12
-          return thisbank
+          return otherbank
 PJI_HarpyFlap
           rem Harpy enhanced button handled in HarpyJump routine (flap to fly)
           gosub HarpyJump bank12
-          return thisbank
+          return otherbank
 PJI_RoboTitoAscend
           rem Ascend toward ceiling (same logic as ProcessUpInput)
           let temp6 = playerCharacter[temp1]
@@ -118,7 +118,7 @@ end
           return otherbank
 PJI_CheckJoy0Down
           if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
-          return thisbank
+          return otherbank
 PJI_RoboTitoLatch
           let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
-          return thisbank
+          return otherbank

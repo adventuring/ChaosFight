@@ -509,7 +509,7 @@ NextAttacker
 
 CombatShowDamageIndicator
           rem Damage indicator system (handled inline)
-          return thisbank
+          return otherbank
 PlayDamageSound
           rem Damage sound effect handler
           rem
@@ -535,4 +535,4 @@ PlayDamageSound
           rem Constraints: None
           let temp1 = SoundAttackHit
           gosub PlaySoundEffect bank15
-          return thisbank
+          return otherbank

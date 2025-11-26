@@ -211,4 +211,4 @@ PCR_NextInner
 PCR_NextOuter
           let temp1 = temp1 + 1
           if temp1 < temp6 then goto PCR_OuterLoop
-          return thisbank
+          return otherbank

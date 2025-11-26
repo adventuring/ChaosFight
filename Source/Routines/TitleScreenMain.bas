@@ -83,7 +83,7 @@ TitleDoneQuad
           rem reached if called directly
           gosub DrawTitleScreen bank9
 
-          return thisbank
+          return otherbank
 TitleScreenComplete
           rem Transition to character select
           rem
@@ -99,4 +99,4 @@ TitleScreenComplete
           rem Constraints: Must be colocated with TitleScreenMain
           let gameMode = ModeCharacterSelect
           gosub ChangeGameMode bank14
-          return thisbank
+          return otherbank

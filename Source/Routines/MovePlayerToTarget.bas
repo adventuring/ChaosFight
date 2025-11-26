@@ -38,7 +38,7 @@ end
           let originalPlayerY_W = playerY[temp1]
           gosub MPT_NudgeRight
           gosub MPT_NudgeLeft
-          return otherbank
+          return thisbank
 
 MPT_NudgeRight
           asm

@@ -64,7 +64,7 @@ CDP_MergeStatus
           rem   never downgrades
           let controllerStatus = temp1 | temp2
 
-          return thisbank
+          return otherbank
 CDP_DetectGenesis
           asm
 CDP_DetectGenesis
@@ -153,10 +153,10 @@ end
           rem   newly detected)
           rem This check is redundant since caller already checks, but
           rem kept for safety
-          if temp1 & SetLeftPortGenesis then return otherbank
-          if temp1 & SetRightPortGenesis then return otherbank
-          if temp2 & SetLeftPortGenesis then return otherbank
-          if temp2 & SetRightPortGenesis then return otherbank
+          if temp1 & SetLeftPortGenesis then return thisbank
+          if temp1 & SetRightPortGenesis then return thisbank
+          if temp2 & SetLeftPortGenesis then return thisbank
+          if temp2 & SetRightPortGenesis then return thisbank
 
           rem Joy2b+ controllers pull all three paddle ports HIGH when
           rem   idle
@@ -212,7 +212,7 @@ end
           rem Constraints: Only processes on 7800 console
           rem (SystemFlag7800 set), not available on SECAM
           rem Only process if running on 7800 (bit 7 of systemFlags)
-          if (systemFlags & SystemFlag7800) = 0 then return otherbank
+          if (systemFlags & SystemFlag7800) = 0 then return thisbank
 
           rem 7800 Pause button detection via Color/B&W switch
           rem On 7800, Color/B&W switch becomes momentary pause button
@@ -222,7 +222,7 @@ end
           if switchbw then PauseNotPressed
 
           rem Button is pressed (low)
-          if (systemFlags & SystemFlagPauseButtonPrev) = 0 then return otherbank
+          if (systemFlags & SystemFlagPauseButtonPrev) = 0 then return thisbank
 
           rem Button just pressed! Toggle Color/B&W override (bit 6)
           let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
@@ -235,7 +235,7 @@ ToggleBWDone
           gosub ReloadArenaColors bank14
 #endif
 
-          return otherbank
+          return thisbank
 
           rem
           rem Quadtari Multiplexing

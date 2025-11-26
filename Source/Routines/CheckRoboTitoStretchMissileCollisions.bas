@@ -91,7 +91,7 @@ CRTSMC_NextPlayer
           let temp1 = temp1 + 1
           if temp1 < 4 then goto CRTSMC_PlayerLoop
 
-          return thisbank
+          return otherbank
 HandleRoboTitoStretchMissileHit
           asm
 HandleRoboTitoStretchMissileHit

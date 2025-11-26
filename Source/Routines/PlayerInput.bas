@@ -281,9 +281,9 @@ HUIEB_UseJoy0
 HUIEB_HandleUp
           rem Check Shamone form switching first (Shamone <-> MethHound)
           rem Switch Shamone -> MethHound
-          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : let temp3 = 0 : return otherbank
+          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : let temp3 = 0 : return thisbank
           rem Switch MethHound -> Shamone
-          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : let temp3 = 0 : return otherbank
+          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : let temp3 = 0 : return thisbank
           rem Robo Tito: Hold UP to ascend; auto-latch on ceiling contact
           rem Check Bernie fall-through
           if playerCharacter[temp1] = CharacterRoboTito then goto HUIEB_RoboTitoAscend
@@ -336,23 +336,23 @@ HUIEB_RoboTitoCheckJoy0
           if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
 HUIEB_RoboTitoDone
           let temp3 = 0
-          return otherbank
+          return thisbank
 HUIEB_RoboTitoLatch
           rem Restore cached animation state
           let temp2 = temp5
           let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
           let temp3 = 0
-          return otherbank
+          return thisbank
 HUIEB_BernieFallThrough
           rem Bernie UP input handled in BernieJump routine (fall through 1-row floors)
           gosub BernieJump bank12
           let temp3 = 0
-          return otherbank
+          return thisbank
 HUIEB_HarpyFlap
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
           gosub HarpyJump bank12
           let temp3 = 0
-          return otherbank
+          return thisbank
 HUIEB_CheckEnhanced
           rem Process jump input from enhanced buttons (Genesis/Joy2b+ Button C/II)
           rem Note: For Shamone/MethHound, UP is form switch, so jump via enhanced buttons only
@@ -368,37 +368,37 @@ HUIEB_EnhancedCheck
           rem Check Genesis/Joy2b+ Button C/II for alternative UP for any characters
           gosub CheckEnhancedJumpButton
           rem For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
-          if playerCharacter[temp1] = CharacterShamone then if temp3 then let playerCharacter[temp1] = CharacterMethHound : return otherbank
-          if playerCharacter[temp1] = CharacterMethHound then if temp3 then let playerCharacter[temp1] = CharacterShamone : return otherbank
-          if temp3 = 0 then return otherbank
+          if playerCharacter[temp1] = CharacterShamone then if temp3 then let playerCharacter[temp1] = CharacterMethHound : return thisbank
+          if playerCharacter[temp1] = CharacterMethHound then if temp3 then let playerCharacter[temp1] = CharacterShamone : return thisbank
+          if temp3 = 0 then return thisbank
           goto HUIEB_ExecuteJump
 HUIEB_StandardEnhancedCheck
           rem Check Genesis/Joy2b+ Button C/II
           gosub CheckEnhancedJumpButton
-          if temp3 = 0 then return otherbank
+          if temp3 = 0 then return thisbank
 HUIEB_ExecuteJump
           rem Execute jump if pressed and not already jumping
           rem Allow Zoe Ryen a single mid-air double-jump
           if playerCharacter[temp1] = CharacterZoeRyen then goto HUIEB_ZoeJumpCheck
           rem Already jumping, cannot jump again
-          if (playerState[temp1] & 4) then return otherbank
+          if (playerState[temp1] & 4) then return thisbank
           goto HUIEB_JumpProceed
 HUIEB_ZoeJumpCheck
           let temp6 = 0
           if (playerState[temp1] & 4) then temp6 = 1
           rem Zoe already used double-jump
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return otherbank
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return thisbank
 HUIEB_JumpProceed
           rem Use cached animation state - block jump during attack animations (states 13-15)
           rem Block jump during attack windup/execute/recovery
-          if temp2 >= 13 then return otherbank
+          if temp2 >= 13 then return thisbank
           rem Dispatch character jump via dispatcher (proper cross-bank handling)
           let temp4 = playerCharacter[temp1]
           gosub DispatchCharacterJump bank10
 HUIEB_JumpDone
           rem Set Zoe Ryen double-jump flag if applicable
           if playerCharacter[temp1] = CharacterZoeRyen then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
-          return otherbank
+          return thisbank
 
 HandleStandardHorizontalMovement
           rem Unified handler for standard horizontal movement
@@ -452,11 +452,11 @@ HSHM_CheckRight
           if temp1 = 0 then goto HSHM_CheckRightJoy0
           rem Players 1,3 use joy1
           if temp1 = 2 then goto HSHM_CheckRightJoy0
-          if !joy1right then return otherbank
+          if !joy1right then return thisbank
           goto HSHM_HandleRight
 HSHM_CheckRightJoy0
           rem Players 0,2 use joy0
-          if !joy0right then return otherbank
+          if !joy0right then return thisbank
 HSHM_HandleRight
           rem Right movement: set positive velocity
           if playerCharacter[temp1] = CharacterFrooty then goto HSHM_RightMomentum
@@ -483,7 +483,7 @@ HSHM_SPF_No2
           let temp3 = 0
 HSHM_SPF_Done2
           if !temp3 then let playerState[temp1] = playerState[temp1] | 1
-          return otherbank
+          return thisbank
 
 HandleFlyingCharacterMovement
           asm
@@ -815,7 +815,7 @@ HGI_Done1
 InputDoneLeftPortAttack
 
 
-          return otherbank
+          return thisbank
 
 InputHandleRightPortPlayerFunction
           asm
@@ -925,7 +925,7 @@ HGI_Done2
           let temp4 = playerCharacter[temp1]
           gosub DispatchCharacterAttack bank10
 InputDoneRightPortAttack
-          return otherbank
+          return thisbank
 
 HandlePauseInput
           rem
@@ -958,5 +958,5 @@ DonePauseToggle
           rem Update previous button state for next frame
           if temp1 then systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
 
-          return otherbank
+          return thisbank
 

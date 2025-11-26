@@ -134,7 +134,7 @@ DonePlayer3Init
           rem Bottom-right Y position (near bottom)
           let activePlayers = activePlayers + 1
 DonePlayer4Init
-          return thisbank          rem Player 4 initialization complete (skipped if not in
+          return otherbank          rem Player 4 initialization complete (skipped if not in
           rem 4-player mode or not active)
           rem
           rem Input: None (label only, no execution)

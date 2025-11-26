@@ -297,7 +297,7 @@ RoboTitoVoluntaryDrop
           let playerVelocityYL[temp1] = 0
           rem Set jumping bit
           let playerState[temp1] = playerState[temp1] | 4
-          return thisbank
+          return otherbank
 StandardGuard
           return otherbank
           asm

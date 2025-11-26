@@ -41,7 +41,7 @@ end
           rem Calculate bit flag using O(1) array lookup:
           rem BitMask[playerIndex] (1, 2, 4, 8)
           let temp6 = BitMask[temp1]
-          return otherbank
+          return thisbank
 
 SpawnMissile
           asm

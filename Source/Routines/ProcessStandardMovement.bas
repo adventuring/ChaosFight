@@ -87,7 +87,7 @@ PSM_InlineNoRight1
           let temp3 = 0
 PSM_InlineDoneRight1
           if !temp3 then let playerState[temp1] = playerState[temp1] | 1
-          return thisbank          
+          return otherbank          
 PSM_UseJoy0
           rem Players 0,2 use joy0
           rem Left movement: set negative velocity
@@ -147,4 +147,4 @@ PSM_InlineNoRight0
           let temp3 = 0
 PSM_InlineDoneRight0
           if !temp3 then let playerState[temp1] = playerState[temp1] | 1
-          return thisbank
+          return otherbank

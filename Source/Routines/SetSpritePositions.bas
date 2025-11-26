@@ -144,7 +144,7 @@ end
           gosub RenderMissileForParticipant
           let temp1 = temp1 + 1
           gosub RenderMissileForParticipant
-          return otherbank
+          return thisbank
 
 RenderMissileForParticipant
           asm
@@ -169,7 +169,7 @@ end
           if RMF_active then goto RMF_MissileActive
           let temp2 = RMF_select
           gosub RenderRoboTitoStretchMissile bank8
-          return otherbank
+          return thisbank
 
 RMF_MissileActive
           let RMF_character = playerCharacter[RMF_participant]
@@ -224,14 +224,14 @@ end
           rem
           rem Output: player2/3 registers updated if participant is active
           rem
-          if (controllerStatus & SetQuadtariDetected) = 0 then return otherbank
-          if playerCharacter[temp1] = NoCharacter then return otherbank
+          if (controllerStatus & SetQuadtariDetected) = 0 then return thisbank
+          if playerCharacter[temp1] = NoCharacter then return thisbank
           rem Unified sprite position assignment (temp1 = 2 → player2, temp1 = 3 → player3)
-          if ! playerHealth[temp1] then return otherbank
+          if ! playerHealth[temp1] then return thisbank
           if temp1 = 2 then goto CPS_WritePlayer2
           player3x = playerX[temp1]
           player3y = playerY[temp1]
-          return otherbank
+          return thisbank
 
 CPS_WritePlayer2
           player2x = playerX[temp1]
@@ -264,13 +264,13 @@ RRTM_CheckStretch
           let temp3 = temp3 & 240
           let temp3 = temp3 / 16
           if temp3 = 10 then RRTM_ReadStretchHeight
-          return thisbank
+          return otherbank
 RRTM_ReadStretchHeight
           let temp4 = missileStretchHeight_R[temp1]
           if temp4 <= 0 then return
           let temp5 = temp2
           gosub SSP_WriteStretchMissile
-          return thisbank
+          return otherbank
 SSP_WriteStretchMissile
           asm
 SSP_WriteStretchMissile

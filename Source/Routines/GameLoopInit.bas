@@ -232,7 +232,7 @@ SkipPlayer4
           rem Load arena data
           gosub LoadArena bank16
 
-          return thisbank          rem Gameplay state initialized - return to ChangeGameMode
+          return otherbank          rem Gameplay state initialized - return to ChangeGameMode
           rem MainLoop will dispatch to GameMainLoop based on gameMode =
           rem   ModeGame
 

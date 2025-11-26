@@ -11,7 +11,7 @@ end
           rem ROBO TITO (13) - Stretch to ceiling
           rem Input: temp1 = player index
           rem Output: Moves up 3px/frame, latches on ceiling contact
-          if (characterStateFlags_R[temp1] & 1) then return otherbank
+          if (characterStateFlags_R[temp1] & 1) then return thisbank
           if (playerState[temp1] & 4) then goto RoboTitoCannotStretch
           if characterSpecialAbility_R[temp1] = 0 then goto RoboTitoCannotStretch
           goto RoboTitoCanStretch

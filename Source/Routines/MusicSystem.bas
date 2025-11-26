@@ -87,8 +87,9 @@ LoadSongPointersDone
           let musicVoice0Frame_W = 1
           let musicVoice1Frame_W = 1
 
-          rem Start first notes
-          rem fall through
+          rem StartMusic is called via gosub from other banks, so must return
+          rem PlayMusic will be called every frame from MainLoop
+          return otherbank
 
 PlayMusic
           asm

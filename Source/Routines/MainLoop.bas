@@ -83,8 +83,8 @@ MainLoopContinue
           rem Notes: Modes 3-6 handle audio updates in their own routines
 
           rem Check if music update is needed for game modes < 3 or mode 7
-          if gameMode < 3 then goto PlayMusic bank1
-          if gameMode = 7 then goto PlayMusic bank1
+          if gameMode < 3 then gosub PlayMusic bank15
+          if gameMode = 7 then gosub PlayMusic bank15
 SkipMusicUpdate
 MainLoopDrawScreen
           rem Renders the appropriate screen for the current game mode

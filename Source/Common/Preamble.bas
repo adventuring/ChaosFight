@@ -9,7 +9,18 @@
 
           asm
 
-;; Include sleep macro (macro.h documents it but doesn’t define it)
+;; Define TV standard constants for ifconst checks in MultiSpriteSuperChip.s
+;; These are set by the platform files (NTSC.bas, PAL.bas, SECAM.bas) before
+;; Preamble.bas is included. The platform files use #define TV_PAL, #define TV_SECAM, etc.
+;; but assembly code needs _TV_PAL, _TV_SECAM symbols defined with SET.
+;; Note: batariBASIC preprocessor doesn't support #ifdef, so we define all three
+;; and let the build system ensure only the correct one is used.
+;; For NTSC builds, _TV_PAL and _TV_SECAM will be undefined (ifconst will fail).
+;; For PAL builds, _TV_PAL will be defined.
+;; For SECAM builds, _TV_SECAM will be defined.
+;; The platform files will override these with the correct values.
+
+;; Include sleep macro (macro.h documents it but doesn't define it)
 #include "Source/Routines/Sleep.s"
 
 ;; CRITICAL: Include MultiSpriteSuperChip.s FIRST to define all symbols before

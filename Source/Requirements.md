@@ -869,9 +869,87 @@ errors.
 
 ## Calling Conventions
 
-**CRITICAL**: Failure to comply with these rules *will* break the game every time.
+**CRITICAL**: Failure to comply with these rules *will* break the game every time, causing stack corruption, BRK instructions, and crashes.
 
-- **Cross-bank calls**: When calling any routine that is ever called cross-bank, you MUST always use `gosub routine bankN` (far call) form, and end with `return otherbank`
-- **Same-bank calls**: When a routine is never called cross-bank, then you MUST always use `gosub routine` (near call) and end with just `return` — this is strongly preferred wherever possible
+### The Fundamental Rule: Consistency is Mandatory
+
+**If a routine is EVER called cross-bank (via `gosub routine bankN`), it MUST ALWAYS use `return otherbank` for ALL return paths. If a routine is ONLY called same-bank, it MUST use `return` (near return) for efficiency.**
+
+**Mixing calling conventions within a single routine is a critical bug that will cause stack corruption.**
+
+### How Cross-Bank Calls Work
+
+When you call a routine cross-bank using `gosub routine bankN`:
+1. batariBASIC pushes an **encoded return address** onto the stack (high byte contains bank number in low nibble)
+2. batariBASIC calls `BS_jsr` which switches banks and does an `RTS` to the target routine
+3. The target routine **MUST** use `return otherbank` which:
+   - Calls `BS_return` to decode the encoded return address
+   - Switches back to the original bank
+   - Does an `RTS` to return to the caller
+
+If the target routine uses plain `return` instead of `return otherbank`:
+- An `RTS` instruction pops the encoded return address as a normal address
+- This causes a jump to uninitialized memory (typically $00 = BRK instruction)
+- The game crashes with a stack imbalance
+
+### Rules
+
+- **Cross-bank calls**: 
+  - **Call site**: MUST use `gosub routine bankN` (far call) form
+  - **Return site**: MUST use `return otherbank` for **ALL** return paths in the routine
+  - **All return paths**: Every `return` statement in a cross-bank-called routine must be `return otherbank`, including early returns, error returns, and fall-through returns
+  
+- **Same-bank calls**: 
+  - **Call site**: Use `gosub routine` (near call) - strongly preferred for efficiency
+  - **Return site**: Use `return` (near return) - faster and smaller
+  - **Optimization**: If a routine is never called cross-bank, use near calls for better performance
+
+- **Routine Analysis**: 
+  - Before writing or modifying a routine, determine if it will be called cross-bank
+  - If ANY call site uses `gosub routine bankN`, the routine MUST use `return otherbank`
+  - If ALL call sites use `gosub routine` (same-bank), the routine MUST use `return`
+
 - **Variable verification**: Verify variable use of called routine (or routines that it calls) do not interfere with the caller's
+
 - **Call depth**: Verify that no sequence of "gosubs" will ever nest more than 3 subroutines deep
+
+### Examples
+
+**CORRECT - Cross-bank routine:**
+```basic
+ProcessAllAttacks
+  rem Called from GameLoopMain.bas with: gosub ProcessAllAttacks bank7
+  for attackerID = 0 to 3
+    if playerHealth[attackerID] <= 0 then NextAttacker
+    gosub ProcessAttackerAttacks
+NextAttacker
+    next
+  return otherbank  rem MUST use return otherbank - called cross-bank
+```
+
+**CORRECT - Same-bank routine:**
+```basic
+ProcessAttackerAttacks
+  rem Only called from ProcessAllAttacks (same bank)
+  rem Calculate hitbox, check collisions, apply damage
+  return  rem Use return - only called same-bank
+```
+
+**WRONG - Mixed conventions (CRITICAL BUG):**
+```basic
+HandleConsoleSwitches
+  rem Called from GameLoopMain.bas with: gosub HandleConsoleSwitches bank13
+  if switchselect then 
+    rem handle pause
+    return otherbank  rem Correct
+  endif
+  rem handle other switches
+  return  rem WRONG! Must be return otherbank - routine is called cross-bank
+```
+
+### Verification
+
+All routines must be verified to ensure:
+1. If called cross-bank, ALL return statements use `return otherbank`
+2. If only called same-bank, ALL return statements use `return`
+3. No routine mixes the two conventions

@@ -88,8 +88,7 @@ P1SetPattern
           rem Set pfscore1 to health bar pattern
           let pfscore1 = temp3
 
-          return
-
+          return thisbank
 UpdatePlayer2HealthBar
           rem Update Player 2 health bar (pfscore2).
           rem Input: temp1 = health value (0-100)
@@ -154,8 +153,7 @@ P2SetPattern
           rem Set pfscore2 to health bar pattern
           let pfscore2 = temp3
 
-          return otherbank
-
+          return thisbank
 UpdatePlayer12HealthBars
           asm
 UpdatePlayer12HealthBars
@@ -268,8 +266,7 @@ ConvertToBCDLoop
             cld          ; clear decimal mode
             sta temp1    ; store result (packed BCD, e.g., $75 for 75)
 end
-          return
-
+          return thisbank
 UpdatePlayer34HealthBars
           asm
 UpdatePlayer34HealthBars

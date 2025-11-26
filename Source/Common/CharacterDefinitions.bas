@@ -96,8 +96,7 @@ GetCharacterWeightSub
           rem
           rem Constraints: Must share bank with CharacterWeights data
           let temp4 = CharacterWeights[temp1]
-          return
-
+          return thisbank
 GetCharacterAttackTypeSub
           rem Decode bit-packed attack type for the requested character
           rem
@@ -124,8 +123,7 @@ end
           goto GetCharacterAttackTypeSubShiftLoop
 GetCharacterAttackTypeSubShiftDone
           let temp4 = temp4 & 1
-          return
-
+          return thisbank
 GetMissileDimsSub
           rem Retrieve missile width and height for the character
           rem
@@ -140,8 +138,7 @@ GetMissileDimsSub
           rem Constraints: Must share bank with missile dimension tables
           let temp3 = CharacterMissileWidths[temp1]
           let temp4 = CharacterMissileHeights[temp1]
-          return
-
+          return thisbank
 GetMissileEmissionHeightSub
           rem Get missile emission height from character data
           rem
@@ -155,8 +152,7 @@ GetMissileEmissionHeightSub
           rem
           rem Constraints: Table access requires same bank residency
           let temp4 = CharacterMissileEmissionHeights[temp1]
-          return
-
+          return thisbank
 GetMissileMomentumXSub
           rem Fetch missile horizontal momentum for the character
           rem
@@ -170,8 +166,7 @@ GetMissileMomentumXSub
           rem
           rem Constraints: Shares bank with CharacterMissileMomentumX
           let temp4 = CharacterMissileMomentumX[temp1]
-          return
-
+          return thisbank
 GetMissileMomentumYSub
           rem Fetch missile vertical momentum for the character
           rem
@@ -185,8 +180,7 @@ GetMissileMomentumYSub
           rem
           rem Constraints: Shares bank with CharacterMissileMomentumY
           let temp4 = CharacterMissileMomentumY[temp1]
-          return
-
+          return thisbank
 GetMissileFlagsSub
           rem Retrieve missile flag bitfield for the character
           rem
@@ -200,8 +194,7 @@ GetMissileFlagsSub
           rem
           rem Constraints: Shares bank with CharacterMissileFlags table
           let temp4 = CharacterMissileFlags[temp1]
-          return
-
+          return thisbank
           rem
           rem Data Format Notes For Skylinetool Output
 

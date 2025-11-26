@@ -74,7 +74,7 @@ CheckPlayer2HealthUpdate
             sta temp6
 end
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
-          return
+          return thisbank
 DonePlayer2HealthUpdate
           rem Player 2 health update check complete (label only)
           rem
@@ -134,9 +134,9 @@ end
           rem Score minikernel requires all three color registers set to same color
           COLUP1 = ColGray(14)
           rem Players 3/4 health displayed as digits in score area
-          return
+          return thisbank
 DonePlayer3HealthUpdate
-          return
+          return thisbank
 UpdateHealthBarPlayer0
           rem Update Player 1 health bar (framePhase 0)
           rem
@@ -176,8 +176,7 @@ end
           rem Score minikernel requires all three color registers set to same color
           COLUP1 = ColGray(14)
           rem Health bars for players 1/2 are displayed using score registers (pfscore/pfscore2)
-          return
-
+          return thisbank
 UpdateHealthBarPlayer1
           rem Update Player 2 health bar (framePhase 1)
           rem
@@ -217,7 +216,6 @@ end
           rem Score minikernel requires all three color registers set to same color
           COLUP1 = ColGray(14)
           rem Health bars for players 1/2 are displayed using score registers (pfscore/pfscore2)
-          return
-
+          return thisbank
 
 

@@ -144,8 +144,7 @@ SelectStickLeft
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
           if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
-          return
-
+          return thisbank
 SelectStickRight
           rem Handle stick-right navigation for the active player
           rem
@@ -160,8 +159,7 @@ SelectStickRight
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = CharacterBernie
           if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
-          return
-
+          return thisbank
 CharacterSelectHandleComplete
 
           rem Check if all players are ready to start (inline
@@ -199,16 +197,14 @@ CharacterSelectDoneQuadtariReadyInline
           gosub CharacterSelectDrawScreen
 
           rem drawscreen called by MainLoop
-          return
-          goto CharacterSelectLoop
+          return thisbank          goto CharacterSelectLoop
 
 
 
 CharacterSelectDrawScreen
           rem Draw character selection screen via shared renderer
           gosub SelectDrawScreen bank6
-          return
-
+          return thisbank
 HandleCharacterSelectPlayerInput
           rem Unified handler for character select player input
           rem
@@ -238,8 +234,7 @@ HandleCharacterSelectPlayerInput
           rem Handle fire button (selection)
           if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           gosub HandleCharacterSelectFire bank6
-          return
-HCSPI_UseJoy0
+          return thisbankHCSPI_UseJoy0
           rem Players 0,2 use joy0
           if joy0left then gosub SelectStickLeft
           rem Unlock by moving up
@@ -247,8 +242,7 @@ HCSPI_UseJoy0
           rem Handle fire button (selection)
           if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           gosub HandleCharacterSelectFire bank6
-          return
-
+          return thisbank
 CharacterSelectCompleted
           rem Character selection complete (stores selected characters
           rem and initializes facing directions)
@@ -285,8 +279,7 @@ DoneCharacter3FacingSel
 DoneCharacter4FacingSel
 
           rem Proceed to falling animation
-          return
-
+          return thisbank
 CharacterSelectDetectQuadtari
           rem Detect Quadtari adapter
           rem Detect Quadtari adapter (canonical detection: check paddle
@@ -329,8 +322,7 @@ CharacterSelectDetectQuadtari
           goto CharacterSelectQuadtariDetected
 
 CharacterSelectQuadtariAbsent
-          return
-          rem Helper: Quadtari not detected in this detection cycle
+          return thisbank          rem Helper: Quadtari not detected in this detection cycle
           rem
           rem Input: None
           rem
@@ -368,4 +360,4 @@ CharacterSelectQuadtariDetected
           rem   existing capabilities
           rem OR merge ensures upgrades only, never downgrades
           let controllerStatus  = controllerStatus | SetQuadtariDetected
-          return
+          return thisbank

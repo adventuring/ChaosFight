@@ -117,5 +117,4 @@ PUI_DoneJumpInput
           let temp3 = 0
 
 PUI_DoneUpInputHandling
-          return
-
+          return thisbank

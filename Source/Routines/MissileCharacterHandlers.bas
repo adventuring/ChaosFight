@@ -49,8 +49,7 @@ end
 VelocityDone
           let missileVelocityY[temp1] = temp6
 
-          return
-
+          return thisbank
 HandleMegaxMissile
           rem
           rem HANDLE MEGAX MISSILE (stationary Fire Breath Visual)
@@ -137,8 +136,7 @@ end
 MegaxMissileActive
           rem Attack still active - missile stays visible
           rem Skip normal movement and collision checks
-          return
-
+          return thisbank
 HandleKnightGuyMissile
           rem
           rem HANDLE KNIGHT GUY MISSILE (sword Swing Visual)
@@ -254,5 +252,4 @@ KnightGuySetY
           let missileVelocityY[temp1] = 0
 
           rem Skip normal movement and collision checks
-          return
-
+          return thisbank

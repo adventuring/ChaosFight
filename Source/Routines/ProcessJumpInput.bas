@@ -29,7 +29,7 @@ end
           rem Note: For Harpy, UP is flap, so jump via enhanced buttons only
           rem Check enhanced button first (sets temp3 = 1 if pressed, 0 otherwise)
           rem Check Genesis/Joy2b+ Button C/II
-          gosub CheckEnhancedJumpButton
+          gosub CheckEnhancedJumpButton bank10
           rem If enhanced button not pressed, return (no jump)
           
           if temp3 = 0 then return otherbank
@@ -65,24 +65,21 @@ PJI_ZoeJumpCheck
           rem Use goto to avoid branch out of range
           if (playerState[temp1] & 4) then temp6 = 1
           rem Use cached animation state - block jump during attack animations (states 13-15)
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return otherbank
-          if temp2 >= 13 then return otherbank
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return
+          if temp2 >= 13 then return
           rem Block jump during attack windup/execute/recovery
           let temp4 = playerCharacter[temp1]
           gosub DispatchCharacterJump bank10
           if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
-          return otherbank
-
+          return thisbank
 PJI_BernieFallThrough
           rem Bernie enhanced button handled in BernieJump routine (fall through 1-row floors)
           gosub BernieJump bank12
-          return otherbank
-
+          return thisbank
 PJI_HarpyFlap
           rem Harpy enhanced button handled in HarpyJump routine (flap to fly)
           gosub HarpyJump bank12
-          return otherbank
-
+          return thisbank
 PJI_RoboTitoAscend
           rem Ascend toward ceiling (same logic as ProcessUpInput)
           let temp6 = playerCharacter[temp1]
@@ -121,8 +118,7 @@ end
           return otherbank
 PJI_CheckJoy0Down
           if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
-          return otherbank
+          return thisbank
 PJI_RoboTitoLatch
           let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
-          return otherbank
-
+          return thisbank

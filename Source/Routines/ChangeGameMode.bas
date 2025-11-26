@@ -26,9 +26,11 @@ end
           rem
           rem Constraints: Must be colocated with all Setup* functions
           rem (called via if...goto)
-          rem Optimized: Use on...goto instead of if-else chain
-          on gameMode goto SetupPublisherPrelude SetupAuthorPrelude SetupTitle SetupCharacterSelect SetupFallingAnimation SetupArenaSelect SetupGame SetupWinner SetupAttract
-          return otherbank
+          rem Use on...goto with near thunks (on...goto is near-call-only)
+          rem Thunks ensure labels resolve correctly within same bank
+          rem Thunks are placed at end of file to prevent fall-through
+          on gameMode goto CGM_ThunkPublisherPrelude CGM_ThunkAuthorPrelude CGM_ThunkTitle CGM_ThunkCharacterSelect CGM_ThunkFallingAnimation CGM_ThunkArenaSelect CGM_ThunkGame CGM_ThunkWinner CGM_ThunkAttract
+          rem Unreachable - on...goto always jumps to a thunk
 
 SetupPublisherPrelude
           rem Setup Publisher Prelude mode
@@ -174,3 +176,44 @@ SetupAttract
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginAttractMode
           return otherbank
+
+          rem ============================================================
+          rem Near thunks for on...goto jump table
+          rem Placed at end to prevent accidental fall-through
+          rem ============================================================
+
+CGM_ThunkPublisherPrelude
+          rem Near thunk - same bank jump
+          goto SetupPublisherPrelude
+
+CGM_ThunkAuthorPrelude
+          rem Near thunk - same bank jump
+          goto SetupAuthorPrelude
+
+CGM_ThunkTitle
+          rem Near thunk - same bank jump
+          goto SetupTitle
+
+CGM_ThunkCharacterSelect
+          rem Near thunk - same bank jump
+          goto SetupCharacterSelect
+
+CGM_ThunkFallingAnimation
+          rem Near thunk - same bank jump
+          goto SetupFallingAnimation
+
+CGM_ThunkArenaSelect
+          rem Near thunk - same bank jump
+          goto SetupArenaSelect
+
+CGM_ThunkGame
+          rem Near thunk - same bank jump
+          goto SetupGame
+
+CGM_ThunkWinner
+          rem Near thunk - same bank jump
+          goto SetupWinner
+
+CGM_ThunkAttract
+          rem Near thunk - same bank jump
+          goto SetupAttract

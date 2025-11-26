@@ -32,5 +32,4 @@ DonePauseToggle
           rem Update previous button state for next frame
           if temp1 then systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
 
-          return
-
+          return thisbank

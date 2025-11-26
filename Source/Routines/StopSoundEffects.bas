@@ -31,5 +31,4 @@ StopSoundEffects
           rem Reset frame counters
           let soundEffectFrame_W = 0
           let soundEffectFrame1_W = 0
-          return
-
+          return thisbank

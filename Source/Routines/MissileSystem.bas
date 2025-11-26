@@ -450,8 +450,7 @@ MissileSystemNoHit
           let missileLifetime_W[temp1] = missileLifetimeValue
 MissileUpdateComplete
 
-          return
-
+          return thisbank
           rem Character handlers extracted to MissileCharacterHandlers.bas
 
 MissileSysPF
@@ -513,8 +512,7 @@ MissileSysPF
           gosub PlayfieldRead bank16
           rem Default: no collision detected
           if temp1 then let temp4 = 1 : return
-          return
-
+          return thisbank
 CheckMissilePlayerCollision
           rem
           rem Check Missile-player Collision
@@ -580,8 +578,7 @@ CheckMissilePlayerCollision
 MissileCheckNextPlayer
           next
 MissileCollisionReturn
-          return
-
+          return thisbank
 HandleMissileHit
           asm
 HandleMissileHit
@@ -724,8 +721,7 @@ KnockbackDone
 
           rem Spawn damage indicator visual (handled inline)
 
-          return
-
+          return thisbank
 HandleMissileBounce
           asm
 HandleMissileBounce
@@ -790,8 +786,7 @@ BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc
 
           rem Continue bouncing (do not deactivate)
-          return
-
+          return thisbank
 DeactivateMissile
           rem
           rem Deactivate Missile
@@ -818,6 +813,5 @@ DeactivateMissile
           let temp6 = MaxByteValue - temp6
           rem Invert bits
           let missileActive  = missileActive & temp6
-          return
-
+          return thisbank
 

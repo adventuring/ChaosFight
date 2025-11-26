@@ -136,8 +136,7 @@ RenderMissilesTwoPlayer
           let temp1 = 0
 RenderMissilePair
           gosub SetSpritePositionsRenderPair
-          return otherbank
-
+          return thisbank
 SetSpritePositionsRenderPair
           asm
 SetSpritePositionsRenderPair
@@ -176,8 +175,7 @@ RMF_MissileActive
           let RMF_character = playerCharacter[RMF_participant]
           let temp5 = RMF_select
           gosub SSP_WriteMissileRegisters
-          return otherbank
-
+          return thisbank
 SSP_WriteMissileRegisters
           asm
 SSP_WriteMissileRegisters
@@ -194,8 +192,7 @@ end
           let temp3 = missileNUSIZ_R[RMF_participant]
           let temp4 = CharacterMissileHeights[RMF_character]
           gosub SSP_WriteMissileRegistersUnified
-          return
-
+          return thisbank
 SSP_WriteMissileRegistersUnified
           asm
 SSP_WriteMissileRegistersUnified
@@ -209,15 +206,14 @@ end
           ENAM1 = 1
           NUSIZ1 = temp3
           missile1height = temp4
-          return
+          return thisbank
 SSP_WriteUnified0
           missile0x = temp6
           missile0y = temp2
           ENAM0 = 1
           NUSIZ0 = temp3
           missile0height = temp4
-          return
-
+          return thisbank
 CopyParticipantSpritePosition
           asm
 CopyParticipantSpritePosition
@@ -240,8 +236,7 @@ end
 CPS_WritePlayer2
           player2x = playerX[temp1]
           player2y = playerY[temp1]
-          return otherbank
-
+          return thisbank
 RenderRoboTitoStretchMissile
           asm
 RenderRoboTitoStretchMissile
@@ -264,20 +259,18 @@ end
           return otherbank
 
 RRTM_CheckStretch
-          if (characterStateFlags_R[temp1] & 1) then return otherbank
+          if (characterStateFlags_R[temp1] & 1) then return
           let temp3 = playerState[temp1]
           let temp3 = temp3 & 240
           let temp3 = temp3 / 16
           if temp3 = 10 then RRTM_ReadStretchHeight
-          return otherbank
-
+          return thisbank
 RRTM_ReadStretchHeight
           let temp4 = missileStretchHeight_R[temp1]
-          if temp4 <= 0 then return otherbank
+          if temp4 <= 0 then return
           let temp5 = temp2
           gosub SSP_WriteStretchMissile
-          return otherbank
-
+          return thisbank
 SSP_WriteStretchMissile
           asm
 SSP_WriteStretchMissile
@@ -290,5 +283,4 @@ end
           rem temp4 already set to height
           let temp3 = 0
           gosub SSP_WriteMissileRegistersUnified
-          return
-
+          return thisbank

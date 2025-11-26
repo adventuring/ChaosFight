@@ -15,7 +15,7 @@ end
 PCR_SkipElse
           let temp1 = 0
 PCR_OuterLoop
-          if temp1 >= temp6 then return otherbank
+          if temp1 >= temp6 then return
           if temp1 >= 2 then PCR_CheckP1Active
           goto PCR_InnerLoop
 PCR_CheckP1Active
@@ -211,4 +211,4 @@ PCR_NextInner
 PCR_NextOuter
           let temp1 = temp1 + 1
           if temp1 < temp6 then goto PCR_OuterLoop
-          return otherbank
+          return thisbank

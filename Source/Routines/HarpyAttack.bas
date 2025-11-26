@@ -115,5 +115,4 @@ HarpySetVerticalVelocity
           rem - Hit players are damaged and pushed (knockback handled by
           rem   collision system)
 
-          return
-
+          return thisbank

@@ -14,5 +14,4 @@ end
           if temp2 = 0 then temp2 = 1 : goto IsEliminatedDone
           let temp2 = 0
 IsEliminatedDone
-          return otherbank
-
+          return thisbank

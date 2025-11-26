@@ -24,14 +24,13 @@ ApplyGuardColor
           on temp1 goto GuardColor0 GuardColor1 GuardColor2 GuardColor3
 GuardColor0
           COLUP0 = ColCyan(12)
-          return
+          return thisbank
 GuardColor1
           _COLUP1 = ColCyan(12)
-          return
+          return thisbank
 GuardColor2
           COLUP2 = ColCyan(12)
-          return
+          return thisbank
 GuardColor3
           COLUP3 = ColCyan(12)
-          return
-
+          return thisbank

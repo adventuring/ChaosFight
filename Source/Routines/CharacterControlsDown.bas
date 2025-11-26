@@ -1,5 +1,6 @@
           rem DOWN BUTTON HANDLERS (Called via on goto from PlayerInput)
 DragonOfStormsDown
+          return otherbank
           asm
 DragonOfStormsDown = .DragonOfStormsDown
 end
@@ -68,6 +69,7 @@ end
           return otherbank
 
 HarpyDown
+          return otherbank
           asm
 HarpyDown = .HarpyDown
 end
@@ -182,9 +184,9 @@ HarpyNormalDown
           let playerVelocityYL[temp1] = 0
           rem Ensure guard bit clear
           let playerState[temp1] = playerState[temp1] & !2
-          return
-
+          return thisbank
 FrootyDown
+          return otherbank
           asm
 FrootyDown = .FrootyDown
 end
@@ -295,9 +297,9 @@ RoboTitoVoluntaryDrop
           let playerVelocityYL[temp1] = 0
           rem Set jumping bit
           let playerState[temp1] = playerState[temp1] | 4
-          return otherbank
-
+          return thisbank
 StandardGuard
+          return otherbank
           asm
 StandardGuard = .StandardGuard
 end

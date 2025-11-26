@@ -28,5 +28,4 @@ end
           rem This timer will be decremented each frame until it reaches 0
           let playerTimers_W[temp1] = GuardTimerMaxFrames
 
-          return
-
+          return thisbank

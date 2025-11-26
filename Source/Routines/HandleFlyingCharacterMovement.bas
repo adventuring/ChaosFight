@@ -4,7 +4,6 @@
 HandleFlyingCharacterMovement
           asm
 HandleFlyingCharacterMovement
-
 end
           rem
           rem Shared Flying Character Movement

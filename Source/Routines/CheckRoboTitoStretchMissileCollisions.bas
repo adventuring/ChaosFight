@@ -91,8 +91,7 @@ CRTSMC_NextPlayer
           let temp1 = temp1 + 1
           if temp1 < 4 then goto CRTSMC_PlayerLoop
 
-          return otherbank
-
+          return thisbank
 HandleRoboTitoStretchMissileHit
           asm
 HandleRoboTitoStretchMissileHit
@@ -141,5 +140,4 @@ end
           rem Clear bit 0 (latched flag)
           let characterStateFlags_W[temp1] = temp3
 
-          return
-
+          return thisbank

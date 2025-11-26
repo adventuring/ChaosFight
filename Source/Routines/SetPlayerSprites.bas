@@ -206,5 +206,4 @@ end
 
 DonePlayer4Sprite
 
-          return otherbank
-
+          return thisbank

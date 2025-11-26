@@ -15,5 +15,4 @@ SetPlayerPosition
           rem SCRAM write to playerSubpixelY_W
           let playerSubpixelY_W[temp1] = temp3
           let playerSubpixelY_WL[temp1] = 0
-          return
-
+          return thisbank

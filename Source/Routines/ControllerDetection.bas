@@ -64,8 +64,7 @@ CDP_MergeStatus
           rem   never downgrades
           let controllerStatus = temp1 | temp2
 
-          return otherbank
-
+          return thisbank
 CDP_DetectGenesis
           asm
 CDP_DetectGenesis
@@ -125,8 +124,7 @@ CDP_NoGenesisLeft
           rem Set RightPortGenesis bit
 
 CDP_NoGenesisRight
-          return otherbank
-
+          return thisbank
 CDP_DetectJoy2bPlus
           asm
 CDP_DetectJoy2bPlus
@@ -182,8 +180,7 @@ CDP_NoJoy2Left
           rem Set RightPortJoy2bPlus bit
 
 CDP_NoJoy2Right
-          return otherbank
-
+          return thisbank
 
           rem
           rem 7800 Pause Button Handler
@@ -262,7 +259,7 @@ UpdateQuadIn
           rem
           rem Constraints: Only runs if Quadtari detected
           rem Only run if Quadtari detected
-          if !QuadtariDetected then return otherbank
+          if !QuadtariDetected then return
 
           rem Alternate between reading players 1-2 and players 3-4
           rem Use qtcontroller to determine which pair to read
@@ -270,8 +267,7 @@ UpdateQuadIn
           if qtcontroller then ReadPlayers34
 
 ReadPlayers12
-          return otherbank
-          rem Read players 1 & 2 (even frames, qtcontroller=0)
+          return thisbank          rem Read players 1 & 2 (even frames, qtcontroller=0)
           rem
           rem Input: qtcontroller (global) = multiplexing state (0 for
           rem P1/P2)
@@ -292,8 +288,7 @@ ReadPlayers12
           rem   correct
 
 ReadPlayers34
-          return otherbank
-          rem Read players 3 & 4 (odd frames, qtcontroller=1)
+          return thisbank          rem Read players 3 & 4 (odd frames, qtcontroller=1)
           rem
           rem Input: qtcontroller (global) = multiplexing state (1 for
           rem P3/P4)
@@ -317,6 +312,5 @@ ReadPlayers34
 PauseNotPressed
           rem Button not pressed, update previous state (set bit 5)
           let systemFlags = systemFlags | SystemFlagPauseButtonPrev
-          return otherbank
-
+          return thisbank
 

@@ -145,14 +145,12 @@ CEP_CheckPlayer1
           rem Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
           if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then temp1 = 1
           if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then temp1 = 1
-          return otherbank
-
+          return thisbank
 CEP_CheckPlayer2
           rem Player 2: Check Genesis Button C (INPT2) or Joy2B+ Button III (INPT3)
           if controllerStatus & SetRightPortGenesis then if (INPT2 & $80) = 0 then temp1 = 1
           if controllerStatus & SetRightPortJoy2bPlus then if (INPT3 & $80) = 0 then temp1 = 1
-          return otherbank
-
+          return thisbank
           rem
           rem Color/B&W switch change detection (triggers controller re-detect)
 

@@ -11,5 +11,4 @@ RestoreNormalPlayerColor
           rem
           rem Mutates: temp4 (loads character index for downstream routines)
           let temp4 = playerCharacter[temp1]
-          return
-
+          return thisbank

@@ -67,4 +67,4 @@ CharacterSelectQuadtariAbsent
           rem Background: black (COLUBK starts black, no need to set)
 
           rem Initialization complete - per-frame loop handled by CharacterSelectInputEntry
-          return
+          return thisbank

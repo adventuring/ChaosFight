@@ -15,7 +15,7 @@ AddVelocitySubpixelY
           rem No carry: temp3 = 0, use low byte directly
           if temp3 > 0 then VelocityYCarry
           let playerVelocityYL[temp1] = temp2
-          return
+          return thisbank
 VelocityYCarry
           rem Helper: Handles carry from subpixel to integer part
           rem
@@ -35,5 +35,4 @@ VelocityYCarry
           rem Carry detected: temp3 > 0, extract wrapped low byte
           let playerVelocityYL[temp1] = temp2
           let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
-          return
-
+          return thisbank

@@ -23,8 +23,7 @@ end
           if temp3 <= 15 then temp2 = 12 : return
           if temp3 <= 25 then temp2 = 18 : return
           let temp2 = 22
-          return
-
+          return thisbank
 ApplyDamage
           asm
 ApplyDamage
@@ -242,8 +241,7 @@ end
 
           rem All bounds checked - defender is inside hitbox
           let hit = 1
-          return
-
+          return thisbank
 NoHit
           rem Defender is outside hitbox bounds
           rem
@@ -256,8 +254,7 @@ NoHit
           rem Called Routines: None
           rem Constraints: Must be colocated with CheckAttackHit
           let hit = 0
-          return
-
+          return thisbank
 CalculateAttackHitbox
           asm
 CalculateAttackHitbox
@@ -329,8 +326,7 @@ FacingRight
           let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth + PlayerSpriteWidth
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
-          return
-
+          return thisbank
 FacingLeft
           rem Hitbox extends 16 pixels forward from sprite left edge
           rem
@@ -353,8 +349,7 @@ FacingLeft
           let cachedHitboxRight_W = playerX[attackerID]
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
-          return
-
+          return thisbank
 ProjectileHitbox
           rem Projectile attacks handled by missile collision system
           rem Issue #1148: Skip projectile hitbox calculation since missiles
@@ -377,8 +372,7 @@ ProjectileHitbox
           let cachedHitboxRight_W = 0
           let cachedHitboxTop_W = 255
           let cachedHitboxBottom_W = 0
-          return
-
+          return thisbank
 AreaHitbox
           rem Area hitbox covers radius around attacker center
           rem Issue #1148: Implement radius-based area-of-effect hitbox
@@ -409,8 +403,7 @@ AreaHitbox
           let cachedHitboxTop_W = temp2 - 24
           rem Bottom edge: center + radius
           let cachedHitboxBottom_W = temp2 + 24
-          return
-
+          return thisbank
 ProcessAttackerAttacks
           asm
 ProcessAttackerAttacks
@@ -466,8 +459,7 @@ end
 
 NextDefender
           next
-          return
-        
+          return thisbank        
 ProcessAllAttacks
           asm
 ProcessAllAttacks
@@ -517,7 +509,7 @@ NextAttacker
 
 CombatShowDamageIndicator
           rem Damage indicator system (handled inline)
-          return
+          return thisbank
 PlayDamageSound
           rem Damage sound effect handler
           rem
@@ -543,5 +535,4 @@ PlayDamageSound
           rem Constraints: None
           let temp1 = SoundAttackHit
           gosub PlaySoundEffect bank15
-          return
-
+          return thisbank

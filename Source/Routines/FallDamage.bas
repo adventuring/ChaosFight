@@ -19,8 +19,8 @@ CheckFallDamage
           if currentCharacter = CharacterBernie then goto CheckBernieStun
 
           rem Check for fall damage immunity (Frooty, DragonOfStorms)
-          if currentCharacter = CharacterFrooty then return otherbank
-          if currentCharacter = CharacterDragonOfStorms then return otherbank
+          if currentCharacter = CharacterFrooty then return
+          if currentCharacter = CharacterDragonOfStorms then return
 
           rem Calculate safe fall velocity threshold
           rem Formula: safe_velocity = 120 ÷ weight
@@ -32,7 +32,7 @@ CheckFallDamage
           rem Check if fall velocity exceeds safe threshold
 
           rem Safe landing, no damage
-          if temp2 <= temp3 then return otherbank
+          if temp2 <= temp3 then return
 
           rem Check if player is guarding - guard does NOT block fall
           rem   damage
@@ -131,8 +131,7 @@ WeightMultDone
           let temp1 = SoundLandingDamage
           gosub PlaySoundEffect bank15
 
-          return otherbank
-
+          return thisbank
 CheckBernieStun
           rem Issue #1178: Bernie post-fall stun animation
           rem Bernie should enter stunned state after falling far enough to trigger fall damage threshold
@@ -154,7 +153,7 @@ CheckBernieStun
           rem Bernie’s safe fall velocity threshold
           let temp3 = SafeFallVelocityThresholds[CharacterBernie]
           rem Safe landing, no stun needed
-          if temp2 <= temp3 then return otherbank
+          if temp2 <= temp3 then return
           rem Fall velocity exceeds threshold - trigger stun
           rem Set stun timer to 1 second (frame-rate independent: 60fps NTSC, 50fps PAL/SECAM)
           rem Set recovery flag to prevent movement during stun
@@ -164,8 +163,7 @@ CheckBernieStun
           let temp3 = playerState[currentPlayer] & MaskPlayerStateFlags
           rem Animation state 8 (Fallen down) << 4 = 128
           let playerState[currentPlayer] = temp3 | ActionFallenDownShifted
-          return otherbank
-
+          return thisbank
 FallDamageApplyGravity
           rem
           rem Apply Gravity
@@ -197,8 +195,8 @@ FallDamageApplyGravity
           let currentCharacter = playerCharacter[currentPlayer]
 
           rem Check for no-gravity characters (Frooty, DragonOfStorms)
-          if currentCharacter = CharacterFrooty then return otherbank
-          if currentCharacter = CharacterDragonOfStorms then return otherbank
+          if currentCharacter = CharacterFrooty then return
+          if currentCharacter = CharacterDragonOfStorms then return
 
           rem Apply gravity (default 2, Harpy 1)
           let temp6 = 2
@@ -209,8 +207,7 @@ FallDamageApplyGravity
 
           if temp2 > TerminalVelocity then temp2 = TerminalVelocity
 
-          return otherbank
-
+          return thisbank
 CheckGroundCollision
           rem
           rem Check Ground Collision
@@ -250,13 +247,12 @@ CheckGroundCollision
           rem Get player Y position
           let temp3 = playerY[currentPlayer]
 
-          if temp3 < 176 then return otherbank
+          if temp3 < 176 then return
           let playerY[currentPlayer] = 176
-          if temp2 <= 0 then return otherbank
+          if temp2 <= 0 then return
           goto CheckFallDamage
 
-          return otherbank
-
+          return thisbank
 HandleFrootyVertical
           rem
           rem Handle Frooty Vertical Control
@@ -272,7 +268,7 @@ HandleFrootyVertical
           rem Check character type to confirm
           let currentCharacter = playerCharacter[currentPlayer]
           if currentCharacter = CharacterFrooty then goto FrootyFallDamage
-          return otherbank
+          return thisbank
 FrootyFallDamage
           rem Frooty fall damage
 
@@ -295,8 +291,7 @@ FrootyFallDamage
           if playerY[currentPlayer] > oldHealthValue then let playerY[currentPlayer] = 0
           if playerY[currentPlayer] > 176 then let playerY[currentPlayer] = 176
 
-          return otherbank
-
+          return thisbank
 HandleHarpySwoopAttack
           rem
           rem Handle Harpy Swoop Attack
@@ -313,7 +308,7 @@ HandleHarpySwoopAttack
           rem Check character type to confirm
           let currentCharacter = playerCharacter[currentPlayer]
           if currentCharacter = CharacterHarpy then goto HarpyDive
-          return otherbank
+          return thisbank
 HarpyDive
           rem Harpy dive
 
@@ -350,8 +345,7 @@ SetVerticalMomentum
           let temp1 = currentPlayer
           gosub SpawnMissile bank7
 
-          return otherbank
-
+          return thisbank
 DivideBy20
           rem
           rem Division/multiplication HELPERS (no Mul/div Support)
@@ -399,8 +393,7 @@ DivideBy100
           if temp2 > 200 then temp2 = 2 : return
           if temp2 > 100 then temp2 = 1 : return
           let temp2 = 0
-          return otherbank
-
+          return thisbank
 CalculateSafeFallDistance
           rem
           rem Calculate Safe Fall Distance
@@ -425,7 +418,7 @@ CalculateSafeFallDistance
           goto CalculateFallDistanceNormal
 SetInfiniteFallDistance
           let temp2 = InfiniteFallDistance
-          return otherbank
+          return thisbank
 CalculateFallDistanceNormal
 
           let temp3 = SafeFallVelocityThresholds[currentCharacter]

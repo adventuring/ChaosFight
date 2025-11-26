@@ -32,5 +32,4 @@ AttractMode
           rem MainLoop)
           rem Only reachable via gosub from MainLoop
           let gameMode = ModePublisherPrelude : gosub ChangeGameMode bank14
-          return
-
+          return thisbank

@@ -17,8 +17,7 @@ end
           rem Constraints: None
           rem Use direct array access for O(1) lookup
           let temp2 = CharacterWeights[temp1]
-          return
-
+          return thisbank
 GetCharacterMissileHeight
           asm
 GetCharacterMissileHeight
@@ -30,8 +29,7 @@ end
           rem Constraints: None (table lookup - missile height)
           rem Use direct array access for O(1) lookup
           let temp2 = CharacterMissileHeights[temp1]
-          return
-
+          return thisbank
 GetCharacterMissileMaxX
           asm
 GetCharacterMissileMaxX
@@ -43,8 +41,7 @@ end
           rem Constraints: None (table lookup - missile max X)
           rem Use direct array access for O(1) lookup
           let temp2 = CharacterMissileMaxX[temp1]
-          return
-
+          return thisbank
 GetCharacterMissileMaxY
           asm
 GetCharacterMissileMaxY
@@ -56,8 +53,7 @@ end
           rem Constraints: None (table lookup - missile max Y)
           rem Use direct array access for O(1) lookup
           let temp2 = CharacterMissileMaxY[temp1]
-          return
-
+          return thisbank
 GetMissileWidth
           asm
 GetMissileWidth
@@ -69,8 +65,7 @@ end
           rem Constraints: None (table lookup - missile width)
           rem Use direct array access for O(1) lookup
           let temp2 = CharacterMissileWidths[temp1]
-          return
-
+          return thisbank
 GetMissileHeight
           asm
 GetMissileHeight
@@ -82,8 +77,7 @@ end
           rem Constraints: None (table lookup - missile height)
           rem Use direct array access for O(1) lookup
           let temp2 = CharacterMissileHeights[temp1]
-          return
-
+          return thisbank
 GetMissileFlags
           asm
 GetMissileFlags
@@ -95,8 +89,7 @@ end
           rem Constraints: None (table lookup - missile flags)
           rem Use direct array access for O(1) lookup
           let temp2 = CharacterMissileFlags[temp1]
-          return
-
+          return thisbank
 GetMissileMomentumX
           asm
 GetMissileMomentumX
@@ -107,8 +100,7 @@ end
           rem Mutates: temp2 (return value - missile momentum X)
           rem Constraints: None (table lookup - missile momentum X)
           let temp2 = CharacterMissileMomentumX[temp1]
-          return
-
+          return thisbank
 GetMissileMomentumY
           asm
 GetMissileMomentumY
@@ -119,4 +111,4 @@ end
           rem Mutates: temp2 (return value - missile momentum Y)
           rem Constraints: None (table lookup - missile momentum Y)
           let temp2 = CharacterMissileMomentumY[temp1]
-          return
+          return thisbank

@@ -147,8 +147,7 @@ AdvanceFrame
           if temp4 >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
 DoneAdvance
-          return
-
+          return thisbank
 HandleFrame7Transition
           rem Frame 7 completed, handle action-specific transitions
           rem
@@ -212,8 +211,7 @@ UpdateSprite
           let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
           gosub LoadPlayerSprite bank16
-          return
-
+          return thisbank
 SetPlayerAnimation
           asm
 SetPlayerAnimation
@@ -286,10 +284,9 @@ InitializeAnimationSystem
           rem Initialize all players to idle animation
           let temp2 = ActionIdle
           for currentPlayer = 0 to 3
-            gosub SetPlayerAnimation
+            gosub SetPlayerAnimation bank12
           next
-          return
-
+          return thisbank
 HandleAnimationTransition
           asm
 HandleAnimationTransition
@@ -302,8 +299,7 @@ end
 TransitionLoopAnimation
           rem SCRAM write to currentAnimationFrame_W
           let currentAnimationFrame_W[currentPlayer] = 0
-          return
-
+          return thisbank
 TransitionToIdle
           let temp2 = ActionIdle
           rem tail call
@@ -365,8 +361,7 @@ HandleAttackTransition
           if temp1 < ActionAttackWindup then return
           let temp1 = temp1 - ActionAttackWindup
           on temp1 goto HandleWindupEnd HandleExecuteEnd HandleRecoveryEnd
-          return
-
+          return thisbank
 HandleWindupEnd
           let temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then return

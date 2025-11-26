@@ -187,7 +187,7 @@ HCSC_P2TailCheckP4
           if playerCharacter[3] = NoCharacter then goto HCSC_P2TailDone
           let temp6 = NoCharacter
 HCSC_P2TailDone
-          return
+          return thisbank
 HCSC_CycleDone
           rem Character cycling complete
           rem
@@ -210,8 +210,7 @@ HCSC_CycleDone
           rem Play navigation sound
           let temp1 = SoundMenuNavigate
           gosub PlaySoundEffect bank15
-          return
-
+          return thisbank
 CharacterSelectInputEntry
           asm
 CharacterSelectInputEntry
@@ -243,7 +242,7 @@ end
 
           if temp3 < 2 then goto ProcessPlayerInput
           if controllerStatus & SetQuadtariDetected then goto ProcessPlayerInput
-          return
+          return thisbank
 ProcessPlayerInput
 
           rem Handle Player 1/3 input (joy0)
@@ -259,8 +258,7 @@ ProcessPlayerInput
           if joy1right then temp1 = temp3 + 1 : temp2 = 1 : gosub HandleCharacterSelectCycle
           if joy1up then temp1 = temp3 + 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           if joy1fire then temp1 = temp3 + 1 : gosub HandleCharacterSelectFire bank7
-          return
-
+          return thisbank
 
 
 CharacterSelectInputComplete
@@ -272,8 +270,7 @@ CharacterSelectInputComplete
           rem Draw selection screen
           rem Draw character selection screen
           gosub SelectDrawScreen bank6
-          return
-
+          return thisbank
           rem
           rem Random Character Roll Handler
           rem Re-roll random selections until valid (0-15), then lock
@@ -312,11 +309,9 @@ CharacterSelectRollRandomPlayerReroll
           rem Valid roll - character ID updated, but not locked
           if temp2 >= NumCharacters then return
           let playerCharacter[currentPlayer] = temp2
-          return
-
+          return thisbank
 CharacterSelectRollsDone
-          return
-
+          return thisbank
 CharacterSelectCheckReady
           rem
           rem Check If Ready To Proceed
@@ -349,8 +344,7 @@ CharacterSelectQuadtariReadyNext
           if readyCount >= 2 then goto CharacterSelectFinish
 
 CharacterSelectReadyDone
-          return
-
+          return thisbank
 CharacterSelectFinish
           rem Finalize selections and transition to falling animation
           rem
@@ -372,5 +366,4 @@ CharacterSelectSkipFacing
           rem Transition to falling animation
           let gameMode = ModeFallingAnimation
           gosub ChangeGameMode bank14
-          return
-
+          return thisbank

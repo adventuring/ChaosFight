@@ -9,5 +9,4 @@ GetCharacterAttackType
           rem Constraints: None (table lookup - attack type)
           rem Use direct array access for O(1) lookup
           let temp2 = CharacterAttackTypes[temp1]
-          return
-
+          return thisbank

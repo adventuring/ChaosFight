@@ -28,7 +28,7 @@ end
           if temp5 = 2 then goto IHLP_FlyingMovement
 
           rem Standard horizontal movement (uses shared routine)
-          gosub ProcessStandardMovement
+          gosub ProcessStandardMovement bank13
 
 DoneLeftPortMovement
 IHLP_FlyingMovement
@@ -52,4 +52,4 @@ InputDoneLeftPortJump
           gosub ProcessAttackInput bank10
 InputDoneLeftPortAttack
 
-          return
+          return thisbank

@@ -29,24 +29,22 @@ BudgetedCollisionCheck
           if framePhase = 0 then BPC_Phase0
           if framePhase = 1 then BPC_Phase1
           if framePhase = 2 then BPC_Phase2
-          return
+          return thisbank
 BPC_Phase0
           if playerCharacter[2] = NoCharacter then return
           gosub CheckCollisionP1vsP3
-          return
+          return thisbank
 BPC_Phase1
           if playerCharacter[3] <> NoCharacter then gosub CheckCollisionP1vsP4
           if playerCharacter[2] = NoCharacter then return
           gosub CheckCollisionP2vsP3
-          return
+          return thisbank
 BPC_Phase2
           if playerCharacter[3] <> NoCharacter then gosub CheckCollisionP2vsP4
           if playerCharacter[2] = NoCharacter then return
           if playerCharacter[3] = NoCharacter then return
           gosub CheckCollisionP3vsP4
-          return
-          return
-
+          return thisbank
 CheckCollisionP1vsP2
           asm
 CheckCollisionP1vsP2
@@ -54,8 +52,7 @@ end
           let temp3 = 0
           let temp4 = 1
           gosub CheckCollisionPair
-          return
-
+          return thisbank
 CheckCollisionPair
           asm
 CheckCollisionPair
@@ -72,12 +69,11 @@ BPC_CheckSep
           if playerX[temp3] < playerX[temp4] then BPC_SepLeft
           let playerX[temp3] = playerX[temp3] + 1
           let playerX[temp4] = playerX[temp4] - 1
-          return
+          return thisbank
 BPC_SepLeft
           let playerX[temp3] = playerX[temp3] - 1
           let playerX[temp4] = playerX[temp4] + 1
-          return
-
+          return thisbank
 CheckCollisionP1vsP3
           asm
 CheckCollisionP1vsP3
@@ -85,8 +81,7 @@ end
           let temp3 = 0
           let temp4 = 2
           gosub CheckCollisionPair
-          return
-
+          return thisbank
 CheckCollisionP1vsP4
           asm
 CheckCollisionP1vsP4
@@ -94,8 +89,7 @@ end
           let temp3 = 0
           let temp4 = 3
           gosub CheckCollisionPair
-          return
-
+          return thisbank
 CheckCollisionP2vsP3
           asm
 CheckCollisionP2vsP3
@@ -103,8 +97,7 @@ end
           let temp3 = 1
           let temp4 = 2
           gosub CheckCollisionPair
-          return
-
+          return thisbank
 CheckCollisionP2vsP4
           asm
 CheckCollisionP2vsP4
@@ -112,8 +105,7 @@ end
           let temp3 = 1
           let temp4 = 3
           gosub CheckCollisionPair
-          return
-
+          return thisbank
 CheckCollisionP3vsP4
           asm
 CheckCollisionP3vsP4
@@ -121,7 +113,6 @@ end
           let temp3 = 2
           let temp4 = 3
           gosub CheckCollisionPair
-          return
-
+          return thisbank
 
 

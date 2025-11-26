@@ -4,7 +4,6 @@
 LocateCharacterArt
           asm
 LocateCharacterArt
-
 end
           rem batariBASIC wrapper for character art location with bank
           rem Character Art Location Wrapper

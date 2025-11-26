@@ -11,5 +11,4 @@ SetPlayerVelocity
           let playerVelocityXL[temp1] = 0
           let playerVelocityY[temp1] = temp3
           let playerVelocityYL[temp1] = 0
-          return
-
+          return thisbank

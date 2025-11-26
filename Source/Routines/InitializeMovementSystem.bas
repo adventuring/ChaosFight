@@ -80,5 +80,4 @@ InitializeMovementSystem
           let playerVelocityXL[3] = 0
           let playerVelocityY[3] = 0
           let playerVelocityYL[3] = 0
-          return
-
+          return thisbank

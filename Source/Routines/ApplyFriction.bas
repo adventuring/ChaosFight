@@ -16,5 +16,4 @@ ApplyFriction
           rem Also zero subpixel if velocity reaches zero
           if playerVelocityX[temp1] & $80 then let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
           if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
-          return
-
+          return thisbank

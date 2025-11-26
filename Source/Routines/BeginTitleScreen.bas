@@ -45,4 +45,4 @@ end
           rem Note: Bitmap data is loaded automatically by titlescreen
           rem   kernel via includes
 
-          return
+          return thisbank

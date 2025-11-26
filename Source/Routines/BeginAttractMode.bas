@@ -33,8 +33,7 @@ end
           rem Initialize Attract Mode
           rem Background: black (COLUBK starts black, no need to set)
 
-          return
-          rem Reset title screen timers for next cycle
+          return thisbank          rem Reset title screen timers for next cycle
           rem titleParadeTimer will be reset when we return to title
           rem   screen
           rem Note: Attract mode immediately transitions to Publisher

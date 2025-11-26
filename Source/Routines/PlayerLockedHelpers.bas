@@ -4,7 +4,6 @@
 GetPlayerLocked
           asm
 GetPlayerLocked
-
 end
           rem Player Locked Helper Functions
           rem Helper functions to access bit-packed playerLocked

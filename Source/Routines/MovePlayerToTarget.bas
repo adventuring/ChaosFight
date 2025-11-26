@@ -47,8 +47,7 @@ end
           let playerX[temp1] = originalPlayerX_W + 1
           gosub MPT_CheckCollision
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
-          return
-
+          return thisbank
 MPT_NudgeLeft
           asm
 MPT_NudgeLeft
@@ -56,8 +55,7 @@ end
           let playerX[temp1] = originalPlayerX_W - 1
           gosub MPT_CheckCollision
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
-          return
-
+          return thisbank
 MPT_CheckCollision
           asm
 MPT_CheckCollision
@@ -81,5 +79,4 @@ end
           let temp3 = temp3 + 16
           let temp5 = temp3 / 16
           if temp5 < pfrows then let temp4 = temp1 : let temp1 = temp2 : let temp2 = temp5 : gosub PlayfieldRead bank16 : if temp1 then let temp6 = 1 : let temp1 = temp4
-          return
-
+          return thisbank

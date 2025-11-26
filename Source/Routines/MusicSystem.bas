@@ -195,7 +195,7 @@ CMVE_CalcElapsed
           rem Check if in decay phase (last NoteDecayFrames frames)
           if temp3 <= NoteDecayFrames then CMVE_ApplyDecay
           rem Sustain phase - use target AUDV (already set)
-          return
+          return thisbank
 CMVE_ApplyAttack
           rem Helper: Applies attack envelope (ramps up volume)
           rem
@@ -223,7 +223,7 @@ CMVE_ApplyAttack
           if temp6 > 15 then temp6 = 15
           if temp1 = 0 then let AUDV0 = temp6 : return
           let AUDV1 = temp6
-          return
+          return thisbank
 CMVE_ApplyDecay
           rem Helper: Applies decay envelope (ramps down volume)
           rem
@@ -251,8 +251,7 @@ CMVE_ApplyDecay
           if temp6 > 15 then temp6 = 15
           if temp1 = 0 then let AUDV0 = temp6 : return
           let AUDV1 = temp6
-          return
-
+          return thisbank
 UpdateMusicVoice0
           asm
 UpdateMusicVoice0
@@ -292,8 +291,7 @@ end
           if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote0Bank15 : return
           rem Song in Bank 1
           gosub LoadMusicNote0 bank1
-          return
-
+          return thisbank
 UpdateMusicVoice1
           asm
 UpdateMusicVoice1
@@ -348,8 +346,7 @@ end
           if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote1Bank15 : return
           rem Song in Bank 1
           gosub LoadMusicNote1 bank1
-          return
-
+          return thisbank
 StopMusic
           rem
           rem Stopmusic - Stop All Music Playback
@@ -380,4 +377,4 @@ StopMusic
           rem Reset frame counters
           let musicVoice0Frame_W = 0
           let musicVoice1Frame_W = 0
-          return otherbank
+          return thisbank

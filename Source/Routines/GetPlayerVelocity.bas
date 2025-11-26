@@ -10,5 +10,4 @@ GetPlayerVelocity
           rem Constraints: Callers should use the values immediately; temps are volatile.
           let temp2 = playerVelocityX[currentPlayer]
           let temp3 = playerVelocityY[currentPlayer]
-          return
-
+          return thisbank

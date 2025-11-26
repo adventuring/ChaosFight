@@ -85,9 +85,7 @@ YDistanceDone
 
           rem Collision detected
           let temp3 = 1
-          return otherbank
-
+          return thisbank
 NoCollision
           let temp3 = 0
-          return otherbank
-
+          return thisbank

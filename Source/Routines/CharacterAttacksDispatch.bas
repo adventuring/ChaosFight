@@ -99,4 +99,4 @@ CEJB_CheckPlayer2Joy2bPlus
           goto CEJB_ReadButton2
 CEJB_Done
           rem Enhanced jump button check complete
-          return
+          return thisbank

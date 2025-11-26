@@ -18,8 +18,7 @@ end
 
 RoboTitoCannotStretch
           let missileStretchHeight_W[temp1] = 0
-          return otherbank
-
+          return thisbank
 RoboTitoCanStretch
 RoboTitoStretching
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
@@ -57,8 +56,7 @@ GroundSearchDone
           let characterSpecialAbility_W[temp1] = 0
           if playerY[temp1] <= 5 then goto RoboTitoCheckCeiling
           let playerY[temp1] = playerY[temp1] - 3
-          return otherbank
-
+          return thisbank
 RoboTitoCheckCeiling
           gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
           let temp3 = playerY[temp1]
@@ -73,8 +71,7 @@ RoboTitoCheckCeiling
           if temp1 then goto RoboTitoLatch
           let temp1 = temp5
           let playerY[temp1] = playerY[temp1] - 3
-          return otherbank
-
+          return thisbank
 RoboTitoLatch
           dim RTL_stateFlags = temp5
           let RTL_stateFlags = characterStateFlags_R[temp1] | 1
@@ -89,6 +86,5 @@ RTL_ReduceHeight
           let temp2 = temp2 - 25
           let missileStretchHeight_W[temp1] = temp2
 RTL_HeightCleared
-          return otherbank
-
+          return thisbank
 

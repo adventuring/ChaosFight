@@ -8,5 +8,4 @@ MovementApplyGravity
           rem Mutates: playerVelocityY[]
           rem Constraints: For subpixel gravity, call AddVelocitySubpixelY separately
           let playerVelocityY[temp1] = playerVelocityY[temp1] + temp2
-          return
-
+          return thisbank

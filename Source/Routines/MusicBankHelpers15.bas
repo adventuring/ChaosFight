@@ -30,12 +30,10 @@ end
           rem Fix: Assign directly to high/low bytes instead of broken * 256 multiplication
           let var40 = SongPointers2H[temp2]
           let songPointer = SongPointers2L[temp2]
-          return
-
+          return thisbank
 LSP15_InvalidSong
           let songPointer = 0
-          return
-
+          return thisbank
 LoadSongVoice1PointerBank15
           asm
 LoadSongVoice1PointerBank15
@@ -63,8 +61,7 @@ end
           rem Fix: Assign directly to high/low bytes instead of broken * 256 multiplication
           let var40 = SongPointers2SecondH[temp2]
           let songPointer = SongPointers2SecondL[temp2]
-          return
-
+          return thisbank
 LoadMusicNote0Bank15
           asm
 LoadMusicNote0Bank15
@@ -128,8 +125,7 @@ end
           rem Advance pointer by 4 bytes (16-bit addition)
           let musicVoice0Pointer = musicVoice0Pointer + 4
 
-          return
-
+          return thisbank
 LoadMusicNote1Bank15
           asm
 LoadMusicNote1Bank15
@@ -198,5 +194,4 @@ end
           rem Advance pointer by 4 bytes
           let musicVoice1Pointer = musicVoice1Pointer + 4
 
-          return
-
+          return thisbank

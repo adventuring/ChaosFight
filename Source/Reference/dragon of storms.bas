@@ -9,8 +9,7 @@ _wing0
   %11001011
   %01011101
 end
-  return
-
+  return thisbank
 wing1
   player1:
   %00111000
@@ -22,8 +21,7 @@ wing1
   %00101011
   %00011101
 end
-  return
-
+  return thisbank
 wing2
   player1:
   %01101110
@@ -35,4 +33,4 @@ wing2
   %00001011
   %00011101
 end
-  return
+  return thisbank

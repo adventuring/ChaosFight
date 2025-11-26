@@ -82,10 +82,9 @@ BernieCheckBottomWrap
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp3
-          if temp5 = 1 then return otherbank
+          if temp5 = 1 then return
           let playerY[temp1] = 0
-          return otherbank
-
+          return thisbank
 CCJ_FreeFlightUp
           asm
 CCJ_FreeFlightUp
@@ -142,8 +141,7 @@ end
 HarpyFlapRecord
           if characterSpecialAbility_R[temp1] > 0 then let characterSpecialAbility_W[temp1] = characterSpecialAbility_R[temp1] - 1
           let harpyLastFlapFrame_W[temp1] = frame
-          return otherbank
-
+          return thisbank
           rem KNIGHT GUY (7) - STANDARD JUMP (dispatched directly to StandardJump)
           rem Removed redundant wrapper function - DispatchCharacterJump calls StandardJump directly
 
@@ -159,8 +157,7 @@ CCJ_FreeFlightCharacterJump
           rem Output: Upward velocity if clear above
           gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
           gosub CCJ_FreeFlightUp
-          return otherbank
-
+          return thisbank
           rem NINJISH GUY (10) - STANDARD JUMP (dispatched directly to StandardJump)
           rem PORK CHOP (11) - STANDARD JUMP (dispatched directly to StandardJump)
           rem RADISH GOBLIN (12) - STANDARD JUMP (dispatched directly to StandardJump)

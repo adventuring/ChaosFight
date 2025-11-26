@@ -32,5 +32,4 @@ LoadSoundPointerOutOfRange
           rem Out of range - mark sound pointer inactive
           let var42 = 0
 LoadSoundPointerReturn
-          return otherbank
-
+          return thisbank

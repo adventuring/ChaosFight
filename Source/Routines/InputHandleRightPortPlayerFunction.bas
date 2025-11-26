@@ -33,7 +33,7 @@ end
           if temp5 = 2 then goto IHRP_FlyingMovement
 
           rem Standard horizontal movement (uses shared routine)
-          gosub ProcessStandardMovement
+          gosub ProcessStandardMovement bank13
 
 DoneRightPortMovement
 IHRP_FlyingMovement
@@ -57,4 +57,4 @@ InputDoneRightPortJump
           gosub ProcessAttackInput bank10
 InputDoneRightPortAttack
 
-          return
+          return thisbank

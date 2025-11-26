@@ -53,8 +53,7 @@ end
           rem Handicap state - set dimmed color and return
           if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return
           rem Normal locked state - color already set by RenderPlayerPreview
-          return
-
+          return thisbank
 PlayerPreviewSetPosition
           asm
 PlayerPreviewSetPosition
@@ -63,7 +62,7 @@ end
           let temp2 = SelectPreviewX[temp1]
           let temp3 = SelectPreviewY[temp1]
           gosub SelectApplyPreviewPosition
-          return
+          return otherbank
 
 SelectApplyPreviewPosition
           asm
@@ -75,19 +74,19 @@ end
 SelectApplyPreviewPositionP0
           player0x = temp2
           player0y = temp3
-          return
+          return otherbank
 SelectApplyPreviewPositionP1
           player1x = temp2
           player1y = temp3
-          return
+          return otherbank
 SelectApplyPreviewPositionP2
           player2x = temp2
           player2y = temp3
-          return
+          return otherbank
 SelectApplyPreviewPositionP3
           player3x = temp2
           player3y = temp3
-          return
+          return otherbank
 
 SelectHideLowerPlayerPreviews
           asm
@@ -134,16 +133,16 @@ end
           on currentPlayer goto SelectApplyPlayerColorP0 SelectApplyPlayerColorP1 SelectApplyPlayerColorP2 SelectApplyPlayerColorP3
 SelectApplyPlayerColorP0
           COLUP0 = temp2
-          return
+          return otherbank
 SelectApplyPlayerColorP1
           _COLUP1 = temp2
-          return
+          return otherbank
 SelectApplyPlayerColorP2
           COLUP2 = temp2
-          return
+          return otherbank
 SelectApplyPlayerColorP3
           COLUP3 = temp2
-          return
+          return otherbank
 
 SelectSetPlayerColorUnlocked
           asm
@@ -152,7 +151,7 @@ end
           rem Override sprite color to indicate unlocked state (white)
           let temp2 = ColGrey(14)
           gosub SelectApplyPlayerColor
-          return
+          return otherbank
 
 SelectSetPlayerColorHandicap
           asm
@@ -162,7 +161,7 @@ end
           rem Override sprite color to indicate handicap lock (dim player color)
           let temp2 = SelectPlayerColorHandicap[currentPlayer]
           gosub SelectApplyPlayerColor
-          return
+          return otherbank
 
 SelectUpdateAnimations
           asm
@@ -210,8 +209,7 @@ end
           let characterSelectPlayerAnimationTimer_W[temp1] = 0
           let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
           let characterSelectPlayerAnimationFrame_W[temp1] = temp3
-          return
-
+          return thisbank
 CharacterSelectCheckControllerRescan
           asm
 CharacterSelectCheckControllerRescan

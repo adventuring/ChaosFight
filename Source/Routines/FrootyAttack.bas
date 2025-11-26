@@ -92,5 +92,4 @@ FrootyButtonReleased
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
 
 FrootyChargeDone
-          return otherbank
-
+          return thisbank

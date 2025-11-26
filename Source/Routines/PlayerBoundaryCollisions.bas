@@ -48,8 +48,7 @@ PBC_ProcessPlayer
               gosub CheckPlayerBoundary
 PBC_NextPlayer
           next
-          return otherbank
-
+          return thisbank
 CheckPlayerBoundary
           asm
 CheckPlayerBoundary
@@ -81,6 +80,5 @@ end
           return otherbank
 CheckPlayerBoundary_BernieWrap
           let playerY[temp1] = 0 : let playerSubpixelY_W[temp1] = 0 : let playerSubpixelY_WL[temp1] = 0
-          return otherbank
-
+          return thisbank
 

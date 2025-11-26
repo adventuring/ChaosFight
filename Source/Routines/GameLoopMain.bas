@@ -220,7 +220,7 @@ TransitionToWinner
           rem Constraints: Must be colocated with GameMainLoop, CheckGameEndTransition
           let gameMode = ModeWinner
           gosub ChangeGameMode bank14
-          return otherbank
+          return thisbank
 GameEndCheckDone
           rem Game end check complete
           rem
@@ -269,5 +269,4 @@ GameEndCheckDone
 GameMainLoopPaused
           rem Game is paused - skip all movement/physics/animation updates
           rem but still allow console switch handling for unpause
-          return otherbank
-
+          return thisbank

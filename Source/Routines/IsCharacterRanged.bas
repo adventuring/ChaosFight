@@ -8,5 +8,4 @@ IsCharacterRanged
           rem Mutates: temp2 (return value - ranged flag)
           rem Constraints: None (direct lookup - ranged flag)
           let temp2 = CharacterAttackTypes[temp1]
-          return
-
+          return thisbank

@@ -32,50 +32,42 @@ MainLoopModePublisherPrelude
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub PublisherPreludeMain bank14
-          return
-
+          return thisbank
 MainLoopModeAuthorPrelude
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub AuthorPrelude bank14
-          return
-
+          return thisbank
 MainLoopModeTitleScreen
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub TitleScreenMain bank14
-          return
-
+          return thisbank
 MainLoopModeCharacterSelect
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub CharacterSelectInputEntry bank9
-          return
-
+          return thisbank
 MainLoopModeFallingAnimation
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub FallingAnimation1 bank11
-          return
-
+          return thisbank
 MainLoopModeArenaSelect
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub ArenaSelect1 bank14
-          return
-
+          return thisbank
 MainLoopModeGameMain
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub GameMainLoop bank11
-          return
-
+          return thisbank
 MainLoopModeWinnerAnnouncement
           rem CRITICAL: Cannot use tail call (goto) for cross-bank calls
           rem Must use gosub to preserve return address for return otherbank
           gosub WinnerAnnouncementLoop bank12
-          return
-MainLoopContinue
+          return thisbankMainLoopContinue
           rem Routes audio updates after per-mode execution
           rem Inputs: gameMode (global 0-7)
           rem Outputs: Falls through to MainLoopDrawScreen

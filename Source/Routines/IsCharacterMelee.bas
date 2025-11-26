@@ -10,5 +10,4 @@ IsCharacterMelee
           let temp2 = CharacterAttackTypes[temp1]
           rem XOR to flip 0<->1
           let temp2 = temp2 ^ 1
-          return
-
+          return thisbank

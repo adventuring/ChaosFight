@@ -12,8 +12,7 @@ end
           rem Mutates: missileActive
           rem Clear missile active bit for this player
           let missileActive = missileActive & PlayerANDMask[currentPlayer]
-          return
-
+          return thisbank
           rem AND masks to clear player missile bits (inverted BitMask values)
           data PlayerANDMask
             $FE, $FD, $FB, $F7

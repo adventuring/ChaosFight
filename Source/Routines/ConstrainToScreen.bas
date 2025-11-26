@@ -25,5 +25,4 @@ ConstrainToScreen
           if playerY[temp1] > 80 then let playerSubpixelY_W[temp1] = 80
           if playerY[temp1] > 80 then let playerSubpixelY_WL[temp1] = 0
 
-          return
-
+          return thisbank

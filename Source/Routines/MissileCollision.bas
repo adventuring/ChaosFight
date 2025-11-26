@@ -282,8 +282,7 @@ end
           return otherbank
 CPB_NextPlayer
           next
-          return otherbank
-
+          return thisbank
 MissileCollPF
           asm
 MissileCollPF

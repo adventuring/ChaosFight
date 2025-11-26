@@ -9,5 +9,4 @@ GetPlayerPosition
           rem Constraints: Callers should consume the values immediately; temps are volatile.
           let temp2 = playerX[currentPlayer]
           let temp3 = playerY[currentPlayer]
-          return
-
+          return thisbank

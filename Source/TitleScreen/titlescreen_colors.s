@@ -2,7 +2,7 @@
 ;;; This is a generated file, do not edit.
 ;;; Color tables, PF1, PF2, and background for all titlescreen bitmaps
 ;;; Combined at $f4f5 (after bitmap data at $f100-$f400)
-;;; Must end at or before $f5a9 to allow code to start at titledrawscreen
+;;; Must end at $f5a9 to allow titledrawscreen at f5a9 (180 bytes)
 
    rorg $f4f5
 

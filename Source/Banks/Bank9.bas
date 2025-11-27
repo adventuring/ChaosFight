@@ -49,6 +49,11 @@ Bank9DataEnds
 end
 
           asm
+            ; Ensure code starts at f5a9 where titledrawscreen must be
+            ; Pad if data ended before f5a9
+            if . < $f5a9
+                ds $f5a9 - .
+            endif
 TitlescreenAsmStart
 #include "Source/TitleScreen/asm/titlescreen.s"
 TitlescreenAsmEnd

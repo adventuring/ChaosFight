@@ -189,6 +189,12 @@
           dim fireHoldTimer_W = w095
           dim fireHoldTimer_R = r095
 
+          rem Random number generator 16-bit state (COMMON - optional, used by randomize routine)
+          rem CRITICAL: Must be in SCRAM, not zero-page stack area ($f0-$ff)
+          rem Located at w120/r120 (single byte, optional enhancement to rand)
+          dim rand16_W = w120
+          dim rand16_R = r120
+
           rem
           rem Music/sound POINTERS - Zero Page Memory (standard Ram)
           rem CRITICAL: 16-bit pointers MUST be in zero page for

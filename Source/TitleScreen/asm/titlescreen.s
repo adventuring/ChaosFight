@@ -67,8 +67,6 @@ title_playfield
           sta REFP0
           sta REFP1
           sta WSYNC
-          lda titlescreencolor
-          sta COLUBK
 
 ; Manually expanded titlescreenlayout macro (labels must be column aligned)
 ; For 48×42 bitmaps using ×2 drawing style (double-height mode)

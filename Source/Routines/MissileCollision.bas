@@ -200,7 +200,7 @@ end
 
           gosub CheckPlayersAgainstCachedHitbox
 
-          return thisbank
+          return otherbank
 
 
 
@@ -328,7 +328,7 @@ end
 
           gosub CheckPlayersAgainstCachedHitbox
 
-          if temp4 <> MissileHitNotFound then return thisbank
+          if temp4 <> MissileHitNotFound then return otherbank
 
 
 
@@ -336,7 +336,7 @@ end
 
           gosub CheckPlayersAgainstCachedHitbox
 
-          return thisbank
+          return otherbank
 
           
 
@@ -408,7 +408,7 @@ end
 
           gosub CheckPlayersAgainstCachedHitbox
 
-          return thisbank
+          return otherbank
 
 
 
@@ -480,7 +480,7 @@ end
 
           gosub CheckPlayersAgainstCachedHitbox
 
-          return thisbank
+          return otherbank
 
 
 
@@ -510,7 +510,7 @@ end
 
           let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
 
-          return thisbank
+          return otherbank
 
 
 
@@ -540,7 +540,7 @@ end
 
           let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
 
-          return thisbank
+          return otherbank
 
 
 
@@ -578,13 +578,13 @@ end
 
           let temp4 = temp2
 
-          return thisbank
+          return otherbank
 
 CPB_NextPlayer
 
           next
 
-          return thisbank
+          return otherbank
 
 MissileCollPF
           rem Returns: Far (return otherbank)

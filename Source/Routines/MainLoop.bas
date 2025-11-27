@@ -35,64 +35,64 @@ end
           goto MainLoopContinue
 
 MainLoopModePublisherPrelude
-          rem CRITICAL: on gameMode gosub now pushes return otherbank address first, then JMPs to target
-          rem Returns: Far (return otherbank)
-          rem So when MainLoopModePublisherPrelude starts, the stack has 2 bytes (return otherbank to ongosub0)
-          rem gosub PublisherPreludeMain bank14 is a far call (pushes 4-byte encoded return otherbank)
-          rem When PublisherPreludeMain returns with return otherbank, it pops 2 bytes from the encoded return otherbank address
-          rem This leaves the 2-byte return otherbank address from on gameMode gosub on the stack
-          rem So we must use return otherbank (RTS) to pop that 2-byte address
+          rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
+          rem Returns: Near (return thisbank)
+          rem on gameMode gosub pushes normal return address, then JMPs to target
+          rem gosub PublisherPreludeMain bank14 is a far call (pushes 4-byte encoded return)
+          rem When PublisherPreludeMain returns with return otherbank, it pops 2 bytes from encoded return
+          rem This leaves the 2-byte normal return address from on gameMode gosub on the stack
+          rem So we must use return thisbank (RTS) to pop that 2-byte normal address
           gosub PublisherPreludeMain bank14
-          return otherbank
+          return thisbank
 MainLoopModeAuthorPrelude
-          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return otherbank address)
-          rem Returns: Far (return otherbank)
-          rem Must use return otherbank to match the near call, not return otherbank
+          rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
+          rem Returns: Near (return thisbank)
+          rem Must use return thisbank (RTS) to match the near call
           gosub AuthorPrelude bank14
-          return otherbank
+          return thisbank
 MainLoopModeTitleScreen
-          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return otherbank address)
-          rem Returns: Far (return otherbank)
-          rem Must use return otherbank to match the near call, not return otherbank
+          rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
+          rem Returns: Near (return thisbank)
+          rem Must use return thisbank (RTS) to match the near call
           gosub TitleScreenMain bank14
-          return otherbank
+          return thisbank
 MainLoopModeCharacterSelect
-          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return otherbank address)
-          rem Returns: Far (return otherbank)
-          rem Must use return otherbank to match the near call, not return otherbank
+          rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
+          rem Returns: Near (return thisbank)
+          rem Must use return thisbank (RTS) to match the near call
           gosub CharacterSelectInputEntry bank9
-          return otherbank
+          return thisbank
 MainLoopModeFallingAnimation
-          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return otherbank address)
-          rem Returns: Far (return otherbank)
-          rem Must use return otherbank to match the near call, not return otherbank
+          rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
+          rem Returns: Near (return thisbank)
+          rem Must use return thisbank (RTS) to match the near call
           gosub FallingAnimation1 bank11
-          return otherbank
+          return thisbank
 MainLoopModeArenaSelect
-          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return otherbank address)
-          rem Returns: Far (return otherbank)
-          rem Must use return otherbank to match the near call, not return otherbank
+          rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
+          rem Returns: Near (return thisbank)
+          rem Must use return thisbank (RTS) to match the near call
           gosub ArenaSelect1 bank14
-          return otherbank
+          return thisbank
 MainLoopModeGameMain
           rem CRITICAL: Guard against being called when not in game mode
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           rem This prevents crashes when gameMode is corrupted or incorrectly set
           rem Only call GameMainLoop when actually in game mode (ModeGame = 6)
           if gameMode = ModeGame then goto MainLoopModeGameMainContinue
-          return otherbank
+          return thisbank
 MainLoopModeGameMainContinue
-          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return otherbank address)
-          rem Returns: Far (return otherbank)
-          rem Must use return otherbank to match the near call, not return otherbank
+          rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
+          rem Returns: Near (return thisbank)
+          rem Must use return thisbank (RTS) to match the near call
           gosub GameMainLoop bank11
-          return otherbank
+          return thisbank
 MainLoopModeWinnerAnnouncement
-          rem CRITICAL: on gameMode gosub is a near call (pushes 2-byte return otherbank address)
-          rem Returns: Far (return otherbank)
-          rem Must use return otherbank to match the near call, not return otherbank
+          rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
+          rem Returns: Near (return thisbank)
+          rem Must use return thisbank (RTS) to match the near call
           gosub WinnerAnnouncementLoop bank12
-          return otherbank
+          return thisbank
 MainLoopContinue
           rem Routes audio updates after per-mode execution
           rem Returns: Far (return otherbank)

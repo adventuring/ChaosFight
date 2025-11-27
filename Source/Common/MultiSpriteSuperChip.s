@@ -7,7 +7,10 @@
 missile1height = $A4
 missile0height = $A5
 ; playfieldRow is now defined via dim in Variables.bas, not here
-rand16 = $00F2
+; rand16 moved to SCRAM (w120/r120) to avoid stack area ($f0-$ff)
+; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
+; rand16 is now defined in Variables.bas as rand16_W and rand16_R
+; All code must use rand16_W for writes and rand16_R for reads - no aliases allowed
 
 #include "vcs.h"
 #include "macro.h"
@@ -787,9 +790,10 @@ vblank_bB_code = $0000
           MS_ASSIGN  stack4, $F9
 
 ; --- Zero-page utility aliases ------------------------------------------------
-          ; NOTE: missile1height, missile0height, rand16 are now defined at the top of this file
+          ; NOTE: missile1height, missile0height are now defined at the top of this file
           ; to allow DASM to resolve forward references
           ; playfieldRow is defined via dim in Variables.bas, not here
+          ; rand16 is defined in Variables.bas as rand16_W and rand16_R (SCRAM)
           MS_ASSIGN  ballheight, $92
           MS_ASSIGN  currentpaddle, $90
           MS_ASSIGN  paddle, $91
@@ -1257,7 +1261,7 @@ stack4 EQU $F9
           MS_ASSIGN  switchbw, $0282
           MS_ASSIGN  screenheight, 192
           ; rand16 is optional (used by randomize if defined)
-          ; NOTE: rand16 is now defined at the top of this file to allow DASM to resolve forward references
+          ; NOTE: rand16 is now defined in Variables.bas as rand16_W and rand16_R (SCRAM)
           ; NOT is a batariBASIC keyword (bitwise NOT operator), not a constant
           ; Do NOT define it here - it causes syntax errors when used as an operator
           ; If you need a bitwise NOT mask, use ($FF ^ value) instead of (NOT value)

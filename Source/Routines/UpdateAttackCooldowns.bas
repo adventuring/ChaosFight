@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 UpdateAttackCooldowns
+          rem Returns: Far (return otherbank)
           asm
 UpdateAttackCooldowns
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Update attack cooldown timers each frame (invoked from main loop).
           rem Decrements playerAttackCooldown_W[0-3] timers if > 0.
           rem Input: None

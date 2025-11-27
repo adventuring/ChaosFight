@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 IsPlayerAlive
+          rem Returns: Far (return otherbank)
           asm
 IsPlayerAlive
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Is Player Alive
           rem Check if specified player is alive (health > 0).
           rem

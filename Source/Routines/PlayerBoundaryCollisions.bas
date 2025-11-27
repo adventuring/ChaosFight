@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 CheckBoundaryCollisions
+          rem Returns: Far (return otherbank)
           asm
 CheckBoundaryCollisions
 end
           rem Player Physics - Boundary Collisions
+          rem Returns: Far (return otherbank)
           rem Handles horizontal wraparound and vertical clamps for all players.
           rem Split from PlayerPhysicsCollisions.bas to reduce bank size.
           rem AVAILABLE VARIABLES:
@@ -50,10 +52,12 @@ PBC_NextPlayer
           next
           return thisbank
 CheckPlayerBoundary
+          rem Returns: Far (return otherbank)
           asm
 CheckPlayerBoundary
 end
           rem Check Player Boundary
+          rem Returns: Far (return otherbank)
           rem Shared function to check boundary collisions for a single player
           rem Reduces code duplication from 4x to 1x implementation
           rem
@@ -74,10 +78,10 @@ end
           if playerX[temp1] < PlayerLeftWrapThreshold then let playerX[temp1] = PlayerRightEdge : let playerSubpixelX_W[temp1] = PlayerRightEdge : let playerSubpixelX_WL[temp1] = 0
           if playerX[temp1] > PlayerRightWrapThreshold then let playerX[temp1] = PlayerLeftEdge : let playerSubpixelX_W[temp1] = PlayerLeftEdge : let playerSubpixelX_WL[temp1] = 0
           if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY_W[temp1] = 20 : let playerSubpixelY_WL[temp1] = 0 : let playerVelocityY[temp1] = 0 : let playerVelocityYL[temp1] = 0
-          if playerY[temp1] <= ScreenBottom then return thisbank
+          if playerY[temp1] <= ScreenBottom then return otherbank
           if playerCharacter[temp1] = CharacterBernie then goto CheckPlayerBoundary_BernieWrap
           let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank14
-          return thisbank
+          return otherbank
 CheckPlayerBoundary_BernieWrap
           let playerY[temp1] = 0 : let playerSubpixelY_W[temp1] = 0 : let playerSubpixelY_WL[temp1] = 0
           return thisbank

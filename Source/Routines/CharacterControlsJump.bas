@@ -25,6 +25,7 @@ end
 
 
 StandardJump
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -33,6 +34,7 @@ StandardJump
 end
 
           rem Shared standard jump with velocity lookup
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = player index
 
@@ -55,6 +57,7 @@ end
 
 
 CCJ_ConvertPlayerXToPlayfieldColumn
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -63,6 +66,7 @@ CCJ_ConvertPlayerXToPlayfieldColumn
 end
 
           rem Convert player X to playfield column (0-31)
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = player index
 
@@ -81,6 +85,7 @@ end
 
 
 BernieJump
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -89,6 +94,7 @@ BernieJump
 end
 
           rem BERNIE (0) - Drop through single-row platforms
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = player index
 
@@ -147,6 +153,7 @@ end
 BernieCheckBottomWrap
 
           rem Helper: Wrap Bernie to top row if clear
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = player index, temp2 = playfield column
 
@@ -166,13 +173,14 @@ BernieCheckBottomWrap
 
           let temp1 = temp3
 
-          if temp5 = 1 then return thisbank
+          if temp5 = 1 then return otherbank
 
           let playerY[temp1] = 0
 
-          return thisbank
+          return otherbank
 
 CCJ_FreeFlightUp
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -181,6 +189,7 @@ CCJ_FreeFlightUp
 end
 
           rem Shared free flight upward movement (DragonOfStorms, Frooty)
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = player index, temp2 = playfield column (from CCJ_ConvertPlayerXToPlayfieldColumn)
 
@@ -223,6 +232,7 @@ end
 
 
 DragonOfStormsJump
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -235,12 +245,14 @@ end
 
 
           rem ZOE RYEN (3) - STANDARD JUMP (dispatched directly to StandardJump)
+          rem Returns: Far (return otherbank)
 
           rem FAT TONY (4) - STANDARD JUMP (dispatched directly to StandardJump)
 
 
 
 HarpyJump
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -249,6 +261,7 @@ HarpyJump
 end
 
           rem HARPY (6) - FLAP TO FLY
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = player index
 
@@ -279,20 +292,23 @@ end
 
 
 HarpyFlapRecord
+          rem Returns: Far (return otherbank)
 
           if characterSpecialAbility_R[temp1] > 0 then let characterSpecialAbility_W[temp1] = characterSpecialAbility_R[temp1] - 1
 
           let harpyLastFlapFrame_W[temp1] = frame
 
-          return thisbank
+          return otherbank
 
           rem KNIGHT GUY (7) - STANDARD JUMP (dispatched directly to StandardJump)
+          rem Returns: Far (return otherbank)
 
           rem Removed redundant wrapper function - DispatchCharacterJump calls StandardJump directly
 
 
 
 FrootyJump
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -307,6 +323,7 @@ end
 CCJ_FreeFlightCharacterJump
 
           rem Shared free-flight jump for DragonOfStorms (2) and Frooty (8)
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = player index
 
@@ -316,7 +333,7 @@ CCJ_FreeFlightCharacterJump
 
           gosub CCJ_FreeFlightUp
 
-          return thisbank
+          return otherbank
 
           rem NINJISH GUY (10) - STANDARD JUMP (dispatched directly to StandardJump)
 

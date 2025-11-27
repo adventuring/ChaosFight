@@ -2,11 +2,13 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 UpdateSoundEffectVoice0
+          rem Returns: Far (return otherbank)
           asm
 UpdateSoundEffectVoice0
 
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Updatesoundeffectvoice0 - Update Voice 0 Sound Effect
           rem Update Voice 0 sound effect playback (decrements frame
           rem counter, loads next note when counter reaches 0)

@@ -43,6 +43,7 @@
 
 
 UpdatePlayer1HealthBar
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -51,6 +52,7 @@ UpdatePlayer1HealthBar
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Update Player 1 health bar (pfscore1).
 
@@ -139,6 +141,7 @@ end
 P1SetPattern
 
           rem Look up bit pattern from table and set pfscore1
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -178,11 +181,12 @@ P1SetPattern
 
 
 
-          return thisbank
+          return otherbank
 
 UpdatePlayer2HealthBar
 
           rem Update Player 2 health bar (pfscore2).
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = health value (0-100)
 
@@ -269,6 +273,7 @@ UpdatePlayer2HealthBar
 P2SetPattern
 
           rem Look up bit pattern from table and set pfscore2
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -308,9 +313,10 @@ P2SetPattern
 
 
 
-          return thisbank
+          return otherbank
 
 UpdatePlayer12HealthBars
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -321,6 +327,7 @@ UpdatePlayer12HealthBars
 end
 
           rem Update both P1 and P2 health bars
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -381,6 +388,7 @@ end
 
 
 InitializeHealthBars
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -389,6 +397,7 @@ InitializeHealthBars
 end
 
           rem Initialize health bars at game start
+          rem Returns: Far (return otherbank)
 
           rem Initialize health bars at game start - set to full (100%)
 
@@ -461,6 +470,7 @@ end
 
 
 ConvertToBCD
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -469,6 +479,7 @@ ConvertToBCD
 end
 
           rem Convert binary value (0-99) to packed BCD format
+          rem Returns: Far (return otherbank)
 
           rem Optimized routine by Thomas Jentsch (used with permission)
 
@@ -537,6 +548,7 @@ end
           return thisbank
 
 UpdatePlayer34HealthBars
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -549,6 +561,7 @@ end
 
 
           rem Check if Quadtari is present
+          rem Returns: Far (return otherbank)
 
           rem If no Quadtari, display CF2026 instead of player health
 
@@ -587,6 +600,7 @@ end
 P3UseAA
 
           rem Player 3 inactive/eliminated - use $ee (displays as ’  ’)
+          rem Returns: Far (return otherbank)
 
           let temp4 = $ee
 
@@ -597,6 +611,7 @@ P3UseAA
 P3ConvertHealth
 
           rem Convert Player 3 health to packed BCD (00-99)
+          rem Returns: Far (return otherbank)
 
           gosub ConvertToBCD
 
@@ -609,6 +624,7 @@ P3ConvertHealth
 P4GetHealth
 
           rem Get Player 4 health (0-100), clamp to 99
+          rem Returns: Far (return otherbank)
 
           rem Use $ee (displays as ’  ’) if inactive
 
@@ -633,6 +649,7 @@ P4GetHealth
 P4UseAA
 
           rem Player 4 inactive/eliminated - use $ee (displays as ’  ’)
+          rem Returns: Far (return otherbank)
 
           let temp5 = $ee
 
@@ -643,6 +660,7 @@ P4UseAA
 P4ConvertHealth
 
           rem Convert Player 4 health to packed BCD (00-99)
+          rem Returns: Far (return otherbank)
 
           let temp1 = temp2
 
@@ -657,6 +675,7 @@ P4ConvertHealth
 SetScoreBytes
 
           rem Set score for nnCFmm format using bad BCD values
+          rem Returns: Far (return otherbank)
 
           rem Format: score (digits 0-1), score+1 (digits 2-3), score+2
 
@@ -716,13 +735,14 @@ end
 
 
 
-          return thisbank
+          return otherbank
 
 
 
 DisplayCF2026
 
           rem No Quadtari detected - display CF2026 using bad BCD
+          rem Returns: Far (return otherbank)
 
           rem   values
 
@@ -760,4 +780,4 @@ end
 
 
 
-          return thisbank
+          return otherbank

@@ -5,6 +5,7 @@
 
 
 HandleCharacterSelectFire
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -15,6 +16,7 @@ HandleCharacterSelectFire
 end
 
           rem Handle fire input (selection)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -79,6 +81,7 @@ end
 HCSF_CheckJoy0
 
           rem Check joy0 for players 0,2
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -106,7 +109,7 @@ HCSF_CheckJoy0
 
           rem Players 0,2 use joy0
 
-          if !joy0fire then return thisbank
+          if !joy0fire then return otherbank
 
           let temp2 = 1
 
@@ -117,6 +120,7 @@ HCSF_CheckJoy0
 HCSF_HandleFire
 
           rem Handle fire button press
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -174,11 +178,12 @@ HCSF_HandleFire
 
           gosub PlaySoundEffect bank15
 
-          return thisbank
+          return otherbank
 
 HCSF_HandleHandicap
 
           rem Handle handicap mode selection (75% health)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -214,11 +219,12 @@ HCSF_HandleHandicap
 
           gosub PlaySoundEffect bank15
 
-          return thisbank
+          return otherbank
 
 HCSF_HandleRandom
 
           rem Handle random character selection
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -265,6 +271,7 @@ HCSF_HandleRandom
 HCSF_HandleRandomSound
 
           rem Play selection sound
+          rem Returns: Far (return otherbank)
 
           let temp1 = SoundMenuSelect
 
@@ -274,4 +281,4 @@ HCSF_HandleRandomSound
 
           rem until roll succeeds
 
-          return thisbank
+          return otherbank

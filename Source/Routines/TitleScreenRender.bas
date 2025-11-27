@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 DrawTitleScreen
+          rem Returns: Far (return otherbank)
           asm
 DrawTitleScreen
 end
           rem Title Screen Rendering
+          rem Returns: Far (return otherbank)
           rem Render the title screen using a 48×42 bitmap generated from Source/Art/ChaosFight.xcf
           rem and included as Source/Generated/Art.ChaosFight.s
           rem BITMAP CONFIGURATION:
@@ -73,11 +75,13 @@ end
           rem - BitmapChaosFightColors: 84 color values (double-height)
 
 LoadTitleBitmap
+          rem Returns: Far (return otherbank)
           asm
 LoadTitleBitmap
 end
-          return thisbank
+          return otherbank
           rem Configure titlescreen kernel to show Title (ChaosFight)
+          rem Returns: Far (return otherbank)
           rem   bitmap
           rem Uses 48x2_3 minikernel - set window/height via assembly
           rem   constants

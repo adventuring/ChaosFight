@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 HarpyAttack
+          rem Returns: Far (return otherbank)
           asm
 HarpyAttack
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Harpy (character 6) - Diagonal downward swoop attack
           rem Attack moves the character along a 45° downward path; the sprite acts
           rem   as the hitbox for the 5-frame swoop animation.

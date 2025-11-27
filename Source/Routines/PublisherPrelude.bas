@@ -5,6 +5,7 @@
 
 
 PublisherPreludeMain
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -15,6 +16,7 @@ PublisherPreludeMain
 end
 
           rem Publisher Prelude Screen - Per-frame Loop
+          rem Returns: Far (return otherbank)
 
           rem Per-frame publisher prelude display and input handling.
 
@@ -187,6 +189,7 @@ end
 PublisherPreludeComplete
 
           rem Transition to Author Prelude mode
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -214,7 +217,7 @@ PublisherPreludeComplete
 
           gosub ChangeGameMode bank14
 
-          return thisbank
+          return otherbank
 
           rem
 

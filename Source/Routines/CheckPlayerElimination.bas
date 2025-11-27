@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 CheckPlayerElimination
+          rem Returns: Far (return otherbank)
           asm
 CheckPlayerElimination
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Check Single Player Elimination
           rem
           rem Check if specified player should be eliminated.
@@ -65,11 +67,13 @@ end
           if currentPlayer = 2 then gosub UpdatePlayers34ActiveFlag bank14 : goto UpdatePlayers34Done
           if currentPlayer = 3 then gosub UpdatePlayers34ActiveFlag bank14
 UpdatePlayers34Done
+          rem Returns: Far (return otherbank)
           asm
 UpdatePlayers34Done
 end
 
           rem Record elimination order
+          rem Returns: Far (return otherbank)
           let temp2 = eliminationCounter_R + 1
           let eliminationCounter_W = temp2
           let eliminationOrder_W[currentPlayer] = temp2

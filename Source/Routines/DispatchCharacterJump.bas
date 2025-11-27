@@ -2,11 +2,13 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 DispatchCharacterJump
+          rem Returns: Far (return otherbank)
           asm
 DispatchCharacterJump
 
 end
           rem Dispatch to character-specific jump function
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp1 = player index (0-3), temp4 = character index (0-31)
           rem

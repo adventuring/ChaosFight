@@ -5,6 +5,7 @@
 
 
 ProcessAttackInput
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -15,6 +16,7 @@ ProcessAttackInput
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Shared Attack Input Handler
 
@@ -83,19 +85,21 @@ end
 PAI_UseJoy0
 
           rem Players 0,2 use joy0
+          rem Returns: Far (return otherbank)
 
-          if !joy0fire then return thisbank
+          if !joy0fire then return otherbank
 
           
 
 PAI_ExecuteAttack
+          rem Returns: Far (return otherbank)
 
-          if (playerState[temp1] & PlayerStateBitFacing) then return thisbank
+          if (playerState[temp1] & PlayerStateBitFacing) then return otherbank
 
           let temp4 = playerCharacter[temp1]
 
           gosub DispatchCharacterAttack bank10
 
-          return thisbank
+          return otherbank
 
 

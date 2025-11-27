@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 ReloadArenaColors
+          rem Returns: Far (return otherbank)
           asm
 ReloadArenaColors
 end
           rem Reload arena colors based on current Color/B&W switch
+          rem Returns: Far (return otherbank)
           rem state
           rem Uses same logic as LoadArenaColors (consolidated to avoid duplication)
 
@@ -20,10 +22,12 @@ end
           if systemFlags & SystemFlagColorBWOverride then temp2 = 1
 
 ReloadArenaColorsDispatch
+          rem Returns: Far (return otherbank)
           asm
 ReloadArenaColorsDispatch
 end
           rem Use existing LoadArena color functions (identical behavior)
+          rem Returns: Far (return otherbank)
           rem Call LoadArenaDispatch to handle color/B&W selection
           rem (inline logic avoids cross-bank goto issues)
           gosub DWS_GetBWMode bank15
@@ -35,6 +39,7 @@ end
           return otherbank
 RAU_LoadBWColors
           rem Load B&W color table
+          rem Returns: Far (return otherbank)
           asm
             lda #<ArenaColorsBW
             sta pfcolortable

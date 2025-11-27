@@ -20,10 +20,12 @@ end
 end
 
 SelectDrawScreen
+          rem Returns: Far (return otherbank)
           asm
 SelectDrawScreen
 end
           rem Character Select drawing (sprites and HUD)
+          rem Returns: Far (return otherbank)
           rem Shared preview renderer used by Character Select and Arena Select flows
           rem Playfield layout is static; no runtime register writes
           let temp6 = 2
@@ -38,37 +40,43 @@ SelectDrawScreenLoop
           return otherbank
 
 SelectRenderPlayerPreview
+          rem Returns: Far (return otherbank)
           asm
 SelectRenderPlayerPreview
 end
           rem Draw character preview for the specified player and apply lock tinting
-          rem Optimized: Combined duplicate conditionals, early return for common case
+          rem Returns: Far (return otherbank)
+          rem Optimized: Combined duplicate conditionals, early return otherbank for common case
           gosub PlayerPreviewSetPosition bank6
           gosub RenderPlayerPreview bank6
           let temp1 = currentPlayer
           gosub GetPlayerLocked bank6
           let temp5 = temp2
-          rem Unlocked state (most common) - set color and return early
-          if !temp5 then gosub SelectSetPlayerColorUnlocked : return thisbank
-          rem Handicap state - set dimmed color and return
-          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return thisbank
+          rem Unlocked state (most common) - set color and return otherbank early
+          if !temp5 then gosub SelectSetPlayerColorUnlocked : return otherbank
+          rem Handicap state - set dimmed color and return otherbank
+          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return otherbank
           rem Normal locked state - color already set by RenderPlayerPreview
-          return thisbank
+          return otherbank
 PlayerPreviewSetPosition
+          rem Returns: Far (return otherbank)
           asm
 PlayerPreviewSetPosition
 end
           rem Position player preview sprites in the four select quadrants
+          rem Returns: Far (return otherbank)
           let temp2 = SelectPreviewX[temp1]
           let temp3 = SelectPreviewY[temp1]
           gosub SelectApplyPreviewPosition
           return otherbank
 
 SelectApplyPreviewPosition
+          rem Returns: Far (return otherbank)
           asm
 SelectApplyPreviewPosition
 end
           rem Input: temp1 = player index, temp2 = x position, temp3 = y position
+          rem Returns: Far (return otherbank)
           rem Optimized: Use on...goto jump table for O(1) dispatch
           on temp1 goto SelectApplyPreviewPositionP0 SelectApplyPreviewPositionP1 SelectApplyPreviewPositionP2 SelectApplyPreviewPositionP3
 SelectApplyPreviewPositionP0
@@ -89,19 +97,23 @@ SelectApplyPreviewPositionP3
           return otherbank
 
 SelectHideLowerPlayerPreviews
+          rem Returns: Far (return otherbank)
           asm
 SelectHideLowerPlayerPreviews
 end
           rem Move lower-player previews off-screen when Quadtari is absent
+          rem Returns: Far (return otherbank)
           player2y = 200
           player3y = 200
           return otherbank
 
 RenderPlayerPreview
+          rem Returns: Far (return otherbank)
           asm
 RenderPlayerPreview
 end
           rem Load preview sprite and base color for admin screens
+          rem Returns: Far (return otherbank)
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
           if currentCharacter >= RandomCharacter then goto RenderPlayerPreviewDefault
@@ -125,10 +137,12 @@ RenderPlayerPreviewInvoke
           return otherbank
 
 SelectApplyPlayerColor
+          rem Returns: Far (return otherbank)
           asm
 SelectApplyPlayerColor
 end
           rem Input: currentPlayer selects target register, temp2 = color value
+          rem Returns: Far (return otherbank)
           rem Optimized: Use on...goto jump table for O(1) dispatch
           on currentPlayer goto SelectApplyPlayerColorP0 SelectApplyPlayerColorP1 SelectApplyPlayerColorP2 SelectApplyPlayerColorP3
 SelectApplyPlayerColorP0
@@ -145,29 +159,35 @@ SelectApplyPlayerColorP3
           return thisbank
 
 SelectSetPlayerColorUnlocked
+          rem Returns: Far (return otherbank)
           asm
 SelectSetPlayerColorUnlocked
 end
           rem Override sprite color to indicate unlocked state (white)
+          rem Returns: Far (return otherbank)
           let temp2 = ColGrey(14)
           gosub SelectApplyPlayerColor
-          return thisbank
+          return otherbank
 
 SelectSetPlayerColorHandicap
+          rem Returns: Far (return otherbank)
           asm
 SelectSetPlayerColorHandicap
 
 end
           rem Override sprite color to indicate handicap lock (dim player color)
+          rem Returns: Far (return otherbank)
           let temp2 = SelectPlayerColorHandicap[currentPlayer]
           gosub SelectApplyPlayerColor
-          return thisbank
+          return otherbank
 
 SelectUpdateAnimations
+          rem Returns: Far (return otherbank)
           asm
 SelectUpdateAnimations
 end
           rem Update character select animations for all players
+          rem Returns: Far (return otherbank)
           rem Optimized: Compact inline version to reduce code size
           let temp6 = 2
           if controllerStatus & SetQuadtariDetected then let temp6 = 4
@@ -183,11 +203,13 @@ SelectUpdateAnimationNext
           return thisbank
 
 SelectUpdatePlayerAnimation
+          rem Returns: Far (return otherbank)
           asm
 SelectUpdatePlayerAnimation
 
 end
           rem Update character select animation counters for one player
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp1 = player index (0-3)
           rem        characterSelectPlayerAnimationTimer_R[] = accumulated
@@ -205,16 +227,18 @@ end
           rem Constraints: Admin-only usage sharing SCRAM with game mode
           let temp2 = characterSelectPlayerAnimationTimer_R[temp1] + 1
           let characterSelectPlayerAnimationTimer_W[temp1] = temp2
-          if temp2 < AnimationFrameDelay then return thisbank
+          if temp2 < AnimationFrameDelay then return otherbank
           let characterSelectPlayerAnimationTimer_W[temp1] = 0
           let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
           let characterSelectPlayerAnimationFrame_W[temp1] = temp3
-          return thisbank
+          return otherbank
 CharacterSelectCheckControllerRescan
+          rem Returns: Far (return otherbank)
           asm
 CharacterSelectCheckControllerRescan
 end
           rem Re-detect controllers on Select/Pause/ColorB&W toggle
+          rem Returns: Far (return otherbank)
           if switchselect then goto CharacterSelectDoRescan
           let temp6 = switchbw
           if temp6 = colorBWPrevious_R then goto CharacterSelectRescanDone

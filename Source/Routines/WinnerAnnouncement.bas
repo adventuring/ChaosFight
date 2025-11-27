@@ -2,11 +2,13 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 WinnerAnnouncementLoop
+          rem Returns: Far (return otherbank)
           asm
 WinnerAnnouncementLoop
 
 end
           rem Winner announcement mode per-frame loop
+          rem Returns: Far (return otherbank)
           rem
           rem Input: joy0fire, joy1fire (hardware) = button states
           rem        switchselect (hardware) = select switch state
@@ -28,6 +30,7 @@ end
 
 WinnerAdvanceToCharacterSelect
           rem Transition to title screen (per issue #483 requirement)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from WinnerAnnouncementLoop)
           rem

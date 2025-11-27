@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 CountRemainingPlayers
+          rem Returns: Far (return otherbank)
           asm
 CountRemainingPlayers
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Count Remaining Players
           rem Input: playerHealth[] (global array)
           rem Output: playersRemaining (global) and temp1 updated with alive player count

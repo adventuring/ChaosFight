@@ -6,6 +6,7 @@
 
 HarpyCheckDiveVelocity
           rem Helper: Checks if Harpy is in dive mode and boosts
+          rem Returns: Far (return otherbank)
           rem velocity if so
           rem
           rem Input: temp6 = base Y velocity, temp1 = player

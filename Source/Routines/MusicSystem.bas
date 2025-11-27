@@ -9,6 +9,7 @@
 
 
 StartMusic
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -17,6 +18,7 @@ StartMusic
 end
 
           rem MUSIC SUBSYSTEM - Polyphony 2 Implementation
+          rem Returns: Far (return otherbank)
 
           rem Music system for publisher/author/title/winner screens
 
@@ -131,6 +133,7 @@ end
 LoadSongFromBank15
 
           rem Song in Bank 15
+          rem Returns: Far (return otherbank)
 
           gosub LoadSongPointerBank15
 
@@ -139,6 +142,7 @@ LoadSongFromBank15
 LoadSongPointersDone
 
           rem LoadSongPointer populated songPointer (16-bit)
+          rem Returns: Far (return otherbank)
 
           rem Set Voice 0 pointer to song start (Song_Voice0 stream)
 
@@ -176,15 +180,16 @@ LoadSongPointersDone
 
 
 
-          rem StartMusic is called via gosub from other banks, so must return
+          rem StartMusic is called via gosub from other banks, so must return otherbank
 
           rem PlayMusic will be called every frame from MainLoop
 
-          return thisbank
+          return otherbank
 
 
 
 PlayMusic
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -193,6 +198,7 @@ PlayMusic
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem PlayMusic - Play Music Each Frame
 
@@ -287,6 +293,7 @@ end
 IsChaotica
 
           rem Both voices ended and song is Chaotica - reset to song head
+          rem Returns: Far (return otherbank)
 
           let musicVoice0Pointer = musicVoice0StartPointer_R
 
@@ -301,6 +308,7 @@ IsChaotica
           goto PlayMusic bank15
 
 CalculateMusicVoiceEnvelope
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -311,6 +319,7 @@ CalculateMusicVoiceEnvelope
 end
 
           rem Helper: End of PlayMusic (label only)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -371,6 +380,7 @@ end
 CMVE_GetVoice0Vars
 
           rem Voice 0
+          rem Returns: Far (return otherbank)
 
           let temp2 = musicVoice0TotalFrames_R
 
@@ -381,6 +391,7 @@ CMVE_GetVoice0Vars
 CMVE_CalcElapsed
 
           rem Calculate frames elapsed = TotalFrames - FrameCounter
+          rem Returns: Far (return otherbank)
 
           let temp4 = temp2 - temp3
 
@@ -394,11 +405,12 @@ CMVE_CalcElapsed
 
           rem Sustain phase - use target AUDV (already set)
 
-          return thisbank
+          return otherbank
 
 CMVE_ApplyAttack
 
           rem Helper: Applies attack envelope (ramps up volume)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -446,15 +458,16 @@ CMVE_ApplyAttack
 
           if temp6 > 15 then temp6 = 15
 
-          if temp1 = 0 then let AUDV0 = temp6 : return thisbank
+          if temp1 = 0 then let AUDV0 = temp6 : return otherbank
 
           let AUDV1 = temp6
 
-          return thisbank
+          return otherbank
 
 CMVE_ApplyDecay
 
           rem Helper: Applies decay envelope (ramps down volume)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -502,13 +515,14 @@ CMVE_ApplyDecay
 
           if temp6 > 15 then temp6 = 15
 
-          if temp1 = 0 then let AUDV0 = temp6 : return thisbank
+          if temp1 = 0 then let AUDV0 = temp6 : return otherbank
 
           let AUDV1 = temp6
 
-          return thisbank
+          return otherbank
 
 UpdateMusicVoice0
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -519,6 +533,7 @@ UpdateMusicVoice0
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Update Voice 0 playback (envelope, frame counter, note stepping).
 
@@ -589,6 +604,7 @@ end
           return thisbank
 
 UpdateMusicVoice1
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -599,6 +615,7 @@ UpdateMusicVoice1
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Updatemusicvoice1 - Update Voice 1 Playback
 
@@ -701,6 +718,7 @@ end
 StopMusic
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Stopmusic - Stop All Music Playback
 
@@ -758,4 +776,4 @@ StopMusic
 
           let musicVoice1Frame_W = 0
 
-          return thisbank
+          return otherbank

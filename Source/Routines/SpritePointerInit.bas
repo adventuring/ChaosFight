@@ -1,9 +1,11 @@
 InitializeSpritePointers
+          rem Returns: Far (return otherbank)
           asm
 InitializeSpritePointers
 
 end
           rem
+          rem Returns: Far (return otherbank)
           rem ChaosFight - Source/Routines/SpritePointerInit.bas
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem Sprite Pointer Initialization

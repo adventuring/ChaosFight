@@ -5,6 +5,7 @@
 
 
 HandleFlyingCharacterMovement
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -65,6 +66,7 @@ HFCM_DoLeft
 HFCM_CheckRight
 
           rem Check right movement
+          rem Returns: Far (return otherbank)
 
           if temp6 = 0 then HFCM_CheckRightJoy0
 
@@ -73,6 +75,7 @@ HFCM_CheckRight
           goto HFCM_DoRight
 
 HFCM_CheckRightJoy0
+          rem Returns: Far (return otherbank)
 
           if !joy0right then goto HFCM_CheckVertical
 
@@ -85,6 +88,7 @@ HFCM_DoRight
 HFCM_CheckVertical
 
           rem Vertical control for flying characters: UP/DOWN
+          rem Returns: Far (return otherbank)
 
           let temp1 = currentPlayer
 
@@ -98,7 +102,7 @@ HFCM_CheckVertical
 
           if joy1down then goto HFCM_VertDown
 
-          return thisbank
+          return otherbank
 
 HFCM_VertJoy0
 

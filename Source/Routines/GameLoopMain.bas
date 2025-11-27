@@ -13,6 +13,7 @@
 
 
 ReadEnhancedButtons
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -21,6 +22,7 @@ ReadEnhancedButtons
 end
 
           rem Read enhanced controller buttons (Genesis Button C, Joy2B+ Button II)
+          rem Returns: Far (return otherbank)
 
           rem Only players 1-2 can have enhanced controllers (players 3-4 require Quadtari)
 
@@ -83,6 +85,7 @@ end
 
 
 GameMainLoop
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -93,6 +96,7 @@ GameMainLoop
 end
 
           rem   1. Handle console switches (pause, reset, color)
+          rem Returns: Far (return otherbank)
 
           rem   2. Handle player input via PlayerInput.bas
 
@@ -311,6 +315,7 @@ CheckQuadtariSkip
 ProcessCollision
 
           rem Check for Radish Goblin bounce movement (ground and wall bounces)
+          rem Returns: Far (return otherbank)
 
           gosub CheckPlayfieldCollisionAllDirections bank10
 
@@ -323,6 +328,7 @@ ProcessCollision
 GameMainLoopQuadtariSkip
 
           rem Skip 4-player collision checks (not in 4-player mode)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -389,6 +395,7 @@ GameMainLoopQuadtariSkip
 CheckGameEndTransition
 
           rem Check if game end timer should transition to winner screen
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -431,6 +438,7 @@ CheckGameEndTransition
 TransitionToWinner
 
           rem Transition to winner announcement mode
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -456,11 +464,12 @@ TransitionToWinner
 
           gosub ChangeGameMode bank14
 
-          return thisbank
+          return otherbank
 
 GameEndCheckDone
 
           rem Game end check complete
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -551,7 +560,8 @@ GameEndCheckDone
 GameMainLoopPaused
 
           rem Game is paused - skip all movement/physics/animation updates
+          rem Returns: Far (return otherbank)
 
           rem but still allow console switch handling for unpause
 
-          return thisbank
+          return otherbank

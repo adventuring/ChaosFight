@@ -14,10 +14,12 @@
 end
 
 LoadCharacterSprite
+          rem Returns: Far (return otherbank)
           asm
 LoadCharacterSprite
 end
           rem Load character sprite data - calls LocateCharacterArt (bank9)
+          rem Returns: Far (return otherbank)
           rem Input: currentCharacter (global), currentPlayer (global)
           rem        temp2 = animation frame (0-7), temp3 = animation action (0-15)
           rem Output: Sprite loaded via bank9 routines
@@ -37,6 +39,7 @@ end
           return otherbank
 
 LoadPlayerSprite
+          rem Returns: Far (return otherbank)
           asm
 LoadPlayerSprite
 end
@@ -76,6 +79,7 @@ end
 ; Set currentCharacter from playerCharacter[currentPlayer]
 end
           rem Inline dispatch to save size (same-bank)
+          rem Returns: Far (return otherbank)
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank9
           return otherbank

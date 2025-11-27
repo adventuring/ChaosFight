@@ -2,11 +2,13 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 TitleScreenMain
+          rem Returns: Far (return otherbank)
           asm
 TitleScreenMain
 
 end
           rem Title Screen - Per-frame Loop
+          rem Returns: Far (return otherbank)
           rem Per-frame title screen display and input handling.
           rem Called from MainLoop each frame (gameMode 2).
           rem Dispatches to other modules for character parade and rendering.
@@ -60,6 +62,7 @@ end
           if !INPT2{7} then TitleScreenComplete
 TitleDoneQuad
           rem Skip Quadtari controller check (not in 4-player mode)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (label only, no execution)
           rem
@@ -86,6 +89,7 @@ TitleDoneQuad
           return otherbank
 TitleScreenComplete
           rem Transition to character select
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from TitleScreenMain)
           rem

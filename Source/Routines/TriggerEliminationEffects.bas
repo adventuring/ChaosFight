@@ -5,6 +5,7 @@
 
 
 TriggerEliminationEffects
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -13,6 +14,7 @@ TriggerEliminationEffects
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Trigger elimination audio/visual effects for currentPlayer.
 

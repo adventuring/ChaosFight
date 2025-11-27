@@ -5,6 +5,7 @@
 
 
 LocateCharacterArt
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -13,6 +14,7 @@ LocateCharacterArt
 end
 
           rem batariBASIC wrapper for character art location with bank
+          rem Returns: Far (return otherbank)
 
           rem Character Art Location Wrapper
 
@@ -129,6 +131,7 @@ end
 Bank2Dispatch
 
           rem Load character art from Bank 2
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -187,6 +190,7 @@ Bank2Dispatch
 Bank3Dispatch
 
           rem Load character art from Bank 3
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -245,6 +249,7 @@ Bank3Dispatch
 Bank4Dispatch
 
           rem Load character art from Bank 4
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -303,6 +308,7 @@ Bank4Dispatch
 Bank5Dispatch
 
           rem Load character art from Bank 5
+          rem Returns: Far (return otherbank)
 
           rem
 

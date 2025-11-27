@@ -5,6 +5,7 @@
 
 
 HandleGuardInput
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -31,16 +32,18 @@ end
 HGI_CheckJoy0
 
           rem Players 0,2 use joy0
+          rem Returns: Far (return otherbank)
 
           if !joy0down then goto HGI_CheckGuardRelease
 
 HGI_HandleDownPressed
 
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
+          rem Returns: Far (return otherbank)
 
           let temp4 = playerCharacter[temp1]
 
-          if temp4 >= 32 then return thisbank
+          if temp4 >= 32 then return otherbank
 
           if temp4 = 2 then goto DragonOfStormsDown bank13
 
@@ -63,12 +66,13 @@ DCD_HandleRoboTitoDown_HGI
 HGI_CheckGuardRelease
 
           rem DOWN released - check for early guard release
+          rem Returns: Far (return otherbank)
 
           let temp2 = playerState[temp1] & 2
 
           rem Not guarding, nothing to do
 
-          if !temp2 then return thisbank
+          if !temp2 then return otherbank
 
           rem Stop guard early and start cooldown
 
@@ -78,6 +82,6 @@ HGI_CheckGuardRelease
 
           let playerTimers_W[temp1] = GuardTimerMaxFrames
 
-          return thisbank
+          return otherbank
 
 

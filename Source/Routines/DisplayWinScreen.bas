@@ -1,11 +1,13 @@
           rem ChaosFight - Source/Routines/DisplayWinScreen.bas
           rem Copyright © 2025 Bruce-Robert Pocock.
 DisplayWinScreen
+          rem Returns: Far (return otherbank)
           asm
 DisplayWinScreen
 
 end
           rem Displays the winner podium with character sprites
+          rem Returns: Far (return otherbank)
           rem Layout:
           rem   - Fixed playfield pattern (podium/platform design)
           rem   - 1 player: Winner centered on podium
@@ -95,6 +97,7 @@ end
           let temp1 = 0
 DWS_RankLoop
           rem Ranking loop - check all players for 2nd and 3rd place
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp1 (player index), temp2,
           rem temp3, temp5,
@@ -127,6 +130,7 @@ DWS_RankLoop
 
 DWS_UpdateSecond
           rem Move current 2nd to 3rd, then update 2nd
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp3, temp5, winScreenCandidateOrder,
           rem temp1 (from DWS_RankLoop)
@@ -147,6 +151,7 @@ DWS_UpdateSecond
 
 DWS_CheckThird
           rem Check if this is 3rd place (higher order than current 3rd,
+          rem Returns: Far (return otherbank)
           rem but lower than 2nd)
           rem
           rem Input: winScreenCandidateOrder,
@@ -165,6 +170,7 @@ DWS_CheckThird
 
 DWS_RankNext
           rem Ranking loop continuation
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp1 (player index, from DWS_RankLoop)
           rem
@@ -191,18 +197,21 @@ DWS_RankNext
           goto DWS_Position3Players
 
 DWS_LoadIdleSprite
+          rem Returns: Far (return otherbank)
           asm
 DWS_LoadIdleSprite
 
 end
           rem Helper: Set temp2=0, temp3=0 and load sprite (saves bytes by eliminating repeated assignments)
+          rem Returns: Far (return otherbank)
           let temp2 = 0
           let temp3 = 0
           gosub LoadCharacterSprite bank16
-          return thisbank
+          return otherbank
 
 DWS_Position1Player
           rem 1 player: Winner centered on podium
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp2, playerCharacter[] (from
           rem DisplayWinScreen)
@@ -226,9 +235,10 @@ DWS_Position1Player
           rem Player 0
           gosub DWS_LoadIdleSprite
           gosub DWS_HidePlayers123
-          return thisbank
+          return otherbank
 DWS_Position2Players
           rem 2 players: Winner centered, runner-up left
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp2, temp3, playerCharacter[]
           rem (from DisplayWinScreen)
@@ -264,6 +274,7 @@ DWS_Position2Players
           goto DWS_Hide2PlayerDone
 DWS_Hide2Player
           rem Hide Player 2 (no runner-up)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from DWS_Position2Players)
           rem
@@ -278,6 +289,7 @@ DWS_Hide2Player
           let playerX[1] = 0
 DWS_Hide2PlayerDone
           rem Hide Player 2 complete (label only)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (label only, no execution)
           rem
@@ -289,9 +301,10 @@ DWS_Hide2PlayerDone
           rem
           rem Constraints: Must be colocated with DisplayWinScreen
           gosub DWS_HidePlayers123
-          return thisbank
+          return otherbank
 DWS_Position3Players
           rem 3+ players: Winner centered high, 2nd left, 3rd right
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp2, temp3, temp4,
           rem playerCharacter[] (from DisplayWinScreen)
@@ -329,6 +342,7 @@ DWS_Position3Players
           goto DWS_Hide3Player2Done
 DWS_Hide3Player2
           rem Hide Player 2 (no 2nd place)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from DWS_Position3Players)
           rem
@@ -343,6 +357,7 @@ DWS_Hide3Player2
           let playerX[1] = 0
 DWS_Hide3Player2Done
           rem Hide Player 2 complete (label only)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (label only, no execution)
           rem
@@ -365,6 +380,7 @@ DWS_Hide3Player2Done
           goto DWS_Hide3Player3Done
 DWS_Hide3Player3
           rem Hide Player 3 (no 3rd place)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from DWS_Position3Players)
           rem
@@ -379,6 +395,7 @@ DWS_Hide3Player3
           let playerX[2] = 0
 DWS_Hide3Player3Done
           rem Hide Player 3 complete (label only)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (label only, no execution)
           rem
@@ -391,29 +408,33 @@ DWS_Hide3Player3Done
           rem Constraints: Must be colocated with DisplayWinScreen
           rem Hide unused player
           let playerX[3] = 0
-          return thisbank
+          return otherbank
 DWS_HidePlayers123
+          rem Returns: Far (return otherbank)
           asm
 DWS_HidePlayers123
 end
           rem Helper: Hide players 1, 2, 3 (saves bytes by consolidating repeated code)
+          rem Returns: Far (return otherbank)
           let playerX[1] = 0
           let playerX[2] = 0
           let playerX[3] = 0
-          return thisbank
+          return otherbank
 
 DWS_GetBWMode
+          rem Returns: Far (return otherbank)
           asm
 DWS_GetBWMode
 
 end
           rem Get Color/BW mode state for arena loading
+          rem Returns: Far (return otherbank)
           rem
           rem Input: systemFlags (global) = system flags including ColorBWOverride bit
           rem
           rem Output: temp2 = 1 if BW mode (ColorBWOverride active), 0 if color mode
           rem
-          rem Mutates: temp2 (used as return value)
+          rem Mutates: temp2 (used as return otherbank value)
           rem
           rem Called Routines: None
           rem
@@ -423,6 +444,7 @@ end
           return otherbank
 
 DWS_LoadColorColors
+          rem Returns: Far (return otherbank)
           asm
 DWS_LoadColorColors
 
@@ -448,5 +470,5 @@ end
             lda #>WinnerScreenColorsColor
             sta pfcolortable+1
 end
-          return thisbank
+          return otherbank
 

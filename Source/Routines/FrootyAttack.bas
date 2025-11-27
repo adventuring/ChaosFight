@@ -7,6 +7,7 @@
 
 
 FrootyAttack
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -15,6 +16,7 @@ FrootyAttack
 end
 
           rem Issue #1177: Frooty lollipop charge-and-bounce attack
+          rem Returns: Far (return otherbank)
 
           rem Charge meter advances at 10 Hz (every 0.1s) while action button is held
 
@@ -73,6 +75,7 @@ end
 FrootyCheckJoy0
 
           rem Player 0 or 2: check joy0fire
+          rem Returns: Far (return otherbank)
 
           rem Button is held - continue charging
 
@@ -81,6 +84,7 @@ FrootyCheckJoy0
 FrootyButtonHeld
 
           rem Button is held - increment charge timer at 10 Hz (every 6 frames at 60fps)
+          rem Returns: Far (return otherbank)
 
           rem Use per-player frame counter stored in charge state (bits 0-2)
 
@@ -117,6 +121,7 @@ FrootyButtonHeld
 FrootyUpdateFrameCounter
 
           rem Update charge state: set charging flag (bit 7) and frame counter (bits 0-2)
+          rem Returns: Far (return otherbank)
 
           rem Bit 7 = 1 (charging), bits 0-2 = frame counter
 
@@ -131,6 +136,7 @@ FrootyUpdateFrameCounter
 FrootyButtonReleased
 
           rem Button released - check if we were charging (bit 7 of charge state)
+          rem Returns: Far (return otherbank)
 
           let temp3 = frootyChargeState_R[temp1]
 
@@ -185,5 +191,6 @@ FrootyButtonReleased
 
 
 FrootyChargeDone
+          rem Returns: Far (return otherbank)
 
-          return thisbank
+          return otherbank

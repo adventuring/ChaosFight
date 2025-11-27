@@ -1,6 +1,7 @@
           rem DOWN BUTTON HANDLERS (Called via on goto from PlayerInput)
 
 DragonOfStormsDown
+          rem Returns: Far (return otherbank)
 
           return otherbank
 
@@ -11,6 +12,7 @@ DragonOfStormsDown = .DragonOfStormsDown
 end
 
           rem DRAGON OF STORMS (2) - FLY DOWN (no guard action)
+          rem Returns: Far (return otherbank)
 
           rem Dragon of Storms flies down instead of guarding
 
@@ -139,6 +141,7 @@ end
 
 
 HarpyDown
+          rem Returns: Far (return otherbank)
 
           return otherbank
 
@@ -149,6 +152,7 @@ HarpyDown = .HarpyDown
 end
 
           rem HARPY (6) - FLY DOWN (no guard action)
+          rem Returns: Far (return otherbank)
 
           rem Harpy flies down instead of guarding
 
@@ -225,6 +229,7 @@ end
 HarpySetDive
 
           rem Helper: Sets dive mode flag for Harpy when airborne
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -261,6 +266,7 @@ HarpySetDive
 HarpyNormalDown
 
           rem Set bit 2 (dive mode)
+          rem Returns: Far (return otherbank)
 
           rem Helper: Handles Harpy flying down with collision check
 
@@ -332,7 +338,7 @@ HarpyNormalDown
 
           rem At bottom, cannot move down
 
-          if temp4 >= pfrows then return
+          if temp4 >= pfrows then return otherbank
 
           rem Check if playfield pixel is clear
 
@@ -354,7 +360,7 @@ HarpyNormalDown
 
           rem Blocked, cannot move down
 
-          if temp5 = 1 then return
+          if temp5 = 1 then return otherbank
 
 
 
@@ -370,7 +376,7 @@ HarpyNormalDown
 
           let playerState[temp1] = playerState[temp1] & !2
 
-          return thisbank
+          return otherbank
 
 FrootyDown
 
@@ -515,6 +521,7 @@ end
 
 
 RoboTitoDown
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -523,6 +530,7 @@ RoboTitoDown
 end
 
           rem ROBO TITO (13) - DOWN: Drops if latched, else guards
+          rem Returns: Far (return otherbank)
 
           rem Voluntary drop from ceiling if latched; otherwise standard guard
 
@@ -549,6 +557,7 @@ end
 RoboTitoInitiateDrop
 
           rem Signal dispatcher to skip guard after voluntary drop
+          rem Returns: Far (return otherbank)
 
           let temp2 = 1
 
@@ -559,6 +568,7 @@ RoboTitoInitiateDrop
 RoboTitoVoluntaryDrop
 
           rem RoboTito drops from ceiling on DOWN; clears latched bit, sets falling, resets stretch height
+          rem Returns: Far (return otherbank)
 
           rem Fix RMW: Read from _R, modify, write to _W
 
@@ -574,7 +584,7 @@ RoboTitoVoluntaryDrop
 
           let missileStretchHeight_W[temp1] = 0
 
-          return thisbank
+          return otherbank
 
 
 
@@ -596,7 +606,7 @@ RoboTitoVoluntaryDrop
 
           let playerState[temp1] = playerState[temp1] | 4
 
-          return thisbank
+          return otherbank
 
 StandardGuard
 

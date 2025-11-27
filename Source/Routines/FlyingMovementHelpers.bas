@@ -2,6 +2,7 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 HFCM_AttemptMoveLeft
+          rem Returns: Far (return otherbank)
           asm
 HFCM_AttemptMoveLeft
 end
@@ -69,6 +70,7 @@ HFCM_SetFacingLeft
           let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           return thisbank
 HFCM_AttemptMoveRight
+          rem Returns: Far (return otherbank)
           asm
 HFCM_AttemptMoveRight
 end

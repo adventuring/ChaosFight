@@ -2,11 +2,13 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 LoadSoundNote
+          rem Returns: Far (return otherbank)
           asm
 LoadSoundNote
 
 end
           rem Load next sound-effect note (assembly pointer access, Voice 0).
+          rem Returns: Far (return otherbank)
           rem Input: soundEffectPointer (global 16-bit) = current note pointer
           rem Output: Updates AUDC0/AUDF0/AUDV0, advances pointer, sets SoundEffectFrame
           rem

@@ -7,11 +7,13 @@
 end
 
 SetSpritePositions
+          rem Returns: Far (return otherbank)
           asm
 SetSpritePositions
 end
 
           rem Player Sprite Rendering
+          rem Returns: Far (return otherbank)
           rem Handles sprite positioning, colors, and graphics for all
           rem   players.
           rem SPRITE ASSIGNMENTS (MULTISPRITE KERNEL):
@@ -121,6 +123,7 @@ end
           return otherbank
 
 SetSpritePositionsRenderMissiles
+          rem Returns: Far (return otherbank)
           asm
 SetSpritePositionsRenderMissiles
 end
@@ -138,19 +141,22 @@ RenderMissilePair
           gosub SetSpritePositionsRenderPair
           return thisbank
 SetSpritePositionsRenderPair
+          rem Returns: Far (return otherbank)
           asm
 SetSpritePositionsRenderPair
 end
           gosub RenderMissileForParticipant
           let temp1 = temp1 + 1
           gosub RenderMissileForParticipant
-          return thisbank
+          return otherbank
 
 RenderMissileForParticipant
+          rem Returns: Far (return otherbank)
           asm
 RenderMissileForParticipant
 end
           rem Render projectile or RoboTito stretch missile for a participant
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp1 = participant index (0-3)
           rem
@@ -172,15 +178,18 @@ end
           return otherbank
 
 RMF_MissileActive
+          rem Returns: Far (return otherbank)
           let RMF_character = playerCharacter[RMF_participant]
           let temp5 = RMF_select
           gosub SSP_WriteMissileRegisters
-          return thisbank
+          return otherbank
 SSP_WriteMissileRegisters
+          rem Returns: Far (return otherbank)
           asm
 SSP_WriteMissileRegisters
 end
           rem Write missile registers for selected hardware slot
+          rem Returns: Far (return otherbank)
           rem Input: temp5 = missile select (0=missile0, 1=missile1), RMF_participant, RMF_character
           rem Use unified helper to write missile registers
           rem Save values to temp variables for unified helper (temp2-temp4 already used by caller, use temp6)
@@ -192,12 +201,14 @@ end
           let temp3 = missileNUSIZ_R[RMF_participant]
           let temp4 = CharacterMissileHeights[RMF_character]
           gosub SSP_WriteMissileRegistersUnified
-          return thisbank
+          return otherbank
 SSP_WriteMissileRegistersUnified
+          rem Returns: Far (return otherbank)
           asm
 SSP_WriteMissileRegistersUnified
 end
           rem Unified helper to write missile registers for either missile0 or missile1
+          rem Returns: Far (return otherbank)
           rem Input: temp5 = missile select (0=missile0, 1=missile1)
           rem        temp6 = X position, temp2 = Y position, temp3 = NUSIZ, temp4 = height
           if temp5 = 0 then goto SSP_WriteUnified0
@@ -206,7 +217,7 @@ end
           ENAM1 = 1
           NUSIZ1 = temp3
           missile1height = temp4
-          return thisbank
+          return otherbank
 SSP_WriteUnified0
           missile0x = temp6
           missile0y = temp2
@@ -215,34 +226,39 @@ SSP_WriteUnified0
           missile0height = temp4
           return thisbank
 CopyParticipantSpritePosition
+          rem Returns: Far (return otherbank)
           asm
 CopyParticipantSpritePosition
 end
           rem Copy participant position into multisprite hardware registers
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp1 = participant index (2 or 3, also equals sprite index)
           rem
           rem Output: player2/3 registers updated if participant is active
           rem
-          if (controllerStatus & SetQuadtariDetected) = 0 then return thisbank
-          if playerCharacter[temp1] = NoCharacter then return thisbank
+          if (controllerStatus & SetQuadtariDetected) = 0 then return otherbank
+          if playerCharacter[temp1] = NoCharacter then return otherbank
           rem Unified sprite position assignment (temp1 = 2 → player2, temp1 = 3 → player3)
-          if ! playerHealth[temp1] then return thisbank
+          if ! playerHealth[temp1] then return otherbank
           if temp1 = 2 then goto CPS_WritePlayer2
           player3x = playerX[temp1]
           player3y = playerY[temp1]
-          return thisbank
+          return otherbank
 
 CPS_WritePlayer2
+          rem Returns: Far (return otherbank)
           player2x = playerX[temp1]
           player2y = playerY[temp1]
-          return thisbank
+          return otherbank
 RenderRoboTitoStretchMissile
+          rem Returns: Far (return otherbank)
           asm
 RenderRoboTitoStretchMissile
 
 end
           rem Render RoboTito stretch visual missiles for whichever hardware slot
+          rem Returns: Far (return otherbank)
           rem is currently multiplexed to the participant.
           rem
           rem Input: temp1 = participant index (0-3)
@@ -259,6 +275,7 @@ end
           return otherbank
 
 RRTM_CheckStretch
+          rem Returns: Far (return otherbank)
           if (characterStateFlags_R[temp1] & 1) then return otherbank
           let temp3 = playerState[temp1]
           let temp3 = temp3 & 240
@@ -272,10 +289,12 @@ RRTM_ReadStretchHeight
           gosub SSP_WriteStretchMissile
           return otherbank
 SSP_WriteStretchMissile
+          rem Returns: Far (return otherbank)
           asm
 SSP_WriteStretchMissile
 end
           rem Write stretch missile registers for selected hardware slot
+          rem Returns: Far (return otherbank)
           rem Input: temp5 = missile select (0=missile0, 1=missile1), temp1 = participant, temp4 = height
           rem Use unified helper with stretch-specific parameters (NUSIZ=0, position from player)
           let temp6 = playerX[temp1]
@@ -283,4 +302,4 @@ end
           rem temp4 already set to height
           let temp3 = 0
           gosub SSP_WriteMissileRegistersUnified
-          return thisbank
+          return otherbank

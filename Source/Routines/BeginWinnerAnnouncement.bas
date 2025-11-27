@@ -1,9 +1,11 @@
 BeginWinnerAnnouncement
+          rem Returns: Far (return otherbank)
           asm
 BeginWinnerAnnouncement
 
 end
           rem
+          rem Returns: Far (return otherbank)
           rem ChaosFight - Source/Routines/BeginWinnerAnnouncement.bas
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem BEGIN WINNER ANNOUNCEMENT - Setup Routine

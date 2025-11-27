@@ -5,6 +5,7 @@
 CtrlDetConsole
 
           rem Console detection (7800 vs 2600) - calls ConsoleDetHW
+          rem Returns: Far (return otherbank)
 
           gosub ConsoleDetHW
 
@@ -17,6 +18,7 @@ CtrlDetConsole
 
 
 DetectPads
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -25,6 +27,7 @@ DetectPads
 end
 
           rem Re-detect controllers (monotonic upgrade only)
+          rem Returns: Far (return otherbank)
 
           rem Public entry point used by console handling and character select flows
 
@@ -65,6 +68,7 @@ CDP_CheckRightSide
 
 
 CDP_QuadtariFound
+          rem Returns: Far (return otherbank)
 
           let temp2 = temp2 | SetQuadtariDetected
 
@@ -75,6 +79,7 @@ CDP_QuadtariFound
 CDP_CheckGenesis
 
           rem Check for Genesis controller (only if Quadtari not already
+          rem Returns: Far (return otherbank)
 
           rem   detected)
 
@@ -119,6 +124,7 @@ CDP_CheckGenesis
 CDP_MergeStatus
 
           rem Merge new detections with existing capabilities (monotonic
+          rem Returns: Far (return otherbank)
 
           rem   upgrade)
 
@@ -130,9 +136,10 @@ CDP_MergeStatus
 
 
 
-          return thisbank
+          return otherbank
 
 CDP_DetectGenesis
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -143,6 +150,7 @@ CDP_DetectGenesis
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Genesis Detection Subroutine
 
@@ -233,6 +241,7 @@ end
 CDP_NoGenesisLeft
 
           rem Check INPT2 - Genesis controllers pull HIGH when idle
+          rem Returns: Far (return otherbank)
 
           if !INPT2{7} then CDP_NoGenesisRight
 
@@ -249,10 +258,12 @@ CDP_NoGenesisLeft
 
 
 CDP_NoGenesisRight
+          rem Returns: Far (return otherbank)
 
-          return thisbank
+          return otherbank
 
 CDP_DetectJoy2bPlus
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -263,6 +274,7 @@ CDP_DetectJoy2bPlus
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Joy2bplus Detection Subroutine
 
@@ -343,6 +355,7 @@ end
 CDP_NoJoy2Left
 
           rem Check right port (INPT2, INPT3, INPT5)
+          rem Returns: Far (return otherbank)
 
           if !INPT2{7} then CDP_NoJoy2Right
 
@@ -361,12 +374,14 @@ CDP_NoJoy2Left
 
 
 CDP_NoJoy2Right
+          rem Returns: Far (return otherbank)
 
-          return thisbank
+          return otherbank
 
 
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem 7800 Pause Button Handler
 
@@ -381,6 +396,7 @@ CDP_NoJoy2Right
 
 
 Check7800Pause
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -389,6 +405,7 @@ Check7800Pause
 end
 
           rem Handle 7800 pause button (toggles Color/B&W override on
+          rem Returns: Far (return otherbank)
 
           rem 7800 console)
 
@@ -461,6 +478,7 @@ end
 ToggleBWDone
 
           rem XOR to toggle 0<->1 (done via if/else above)
+          rem Returns: Far (return otherbank)
 
 
 
@@ -472,7 +490,7 @@ ToggleBWDone
 
 
 
-          return thisbank
+          return otherbank
 
 
 
@@ -487,6 +505,7 @@ ToggleBWDone
 UpdateQuadIn
 
           rem Handle Quadtari frame-based controller multiplexing for 4
+          rem Returns: Far (return otherbank)
 
           rem players
 
@@ -518,11 +537,11 @@ UpdateQuadIn
 
           rem Constraints: Only runs if Quadtari detected
 
-          rem DetectPads is called cross-bank, so all return paths must use return otherbank
+          rem DetectPads is called cross-bank, so all return otherbank paths must use return otherbank
 
           rem Only run if Quadtari detected
 
-          if !QuadtariDetected then return thisbank
+          if !QuadtariDetected then return otherbank
 
 
 
@@ -538,9 +557,10 @@ UpdateQuadIn
 
 ReadPlayers12
 
-          rem DetectPads is called cross-bank, so all return paths must use return otherbank
+          rem DetectPads is called cross-bank, so all return otherbank paths must use return otherbank
+          rem Returns: Far (return otherbank)
 
-          return thisbank          rem Read players 1 & 2 (even frames, qtcontroller=0)
+          return otherbank          rem Read players 1 & 2 (even frames, qtcontroller=0)
 
           rem
 
@@ -582,9 +602,10 @@ ReadPlayers12
 
 ReadPlayers34
 
-          rem DetectPads is called cross-bank, so all return paths must use return otherbank
+          rem DetectPads is called cross-bank, so all return otherbank paths must use return otherbank
+          rem Returns: Far (return otherbank)
 
-          return thisbank          rem Read players 3 & 4 (odd frames, qtcontroller=1)
+          return otherbank          rem Read players 3 & 4 (odd frames, qtcontroller=1)
 
           rem
 
@@ -629,9 +650,10 @@ ReadPlayers34
 PauseNotPressed
 
           rem Button not pressed, update previous state (set bit 5)
+          rem Returns: Far (return otherbank)
 
           let systemFlags = systemFlags | SystemFlagPauseButtonPrev
 
-          return thisbank
+          return otherbank
 
 

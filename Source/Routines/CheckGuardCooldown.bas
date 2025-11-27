@@ -2,11 +2,13 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 CheckGuardCooldown
+          rem Returns: Far (return otherbank)
           asm
 CheckGuardCooldown
 
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Check guard cooldown (1 second lockout after guard ends).
           rem Input: temp1 = player index (0-3)
           rem        playerState[] (global array) = player state flags
@@ -36,6 +38,7 @@ end
 
 GuardCooldownBlocked
           rem Currently guarding or in cooldown - not allowed to start
+          rem Returns: Far (return otherbank)
           rem new guard
           rem
           rem Input: None (called from CheckGuardCooldown)
@@ -49,4 +52,4 @@ GuardCooldownBlocked
           rem Currently guarding or in cooldown - not allowed to start
           rem   new guard
           let temp2 = 0
-          return thisbank
+          return otherbank

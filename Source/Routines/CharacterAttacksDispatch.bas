@@ -1,4 +1,5 @@
 DispatchCharacterAttack
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -9,6 +10,7 @@ DispatchCharacterAttack
 end
 
           rem Dispatch to character-specific attack handler (0-31)
+          rem Returns: Far (return otherbank)
 
           rem MethHound uses ShamoneAttack handler
 
@@ -103,6 +105,7 @@ end
 
 
 CheckEnhancedJumpButton
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -113,6 +116,7 @@ CheckEnhancedJumpButton
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Shared Enhanced Button Check
 
@@ -153,12 +157,14 @@ end
 CEJB_CheckPlayer0
 
           rem Player 0: Check Genesis controller first
+          rem Returns: Far (return otherbank)
 
           if !controllerStatus{0} then goto CEJB_CheckPlayer0Joy2bPlus
 
 CEJB_ReadButton0
 
           rem Shared button read for Player 0 enhanced controllers (Button C/II)
+          rem Returns: Far (return otherbank)
 
           if !INPT0{7} then temp3 = 1
 
@@ -167,6 +173,7 @@ CEJB_ReadButton0
 CEJB_CheckPlayer0Joy2bPlus
 
           rem Player 0: Check Joy2b+ controller (fallback)
+          rem Returns: Far (return otherbank)
 
           if !controllerStatus{1} then CEJB_Done
 
@@ -175,12 +182,14 @@ CEJB_CheckPlayer0Joy2bPlus
 CEJB_CheckPlayer2
 
           rem Player 1: Check Genesis controller first
+          rem Returns: Far (return otherbank)
 
           if (controllerStatus & $04) = 0 then CEJB_CheckPlayer2Joy2bPlus
 
 CEJB_ReadButton2
 
           rem Shared button read for Player 1 enhanced controllers (Button C/II)
+          rem Returns: Far (return otherbank)
 
           if (INPT2 & $80) = 0 then temp3 = 1
 
@@ -189,6 +198,7 @@ CEJB_ReadButton2
 CEJB_CheckPlayer2Joy2bPlus
 
           rem Player 1: Check Joy2b+ controller (fallback)
+          rem Returns: Far (return otherbank)
 
           if (controllerStatus & $08) = 0 then CEJB_Done
 
@@ -197,5 +207,6 @@ CEJB_CheckPlayer2Joy2bPlus
 CEJB_Done
 
           rem Enhanced jump button check complete
+          rem Returns: Far (return otherbank)
 
-          return thisbank
+          return otherbank

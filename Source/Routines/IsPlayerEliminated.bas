@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 IsPlayerEliminated
+          rem Returns: Far (return otherbank)
           asm
 IsPlayerEliminated
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Is Player Eliminated
           rem Input: currentPlayer (0-3), playerHealth[]
           rem Output: temp2 = 1 if eliminated, 0 if alive

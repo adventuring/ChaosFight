@@ -3,11 +3,13 @@
           rem Arena loading function
 
 LoadArenaByIndex
+          rem Returns: Far (return otherbank)
           asm
 LoadArenaByIndex
 
 end
           rem Load arena data by index into playfield RAM
+          rem Returns: Far (return otherbank)
           rem Input: temp1 = arena index (0-31)
           rem Output: Playfield RAM loaded with arena data
           rem Mutates: PF1pointer, PF2pointer, temp2-temp5

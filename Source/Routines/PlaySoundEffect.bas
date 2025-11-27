@@ -2,11 +2,13 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 PlaySoundEffect
+          rem Returns: Far (return otherbank)
           asm
 PlaySoundEffect
 
 end
           rem SOUND EFFECT SUBSYSTEM - Polyphony 2 Implementation
+          rem Returns: Far (return otherbank)
           rem Sound effects for gameplay (gameMode 6)
           rem Uses interleaved 4-byte streams: AUDCV, AUDF, Duration,
           rem Delay
@@ -65,6 +67,7 @@ end
 
 TryVoice1
           rem Helper: Tries Voice 1 if Voice 0 is busy
+          rem Returns: Far (return otherbank)
           rem
           rem Input: soundEffectPointer (global 16-bit) = sound pointer (set by LoadSoundPointer),
           rem soundEffectPointer1 (global 16-bit) = Voice 1 pointer
@@ -80,7 +83,7 @@ TryVoice1
           rem Constraints: Internal helper for PlaySoundEffect, only
           rem called when Voice 0 is busy
           rem Try Voice 1
-          if soundEffectPointer1 then return thisbank
+          if soundEffectPointer1 then return otherbank
 
           rem Copy soundEffectPointer (var41.var42) to soundEffectPointer1 (var43.var44)
           let var43 = var41

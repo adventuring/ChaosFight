@@ -1,6 +1,7 @@
           rem ConsoleHandling.bas - Console switch handling
 
 WarmStart
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -11,6 +12,7 @@ WarmStart
 end
 
           rem Warm Start / Reset Handler
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -119,6 +121,7 @@ end
 
 
 HandleConsoleSwitches
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -129,6 +132,7 @@ HandleConsoleSwitches
 end
 
           rem Main console switch handler
+          rem Returns: Far (return otherbank)
 
 
 
@@ -155,10 +159,11 @@ end
 Player1PauseDone
 
           rem Debounce - wait for button release (drawscreen called by
+          rem Returns: Far (return otherbank)
 
           rem MainLoop)
 
-          return thisbank
+          return otherbank
 
 DonePlayer1Pause
 
@@ -185,10 +190,11 @@ DonePlayer1Pause
 Player2PauseDone
 
           rem Debounce - wait for button release (drawscreen called by
+          rem Returns: Far (return otherbank)
 
           rem MainLoop)
 
-          return thisbank
+          return otherbank
 
 DonePlayer2Pause
 
@@ -219,6 +225,7 @@ DonePlayer2Pause
 
 
 CheckEnhancedPause
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -229,6 +236,7 @@ CheckEnhancedPause
 end
 
           rem Check if pause buttons are pressed (console Game Select switch or enhanced controller buttons)
+          rem Returns: Far (return otherbank)
 
           rem Game Select switch (always) + Joy2B+ Button III (INPT1/INPT3) or Genesis Button C (INPT0/INPT2)
 
@@ -287,22 +295,24 @@ end
 CEP_CheckPlayer1
 
           rem Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
+          rem Returns: Far (return otherbank)
 
           if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then temp1 = 1
 
           if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then temp1 = 1
 
-          return thisbank
+          return otherbank
 
 CEP_CheckPlayer2
 
           rem Player 2: Check Genesis Button C (INPT2) or Joy2B+ Button III (INPT3)
+          rem Returns: Far (return otherbank)
 
           if controllerStatus & SetRightPortGenesis then if (INPT2 & $80) = 0 then temp1 = 1
 
           if controllerStatus & SetRightPortJoy2bPlus then if (INPT3 & $80) = 0 then temp1 = 1
 
-          return thisbank
+          return otherbank
 
           rem
 
@@ -311,6 +321,7 @@ CEP_CheckPlayer2
 
 
 CheckColorBWToggle
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -319,6 +330,7 @@ CheckColorBWToggle
 end
 
           rem Check switch state and trigger DetectPads when it flips
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -367,6 +379,7 @@ end
 DoneSwitchChange
 
           rem Color/B&W switch change check complete (label only, no
+          rem Returns: Far (return otherbank)
 
           rem execution)
 
@@ -426,14 +439,15 @@ DoneSwitchChange
 
 
 
-          return thisbank
+          return otherbank
 
 
 
 ReloadArenaColorsNow
 
           rem Reload arena colors with current switch state
+          rem Returns: Far (return otherbank)
 
           gosub ReloadArenaColors bank14
 
-          return thisbank
+          return otherbank

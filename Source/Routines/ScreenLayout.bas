@@ -1,8 +1,10 @@
 SetGameScreenLayout
+          rem Returns: Far (return otherbank)
           asm
 SetGameScreenLayout
 end
           rem Set screen layout for all screens (32×8) with health bar
+          rem Returns: Far (return otherbank)
           rem space
           rem
           rem Input: None
@@ -15,4 +17,4 @@ end
           rem Constraints: Called for all screen layouts
           pfrowheight = ScreenPfRowHeight
           pfrows = ScreenPfRows
-          return thisbank
+          return otherbank

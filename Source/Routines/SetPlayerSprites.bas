@@ -2,11 +2,13 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 SetPlayerSprites
+          rem Returns: Far (return otherbank)
           asm
 SetPlayerSprites
 
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Set Player Sprites
           rem Sets colors and graphics for all player sprites.
           rem Colors depend on hurt and guard state only (player-index palettes).

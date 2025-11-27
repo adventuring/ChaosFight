@@ -1,4 +1,5 @@
 GetPlayerAnimationStateFunction
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -101,6 +102,7 @@ end
 
 
 InputHandleAllPlayers
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -189,6 +191,7 @@ end
 InputDonePlayer0Input
 
           rem Skip Player 0 input (label only, no execution)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -229,6 +232,7 @@ InputDonePlayer0Input
 InputHandlePlayer1
 
           rem Handle Player 1 input (right port)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -259,12 +263,14 @@ InputHandlePlayer1
 InputDonePlayer1Input
 
           rem Player 1 uses Joy1
+          rem Returns: Far (return otherbank)
 
-          return thisbank
+          return otherbank
 
 InputHandleQuadtariPlayers
 
           rem Skip Player 1 input (label only, no execution)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -351,6 +357,7 @@ InputHandleQuadtariPlayers
 InputDonePlayer3Input
 
           rem Skip Player 3 input (label only, no execution)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -387,6 +394,7 @@ InputDonePlayer3Input
 InputDonePlayer4Input
 
           rem Skip Player 4 input (label only, no execution)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -418,11 +426,12 @@ InputDonePlayer4Input
 
           qtcontroller = 0
 
-          return thisbank
+          return otherbank
 
 
 
 HandleGuardInput
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -465,16 +474,18 @@ end
 HGI_CheckJoy0
 
           rem Players 0,2 use joy0
+          rem Returns: Far (return otherbank)
 
           if !joy0down then goto HGI_CheckGuardRelease
 
 HGI_HandleDownPressed
 
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
+          rem Returns: Far (return otherbank)
 
           let temp4 = playerCharacter[temp1]
 
-          if temp4 >= 32 then return thisbank
+          if temp4 >= 32 then return otherbank
 
           if temp4 = CharacterDragonOfStorms then goto DragonOfStormsDown bank13
 
@@ -497,12 +508,13 @@ DCD_HandleRoboTitoDown
 HGI_CheckGuardRelease
 
           rem DOWN released - check for early guard release
+          rem Returns: Far (return otherbank)
 
           let temp2 = playerState[temp1] & 2
 
           rem Not guarding, nothing to do
 
-          if !temp2 then return thisbank
+          if !temp2 then return otherbank
 
           rem Stop guard early and start cooldown
 
@@ -512,13 +524,14 @@ HGI_CheckGuardRelease
 
           let playerTimers_W[temp1] = GuardTimerMaxFrames
 
-          return thisbank
+          return otherbank
 
 
 
 HandleUpInputAndEnhancedButton
 
           rem Unified handler for UP input and enhanced button (Button II) handling
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -555,20 +568,22 @@ HandleUpInputAndEnhancedButton
 HUIEB_UseJoy0
 
           rem Players 0,2 use joy0
+          rem Returns: Far (return otherbank)
 
           if !joy0up then goto HUIEB_CheckEnhanced
 
 HUIEB_HandleUp
 
           rem Check Shamone form switching first (Shamone <-> MethHound)
+          rem Returns: Far (return otherbank)
 
           rem Switch Shamone -> MethHound
 
-          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : let temp3 = 0 : return thisbank
+          if playerCharacter[temp1] = CharacterShamone then let playerCharacter[temp1] = CharacterMethHound : let temp3 = 0 : return otherbank
 
           rem Switch MethHound -> Shamone
 
-          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : let temp3 = 0 : return thisbank
+          if playerCharacter[temp1] = CharacterMethHound then let playerCharacter[temp1] = CharacterShamone : let temp3 = 0 : return otherbank
 
           rem Robo Tito: Hold UP to ascend; auto-latch on ceiling contact
 
@@ -591,6 +606,7 @@ HUIEB_HandleUp
 HUIEB_RoboTitoAscend
 
           rem Ascend toward ceiling
+          rem Returns: Far (return otherbank)
 
           rem Save cached animation state (temp2) - will be restored after playfield read
 
@@ -679,6 +695,7 @@ HUIEB_RoboTitoDone
 HUIEB_RoboTitoLatch
 
           rem Restore cached animation state
+          rem Returns: Far (return otherbank)
 
           let temp2 = temp5
 
@@ -686,31 +703,34 @@ HUIEB_RoboTitoLatch
 
           let temp3 = 0
 
-          return thisbank
+          return otherbank
 
 HUIEB_BernieFallThrough
 
           rem Bernie UP input handled in BernieJump routine (fall through 1-row floors)
+          rem Returns: Far (return otherbank)
 
           gosub BernieJump bank12
 
           let temp3 = 0
 
-          return thisbank
+          return otherbank
 
 HUIEB_HarpyFlap
 
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
+          rem Returns: Far (return otherbank)
 
           gosub HarpyJump bank12
 
           let temp3 = 0
 
-          return thisbank
+          return otherbank
 
 HUIEB_CheckEnhanced
 
           rem Process jump input from enhanced buttons (Genesis/Joy2b+ Button C/II)
+          rem Returns: Far (return otherbank)
 
           rem Note: For Shamone/MethHound, UP is form switch, so jump via enhanced buttons only
 
@@ -733,30 +753,33 @@ HUIEB_CheckEnhanced
 HUIEB_EnhancedCheck
 
           rem Check Genesis/Joy2b+ Button C/II for alternative UP for any characters
+          rem Returns: Far (return otherbank)
 
           gosub CheckEnhancedJumpButton bank10
 
           rem For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
 
-          if playerCharacter[temp1] = CharacterShamone then if temp3 then let playerCharacter[temp1] = CharacterMethHound : return thisbank
+          if playerCharacter[temp1] = CharacterShamone then if temp3 then let playerCharacter[temp1] = CharacterMethHound : return otherbank
 
-          if playerCharacter[temp1] = CharacterMethHound then if temp3 then let playerCharacter[temp1] = CharacterShamone : return thisbank
+          if playerCharacter[temp1] = CharacterMethHound then if temp3 then let playerCharacter[temp1] = CharacterShamone : return otherbank
 
-          if temp3 = 0 then return thisbank
+          if temp3 = 0 then return otherbank
 
           goto HUIEB_ExecuteJump
 
 HUIEB_StandardEnhancedCheck
 
           rem Check Genesis/Joy2b+ Button C/II
+          rem Returns: Far (return otherbank)
 
           gosub CheckEnhancedJumpButton bank10
 
-          if temp3 = 0 then return thisbank
+          if temp3 = 0 then return otherbank
 
 HUIEB_ExecuteJump
 
           rem Execute jump if pressed and not already jumping
+          rem Returns: Far (return otherbank)
 
           rem Allow Zoe Ryen a single mid-air double-jump
 
@@ -764,7 +787,7 @@ HUIEB_ExecuteJump
 
           rem Already jumping, cannot jump again
 
-          if (playerState[temp1] & 4) then return thisbank
+          if (playerState[temp1] & 4) then return otherbank
 
           goto HUIEB_JumpProceed
 
@@ -781,10 +804,11 @@ HUIEB_ZoeJumpCheck
 HUIEB_JumpProceed
 
           rem Use cached animation state - block jump during attack animations (states 13-15)
+          rem Returns: Far (return otherbank)
 
           rem Block jump during attack windup/execute/recovery
 
-          if temp2 >= 13 then return thisbank
+          if temp2 >= 13 then return otherbank
 
           rem Dispatch character jump via dispatcher (proper cross-bank handling)
 
@@ -795,16 +819,18 @@ HUIEB_JumpProceed
 HUIEB_JumpDone
 
           rem Set Zoe Ryen double-jump flag if applicable
+          rem Returns: Far (return otherbank)
 
           if playerCharacter[temp1] = CharacterZoeRyen then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
 
-          return thisbank
+          return otherbank
 
 
 
 HandleStandardHorizontalMovement
 
           rem Unified handler for standard horizontal movement
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -837,12 +863,14 @@ HandleStandardHorizontalMovement
 HSHM_UseJoy0
 
           rem Players 0,2 use joy0
+          rem Returns: Far (return otherbank)
 
           if !joy0left then goto HSHM_CheckRight
 
 HSHM_HandleLeft
 
           rem Left movement: set negative velocity
+          rem Returns: Far (return otherbank)
 
           if playerCharacter[temp1] = CharacterFrooty then goto HSHM_LeftMomentum
 
@@ -873,6 +901,7 @@ HSHM_LeftMomentum
 HSHM_AfterLeftSet
 
           rem Inline ShouldPreserveFacing logic
+          rem Returns: Far (return otherbank)
 
           if (playerState[temp1] & 8) then goto HSHM_SPF_Yes1
 
@@ -899,6 +928,7 @@ HSHM_SPF_Done1
 HSHM_CheckRight
 
           rem Determine which joy port to use for right movement
+          rem Returns: Far (return otherbank)
 
           if temp1 = 0 then goto HSHM_CheckRightJoy0
 
@@ -906,19 +936,21 @@ HSHM_CheckRight
 
           if temp1 = 2 then goto HSHM_CheckRightJoy0
 
-          if !joy1right then return thisbank
+          if !joy1right then return otherbank
 
           goto HSHM_HandleRight
 
 HSHM_CheckRightJoy0
 
           rem Players 0,2 use joy0
+          rem Returns: Far (return otherbank)
 
-          if !joy0right then return thisbank
+          if !joy0right then return otherbank
 
 HSHM_HandleRight
 
           rem Right movement: set positive velocity
+          rem Returns: Far (return otherbank)
 
           if playerCharacter[temp1] = CharacterFrooty then goto HSHM_RightMomentum
 
@@ -945,6 +977,7 @@ HSHM_RightMomentum
 HSHM_AfterRightSet
 
           rem Inline ShouldPreserveFacing logic
+          rem Returns: Far (return otherbank)
 
           if (playerState[temp1] & 8) then goto HSHM_SPF_Yes2
 
@@ -973,6 +1006,7 @@ HSHM_SPF_Done2
 
 
 HandleFlyingCharacterMovement
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -1017,6 +1051,7 @@ end
 HFCM_UseJoy0
 
           rem Players 0,2 use joy0
+          rem Returns: Far (return otherbank)
 
           if joy0left then goto HFCM_CheckLeftCollision
 
@@ -1025,6 +1060,7 @@ HFCM_UseJoy0
 HFCM_CheckLeftCollision
 
           rem Convert player position to playfield coordinates
+          rem Returns: Far (return otherbank)
 
           let temp2 = playerX[temp1]
 
@@ -1139,6 +1175,7 @@ end
 HFCM_MoveLeftOK
 
           rem Blocked at bottom too
+          rem Returns: Far (return otherbank)
 
           if temp5 = 8 then goto HFCM_LeftMomentumApply
 
@@ -1167,6 +1204,7 @@ HFCM_LeftDirectApply
 HFCM_LeftApplyDone
 
           rem Preserve facing during hurt/recovery states (knockback, hitstun)
+          rem Returns: Far (return otherbank)
 
           rem Inline ShouldPreserveFacing logic
 
@@ -1195,6 +1233,7 @@ SPF_InlineDone1
 HFCM_CheckRightMovement
 
           rem Determine which joy port to use for right movement
+          rem Returns: Far (return otherbank)
 
           if temp1 = 0 then goto HFCM_CheckRightJoy0
 
@@ -1202,19 +1241,21 @@ HFCM_CheckRightMovement
 
           if temp1 = 2 then goto HFCM_CheckRightJoy0
 
-          if !joy1right then return thisbank
+          if !joy1right then return otherbank
 
           goto HFCM_DoRightMovement
 
 HFCM_CheckRightJoy0
 
           rem Players 0,2 use joy0
+          rem Returns: Far (return otherbank)
 
-          if !joy0right then return thisbank
+          if !joy0right then return otherbank
 
 HFCM_DoRightMovement
 
           rem Convert player position to playfield coordinates
+          rem Returns: Far (return otherbank)
 
           let temp2 = playerX[temp1]
 
@@ -1238,7 +1279,7 @@ end
 
 
 
-          if temp2 >= 31 then return thisbank
+          if temp2 >= 31 then return otherbank
 
           rem Already at right edge
 
@@ -1290,7 +1331,7 @@ end
 
           rem Blocked, cannot move right
 
-          if temp5 = 1 then return thisbank
+          if temp5 = 1 then return otherbank
 
           rem Also check bottom row (feet)
 
@@ -1326,11 +1367,12 @@ end
 
           let temp1 = currentPlayer
 
-          if temp5 = 1 then return thisbank
+          if temp5 = 1 then return otherbank
 
 HFCM_MoveRightOK
 
           rem Blocked at bottom too
+          rem Returns: Far (return otherbank)
 
           if temp5 = 8 then goto HFCM_RightMomentumApply
 
@@ -1359,6 +1401,7 @@ HFCM_RightDirectApply
 HFCM_RightApplyDone
 
           rem Preserve facing during hurt/recovery states while processing right movement
+          rem Returns: Far (return otherbank)
 
           rem Inline ShouldPreserveFacing logic
 
@@ -1383,6 +1426,7 @@ SPF_InlineNo2
 SPF_InlineDone2
 
           rem Vertical control for flying characters: UP/DOWN
+          rem Returns: Far (return otherbank)
 
           if !temp3 then let playerState[temp1] = playerState[temp1] | 1
 
@@ -1392,7 +1436,7 @@ SPF_InlineDone2
 
           if joy1down then goto HFCM_VertDown
 
-          return thisbank
+          return otherbank
 
 HFCM_VertJoy0
 
@@ -1529,12 +1573,14 @@ IHLP_DoneFlyingLeftRight
 HGI_CheckJoy0_1
 
           rem Players 0,2 use joy0
+          rem Returns: Far (return otherbank)
 
           if !joy0down then goto HGI_CheckGuardRelease1
 
 HGI_HandleDownPressed1
 
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
+          rem Returns: Far (return otherbank)
 
           let temp4 = playerCharacter[temp1]
 
@@ -1555,6 +1601,7 @@ HGI_HandleDownPressed1
 HGI_HandleRadishGoblinDown1
 
           rem Radish Goblin: drop momentum + normal guarding
+          rem Returns: Far (return otherbank)
 
           gosub RadishGoblinHandleStickDown bank12
 
@@ -1571,6 +1618,7 @@ DCD_HandleRoboTitoDown1
 HGI_CheckGuardRelease1
 
           rem DOWN released - check for early guard release
+          rem Returns: Far (return otherbank)
 
           let temp2 = playerState[temp1] & 2
 
@@ -1589,6 +1637,7 @@ HGI_CheckGuardRelease1
 HGI_CheckRadishGoblinRelease1
 
           rem Check if Radish Goblin and apply short bounce on stick down release
+          rem Returns: Far (return otherbank)
 
           if playerCharacter[temp1] = CharacterRadishGoblin then gosub RadishGoblinHandleStickDownRelease bank12
 
@@ -1757,12 +1806,14 @@ IHRP_DoneFlyingLeftRight
 HGI_CheckJoy0_2
 
           rem Players 0,2 use joy0
+          rem Returns: Far (return otherbank)
 
           if !joy0down then goto HGI_CheckGuardRelease2
 
 HGI_HandleDownPressed2
 
           rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
+          rem Returns: Far (return otherbank)
 
           let temp4 = playerCharacter[temp1]
 
@@ -1783,6 +1834,7 @@ HGI_HandleDownPressed2
 HGI_HandleRadishGoblinDown2
 
           rem Radish Goblin: drop momentum + normal guarding
+          rem Returns: Far (return otherbank)
 
           gosub RadishGoblinHandleStickDown bank12
 
@@ -1799,6 +1851,7 @@ DCD_HandleRoboTitoDown2
 HGI_CheckGuardRelease2
 
           rem DOWN released - check for early guard release
+          rem Returns: Far (return otherbank)
 
           let temp2 = playerState[temp1] & 2
 
@@ -1817,6 +1870,7 @@ HGI_CheckGuardRelease2
 HGI_CheckRadishGoblinRelease2
 
           rem Check if Radish Goblin and apply short bounce on stick down release
+          rem Returns: Far (return otherbank)
 
           if playerCharacter[temp1] = CharacterRadishGoblin then gosub RadishGoblinHandleStickDownRelease bank12
 

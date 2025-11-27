@@ -55,6 +55,7 @@
 
 
 BeginGameLoop
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -65,6 +66,7 @@ BeginGameLoop
 end
 
           rem Initialize all game state for the main gameplay loop
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -193,6 +195,7 @@ end
 Init4PlayerPositions
 
           rem Initialize player positions for 4-player mode
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -239,6 +242,7 @@ Init4PlayerPositions
 InitPositionsDone
 
           rem Player positions initialization complete
+          rem Returns: Far (return otherbank)
 
           rem
 

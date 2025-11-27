@@ -5,6 +5,7 @@
 
 
 CheckAllPlayerCollisions
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -13,6 +14,7 @@ CheckAllPlayerCollisions
 end
 
           rem Check Multi-player Collisions
+          rem Returns: Far (return otherbank)
 
           rem Handles player-to-player collisions, resolving positional
 
@@ -173,6 +175,7 @@ end
           goto PCR_ImpulseDone_1
 
 PCR_Div32_1
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -195,6 +198,7 @@ end
           goto PCR_ImpulseDone_1
 
 PCR_Div64_1
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -219,6 +223,7 @@ end
           goto PCR_ImpulseDone_1
 
 PCR_Div128_1
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -331,6 +336,7 @@ end
           goto PCR_ImpulseDone_2
 
 PCR_Div32_2
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -353,6 +359,7 @@ end
           goto PCR_ImpulseDone_2
 
 PCR_Div64_2
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -377,6 +384,7 @@ end
           goto PCR_ImpulseDone_2
 
 PCR_Div128_2
+          rem Returns: Far (return otherbank)
 
           asm
 

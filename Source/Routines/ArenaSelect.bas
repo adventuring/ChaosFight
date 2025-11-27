@@ -2,12 +2,14 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 ArenaSelect1
+          rem Returns: Far (return otherbank)
           asm
 ArenaSelect1
 
 end
 ArenaSelect1Loop
           rem Arena Select - Per-frame Loop
+          rem Returns: Far (return otherbank)
           rem Handles the arena carousel (1-32 plus random) each frame.
           rem Called from MainLoop when gameMode = ModeArenaSelect.
           rem BeginArenaSelect performs setup; this routine processes one frame then returns.

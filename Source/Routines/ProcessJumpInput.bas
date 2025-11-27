@@ -5,6 +5,7 @@
 
 
 ProcessJumpInput
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -15,6 +16,7 @@ ProcessJumpInput
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Shared Jump Input Handler
 
@@ -123,18 +125,20 @@ end
 
 
 PJI_ZoeJumpCheck
+          rem Returns: Far (return otherbank)
 
           let temp6 = 0
 
           rem Use goto to avoid branch out of range
+          rem Returns: Far (return otherbank)
 
           if (playerState[temp1] & 4) then temp6 = 1
 
           rem Use cached animation state - block jump during attack animations (states 13-15)
 
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return thisbank
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return otherbank
 
-          if temp2 >= 13 then return thisbank
+          if temp2 >= 13 then return otherbank
 
           rem Block jump during attack windup/execute/recovery
 
@@ -144,27 +148,30 @@ PJI_ZoeJumpCheck
 
           if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
 
-          return thisbank
+          return otherbank
 
 PJI_BernieFallThrough
 
           rem Bernie enhanced button handled in BernieJump routine (fall through 1-row floors)
+          rem Returns: Far (return otherbank)
 
           gosub BernieJump bank12
 
-          return thisbank
+          return otherbank
 
 PJI_HarpyFlap
 
           rem Harpy enhanced button handled in HarpyJump routine (flap to fly)
+          rem Returns: Far (return otherbank)
 
           gosub HarpyJump bank12
 
-          return thisbank
+          return otherbank
 
 PJI_RoboTitoAscend
 
           rem Ascend toward ceiling (same logic as ProcessUpInput)
+          rem Returns: Far (return otherbank)
 
           let temp6 = playerCharacter[temp1]
 
@@ -232,16 +239,16 @@ end
 
           if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
 
-          return thisbank
+          return otherbank
 
 PJI_CheckJoy0Down
 
           if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
 
-          return thisbank
+          return otherbank
 
 PJI_RoboTitoLatch
 
           let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
 
-          return thisbank
+          return otherbank

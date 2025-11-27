@@ -4,10 +4,12 @@
           rem Moves players from quadrant staging positions to arena row 2.
 
 FallingAnimation1
+          rem Returns: Far (return otherbank)
           asm
 FallingAnimation1
 end
           rem Moves active players from quadrant spawn points to row 2 starting positions
+          rem Returns: Far (return otherbank)
           rem Called each frame while gameMode = ModeFallingAnimation1
           rem Flow:
           rem   1. Move each active player toward their target position
@@ -59,6 +61,7 @@ end
           goto Player1TargetDone
 Player1Target4P
           rem Set Player 1 target X for 4-player mode
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from FallingAnimation1)
           rem
@@ -74,6 +77,7 @@ Player1Target4P
           let temp2 = 32
 Player1TargetDone
           rem Player 1 target calculation complete
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (label only, no execution)
           rem
@@ -88,6 +92,7 @@ Player1TargetDone
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer1Move
           rem reached = 1 if reached target
+          rem Returns: Far (return otherbank)
           rem Player 1 movement complete (skipped if not active)
           rem
           rem Input: None (label only, no execution)
@@ -111,6 +116,7 @@ DonePlayer1Move
           goto Player2TargetDone
 Player2Target4P
           rem Set Player 2 target X for 4-player mode
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from FallingAnimation1)
           rem
@@ -126,6 +132,7 @@ Player2Target4P
           let temp2 = 128
 Player2TargetDone
           rem Player 2 target calculation complete
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (label only, no execution)
           rem
@@ -140,6 +147,7 @@ Player2TargetDone
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer2Move
           rem Player 2 movement complete (skipped if not active)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (label only, no execution)
           rem
@@ -163,6 +171,7 @@ DonePlayer2Move
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer3Move
           rem Player 3 movement complete (skipped if not in 4-player
+          rem Returns: Far (return otherbank)
           rem mode or not active)
           rem
           rem Input: None (label only, no execution)
@@ -187,6 +196,7 @@ DonePlayer3Move
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer4Move
           rem Player 4 movement complete (skipped if not in 4-player
+          rem Returns: Far (return otherbank)
           rem mode or not active)
           rem
           rem Input: None (label only, no execution)
@@ -211,10 +221,11 @@ DonePlayer4Move
           gosub SetPlayerSprites bank6
 
           rem drawscreen called by MainLoop
-          return thisbank          goto FallingAnimation1 bank11
+          return otherbank          goto FallingAnimation1 bank11
 
 FallingComplete1
           rem All players have reached row 2 positions
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from FallingAnimation1)
           rem
@@ -237,4 +248,4 @@ FallingComplete1
           rem Transition to Game Mode
           let gameMode = ModeGame
           gosub ChangeGameMode bank14
-          return thisbank
+          return otherbank

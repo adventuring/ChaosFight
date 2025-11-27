@@ -5,6 +5,7 @@
 
 
 BernieAttack
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -15,6 +16,7 @@ BernieAttack
 end
 
           rem Executes Bernies ground-thump area attack
+          rem Returns: Far (return otherbank)
 
           rem Each character has a unique attack subroutine that:
 

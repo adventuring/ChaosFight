@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 CheckRoboTitoStretchMissileCollisions
+          rem Returns: Far (return otherbank)
           asm
 CheckRoboTitoStretchMissileCollisions
 end
           rem Detects RoboTito stretch missile hits against other players
+          rem Returns: Far (return otherbank)
           rem Inputs: playerCharacter[], playerState[], characterStateFlags_R[],
           rem         missileStretchHeight_R[], playerX[], playerY[], playerHealth[]
           rem Outputs: Updates via HandleRoboTitoStretchMissileHit when collisions occur

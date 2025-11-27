@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 UpdatePlayerMovement
+          rem Returns: Far (return otherbank)
           asm
 UpdatePlayerMovement
 end
           rem 8.8 fixed-point movement system using batariBASIC built-in
+          rem Returns: Far (return otherbank)
           rem   support
           rem Movement System Routines
           rem All integers are 8-bit. Position consists of:

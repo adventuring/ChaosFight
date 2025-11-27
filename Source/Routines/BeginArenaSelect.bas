@@ -1,9 +1,11 @@
 BeginArenaSelect
+          rem Returns: Far (return otherbank)
           asm
 BeginArenaSelect
 
 end
           rem
+          rem Returns: Far (return otherbank)
           rem ChaosFight - Source/Routines/BeginArenaSelect.bas
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem Begin Arena Select

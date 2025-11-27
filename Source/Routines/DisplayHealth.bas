@@ -5,6 +5,7 @@
 
 
 DisplayHealth
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -15,6 +16,7 @@ DisplayHealth
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Display Health
 
@@ -83,6 +85,7 @@ FlashParticipant1
 DoneParticipant1Flash
 
           rem Hide P0 sprite
+          rem Returns: Far (return otherbank)
 
 
 
@@ -129,6 +132,7 @@ FlashPlayer3
 DonePlayer3Flash
 
           rem Player 3 uses player2 sprite
+          rem Returns: Far (return otherbank)
 
 
 
@@ -155,7 +159,8 @@ FlashPlayer4
 DonePlayer4Flash
 
           rem Player 4 uses player3 sprite
+          rem Returns: Far (return otherbank)
 
 
 
-          return thisbank
+          return otherbank

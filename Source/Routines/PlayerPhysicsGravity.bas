@@ -5,11 +5,13 @@
           rem smartbranching off
 
 PhysicsApplyGravity
+          rem Returns: Far (return otherbank)
           asm
 PhysicsApplyGravity
 
 end
           rem Player Physics - Gravity And Momentum
+          rem Returns: Far (return otherbank)
           rem Handles gravity, momentum, and recovery for all players.
           rem Split from PlayerPhysics.bas to reduce bank size.
           rem AVAILABLE VARIABLES:

@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 UpdateGuardTimers
+          rem Returns: Far (return otherbank)
           asm
 UpdateGuardTimers
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Update guard duration and cooldown timers each frame (invoked from main loop).
           rem Input: None
           rem Output: Guard timers refreshed for all players

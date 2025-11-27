@@ -7,6 +7,7 @@
 
 
 LoadCharacterColors
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -17,6 +18,7 @@ LoadCharacterColors
 end
 
           rem Load player colors based on guard and hurt state.
+          rem Returns: Far (return otherbank)
 
           rem Player colors are fixed per player index:
 
@@ -83,7 +85,8 @@ end
 NormalColorState
 
           rem Normal color state
+          rem Returns: Far (return otherbank)
 
           let temp6 = PlayerColors12[currentPlayer]
 
-          return thisbank
+          return otherbank

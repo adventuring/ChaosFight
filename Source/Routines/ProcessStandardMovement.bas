@@ -5,6 +5,7 @@
 
 
 ProcessStandardMovement
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -15,6 +16,7 @@ ProcessStandardMovement
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Shared Standard Movement Handler
 
@@ -99,6 +101,7 @@ PSM_LeftMomentum1
 PSM_AfterLeftSet1
 
           rem Inline ShouldPreserveFacing logic
+          rem Returns: Far (return otherbank)
 
           if (playerState[temp1] & 8) then PSM_InlineYesLeft
 
@@ -125,8 +128,9 @@ PSM_InlineDoneLeft
 PSM_CheckRightJoy1
 
           rem Right movement: set positive velocity
+          rem Returns: Far (return otherbank)
 
-          if !joy1right then return thisbank
+          if !joy1right then return otherbank
 
           if playerCharacter[temp1] = CharacterFrooty then PSM_RightMomentum1
 
@@ -153,6 +157,7 @@ PSM_RightMomentum1
 PSM_AfterRightSet1
 
           rem Inline ShouldPreserveFacing logic
+          rem Returns: Far (return otherbank)
 
           if (playerState[temp1] & 8) then PSM_InlineYesRight1
 
@@ -181,6 +186,7 @@ PSM_InlineDoneRight1
 PSM_UseJoy0
 
           rem Players 0,2 use joy0
+          rem Returns: Far (return otherbank)
 
           rem Left movement: set negative velocity
 
@@ -217,6 +223,7 @@ PSM_LeftMomentum0
 PSM_AfterLeftSet0
 
           rem Inline ShouldPreserveFacing logic
+          rem Returns: Far (return otherbank)
 
           if (playerState[temp1] & 8) then PSM_InlineYesLeft0
 
@@ -245,8 +252,9 @@ PSM_InlineDoneLeft0
 PSM_CheckRightJoy0
 
           rem Right movement: set positive velocity
+          rem Returns: Far (return otherbank)
 
-          if !joy0right then return thisbank
+          if !joy0right then return otherbank
 
           if playerCharacter[temp1] = CharacterFrooty then PSM_RightMomentum0
 
@@ -273,6 +281,7 @@ PSM_RightMomentum0
 PSM_AfterRightSet0
 
           rem Inline ShouldPreserveFacing logic
+          rem Returns: Far (return otherbank)
 
           if (playerState[temp1] & 8) then PSM_InlineYesRight0
 

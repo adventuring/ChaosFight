@@ -5,6 +5,7 @@
 
 
 CheckPlayfieldCollisionAllDirections
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -13,6 +14,7 @@ CheckPlayfieldCollisionAllDirections
 end
 
           rem Check Playfield Collision All Directions
+          rem Returns: Far (return otherbank)
 
           rem Checks for playfield pixel collisions in all four directions and blocks movement by zeroing velocity.
 
@@ -93,6 +95,7 @@ end
 
 
 PFCheckRight
+          rem Returns: Far (return otherbank)
 
           if temp6 >= 31 then goto PFCheckUp
 
@@ -107,6 +110,7 @@ PFCheckRight
 
 
 PFCheckUp
+          rem Returns: Far (return otherbank)
 
           if playfieldRow = 0 then goto PFCheckDown_Body
 
@@ -127,6 +131,7 @@ PFCheckUp
 PFBlockUp
 
           rem Skip zeroing velocity for Radish Goblin (bounce system handles it)
+          rem Returns: Far (return otherbank)
 
           if playerCharacter[currentPlayer] = CharacterRadishGoblin then goto PFBlockUpClamp
 
@@ -147,6 +152,7 @@ PFBlockUpClamp
 PFBlockDown
 
           rem Skip zeroing velocity for Radish Goblin (bounce system handles it)
+          rem Returns: Far (return otherbank)
 
           if playerCharacter[currentPlayer] = CharacterRadishGoblin then return otherbank
 
@@ -155,6 +161,7 @@ PFBlockDown
           return otherbank
 
 PF_CheckColumnSpan
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -163,6 +170,7 @@ PF_CheckColumnSpan
 end
 
           rem Helper: sample a column at up to three row offsets (top/mid/bottom)
+          rem Returns: Far (return otherbank)
 
           rem Input: playfieldColumn (global), playfieldRow (global top row), temp3 = row span
 
@@ -207,12 +215,14 @@ PFCS_Advance
 
 
 PFCS_Done
+          rem Returns: Far (return otherbank)
 
           let temp4 = PCC_result
 
           return otherbank
 
 PF_CheckRowColumns
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -221,6 +231,7 @@ PF_CheckRowColumns
 end
 
           rem Helper: test current row for center/side collisions
+          rem Returns: Far (return otherbank)
 
           rem Input: temp2 = row index, temp6 = center column
 
@@ -281,6 +292,7 @@ PRC_Done
           return otherbank
 
 PF_ProcessHorizontalCollision
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -289,6 +301,7 @@ PF_ProcessHorizontalCollision
 end
 
           rem Helper: evaluate horizontal collision for given column and clamp
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = column index, temp3 = direction (0=left, 1=right)
 

@@ -10,11 +10,13 @@ end
 end
 
 UpdateCharacterAnimations
+          rem Returns: Far (return otherbank)
           asm
 UpdateCharacterAnimations
 
 end
           rem Drives the 10fps animation system for every active player
+          rem Returns: Far (return otherbank)
           rem Inputs: controllerStatus (global), currentPlayer (global scratch)
           rem         animationCounter_R[] (SCRAM), currentAnimationFrame_R[],
           rem         currentAnimationSeq[], playerHealth[] (global array)
@@ -30,11 +32,13 @@ end
 AnimationNextPlayer
           next
 UpdatePlayerAnimation
+          rem Returns: Far (return otherbank)
           asm
 UpdatePlayerAnimation
 
 end
           rem Skip Player 3/4 animations (2-player mode only, label
+          rem Returns: Far (return otherbank)
           rem only)
           rem
           rem Input: None (label only, no execution)
@@ -98,7 +102,7 @@ end
           rem DoneAdvance, HandleFrame7Transition,
           rem              UpdateSprite (all called via goto)
           rem Skip if player is eliminated (health = 0)
-          if playerHealth[currentPlayer] = 0 then return thisbank
+          if playerHealth[currentPlayer] = 0 then return otherbank
 
           rem Increment this sprite 10fps animation counter (NOT global
           rem   frame counter)
@@ -110,6 +114,7 @@ end
           if temp4 < AnimationFrameDelay then DoneAdvance
 AdvanceFrame
           rem Advance animation frame (counter reached threshold)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: currentPlayer (global), currentAnimationFrame_R[]
           rem (from UpdatePlayerAnimation)
@@ -150,6 +155,7 @@ DoneAdvance
           return thisbank
 HandleFrame7Transition
           rem Frame 7 completed, handle action-specific transitions
+          rem Returns: Far (return otherbank)
           rem
           rem Input: currentPlayer (global) = player index (from
           rem UpdatePlayerAnimation/AdvanceFrame)
@@ -170,6 +176,7 @@ HandleFrame7Transition
 
 UpdateSprite
           rem Update character sprite with current animation frame and
+          rem Returns: Far (return otherbank)
           rem action
           rem
           rem Input: currentPlayer (global) = player index (0-3)
@@ -211,13 +218,15 @@ UpdateSprite
           let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
           gosub LoadPlayerSprite bank16
-          return thisbank
+          return otherbank
 SetPlayerAnimation
+          rem Returns: Far (return otherbank)
           asm
 SetPlayerAnimation
 
 end
           rem Set animation action for a player
+          rem Returns: Far (return otherbank)
           rem
           rem INPUT: currentPlayer = player index (0-3), temp2 =
           rem   animation action (0-15)
@@ -273,6 +282,7 @@ end
 
 InitializeAnimationSystem
           rem Initialize animation system for all players
+          rem Returns: Far (return otherbank)
           rem Called at game start to set up initial animation states
           rem
           rem INPUT: None
@@ -286,8 +296,9 @@ InitializeAnimationSystem
           for currentPlayer = 0 to 3
             gosub SetPlayerAnimation bank12
           next
-          return thisbank
+          return otherbank
 HandleAnimationTransition
+          rem Returns: Far (return otherbank)
           asm
 HandleAnimationTransition
 end
@@ -298,20 +309,24 @@ end
 
 TransitionLoopAnimation
           rem SCRAM write to currentAnimationFrame_W
+          rem Returns: Far (return otherbank)
           let currentAnimationFrame_W[currentPlayer] = 0
-          return thisbank
+          return otherbank
 TransitionToIdle
           let temp2 = ActionIdle
           rem tail call
           goto SetPlayerAnimation
 
 TransitionToFallen
+          rem Returns: Far (return otherbank)
           let temp2 = ActionFallen
           rem tail call
+          rem Returns: Far (return otherbank)
           goto SetPlayerAnimation
 
 TransitionHandleJump
           rem Stay on frame 7 until Y velocity goes negative
+          rem Returns: Far (return otherbank)
           rem Check if player is falling (positive Y velocity =
           rem downward)
           rem Still ascending (negative or zero Y velocity), stay in jump
@@ -321,12 +336,14 @@ TransitionHandleJump
           goto SetPlayerAnimation
 TransitionHandleJump_TransitionToFalling
           rem Falling (positive Y velocity), transition to falling
+          rem Returns: Far (return otherbank)
           let temp2 = ActionFalling
           rem tail call
           goto SetPlayerAnimation
 
 TransitionHandleFallBack
           rem Check wall collision using pfread
+          rem Returns: Far (return otherbank)
           rem If hit wall: goto idle, else: goto fallen
           rem Convert player X position to playfield column (0-31)
           let temp5 = playerX[currentPlayer]
@@ -348,6 +365,7 @@ TransitionHandleFallBack
           goto SetPlayerAnimation
 TransitionHandleFallBack_HitWall
           rem Hit wall, transition to idle
+          rem Returns: Far (return otherbank)
           let temp2 = ActionIdle
           rem tail call
           goto SetPlayerAnimation
@@ -357,11 +375,12 @@ TransitionHandleFallBack_HitWall
           rem Character-specific attack transitions based on patterns
 
 HandleAttackTransition
+          rem Returns: Far (return otherbank)
           let temp1 = currentAnimationSeq_R[currentPlayer]
-          if temp1 < ActionAttackWindup then return thisbank
+          if temp1 < ActionAttackWindup then return otherbank
           let temp1 = temp1 - ActionAttackWindup
           on temp1 goto HandleWindupEnd HandleExecuteEnd HandleRecoveryEnd
-          return thisbank
+          return otherbank
 HandleWindupEnd
           let temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then return thisbank
@@ -371,16 +390,18 @@ HandleWindupEnd
           goto SetPlayerAnimation
 
 HandleExecuteEnd
+          rem Returns: Far (return otherbank)
           let temp1 = playerCharacter[currentPlayer]
-          if temp1 >= 32 then return thisbank
+          if temp1 >= 32 then return otherbank
           if temp1 = 6 then goto HarpyExecute
           if temp1 >= 16 then let temp1 = 0
           let temp2 = CharacterExecuteNextAction[temp1]
-          if temp2 = 255 then return thisbank
+          if temp2 = 255 then return otherbank
           goto SetPlayerAnimation
 
 HarpyExecute
           rem Harpy: Execute → Idle
+          rem Returns: Far (return otherbank)
           rem Clear dive flag and stop diagonal movement when attack
           rem   completes
           rem Also apply upward wing flap momentum after swoop attack
@@ -414,6 +435,7 @@ HarpyExecute
 
 HandleRecoveryEnd
           rem All characters: Recovery → Idle
+          rem Returns: Far (return otherbank)
           let temp2 = ActionIdle
           rem tail call
           goto SetPlayerAnimation

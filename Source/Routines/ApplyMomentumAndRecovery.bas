@@ -5,11 +5,13 @@
           rem   duplicate .MomentumRecoveryNext labels trying to walk past $10000. One copy
           rem   is plenty; see Issue #875 if you are tempted to clone it again.
 ApplyMomentumAndRecovery
+          rem Returns: Far (return otherbank)
           asm
 ApplyMomentumAndRecovery
 
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Apply Momentum And Recovery
           rem Updates recovery frames and applies velocity during
           rem   hitstun.

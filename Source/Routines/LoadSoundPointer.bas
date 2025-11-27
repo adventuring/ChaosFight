@@ -5,6 +5,7 @@
 
 
 LoadSoundPointer
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -15,6 +16,7 @@ LoadSoundPointer
 end
 
           rem Lookup sound pointer from tables (Bank 15 sounds: 0-9)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -57,6 +59,7 @@ end
 LoadSoundPointerOutOfRange
 
           rem Set pointer to 0 (var41.var42 = 0.0)
+          rem Returns: Far (return otherbank)
 
           let var41 = 0
 

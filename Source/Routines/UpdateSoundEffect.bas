@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 UpdateSoundEffect
+          rem Returns: Far (return otherbank)
           asm
 UpdateSoundEffect
 end
           rem UpdateSoundEffect - Update sound effect playback each
+          rem Returns: Far (return otherbank)
           rem   frame
           rem Called every frame from MainLoop for gameMode 6
           rem Updates both voices if active (high byte != 0)

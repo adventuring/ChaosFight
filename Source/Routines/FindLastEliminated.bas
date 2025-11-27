@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 FindLastEliminated
+          rem Returns: Far (return otherbank)
           asm
 FindLastEliminated
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Find player eliminated most recently (highest elimination order).
           rem Input: currentPlayer loop variable, eliminationOrder[]
           rem Output: winnerPlayerIndex updated to last eliminated player

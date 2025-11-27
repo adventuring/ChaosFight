@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 UpdateSingleGuardTimer
+          rem Returns: Far (return otherbank)
           asm
 UpdateSingleGuardTimer
 end
           rem Update guard timer or cooldown for a single player
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp1 = player index (0-3)
           rem        playerState[] (global array) = player state flags
@@ -56,6 +58,7 @@ end
 
 UpdateGuardTimerActive
           rem Player is guarding - decrement guard duration timer
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp1 (from UpdateSingleGuardTimer),
           rem playerTimers_R[] (global SCRAM array)
@@ -78,9 +81,10 @@ UpdateGuardTimerActive
           let temp3 = temp3 - 1
           let playerTimers_W[temp1] = temp3
           if temp3 = 0 then GuardTimerExpired
-          return thisbank
+          return otherbank
 GuardTimerExpired
           rem Guard duration expired - clear guard bit and start
+          rem Returns: Far (return otherbank)
           rem cooldown
           rem
           rem Input: temp1 (from UpdateGuardTimerActive),
@@ -98,4 +102,4 @@ GuardTimerExpired
           rem Start cooldown timer (same duration as guard)
           let playerState[temp1] = playerState[temp1] & MaskClearGuard
           let playerTimers_W[temp1] = GuardTimerMaxFrames
-          return thisbank
+          return otherbank

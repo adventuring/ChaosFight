@@ -17,6 +17,7 @@
 
 
 LoadSongPointer
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -25,6 +26,7 @@ LoadSongPointer
 end
 
           rem Lookup 16-bit song pointer for Bank 1 songs.
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = song ID (Bank1MinSongID-28), SongPointers1L[]/SongPointers1H[]
 
@@ -57,6 +59,7 @@ end
 
 
 LSP_InvalidSong
+          rem Returns: Far (return otherbank)
 
           let songPointer = 0
 
@@ -65,6 +68,7 @@ LSP_InvalidSong
 
 
 LoadSongVoice1PointerBank1
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -75,6 +79,7 @@ end
 
 
           rem Lookup Voice 1 song pointer from tables (Bank 1 songs)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -131,6 +136,7 @@ end
 
 
 LSV1P_InvalidSong
+          rem Returns: Far (return otherbank)
 
           let songPointer = 0
 
@@ -139,6 +145,7 @@ LSV1P_InvalidSong
 
 
 LoadMusicNote0
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -147,6 +154,7 @@ LoadMusicNote0
 end
 
           rem Load next note from Voice 0 stream (assembly pointer access).
+          rem Returns: Far (return otherbank)
 
           rem Input: musicVoice0Pointer (global 16-bit) = current Song_Voice0 pointer
 
@@ -267,6 +275,7 @@ end
 
 
 LoadMusicNote1
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -275,6 +284,7 @@ LoadMusicNote1
 end
 
           rem Load next note from Voice 1 stream using assembly for pointer access
+          rem Returns: Far (return otherbank)
 
           rem
 

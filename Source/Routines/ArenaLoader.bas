@@ -3,11 +3,13 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 LoadArena
+          rem Returns: Far (return otherbank)
           asm
 LoadArena
 
 end
           rem Arena Loader
+          rem Returns: Far (return otherbank)
           rem Loads arena playfield data and colors based on
           rem   selectedArena.
           rem Handles Color/B&W switch: switchbw=1 (B&W/white),
@@ -44,24 +46,29 @@ end
           rem Get arena index (0-15)
 
 LoadArenaDispatch
+          rem Returns: Far (return otherbank)
           gosub DWS_GetBWMode bank15
           let temp6 = temp2
           gosub LoadArenaByIndex bank16
           if temp6 then goto LA_LoadBWColors
           rem Load color color table - fall through to LoadArenaColorsColor
+          rem Returns: Far (return otherbank)
           goto LA_LoadColorColors
 LA_LoadBWColors
           rem Load B&W color table (shared routine)
+          rem Returns: Far (return otherbank)
           gosub LoadArenaColorsBW
           return otherbank
 LA_LoadColorColors
 
 LoadArenaColorsColor
+          rem Returns: Far (return otherbank)
           asm
 LoadArenaColorsColor
 
 end
           rem Load arena color table pointer using stride calculation
+          rem Returns: Far (return otherbank)
           asm
             lda #<Arena0Colors
             sta pfcolortable
@@ -87,10 +94,12 @@ end
           return otherbank
 
 LoadArenaColorsBW
+          rem Returns: Far (return otherbank)
           asm
 LoadArenaColorsBW
 end
           rem Shared B&W color table loader
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None
           rem
@@ -107,9 +116,10 @@ end
             lda #>ArenaColorsBW
             sta pfcolortable+1
 end
-          return thisbank
+          return otherbank
 LoadArenaRandom
           rem Select random arena (0-31) using proper random number
+          rem Returns: Far (return otherbank)
           rem generator
           rem
           rem Input: rand (global) = random number generator
@@ -138,5 +148,6 @@ LoadArenaRandom
           return otherbank
 LAR_LoadBWColors
           rem Load B&W color table (shared routine)
+          rem Returns: Far (return otherbank)
           gosub LoadArenaColorsBW
           return otherbank

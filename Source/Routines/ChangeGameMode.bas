@@ -1,4 +1,5 @@
 ChangeGameMode
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -9,6 +10,7 @@ ChangeGameMode
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem ChaosFight - Source/Routines/ChangeGameMode.bas
 
@@ -71,6 +73,7 @@ end
 SetupPublisherPrelude
 
           rem Setup Publisher Prelude mode
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -96,7 +99,7 @@ SetupPublisherPrelude
 
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
 
-          rem ChangeGameMode is called cross-bank, so all return paths must use return otherbank
+          rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
 
           gosub BeginPublisherPrelude
 
@@ -107,6 +110,7 @@ SetupPublisherPrelude
 SetupAuthorPrelude
 
           rem Setup Author Prelude mode
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -132,7 +136,7 @@ SetupAuthorPrelude
 
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
 
-          rem ChangeGameMode is called cross-bank, so all return paths must use return otherbank
+          rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
 
           gosub BeginAuthorPrelude
 
@@ -143,6 +147,7 @@ SetupAuthorPrelude
 SetupTitle
 
           rem Setup Title Screen mode
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -168,7 +173,7 @@ SetupTitle
 
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
 
-          rem ChangeGameMode is called cross-bank, so all return paths must use return otherbank
+          rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
 
           gosub BeginTitleScreen
 
@@ -179,14 +184,16 @@ SetupTitle
 SetupCharacterSelect
 
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
+          rem Returns: Far (return otherbank)
 
-          rem ChangeGameMode is called cross-bank, so all return paths must use return otherbank
+          rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
 
           return otherbank
 
 SetupFallingAnimation
 
           rem Character select uses its own internal flow
+          rem Returns: Far (return otherbank)
 
           rem No separate Begin function needed - setup is handled
 
@@ -238,7 +245,7 @@ SetupFallingAnimation
 
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
 
-          rem ChangeGameMode is called cross-bank, so all return paths must use return otherbank
+          rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
 
           gosub BeginFallingAnimation bank12
 
@@ -249,6 +256,7 @@ SetupFallingAnimation
 SetupArenaSelect
 
           rem Setup Arena Select mode
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -274,7 +282,7 @@ SetupArenaSelect
 
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
 
-          rem ChangeGameMode is called cross-bank, so all return paths must use return otherbank
+          rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
 
           gosub BeginArenaSelect bank12
 
@@ -285,6 +293,7 @@ SetupArenaSelect
 SetupGame
 
           rem Setup Game mode
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -314,7 +323,7 @@ SetupGame
 
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
 
-          rem ChangeGameMode is called cross-bank, so all return paths must use return otherbank
+          rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
 
           gosub BeginGameLoop bank11
 
@@ -325,6 +334,7 @@ SetupGame
 SetupWinner
 
           rem Setup Winner Announcement mode
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -350,7 +360,7 @@ SetupWinner
 
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
 
-          rem ChangeGameMode is called cross-bank, so all return paths must use return otherbank
+          rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
 
           gosub BeginWinnerAnnouncement bank12
 
@@ -361,6 +371,7 @@ SetupWinner
 SetupAttract
 
           rem Setup Attract Mode
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -386,7 +397,7 @@ SetupAttract
 
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
 
-          rem ChangeGameMode is called cross-bank, so all return paths must use return otherbank
+          rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
 
           gosub BeginAttractMode
 
@@ -407,6 +418,7 @@ SetupAttract
 CGM_ThunkPublisherPrelude
 
           rem Near thunk - same bank jump
+          rem Returns: Far (return otherbank)
 
           goto SetupPublisherPrelude
 
@@ -415,6 +427,7 @@ CGM_ThunkPublisherPrelude
 CGM_ThunkAuthorPrelude
 
           rem Near thunk - same bank jump
+          rem Returns: Far (return otherbank)
 
           goto SetupAuthorPrelude
 
@@ -423,6 +436,7 @@ CGM_ThunkAuthorPrelude
 CGM_ThunkTitle
 
           rem Near thunk - same bank jump
+          rem Returns: Far (return otherbank)
 
           goto SetupTitle
 
@@ -431,6 +445,7 @@ CGM_ThunkTitle
 CGM_ThunkCharacterSelect
 
           rem Near thunk - same bank jump
+          rem Returns: Far (return otherbank)
 
           goto SetupCharacterSelect
 
@@ -439,6 +454,7 @@ CGM_ThunkCharacterSelect
 CGM_ThunkFallingAnimation
 
           rem Near thunk - same bank jump
+          rem Returns: Far (return otherbank)
 
           goto SetupFallingAnimation
 
@@ -447,6 +463,7 @@ CGM_ThunkFallingAnimation
 CGM_ThunkArenaSelect
 
           rem Near thunk - same bank jump
+          rem Returns: Far (return otherbank)
 
           goto SetupArenaSelect
 
@@ -455,6 +472,7 @@ CGM_ThunkArenaSelect
 CGM_ThunkGame
 
           rem Near thunk - same bank jump
+          rem Returns: Far (return otherbank)
 
           goto SetupGame
 
@@ -463,6 +481,7 @@ CGM_ThunkGame
 CGM_ThunkWinner
 
           rem Near thunk - same bank jump
+          rem Returns: Far (return otherbank)
 
           goto SetupWinner
 
@@ -471,5 +490,6 @@ CGM_ThunkWinner
 CGM_ThunkAttract
 
           rem Near thunk - same bank jump
+          rem Returns: Far (return otherbank)
 
           goto SetupAttract

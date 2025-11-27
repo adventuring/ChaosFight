@@ -5,6 +5,7 @@
 
 
 GetPlayerLocked
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -13,6 +14,7 @@ GetPlayerLocked
 end
 
           rem Player Locked Helper Functions
+          rem Returns: Far (return otherbank)
 
           rem Helper functions to access bit-packed playerLocked
 
@@ -99,6 +101,7 @@ GetPlayerLockedP3
 
 
 SetPlayerLocked
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -107,6 +110,7 @@ SetPlayerLocked
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Set Player Locked State
 
@@ -150,30 +154,33 @@ end
 
 SetPlayerLockedUseTemp
 
-          rem if temp3 > 3 then return
+          rem if temp3 > 3 then return otherbank
+          rem Returns: Far (return otherbank)
 
           let temp3 = temp1
 
 
 
 SetPlayerLockedApply
+          rem Returns: Far (return otherbank)
 
           let currentPlayer = temp3
 
 
 
           rem Clear the 2 bits for this player and set the new value
+          rem Returns: Far (return otherbank)
 
-          if temp3 = 0 then playerLocked = (playerLocked & 252) | temp2 : return thisbank
+          if temp3 = 0 then playerLocked = (playerLocked & 252) | temp2 : return otherbank
 
-          if temp3 = 1 then playerLocked = (playerLocked & 243) | (temp2 * 4) : return thisbank
+          if temp3 = 1 then playerLocked = (playerLocked & 243) | (temp2 * 4) : return otherbank
 
-          if temp3 = 2 then playerLocked = (playerLocked & 207) | (temp2 * 16) : return thisbank
+          if temp3 = 2 then playerLocked = (playerLocked & 207) | (temp2 * 16) : return otherbank
 
-          if temp3 = 3 then playerLocked = (playerLocked & 63) | (temp2 * 64) : return thisbank
+          if temp3 = 3 then playerLocked = (playerLocked & 63) | (temp2 * 64) : return otherbank
 
 
 
-          return thisbank
+          return otherbank
 
 

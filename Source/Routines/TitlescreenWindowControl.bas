@@ -1,8 +1,10 @@
 SetPublisherWindowValues
+          rem Returns: Far (return otherbank)
           asm
 SetPublisherWindowValues
 end
           rem
+          rem Returns: Far (return otherbank)
           rem ChaosFight - Source/Routines/TitlescreenWindowControl.bas
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem Titlescreen Window Control
@@ -47,11 +49,13 @@ end
           return otherbank
 
 SetAuthorWindowValues
+          rem Returns: Far (return otherbank)
           asm
 SetAuthorWindowValues
 
 end
           rem Initialize window values for Author screen
+          rem Returns: Far (return otherbank)
           rem Shows: BRP (slot 4)
           rem Hides: AtariAge logo (bmp_48x2_1), AtariAgeText
           rem   (bmp_48x2_2), ChaosFight (bmp_48x2_3)
@@ -74,10 +78,12 @@ end
           return otherbank
 
 SetTitleWindowValues
+          rem Returns: Far (return otherbank)
           asm
 SetTitleWindowValues
 end
           rem Initialize window values for Title screen
+          rem Returns: Far (return otherbank)
           rem Shows: ChaosFight (bmp_48x2_3) only
           rem Hides: AtariAge logo (bmp_48x2_1), AtariAgeText
           rem   (bmp_48x2_2), BRP (bmp_48x2_4)

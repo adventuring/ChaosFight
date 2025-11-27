@@ -7,10 +7,12 @@
           rem   can be:
 
 GetPlayerMissileBitFlag
+          rem Returns: Far (return otherbank)
           asm
 GetPlayerMissileBitFlag
 end
           rem   - Ranged projectile (bullet, arrow, magic spell)
+          rem Returns: Far (return otherbank)
           rem   - Mêlée attack visual (sword, fist, kick sprite)
           rem MISSILE VARIABLES (from Variables.bas):
           rem   missileX[0-3] (a-d) - X positions
@@ -34,21 +36,23 @@ end
           rem Get Player Missile Bit Flag
           rem Input: temp1 = player index (0-3)
           rem Output: temp6 = bit flag (1, 2, 4, or 8)
-          rem Mutates: temp6 (return value)
+          rem Mutates: temp6 (return otherbank value)
           rem
           rem Called Routines: None
           rem Constraints: None
           rem Calculate bit flag using O(1) array lookup:
           rem BitMask[playerIndex] (1, 2, 4, 8)
           let temp6 = BitMask[temp1]
-          return thisbank
+          return otherbank
 
 SpawnMissile
+          rem Returns: Far (return otherbank)
           asm
 SpawnMissile
 
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Spawn Missile
           rem Creates a new missile/attack visual for a player.
           rem Called when player presses attack button.
@@ -161,10 +165,12 @@ end
           return otherbank
 
 UpdateAllMissiles
+          rem Returns: Far (return otherbank)
           asm
 UpdateAllMissiles
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Update All Missiles
           rem Called once per frame to update all active missiles.
           rem Updates position, checks collisions, handles lifetime.
@@ -188,10 +194,12 @@ end
           return otherbank
 
 UpdateOneMissile
+          rem Returns: Far (return otherbank)
           asm
 UpdateOneMissile
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Update One Missile
           rem Updates a single player missile.
           rem Handles movement, gravity, collisions, and lifetime.
@@ -251,7 +259,7 @@ end
           gosub GetPlayerMissileBitFlag
           let temp4 = missileActive & temp6
           rem Not active, skip
-          if temp4  = 0 then return thisbank
+          if temp4  = 0 then return otherbank
 
           rem Preserve player index since GetMissileFlags uses temp1
           rem Use temp6 temporarily to save player index (temp6 is used
@@ -294,6 +302,7 @@ end
           let missileVelocityY[temp1] = temp3
 GravityDone
           rem Update stored Y velocity
+          rem Returns: Far (return otherbank)
 
           rem Issue #1188: Apply friction if flag is set (curling stone deceleration)
           rem Consolidated friction calculation - handles both positive and negative velocities
@@ -356,6 +365,7 @@ FrictionDone
 
 FrootyRicochetCheck
           rem Issue #1177: Frooty lollipop ricochets off arena bounds
+          rem Returns: Far (return otherbank)
           rem Check horizontal bounds and reverse X velocity
           let temp2 = missileX[temp1]
           if temp2 < PlayerLeftWrapThreshold then goto FrootyRicochetLeft
@@ -363,15 +373,18 @@ FrootyRicochetCheck
           goto FrootyRicochetVerticalCheck
 FrootyRicochetLeft
           rem Hit left wall - reverse X velocity and clamp position
+          rem Returns: Far (return otherbank)
           let missileX[temp1] = PlayerLeftWrapThreshold
           let missileVelocityX[temp1] = 0 - missileVelocityX[temp1]
           goto FrootyRicochetVerticalCheck
 FrootyRicochetRight
           rem Hit right wall - reverse X velocity and clamp position
+          rem Returns: Far (return otherbank)
           let missileX[temp1] = PlayerRightWrapThreshold
           let missileVelocityX[temp1] = 0 - missileVelocityX[temp1]
 FrootyRicochetVerticalCheck
           rem Check vertical bounds and reverse Y velocity
+          rem Returns: Far (return otherbank)
           rem Screen top is around 20 (visible area), bottom is 192
           let temp3 = temp4
           if temp3 < 20 then goto FrootyRicochetTop
@@ -379,11 +392,13 @@ FrootyRicochetVerticalCheck
           goto BoundsCheckDone
 FrootyRicochetTop
           rem Hit top wall - reverse Y velocity and clamp position
+          rem Returns: Far (return otherbank)
           let missileY_W[temp1] = 20
           let missileVelocityY[temp1] = 0 - missileVelocityY[temp1]
           goto BoundsCheckDone
 FrootyRicochetBottom
           rem Hit bottom wall - reverse Y velocity and clamp position
+          rem Returns: Far (return otherbank)
           let missileY_W[temp1] = ScreenBottom
           let missileVelocityY[temp1] = 0 - missileVelocityY[temp1]
 BoundsCheckDone
@@ -400,6 +415,7 @@ BoundsCheckDone
           goto DeactivateMissile
 PlayfieldCollisionDone
           rem No bounce - deactivate on background hit
+          rem Returns: Far (return otherbank)
 
           rem Check collision with players
           rem This handles both visible missiles and AOE attacks
@@ -429,11 +445,13 @@ end
 
 HandleMissileDamage
           rem HandleMissileHit applies damage and effects
+          rem Returns: Far (return otherbank)
           gosub HandleMissileHit
           rem tail call
           goto DeactivateMissile
 MissileSystemNoHit
           rem Missile disappears after hitting player
+          rem Returns: Far (return otherbank)
 
           rem Decrement lifetime counter and check expiration
           rem Retrieve current lifetime for this missile
@@ -455,6 +473,7 @@ MissileUpdateComplete
 
 MissileSysPF
           rem
+          rem Returns: Far (return otherbank)
           rem Check Missile-playfield Collision
           rem Checks if missile hit the playfield (walls, obstacles).
           rem Uses pfread to check playfield pixel at missile position.
@@ -511,10 +530,11 @@ MissileSysPF
           let temp2 = temp3
           gosub PlayfieldRead bank16
           rem Default: no collision detected
-          if temp1 then let temp4 = 1 : return thisbank
-          return thisbank
+          if temp1 then let temp4 = 1 : return otherbank
+          return otherbank
 CheckMissilePlayerCollision
           rem
+          rem Returns: Far (return otherbank)
           rem Check Missile-player Collision
           rem Checks if a missile hit any player (except the owner).
           rem Uses axis-aligned bounding box (AABB) collision detection.
@@ -571,7 +591,7 @@ CheckMissilePlayerCollision
           if temp2 >= playerX[temp6] + PlayerSpriteHalfWidth then goto MissileCheckNextPlayer
           if temp2 + MissileAABBSize <= playerX[temp6] then goto MissileCheckNextPlayer
           if temp3 >= playerY[temp6] + PlayerSpriteHeight then goto MissileCheckNextPlayer
-          rem Collision detected - return hit player index
+          rem Collision detected - return otherbank hit player index
           if temp3 + MissileAABBSize <= playerY[temp6] then goto MissileCheckNextPlayer
           let temp4 = temp6
           goto MissileCollisionReturn
@@ -580,10 +600,12 @@ MissileCheckNextPlayer
 MissileCollisionReturn
           return thisbank
 HandleMissileHit
+          rem Returns: Far (return otherbank)
           asm
 HandleMissileHit
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Handle Missile Hit
           rem Processes a missile hitting a player.
           rem Applies damage, knockback, and visual/audio feedback.
@@ -647,6 +669,7 @@ MissileDamageDone
           goto DiveCheckDone
 HarpyCheckDive
           rem Check if Harpy is in dive mode
+          rem Returns: Far (return otherbank)
           rem Not diving, skip bonus
           if (characterStateFlags_R[temp1] & 4) = 0 then goto DiveCheckDone
           rem Apply 1.5× damage for diving attacks (temp6 + temp6÷2 =
@@ -684,6 +707,7 @@ DiveCheckDone
           goto WeightBasedKnockbackApply
 WeightBasedKnockbackScale
           rem Heavy characters: reduced knockback (4 × (100-weight) ÷ 100)
+          rem Returns: Far (return otherbank)
           let velocityCalculation = 100 - characterWeight
           asm
             lda velocityCalculation
@@ -698,6 +722,7 @@ end
           if impulseStrength = 0 then let impulseStrength = 1
 WeightBasedKnockbackApply
           rem Apply knockback: missile from left pushes right, from right pushes left
+          rem Returns: Far (return otherbank)
           if temp2 >= playerX[temp4] then goto KnockbackRight
           let playerVelocityX[temp4] = playerVelocityX[temp4] + impulseStrength
           goto KnockbackDone
@@ -705,6 +730,7 @@ KnockbackRight
           let playerVelocityX[temp4] = playerVelocityX[temp4] - impulseStrength
 KnockbackDone
           rem Zero subpixel when applying knockback impulse
+          rem Returns: Far (return otherbank)
           let playerVelocityXL[temp4] = 0
 
           rem Set recovery/hitstun frames
@@ -721,13 +747,15 @@ KnockbackDone
 
           rem Spawn damage indicator visual (handled inline)
 
-          return thisbank
+          return otherbank
 HandleMissileBounce
+          rem Returns: Far (return otherbank)
           asm
 HandleMissileBounce
 
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Handle Missile Bounce
           rem Handles wall bounce for missiles with bounce flag set.
           rem
@@ -789,6 +817,7 @@ BounceDone
           return thisbank
 DeactivateMissile
           rem
+          rem Returns: Far (return otherbank)
           rem Deactivate Missile
           rem Removes a missile from active status.
           rem
@@ -813,5 +842,5 @@ DeactivateMissile
           let temp6 = MaxByteValue - temp6
           rem Invert bits
           let missileActive  = missileActive & temp6
-          return thisbank
+          return otherbank
 

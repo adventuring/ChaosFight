@@ -127,6 +127,7 @@
 HCSC_CheckJoy0
 
           rem Check joy0 for players 0,2
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -158,13 +159,14 @@ HCSC_CheckJoy0
 
           if temp2 = 0 then HCSC_CheckJoy0Left
 
-          if !joy0right then return thisbank
+          if !joy0right then return otherbank
 
           goto HandleCharacterSelectCycle
 
 HCSC_CheckJoy0Left
 
           rem Check joy0 left button
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -186,11 +188,12 @@ HCSC_CheckJoy0Left
 
           rem Constraints: Must be colocated with HandleCharacterSelectCycle
 
-          if !joy0left then return
+          if !joy0left then return otherbank
 
 HCSC_CheckJoy1Left
 
           rem Check joy1 left button
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -212,9 +215,10 @@ HCSC_CheckJoy1Left
 
           rem Constraints: Must be colocated with HandleCharacterSelectCycle
 
-          if !joy1left then return
+          if !joy1left then return otherbank
 
 HandleCharacterSelectCycle
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -223,6 +227,7 @@ HandleCharacterSelectCycle
 end
 
           rem Perform character cycling
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -277,6 +282,7 @@ end
 HCSC_CycleLeft
 
           rem Handle stick-left navigation with ordered wrap logic
+          rem Returns: Far (return otherbank)
 
           if temp1 = RandomCharacter then goto HCSC_LeftFromRandom
 
@@ -315,6 +321,7 @@ HCSC_LeftFromZero
 HCSC_CycleRight
 
           rem Handle stick-right navigation with ordered wrap logic
+          rem Returns: Far (return otherbank)
 
           if temp1 = RandomCharacter then goto HCSC_RightFromRandom
 
@@ -351,6 +358,7 @@ HCSC_RightFromMax
           goto HCSC_CycleDone
 
 HCSC_GetPlayer2Tail
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -359,6 +367,7 @@ HCSC_GetPlayer2Tail
 end
 
           rem Determine whether Player 2 wraps to CPU or NO
+          rem Returns: Far (return otherbank)
 
           let temp6 = CPUCharacter
 
@@ -381,6 +390,7 @@ HCSC_P2TailDone
 HCSC_CycleDone
 
           rem Character cycling complete
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -422,9 +432,10 @@ HCSC_CycleDone
 
           gosub PlaySoundEffect bank15
 
-          return thisbank
+          return otherbank
 
 CharacterSelectInputEntry
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -439,6 +450,7 @@ end
 
 
           rem Consolidated input handling with Quadtari multiplexing
+          rem Returns: Far (return otherbank)
 
           let temp3 = 0
 
@@ -457,6 +469,7 @@ end
 
 
 CharacterSelectHandleTwoPlayers
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -467,6 +480,7 @@ CharacterSelectHandleTwoPlayers
 end
 
           rem Handle input for two players (P1/P2 or P3/P4 based on temp3)
+          rem Returns: Far (return otherbank)
 
           rem temp3 = player offset (0 or 2)
 
@@ -527,6 +541,7 @@ ProcessPlayerInput
 CharacterSelectInputComplete
 
           rem Handle random character re-rolls if any players need it
+          rem Returns: Far (return otherbank)
 
           gosub CharacterSelectHandleRandomRolls
 
@@ -542,7 +557,7 @@ CharacterSelectInputComplete
 
           gosub SelectDrawScreen bank6
 
-          return thisbank
+          return otherbank
 
           rem
 
@@ -553,6 +568,7 @@ CharacterSelectInputComplete
 
 
 CharacterSelectHandleRandomRolls
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -561,6 +577,7 @@ CharacterSelectHandleRandomRolls
 end
 
           rem Check each player for pending random roll
+          rem Returns: Far (return otherbank)
 
           let temp1 = 1
 
@@ -577,6 +594,7 @@ end
 
 
 CharacterSelectRollRandomPlayer
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -587,6 +605,7 @@ CharacterSelectRollRandomPlayer
 end
 
           rem Handle random character roll for the current player’s slot.
+          rem Returns: Far (return otherbank)
 
           rem Requirements: Each frame, if selection is RandomCharacter,
 
@@ -611,16 +630,17 @@ end
 CharacterSelectRollRandomPlayerReroll
 
           rem if not valid, try next frame.
+          rem Returns: Far (return otherbank)
 
           let temp2 = rand & $1f
 
           rem Valid roll - character ID updated, but not locked
 
-          if temp2 >= NumCharacters then return thisbank
+          if temp2 >= NumCharacters then return otherbank
 
           let playerCharacter[currentPlayer] = temp2
 
-          return thisbank
+          return otherbank
 
 CharacterSelectRollsDone
 
@@ -629,6 +649,7 @@ CharacterSelectRollsDone
 CharacterSelectCheckReady
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Check If Ready To Proceed
 
@@ -655,6 +676,7 @@ CharacterSelectCheckReady
 CharacterSelectQuadtariReady
 
           rem 4-player mode: Count players who are ready (locked OR on
+          rem Returns: Far (return otherbank)
 
           rem   CPU/NO)
 
@@ -689,12 +711,14 @@ CharacterSelectQuadtariReadyNext
 
 
 CharacterSelectReadyDone
+          rem Returns: Far (return otherbank)
 
-          return thisbank
+          return otherbank
 
 CharacterSelectFinish
 
           rem Finalize selections and transition to falling animation
+          rem Returns: Far (return otherbank)
 
           rem
 

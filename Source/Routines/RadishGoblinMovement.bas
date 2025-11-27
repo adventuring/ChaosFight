@@ -11,6 +11,7 @@
 
 
 RadishGoblinHandleInput
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -19,6 +20,7 @@ RadishGoblinHandleInput
 end
 
           rem Handle joystick input for Radish Goblin bounce movement
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = player index (0-3)
 
@@ -105,6 +107,7 @@ RGHI_SPF_No2
 
 
 RadishGoblinHandleStickDown
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -113,6 +116,7 @@ RadishGoblinHandleStickDown
 end
 
           rem Drop all momentum for Radish Goblin
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = player index (0-3)
 
@@ -129,6 +133,7 @@ end
 
 
 RadishGoblinCheckGroundBounce
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -137,6 +142,7 @@ RadishGoblinCheckGroundBounce
 end
 
           rem Check for ground contact and apply bounce for Radish Goblin
+          rem Returns: Far (return otherbank)
 
           rem Input: currentPlayer = player index (0-3) (global)
 
@@ -223,6 +229,7 @@ RGBGB_ClearState
 RGBGB_CalcBounce
 
           rem Calculate bounce height
+          rem Returns: Far (return otherbank)
 
           let temp2 = RadishGoblinBounceNormal
 
@@ -305,6 +312,7 @@ RGBGB_ClearState2
 
 
 RadishGoblinCheckWallBounce
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -313,6 +321,7 @@ RadishGoblinCheckWallBounce
 end
 
           rem Check for wall bounce collision (horizontal only)
+          rem Returns: Far (return otherbank)
 
           rem Input: currentPlayer = player index (0-3) (global)
 
@@ -323,6 +332,7 @@ end
 
 
 RadishGoblinHandleStickDownRelease
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -331,6 +341,7 @@ RadishGoblinHandleStickDownRelease
 end
 
           rem Handle stick down release for Radish Goblin (short bounce if on ground)
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = player index (0-3)
 

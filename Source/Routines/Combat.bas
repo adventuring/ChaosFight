@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem COMBAT SYSTEM - Generic Subroutines Using Player Arrays
 GetWeightBasedDamage
+          rem Returns: Far (return otherbank)
           asm
 GetWeightBasedDamage
 end
           rem Calculate damage value based on character weight
+          rem Returns: Far (return otherbank)
           rem Issue #1149: Deduplicated weight-tier calculation
           rem
           rem Input: temp1 = character index (0-31)
@@ -13,23 +15,25 @@ end
           rem
           rem Output: temp2 = damage value (12, 18, or 22)
           rem
-          rem Mutates: temp3 (used for weight lookup), temp2 (return value)
+          rem Mutates: temp3 (used for weight lookup), temp2 (return otherbank value)
           rem
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with ApplyDamage
           rem Weight tiers: <=15 = 12 damage, <=25 = 18 damage, >25 = 22 damage
           let temp3 = CharacterWeights[temp1]
-          if temp3 <= 15 then temp2 = 12 : return
-          if temp3 <= 25 then temp2 = 18 : return
+          if temp3 <= 15 then temp2 = 12 : return otherbank
+          if temp3 <= 25 then temp2 = 18 : return otherbank
           let temp2 = 22
-          return thisbank
+          return otherbank
 ApplyDamage
+          rem Returns: Far (return otherbank)
           asm
 ApplyDamage
 
 end
           rem Apply damage from attacker to defender
+          rem Returns: Far (return otherbank)
           rem
           rem Process:
           rem   1. Player begins hurt animation (ActionHit = 5)
@@ -113,6 +117,7 @@ end
 
 ApplyUrsuloKnockUp
           rem Issue #1180: Apply vertical knockback based on target weight
+          rem Returns: Far (return otherbank)
           rem Lighter characters get launched higher (inverse relationship: lower weight = higher launch)
           rem
           rem Input: defenderID (global) = defender player index
@@ -155,6 +160,7 @@ ApplyUrsuloKnockUp
 
 PlayerDies
           rem Player dies - instantly vanish
+          rem Returns: Far (return otherbank)
           rem
           rem Input: defenderID (from ApplyDamage) = defender player
           rem index
@@ -185,6 +191,7 @@ PlayerDies
 
 
 CheckAttackHit
+          rem Returns: Far (return otherbank)
           asm
 CheckAttackHit
 end
@@ -192,7 +199,7 @@ end
           rem Inputs: attackerID, defenderID (must be set before
           rem   calling)
           rem
-          rem Returns: hit (1 = hit, 0 = miss)
+          rem Returns: Far (return otherbank)
           rem Uses cached hitbox values from ProcessAttackerAttacks
           rem   (cached once per attacker, reused for all defenders)
           rem Check if attack hits defender using AABB collision
@@ -241,9 +248,10 @@ end
 
           rem All bounds checked - defender is inside hitbox
           let hit = 1
-          return thisbank
+          return otherbank
 NoHit
           rem Defender is outside hitbox bounds
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from CheckAttackHit)
           rem
@@ -254,13 +262,15 @@ NoHit
           rem Called Routines: None
           rem Constraints: Must be colocated with CheckAttackHit
           let hit = 0
-          return thisbank
+          return otherbank
 CalculateAttackHitbox
+          rem Returns: Far (return otherbank)
           asm
 CalculateAttackHitbox
 
 end
           rem Compute attack hitbox bounds from attacker position and facing.
+          rem Returns: Far (return otherbank)
           rem Inputs: attackerID (global), playerX[], playerY[], playerAttackType_R[],
           rem        playerState[] (for facing direction), PlayerSpriteWidth, PlayerSpriteHeight
           rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W,
@@ -284,6 +294,7 @@ end
 
 MeleeHitbox
           rem Mêlée hitbox extends PlayerSpriteWidth pixels in facing
+          rem Returns: Far (return otherbank)
           rem direction
           rem
           rem Input: attackerID, playerState[] (from
@@ -306,6 +317,7 @@ MeleeHitbox
 
 FacingRight
           rem Hitbox extends 16 pixels forward from sprite right edge
+          rem Returns: Far (return otherbank)
           rem
           rem Input: attackerID, playerX[], playerY[] (from
           rem MeleeHitbox)
@@ -326,9 +338,10 @@ FacingRight
           let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth + PlayerSpriteWidth
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
-          return thisbank
+          return otherbank
 FacingLeft
           rem Hitbox extends 16 pixels forward from sprite left edge
+          rem Returns: Far (return otherbank)
           rem
           rem Input: attackerID, playerX[], playerY[] (from
           rem MeleeHitbox)
@@ -349,9 +362,10 @@ FacingLeft
           let cachedHitboxRight_W = playerX[attackerID]
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
-          return thisbank
+          return otherbank
 ProjectileHitbox
           rem Projectile attacks handled by missile collision system
+          rem Returns: Far (return otherbank)
           rem Issue #1148: Skip projectile hitbox calculation since missiles
           rem handle their own collisions via MissileCollision routines
           rem
@@ -372,9 +386,10 @@ ProjectileHitbox
           let cachedHitboxRight_W = 0
           let cachedHitboxTop_W = 255
           let cachedHitboxBottom_W = 0
-          return thisbank
+          return otherbank
 AreaHitbox
           rem Area hitbox covers radius around attacker center
+          rem Returns: Far (return otherbank)
           rem Issue #1148: Implement radius-based area-of-effect hitbox
           rem
           rem Input: attackerID (from CalculateAttackHitbox), playerX[],
@@ -403,12 +418,14 @@ AreaHitbox
           let cachedHitboxTop_W = temp2 - 24
           rem Bottom edge: center + radius
           let cachedHitboxBottom_W = temp2 + 24
-          return thisbank
+          return otherbank
 ProcessAttackerAttacks
+          rem Returns: Far (return otherbank)
           asm
 ProcessAttackerAttacks
 end
           rem Process attacks for one attacker against all defenders.
+          rem Returns: Far (return otherbank)
           rem Input: attackerID (must be set before calling); facing handled by
           rem        CalculateAttackHitbox which caches bounds once per attacker.
           rem
@@ -438,7 +455,7 @@ end
           rem Issue #1148: Skip ranged attackers (handled by missile system)
           let temp1 = playerAttackType_R[attackerID]
           rem Cache hitbox for this attacker (calculated once, used for
-          if temp1 = RangedAttack then return
+          if temp1 = RangedAttack then return otherbank
           rem all
           rem   defenders)
           gosub CalculateAttackHitbox
@@ -458,13 +475,16 @@ end
           if hit then gosub ApplyDamage
 
 NextDefender
+          rem Returns: Far (return otherbank)
           next
-          return thisbank        
+          return otherbank        
 ProcessAllAttacks
+          rem Returns: Far (return otherbank)
           asm
 ProcessAllAttacks
 end
           rem Process all attacks for all players
+          rem Returns: Far (return otherbank)
           rem Process all attacks for all players (orchestrates attack
           rem processing for all active players)
           rem
@@ -495,8 +515,9 @@ end
 
 NextAttacker
           rem Helper: End of attacker loop iteration (label only)
+          rem Returns: Far (return otherbank)
           next
-          return thisbank
+          return otherbank
           rem Input: None (label only)
           rem
           rem Output: None (label only)
@@ -509,9 +530,11 @@ NextAttacker
 
 CombatShowDamageIndicator
           rem Damage indicator system (handled inline)
-          return thisbank
+          rem Returns: Far (return otherbank)
+          return otherbank
 PlayDamageSound
           rem Damage sound effect handler
+          rem Returns: Far (return otherbank)
           rem
           rem Input: SoundAttackHit (global constant) = sound effect ID
           rem
@@ -535,4 +558,4 @@ PlayDamageSound
           rem Constraints: None
           let temp1 = SoundAttackHit
           gosub PlaySoundEffect bank15
-          return thisbank
+          return otherbank

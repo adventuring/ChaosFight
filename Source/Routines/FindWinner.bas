@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 FindWinner
+          rem Returns: Far (return otherbank)
           asm
 FindWinner
 end
           rem
+          rem Returns: Far (return otherbank)
           rem Find Winner
           rem Identify the last standing player.
           rem Input: currentPlayer (loop), playerHealth[], eliminationOrder[]

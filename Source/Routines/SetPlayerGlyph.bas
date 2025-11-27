@@ -55,6 +55,7 @@ end
 
 
 SetPlayerGlyph
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -63,6 +64,7 @@ SetPlayerGlyph
 end
 
           rem Unified function supports two input modes:
+          rem Returns: Far (return otherbank)
 
           rem Mode 1 (direct): temp1 = glyph index, temp3 = player index
 
@@ -83,6 +85,7 @@ end
 SetPlayerGlyphDirectMode
 
           rem Calculate offset into FontData (16 bytes per glyph)
+          rem Returns: Far (return otherbank)
 
           temp2 = temp1 * 16
 
@@ -117,6 +120,7 @@ end
           on temp3 goto SetPlayerGlyphP0 SetPlayerGlyphP1 SetPlayerGlyphP2 SetPlayerGlyphP3 SetPlayerGlyphP4 SetPlayerGlyphP5
 
 SetPlayerGlyphP5
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -134,9 +138,10 @@ SetPlayerGlyphP5
 
 end
 
-          return thisbank
+          return otherbank
 
 SetPlayerGlyphP0
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -154,9 +159,10 @@ SetPlayerGlyphP0
 
 end
 
-          return thisbank
+          return otherbank
 
 SetPlayerGlyphP1
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -174,9 +180,10 @@ SetPlayerGlyphP1
 
 end
 
-          return thisbank
+          return otherbank
 
 SetPlayerGlyphP2
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -194,9 +201,10 @@ SetPlayerGlyphP2
 
 end
 
-          return thisbank
+          return otherbank
 
 SetPlayerGlyphP3
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -214,9 +222,10 @@ SetPlayerGlyphP3
 
 end
 
-          return thisbank
+          return otherbank
 
 SetPlayerGlyphP4
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -234,13 +243,15 @@ SetPlayerGlyphP4
 
 end
 
-          return thisbank
+          return otherbank
 
 
 
           rem Backward compatibility wrappers
+          rem Returns: Far (return otherbank)
 
 SetGlyph
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -249,6 +260,7 @@ SetGlyph
 end
 
           rem Wrapper for SetPlayerGlyph - direct glyph index mode
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = glyph index, temp3 = player index
 
@@ -261,6 +273,7 @@ end
 
 
 CopyGlyphToPlayer
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -269,6 +282,7 @@ CopyGlyphToPlayer
 end
 
           rem Wrapper for SetPlayerGlyph - sprite type lookup mode
+          rem Returns: Far (return otherbank)
 
           rem Input: temp3 = player index, temp4 = sprite type (0-2)
 

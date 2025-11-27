@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 LoadSoundNote1
+          rem Returns: Far (return otherbank)
           asm
 LoadSoundNote1
 end
           rem Load next note from sound effect stream for Voice 1
+          rem Returns: Far (return otherbank)
           rem
           rem Input: soundEffectPointer1 (global 16-bit) points to current note in
           rem   Sound_Voice0 stream

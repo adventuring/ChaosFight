@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 CheckAllPlayerEliminations
+          rem Returns: Far (return otherbank)
           asm
 CheckAllPlayerEliminations
 end
           rem Player Elimination System
+          rem Returns: Far (return otherbank)
           rem Handles player elimination when health reaches 0, game end
           rem   conditions,
           rem and removal of eliminated players from active gameplay

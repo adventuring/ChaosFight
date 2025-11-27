@@ -5,6 +5,7 @@
 
 
 InputHandleAllPlayers
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -91,6 +92,7 @@ end
 InputDonePlayer0Input
 
           rem Skip Player 0 input (label only, no execution)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -131,6 +133,7 @@ InputDonePlayer0Input
 InputHandlePlayer1
 
           rem Handle Player 1 input (right port)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -161,12 +164,14 @@ InputHandlePlayer1
 InputDonePlayer1Input
 
           rem Player 1 uses Joy1
+          rem Returns: Far (return otherbank)
 
-          return thisbank
+          return otherbank
 
 InputHandleQuadtariPlayers
 
           rem Skip Player 1 input (label only, no execution)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -253,6 +258,7 @@ InputHandleQuadtariPlayers
 InputDonePlayer3Input
 
           rem Skip Player 3 input (label only, no execution)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -289,6 +295,7 @@ InputDonePlayer3Input
 InputDonePlayer4Input
 
           rem Skip Player 4 input (label only, no execution)
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -320,4 +327,4 @@ InputDonePlayer4Input
 
           qtcontroller = 0
 
-          return thisbank
+          return otherbank

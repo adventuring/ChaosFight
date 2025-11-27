@@ -2,10 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 UpdatePlayerMovementSingle
+          rem Returns: Far (return otherbank)
           asm
 UpdatePlayerMovementSingle
 end
           rem Move one player using 8.8 fixed-point velocity integration.
+          rem Returns: Far (return otherbank)
           rem Input: currentPlayer (global) = player index (0-3)
           rem        playerHealth[], playerSubpixelX/Y (SCRAM),
           rem        playerVelocityX/Y, playerX[], playerY[]

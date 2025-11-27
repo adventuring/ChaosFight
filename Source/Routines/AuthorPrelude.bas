@@ -48,11 +48,13 @@
           rem   bitmap display
 
 AuthorPrelude
+          rem Returns: Far (return otherbank)
           asm
 AuthorPrelude
 
 end
           rem Check for button press on any controller to skip
+          rem Returns: Far (return otherbank)
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then AuthorPreludeComplete
           if joy1fire then AuthorPreludeComplete
@@ -83,6 +85,7 @@ end
 
 AuthorPreludeComplete
           rem Transition to Title Screen mode
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from AuthorPrelude)
           rem

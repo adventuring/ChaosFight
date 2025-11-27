@@ -3,11 +3,13 @@
           rem Helper functions for falling animation player movement
 
 MovePlayerToTarget
+          rem Returns: Far (return otherbank)
           asm
 MovePlayerToTarget
 
 end
           rem Move player toward target position (called from FallingAnimation1)
+          rem Returns: Far (return otherbank)
           rem Input: temp1 = player index (0-3)
           rem        temp2 = target X position
           rem        temp3 = target Y position
@@ -28,42 +30,50 @@ end
           return otherbank
 
 NudgePlayerFromPlayfield
+          rem Returns: Far (return otherbank)
           asm
 NudgePlayerFromPlayfield
 end
           rem Nudge player away from playfield collision
+          rem Returns: Far (return otherbank)
           rem Input: temp1 = player index
           rem Output: Player position adjusted to avoid playfield
           let originalPlayerX_W = playerX[temp1]
           let originalPlayerY_W = playerY[temp1]
-          rem MovePlayerToTarget is called cross-bank, so all return paths must use return thisbank
+          rem MovePlayerToTarget is called cross-bank, so all return otherbank paths must use return otherbank
           gosub MPT_NudgeRight
           gosub MPT_NudgeLeft
-          return thisbank
+          return otherbank
 
 MPT_NudgeRight
+          rem Returns: Far (return otherbank)
           asm
 MPT_NudgeRight
 end
           let playerX[temp1] = originalPlayerX_W + 1
           gosub MPT_CheckCollision
-          rem MovePlayerToTarget is called cross-bank, so all return paths must use return thisbank
+          rem MovePlayerToTarget is called cross-bank, so all return otherbank paths must use return otherbank
+          rem Returns: Far (return otherbank)
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
-          return thisbank
+          return otherbank
 MPT_NudgeLeft
+          rem Returns: Far (return otherbank)
           asm
 MPT_NudgeLeft
 end
           let playerX[temp1] = originalPlayerX_W - 1
           gosub MPT_CheckCollision
-          rem MovePlayerToTarget is called cross-bank, so all return paths must use return thisbank
+          rem MovePlayerToTarget is called cross-bank, so all return otherbank paths must use return otherbank
+          rem Returns: Far (return otherbank)
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
-          return thisbank
+          return otherbank
 MPT_CheckCollision
+          rem Returns: Far (return otherbank)
           asm
 MPT_CheckCollision
 end
           rem Check collision at current position
+          rem Returns: Far (return otherbank)
           rem Input: temp1 = player index, playerX[temp1] = test position, originalPlayerY_W = Y
           rem Output: temp6 = 1 if collision, 0 if clear
           let temp2 = playerX[temp1] - ScreenInsetX
@@ -81,6 +91,6 @@ end
           let temp1 = temp4
           let temp3 = temp3 + 16
           let temp5 = temp3 / 16
-          rem MovePlayerToTarget is called cross-bank, so all return paths must use return thisbank
+          rem MovePlayerToTarget is called cross-bank, so all return otherbank paths must use return otherbank
           if temp5 < pfrows then let temp4 = temp1 : let temp1 = temp2 : let temp2 = temp5 : gosub PlayfieldRead bank16 : if temp1 then let temp6 = 1 : let temp1 = temp4
-          return thisbank
+          return otherbank

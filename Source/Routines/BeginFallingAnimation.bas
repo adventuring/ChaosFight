@@ -3,11 +3,13 @@
           rem Begin Falling Animation
 
 BeginFallingAnimation
+          rem Returns: Far (return otherbank)
           asm
 BeginFallingAnimation
 
 end
           rem Setup routine for Falling In animation.
+          rem Returns: Far (return otherbank)
           rem Sets players in quadrant starting positions and
           rem   initializes state.
           rem
@@ -69,6 +71,7 @@ end
           let activePlayers = activePlayers + 1
 DonePlayer1Init
           rem Player 1 initialization complete (skipped if not active)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (label only, no execution)
           rem
@@ -90,6 +93,7 @@ DonePlayer1Init
           let activePlayers = activePlayers + 1
 DonePlayer2Init
           rem Player 2 initialization complete (skipped if not active)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (label only, no execution)
           rem
@@ -112,6 +116,7 @@ DonePlayer2Init
           let activePlayers = activePlayers + 1
 DonePlayer3Init
           rem Player 3 initialization complete (skipped if not in
+          rem Returns: Far (return otherbank)
           rem 4-player mode or not active)
           rem
           rem Input: None (label only, no execution)
@@ -134,8 +139,10 @@ DonePlayer3Init
           rem Bottom-right Y position (near bottom)
           let activePlayers = activePlayers + 1
 DonePlayer4Init
-          return thisbank          rem Player 4 initialization complete (skipped if not in
+          rem Returns: Far (return otherbank)
+          return otherbank          rem Player 4 initialization complete (skipped if not in
           rem 4-player mode or not active)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: None (label only, no execution)
           rem

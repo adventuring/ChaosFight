@@ -3,6 +3,7 @@
 
 PlayfieldRead
           rem Read playfield pixel at specified column and row
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp1 = playfield column (0-31), temp2 = playfield
           rem        row (0-7)

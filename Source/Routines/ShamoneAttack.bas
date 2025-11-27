@@ -5,6 +5,7 @@
 
 
 ShamoneAttack
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -13,6 +14,7 @@ ShamoneAttack
 end
 
           rem Shamone (Character 15) - Special attack: jumps while
+          rem Returns: Far (return otherbank)
 
           rem attacking simultaneously
 

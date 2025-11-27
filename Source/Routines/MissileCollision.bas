@@ -5,6 +5,7 @@
 
 
 CheckAllMissileCollisions
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -13,6 +14,7 @@ CheckAllMissileCollisions
 end
 
           rem Missile Collision System
+          rem Returns: Far (return otherbank)
 
           rem Handles all collision detection for missiles and
 
@@ -105,6 +107,7 @@ end
 
 
 CheckVisibleMissileCollision
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -113,6 +116,7 @@ CheckVisibleMissileCollision
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Check Visible Missile Collision
 
@@ -201,6 +205,7 @@ end
 
 
 CheckAOECollision
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -209,6 +214,7 @@ CheckAOECollision
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Check Aoe Collision
 
@@ -307,6 +313,7 @@ end
 
 
 CheckBernieAOE
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -315,6 +322,7 @@ CheckBernieAOE
 end
 
           rem Bernie swings both directions every frame
+          rem Returns: Far (return otherbank)
 
           gosub CacheAOERightHitbox
 
@@ -333,6 +341,7 @@ end
           
 
 CheckAOEDirection_Right
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -341,6 +350,7 @@ CheckAOEDirection_Right
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Check Aoe Direction - Right
 
@@ -403,6 +413,7 @@ end
 
 
 CheckAOEDirection_Left
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -411,6 +422,7 @@ CheckAOEDirection_Left
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Check Aoe Direction - Left
 
@@ -473,6 +485,7 @@ end
 
 
 CacheAOERightHitbox
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -481,6 +494,7 @@ CacheAOERightHitbox
 end
 
           rem Cache right-facing AOE bounds for current attacker
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = attacker index, characterIndex = character ID
 
@@ -501,6 +515,7 @@ end
 
 
 CacheAOELeftHitbox
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -509,6 +524,7 @@ CacheAOELeftHitbox
 end
 
           rem Cache left-facing AOE bounds for current attacker
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = attacker index, characterIndex = character ID
 
@@ -529,6 +545,7 @@ end
 
 
 CheckPlayersAgainstCachedHitbox
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -537,6 +554,7 @@ CheckPlayersAgainstCachedHitbox
 end
 
           rem Shared defender scan for missile/AOE collisions
+          rem Returns: Far (return otherbank)
 
           rem Input: temp1 = attacker index, cachedHitbox* = attacker bounds
 
@@ -569,6 +587,7 @@ CPB_NextPlayer
           return thisbank
 
 MissileCollPF
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -577,6 +596,7 @@ MissileCollPF
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Check Missile-playfield Collision
 

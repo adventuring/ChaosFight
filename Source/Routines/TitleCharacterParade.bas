@@ -5,6 +5,7 @@
 
 
 UpdateCharacterParade
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -13,6 +14,7 @@ UpdateCharacterParade
 end
 
           rem Title Screen Character Parade
+          rem Returns: Far (return otherbank)
 
           rem Manages the animated character parade that runs across the bottom of the title screen after 5 seconds (when copyright disappears).
 
@@ -125,6 +127,7 @@ end
 StartNewParadeCharacter
 
           rem Start new character parade
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -153,10 +156,12 @@ StartNewParadeCharacter
           rem Constraints: Must be colocated with UpdateCharacterParade
 
 Roll
+          rem Returns: Far (return otherbank)
 
           let titleParadeCharacter = rand & $1f
 
           rem Random character 0-MaxCharacter
+          rem Returns: Far (return otherbank)
 
           if titleParadeCharacter > MaxCharacter then Roll
 
@@ -171,6 +176,7 @@ Roll
 MoveParadeCharacter
 
           rem Move character across screen
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -207,6 +213,7 @@ MoveParadeCharacter
 ParadeCharacterLeft
 
           rem Character has left - wait 1 second (FramesPerSecond frames) before next
+          rem Returns: Far (return otherbank)
 
           rem
 
@@ -241,6 +248,7 @@ ParadeCharacterLeft
           return otherbank
 
 DrawParadeCharacter
+          rem Returns: Far (return otherbank)
 
           asm
 
@@ -251,6 +259,7 @@ DrawParadeCharacter
 end
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Draw Parade Character
 
@@ -307,6 +316,7 @@ end
 DrawParadeCharacterSprite
 
           rem
+          rem Returns: Far (return otherbank)
 
           rem Draw Parade Character Sprite
 

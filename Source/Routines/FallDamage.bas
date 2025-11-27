@@ -3,6 +3,7 @@
 
 CheckFallDamage
           rem Applies character-specific fall damage when players land
+          rem Returns: Far (return otherbank)
           rem Inputs: currentPlayer (global) = player index (0-3), temp2 = landing velocity (positive downward)
           rem         currentCharacter (global hint, refreshed internally), playerCharacter[], playerState[], playerHealth[], playerRecoveryFrames[]
           rem         SafeFallVelocityThresholds[], WeightDividedBy20[]
@@ -19,8 +20,8 @@ CheckFallDamage
           if currentCharacter = CharacterBernie then goto CheckBernieStun
 
           rem Check for fall damage immunity (Frooty, DragonOfStorms)
-          if currentCharacter = CharacterFrooty then return
-          if currentCharacter = CharacterDragonOfStorms then return
+          if currentCharacter = CharacterFrooty then return otherbank
+          if currentCharacter = CharacterDragonOfStorms then return otherbank
 
           rem Calculate safe fall velocity threshold
           rem Formula: safe_velocity = 120 ÷ weight
@@ -32,7 +33,7 @@ CheckFallDamage
           rem Check if fall velocity exceeds safe threshold
 
           rem Safe landing, no damage
-          if temp2 <= temp3 then return
+          if temp2 <= temp3 then return otherbank
 
           rem Check if player is guarding - guard does NOT block fall
           rem   damage
@@ -99,6 +100,7 @@ multdone:
 end
 WeightMultDone
           rem temp4 = damage × (weight ÷ 20) (weight-based multiplier applied)
+          rem Returns: Far (return otherbank)
 
           rem Apply damage reduction (NinjishGuy, RoboTito: half damage)
           if currentCharacter = CharacterNinjishGuy then temp4 = temp4 / 2
@@ -131,9 +133,10 @@ WeightMultDone
           let temp1 = SoundLandingDamage
           gosub PlaySoundEffect bank15
 
-          return thisbank
+          return otherbank
 CheckBernieStun
           rem Issue #1178: Bernie post-fall stun animation
+          rem Returns: Far (return otherbank)
           rem Bernie should enter stunned state after falling far enough to trigger fall damage threshold
           rem Stays in ’fallen from high’ animation for 1 second (frame-rate independent)
           rem
@@ -153,7 +156,7 @@ CheckBernieStun
           rem Bernie’s safe fall velocity threshold
           let temp3 = SafeFallVelocityThresholds[CharacterBernie]
           rem Safe landing, no stun needed
-          if temp2 <= temp3 then return
+          if temp2 <= temp3 then return otherbank
           rem Fall velocity exceeds threshold - trigger stun
           rem Set stun timer to 1 second (frame-rate independent: 60fps NTSC, 50fps PAL/SECAM)
           rem Set recovery flag to prevent movement during stun
@@ -163,9 +166,10 @@ CheckBernieStun
           let temp3 = playerState[currentPlayer] & MaskPlayerStateFlags
           rem Animation state 8 (Fallen down) << 4 = 128
           let playerState[currentPlayer] = temp3 | ActionFallenDownShifted
-          return thisbank
+          return otherbank
 FallDamageApplyGravity
           rem
+          rem Returns: Far (return otherbank)
           rem Apply Gravity
           rem Applies gravity acceleration to a player each frame.
           rem Handles character-specific gravity rates and terminal
@@ -195,8 +199,8 @@ FallDamageApplyGravity
           let currentCharacter = playerCharacter[currentPlayer]
 
           rem Check for no-gravity characters (Frooty, DragonOfStorms)
-          if currentCharacter = CharacterFrooty then return
-          if currentCharacter = CharacterDragonOfStorms then return
+          if currentCharacter = CharacterFrooty then return otherbank
+          if currentCharacter = CharacterDragonOfStorms then return otherbank
 
           rem Apply gravity (default 2, Harpy 1)
           let temp6 = 2
@@ -207,9 +211,10 @@ FallDamageApplyGravity
 
           if temp2 > TerminalVelocity then temp2 = TerminalVelocity
 
-          return thisbank
+          return otherbank
 CheckGroundCollision
           rem
+          rem Returns: Far (return otherbank)
           rem Check Ground Collision
           rem Checks if player has landed on ground or platform.
           rem Calls CheckFallDamage if landing detected.
@@ -247,14 +252,15 @@ CheckGroundCollision
           rem Get player Y position
           let temp3 = playerY[currentPlayer]
 
-          if temp3 < 176 then return
+          if temp3 < 176 then return otherbank
           let playerY[currentPlayer] = 176
-          if temp2 <= 0 then return
+          if temp2 <= 0 then return otherbank
           goto CheckFallDamage
 
-          return thisbank
+          return otherbank
 HandleFrootyVertical
           rem
+          rem Returns: Far (return otherbank)
           rem Handle Frooty Vertical Control
           rem Frooty has no gravity and can move up/down freely.
           rem Down button moves down (no guard action).
@@ -268,9 +274,10 @@ HandleFrootyVertical
           rem Check character type to confirm
           let currentCharacter = playerCharacter[currentPlayer]
           if currentCharacter = CharacterFrooty then goto FrootyFallDamage
-          return thisbank
+          return otherbank
 FrootyFallDamage
           rem Frooty fall damage
+          rem Returns: Far (return otherbank)
 
           rem Get joystick state
           rem This needs to be integrated with PlayerInput.bas
@@ -291,9 +298,10 @@ FrootyFallDamage
           if playerY[currentPlayer] > oldHealthValue then let playerY[currentPlayer] = 0
           if playerY[currentPlayer] > 176 then let playerY[currentPlayer] = 176
 
-          return thisbank
+          return otherbank
 HandleHarpySwoopAttack
           rem
+          rem Returns: Far (return otherbank)
           rem Handle Harpy Swoop Attack
           rem Harpy attack causes an instant redirection into a rapid
           rem downward diagonal strike at ~45° to the facing direction.
@@ -308,9 +316,10 @@ HandleHarpySwoopAttack
           rem Check character type to confirm
           let currentCharacter = playerCharacter[currentPlayer]
           if currentCharacter = CharacterHarpy then goto HarpyDive
-          return thisbank
+          return otherbank
 HarpyDive
           rem Harpy dive
+          rem Returns: Far (return otherbank)
 
           rem Get facing direction from playerState bit 0
           let temp6 = playerState[currentPlayer] & PlayerStateBitFacing
@@ -325,9 +334,11 @@ HarpyDive
           goto SetVerticalMomentum
 SetHorizontalMomentumRight
           rem Facing right: set positive momentum
+          rem Returns: Far (return otherbank)
           let playerVelocityX[currentPlayer] = 4
 SetVerticalMomentum
           rem Set downward momentum (using temp variable for now)
+          rem Returns: Far (return otherbank)
           rem Integrate with vertical momentum system
           rem This is handled by PlayerPhysicsGravity.bas
           rem This needs to override normal gravity temporarily
@@ -345,9 +356,10 @@ SetVerticalMomentum
           let temp1 = currentPlayer
           gosub SpawnMissile bank7
 
-          return thisbank
+          return otherbank
 DivideBy20
           rem
+          rem Returns: Far (return otherbank)
           rem Division/multiplication HELPERS (no Mul/div Support)
           rem Helper routines using optimized assembly for fast
           rem   division/multiplication
@@ -385,17 +397,19 @@ end
 
 DivideBy100
           rem DivideBy100: compute floor(temp2 ÷ 100) using range check
+          rem Returns: Far (return otherbank)
           rem
           rem INPUT: temp2 = dividend
           rem
           rem OUTPUT: temp2 = quotient (0, 1, or 2)
           rem Fast approximation for values 0-255
-          if temp2 > 200 then temp2 = 2 : return
-          if temp2 > 100 then temp2 = 1 : return
+          if temp2 > 200 then temp2 = 2 : return otherbank
+          if temp2 > 100 then temp2 = 1 : return otherbank
           let temp2 = 0
-          return thisbank
+          return otherbank
 CalculateSafeFallDistance
           rem
+          rem Returns: Far (return otherbank)
           rem Calculate Safe Fall Distance
           rem Utility routine to calculate safe fall distance for a
           rem   character.

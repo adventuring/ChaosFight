@@ -1,0 +1,1073 @@
+#!/usr/bin/perl
+# ChaosFight - Tools/audit-calling-conventions
+# Copyright © 2025 Bruce-Robert Pocock.
+#
+# Audits stack usage and calling conventions by analyzing the compiled
+# listing file. Tracks all stack-affecting operations including:
+# - JSR/RTS (±2 bytes)
+# - PHA/PLA, PHP/PLP (±1 byte)
+# - Far calls via BS_jsr/BS_return (±4 bytes)
+# - Follows JMP/branch control flow
+
+use strict;
+use warnings;
+use File::Basename;
+use Cwd 'abs_path';
+
+# Find project root
+my $script_dir = dirname(abs_path($0));
+my $project_root = dirname($script_dir);
+
+# Listing file location
+my $lst_file = "$project_root/Dist/ChaosFight26.NTSC.lst";
+
+# Data structures
+my %labels;           # addr => label_name
+my %instructions;     # addr => { opcode, operand, stack_delta, is_branch, target }
+my %routines;         # label => { start_addr, returns => [], calls => [], stack_issues => [] }
+my @global_issues;    # List of detected issues
+
+# Stack effects for 6502 opcodes
+my %stack_ops = (
+    'pha' => -1,    # Push A (grows stack down)
+    'php' => -1,    # Push P
+    'pla' => +1,    # Pull A (shrinks stack)
+    'plp' => +1,    # Pull P
+    'jsr' => -2,    # Push return address
+    'rts' => +2,    # Pull return address
+    'rti' => +3,    # Pull P and return address
+    'brk' => -3,    # Push P and return address (rarely used intentionally)
+);
+
+# Branch/jump opcodes
+my %branches = map { $_ => 1 } qw(bcc bcs beq bmi bne bpl bvc bvs jmp);
+
+# Parse the listing file
+sub parse_listing {
+    open my $fh, '<', $lst_file or die "Cannot open $lst_file: $!\n";
+    
+    my $current_bank = 0;
+    my $in_code = 0;
+    
+    while (<$fh>) {
+        chomp;
+        
+        # Detect bank changes - look for "start_bankN" or ORG patterns
+        if (/ORG\s+\$([0-9a-f]+)/i) {
+            my $org = hex($1);
+            $current_bank = int($org / 0x1000);
+        }
+        
+        # Parse listing line format:
+        # LINE_NUM  FILE_OFFSET  BYTES  INSTRUCTION
+        # Example: "  1234  f123  20 34 f1  jsr Label"
+        
+        # Match lines with actual code (has hex bytes)
+        if (/^\s*\d+\s+([0-9a-f]+)\s+([0-9a-f]{2}(?:\s+[0-9a-f]{2})*)\s+(\w+)\s*(.*)/i) {
+            my ($addr_str, $bytes, $opcode, $operand) = ($1, $2, lc($3), $4);
+            my $addr = hex($addr_str);
+            
+            # Skip if not a real instruction (data, etc.)
+            next unless $opcode =~ /^[a-z]{3}$/;
+            
+            my $stack_delta = $stack_ops{$opcode} // 0;
+            my $is_branch = exists $branches{$opcode};
+            my $target = undef;
+            
+            # Parse branch/jump targets
+            if ($is_branch && $operand =~ /\$([0-9a-f]+)/i) {
+                $target = hex($1);
+            } elsif ($is_branch && $operand =~ /(\w+)/) {
+                # Symbolic target - will resolve later
+                $target = $1;
+            }
+            
+            $instructions{$addr} = {
+                opcode => $opcode,
+                operand => $operand,
+                stack_delta => $stack_delta,
+                is_branch => $is_branch,
+                target => $target,
+                bank => $current_bank,
+            };
+        }
+        
+        # Capture label definitions
+        # Format: "LabelName" or ".LabelName" at start, or "LabelName EQU $addr"
+        if (/^([A-Za-z_][A-Za-z0-9_]*)\s*$/ || /^\.([A-Za-z_][A-Za-z0-9_]*)\s/) {
+            # Label on its own line - next instruction is its address
+        }
+        if (/^\s*\d+\s+([0-9a-f]+)\s*([A-Za-z_][A-Za-z0-9_]*)/i) {
+            my ($addr_str, $label) = ($1, $2);
+            my $addr = hex($addr_str);
+            # Skip DASM directives and batariBASIC internal labels
+            next if $label =~ /^(EQU|SET|ORG|RORG|IF|ENDIF|BYTE|WORD)$/i;
+            next if $label =~ /^\.L\d+$/;  # batariBASIC generated labels
+            $labels{$addr} = $label unless exists $labels{$addr};
+        }
+    }
+    close $fh;
+}
+
+# Find routines (labels that are JSR targets or known entry points)
+sub identify_routines {
+    # First pass: find all JSR targets
+    for my $addr (keys %instructions) {
+        my $inst = $instructions{$addr};
+        if ($inst->{opcode} eq 'jsr' && defined $inst->{target}) {
+            my $target = $inst->{target};
+            if ($target =~ /^[0-9a-f]+$/i) {
+                $target = hex($target);
+            }
+            # Mark as routine entry point
+            if (exists $labels{$target}) {
+                $routines{$labels{$target}} //= {
+                    start_addr => $target,
+                    returns => [],
+                    calls => [],
+                    stack_issues => [],
+                };
+            }
+        }
+    }
+    
+    # Also add known entry points
+    for my $label (qw(MainLoop ColdStart WarmStart Reset BS_jsr BS_return drawscreen)) {
+        for my $addr (keys %labels) {
+            if ($labels{$addr} eq $label) {
+                $routines{$label} //= {
+                    start_addr => $addr,
+                    returns => [],
+                    calls => [],
+                    stack_issues => [],
+                };
+            }
+        }
+    }
+}
+
+# Trace stack balance through a routine using DFS
+sub trace_routine {
+    my ($routine_name, $start_addr) = @_;
+    
+    my %visited;
+    my @issues;
+    
+    # DFS with stack tracking
+    my $trace;
+    $trace = sub {
+        my ($addr, $stack_depth, $path) = @_;
+        
+        # Bounds check
+        return if $addr < 0xF000 || $addr > 0xFFFF;
+        
+        # Cycle detection with stack state
+        my $state_key = "$addr:$stack_depth";
+        return if $visited{$state_key}++;
+        
+        # Path length limit
+        return if @$path > 1000;
+        
+        my $inst = $instructions{$addr};
+        return unless $inst;
+        
+        my $new_depth = $stack_depth + ($inst->{stack_delta} // 0);
+        my @new_path = (@$path, sprintf("%04x:%s", $addr, $inst->{opcode}));
+        
+        # Check for stack underflow
+        if ($new_depth > 0) {
+            push @issues, {
+                type => 'underflow',
+                addr => $addr,
+                depth => $new_depth,
+                path => [@new_path],
+            };
+        }
+        
+        # Handle RTS - check if stack is balanced
+        if ($inst->{opcode} eq 'rts') {
+            if ($new_depth != 0) {
+                push @issues, {
+                    type => 'imbalance_at_return',
+                    addr => $addr,
+                    depth => $new_depth,
+                    path => [@new_path],
+                };
+            }
+            return;
+        }
+        
+        # Handle JMP BS_return - far return
+        if ($inst->{opcode} eq 'jmp' && $inst->{operand} =~ /BS_return/i) {
+            # Far return expects -4 on stack (2 bytes caller addr + 2 bytes encoded return)
+            # Actually the far call pushed 4 bytes, so we expect stack_depth = 0 here too
+            # But the BS_return will add +4 (rts after decoding)
+            # This is complex - for now just note it
+            return;
+        }
+        
+        # Handle JSR
+        if ($inst->{opcode} eq 'jsr') {
+            # JSR pushes 2 bytes, callee should pop them with RTS
+            # We continue after the call with same effective stack depth
+            # (JSR -2, then callee does stuff and RTS +2)
+            $trace->($addr + 3, $stack_depth, \@new_path);
+            return;
+        }
+        
+        # Handle branches and jumps
+        if ($inst->{is_branch}) {
+            my $target = $inst->{target};
+            if (defined $target) {
+                if ($target =~ /^[0-9a-f]+$/i) {
+                    $target = hex($target);
+                } elsif (exists $labels{$target}) {
+                    # Resolve symbolic target
+                    for my $a (keys %labels) {
+                        if ($labels{$a} eq $target) {
+                            $target = $a;
+                            last;
+                        }
+                    }
+                }
+                
+                if ($target =~ /^\d+$/) {
+                    # JMP doesn't return, just trace target
+                    if ($inst->{opcode} eq 'jmp') {
+                        $trace->($target, $new_depth, \@new_path);
+                        return;
+                    }
+                    # Conditional branch: trace both paths
+                    $trace->($target, $new_depth, \@new_path);
+                }
+            }
+        }
+        
+        # Continue to next instruction
+        my $next_addr = $addr + instruction_size($inst);
+        $trace->($next_addr, $new_depth, \@new_path);
+    };
+    
+    $trace->($start_addr, 0, []);
+    
+    return @issues;
+}
+
+# Estimate instruction size from opcode (simplified)
+sub instruction_size {
+    my ($inst) = @_;
+    my $op = $inst->{opcode};
+    my $operand = $inst->{operand} // '';
+    
+    # Implied/accumulator addressing (1 byte)
+    return 1 if $op =~ /^(pha|pla|php|plp|rts|rti|brk|nop|clc|sec|cli|sei|clv|cld|sed|tax|txa|tay|tya|tsx|txs|inx|dex|iny|dey|asl|lsr|rol|ror)$/;
+    
+    # Branches are 2 bytes (opcode + relative offset)
+    return 2 if $op =~ /^(bcc|bcs|beq|bmi|bne|bpl|bvc|bvs)$/;
+    
+    # JMP/JSR are 3 bytes
+    return 3 if $op =~ /^(jmp|jsr)$/;
+    
+    # Check operand for addressing mode
+    if ($operand =~ /^#/) {
+        return 2;  # Immediate
+    } elsif ($operand =~ /^\$[0-9a-f]{4}/i) {
+        return 3;  # Absolute
+    } elsif ($operand =~ /^\$[0-9a-f]{2}(?:,|$)/i) {
+        return 2;  # Zero page
+    }
+    
+    # Default to 2
+    return 2;
+}
+
+# Analyze stack balance for specific patterns
+sub analyze_stack_patterns {
+    print STDERR "Analyzing stack patterns in listing...\n";
+    
+    # Count push/pull operations
+    my $pha_count = 0;
+    my $pla_count = 0;
+    my $php_count = 0;
+    my $plp_count = 0;
+    my $jsr_count = 0;
+    my $rts_count = 0;
+    
+    for my $addr (keys %instructions) {
+        my $op = $instructions{$addr}{opcode};
+        $pha_count++ if $op eq 'pha';
+        $pla_count++ if $op eq 'pla';
+        $php_count++ if $op eq 'php';
+        $plp_count++ if $op eq 'plp';
+        $jsr_count++ if $op eq 'jsr';
+        $rts_count++ if $op eq 'rts';
+    }
+    
+    return {
+        pha => $pha_count,
+        pla => $pla_count,
+        php => $php_count,
+        plp => $plp_count,
+        jsr => $jsr_count,
+        rts => $rts_count,
+    };
+}
+
+# Analyze stack balance per routine using control flow
+sub analyze_routine_stack_balance {
+    my @imbalances;
+    
+    # For each routine, trace all paths and check stack balance
+    for my $routine (sort keys %routines) {
+        my $info = $routines{$routine};
+        my $start = $info->{start_addr};
+        next unless $start && exists $instructions{$start};
+        
+        # Track all exit points and their stack depths
+        my %exit_depths;
+        my %visited;
+        
+        my $trace;
+        $trace = sub {
+            my ($addr, $stack_depth, $path) = @_;
+            
+            # Bounds check
+            return if $addr < 0xF000 || $addr > 0xFFFF;
+            
+            # Cycle detection
+            my $state_key = "$addr:$stack_depth";
+            return if $visited{$state_key}++;
+            
+            # Path limit
+            return if @$path > 500;
+            
+            my $inst = $instructions{$addr};
+            return unless $inst;
+            
+            my $op = $inst->{opcode};
+            my $new_depth = $stack_depth + ($inst->{stack_delta} // 0);
+            my @new_path = (@$path, sprintf("%04x:%s", $addr, $op));
+            
+            # Check for stack underflow
+            if ($new_depth > 0) {
+                push @imbalances, {
+                    routine => $routine,
+                    type => 'stack_underflow',
+                    addr => sprintf("%04x", $addr),
+                    depth => $new_depth,
+                    path => [@new_path],
+                };
+            }
+            
+            # Exit points: RTS, RTI, JMP BS_return
+            if ($op eq 'rts') {
+                if ($new_depth != 0) {
+                    push @imbalances, {
+                        routine => $routine,
+                        type => 'unbalanced_return',
+                        addr => sprintf("%04x", $addr),
+                        depth => $new_depth,
+                        path => [@new_path],
+                        detail => "RTS with stack depth $new_depth (should be 0)",
+                    };
+                }
+                $exit_depths{$new_depth}++;
+                return;
+            }
+            
+            if ($op eq 'rti') {
+                if ($new_depth != 0) {
+                    push @imbalances, {
+                        routine => $routine,
+                        type => 'unbalanced_rti',
+                        addr => sprintf("%04x", $addr),
+                        depth => $new_depth,
+                        path => [@new_path],
+                    };
+                }
+                return;
+            }
+            
+            if ($op eq 'jmp' && $inst->{operand} =~ /BS_return/i) {
+                # Far return - stack should be at entry depth (0) when BS_return decodes
+                # BS_return pops 2 bytes, then RTS pops 2 more
+                if ($new_depth != 0) {
+                    push @imbalances, {
+                        routine => $routine,
+                        type => 'unbalanced_far_return',
+                        addr => sprintf("%04x", $addr),
+                        depth => $new_depth,
+                        path => [@new_path],
+                        detail => "JMP BS_return with stack depth $new_depth (should be 0)",
+                    };
+                }
+                return;
+            }
+            
+            # Handle JSR - don't trace into callee, assume it balances
+            if ($op eq 'jsr') {
+                # Continue after call with same depth (JSR -2, callee RTS +2)
+                my $next = $addr + 3;
+                $trace->($next, $stack_depth, \@new_path);
+                return;
+            }
+            
+            # Handle branches
+            if ($inst->{is_branch}) {
+                my $target = $inst->{target};
+                if (defined $target && $target =~ /^\d+$/) {
+                    if ($op eq 'jmp') {
+                        $trace->($target, $new_depth, \@new_path);
+                        return;
+                    }
+                    # Conditional branch - trace both paths
+                    $trace->($target, $new_depth, \@new_path);
+                }
+            }
+            
+            # Continue to next instruction
+            my $next = $addr + instruction_size($inst);
+            $trace->($next, $new_depth, \@new_path);
+        };
+        
+        %visited = ();
+        $trace->($start, 0, []);
+        
+        # Check for multiple exit depths
+        if (keys %exit_depths > 1) {
+            push @imbalances, {
+                routine => $routine,
+                type => 'multiple_exit_depths',
+                depths => [sort keys %exit_depths],
+                detail => "Routine has exits with different stack depths: " . join(', ', sort keys %exit_depths),
+            };
+        }
+    }
+    
+    return @imbalances;
+}
+
+# Look for suspicious patterns in the listing
+sub find_suspicious_patterns {
+    my @suspicious;
+    
+    open my $fh, '<', $lst_file or die "Cannot open $lst_file: $!\n";
+    
+    my $line_num = 0;
+    my $prev_line = '';
+    my $current_routine = '';
+    my @pha_stack;  # Track PHA addresses
+    my @php_stack;  # Track PHP addresses
+    
+    while (<$fh>) {
+        $line_num++;
+        chomp;
+        my $line = $_;
+        
+        # Track current routine from source comments
+        if (/;;line \d+;;\s*(\w+)/) {
+            my $potential = $1;
+            $current_routine = $potential unless $potential =~ /^(rem|if|then|goto|gosub|return|let|dim|const|for|next)$/i;
+        }
+        
+        # Pattern 1: RTS immediately after JSR (tail call candidate but not optimized)
+        if ($prev_line =~ /\bjsr\b/i && $line =~ /\brts\b/i) {
+            push @suspicious, {
+                line => $line_num,
+                type => 'jsr_then_rts',
+                context => "$prev_line\n$line",
+                routine => $current_routine,
+            };
+        }
+        
+        # Pattern 2: PHA without matching PLA
+        if ($line =~ /\bpha\b/i) {
+            push @pha_stack, { line => $line_num, routine => $current_routine };
+        }
+        if ($line =~ /\bpla\b/i) {
+            if (@pha_stack) {
+                pop @pha_stack;
+            } else {
+                push @suspicious, {
+                    line => $line_num,
+                    type => 'pla_without_pha',
+                    context => $line,
+                    routine => $current_routine,
+                    detail => "PLA without matching PHA",
+                };
+            }
+        }
+        
+        # Pattern 3: PHP without matching PLP
+        if ($line =~ /\bphp\b/i) {
+            push @php_stack, { line => $line_num, routine => $current_routine };
+        }
+        if ($line =~ /\bplp\b/i) {
+            if (@php_stack) {
+                pop @php_stack;
+            } else {
+                push @suspicious, {
+                    line => $line_num,
+                    type => 'plp_without_php',
+                    context => $line,
+                    routine => $current_routine,
+                    detail => "PLP without matching PHP",
+                };
+            }
+        }
+        
+        # Pattern 4: Multiple RTS in sequence (dead code or wrong control flow)
+        if ($prev_line =~ /\brts\b/i && $line =~ /\brts\b/i) {
+            push @suspicious, {
+                line => $line_num,
+                type => 'double_rts',
+                context => "$prev_line\n$line",
+                routine => $current_routine,
+            };
+        }
+        
+        # Pattern 5: Unmatched PHA at routine end
+        # (Will be caught by stack balance analysis)
+        
+        $prev_line = $line;
+    }
+    close $fh;
+    
+    # Report unmatched PHAs
+    for my $pha (@pha_stack) {
+        push @suspicious, {
+            line => $pha->{line},
+            type => 'unmatched_pha',
+            routine => $pha->{routine},
+            detail => "PHA without matching PLA",
+        };
+    }
+    
+    # Report unmatched PHPs
+    for my $php (@php_stack) {
+        push @suspicious, {
+            line => $php->{line},
+            type => 'unmatched_php',
+            routine => $php->{routine},
+            detail => "PHP without matching PLP",
+        };
+    }
+    
+    return @suspicious;
+}
+
+# Analyze source .bas files for calling convention mismatches
+# Track which routines are far-called and verify their return types
+sub analyze_source_conventions {
+    my @issues;
+    
+    # First pass: collect all far call targets and all routine returns
+    my %far_call_targets;  # routine_name => [ { caller_file, caller_line, target_bank } ]
+    my %near_call_targets; # routine_name => [ { caller_file, caller_line } ]
+    my %routine_returns;   # routine_name => [ { file, line, type } ]
+    my %routine_locations; # routine_name => { file, line }
+    my %routine_stack_ops; # routine_name => [ { file, line, op, delta } ]
+    
+    # Find all .bas and .s files
+    my @bas_files;
+    my @asm_files;
+    use File::Find;
+    find(sub {
+        return unless -f;
+        my $path = $File::Find::name;
+        return if $path =~ /\/Generated\//;
+        return if $path =~ /\/Object\//;
+        if (/\.bas$/) {
+            push @bas_files, $path;
+        } elsif (/\.s$/) {
+            push @asm_files, $path;
+        }
+    }, "$project_root/Source");
+    
+    # First pass: collect data
+    for my $file (@bas_files) {
+        open my $fh, '<', $file or next;
+        
+        my $line_num = 0;
+        my $current_routine = '';
+        my $in_asm_block = 0;
+        
+        while (<$fh>) {
+            $line_num++;
+            chomp;
+            my $line = $_;
+            
+            # Track asm blocks
+            if (/^\s*asm\s*$/i) {
+                $in_asm_block = 1;
+                next;
+            }
+            if (/^end\s*$/ && $in_asm_block) {
+                $in_asm_block = 0;
+                next;
+            }
+            
+            # Skip comments
+            next if /^\s*rem\b/i;
+            
+            # Detect routine start (label at column 0)
+            if (/^([A-Za-z_][A-Za-z0-9_]*)\s*$/) {
+                $current_routine = $1;
+                $routine_locations{$current_routine} //= { file => $file, line => $line_num };
+            }
+            
+            # Detect far calls: gosub RoutineName bankN
+            if (/\bgosub\s+([A-Za-z_][A-Za-z0-9_]*)\s+bank(\d+)/i) {
+                my ($target, $bank) = ($1, $2);
+                push @{$far_call_targets{$target}}, {
+                    caller_file => $file,
+                    caller_line => $line_num,
+                    target_bank => $bank,
+                };
+            }
+            
+            # Detect far tail calls: goto RoutineName bankN
+            if (/\bgoto\s+([A-Za-z_][A-Za-z0-9_]*)\s+bank(\d+)/i) {
+                my ($target, $bank) = ($1, $2);
+                push @{$far_call_targets{$target}}, {
+                    caller_file => $file,
+                    caller_line => $line_num,
+                    target_bank => $bank,
+                    is_tail => 1,
+                };
+            }
+            
+            # Detect near calls: gosub Label (no bank specifier)
+            if (/\bgosub\s+([A-Za-z_][A-Za-z0-9_]*)(?:\s|$|:)/i) {
+                my $target = $1;
+                # Make sure it's not followed by bank
+                unless ($line =~ /\bgosub\s+$target\s+bank/i) {
+                    push @{$near_call_targets{$target}}, {
+                        caller_file => $file,
+                        caller_line => $line_num,
+                    };
+                }
+            }
+            
+        # Detect returns
+        if (/\breturn\s+thisbank\b/i && $current_routine) {
+            push @{$routine_returns{$current_routine}}, {
+                file => $file,
+                line => $line_num,
+                type => 'thisbank',
+            };
+        }
+        if (/\breturn\s+otherbank\b/i && $current_routine) {
+            push @{$routine_returns{$current_routine}}, {
+                file => $file,
+                line => $line_num,
+                type => 'otherbank',
+            };
+        }
+        
+        # Track PHA/PLA, PHP/PLP in asm blocks
+        if ($in_asm_block) {
+            if (/\bpha\b/i) {
+                push @{$routine_stack_ops{$current_routine}}, {
+                    file => $file,
+                    line => $line_num,
+                    op => 'pha',
+                    delta => -1,
+                };
+            }
+            if (/\bpla\b/i) {
+                push @{$routine_stack_ops{$current_routine}}, {
+                    file => $file,
+                    line => $line_num,
+                    op => 'pla',
+                    delta => +1,
+                };
+            }
+            if (/\bphp\b/i) {
+                push @{$routine_stack_ops{$current_routine}}, {
+                    file => $file,
+                    line => $line_num,
+                    op => 'php',
+                    delta => -1,
+                };
+            }
+            if (/\bplp\b/i) {
+                push @{$routine_stack_ops{$current_routine}}, {
+                    file => $file,
+                    line => $line_num,
+                    op => 'plp',
+                    delta => +1,
+                };
+            }
+        }
+        }  # End while loop
+        close $fh;
+    }
+    
+    # Parse .s files for stack operations
+    for my $file (@asm_files) {
+        open my $fh, '<', $file or next;
+        
+        my $line_num = 0;
+        my $current_routine = '';
+        
+        while (<$fh>) {
+            $line_num++;
+            chomp;
+            my $line = $_;
+            
+            # Skip comments
+            next if /^\s*;/;
+            next if /^\s*$/;
+            
+            # Detect label definitions
+            # Format: LabelName at start of line (with or without colon)
+            # Or: LabelName EQU/SET
+            if (/^([A-Za-z_][A-Za-z0-9_]*)\s*:/) {
+                my $label = $1;
+                next if $label =~ /^\./;  # Skip local labels
+                $current_routine = $label;
+                $routine_locations{$current_routine} //= { file => $file, line => $line_num };
+            } elsif (/^([A-Za-z_][A-Za-z0-9_]*)\s+(?:EQU|SET)\s/i) {
+                my $label = $1;
+                next if $label =~ /^\./;  # Skip local labels
+                $current_routine = $label;
+                $routine_locations{$current_routine} //= { file => $file, line => $line_num };
+            } elsif (/^([A-Za-z_][A-Za-z0-9_]*)\s*$/) {
+                # Label at start of line without colon (common in .s files)
+                my $label = $1;
+                next if $label =~ /^\./;  # Skip local labels
+                # Skip if it's a directive or instruction
+                next if $line =~ /^\s*(BYTE|WORD|ORG|RORG|IF|ENDIF|MACRO|ENDM|REPEAT|REPEND|MAC|ENDMAC|SLEEP|LDA|STA|LDX|STX|LDY|STY|TAX|TXA|TAY|TYA|TSX|TXS|PHA|PLA|PHP|PLP|JSR|RTS|JMP|BRK|RTI|CLC|SEC|CLI|SEI|CLV|CLD|SED|INX|DEX|INY|DEY|ASL|LSR|ROL|ROR|ADC|SBC|AND|ORA|EOR|CMP|CPX|CPY|BIT|BCC|BCS|BEQ|BMI|BNE|BPL|BVC|BVS)\s/i;
+                $current_routine = $label;
+                $routine_locations{$current_routine} //= { file => $file, line => $line_num };
+            }
+            
+            # Track stack operations
+            if (/\bpha\b/i && $current_routine) {
+                push @{$routine_stack_ops{$current_routine}}, {
+                    file => $file,
+                    line => $line_num,
+                    op => 'pha',
+                    delta => -1,
+                };
+            }
+            if (/\bpla\b/i && $current_routine) {
+                push @{$routine_stack_ops{$current_routine}}, {
+                    file => $file,
+                    line => $line_num,
+                    op => 'pla',
+                    delta => +1,
+                };
+            }
+            if (/\bphp\b/i && $current_routine) {
+                push @{$routine_stack_ops{$current_routine}}, {
+                    file => $file,
+                    line => $line_num,
+                    op => 'php',
+                    delta => -1,
+                };
+            }
+            if (/\bplp\b/i && $current_routine) {
+                push @{$routine_stack_ops{$current_routine}}, {
+                    file => $file,
+                    line => $line_num,
+                    op => 'plp',
+                    delta => +1,
+                };
+            }
+        }
+        close $fh;
+    }
+    
+    # Second pass: find violations
+    # CRITICAL: Routines called both near AND far are fatal errors
+    for my $routine (sort keys %far_call_targets) {
+        if (exists $near_call_targets{$routine}) {
+            my @far_calls = @{$far_call_targets{$routine}};
+            my @near_calls = @{$near_call_targets{$routine}};
+            my @non_tail_far = grep { !$_->{is_tail} } @far_calls;
+            next unless @non_tail_far;  # Skip if only tail far calls
+            
+            push @issues, {
+                file => ($routine_locations{$routine} // { file => '?' })->{file},
+                line => ($routine_locations{$routine} // { line => 0 })->{line},
+                routine => $routine,
+                type => 'mixed_calling_conventions',
+                detail => "FATAL: Routine is called both near (gosub) and far (gosub bankN) - mixing conventions is always an error",
+                far_callers => \@non_tail_far,
+                near_callers => \@near_calls,
+            };
+        }
+    }
+    
+    # A routine that is far-called must use return otherbank
+    for my $routine (sort keys %far_call_targets) {
+        my @far_calls = @{$far_call_targets{$routine}};
+        # Skip if only tail calls (goto bankN) - callee inherits caller's return obligation
+        my @non_tail = grep { !$_->{is_tail} } @far_calls;
+        next unless @non_tail;
+        
+        my $returns = $routine_returns{$routine} // [];
+        
+        for my $ret (@$returns) {
+            if ($ret->{type} eq 'thisbank') {
+                my $loc = $routine_locations{$routine} // { file => '?', line => 0 };
+                push @issues, {
+                    file => $ret->{file},
+                    line => $ret->{line},
+                    routine => $routine,
+                    type => 'far_called_near_return',
+                    detail => sprintf("Routine is far-called (gosub %s bankN) but uses return thisbank", $routine),
+                    callers => \@non_tail,
+                };
+            }
+        }
+        
+        # Also check for mixed returns in far-called routines
+        if (@$returns > 1) {
+            my %types = map { $_->{type} => 1 } @$returns;
+            if (keys %types > 1) {
+                my $loc = $routine_locations{$routine} // { file => '?', line => 0 };
+                push @issues, {
+                    file => $loc->{file},
+                    line => $loc->{line},
+                    routine => $routine,
+                    type => 'mixed_returns',
+                    detail => "Far-called routine has mixed return types",
+                    returns => $returns,
+                };
+            }
+        }
+    }
+    
+    # Also find near-only routines using far returns (inefficiency)
+    for my $routine (sort keys %routine_returns) {
+        next if exists $far_call_targets{$routine};  # Skip if far-called
+        
+        my $returns = $routine_returns{$routine};
+        for my $ret (@$returns) {
+            if ($ret->{type} eq 'otherbank') {
+                push @issues, {
+                    file => $ret->{file},
+                    line => $ret->{line},
+                    routine => $routine,
+                    type => 'near_only_far_return',
+                    detail => "Routine is never far-called but uses return otherbank (inefficient)",
+                };
+            }
+        }
+    }
+    
+    # Check PHA/PLA, PHP/PLP balance per routine
+    for my $routine (sort keys %routine_stack_ops) {
+        my $ops = $routine_stack_ops{$routine};
+        my $pha_count = scalar grep { $_->{op} eq 'pha' } @$ops;
+        my $pla_count = scalar grep { $_->{op} eq 'pla' } @$ops;
+        my $php_count = scalar grep { $_->{op} eq 'php' } @$ops;
+        my $plp_count = scalar grep { $_->{op} eq 'plp' } @$ops;
+        
+        if ($pha_count != $pla_count) {
+            push @issues, {
+                file => ($routine_locations{$routine} // { file => '?' })->{file},
+                line => ($routine_locations{$routine} // { line => 0 })->{line},
+                routine => $routine,
+                type => 'pha_pla_imbalance',
+                detail => sprintf("PHA count (%d) != PLA count (%d), delta: %+d", 
+                    $pha_count, $pla_count, $pla_count - $pha_count),
+            };
+        }
+        
+        if ($php_count != $plp_count) {
+            push @issues, {
+                file => ($routine_locations{$routine} // { file => '?' })->{file},
+                line => ($routine_locations{$routine} // { line => 0 })->{line},
+                routine => $routine,
+                type => 'php_plp_imbalance',
+                detail => sprintf("PHP count (%d) != PLP count (%d), delta: %+d", 
+                    $php_count, $plp_count, $plp_count - $php_count),
+            };
+        }
+    }
+    
+    return @issues;
+}
+
+# Generate report
+sub generate_report {
+    my ($counts, $suspicious, $stack_imbalances, $source_issues) = @_;
+    
+    print "=" x 70, "\n";
+    print "STACK USAGE AND CALLING CONVENTION AUDIT\n";
+    print "ChaosFight - Compiled Assembly Analysis\n";
+    print "=" x 70, "\n\n";
+    
+    print "STACK OPERATION COUNTS\n";
+    print "-" x 40, "\n";
+    printf "PHA (push A):    %5d\n", $counts->{pha};
+    printf "PLA (pull A):    %5d  (delta: %+d)\n", $counts->{pla}, $counts->{pla} - $counts->{pha};
+    printf "PHP (push P):    %5d\n", $counts->{php};
+    printf "PLP (pull P):    %5d  (delta: %+d)\n", $counts->{plp}, $counts->{plp} - $counts->{php};
+    printf "JSR (call):      %5d\n", $counts->{jsr};
+    printf "RTS (return):    %5d  (delta: %+d)\n", $counts->{rts}, ($counts->{rts} - $counts->{jsr}) * 2;
+    print "\n";
+    
+    print "NOTE: PHA/PLA counts may not balance globally because:\n";
+    print "  - Same code executes multiple times (loops, multiple calls)\n";
+    print "  - Kernel uses PHA for sprite data streaming\n";
+    print "  - BS_return uses PHA/PLA for bank decoding\n";
+    print "\n";
+    
+    if (@$stack_imbalances) {
+        print "=" x 70, "\n";
+        print "STACK IMBALANCE DETECTED\n";
+        print "=" x 70, "\n\n";
+        
+        for my $imb (@$stack_imbalances) {
+            printf "*** STACK IMBALANCE: %s\n", $imb->{routine};
+            printf "  Type: %s\n", $imb->{type};
+            printf "  Address: %s\n", $imb->{addr} if $imb->{addr};
+            printf "  Stack depth: %d\n", $imb->{depth} if defined $imb->{depth};
+            printf "  Detail: %s\n", $imb->{detail} if $imb->{detail};
+            if ($imb->{depths}) {
+                printf "  Exit depths: %s\n", join(', ', @{$imb->{depths}});
+            }
+            if ($imb->{path} && @{$imb->{path}} > 0) {
+                print "  Execution path (last 10 steps):\n";
+                my @path = @{$imb->{path}};
+                for my $step (@path[-10..$#path]) {
+                    print "    $step\n";
+                }
+            }
+            print "\n";
+        }
+    }
+    
+    if (@$suspicious) {
+        print "=" x 70, "\n";
+        print "SUSPICIOUS PATTERNS FOUND\n";
+        print "=" x 70, "\n\n";
+        
+        for my $s (@$suspicious) {
+            printf "Line %d: %s\n", $s->{line}, $s->{type};
+            printf "  Routine: %s\n", $s->{routine} if $s->{routine};
+            printf "  Detail: %s\n", $s->{detail} if $s->{detail};
+            if ($s->{context}) {
+                print "  Context:\n";
+                for my $ctx_line (split /\n/, $s->{context}) {
+                    print "    $ctx_line\n";
+                }
+            }
+            print "\n";
+        }
+    }
+    
+    if (@$source_issues) {
+        # Separate fatal errors from inefficiencies
+        my @fatal = grep { $_->{type} eq 'mixed_calling_conventions' || $_->{type} eq 'far_called_near_return' } @$source_issues;
+        my @others = grep { $_->{type} ne 'mixed_calling_conventions' && $_->{type} ne 'far_called_near_return' } @$source_issues;
+        
+        if (@fatal) {
+            print "=" x 70, "\n";
+            print "FATAL CALLING CONVENTION ERRORS\n";
+            print "=" x 70, "\n\n";
+            
+            for my $i (@fatal) {
+                printf "*** FATAL: %s:%d - %s\n", basename($i->{file}), $i->{line}, $i->{type};
+                printf "  Routine: %s\n", $i->{routine};
+                printf "  Detail: %s\n", $i->{detail};
+                
+                if ($i->{type} eq 'mixed_calling_conventions') {
+                    print "  Near-called from:\n";
+                    for my $c (@{$i->{near_callers}}) {
+                        printf "    - %s:%d\n", basename($c->{caller_file}), $c->{caller_line};
+                    }
+                    print "  Far-called from:\n";
+                    for my $c (@{$i->{far_callers}}) {
+                        printf "    - %s:%d (bank%d)\n", 
+                            basename($c->{caller_file}), $c->{caller_line}, $c->{target_bank};
+                    }
+                } elsif ($i->{callers}) {
+                    print "  Far-called from:\n";
+                    for my $c (@{$i->{callers}}) {
+                        printf "    - %s:%d (bank%d)\n", 
+                            basename($c->{caller_file}), $c->{caller_line}, $c->{target_bank};
+                    }
+                }
+                
+                print "\n";
+            }
+        }
+        
+        if (@others) {
+            print "=" x 70, "\n";
+            print "OTHER CONVENTION ISSUES\n";
+            print "=" x 70, "\n\n";
+            
+            for my $i (@others) {
+                printf "%s:%d - %s\n", basename($i->{file}), $i->{line}, $i->{type};
+                printf "  Routine: %s\n", $i->{routine};
+                printf "  Detail: %s\n", $i->{detail};
+                
+                if ($i->{returns}) {
+                    print "  Returns:\n";
+                    for my $r (@{$i->{returns}}) {
+                        printf "    - %s:%d (%s)\n",
+                            basename($r->{file}), $r->{line}, $r->{type};
+                    }
+                }
+                
+                print "\n";
+            }
+        }
+    }
+    
+    # Summary
+    print "=" x 70, "\n";
+    print "SUMMARY\n";
+    print "=" x 70, "\n";
+    printf "Stack imbalances:    %d\n", scalar @$stack_imbalances;
+    printf "Suspicious patterns: %d\n", scalar @$suspicious;
+    printf "Source issues:       %d\n", scalar @$source_issues;
+    print "\n";
+    
+    if (!@$stack_imbalances && !@$suspicious && !@$source_issues) {
+        print "No obvious issues found.\n";
+        print "\nFor deeper analysis, use Stella debugger to trace actual stack\n";
+        print "behavior during gameplay, especially during mode transitions.\n";
+    }
+    
+    return (@$stack_imbalances + @$suspicious + @$source_issues) > 0 ? 1 : 0;
+}
+
+# Main
+sub main {
+    unless (-f $lst_file) {
+        die "Listing file not found: $lst_file\nRun 'make game' first to generate it.\n";
+    }
+    
+    print STDERR "Parsing listing file...\n";
+    parse_listing();
+    
+    print STDERR "Identifying routines...\n";
+    identify_routines();
+    
+    print STDERR "Analyzing stack patterns...\n";
+    my $counts = analyze_stack_patterns();
+    
+    print STDERR "Finding suspicious patterns...\n";
+    my @suspicious = find_suspicious_patterns();
+    
+    print STDERR "Analyzing routine stack balance...\n";
+    my @stack_imbalances = analyze_routine_stack_balance();
+    
+    print STDERR "Analyzing source conventions...\n";
+    my @source_issues = analyze_source_conventions();
+    
+    print STDERR "Generating report...\n\n";
+    my $exit_code = generate_report($counts, \@suspicious, \@stack_imbalances, \@source_issues);
+    
+    exit($exit_code);
+}
+
+main();

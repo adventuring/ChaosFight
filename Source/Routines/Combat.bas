@@ -56,7 +56,7 @@ end
           rem         currentPlayer (set to defenderID), temp2 (passed
           rem         to SetPlayerAnimation)
           rem
-          rem Called Routines: GetCharacterDamage (bank12) - obtains base
+          rem Called Routines: GetWeightBasedDamage (colocated) - obtains base
           rem   damage per character, SetPlayerAnimation (bank12) - sets
           rem   hurt animation, CheckPlayerElimination - handles player
           rem   elimination, PlayDamageSound - plays damage sound effect
@@ -496,7 +496,7 @@ end
 NextAttacker
           rem Helper: End of attacker loop iteration (label only)
           next
-          return otherbank
+          return thisbank
           rem Input: None (label only)
           rem
           rem Output: None (label only)
@@ -509,7 +509,7 @@ NextAttacker
 
 CombatShowDamageIndicator
           rem Damage indicator system (handled inline)
-          return otherbank
+          return thisbank
 PlayDamageSound
           rem Damage sound effect handler
           rem
@@ -535,4 +535,4 @@ PlayDamageSound
           rem Constraints: None
           let temp1 = SoundAttackHit
           gosub PlaySoundEffect bank15
-          return otherbank
+          return thisbank

@@ -58,6 +58,41 @@ In any mode, pressing Game Reset causes an instant hard reboot:
 
 ---
 
+## Address Mapping (Bank Prefixes, CPU Addresses, File Offsets)
+
+When debugging with addresses from Stella or listing files, it's critical to understand the relationship between bank-prefixed addresses, CPU addresses, and file offsets.
+
+### Bank-Prefixed Address Format
+
+Addresses are often written as `$N:fXXX` where:
+- `$N` is the bank ID (0-15, hexadecimal)
+- `$fXXX` is the offset within that bank (12-bit value, 0x000-0xFFF)
+
+### File Offset Calculation
+
+For an address `$N:fXXX`:
+- **File offset** = `$N × $1000 + $XXX`
+
+Where `$XXX` is the lower 12 bits of `$fXXX` (i.e., `$fXXX & $FFF`).
+
+**Examples**:
+- `$d:f4c2` → File offset = `$d × $1000 + $4c2` = `$d4c2`
+- `$d:f1ec` → File offset = `$d × $1000 + $1ec` = `$d1ec`
+- `$f:faaf` → File offset = `$f × $1000 + $aaf` = `$faaf`
+
+### Usage in Listing Files
+
+When searching for addresses in `.lst` files:
+- Use the **file offset** (not the bank-prefixed form)
+- The listing file shows addresses as they appear in the compiled binary
+- Bank boundaries occur at `$N000` offsets (every 4kiB)
+
+### CPU Address Mapping
+
+The CPU sees addresses in the range `$F000-$FFFF` (bank switching window). The actual bank content is mapped into this window based on the current bank selection register. File offsets map directly to positions within each bank's 4kiB space.
+
+---
+
 ## Bankswitch Return Semantics (Investigations 2025‑11‑26)
 
 - `return thisbank` compiles to a bare `RTS`. Only routines that are *never*

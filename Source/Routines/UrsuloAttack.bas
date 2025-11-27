@@ -12,12 +12,12 @@ end
           rem Output: Mêlée attack executed
           rem
           rem Mutates: playerState[] (animation state set), missile
-          rem state (via PerformMeleeAttack)
+          rem state (via PerformGenericAttack)
           rem
-          rem Called Routines: PerformMeleeAttack (bank7, tail call via goto) -
-          rem executes mêlée attack, spawns missile
+          rem Called Routines: PerformGenericAttack (bank7, tail call via goto) -
+          rem executes generic attack, spawns missile
           rem
-          rem Constraints: Tail call to PerformMeleeAttack
+          rem Constraints: Tail call to PerformGenericAttack
           rem Mêlée attack (claw swipe)
-          goto PerformMeleeAttack bank7
+          goto PerformGenericAttack bank7
 

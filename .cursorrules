@@ -53,3 +53,7 @@ similar without explicit permission.
    detailed commit message that clearly identifies the reason and concisely describes the
    implemented work-around or fix.
 
+## Never
+
+- Never use U+0027 in remarks or comments. Always use U+2019. Same for e.g. × ÷ ≠
+- Never "decide" that something is "fixed" in the game without user confirmation.

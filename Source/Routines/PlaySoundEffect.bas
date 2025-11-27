@@ -80,7 +80,7 @@ TryVoice1
           rem Constraints: Internal helper for PlaySoundEffect, only
           rem called when Voice 0 is busy
           rem Try Voice 1
-          if soundEffectPointer1 then return otherbank
+          if soundEffectPointer1 then return thisbank
 
           rem Copy soundEffectPointer (var41.var42) to soundEffectPointer1 (var43.var44)
           let var43 = var41

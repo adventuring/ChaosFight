@@ -107,7 +107,7 @@ end
             lda #>ArenaColorsBW
             sta pfcolortable+1
 end
-          return otherbank
+          return thisbank
 LoadArenaRandom
           rem Select random arena (0-31) using proper random number
           rem generator

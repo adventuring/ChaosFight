@@ -381,7 +381,7 @@ DivideBy20
             lsr
             sta temp2
 end
-          return otherbank
+          return thisbank
 
 DivideBy100
           rem DivideBy100: compute floor(temp2 ÷ 100) using range check
@@ -430,5 +430,5 @@ CalculateFallDistanceNormal
 end
           if currentCharacter = CharacterNinjishGuy then temp2 = temp2 * 2
 
-          return otherbank
+          return thisbank
 

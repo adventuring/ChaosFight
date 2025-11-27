@@ -76,7 +76,7 @@ LoadTitleBitmap
           asm
 LoadTitleBitmap
 end
-          return otherbank
+          return thisbank
           rem Configure titlescreen kernel to show Title (ChaosFight)
           rem   bitmap
           rem Uses 48x2_3 minikernel - set window/height via assembly

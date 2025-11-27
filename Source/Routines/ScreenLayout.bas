@@ -15,4 +15,4 @@ end
           rem Constraints: Called for all screen layouts
           pfrowheight = ScreenPfRowHeight
           pfrows = ScreenPfRows
-          return otherbank
+          return thisbank

@@ -226,7 +226,7 @@ ArenaSelectConfirm
 ArenaSelectDoneConfirm
 
           rem drawscreen called by MainLoop
-          return otherbank          goto ArenaSelect1Loop
+          return thisbank          goto ArenaSelect1Loop
 
 CheckQuadtariFireHold
           rem Check Player 3 and 4 fire buttons (Quadtari)
@@ -246,7 +246,7 @@ CheckQuadtariFireHold
           if !INPT0{7} then let temp1 = 1
           rem Player 4 fire button (right port, odd frame)
           if !INPT2{7} then let temp1 = 1
-          return otherbank
+          return thisbank
 ReturnToCharacterSelect
           rem Return to Character Select screen
           rem
@@ -263,7 +263,7 @@ ReturnToCharacterSelect
           let fireHoldTimer_W = 0
           let gameMode = ModeCharacterSelect
           gosub ChangeGameMode bank14
-          return otherbank
+          return thisbank
 StartGame1
           rem Start game with selected arena
           rem
@@ -278,7 +278,7 @@ StartGame1
           rem Constraints: Must be colocated with ArenaSelect1
           let gameMode = ModeGame
           gosub ChangeGameMode bank14
-          return otherbank
+          return thisbank
           rem
           rem Character Display And Animation
 
@@ -399,5 +399,5 @@ ArenaSelectDoneDrawP2
 ArenaSelectDoneDrawP23
           rem Skip Player 3/4 character drawing (not in 4-player mode or
           rem not selected)
-          rem ArenaSelect1 is called cross-bank, so all return paths must use return otherbank
-          return otherbank
+          rem ArenaSelect1 is called cross-bank, so all return paths must use return thisbank
+          return thisbank

@@ -80,7 +80,7 @@ end
           rem perfectly with RAM
           rem   addresses. No kernel modifications needed!
           rem InitializeSpritePointers is called both same-bank (from ColdStart bank14)
-          rem and cross-bank (from BeginGameLoop bank11). Since it's called cross-bank,
+          rem and cross-bank (from BeginGameLoop bank11). Since it’s called cross-bank,
           rem it must always use return otherbank per the fundamental rule.
           return otherbank
 

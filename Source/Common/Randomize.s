@@ -13,8 +13,12 @@ randomize
 	eor #$B4
 noeor
 	sta rand
- ifconst rand16
+	ifconst rand16
 	eor rand16
- endif
-	RETURN
+	endif
+	; CRITICAL: randomize is only called same-bank (via gosub randomize),
+	; so it must use rts, not jmp BS_return. RETURN macro expands to
+	; jmp BS_return when bankswitch is defined, which is incorrect for
+	; same-bank calls.
+	rts
 

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Banks/Bank7.bas
-          rem Copyright © 2025 Bruce-Robert Pocock.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
           rem Missile system (tables, physics, collision) + combat system
@@ -55,26 +55,17 @@ end
 CombatEnd
             echo "// Bank 7: ", [CombatEnd - CombatStart]d, " bytes = Combat"
           asm
-PerformRangedAttackStart
+PerformGenericAttackStart
 end
-#include "Source/Routines/PerformRangedAttack.bas"
+#include "Source/Routines/PerformGenericAttack.bas"
           asm
-PerformRangedAttackEnd
-            echo "// Bank 7: ", [PerformRangedAttackEnd - PerformRangedAttackStart]d, " bytes = PerformRangedAttack"
-          asm
-PerformMeleeAttackStart
-end
-#include "Source/Routines/PerformMeleeAttack.bas"
-          asm
-PerformMeleeAttackEnd
-            echo "// Bank 7: ", [PerformMeleeAttackEnd - PerformMeleeAttackStart]d, " bytes = PerformMeleeAttack"
+PerformGenericAttackEnd
+            echo "// Bank 7: ", [PerformGenericAttackEnd - PerformGenericAttackStart]d, " bytes = PerformGenericAttack"
 FlyingMovementHelpersStart
 end
 #include "Source/Routines/FlyingMovementHelpers.bas"
           asm
 FlyingMovementHelpersEnd
             echo "// Bank 7: ", [FlyingMovementHelpersEnd - FlyingMovementHelpersStart]d, " bytes = FlyingMovementHelpers"
-end
-          asm
 Bank7CodeEnds
 end

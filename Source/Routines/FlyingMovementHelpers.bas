@@ -60,14 +60,14 @@ HFCM_LeftDirect
           let temp2 = playerX[temp1]
           let playerX[temp1] = temp2 - characterMovementSpeed
 HFCM_LeftFacing
-          if (playerState[temp1] & 8) then return otherbank
+          if (playerState[temp1] & 8) then return thisbank
           gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then HFCM_SetFacingLeft
           if temp2 > 9 then HFCM_SetFacingLeft
-          return otherbank
+          return thisbank
 HFCM_SetFacingLeft
           let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
-          return otherbank
+          return thisbank
 HFCM_AttemptMoveRight
           asm
 HFCM_AttemptMoveRight
@@ -127,12 +127,12 @@ HFCM_RightDirect
           let temp2 = playerX[temp1]
           let playerX[temp1] = temp2 + characterMovementSpeed
 HFCM_RightFacing
-          if (playerState[temp1] & 8) then return otherbank
+          if (playerState[temp1] & 8) then return thisbank
           gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then HFCM_SetFacingRight
           if temp2 > 9 then HFCM_SetFacingRight
-          return otherbank
+          return thisbank
 HFCM_SetFacingRight
           let playerState[temp1] = playerState[temp1] | 1
-          return otherbank
+          return thisbank
 

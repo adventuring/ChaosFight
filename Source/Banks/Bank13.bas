@@ -71,24 +71,6 @@ end
           asm
 TriggerEliminationEffectsEnd
             echo "// Bank 13: ", [TriggerEliminationEffectsEnd - TriggerEliminationEffectsStart]d, " bytes = TriggerEliminationEffects"
-GetCharacterAttackTypeStart
-end
-#include "Source/Routines/GetCharacterAttackType.bas"
-          asm
-GetCharacterAttackTypeEnd
-            echo "// Bank 13: ", [GetCharacterAttackTypeEnd - GetCharacterAttackTypeStart]d, " bytes = GetCharacterAttackType"
-IsCharacterRangedStart
-end
-#include "Source/Routines/IsCharacterRanged.bas"
-          asm
-IsCharacterRangedEnd
-            echo "// Bank 13: ", [IsCharacterRangedEnd - IsCharacterRangedStart]d, " bytes = IsCharacterRanged"
-IsCharacterMeleeStart
-end
-#include "Source/Routines/IsCharacterMelee.bas"
-          asm
-IsCharacterMeleeEnd
-            echo "// Bank 13: ", [IsCharacterMeleeEnd - IsCharacterMeleeStart]d, " bytes = IsCharacterMelee"
 IsPlayerEliminatedStart
 end
 #include "Source/Routines/IsPlayerEliminated.bas"

@@ -6,6 +6,11 @@ test: SkylineTool/skyline-tool.asd
 	@echo "Running SkylineTool fiveam tests..."
 	cd SkylineTool && sbcl --script tests/run-tests.lisp || (echo "Tests failed!" && exit 1)
 
+# Verify calling conventions (stack usage audit)
+verify-calls:
+	@echo "Auditing calling conventions..."
+	@./Tools/audit-calling-conventions
+
 # Precious intermediate files
 .PRECIOUS: %.s %.png %.midi %.bas
 
@@ -539,9 +544,6 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/CharacterAttacksDispatch.bas \
 	Source/Routines/CharacterControlsDown.bas \
 	Source/Routines/CharacterControlsJump.bas \
-	Source/Routines/GetCharacterAttackType.bas \
-	Source/Routines/IsCharacterRanged.bas \
-	Source/Routines/IsCharacterMelee.bas \
 	Source/Routines/CharacterSelectMain.bas \
 	Source/Routines/CharacterSelectRender.bas \
 	Source/Routines/CheckRoboTitoStretchMissileCollisions.bas \
@@ -581,8 +583,7 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/MusicBankHelpers15.bas \
 	Source/Routines/MusicBankHelpers.bas \
 	Source/Routines/MusicSystem.bas \
-	Source/Routines/PerformMeleeAttack.bas \
-	Source/Routines/PerformRangedAttack.bas \
+	Source/Routines/PerformGenericAttack.bas \
 	Source/Routines/PlayerCollisionResolution.bas \
 	Source/Routines/CheckAllPlayerEliminations.bas \
 	Source/Routines/CheckPlayerElimination.bas \

@@ -18,10 +18,6 @@ end
           asm
 Bank12AfterUpdateAttackCooldowns
 end
-#include "Source/Routines/CharacterDamage.bas"
-          asm
-Bank12AfterCharacterDamage
-end
 #include "Source/Routines/HandleFlyingCharacterMovement.bas"
           asm
 Bank12AfterHandleFlyingCharacterMovement
@@ -50,8 +46,7 @@ end
           asm
 Bank12CodeEnds
            echo "// Bank 12: ", [Bank12AfterUpdateAttackCooldowns - Bank12DataEnds]d, " bytes = UpdateAttackCooldowns"
-           echo "// Bank 12: ", [Bank12AfterCharacterDamage - Bank12AfterUpdateAttackCooldowns]d, " bytes = CharacterDamage"
-           echo "// Bank 12: ", [Bank12AfterHandleFlyingCharacterMovement - Bank12AfterCharacterDamage]d, " bytes = HandleFlyingCharacterMovement"
+           echo "// Bank 12: ", [Bank12AfterHandleFlyingCharacterMovement - Bank12AfterUpdateAttackCooldowns]d, " bytes = HandleFlyingCharacterMovement (CharacterDamage removed - was empty)"
            echo "// Bank 12: ", [Bank12AfterHandleGuardInput - Bank12AfterHandleFlyingCharacterMovement]d, " bytes = HandleGuardInput"
            echo "// Bank 12: ", [Bank12AfterRadishGoblinMovement - Bank12AfterHandleGuardInput]d, " bytes = RadishGoblinMovement"
            echo "// Bank 12: ", [Bank12AfterCharacterControlsJump - Bank12AfterRadishGoblinMovement]d, " bytes = CharacterControlsJump"

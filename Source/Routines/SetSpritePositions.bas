@@ -136,7 +136,7 @@ RenderMissilesTwoPlayer
           let temp1 = 0
 RenderMissilePair
           gosub SetSpritePositionsRenderPair
-          return otherbank
+          return thisbank
 SetSpritePositionsRenderPair
           asm
 SetSpritePositionsRenderPair
@@ -144,7 +144,7 @@ end
           gosub RenderMissileForParticipant
           let temp1 = temp1 + 1
           gosub RenderMissileForParticipant
-          return otherbank
+          return thisbank
 
 RenderMissileForParticipant
           asm
@@ -175,7 +175,7 @@ RMF_MissileActive
           let RMF_character = playerCharacter[RMF_participant]
           let temp5 = RMF_select
           gosub SSP_WriteMissileRegisters
-          return otherbank
+          return thisbank
 SSP_WriteMissileRegisters
           asm
 SSP_WriteMissileRegisters
@@ -192,7 +192,7 @@ end
           let temp3 = missileNUSIZ_R[RMF_participant]
           let temp4 = CharacterMissileHeights[RMF_character]
           gosub SSP_WriteMissileRegistersUnified
-          return otherbank
+          return thisbank
 SSP_WriteMissileRegistersUnified
           asm
 SSP_WriteMissileRegistersUnified
@@ -206,14 +206,14 @@ end
           ENAM1 = 1
           NUSIZ1 = temp3
           missile1height = temp4
-          return otherbank
+          return thisbank
 SSP_WriteUnified0
           missile0x = temp6
           missile0y = temp2
           ENAM0 = 1
           NUSIZ0 = temp3
           missile0height = temp4
-          return otherbank
+          return thisbank
 CopyParticipantSpritePosition
           asm
 CopyParticipantSpritePosition
@@ -224,19 +224,19 @@ end
           rem
           rem Output: player2/3 registers updated if participant is active
           rem
-          if (controllerStatus & SetQuadtariDetected) = 0 then return otherbank
-          if playerCharacter[temp1] = NoCharacter then return otherbank
+          if (controllerStatus & SetQuadtariDetected) = 0 then return thisbank
+          if playerCharacter[temp1] = NoCharacter then return thisbank
           rem Unified sprite position assignment (temp1 = 2 → player2, temp1 = 3 → player3)
-          if ! playerHealth[temp1] then return otherbank
+          if ! playerHealth[temp1] then return thisbank
           if temp1 = 2 then goto CPS_WritePlayer2
           player3x = playerX[temp1]
           player3y = playerY[temp1]
-          return otherbank
+          return thisbank
 
 CPS_WritePlayer2
           player2x = playerX[temp1]
           player2y = playerY[temp1]
-          return otherbank
+          return thisbank
 RenderRoboTitoStretchMissile
           asm
 RenderRoboTitoStretchMissile
@@ -283,4 +283,4 @@ end
           rem temp4 already set to height
           let temp3 = 0
           gosub SSP_WriteMissileRegistersUnified
-          return otherbank
+          return thisbank

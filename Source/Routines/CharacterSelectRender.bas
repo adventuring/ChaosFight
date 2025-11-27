@@ -49,11 +49,11 @@ end
           gosub GetPlayerLocked bank6
           let temp5 = temp2
           rem Unlocked state (most common) - set color and return early
-          if !temp5 then gosub SelectSetPlayerColorUnlocked : return otherbank
+          if !temp5 then gosub SelectSetPlayerColorUnlocked : return thisbank
           rem Handicap state - set dimmed color and return
-          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return otherbank
+          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return thisbank
           rem Normal locked state - color already set by RenderPlayerPreview
-          return otherbank
+          return thisbank
 PlayerPreviewSetPosition
           asm
 PlayerPreviewSetPosition
@@ -133,16 +133,16 @@ end
           on currentPlayer goto SelectApplyPlayerColorP0 SelectApplyPlayerColorP1 SelectApplyPlayerColorP2 SelectApplyPlayerColorP3
 SelectApplyPlayerColorP0
           COLUP0 = temp2
-          return otherbank
+          return thisbank
 SelectApplyPlayerColorP1
           _COLUP1 = temp2
-          return otherbank
+          return thisbank
 SelectApplyPlayerColorP2
           COLUP2 = temp2
-          return otherbank
+          return thisbank
 SelectApplyPlayerColorP3
           COLUP3 = temp2
-          return otherbank
+          return thisbank
 
 SelectSetPlayerColorUnlocked
           asm
@@ -151,7 +151,7 @@ end
           rem Override sprite color to indicate unlocked state (white)
           let temp2 = ColGrey(14)
           gosub SelectApplyPlayerColor
-          return otherbank
+          return thisbank
 
 SelectSetPlayerColorHandicap
           asm
@@ -161,7 +161,7 @@ end
           rem Override sprite color to indicate handicap lock (dim player color)
           let temp2 = SelectPlayerColorHandicap[currentPlayer]
           gosub SelectApplyPlayerColor
-          return otherbank
+          return thisbank
 
 SelectUpdateAnimations
           asm
@@ -180,7 +180,7 @@ SelectUpdateAnimationLoop
 SelectUpdateAnimationNext
           let temp1 = temp1 + 1
           if temp1 < temp6 then goto SelectUpdateAnimationLoop
-          return otherbank
+          return thisbank
 
 SelectUpdatePlayerAnimation
           asm
@@ -205,11 +205,11 @@ end
           rem Constraints: Admin-only usage sharing SCRAM with game mode
           let temp2 = characterSelectPlayerAnimationTimer_R[temp1] + 1
           let characterSelectPlayerAnimationTimer_W[temp1] = temp2
-          if temp2 < AnimationFrameDelay then return otherbank
+          if temp2 < AnimationFrameDelay then return thisbank
           let characterSelectPlayerAnimationTimer_W[temp1] = 0
           let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
           let characterSelectPlayerAnimationFrame_W[temp1] = temp3
-          return otherbank
+          return thisbank
 CharacterSelectCheckControllerRescan
           asm
 CharacterSelectCheckControllerRescan
@@ -224,6 +224,6 @@ end
 CharacterSelectDoRescan
           gosub DetectPads bank13
 CharacterSelectRescanDone
-          return otherbank
+          return thisbank
 
 

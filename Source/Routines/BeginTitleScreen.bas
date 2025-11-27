@@ -46,5 +46,5 @@ end
           rem   kernel via includes
           rem BeginTitleScreen is called same-bank from SetupTitle (both in bank14)
           rem SetupTitle uses gosub (same-bank call, pushes 2 bytes), so return thisbank is correct
-          rem SetupTitle itself returns with return otherbank to handle the cross-bank call to ChangeGameMode
+          rem SetupTitle itself returns with return thisbank to handle the cross-bank call to ChangeGameMode
           return thisbank

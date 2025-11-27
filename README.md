@@ -1,6 +1,7 @@
 # ChaosFight - System Architecture
 
-A 4-player fighting game for the Atari 2600, built with batariBASIC targeting the 64KB SuperChip cartridge format.
+A 4-player fighting game for the Atari 2600, built with batariBASIC targeting the
+64kiB EF + SuperChip cartridge format.
 
 ## Overview
 
@@ -35,7 +36,7 @@ ChaosFight uses a dual-context execution model: **Admin Mode** (title screens, m
 
 See `Source/Common/Variables.bas` for complete memory layout.
 
-## Bank Organization (64KB Cartridge)
+## Bank Organization (64kiB Cartridge)
 
 ### Asset Banks (Separate Memory Budget)
 **Music/Sound Assets:**

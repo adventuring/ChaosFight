@@ -369,21 +369,22 @@ Source/Art/Numbers.png: Source/Art/Numbers.xcf | Source/Art/
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
 # PNG files are generated from XCF via %.png: %.xcf pattern rule
 # Explicitly depend on XCF to ensure proper build ordering in parallel builds
-Source/Generated/Art.AtariAge.s: Source/Art/AtariAge.png Source/Art/AtariAge.xcf bin/skyline-tool | Source/Generated/
+# SkylineTool generates both .s and .colors.s files in one call
+Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAge.colors.s: Source/Art/AtariAge.png Source/Art/AtariAge.xcf bin/skyline-tool | Source/Generated/
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+	bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.AtariAge.s" "t" "NTSC"
 
-Source/Generated/Art.AtariAgeText.s: Source/Art/AtariAgeText.png Source/Art/AtariAgeText.xcf bin/skyline-tool | Source/Generated/
+Source/Generated/Art.AtariAgeText.s Source/Generated/Art.AtariAgeText.colors.s: Source/Art/AtariAgeText.png Source/Art/AtariAgeText.xcf bin/skyline-tool | Source/Generated/
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+	bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.AtariAgeText.s" "t" "NTSC"
 
-Source/Generated/Art.Author.s: Source/Art/BRP.png Source/Art/BRP.xcf bin/skyline-tool | Source/Generated/
+Source/Generated/Art.Author.s Source/Generated/Art.Author.colors.s: Source/Art/BRP.png Source/Art/BRP.xcf bin/skyline-tool | Source/Generated/
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+	bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.Author.s" "t" "NTSC"
 
-Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png Source/Art/ChaosFight.xcf bin/skyline-tool | Source/Generated/
+Source/Generated/Art.ChaosFight.s Source/Generated/Art.ChaosFight.colors.s: Source/Art/ChaosFight.png Source/Art/ChaosFight.xcf bin/skyline-tool | Source/Generated/
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+	bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.ChaosFight.s" "t" "NTSC"
 
 # Color files are generated automatically when bitmap files are generated
 # Combine all titlescreen color tables, PF1, PF2, and background into a single file at $f500

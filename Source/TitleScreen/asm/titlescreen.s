@@ -2,13 +2,8 @@
 #include "TitleScreen/asm/layoutmacros.s"
 ; titlescreen_layout.s macro expanded inline below (line 85-88) - include removed to avoid macro definition processing
 
-; Optional bitmap index offsets (all are 0)
-bmp_48x2_1_index_value
-bmp_48x2_2_index_value
-bmp_48x2_3_index_value
-bmp_48x2_4_index_value
-          BYTE 0
-
+; Optional bitmap index offsets - data (BYTE 0) moved to Bank9.bas data segment
+; Symbol definitions only (no data) - these are compile-time constants
 bmp_48x2_1_index SET bmp_48x2_1_index_value
 bmp_48x2_2_index SET bmp_48x2_2_index_value
 bmp_48x2_3_index SET bmp_48x2_3_index_value
@@ -101,7 +96,6 @@ draw_48x2_4
           #include "TitleScreen/asm/48x2_4_kernel.s"
 
           #include "TitleScreen/asm/draw_bmp_48x2_X.s"
-          #include "TitleScreen/asm/draw_bmp_48x1_X.s"
 
 	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 

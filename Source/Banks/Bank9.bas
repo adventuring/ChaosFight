@@ -33,6 +33,12 @@ ArtAuthorStart
 #include "Source/Generated/Art.Author.s"
 ArtAuthorEnd
             echo "// Bank 9: ", [ArtAuthorEnd - ArtAuthorStart]d, " bytes = Art.Author"
+            ; Optional bitmap index offsets (all are 0) - data must be in data segment before colors
+bmp_48x2_1_index_value
+bmp_48x2_2_index_value
+bmp_48x2_3_index_value
+bmp_48x2_4_index_value
+          BYTE 0
             ; Colors must be included here, right after bitmap data,
             ;   before titlescreen.s includes other files that advance past $f500
 TitlescreenColorsStart

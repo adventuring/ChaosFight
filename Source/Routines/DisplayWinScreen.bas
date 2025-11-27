@@ -199,7 +199,7 @@ end
           let temp2 = 0
           let temp3 = 0
           gosub LoadCharacterSprite bank16
-          return thisbank
+          return otherbank
 
 DWS_Position1Player
           rem 1 player: Winner centered on podium
@@ -226,7 +226,7 @@ DWS_Position1Player
           rem Player 0
           gosub DWS_LoadIdleSprite
           gosub DWS_HidePlayers123
-          return thisbank
+          return otherbank
 DWS_Position2Players
           rem 2 players: Winner centered, runner-up left
           rem
@@ -289,7 +289,7 @@ DWS_Hide2PlayerDone
           rem
           rem Constraints: Must be colocated with DisplayWinScreen
           gosub DWS_HidePlayers123
-          return thisbank
+          return otherbank
 DWS_Position3Players
           rem 3+ players: Winner centered high, 2nd left, 3rd right
           rem
@@ -391,7 +391,7 @@ DWS_Hide3Player3Done
           rem Constraints: Must be colocated with DisplayWinScreen
           rem Hide unused player
           let playerX[3] = 0
-          return thisbank
+          return otherbank
 DWS_HidePlayers123
           asm
 DWS_HidePlayers123
@@ -400,7 +400,7 @@ end
           let playerX[1] = 0
           let playerX[2] = 0
           let playerX[3] = 0
-          return thisbank
+          return otherbank
 
 DWS_GetBWMode
           asm
@@ -448,5 +448,5 @@ end
             lda #>WinnerScreenColorsColor
             sta pfcolortable+1
 end
-          return thisbank
+          return otherbank
 

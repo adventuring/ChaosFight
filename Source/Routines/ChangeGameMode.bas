@@ -46,6 +46,8 @@ SetupPublisherPrelude
           rem Called Routines: BeginPublisherPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginPublisherPrelude
           return otherbank
 
@@ -62,6 +64,8 @@ SetupAuthorPrelude
           rem Called Routines: BeginAuthorPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginAuthorPrelude
           return otherbank
 
@@ -78,10 +82,14 @@ SetupTitle
           rem Called Routines: BeginTitleScreen (bank14) - accesses title
           rem screen state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginTitleScreen
           return otherbank
 
 SetupCharacterSelect
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           return otherbank
 SetupFallingAnimation
           rem Character select uses its own internal flow
@@ -109,6 +117,8 @@ SetupFallingAnimation
           rem Called Routines: BeginFallingAnimation (bank12) - accesses
           rem animation state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginFallingAnimation bank12
           return otherbank
 
@@ -125,6 +135,8 @@ SetupArenaSelect
           rem Called Routines: BeginArenaSelect (bank12) - accesses
           rem arena select state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginArenaSelect bank12
           return otherbank
 
@@ -143,6 +155,8 @@ SetupGame
           rem Constraints: Must be colocated with ChangeGameMode
           rem BeginGameLoop resets gameplay state and returns
           rem MainLoop will dispatch to GameMainLoop when gameMode = ModeGame
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginGameLoop bank11
           return otherbank
 
@@ -159,6 +173,8 @@ SetupWinner
           rem Called Routines: BeginWinnerAnnouncement (bank12) -
           rem accesses winner state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginWinnerAnnouncement bank12
           return otherbank
 
@@ -175,6 +191,8 @@ SetupAttract
           rem Called Routines: BeginAttractMode (bank14) - accesses
           rem attract mode state
           rem Constraints: Must be colocated with ChangeGameMode
+          rem CRITICAL: ChangeGameMode is called cross-bank, so all return paths
+          rem must use return otherbank even though Setup* functions are reached via goto
           gosub BeginAttractMode
           return otherbank
 

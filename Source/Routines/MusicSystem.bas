@@ -87,8 +87,9 @@ LoadSongPointersDone
           let musicVoice0Frame_W = 1
           let musicVoice1Frame_W = 1
 
-          rem Start first notes
-          rem fall through
+          rem StartMusic is called via gosub from other banks, so must return
+          rem PlayMusic will be called every frame from MainLoop
+          return otherbank
 
 PlayMusic
           asm
@@ -195,7 +196,7 @@ CMVE_CalcElapsed
           rem Check if in decay phase (last NoteDecayFrames frames)
           if temp3 <= NoteDecayFrames then CMVE_ApplyDecay
           rem Sustain phase - use target AUDV (already set)
-          return thisbank
+          return otherbank
 CMVE_ApplyAttack
           rem Helper: Applies attack envelope (ramps up volume)
           rem
@@ -221,9 +222,9 @@ CMVE_ApplyAttack
           if temp6 & $80 then temp6 = 0
           rem Set voice-specific AUDV
           if temp6 > 15 then temp6 = 15
-          if temp1 = 0 then let AUDV0 = temp6 : return
+          if temp1 = 0 then let AUDV0 = temp6 : return otherbank
           let AUDV1 = temp6
-          return thisbank
+          return otherbank
 CMVE_ApplyDecay
           rem Helper: Applies decay envelope (ramps down volume)
           rem
@@ -249,9 +250,9 @@ CMVE_ApplyDecay
           if temp6 & $80 then temp6 = 0
           rem Set voice-specific AUDV
           if temp6 > 15 then temp6 = 15
-          if temp1 = 0 then let AUDV0 = temp6 : return
+          if temp1 = 0 then let AUDV0 = temp6 : return otherbank
           let AUDV1 = temp6
-          return thisbank
+          return otherbank
 UpdateMusicVoice0
           asm
 UpdateMusicVoice0
@@ -283,15 +284,15 @@ end
           let temp4 = musicVoice0Frame_R - 1
           let musicVoice0Frame_W = temp4
           rem Frame counter reached 0 - load next note from appropriate
-          if temp4 then return
+          if temp4 then return otherbank
           rem bank
           rem Check which bank this song is in (Bank 15: songs 0-Bank15MaxSongID, Bank
           rem 1: others)
           rem Song in Bank 15
-          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote0Bank15 : return
+          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote0Bank15 : return otherbank
           rem Song in Bank 1
           gosub LoadMusicNote0 bank1
-          return thisbank
+          return otherbank
 UpdateMusicVoice1
           asm
 UpdateMusicVoice1
@@ -338,15 +339,15 @@ end
           let temp5 = musicVoice1Frame_R - 1
           let musicVoice1Frame_W = temp5
           rem Frame counter reached 0 - load next note from appropriate
-          if temp5 then return
+          if temp5 then return otherbank
           rem bank
           rem Check which bank this song is in (Bank 15: songs 0-Bank15MaxSongID, Bank
           rem 1: others)
           rem Song in Bank 15
-          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote1Bank15 : return
+          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote1Bank15 : return otherbank
           rem Song in Bank 1
           gosub LoadMusicNote1 bank1
-          return thisbank
+          return otherbank
 StopMusic
           rem
           rem Stopmusic - Stop All Music Playback
@@ -377,4 +378,4 @@ StopMusic
           rem Reset frame counters
           let musicVoice0Frame_W = 0
           let musicVoice1Frame_W = 0
-          return thisbank
+          return otherbank

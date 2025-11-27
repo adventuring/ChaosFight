@@ -61,6 +61,10 @@ end
           rem Step 2: Initialize sprite pointers to RAM addresses
           rem Must be done before any sprite loading to ensure pointers
           rem   point to SCRAM buffers instead of ROM
+          rem CRITICAL: InitializeSpritePointers is called both same-bank (from ColdStart)
+          rem and cross-bank (from BeginGameLoop). Since it's called cross-bank, it must
+          rem always use return otherbank. When called same-bank, specifying bank14 still
+          rem uses cross-bank mechanism, so the return matches.
           gosub InitializeSpritePointers bank14
 
           rem Step 3: Initialize TIA color registers to safe defaults

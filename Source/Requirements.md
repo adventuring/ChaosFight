@@ -75,6 +75,12 @@ In any mode, pressing Game Reset causes an instant hard reboot:
   far-return sequence. Rebuilds must still re-check the far-call trampoline at
   `$f:fa5c` to confirm the stack returns to `$FD` after each trip through the
   mode table.
+- `PlayMusic` is often tail-called (StartMusic uses `goto PlayMusic bank15`), so
+  any other caller MUST use `gosub ... bankN` to keep the encoded far-return
+  bytes on the stack. `MainLoop` previously used `goto PlayMusic bank1`, which
+  meant `BS_return` tried to decode garbage and wrapped SP to `$FF`. The
+  dispatcher now uses `gosub` so the stack depth stays balanced regardless of
+  how many nested music helpers fire inside bank 15.
 
 ---
 

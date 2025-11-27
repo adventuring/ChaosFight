@@ -251,7 +251,7 @@ end
           gosub GetPlayerMissileBitFlag
           let temp4 = missileActive & temp6
           rem Not active, skip
-          if temp4  = 0 then return
+          if temp4  = 0 then return otherbank
 
           rem Preserve player index since GetMissileFlags uses temp1
           rem Use temp6 temporarily to save player index (temp6 is used
@@ -396,7 +396,7 @@ BoundsCheckDone
           gosub MissileCollPF bank8
           rem Issue #1188: Collision detected - check if should bounce or deactivate
           if !temp4 then goto PlayfieldCollisionDone
-          if temp5 & MissileFlagBounce then gosub HandleMissileBounce : return
+          if temp5 & MissileFlagBounce then gosub HandleMissileBounce : return otherbank
           goto DeactivateMissile
 PlayfieldCollisionDone
           rem No bounce - deactivate on background hit
@@ -450,7 +450,7 @@ MissileSystemNoHit
           let missileLifetime_W[temp1] = missileLifetimeValue
 MissileUpdateComplete
 
-          return thisbank
+          return otherbank
           rem Character handlers extracted to MissileCharacterHandlers.bas
 
 MissileSysPF
@@ -511,8 +511,8 @@ MissileSysPF
           let temp2 = temp3
           gosub PlayfieldRead bank16
           rem Default: no collision detected
-          if temp1 then let temp4 = 1 : return
-          return thisbank
+          if temp1 then let temp4 = 1 : return otherbank
+          return otherbank
 CheckMissilePlayerCollision
           rem
           rem Check Missile-player Collision
@@ -578,7 +578,7 @@ CheckMissilePlayerCollision
 MissileCheckNextPlayer
           next
 MissileCollisionReturn
-          return thisbank
+          return otherbank
 HandleMissileHit
           asm
 HandleMissileHit
@@ -721,7 +721,7 @@ KnockbackDone
 
           rem Spawn damage indicator visual (handled inline)
 
-          return thisbank
+          return otherbank
 HandleMissileBounce
           asm
 HandleMissileBounce
@@ -786,7 +786,7 @@ BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc
 
           rem Continue bouncing (do not deactivate)
-          return thisbank
+          return otherbank
 DeactivateMissile
           rem
           rem Deactivate Missile
@@ -813,5 +813,5 @@ DeactivateMissile
           let temp6 = MaxByteValue - temp6
           rem Invert bits
           let missileActive  = missileActive & temp6
-          return thisbank
+          return otherbank
 

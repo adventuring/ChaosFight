@@ -98,7 +98,7 @@ end
           rem DoneAdvance, HandleFrame7Transition,
           rem              UpdateSprite (all called via goto)
           rem Skip if player is eliminated (health = 0)
-          if playerHealth[currentPlayer] = 0 then return
+          if playerHealth[currentPlayer] = 0 then return otherbank
 
           rem Increment this sprite 10fps animation counter (NOT global
           rem   frame counter)
@@ -147,7 +147,7 @@ AdvanceFrame
           if temp4 >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
 DoneAdvance
-          return thisbank
+          return otherbank
 HandleFrame7Transition
           rem Frame 7 completed, handle action-specific transitions
           rem
@@ -211,7 +211,7 @@ UpdateSprite
           let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
           gosub LoadPlayerSprite bank16
-          return thisbank
+          return otherbank
 SetPlayerAnimation
           asm
 SetPlayerAnimation
@@ -299,7 +299,7 @@ end
 TransitionLoopAnimation
           rem SCRAM write to currentAnimationFrame_W
           let currentAnimationFrame_W[currentPlayer] = 0
-          return thisbank
+          return otherbank
 TransitionToIdle
           let temp2 = ActionIdle
           rem tail call
@@ -358,25 +358,25 @@ TransitionHandleFallBack_HitWall
 
 HandleAttackTransition
           let temp1 = currentAnimationSeq_R[currentPlayer]
-          if temp1 < ActionAttackWindup then return
+          if temp1 < ActionAttackWindup then return otherbank
           let temp1 = temp1 - ActionAttackWindup
           on temp1 goto HandleWindupEnd HandleExecuteEnd HandleRecoveryEnd
-          return thisbank
+          return otherbank
 HandleWindupEnd
           let temp1 = playerCharacter[currentPlayer]
-          if temp1 >= 32 then return
+          if temp1 >= 32 then return otherbank
           if temp1 >= 16 then let temp1 = 0
           let temp2 = CharacterWindupNextAction[temp1]
-          if temp2 = 255 then return
+          if temp2 = 255 then return otherbank
           goto SetPlayerAnimation
 
 HandleExecuteEnd
           let temp1 = playerCharacter[currentPlayer]
-          if temp1 >= 32 then return
+          if temp1 >= 32 then return otherbank
           if temp1 = 6 then goto HarpyExecute
           if temp1 >= 16 then let temp1 = 0
           let temp2 = CharacterExecuteNextAction[temp1]
-          if temp2 = 255 then return
+          if temp2 = 255 then return otherbank
           goto SetPlayerAnimation
 
 HarpyExecute

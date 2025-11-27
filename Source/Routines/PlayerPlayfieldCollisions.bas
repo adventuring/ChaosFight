@@ -73,7 +73,7 @@ PFBlockUpClamp
           if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_WL[currentPlayer] = 0
 PFBlockDown
           rem Skip zeroing velocity for Radish Goblin (bounce system handles it)
-          if playerCharacter[currentPlayer] = CharacterRadishGoblin then return
+          if playerCharacter[currentPlayer] = CharacterRadishGoblin then return otherbank
           if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           return otherbank
 PF_CheckColumnSpan
@@ -182,10 +182,10 @@ PHC_ClampRight
           return otherbank
 PFCheckDown_Body
           let rowCounter = playfieldRow + temp5
-          if rowCounter >= pfrows then return
+          if rowCounter >= pfrows then return otherbank
 
           let playfieldRow = rowCounter + 1
-          if playfieldRow >= pfrows then return
+          if playfieldRow >= pfrows then return otherbank
 
           let temp2 = playfieldRow
           gosub PF_CheckRowColumns bank10

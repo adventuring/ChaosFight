@@ -170,7 +170,7 @@ TitleScreenFixPlayerHeights:
           lda #%11000010
           sta WSYNC
           sta VBLANK
-          RETURN
+          rts
 
 	; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 	; Note: Bitmap image data is now included from generated Art.*.s files in Bank9
@@ -190,4 +190,4 @@ TitleScreenFixPlayerHeights:
 
 	; Removed unused player, score, and gameselect minikernels
 
-          RETURN
+          rts

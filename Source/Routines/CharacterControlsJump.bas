@@ -82,7 +82,7 @@ BernieCheckBottomWrap
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp3
-          if temp5 = 1 then return
+          if temp5 = 1 then return otherbank
           let playerY[temp1] = 0
           return otherbank
 CCJ_FreeFlightUp
@@ -95,7 +95,7 @@ end
           rem Mutates: temp3-temp6, playerVelocityY[], playerVelocityYL[], playerState[]
           let temp3 = playerY[temp1]
           let temp4 = temp3 / 16
-          if temp4 <= 0 then return thisbank
+          if temp4 <= 0 then return otherbank
           let temp4 = temp4 - 1
           let temp5 = 0
           let temp6 = temp1
@@ -104,11 +104,11 @@ end
           gosub PlayfieldRead bank16
           if temp1 then let temp5 = 1
           let temp1 = temp6
-          if temp5 = 1 then return thisbank
+          if temp5 = 1 then return otherbank
           let playerVelocityY[temp1] = 254
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
-          return thisbank
+          return otherbank
 
 DragonOfStormsJump
           asm

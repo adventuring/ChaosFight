@@ -62,7 +62,7 @@ PSM_InlineDoneLeft
           if !temp3 then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
 PSM_CheckRightJoy1
           rem Right movement: set positive velocity
-          if !joy1right then return
+          if !joy1right then return otherbank
           if playerCharacter[temp1] = CharacterFrooty then PSM_RightMomentum1
           let temp6 = playerCharacter[temp1]
           let temp6 = CharacterMovementSpeed[temp6]
@@ -122,7 +122,7 @@ PSM_InlineDoneLeft0
           
 PSM_CheckRightJoy0
           rem Right movement: set positive velocity
-          if !joy0right then return
+          if !joy0right then return otherbank
           if playerCharacter[temp1] = CharacterFrooty then PSM_RightMomentum0
           let temp6 = playerCharacter[temp1]
           let temp6 = CharacterMovementSpeed[temp6]

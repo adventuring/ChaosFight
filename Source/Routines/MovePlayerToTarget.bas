@@ -50,22 +50,22 @@ MPT_NudgeRight
           asm
 MPT_NudgeRight
 end
-          let playerX[temp1] = originalPlayerX_W + 1
+          let playerX[temp1] = originalPlayerX_R + 1
           gosub MPT_CheckCollision
           rem MovePlayerToTarget is called cross-bank, so all return otherbank paths must use return otherbank
           rem Returns: Far (return otherbank)
-          if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
+          if temp6 = 1 then let playerX[temp1] = originalPlayerX_R
           return otherbank
 MPT_NudgeLeft
           rem Returns: Far (return thisbank)
           asm
 MPT_NudgeLeft
 end
-          let playerX[temp1] = originalPlayerX_W - 1
+          let playerX[temp1] = originalPlayerX_R - 1
           gosub MPT_CheckCollision
           rem MovePlayerToTarget is called cross-bank, so all return otherbank paths must use return otherbank
           rem Returns: Far (return otherbank)
-          if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
+          if temp6 = 1 then let playerX[temp1] = originalPlayerX_R
           return otherbank
 MPT_CheckCollision
           rem Returns: Far (return thisbank)
@@ -74,13 +74,13 @@ MPT_CheckCollision
 end
           rem Check collision at current position
           rem Returns: Far (return otherbank)
-          rem Input: temp1 = player index, playerX[temp1] = test position, originalPlayerY_W = Y
+          rem Input: temp1 = player index, playerX[temp1] = test position, originalPlayerY_R = Y
           rem Output: temp6 = 1 if collision, 0 if clear
           let temp2 = playerX[temp1] - ScreenInsetX
           let temp2 = temp2 / 4
           if temp2 > 31 then temp2 = 31
           if temp2 & $80 then temp2 = 0
-          let temp3 = originalPlayerY_W
+          let temp3 = originalPlayerY_R
           let temp5 = temp3 / 16
           let temp6 = 0
           let temp4 = temp1

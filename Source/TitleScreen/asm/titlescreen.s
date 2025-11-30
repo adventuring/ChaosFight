@@ -17,7 +17,9 @@ title_eat_overscan
 	        clc
           lda INTIM
           bmi title_eat_overscan
-          jmp title_do_vertical_sync
+          ; NOTE: Using explicit address $85b2 due to symbol resolution issue
+          ; title_do_vertical_sync is defined at $9:85b2
+          jmp $85b2
 
 title_do_vertical_sync
           lda #2

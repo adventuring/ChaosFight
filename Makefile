@@ -135,6 +135,9 @@ bin/:
 Source/Generated/:
 	mkdir -p $@
 
+Source/TitleScreen/:
+	mkdir -p $@
+
 Source/Art/:
 	mkdir -p $@
 
@@ -385,6 +388,24 @@ Source/Generated/Art.Author.s Source/Generated/Art.Author.colors.s: Source/Art/B
 Source/Generated/Art.ChaosFight.s Source/Generated/Art.ChaosFight.colors.s: Source/Art/ChaosFight.png Source/Art/ChaosFight.xcf bin/skyline-tool | Source/Generated/
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.ChaosFight.s" "t" "NTSC"
+
+# Generate titlescreen kernel image files from Art.*.s and Art.*.colors.s files
+# These are used by the titlescreen kernel minikernels
+Source/TitleScreen/48x2_1_image.s: Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAge.colors.s Tools/generate-48x2-image.sh | Source/TitleScreen/
+	@echo "Generating titlescreen image file $@ from $<..."
+	Tools/generate-48x2-image.sh "Source/Generated/Art.AtariAge.s" "Source/Generated/Art.AtariAge.colors.s" "$@" "1"
+
+Source/TitleScreen/48x2_2_image.s: Source/Generated/Art.AtariAgeText.s Source/Generated/Art.AtariAgeText.colors.s Tools/generate-48x2-image.sh | Source/TitleScreen/
+	@echo "Generating titlescreen image file $@ from $<..."
+	Tools/generate-48x2-image.sh "Source/Generated/Art.AtariAgeText.s" "Source/Generated/Art.AtariAgeText.colors.s" "$@" "2"
+
+Source/TitleScreen/48x2_3_image.s: Source/Generated/Art.ChaosFight.s Source/Generated/Art.ChaosFight.colors.s Tools/generate-48x2-image.sh | Source/TitleScreen/
+	@echo "Generating titlescreen image file $@ from $<..."
+	Tools/generate-48x2-image.sh "Source/Generated/Art.ChaosFight.s" "Source/Generated/Art.ChaosFight.colors.s" "$@" "3"
+
+Source/TitleScreen/48x2_4_image.s: Source/Generated/Art.Author.s Source/Generated/Art.Author.colors.s Tools/generate-48x2-image.sh | Source/TitleScreen/
+	@echo "Generating titlescreen image file $@ from $<..."
+	Tools/generate-48x2-image.sh "Source/Generated/Art.Author.s" "Source/Generated/Art.Author.colors.s" "$@" "4"
 
 # Color files are generated automatically when bitmap files are generated
 # Combine all titlescreen color tables, PF1, PF2, and background into a single file at $f500

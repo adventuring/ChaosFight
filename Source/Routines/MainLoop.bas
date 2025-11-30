@@ -117,5 +117,10 @@ MainLoopDrawScreen
 
           rem Titlescreen graphics and kernel reside in bank9
           if gameMode < 3 then gosub DrawTitleScreen bank9
-          if gameMode >= 3 then drawscreen
+          rem CRITICAL: drawscreen must be called every frame
+          rem Since MainLoopDrawScreen and drawscreen are both in bank 16, use near jsr
+          rem batariBASIC’s "drawscreen" statement generates cross-bank calls which cause stack imbalance
+          if gameMode >= 3 then asm
+            jsr drawscreen
+end
           goto MainLoop bank16

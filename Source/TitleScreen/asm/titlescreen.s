@@ -14,7 +14,7 @@ score_kernel_fade = 0
 titledrawscreen
 title_eat_overscan
  	;bB runs in overscan. Wait for the overscan to run out...
-          clc
+	        clc
           lda INTIM
           bmi title_eat_overscan
           jmp title_do_vertical_sync
@@ -29,9 +29,24 @@ title_do_vertical_sync
           sta WSYNC ;one line with VSYNC
           sta VSYNC ;turn off VSYNC
 
+          ; VBLANK: Use Reference cycle-exact timing
+          ifnconst vblank_time
+          ifconst _TV_PAL
           lda #42+128
-
           sta TIM64T
+          else
+          ifconst _TV_SECAM
+          lda #42+128
+          sta TIM64T
+          else
+          lda #37+128
+          sta TIM64T
+          endif
+          endif
+          else
+          lda #vblank_time+128
+          sta TIM64T
+          endif
 
 titleframe = missile0x
           inc titleframe ; increment the frame counter
@@ -62,6 +77,11 @@ title_playfield
           sta REFP0
           sta REFP1
           sta WSYNC
+          sta COLUBK
+          ; Clear playfield to prevent garbage display
+          sta PF0
+          sta PF1
+          sta PF2
 
 ; Manually expanded titlescreenlayout macro (labels must be column aligned)
 ; For 48×42 bitmaps using ×2 drawing style (double-height mode)
@@ -75,10 +95,10 @@ title_playfield
 ; Author screen: Shows only 48x2_4 (BRP) - window=42
 ; Title screen: Shows only 48x2_3 (ChaosFight) - window=42
 ; Each screen activates only its minikernel by setting height/window = 0 for others
-draw_48x2_1
-draw_48x2_2
-draw_48x2_3
-draw_48x2_4
+          draw_48x2_1
+          draw_48x2_2
+          draw_48x2_3
+          draw_48x2_4
 
           jmp PFWAIT ; kernel is done. Finish off the screen
 
@@ -136,13 +156,29 @@ gamenumber
           .byte $00
 
 PFWAIT
-          lda INTIM 
+          lda INTIM
           bne PFWAIT
           sta WSYNC
 
 OVERSCAN
+          ; Overscan: Use Reference cycle-exact timing
+          ifnconst overscan_time
+          ifconst _TV_PAL
           lda #34+128
           sta TIM64T
+          else
+          ifconst _TV_SECAM
+          lda #34+128
+          sta TIM64T
+          else
+          lda #30+128
+          sta TIM64T
+          endif
+          endif
+          else
+          lda #overscan_time+128-5
+          sta TIM64T
+          endif
 
 	;fix height variables we borrowed
           ifconst player9height

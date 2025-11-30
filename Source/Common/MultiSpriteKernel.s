@@ -64,8 +64,15 @@ WaitForOverscanEnd
           sta TIM64T
 
 ; run possible vblank bB code
-vblank_bB_code
-          rts
+; batariBASIC code will be placed at this label via vblank statement
+; The vblank code must return (return thisbank for bankswitching)
+; vblank_bB_code constant is defined in VblankHandlers.bas (or $0000 if not used)
+; MultiSpriteSuperChip.s sets it to $0000 if not defined, so we can always call it
+          lda vblank_bB_code
+          ora vblank_bB_code + 1
+          beq skip_vblank_call
+          jsr vblank_bB_code
+skip_vblank_call
 
           jsr setscorepointers
           jsr SetupP1Subroutine

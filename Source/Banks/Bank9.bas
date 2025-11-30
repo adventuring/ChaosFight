@@ -33,27 +33,22 @@ ArtAuthorStart
 #include "Source/Generated/Art.Author.s"
 ArtAuthorEnd
             echo "// Bank 9: ", [ArtAuthorEnd - ArtAuthorStart]d, " bytes = Art.Author"
-            ; Optional bitmap index offsets (all are 0) - data must be in data segment before colors
-bmp_48x2_1_index_value
-bmp_48x2_2_index_value
-bmp_48x2_3_index_value
-bmp_48x2_4_index_value
-          BYTE 0
             ; Colors must be included here, right after bitmap data,
             ;   before titlescreen.s includes other files that advance past $f500
 TitlescreenColorsStart
 #include "Source/TitleScreen/titlescreen_colors.s"
 TitlescreenColorsEnd
             echo "// Bank 9: ", [TitlescreenColorsEnd - TitlescreenColorsStart]d, " bytes = titlescreen_colors"
+            ; Optional bitmap index offsets (all are 0) - data must be in data segment
+bmp_48x2_1_index_value
+bmp_48x2_2_index_value
+bmp_48x2_3_index_value
+bmp_48x2_4_index_value
+          BYTE 0
 Bank9DataEnds
 end
 
           asm
-            ; Ensure code starts at f5a9 where titledrawscreen must be
-            ; Pad if data ended before f5a9
-            if . < $f5a9
-                ds $f5a9 - .
-            endif
 TitlescreenAsmStart
 #include "Source/TitleScreen/asm/titlescreen.s"
 TitlescreenAsmEnd

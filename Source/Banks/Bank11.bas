@@ -53,5 +53,12 @@ end
           asm
 FallingAnimationEnd
             echo "// Bank 11: ", [FallingAnimationEnd - FallingAnimationStart]d, " bytes = FallingAnimation"
+          asm
+VblankHandlersStart
+end
+#include "Source/Routines/VblankHandlers.bas"
+          asm
+VblankHandlersEnd
+            echo "// Bank 11: ", [VblankHandlersEnd - VblankHandlersStart]d, " bytes = VblankHandlers"
 Bank11CodeEnds
 end

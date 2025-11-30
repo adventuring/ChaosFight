@@ -713,6 +713,9 @@ CharacterSelectQuadtariReadyNext
 CharacterSelectReadyDone
           rem Returns: Far (return otherbank)
 
+          rem Update sound effects (active sound effects need per-frame updates)
+          gosub UpdateSoundEffect bank15
+
           return otherbank
 
 CharacterSelectFinish
@@ -751,6 +754,9 @@ CharacterSelectSkipFacing
           next
 
 
+
+          rem Update sound effects (active sound effects need per-frame updates)
+          gosub UpdateSoundEffect bank15
 
           rem Transition to falling animation
 

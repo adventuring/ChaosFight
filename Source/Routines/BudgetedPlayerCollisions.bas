@@ -23,28 +23,28 @@ BudgetedCollisionCheck
           gosub CheckCollisionP1vsP2
 
           rem Skip other checks if not Quadtari
-          if (controllerStatus & SetQuadtariDetected) = 0 then return
+          if (controllerStatus & SetQuadtariDetected) = 0 then return otherbank
 
           rem Check additional pairs based on frame phase
           if framePhase = 0 then BPC_Phase0
           if framePhase = 1 then BPC_Phase1
           if framePhase = 2 then BPC_Phase2
-          return thisbank
+          return otherbank
 BPC_Phase0
-          if playerCharacter[2] = NoCharacter then return
+          if playerCharacter[2] = NoCharacter then return otherbank
           gosub CheckCollisionP1vsP3
-          return thisbank
+          return otherbank
 BPC_Phase1
           if playerCharacter[3] <> NoCharacter then gosub CheckCollisionP1vsP4
-          if playerCharacter[2] = NoCharacter then return
+          if playerCharacter[2] = NoCharacter then return otherbank
           gosub CheckCollisionP2vsP3
-          return thisbank
+          return otherbank
 BPC_Phase2
           if playerCharacter[3] <> NoCharacter then gosub CheckCollisionP2vsP4
-          if playerCharacter[2] = NoCharacter then return
-          if playerCharacter[3] = NoCharacter then return
+          if playerCharacter[2] = NoCharacter then return otherbank
+          if playerCharacter[3] = NoCharacter then return otherbank
           gosub CheckCollisionP3vsP4
-          return thisbank
+          return otherbank
 CheckCollisionP1vsP2
           asm
 CheckCollisionP1vsP2
@@ -65,7 +65,7 @@ end
 BPC_CalcDiff
           let temp2 = playerX[temp3] - playerX[temp4]
 BPC_CheckSep
-          if temp2 >= 16 then return
+          if temp2 >= 16 then return thisbank
           if playerX[temp3] < playerX[temp4] then BPC_SepLeft
           let playerX[temp3] = playerX[temp3] + 1
           let playerX[temp4] = playerX[temp4] - 1

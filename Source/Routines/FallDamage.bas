@@ -393,7 +393,7 @@ DivideBy20
             lsr
             sta temp2
 end
-          return thisbank
+          return otherbank
 
 DivideBy100
           rem DivideBy100: compute floor(temp2 ÷ 100) using range check
@@ -432,7 +432,7 @@ CalculateSafeFallDistance
           goto CalculateFallDistanceNormal
 SetInfiniteFallDistance
           let temp2 = InfiniteFallDistance
-          return thisbank
+          return otherbank
 CalculateFallDistanceNormal
 
           let temp3 = SafeFallVelocityThresholds[currentCharacter]
@@ -444,5 +444,5 @@ CalculateFallDistanceNormal
 end
           if currentCharacter = CharacterNinjishGuy then temp2 = temp2 * 2
 
-          return thisbank
+          return otherbank
 

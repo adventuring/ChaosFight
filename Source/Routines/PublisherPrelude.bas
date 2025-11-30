@@ -28,19 +28,15 @@ end
 
           rem This function processes one frame and returns.
 
-          rem FLOW PER FRAME:
+          rem FLOW PER FRAME (OVerscan only - minimal work):
 
-          rem 1. Handle input - any button press skips to author
+          rem 1. Handle input - any button press skips to author prelude
 
-          rem   prelude
+          rem 2. Check auto-advance timer (music completion + 0.5s)
 
-          rem   2. Update music playback
+          rem 3. Increment timer
 
-          rem   3. Check auto-advance timer (music completion + 0.5s)
-
-          rem   4. Set window values for Publisher screen
-
-          rem   5. Return to MainLoop (drawing handled by MainLoop)
+          rem 4. Return to MainLoop (music and drawing handled by MainLoop)
 
           rem BITMAP CONFIGURATION:
 
@@ -94,11 +90,7 @@ end
 
           rem
 
-          rem Called Routines: PlayMusic (bank1) - plays music
-
-          rem playback, SetPublisherWindowValues (bank14) - accesses
-
-          rem window state
+          rem Called Routines: None (music handled by MainLoop, window values set in BeginPublisherPrelude)
 
           rem
 
@@ -152,35 +144,15 @@ end
 
           if temp1 then if !INPT3{7} then goto PublisherPreludeComplete
 
-
-
-          gosub PlayMusic bank15
-
-
-
           rem Auto-advance after music completes + 0.5s
 
           rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
 
           if preambleTimer > 30 && musicPlaying = 0 then goto PublisherPreludeComplete
 
-
-
           let preambleTimer = preambleTimer + 1
 
-
-
-          rem Set window values for Publisher screen (AtariAge logo +
-
-          rem   AtariAge text)
-
-          gosub SetPublisherWindowValues bank14
-
-
-
-          rem Drawing handled by MainLoop (titledrawscreen for admin
-
-          rem   screens)
+          rem Music and drawing handled by MainLoop (PlayMusic and DrawTitleScreen)
 
           return otherbank
 

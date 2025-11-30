@@ -29,6 +29,9 @@ end
           rem Initialize timer
           let preambleTimer = 0
 
+          rem Disable character parade (only active on title screen, not preludes)
+          let titleParadeActive = 0
+
           rem Background: black (COLUBK starts black, no need to set)
 
           rem Start Interworldly music

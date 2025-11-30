@@ -110,22 +110,22 @@ HFCM_VertJoy0
 
           if joy0down then goto HFCM_VertDown
 
-          return thisbank
+          return otherbank
 
 HFCM_VertUp
 
-          if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] - characterMovementSpeed : return thisbank
+          if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] - characterMovementSpeed : return otherbank
 
-          if temp5 = 2 then let playerY[temp1] = playerY[temp1] - characterMovementSpeed : return thisbank
+          if temp5 = 2 then let playerY[temp1] = playerY[temp1] - characterMovementSpeed : return otherbank
 
-          return thisbank
+          return otherbank
 
 HFCM_VertDown
 
-          if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] + characterMovementSpeed : return thisbank
+          if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] + characterMovementSpeed : return otherbank
 
-          if temp5 = 2 then let playerY[temp1] = playerY[temp1] + characterMovementSpeed : return thisbank
+          if temp5 = 2 then let playerY[temp1] = playerY[temp1] + characterMovementSpeed : return otherbank
 
-          return thisbank
+          return otherbank
 
 

@@ -1,5 +1,13 @@
 
 draw_bmp_48x2_2
+          ; Early exit if window is 0 (bitmap disabled)
+          ifnconst titlescreenWindow2
+          ldy #bmp_48x2_2_window
+          beq draw_bmp_48x2_2_done
+          else
+          ldy titlescreenWindow2
+          beq draw_bmp_48x2_2_done
+          endif
 
           lda #<(bmp_48x2_2_colors-1+bmp_48x2_2_height-bmp_48x2_2_window)
           ifconst bmp_48x2_2_index
@@ -68,6 +76,9 @@ bmp_48x2_2_pointersetup
           sta PF2
 
           jmp draw_bmp_48x2_X
+
+draw_bmp_48x2_2_done
+          rts
 
 bmp_48x2_2_values
           .word (bmp_48x2_2_00+#bmp_48x2_2_height-#bmp_48x2_2_window)

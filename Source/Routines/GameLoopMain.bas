@@ -208,6 +208,10 @@ GameMainLoopContinue
 
           
 
+          rem OVSCAN HANDLER: Input reading and sound updates only
+          rem Heavy game logic moved to vblank handler (VblankModeGameMain)
+          rem This runs during overscan period before drawscreen is called
+
           rem Read enhanced controller buttons (Genesis Button C, Joy2B+
 
           rem   II/III)
@@ -219,12 +223,6 @@ GameMainLoopContinue
           rem Handle console switches (in Bank 13)
 
           gosub HandleConsoleSwitches bank13 :
-
-
-
-          rem Check if game is paused - skip movement/physics/animation if so
-
-          if systemFlags & SystemFlagGameStatePaused then goto GameMainLoopPaused
 
 
 
@@ -268,286 +266,19 @@ FrootyChargeNext
 
 
 
-          rem Update animation system (10fps character animation) (in Bank 12)
-
-          gosub UpdateCharacterAnimations bank12
-
-
-
-          rem Update movement system (full frame rate movement) (in Bank 8)
-
-          gosub UpdatePlayerMovement bank8
-
-
-
-          rem Apply gravity and physics (in Bank 13)
-
-          gosub PhysicsApplyGravity bank13
-
-
-
-          rem Apply momentum and recovery effects (in Bank 8)
-
-          gosub ApplyMomentumAndRecovery bank8
-
-
-
-          rem Check boundary collisions (in Bank 10)
-
-          gosub CheckBoundaryCollisions bank10
-
-
-
-          rem Optimized: Single loop for playfield collisions (walls, ceilings, ground)
-
-          for currentPlayer = 0 to 3
-
-          if currentPlayer >= 2 then goto CheckQuadtariSkip
-
-          goto ProcessCollision
-
-CheckQuadtariSkip
-
-          if controllerStatus & SetQuadtariDetected then goto ProcessCollision
-
-          goto GameMainLoopQuadtariSkip
-
-ProcessCollision
-
-          rem Check for Radish Goblin bounce movement (ground and wall bounces)
-          rem Returns: Far (return otherbank)
-
-          gosub CheckPlayfieldCollisionAllDirections bank10
-
-          if playerCharacter[currentPlayer] = CharacterRadishGoblin then gosub RadishGoblinCheckGroundBounce bank12
-
-          if playerCharacter[currentPlayer] = CharacterRadishGoblin then gosub RadishGoblinCheckWallBounce bank12
-
-          next
-
-GameMainLoopQuadtariSkip
-
-          rem Skip 4-player collision checks (not in 4-player mode)
-          rem Returns: Far (return otherbank)
-
-          rem
-
-          rem Input: None (label only, no execution)
-
-          rem
-
-          rem Output: None (label only)
-
-          rem
-
-          rem Mutates: None
-
-          rem
-
-          rem Called Routines: None
-
-          rem
-
-          rem Constraints: Must be colocated with GameMainLoop
-
-
-
-          rem Check multi-player collisions (in Bank 11)
-
-          gosub CheckAllPlayerCollisions bank11
-
-
-
-          rem Process mêlée and area attack collisions (in Bank 7)
-
-          gosub ProcessAllAttacks bank7
-
-          rem WIP #1146: Hook present while attack-state gating is implemented
-
-
-
-          rem Check for player eliminations
-
-          gosub CheckAllPlayerEliminations bank14
-
-
-
-          rem Update missiles (in Bank 12)
-
-          gosub UpdateAllMissiles bank7
-
-
-
-          rem Check if game should end and transition to winner screen
-
-          rem   ending,
-
-          rem systemFlags bit 3 (SystemFlagGameStateEnding) means game
-
-          rem is
-
-          rem gameEndTimer counts down
-
-          if systemFlags & SystemFlagGameStateEnding then CheckGameEndTransition
-
-          goto GameEndCheckDone
-
-CheckGameEndTransition
-
-          rem Check if game end timer should transition to winner screen
-          rem Returns: Far (return otherbank)
-
-          rem
-
-          rem Input: gameEndTimer (global) = game end countdown timer
-
-          rem        systemFlags (global) = system flags including
-
-          rem        ending state
-
-          rem
-
-          rem Output: Dispatches to TransitionToWinner or
-
-          rem GameEndCheckDone
-
-          rem
-
-          rem Mutates: gameEndTimer (decremented)
-
-          rem
-
-          rem Called Routines: None (dispatcher only)
-
-          rem
-
-          rem Constraints: Must be colocated with GameMainLoop,
-
-          rem TransitionToWinner, GameEndCheckDone
-
-          rem When timer reaches 0, transition to winner announcement
-
-          if gameEndTimer_R = 0 then TransitionToWinner
-
-          rem Decrement game end timer
-
-          let gameEndTimer_W = gameEndTimer_R - 1
-
-          goto GameEndCheckDone
-
-TransitionToWinner
-
-          rem Transition to winner announcement mode
-          rem Returns: Far (return otherbank)
-
-          rem
-
-          rem Input: None (called from CheckGameEndTransition)
-
-          rem
-
-          rem Output: gameMode set to ModeWinner, ChangeGameMode called
-
-          rem
-
-          rem Mutates: gameMode (global)
-
-          rem
-
-          rem Called Routines: ChangeGameMode (bank14) - accesses game
-
-          rem mode state
-
-          rem Constraints: Must be colocated with GameMainLoop, CheckGameEndTransition
-
-          let gameMode = ModeWinner
-
-          gosub ChangeGameMode bank14
-
-          return otherbank
-
-GameEndCheckDone
-
-          rem Game end check complete
-          rem Returns: Far (return otherbank)
-
-          rem
-
-          rem Input: None (label only, no execution)
-
-          rem
-
-          rem Output: None (label only)
-
-          rem
-
-          rem Mutates: None
-
-          rem
-
-          rem Called Routines: None
-
-          rem
-
-          rem Constraints: Must be colocated with GameMainLoop
-
-
-
-          rem Update missiles (in Bank 12)
-
-          gosub UpdateAllMissiles bank7
-
-
-
-          rem Check missile collisions (in Bank 7) - handled internally
-
-          rem   by UpdateAllMissiles
-
-          rem No separate CheckMissileCollisions call needed
-
-
-
-          rem Check RoboTito stretch missile collisions (bank 7)
-
-          gosub CheckRoboTitoStretchMissileCollisions bank10
-
-
-
-          rem Set sprite positions (now handled by movement system)
-
-          rem Call SetSpritePositions
-
-          rem Replaced by UpdatePlayerMovement
-
-
-
-          rem Set sprite graphics (in Bank 6)
-
-          gosub SetPlayerSprites bank6
-
-
-
-          rem Display health information (in Bank 11)
-
-          gosub DisplayHealth bank11
-
-
-
-          rem Update P1/P2 health bars using pfscore system
-
-          gosub UpdatePlayer12HealthBars bank11
-
-
-
-          rem Update P3/P4 health bars using playfield system
-
-          gosub UpdatePlayer34HealthBars bank11
-
-
-
           rem Update sound effects (game mode 6 only)
 
+          rem Sound updates must happen in overscan so they are ready for vblank
+
           gosub UpdateSoundEffect bank15
+
+
+
+          rem Heavy game logic (physics, collisions, rendering) moved to vblank handler
+
+          rem This allows better time distribution: overscan for input/sound, vblank for logic
+
+          rem Vblank handler is called from kernel vblank_bB_code hook during vblank period
 
 
 
@@ -555,7 +286,11 @@ GameEndCheckDone
 
           rem kernel
 
+          rem Note: Heavy game logic (physics, collisions, rendering) is now handled
 
+          rem in vblank handler (VblankModeGameMain) for better time distribution
+
+          return otherbank
 
 GameMainLoopPaused
 
@@ -563,5 +298,7 @@ GameMainLoopPaused
           rem Returns: Far (return otherbank)
 
           rem but still allow console switch handling for unpause
+
+          rem Vblank handler will also check pause state and skip logic
 
           return otherbank

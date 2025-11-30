@@ -45,6 +45,7 @@ end
 
           rem Second — routines locked to that data. Cannot be moved.
           rem Multisprite kernel (contains drawscreen) must be before MainLoop
+          rem Note: vblank_bB_code constant will be defined in VblankHandlers.bas after VblankHandlerDispatcher label
           asm
 #include "Source/Common/MultiSpriteKernel.s"
 Bank16AfterMultiSpriteKernel
@@ -60,6 +61,16 @@ end
 #include "Source/Routines/MainLoop.bas"
           asm
 Bank16AfterMainLoop
+end
+#include "Source/Routines/VblankHandlerTrampoline.bas"
+          asm
+Bank16AfterVblankTrampoline
+end
+          rem Define vblank_bB_code constant pointing to trampoline
+          asm
+          ifnconst vblank_bB_code
+vblank_bB_code = VblankHandlerTrampoline
+          endif
 end
 #include "Source/Routines/SpriteLoader.bas"
           asm
@@ -81,6 +92,7 @@ Bank16CodeEnds
            echo "// Bank 16: ", [Bank16AfterArenaLoader - Bank16AfterMultiSpriteKernel]d, " bytes = ArenaLoader"
            echo "// Bank 16: ", [Bank16AfterLoadArenaByIndex - Bank16AfterArenaLoader]d, " bytes = LoadArenaByIndex"
            echo "// Bank 16: ", [Bank16AfterMainLoop - Bank16AfterLoadArenaByIndex]d, " bytes = MainLoop"
+           echo "// Bank 16: ", [Bank16AfterVblankTrampoline - Bank16AfterMainLoop]d, " bytes = VblankHandlerTrampoline"
            echo "// Bank 16: ", [Bank16AfterSpriteLoader - Bank16AfterMainLoop]d, " bytes = SpriteLoader"
            echo "// Bank 16: ", [Bank16AfterPlayfieldRead - Bank16AfterSpriteLoader]d, " bytes = PlayfieldRead"
            echo "// Bank 16: ", [Bank16AfterSetPlayerGlyph - Bank16AfterPlayfieldRead]d, " bytes = SetPlayerGlyph (unified)"

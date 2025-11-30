@@ -59,7 +59,7 @@ DCD_HandleRoboTitoDown_HGI
 
           gosub RoboTitoDown bank13
 
-          if temp2 = 1 then return thisbank
+          if temp2 = 1 then return otherbank
 
           goto StandardGuard bank13
 

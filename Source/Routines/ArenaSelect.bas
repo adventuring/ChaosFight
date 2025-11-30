@@ -227,8 +227,11 @@ ArenaSelectConfirm
           goto StartGame1
 ArenaSelectDoneConfirm
 
+          rem Update sound effects (active sound effects need per-frame updates)
+          gosub UpdateSoundEffect bank15
+
           rem drawscreen called by MainLoop
-          return thisbank          goto ArenaSelect1Loop
+          return thisbank
 
 CheckQuadtariFireHold
           rem Check Player 3 and 4 fire buttons (Quadtari)

@@ -181,7 +181,7 @@ PSM_InlineDoneRight1
 
           if !temp3 then let playerState[temp1] = playerState[temp1] | 1
 
-          return thisbank          
+          return otherbank          
 
 PSM_UseJoy0
 
@@ -305,4 +305,4 @@ PSM_InlineDoneRight0
 
           if !temp3 then let playerState[temp1] = playerState[temp1] | 1
 
-          return thisbank
+          return otherbank

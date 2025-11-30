@@ -411,7 +411,7 @@ BoundsCheckDone
           gosub MissileCollPF bank8
           rem Issue #1188: Collision detected - check if should bounce or deactivate
           if !temp4 then goto PlayfieldCollisionDone
-          if temp5 & MissileFlagBounce then gosub HandleMissileBounce : return thisbank
+          if temp5 & MissileFlagBounce then gosub HandleMissileBounce : return otherbank
           goto DeactivateMissile
 PlayfieldCollisionDone
           rem No bounce - deactivate on background hit
@@ -598,7 +598,7 @@ CheckMissilePlayerCollision
 MissileCheckNextPlayer
           next
 MissileCollisionReturn
-          return thisbank
+          return otherbank
 HandleMissileHit
           rem Returns: Far (return otherbank)
           asm
@@ -814,7 +814,7 @@ BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc
 
           rem Continue bouncing (do not deactivate)
-          return thisbank
+          return otherbank
 DeactivateMissile
           rem
           rem Returns: Far (return otherbank)

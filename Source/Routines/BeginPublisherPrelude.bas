@@ -17,6 +17,7 @@ end
           rem   - Timer initialization
           rem   - Background color
           rem   - Music playback start
+          rem   - Window values for Publisher screen bitmaps
           rem Bitmap data is loaded automatically by titlescreen kernel
           rem   via includes.
           rem No explicit loading needed - titlescreen kernel handles
@@ -32,13 +33,16 @@ end
           rem Mutates: preambleTimer (set to 0), COLUBK (TIA register),
           rem temp1 (passed to StartMusic)
           rem
-          rem Called Routines: StartMusic (bank1) - starts AtariToday
-          rem music
+          rem Called Routines: StartMusic (bank15) - starts AtariToday
+          rem music, SetPublisherWindowValues (bank14) - sets window values for bitmaps
           rem
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModePublisherPrelude
           rem Initialize prelude timer
           let preambleTimer = 0
+
+          rem Disable character parade (only active on title screen, not preludes)
+          let titleParadeActive = 0
 
           rem Background: black (COLUBK starts black, no need to set)
 
@@ -48,6 +52,11 @@ end
           rem SetupPublisherPrelude itself returns with return otherbank to handle the cross-bank call to ChangeGameMode
           let temp1 = MusicAtariToday
           gosub StartMusic bank15
+
+          rem Set window values for Publisher screen (AtariAge logo + AtariAge text)
+          rem Window values are set once during setup, not every frame
+          gosub SetPublisherWindowValues bank14
+
           return thisbank
 
 

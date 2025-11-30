@@ -73,7 +73,7 @@ end
           let temp1 = controllerStatus & SetRightPortJoy2bPlus
           if temp1 then if !INPT3{7} then AuthorPreludeComplete
 
-          gosub PlayMusic bank15
+          rem Music updated in MainLoopContinue (redundant call removed)
 
           rem Auto-advance after music completes + 0.5s
 

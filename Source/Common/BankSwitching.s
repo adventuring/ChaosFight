@@ -2,8 +2,8 @@
           ; batariBASIC sets ORG before include, but DASM may need it here too
           ; Define as constants (SET allows redefinition per bank, EQU does not)
 BS_return SET .
-          ; OPTIMIZATION: Don't save A/X - target routine is returning, so its A/X don't matter
-          ; Original caller's A/X are already saved on stack from BS_jsr call
+          ; OPTIMIZATION: Don’t save A/X - target routine is returning, so its A/X don’t matter
+          ; Original caller’s A/X are already saved on stack from BS_jsr call
           tsx
           lda 2,x ; get encoded high byte of return address from stack (no A/X save, so offset is 2)
           tay ; save encoded byte for restoration
@@ -19,7 +19,7 @@ BS_return SET .
           tax ; bank number (0-F) now in X, already 0-based from batariBASIC
 BS_jsr SET .
           nop $ffe0,x ; bankswitch_hotspot + X where X is 0-based bank number
-          ; No need to restore A/X - caller doesn't use A/X after cross-bank call returns
+          ; No need to restore A/X - caller doesn’t use A/X after cross-bank call returns
           ; Stack now has return address at top, rts will return to original caller
           rts
           ; Pad to 24 bytes total (20 bytes code + 4 bytes padding)

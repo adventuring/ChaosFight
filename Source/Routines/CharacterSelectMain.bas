@@ -218,7 +218,7 @@ HCSC_CheckJoy1Left
           if !joy1left then return otherbank
 
 HandleCharacterSelectCycle
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 
@@ -358,7 +358,7 @@ HCSC_RightFromMax
           goto HCSC_CycleDone
 
 HCSC_GetPlayer2Tail
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 
@@ -469,7 +469,7 @@ end
 
 
 CharacterSelectHandleTwoPlayers
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 
@@ -568,7 +568,7 @@ CharacterSelectInputComplete
 
 
 CharacterSelectHandleRandomRolls
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 
@@ -594,7 +594,7 @@ end
 
 
 CharacterSelectRollRandomPlayer
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 

@@ -40,13 +40,14 @@ SelectDrawScreenLoop
           return otherbank
 
 SelectRenderPlayerPreview
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 SelectRenderPlayerPreview
 end
           rem Draw character preview for the specified player and apply lock tinting
-          rem Returns: Far (return otherbank)
-          rem Optimized: Combined duplicate conditionals, early return otherbank for common case
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from SelectDrawScreenLoop, so use return thisbank
+          rem Optimized: Combined duplicate conditionals, early return thisbank for common case
           gosub PlayerPreviewSetPosition bank6
           gosub RenderPlayerPreview bank6
           let temp1 = currentPlayer
@@ -71,12 +72,13 @@ end
           return otherbank
 
 SelectApplyPreviewPosition
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 SelectApplyPreviewPosition
 end
           rem Input: temp1 = player index, temp2 = x position, temp3 = y position
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from SelectRenderPlayerPreview, so use return thisbank
           rem Optimized: Use on...goto jump table for O(1) dispatch
           on temp1 goto SelectApplyPreviewPositionP0 SelectApplyPreviewPositionP1 SelectApplyPreviewPositionP2 SelectApplyPreviewPositionP3
 SelectApplyPreviewPositionP0
@@ -137,12 +139,13 @@ RenderPlayerPreviewInvoke
           return otherbank
 
 SelectApplyPlayerColor
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 SelectApplyPlayerColor
 end
           rem Input: currentPlayer selects target register, temp2 = color value
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from SelectSetPlayerColorUnlocked/Handicap, so use return thisbank
           rem Optimized: Use on...goto jump table for O(1) dispatch
           on currentPlayer goto SelectApplyPlayerColorP0 SelectApplyPlayerColorP1 SelectApplyPlayerColorP2 SelectApplyPlayerColorP3
 SelectApplyPlayerColorP0
@@ -159,18 +162,19 @@ SelectApplyPlayerColorP3
           return thisbank
 
 SelectSetPlayerColorUnlocked
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 SelectSetPlayerColorUnlocked
 end
           rem Override sprite color to indicate unlocked state (white)
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from SelectRenderPlayerPreview, so use return thisbank
           let temp2 = ColGrey(14)
           gosub SelectApplyPlayerColor
           return otherbank
 
 SelectSetPlayerColorHandicap
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 SelectSetPlayerColorHandicap
 
@@ -203,13 +207,14 @@ SelectUpdateAnimationNext
           return thisbank
 
 SelectUpdatePlayerAnimation
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 SelectUpdatePlayerAnimation
 
 end
           rem Update character select animation counters for one player
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from SelectUpdateAnimations, so use return thisbank
           rem
           rem Input: temp1 = player index (0-3)
           rem        characterSelectPlayerAnimationTimer_R[] = accumulated

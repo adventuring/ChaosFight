@@ -197,17 +197,18 @@ DWS_RankNext
           goto DWS_Position3Players
 
 DWS_LoadIdleSprite
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 DWS_LoadIdleSprite
 
 end
           rem Helper: Set temp2=0, temp3=0 and load sprite (saves bytes by eliminating repeated assignments)
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from DisplayWinScreen, so use return thisbank
           let temp2 = 0
           let temp3 = 0
           gosub LoadCharacterSprite bank16
-          return otherbank
+          return thisbank
 
 DWS_Position1Player
           rem 1 player: Winner centered on podium
@@ -410,16 +411,17 @@ DWS_Hide3Player3Done
           let playerX[3] = 0
           return otherbank
 DWS_HidePlayers123
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 DWS_HidePlayers123
 end
           rem Helper: Hide players 1, 2, 3 (saves bytes by consolidating repeated code)
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from DisplayWinScreen, so use return thisbank
           let playerX[1] = 0
           let playerX[2] = 0
           let playerX[3] = 0
-          return otherbank
+          return thisbank
 
 DWS_GetBWMode
           rem Returns: Far (return otherbank)
@@ -444,7 +446,7 @@ end
           return otherbank
 
 DWS_LoadColorColors
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 DWS_LoadColorColors
 
@@ -470,5 +472,5 @@ end
             lda #>WinnerScreenColorsColor
             sta pfcolortable+1
 end
-          return otherbank
+          return thisbank
 

@@ -2,7 +2,7 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem COMBAT SYSTEM - Generic Subroutines Using Player Arrays
 GetWeightBasedDamage
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 GetWeightBasedDamage
 end
@@ -27,7 +27,7 @@ end
           let temp2 = 22
           return otherbank
 ApplyDamage
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 ApplyDamage
 
@@ -191,7 +191,7 @@ PlayerDies
 
 
 CheckAttackHit
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 CheckAttackHit
 end
@@ -264,7 +264,7 @@ NoHit
           let hit = 0
           return otherbank
 CalculateAttackHitbox
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 CalculateAttackHitbox
 
@@ -420,7 +420,7 @@ AreaHitbox
           let cachedHitboxBottom_W = temp2 + 24
           return otherbank
 ProcessAttackerAttacks
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 ProcessAttackerAttacks
 end

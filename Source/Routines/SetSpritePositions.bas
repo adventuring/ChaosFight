@@ -123,7 +123,7 @@ end
           return otherbank
 
 SetSpritePositionsRenderMissiles
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 SetSpritePositionsRenderMissiles
 end
@@ -141,7 +141,7 @@ RenderMissilePair
           gosub SetSpritePositionsRenderPair
           return thisbank
 SetSpritePositionsRenderPair
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 SetSpritePositionsRenderPair
 end
@@ -151,7 +151,7 @@ end
           return otherbank
 
 RenderMissileForParticipant
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 RenderMissileForParticipant
 end
@@ -184,7 +184,7 @@ RMF_MissileActive
           gosub SSP_WriteMissileRegisters
           return otherbank
 SSP_WriteMissileRegisters
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 SSP_WriteMissileRegisters
 end
@@ -203,7 +203,7 @@ end
           gosub SSP_WriteMissileRegistersUnified
           return otherbank
 SSP_WriteMissileRegistersUnified
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 SSP_WriteMissileRegistersUnified
 end
@@ -226,7 +226,7 @@ SSP_WriteUnified0
           missile0height = temp4
           return thisbank
 CopyParticipantSpritePosition
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 CopyParticipantSpritePosition
 end
@@ -289,7 +289,7 @@ RRTM_ReadStretchHeight
           gosub SSP_WriteStretchMissile
           return otherbank
 SSP_WriteStretchMissile
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 SSP_WriteStretchMissile
 end

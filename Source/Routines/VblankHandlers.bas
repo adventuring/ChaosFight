@@ -7,12 +7,12 @@
           rem vblank_bB_code constant (defined after label) points to this subroutine
 
 VblankHandlerDispatcher
-          rem Returns: Near (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 VblankHandlerDispatcher
 end
           rem Vblank handler dispatcher - routes to mode-specific vblank handlers
-          rem Returns: Near (return thisbank)
+          rem Returns: Far (return otherbank)
           rem Inputs: gameMode (global 0-7)
           rem Outputs: Dispatches to mode-specific vblank handlers
           rem Mutates: None; dispatcher only
@@ -22,10 +22,14 @@ end
           rem              vblank_bB_code constant points to this subroutine
 
           rem Optimized: Use on/gosub for space efficiency
+          rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
+          rem VblankHandlerDispatcher is called with cross-bank call (pushes 4-byte encoded return)
+          rem Mode handlers return with return thisbank (pops 2 bytes from near call)
+          rem VblankHandlerDispatcher must return with return otherbank (pops 4 bytes from cross-bank call)
           on gameMode gosub VblankModePublisherPrelude VblankModeAuthorPrelude VblankModeTitleScreen VblankModeCharacterSelect VblankModeFallingAnimation VblankModeArenaSelect VblankModeGameMain VblankModeWinnerAnnouncement
           ; Execution continues at ongosub0 label
           goto VblankHandlerDone
-          return thisbank
+          return otherbank
 
 VblankModePublisherPrelude
           rem Publisher Prelude vblank handler
@@ -181,8 +185,9 @@ VblankModeWinnerAnnouncement
 
 VblankHandlerDone
           rem Vblank handler complete
-          rem Returns: Near (return thisbank)
-          return thisbank
+          rem Returns: Far (return otherbank)
+          rem Called via cross-bank call from VblankHandlerTrampoline, so must use return otherbank
+          return otherbank
 
           rem Note: vblank_bB_code constant is defined in Bank16.bas pointing to VblankHandlerTrampoline
           rem The trampoline calls this dispatcher via cross-bank call

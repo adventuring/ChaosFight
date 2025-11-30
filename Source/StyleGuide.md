@@ -20,9 +20,10 @@ maintainability, and clarity.
 5. [File Organization](#file-organization)
 6. [Memory Management](#memory-management)
 7. [Indentation](#indentation)
-8. [Includes](#includes)
-9. [Control Flow](#control-flow)
-10. [Code Review Checklist](#code-review-checklist)
+8. [Blank Lines](#blank-lines)
+9. [Includes](#includes)
+10. [Control Flow](#control-flow)
+11. [Code Review Checklist](#code-review-checklist)
 
 ---
 
@@ -630,6 +631,59 @@ LoadCharacterSprite
               next
           next
 ```
+
+---
+
+## Blank Lines
+
+Blank lines in source files should occur:
+
+- **Never** between a label and remarks describing a routine entered via
+  that label
+- **Never** between a remark and the subsequent line which it describes
+- **Never** between lines in one series of remarks
+- **Always** after a `goto`, `gosub`, `if/then (goto) (label)`, or `return`
+- **Allowed**, but sparsely used, to divide unrelated sections of code
+  (prefer to use a label to clarify)
+
+**Correct:**
+
+```basic
+LoadCharacterSprite
+          rem Load sprite data for a character
+          rem Input: temp1 = character index, temp2 = animation frame
+          dim LCS_characterIndex = temp1
+          if LCS_characterIndex = 255 then goto LoadSpecialSprite
+          rem Normal character loading
+          return
+
+LoadSpecialSprite
+          rem Load special sprite variant
+          dim LSS_spriteType = temp2
+          return
+```
+
+**Incorrect:**
+
+```basic
+LoadCharacterSprite
+
+          rem Load sprite data for a character
+          rem Input: temp1 = character index, temp2 = animation frame
+
+          dim LCS_characterIndex = temp1
+          if LCS_characterIndex = 255 then goto LoadSpecialSprite
+          rem Normal character loading
+          return
+LoadSpecialSprite
+          rem Load special sprite variant
+```
+
+**Rationale**: Blank lines should only appear where they serve a clear
+structural purpose (after control flow statements) or to separate
+unrelated sections. They should never break the visual connection between
+a label and its documentation, or between documentation and the code it
+describes.
 
 ---
 

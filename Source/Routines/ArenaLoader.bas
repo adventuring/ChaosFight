@@ -94,7 +94,7 @@ end
           return otherbank
 
 LoadArenaColorsBW
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 LoadArenaColorsBW
 end

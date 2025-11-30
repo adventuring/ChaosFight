@@ -7,7 +7,7 @@
           rem   can be:
 
 GetPlayerMissileBitFlag
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 GetPlayerMissileBitFlag
 end
@@ -194,7 +194,7 @@ end
           return otherbank
 
 UpdateOneMissile
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 UpdateOneMissile
 end
@@ -600,7 +600,7 @@ MissileCheckNextPlayer
 MissileCollisionReturn
           return otherbank
 HandleMissileHit
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 HandleMissileHit
 end
@@ -749,7 +749,7 @@ KnockbackDone
 
           return otherbank
 HandleMissileBounce
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 HandleMissileBounce
 

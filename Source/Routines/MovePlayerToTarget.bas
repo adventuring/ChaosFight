@@ -30,7 +30,7 @@ end
           return otherbank
 
 NudgePlayerFromPlayfield
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 NudgePlayerFromPlayfield
 end
@@ -46,7 +46,7 @@ end
           return otherbank
 
 MPT_NudgeRight
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 MPT_NudgeRight
 end
@@ -57,7 +57,7 @@ end
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
           return otherbank
 MPT_NudgeLeft
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 MPT_NudgeLeft
 end
@@ -68,7 +68,7 @@ end
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
           return otherbank
 MPT_CheckCollision
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 MPT_CheckCollision
 end

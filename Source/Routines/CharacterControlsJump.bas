@@ -180,7 +180,7 @@ BernieCheckBottomWrap
           return otherbank
 
 CCJ_FreeFlightUp
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 

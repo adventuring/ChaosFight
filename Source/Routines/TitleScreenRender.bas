@@ -58,10 +58,9 @@ end
           if titleParadeActive then gosub DrawParadeCharacter bank14
 
           rem Call titlescreen kernel to render the bitmap
-          rem NOTE: Using explicit address $85a9 due to symbol resolution issue
-          rem titledrawscreen is defined at $9:85a9 in titlescreen.s
+          rem titledrawscreen is defined in Source/TitleScreen/asm/titlescreen.s
           asm
-            jsr $85a9
+            jsr titledrawscreen
 end
 
           return otherbank

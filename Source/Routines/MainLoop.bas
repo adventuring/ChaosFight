@@ -43,56 +43,74 @@ MainLoopModePublisherPrelude
           rem This leaves the 2-byte normal return address from on gameMode gosub on the stack
           rem So we must use return thisbank (RTS) to pop that 2-byte normal address
           gosub PublisherPreludeMain bank14
+
           return thisbank
+
 MainLoopModeAuthorPrelude
           rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
           rem Returns: Near (return thisbank)
           rem Must use return thisbank (RTS) to match the near call
           gosub AuthorPrelude bank14
+
           return thisbank
+
 MainLoopModeTitleScreen
           rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
           rem Returns: Near (return thisbank)
           rem Must use return thisbank (RTS) to match the near call
           gosub TitleScreenMain bank14
+
           return thisbank
+
 MainLoopModeCharacterSelect
           rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
           rem Returns: Near (return thisbank)
           rem Must use return thisbank (RTS) to match the near call
           gosub CharacterSelectInputEntry bank9
+
           return thisbank
+
 MainLoopModeFallingAnimation
           rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
           rem Returns: Near (return thisbank)
           rem Must use return thisbank (RTS) to match the near call
           gosub FallingAnimation1 bank11
+
           return thisbank
+
 MainLoopModeArenaSelect
           rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
           rem Returns: Near (return thisbank)
           rem Must use return thisbank (RTS) to match the near call
           gosub ArenaSelect1 bank14
+
           return thisbank
+
 MainLoopModeGameMain
           rem CRITICAL: Guard against being called when not in game mode
           rem Returns: Near (return thisbank)
           rem This prevents crashes when gameMode is corrupted or incorrectly set
           rem Only call GameMainLoop when actually in game mode (ModeGame = 6)
           if gameMode = ModeGame then goto MainLoopModeGameMainContinue
+
           return thisbank
+
 MainLoopModeGameMainContinue
           rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
           rem Returns: Near (return thisbank)
           rem Must use return thisbank (RTS) to match the near call
           gosub GameMainLoop bank11
+
           return thisbank
+
 MainLoopModeWinnerAnnouncement
           rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
           rem Returns: Near (return thisbank)
           rem Must use return thisbank (RTS) to match the near call
           gosub WinnerAnnouncementLoop bank12
+
           return thisbank
+
 MainLoopContinue
           rem Routes audio updates after per-mode execution
           rem Returns: Far (return otherbank)
@@ -104,7 +122,9 @@ MainLoopContinue
 
           rem Check if music update is needed for game modes < 3 or mode 7
           if gameMode < 3 then gosub PlayMusic bank15
+
           if gameMode = 7 then gosub PlayMusic bank15
+
 SkipMusicUpdate
 MainLoopDrawScreen
           rem Renders the appropriate screen for the current game mode
@@ -118,9 +138,8 @@ MainLoopDrawScreen
           rem Titlescreen graphics and kernel reside in bank9
           if gameMode < 3 then gosub DrawTitleScreen bank9
           rem CRITICAL: drawscreen must be called every frame
-          rem Since MainLoopDrawScreen and drawscreen are both in bank 16, use near jsr
-          rem batariBASIC’s "drawscreen" statement generates cross-bank calls which cause stack imbalance
-          if gameMode >= 3 then asm
-            jsr drawscreen
-end
+          rem After DrawTitleScreen bank9 returns via BS_return, we’re back in bank 16
+          rem MainLoopDrawScreen is in bank 16, and drawscreen is also in bank 16
+          rem Use batariBASIC’s drawscreen statement which handles bank context correctly
+          if gameMode >= 3 then drawscreen
           goto MainLoop bank16

@@ -139,7 +139,8 @@ CDP_MergeStatus
           return otherbank
 
 CDP_DetectGenesis
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from DetectPads, so use return thisbank
 
           asm
 
@@ -149,10 +150,9 @@ CDP_DetectGenesis
 
 end
 
-          rem
-          rem Returns: Far (return otherbank)
-
           rem Genesis Detection Subroutine
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from DetectPads, so use return thisbank
 
           rem Detect Genesis/MegaDrive controllers by grounding paddle
 
@@ -258,12 +258,14 @@ CDP_NoGenesisLeft
 
 
 CDP_NoGenesisRight
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from CDP_DetectGenesis, so use return thisbank
 
-          return otherbank
+          return thisbank
 
 CDP_DetectJoy2bPlus
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from DetectPads, so use return thisbank
 
           asm
 
@@ -273,10 +275,9 @@ CDP_DetectJoy2bPlus
 
 end
 
-          rem
-          rem Returns: Far (return otherbank)
-
           rem Joy2bplus Detection Subroutine
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from DetectPads, so use return thisbank
 
           rem Detect Joy2b+ enhanced controllers by checking paddle port
 
@@ -374,9 +375,10 @@ CDP_NoJoy2Left
 
 
 CDP_NoJoy2Right
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from CDP_DetectJoy2bPlus, so use return thisbank
 
-          return otherbank
+          return thisbank
 
 
 

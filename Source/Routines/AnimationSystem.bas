@@ -32,7 +32,7 @@ end
 AnimationNextPlayer
           next
 UpdatePlayerAnimation
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 UpdatePlayerAnimation
 
@@ -298,7 +298,7 @@ InitializeAnimationSystem
           next
           return otherbank
 HandleAnimationTransition
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 HandleAnimationTransition
 end

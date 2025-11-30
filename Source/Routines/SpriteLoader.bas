@@ -24,7 +24,6 @@ end
           rem        temp2 = animation frame (0-7), temp3 = animation action (0-15)
           rem Output: Sprite loaded via bank9 routines
           rem Inputs are trusted in internal context; skip range validation
-
           rem Handle special sprite cases first
           if currentCharacter = NoCharacter then let temp3 = currentPlayer : let temp4 = SpriteNo : gosub CopyGlyphToPlayer bank16 : return otherbank
 
@@ -36,6 +35,7 @@ end
           let temp4 = currentPlayer
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank9
+
           return otherbank
 
 LoadPlayerSprite
@@ -82,5 +82,5 @@ end
           rem Returns: Far (return otherbank)
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank9
-          return otherbank
 
+          return otherbank

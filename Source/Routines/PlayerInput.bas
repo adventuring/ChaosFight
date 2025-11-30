@@ -531,7 +531,7 @@ HGI_CheckGuardRelease
 HandleUpInputAndEnhancedButton
 
           rem Unified handler for UP input and enhanced button (Button II) handling
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           rem
 
@@ -830,7 +830,7 @@ HUIEB_JumpDone
 HandleStandardHorizontalMovement
 
           rem Unified handler for standard horizontal movement
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           rem
 

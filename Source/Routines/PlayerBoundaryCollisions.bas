@@ -52,7 +52,7 @@ PBC_NextPlayer
           next
           return thisbank
 CheckPlayerBoundary
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
           asm
 CheckPlayerBoundary
 end

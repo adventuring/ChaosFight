@@ -47,6 +47,8 @@ end
           rem Multisprite kernel (contains drawscreen) must be before MainLoop
           rem Note: vblank_bB_code constant will be defined in VblankHandlers.bas after VblankHandlerDispatcher label
           asm
+            ORG Bank16DataEnds
+            RORG Bank16DataEnds
 #include "Source/Common/MultiSpriteKernel.s"
 Bank16AfterMultiSpriteKernel
 end

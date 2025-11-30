@@ -43,7 +43,7 @@
 
 
 UpdatePlayer1HealthBar
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 
@@ -470,7 +470,7 @@ end
 
 
 ConvertToBCD
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 

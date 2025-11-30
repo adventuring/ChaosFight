@@ -308,7 +308,7 @@ IsChaotica
           goto PlayMusic bank15
 
 CalculateMusicVoiceEnvelope
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 
@@ -522,7 +522,7 @@ CMVE_ApplyDecay
           return otherbank
 
 UpdateMusicVoice0
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 
@@ -604,7 +604,7 @@ end
           return thisbank
 
 UpdateMusicVoice1
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 

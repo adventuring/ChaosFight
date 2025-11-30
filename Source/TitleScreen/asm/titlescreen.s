@@ -14,13 +14,11 @@ score_kernel_fade = 0
 titledrawscreen
 title_eat_overscan
  	;bB runs in overscan. Wait for the overscan to run out...
-	        clc
+	clc
           lda INTIM
           bmi title_eat_overscan
-          ; NOTE: Using explicit address $85b2 due to symbol resolution issue
-          ; title_do_vertical_sync is defined at $9:85b2
-          jmp $85b2
-
+          ; Fall through to title_do_vertical_sync (no alignment needed)
+          
 title_do_vertical_sync
           lda #2
           sta WSYNC ;one line with VSYNC

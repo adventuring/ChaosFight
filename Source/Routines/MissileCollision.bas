@@ -485,7 +485,7 @@ end
 
 
 CacheAOERightHitbox
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 
@@ -515,7 +515,7 @@ end
 
 
 CacheAOELeftHitbox
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 
@@ -545,7 +545,7 @@ end
 
 
 CheckPlayersAgainstCachedHitbox
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 

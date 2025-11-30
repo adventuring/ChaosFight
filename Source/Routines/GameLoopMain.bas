@@ -13,7 +13,7 @@
 
 
 ReadEnhancedButtons
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           asm
 

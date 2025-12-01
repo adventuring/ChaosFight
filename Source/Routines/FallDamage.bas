@@ -42,7 +42,7 @@ CheckFallDamage
           rem Fall damage is environmental, so guard does not protect
 
           rem Calculate fall damage
-          rem Base damage = (velocity - safe_velocity) ×
+          rem Base damage = (velocity - safe_velocity) x
           rem   base_damage_multiplier
           rem Base damage multiplier: 2 (so 1 extra velocity = 2 × base
           rem   damage)
@@ -54,10 +54,10 @@ CheckFallDamage
           rem   are, the harder they fall
           rem Heavy characters take more damage for the same impact
           rem   velocity
-          rem Formula: damage_multiplier = weight ÷ 20 (average weight)
-          rem Using integer math: damage = damage × (weight ÷ 20)
-          rem Use lookup table for weight÷20, then multiply by damage
-          rem temp2 = weight ÷ 20 from lookup table
+          rem Formula: damage_multiplier = weight / 20 (average weight)
+          rem Using integer math: damage = damage x (weight / 20)
+          rem Use lookup table for weight/20, then multiply by damage
+          rem temp2 = weight / 20 from lookup table
           rem Apply weight-based damage multiplier (temp2 = 0-5)
           let temp2 = WeightDividedBy20[currentCharacter]
           if temp2 = 0 then temp4 = 0 : goto WeightMultDone
@@ -99,7 +99,7 @@ mult5:      sta temp3
 multdone:
 end
 WeightMultDone
-          rem temp4 = damage × (weight ÷ 20) (weight-based multiplier applied)
+          rem temp4 = damage x (weight / 20) (weight-based multiplier applied)
           rem Returns: Far (return otherbank)
 
           rem Apply damage reduction (NinjishGuy, RoboTito: half damage)
@@ -370,7 +370,7 @@ DivideBy20
           rem Thanks to Omegamatrix and AtariAge forum contributors for
           rem   these routines
           asm
-          ; rem DivideBy20: compute floor(A ÷ 20) using optimized assembly
+          ; rem DivideBy20: compute floor(A / 20) using optimized assembly
           ; rem
           ; rem INPUT: A register = dividend (temp2)
           ; rem

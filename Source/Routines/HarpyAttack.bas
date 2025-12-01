@@ -51,7 +51,7 @@ end
           rem   horizontal, 4 pixels/frame vertical)
           rem Horizontal: 4 pixels/frame in facing direction
           rem Use explicit assignment to dodge unsupported multiply op
-          rem When temp2=0 (left): want 252 (-4), when temp2≠0 (right): want 4
+          rem When temp2=0 (left): want 252 (-4), when temp2≠ 0 (right): want 4
           let temp4 = 252
           if temp2 then temp4 = 4
 HarpySetLeftVelocity

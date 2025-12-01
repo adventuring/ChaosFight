@@ -164,7 +164,7 @@ end
 
           rem 4-Player Game: P1 at 1/5 (32), P3 at 2/5 (64), P4 at 3/5
 
-          rem   (96), P2 at 4/5 (128)
+          rem   (96), P2 at 4 ÷ 5 (128)
 
           rem All players start at second row from top (Y=24, center of
 

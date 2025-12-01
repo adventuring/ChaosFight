@@ -32,7 +32,12 @@ end
           ; CRITICAL FIX: ongosub0 is at same address as MainLoopModePublisherPrelude, causing fall-through
           ; We need to add explicit jump here to prevent fall-through into handlers
           ; This will be placed at ongosub0 by the assembler
-          goto MainLoopContinue
+          ; CRITICAL: Inlined MainLoopContinue to save stack space (was: goto MainLoopContinue)
+          rem Routes audio updates after per-mode execution
+          rem CRITICAL: PlayMusic is now called from Vblank handlers (earlier in frame) to reduce stack depth
+          rem Modes < 3 and mode 7 handle music in VblankMode handlers (VblankHandlers.bas)
+          rem This avoids stack overflow by calling PlayMusic when stack is shallower
+          goto MainLoopDrawScreen
 
 MainLoopModePublisherPrelude
           rem CRITICAL: on gameMode gosub is a NEAR call (pushes normal 2-byte return address)
@@ -110,20 +115,6 @@ MainLoopModeWinnerAnnouncement
           gosub WinnerAnnouncementLoop bank12
 
           return thisbank
-
-MainLoopContinue
-          rem Routes audio updates after per-mode execution
-          rem Returns: Far (return otherbank)
-          rem Inputs: gameMode (global 0-7)
-          rem Outputs: Falls through to MainLoopDrawScreen
-          rem Mutates: None; dispatcher only
-          rem Calls: PlayMusic bank1 (for modes < 3 and mode 7); colocated with MainLoop/MainLoopDrawScreen
-          rem Notes: Modes 3-6 handle audio updates in their own routines
-
-          rem Check if music update is needed for game modes < 3 or mode 7
-          if gameMode < 3 then gosub PlayMusic bank15
-
-          if gameMode = 7 then gosub PlayMusic bank15
 
 SkipMusicUpdate
 MainLoopDrawScreen

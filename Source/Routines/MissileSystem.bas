@@ -312,10 +312,10 @@ GravityDone
           rem Zero velocity, no friction to apply
           if missileVelocityXCalc = 0 then goto FrictionDone
 
-          rem Apply ice-like friction: reduce by CurlingFrictionCoefficient÷256 per frame
-          rem CurlingFrictionCoefficient = 4, so reduction = velocity ÷ 64 (1.56% per frame)
+          rem Apply ice-like friction: reduce by CurlingFrictionCoefficient/256 per frame
+          rem CurlingFrictionCoefficient = 4, so reduction = velocity / 64 (1.56% per frame)
           rem Issue #1188: Consolidated calculation - works for both positive and negative
-          rem Calculate reduction amount (velocity ÷ 64 using 6-bit shift)
+          rem Calculate reduction amount (velocity / 64 using 6-bit shift)
           let velocityCalculation = missileVelocityXCalc
           asm
             lda velocityCalculation
@@ -420,7 +420,7 @@ PlayfieldCollisionDone
           rem Check collision with players
           rem This handles both visible missiles and AOE attacks
           gosub CheckAllMissileCollisions bank8
-          rem Check if hit was found (temp4 != MissileHitNotFound)
+          rem Check if hit was found (temp4 ≠ MissileHitNotFound)
           if temp4 = MissileHitNotFound then goto MissileSystemNoHit
 
           rem Issue #1188: Check if hit player is guarding before handling hit
@@ -672,7 +672,7 @@ HarpyCheckDive
           rem Returns: Far (return otherbank)
           rem Not diving, skip bonus
           if (characterStateFlags_R[temp1] & 4) = 0 then goto DiveCheckDone
-          rem Apply 1.5× damage for diving attacks (temp6 + temp6÷2 =
+          rem Apply 1.5× damage for diving attacks (temp6 + temp6 ÷ 2 =
           rem   1.5 × temp6)
           let temp2 = temp6
           asm
@@ -706,7 +706,7 @@ DiveCheckDone
           let impulseStrength = KnockbackImpulse
           goto WeightBasedKnockbackApply
 WeightBasedKnockbackScale
-          rem Heavy characters: reduced knockback (4 × (100-weight) ÷ 100)
+          rem Heavy characters: reduced knockback (4 × (100-weight) / 100)
           rem Returns: Far (return otherbank)
           let velocityCalculation = 100 - characterWeight
           asm

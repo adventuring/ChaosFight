@@ -106,7 +106,7 @@ AuthorPreludeComplete
           rem Generated from Source/Art/Interworldly.xcf →
           rem   Interworldly.png
           rem SkylineTool creates: Source/Generated/Art.Interworldly.s
-          rem   - BitmapInterworldly: 6 columns × 42 bytes (inverted-y)
+          rem   - BitmapInterworldly: 6 columns x 42 bytes (inverted-y)
           rem - BitmapInterworldlyColors: 84 color values
           rem   (double-height)
           rem The titlescreen kernel handles bitmap display

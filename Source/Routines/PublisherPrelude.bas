@@ -203,7 +203,7 @@ PublisherPreludeComplete
 
           rem SkylineTool creates: Source/Generated/Art.AtariAge.s
 
-          rem   - BitmapAtariAge: 6 columns × 42 bytes (inverted-y)
+          rem   - BitmapAtariAge: 6 columns x 42 bytes (inverted-y)
 
           rem   - BitmapAtariAgeColors: 84 color values (double-height)
 

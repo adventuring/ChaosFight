@@ -30,7 +30,7 @@ HarpyBoostDiveVelocity
           rem
           rem Input: temp6 = base velocity
           rem
-          rem Output: Velocity increased by 50% (velocity + velocity÷2)
+          rem Output: Velocity increased by 50% (velocity + velocity/2)
           rem
           rem Mutates: temp6, temp6 (velocity
           rem values)
@@ -85,7 +85,7 @@ HandleMegaxMissile
           rem when attack completes
           rem
           rem Constraints: Megax missile stays adjacent to player with
-          rem zero velocity. Deactivates when animation state !=
+          rem zero velocity. Deactivates when animation state ≠ 
           rem ActionAttackExecute (14)
 
           rem Get facing direction (bit 0: 0=left, 1=right)
@@ -129,7 +129,7 @@ end
           rem If animation state is not ActionAttackExecute (14), attack
           rem is complete
           rem   deactivate
-          rem ActionAttackExecute = 14, so if animationState != 14,
+          rem ActionAttackExecute = 14, so if animationState ≠ 14,
           if temp6 = 14 then MegaxMissileActive
           rem Attack complete - deactivate missile
           goto DeactivateMissile
@@ -173,7 +173,7 @@ HandleKnightGuyMissile
           rem
           rem Constraints: Knight Guy missile swings out 1-4 pixels
           rem (frames 0-3) then returns (frames 4-7). Deactivates when
-          rem animation state != ActionAttackExecute (14)
+          rem animation state ≠ ActionAttackExecute (14)
 
           rem Get facing direction (bit 0: 0=left, 1=right)
           let temp4 = playerState[temp1] & PlayerStateBitFacing

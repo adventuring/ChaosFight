@@ -97,7 +97,7 @@ end
           let temp2 = ActionHit
           gosub SetPlayerAnimation bank12
 
-          rem Calculate recovery frames (damage ÷ 2, clamped 10-30)
+          rem Calculate recovery frames (damage / 2, clamped 10-30)
           let temp4 = temp1 / 2
           if temp4 < 10 then temp4 = 10
           if temp4 > 30 then temp4 = 30
@@ -227,7 +227,7 @@ end
           rem Check if defender bounding box overlaps hitbox (AABB
           rem   collision detection)
           rem playerX/playerY represent sprite top-left corner, sprite
-          rem   is 16x16 pixels
+          rem   is 16×16 pixels
           rem Defender bounding box: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
           rem Hitbox: [cachedHitboxLeft, cachedHitboxRight] x
@@ -404,7 +404,7 @@ AreaHitbox
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with CalculateAttackHitbox
-          rem Area radius: 24 pixels (1.5× sprite width) centered on attacker
+          rem Area radius: 24 pixels (1.5x sprite width) centered on attacker
           rem Calculate attacker center (sprite midpoint)
           rem Center X = playerX + half sprite width
           let temp2 = playerX[attackerID] + 8

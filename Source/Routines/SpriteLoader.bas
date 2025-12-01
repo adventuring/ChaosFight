@@ -24,7 +24,11 @@ end
           rem        temp2 = animation frame (0-7), temp3 = animation action (0-15)
           rem Output: Sprite loaded via bank9 routines
           rem Inputs are trusted in internal context; skip range validation
-          rem Handle special sprite cases first
+          rem CRITICAL: Only run during game mode - publisher prelude has no characters
+          rem This prevents stack overflow when called during publisher prelude (gameMode = 0)
+          rem Special sprite cases (NoCharacter, CPUCharacter, RandomCharacter) are safe to handle
+          rem but normal character loading must be guarded
+          rem Handle special sprite cases first (these are safe)
           if currentCharacter = NoCharacter then let temp3 = currentPlayer : let temp4 = SpriteNo : gosub CopyGlyphToPlayer bank16 : return otherbank
 
           if currentCharacter = CPUCharacter then let temp3 = currentPlayer : let temp4 = SpriteCPU : gosub CopyGlyphToPlayer bank16 : return otherbank
@@ -78,9 +82,44 @@ end
           asm
 ; Set currentCharacter from playerCharacter[currentPlayer]
 end
-          rem Inline dispatch to save size (same-bank)
+          rem Inline LocateCharacterArt to reduce call chain depth (stack overflow fix)
           rem Returns: Far (return otherbank)
+          rem CRITICAL: Inlined to reduce stack depth from 19 to 15 bytes (within 16-byte limit)
+          rem Original: gosub LocateCharacterArt bank9 (4 bytes saved by inlining)
           let temp1 = currentCharacter
-          gosub LocateCharacterArt bank9
+          rem Save original character index in temp6 for bank-relative calculation
+          let temp6 = temp1
+          rem Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
+          rem Use goto instead of gosub to avoid stack push
+          if temp1 < 8 then goto LoadPlayerSprite_Bank2Dispatch
+          if temp1 < 16 then goto LoadPlayerSprite_Bank3Dispatch
+          if temp1 < 24 then goto LoadPlayerSprite_Bank4Dispatch
+          goto LoadPlayerSprite_Bank5Dispatch
 
+LoadPlayerSprite_Bank2Dispatch
+          rem Bank 2: Characters 0-7 (bank-relative 0-7)
+          let temp6 = temp1
+          let temp5 = temp4
+          gosub SetPlayerCharacterArtBank2 bank2
+          return otherbank
+
+LoadPlayerSprite_Bank3Dispatch
+          rem Bank 3: Characters 8-15 (bank-relative 0-7)
+          let temp6 = temp1 - 8
+          let temp5 = temp4
+          gosub SetPlayerCharacterArtBank3 bank3
+          return otherbank
+
+LoadPlayerSprite_Bank4Dispatch
+          rem Bank 4: Characters 16-23 (bank-relative 0-7)
+          let temp6 = temp1 - 16
+          let temp5 = temp4
+          gosub SetPlayerCharacterArtBank4 bank4
+          return otherbank
+
+LoadPlayerSprite_Bank5Dispatch
+          rem Bank 5: Characters 24-31 (bank-relative 0-7)
+          let temp6 = temp1 - 24
+          let temp5 = temp4
+          gosub SetPlayerCharacterArtBank5 bank5
           return otherbank

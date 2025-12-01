@@ -2,8 +2,10 @@
           ; batariBASIC sets ORG before include, but DASM may need it here too
           ; Define as constants (SET allows redefinition per bank, EQU does not)
 BS_return SET .
-          ; OPTIMIZATION: Don’t save A/X - target routine is returning, so its A/X don’t matter
-          ; Original caller’s A/X are already saved on stack from BS_jsr call
+          ; OPTIMIZATION: Don't save A/X - target routine is returning, so its A/X don't matter
+          ; Original caller's A/X are already saved on stack from BS_jsr call
+          ; CRITICAL: Use zero-page variable instead of pha to avoid stack overflow
+          ; temp7 is used by kernel for bankswitching, but we can use it here since we're doing bank switching
           tsx
           lda 2,x ; get encoded high byte of return address from stack (no A/X save, so offset is 2)
           tay ; save encoded byte for restoration
@@ -11,11 +13,11 @@ BS_return SET .
           lsr
           lsr
           lsr ; bank now in low nibble
-          pha ; save bank number temporarily
+          sta temp7 ; save bank number in zero-page variable (saves 1 byte on stack vs pha)
           tya ; get saved encoded byte
           ora #$F0 ; restore to $Fx format
           sta 2,x ; store restored address back to stack (X still has stack pointer)
-          pla ; restore bank number
+          lda temp7 ; restore bank number from zero-page variable
           tax ; bank number (0-F) now in X, already 0-based from batariBASIC
 BS_jsr SET .
           nop $ffe0,x ; bankswitch_hotspot + X where X is 0-based bank number

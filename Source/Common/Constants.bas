@@ -17,7 +17,7 @@
           const KnockbackDistance=12
           rem Minimum horizontal separation distance (in pixels) between players
           rem If players are this distance or more apart, skip collision separation
-          rem Characters are 8px wide, so 16px provides 2× sprite width separation
+          rem Characters are 8px wide, so 16px provides 2x sprite width separation
           rem Matches hardcoded value used in other collision checks (P1vsP3, P1vsP4, etc.)
           const CollisionSeparationDistance=16
 
@@ -195,9 +195,9 @@
           rem ActionFalling (11) << 4 = 176 (0xB0)
           const ActionFallenDown = 8
           const ActionFallenDownShifted = 128
-          rem ActionFallenDown (8) << 4 = 128 (0x80) - Issue #1178: Bernie post-fall stun
+          rem ActionFallenDown (8) << 4 = 128 (0×80) - Issue #1178: Bernie post-fall stun
           const MaskAnimationRecovering = 144
-          rem ActionRecovering (9) << 4 = 144 (0x90)
+          rem ActionRecovering (9) << 4 = 144 (0×90)
           const MaskAnimationFalling = 176
           rem Alias for ActionFallingShifted (0xB0) for clarity in masks
 
@@ -322,7 +322,7 @@
           rem Divisor applied to velocity on bounce reflect (for minimal
           const CurlingFrictionCoefficient = 4
           rem   velocity reduction)
-          rem Ice-like friction coefficient (Q8 fixed-point: 4/256 =
+          rem Ice-like friction coefficient (Q8 fixed-point: 4 ÷ 256 =
           rem   1.56% per frame reduction)
           rem Used for curling stone near-perfect momentum (very low
           rem   friction, similar to ice)
@@ -443,7 +443,7 @@
 #ifdef TV_NTSC
           const AnimationFrameDelay = 6
           const MovementFrameRate = 60
-          rem 60fps ÷ 10fps = 6 frames
+          rem 60fps / 10fps = 6 frames
           const FramesPerSecond = 60
           rem 60fps movement updates
           const TitleParadeDelayFrames = 240
@@ -459,7 +459,7 @@
 #ifdef TV_PAL
           const AnimationFrameDelay = 5
           const MovementFrameRate = 50
-          rem 50fps ÷ 10fps = 5 frames
+          rem 50fps / 10fps = 5 frames
           const FramesPerSecond = 50
           rem 50fps movement updates
           const TitleParadeDelayFrames = 200

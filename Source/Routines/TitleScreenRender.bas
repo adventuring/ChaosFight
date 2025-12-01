@@ -72,7 +72,7 @@ end
           rem   kernel.
           rem Generated from Source/Art/ChaosFight.xcf → ChaosFight.png
           rem SkylineTool creates: Source/Generated/Art.ChaosFight.s
-          rem   - BitmapChaosFight: 6 columns × 42 bytes (inverted-y)
+          rem   - BitmapChaosFight: 6 columns x 42 bytes (inverted-y)
           rem - BitmapChaosFightColors: 84 color values (double-height)
 
 LoadTitleBitmap

@@ -5,7 +5,7 @@
           rem MUST be in Bank16 - playfields always must be in Bank16
 
           rem Winner Screen Playfield Data
-          rem 16 columns × 8 rows (pfres=8, reflecting mode)
+          rem 16 columns x 8 rows (pfres=8, reflecting mode)
           rem Design: Central high podium for winner, side platforms for
           rem   2nd/3rd
           rem Row 4: Central high platform (winner podium)

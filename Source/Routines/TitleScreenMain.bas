@@ -48,9 +48,30 @@ end
           rem Constraints: Must be colocated with TitleSkipQuad,
           rem TitleScreenComplete
           rem              Called from MainLoop each frame (gameMode 2)
-          rem Update random number generator (use local Randomize routine)
+          rem Update random number generator (inlined to save 2 bytes on stack)
+          rem CRITICAL: Inlined randomize routine (only called once, saves 2 bytes vs gosub)
+          rem
+          asm
+          ; Inlined randomize routine to save stack space
+          lda rand
+          lsr
+          ifconst rand16_W
+          ; CRITICAL: rand16 is in SCRAM - no RMW operations allowed
+          ; Must read from read port, perform operation in register, write to write port
+          lda rand16_R
+          rol
+          sta rand16_W
+          endif
+          bcc TitleScreenRandomizeNoEor
+          eor #$B4
+TitleScreenRandomizeNoEor
+          sta rand
+          ifconst rand16_W
+          ; CRITICAL: rand16 is in SCRAM, must use read port for EOR (read-only)
+          eor rand16_R
+          endif
+end
           rem Handle input - any button press goes to character select
-          gosub randomize
           rem Check standard controllers (Player 1 & 2)
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then TitleScreenComplete

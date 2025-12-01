@@ -195,7 +195,7 @@ GravityRowCalcLoop
           let rowCounter = rowCounter - 1
           if rowCounter > 0 then goto GravityRowCalcLoop
 GravityRowCalcDone
-          rem rowYPosition now contains rowBelow × pfrowheight (Y
+          rem rowYPosition now contains rowBelow x pfrowheight (Y
           rem   position of top of ground row)
           rem Clamp playerY so feet are at top of ground row
           let playerY[temp1] = rowYPosition - PlayerSpriteHeight
@@ -251,7 +251,7 @@ GravityCheckBottom
           if temp6 = CharacterRadishGoblin then goto GravityNextPlayer
 
           rem Bottom row is always ground - clamp to bottom
-          rem Calculate (pfrows - 1) × pfrowheight using repeated
+          rem Calculate (pfrows - 1) x pfrowheight using repeated
           rem   addition
           let rowYPosition = 0
           let rowCounter = pfrows - 1

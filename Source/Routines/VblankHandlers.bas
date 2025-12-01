@@ -34,38 +34,55 @@ end
 VblankModePublisherPrelude
           rem Publisher Prelude vblank handler
           rem Returns: Near (return thisbank)
+          rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
+          rem When called from Vblank, stack is shallower than when called from MainLoop
+          gosub PlayMusic bank15
           rem No heavy logic needed - all handled in overscan
           return thisbank
 
 VblankModeAuthorPrelude
           rem Author Prelude vblank handler
           rem Returns: Near (return thisbank)
+          rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
+          rem When called from Vblank, stack is shallower than when called from MainLoop
+          gosub PlayMusic bank15
           rem No heavy logic needed - all handled in overscan
           return thisbank
 
 VblankModeTitleScreen
           rem Title Screen vblank handler
           rem Returns: Near (return thisbank)
-          rem No heavy logic needed - all handled in overscan
-          return thisbank
+          rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
+          rem When called from Vblank, stack is shallower than when called from MainLoop
+          gosub PlayMusic bank15
+          rem Update character animations for character parade
+          rem CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on stack
+          rem (was: gosub UpdateCharacterAnimations bank12)
+          goto VblankSharedUpdateCharacterAnimations
 
 VblankModeCharacterSelect
           rem Character Select vblank handler
           rem Returns: Near (return thisbank)
-          rem No heavy logic needed - all handled in overscan
-          return thisbank
+          rem Update character animations for character selection
+          rem CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on stack
+          rem (was: gosub UpdateCharacterAnimations bank12)
+          goto VblankSharedUpdateCharacterAnimations
 
 VblankModeFallingAnimation
           rem Falling Animation vblank handler
           rem Returns: Near (return thisbank)
-          rem No heavy logic needed - all handled in overscan
-          return thisbank
+          rem Update character animations for falling animation
+          rem CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on stack
+          rem (was: gosub UpdateCharacterAnimations bank12)
+          goto VblankSharedUpdateCharacterAnimations
 
 VblankModeArenaSelect
           rem Arena Select vblank handler
           rem Returns: Near (return thisbank)
-          rem No heavy logic needed - all handled in overscan
-          return thisbank
+          rem Update character animations for arena selection
+          rem CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on stack
+          rem (was: gosub UpdateCharacterAnimations bank12)
+          goto VblankSharedUpdateCharacterAnimations
 
 VblankModeGameMain
           rem Game Mode vblank handler - handles heavy game logic
@@ -80,7 +97,7 @@ VblankModeGameMainContinue
           rem Input: All player state arrays (from overscan input handling)
           rem Output: All game systems updated for one frame
           rem Mutates: All game state (players, missiles, animations, physics, etc.)
-          rem Called Routines: UpdateCharacterAnimations, UpdatePlayerMovement,
+          rem Called Routines: UpdateCharacterAnimations (inlined), UpdatePlayerMovement,
           rem   PhysicsApplyGravity, ApplyMomentumAndRecovery,
           rem   CheckBoundaryCollisions, CheckPlayfieldCollisionAllDirections,
           rem   CheckAllPlayerCollisions, ProcessAllAttacks,
@@ -92,9 +109,221 @@ VblankModeGameMainContinue
           rem Check if game is paused - skip all movement/physics/animation if so
           if systemFlags & SystemFlagGameStatePaused then return thisbank
 
-          rem Update animation system (10fps character animation) (in Bank 12)
-          gosub UpdateCharacterAnimations bank12
+          rem CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on stack
+          rem Update animation system (10fps character animation) - INLINED from Bank 12
+          rem Fall through to shared inlined UpdateCharacterAnimations code
+          goto VblankSharedUpdateCharacterAnimations
 
+VblankSharedUpdateCharacterAnimations
+          rem CRITICAL: Shared inlined UpdateCharacterAnimations code
+          rem Used by: VblankModeTitleScreen, VblankModeCharacterSelect, VblankModeFallingAnimation,
+          rem   VblankModeArenaSelect, VblankModeGameMain, VblankModeWinnerAnnouncement
+          rem Saves 4 bytes on stack by avoiding cross-bank call to UpdateCharacterAnimations bank12
+          dim VblankUCA_quadtariActive = temp5
+          let VblankUCA_quadtariActive = controllerStatus & SetQuadtariDetected
+          for currentPlayer = 0 to 3
+          if currentPlayer >= 2 && !VblankUCA_quadtariActive then goto VblankAnimationNextPlayer
+          rem Skip if player is eliminated (health = 0)
+          if playerHealth[currentPlayer] = 0 then goto VblankAnimationNextPlayer
+
+          rem Increment this sprite 10fps animation counter (NOT global frame counter)
+          rem SCRAM read-modify-write: animationCounter_R → animationCounter_W
+          let temp4 = animationCounter_R[currentPlayer] + 1
+          let animationCounter_W[currentPlayer] = temp4
+
+          rem Check if time to advance animation frame (every AnimationFrameDelay frames)
+          if temp4 < AnimationFrameDelay then goto VblankDoneAdvanceInlined
+VblankAdvanceFrame
+          let animationCounter_W[currentPlayer] = 0
+          rem Advance to next frame in current animation action
+          rem SCRAM read-modify-write: currentAnimationFrame_R → currentAnimationFrame_W
+          let temp4 = currentAnimationFrame_R[currentPlayer]
+          let temp4 = 1 + temp4
+          let currentAnimationFrame_W[currentPlayer] = temp4
+
+          rem Check if we have completed the current action (8 frames per action)
+          if temp4 >= FramesPerSequence then goto VblankHandleFrame7Transition
+          goto VblankUpdateSprite
+VblankDoneAdvanceInlined
+          goto VblankAnimationNextPlayer
+VblankHandleFrame7Transition
+          rem Frame 7 completed, handle action-specific transitions
+          rem CRITICAL: Inlined HandleAnimationTransition to save 4 bytes on stack
+          rem (was: gosub HandleAnimationTransition bank12)
+          let temp1 = currentAnimationSeq_R[currentPlayer]
+          if ActionAttackRecovery < temp1 then goto VblankTransitionLoopAnimation
+
+          on temp1 goto VblankTransitionLoopAnimation VblankTransitionLoopAnimation VblankTransitionLoopAnimation VblankTransitionLoopAnimation VblankTransitionLoopAnimation VblankTransitionToIdle VblankTransitionHandleFallBack VblankTransitionToFallen VblankTransitionLoopAnimation VblankTransitionToIdle VblankTransitionHandleJump VblankTransitionLoopAnimation VblankTransitionToIdle VblankHandleAttackTransition VblankHandleAttackTransition VblankHandleAttackTransition
+
+VblankTransitionLoopAnimation
+          let currentAnimationFrame_W[currentPlayer] = 0
+          goto VblankUpdateSprite
+
+VblankTransitionToIdle
+          let temp2 = ActionIdle
+          rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
+          goto VblankSetPlayerAnimationInlined
+
+VblankTransitionToFallen
+          let temp2 = ActionFallen
+          rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
+          goto VblankSetPlayerAnimationInlined
+
+VblankTransitionHandleJump
+          rem Stay on frame 7 until Y velocity goes negative
+          if 0 < playerVelocityY[currentPlayer] then VblankTransitionHandleJump_TransitionToFalling
+          let temp2 = ActionJumping
+          rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
+          goto VblankSetPlayerAnimationInlined
+
+VblankTransitionHandleJump_TransitionToFalling
+          rem Falling (positive Y velocity), transition to falling
+          let temp2 = ActionFalling
+          rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
+          goto VblankSetPlayerAnimationInlined
+
+VblankTransitionHandleFallBack
+          rem Check wall collision using pfread
+          rem Convert player X position to playfield column (0-31)
+          let temp5 = playerX[currentPlayer]
+          let temp5 = temp5 - ScreenInsetX
+          let temp5 = temp5 / 4
+          rem Convert player Y position to playfield row (0-7)
+          let temp6 = playerY[currentPlayer]
+          let temp6 = temp6 / 8
+          let temp1 = temp5
+          let temp3 = temp2
+          let temp2 = temp6
+          gosub PlayfieldRead bank16
+          let temp2 = temp3
+          if temp1 then VblankTransitionHandleFallBack_HitWall
+          rem No wall collision, transition to fallen
+          let temp2 = ActionFallen
+          rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
+          goto VblankSetPlayerAnimationInlined
+
+VblankTransitionHandleFallBack_HitWall
+          rem Hit wall, transition to idle
+          let temp2 = ActionIdle
+          rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
+          goto VblankSetPlayerAnimationInlined
+
+VblankSetPlayerAnimationInlined
+          rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
+          rem Set animation action for a player (inlined from AnimationSystem.bas)
+          if temp2 >= AnimationSequenceCount then goto VblankUpdateSprite
+          rem SCRAM write to currentAnimationSeq_W
+          let currentAnimationSeq_W[currentPlayer] = temp2
+          rem Start at first frame
+          let currentAnimationFrame_W[currentPlayer] = 0
+          rem SCRAM write to animationCounter_W
+          rem Reset animation counter
+          let animationCounter_W[currentPlayer] = 0
+          rem Update character sprite immediately using inlined LoadPlayerSprite logic
+          rem Set up parameters for sprite loading (frame=0, action=temp2, player=currentPlayer)
+          let temp2 = 0
+          let temp3 = currentAnimationSeq_R[currentPlayer]
+          let temp4 = currentPlayer
+          rem Fall through to VblankUpdateSprite which has inlined LoadPlayerSprite logic
+
+VblankHandleAttackTransition
+          let temp1 = currentAnimationSeq_R[currentPlayer]
+          if temp1 < ActionAttackWindup then goto VblankUpdateSprite
+          let temp1 = temp1 - ActionAttackWindup
+          on temp1 goto VblankHandleWindupEnd VblankHandleExecuteEnd VblankHandleRecoveryEnd
+          goto VblankUpdateSprite
+
+VblankHandleWindupEnd
+          let temp1 = playerCharacter[currentPlayer]
+          if temp1 >= 32 then goto VblankUpdateSprite
+          if temp1 >= 16 then let temp1 = 0
+          let temp2 = CharacterWindupNextAction[temp1]
+          if temp2 = 255 then goto VblankUpdateSprite
+          rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
+          goto VblankSetPlayerAnimationInlined
+
+VblankHandleExecuteEnd
+          let temp1 = playerCharacter[currentPlayer]
+          if temp1 >= 32 then goto VblankUpdateSprite
+          if temp1 = 6 then goto VblankHarpyExecute
+          if temp1 >= 16 then let temp1 = 0
+          let temp2 = CharacterExecuteNextAction[temp1]
+          if temp2 = 255 then goto VblankUpdateSprite
+          rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
+          goto VblankSetPlayerAnimationInlined
+
+VblankHarpyExecute
+          rem Harpy: Execute → Idle
+          rem Clear dive flag and stop diagonal movement when attack completes
+          let temp1 = currentPlayer
+          rem Clear dive flag (bit 4 in characterStateFlags)
+          let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
+          let characterStateFlags_W[temp1] = C6E_stateFlags
+          rem Stop horizontal velocity (zero X velocity)
+          let playerVelocityX[temp1] = 0
+          let playerVelocityXL[temp1] = 0
+          rem Apply upward wing flap momentum after swoop attack
+          let playerVelocityY[temp1] = 254
+          let playerVelocityYL[temp1] = 0
+          rem Transition to Idle
+          let temp2 = ActionIdle
+          rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
+          goto VblankSetPlayerAnimationInlined
+
+VblankHandleRecoveryEnd
+          rem All characters: Recovery → Idle
+          let temp2 = ActionIdle
+          rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
+          goto VblankSetPlayerAnimationInlined
+
+VblankUpdateSprite
+          rem Update character sprite with current animation frame and action
+          let temp2 = currentAnimationFrame_R[currentPlayer]
+          let temp3 = currentAnimationSeq_R[currentPlayer]
+          let temp4 = currentPlayer
+          rem CRITICAL: Inlined LoadPlayerSprite dispatcher to save 4 bytes on stack
+          let currentCharacter = playerCharacter[currentPlayer]
+          let temp1 = currentCharacter
+          let temp6 = temp1
+          rem Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
+          if temp1 < 8 then goto VblankUpdateSprite_Bank2Dispatch
+          if temp1 < 16 then goto VblankUpdateSprite_Bank3Dispatch
+          if temp1 < 24 then goto VblankUpdateSprite_Bank4Dispatch
+          goto VblankUpdateSprite_Bank5Dispatch
+
+VblankUpdateSprite_Bank2Dispatch
+          let temp6 = temp1
+          let temp5 = temp4
+          gosub SetPlayerCharacterArtBank2 bank2
+          goto VblankAnimationNextPlayer
+
+VblankUpdateSprite_Bank3Dispatch
+          let temp6 = temp1 - 8
+          let temp5 = temp4
+          gosub SetPlayerCharacterArtBank3 bank3
+          goto VblankAnimationNextPlayer
+
+VblankUpdateSprite_Bank4Dispatch
+          let temp6 = temp1 - 16
+          let temp5 = temp4
+          gosub SetPlayerCharacterArtBank4 bank4
+          goto VblankAnimationNextPlayer
+
+VblankUpdateSprite_Bank5Dispatch
+          let temp6 = temp1 - 24
+          let temp5 = temp4
+          gosub SetPlayerCharacterArtBank5 bank5
+          goto VblankAnimationNextPlayer
+
+VblankAnimationNextPlayer
+          next
+          rem End of shared inlined UpdateCharacterAnimations code
+          rem For game mode, continue with additional game logic
+          rem For other modes, return immediately
+          if gameMode = ModeGame then goto VblankModeGameMainAfterAnimations
+          return thisbank
+
+VblankModeGameMainAfterAnimations
           rem Update movement system (full frame rate movement) (in Bank 8)
           gosub UpdatePlayerMovement bank8
 
@@ -180,8 +409,13 @@ VblankGameEndCheckDone
 VblankModeWinnerAnnouncement
           rem Winner Announcement vblank handler
           rem Returns: Near (return thisbank)
-          rem No heavy logic needed - all handled in overscan
-          return thisbank
+          rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
+          rem When called from Vblank, stack is shallower than when called from MainLoop
+          gosub PlayMusic bank15
+          rem Update character animations for winner screen
+          rem CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on stack
+          rem (was: gosub UpdateCharacterAnimations bank12)
+          goto VblankSharedUpdateCharacterAnimations
 
 VblankHandlerDone
           rem Vblank handler complete

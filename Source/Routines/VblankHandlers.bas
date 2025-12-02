@@ -34,27 +34,41 @@ end
 VblankModePublisherPrelude
           rem Publisher Prelude vblank handler
           rem Returns: Near (return thisbank)
+          rem CRITICAL: Guard PlayMusic call - only call if music is initialized
+          rem musicVoice0Pointer = 0 means music not started yet (StartMusic sets it to songPointer)
+          rem On first frame, BeginPublisherPrelude hasn't called StartMusic yet
+          rem Check if music is initialized before calling PlayMusic to prevent crash
+          if musicVoice0Pointer = 0 then goto VblankPublisherPreludeSkipMusic
           rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           rem When called from Vblank, stack is shallower than when called from MainLoop
           gosub PlayMusic bank15
+VblankPublisherPreludeSkipMusic
           rem No heavy logic needed - all handled in overscan
           return thisbank
 
 VblankModeAuthorPrelude
           rem Author Prelude vblank handler
           rem Returns: Near (return thisbank)
+          rem CRITICAL: Guard PlayMusic call - only call if music is initialized
+          rem musicVoice0Pointer = 0 means music not started yet
+          if musicVoice0Pointer = 0 then goto VblankAuthorPreludeSkipMusic
           rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           rem When called from Vblank, stack is shallower than when called from MainLoop
           gosub PlayMusic bank15
+VblankAuthorPreludeSkipMusic
           rem No heavy logic needed - all handled in overscan
           return thisbank
 
 VblankModeTitleScreen
           rem Title Screen vblank handler
           rem Returns: Near (return thisbank)
+          rem CRITICAL: Guard PlayMusic call - only call if music is initialized
+          rem musicVoice0Pointer = 0 means music not started yet
+          if musicVoice0Pointer = 0 then goto VblankTitleScreenSkipMusic
           rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           rem When called from Vblank, stack is shallower than when called from MainLoop
           gosub PlayMusic bank15
+VblankTitleScreenSkipMusic
           rem Update character animations for character parade
           rem CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on stack
           rem (was: gosub UpdateCharacterAnimations bank12)
@@ -409,9 +423,13 @@ VblankGameEndCheckDone
 VblankModeWinnerAnnouncement
           rem Winner Announcement vblank handler
           rem Returns: Near (return thisbank)
+          rem CRITICAL: Guard PlayMusic call - only call if music is initialized
+          rem musicVoice0Pointer = 0 means music not started yet
+          if musicVoice0Pointer = 0 then goto VblankWinnerAnnouncementSkipMusic
           rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           rem When called from Vblank, stack is shallower than when called from MainLoop
           gosub PlayMusic bank15
+VblankWinnerAnnouncementSkipMusic
           rem Update character animations for winner screen
           rem CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on stack
           rem (was: gosub UpdateCharacterAnimations bank12)

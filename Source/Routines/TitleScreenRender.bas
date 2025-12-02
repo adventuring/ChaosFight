@@ -6,59 +6,68 @@ DrawTitleScreen
           asm
 DrawTitleScreen
 end
-          rem Title Screen Rendering
+          rem Title Screen Rendering (Publisher/Author/Title screens)
           rem Returns: Far (return otherbank)
-          rem Render the title screen using a 48×42 bitmap generated from Source/Art/ChaosFight.xcf
-          rem and included as Source/Generated/Art.ChaosFight.s
-          rem BITMAP CONFIGURATION:
-          rem - Size: 48×42 pixels (displayed as 48×84 scanlines in double-height mode)
-          rem   - Uses titlescreen kernel minikernel for display
-          rem - Color-per-line support (84 color values, 42 × 2 for
-          rem   double-height)
-          rem - Bitmap data stored in ROM: Source/Generated/Art.ChaosFight.s
-          rem AVAILABLE VARIABLES:
-          rem   titleParadeActive - Whether to draw parade character
-          rem   COLUBK - Background color
-          rem   COLUPF - Playfield color
-          rem Main draw routine for title screen
-          rem Clear sprites first
+          rem Render screens using 48×42 bitmaps via titlescreen kernel
+          rem CRITICAL: Sets window values based on gameMode to show correct bitmaps
+          rem Publisher (gameMode 0): AtariAge logo + AtariAge text (bmp_48x2_1, bmp_48x2_2)
+          rem Author (gameMode 1): BRP signature (bmp_48x2_4)
+          rem Title (gameMode 2): ChaosFight title (bmp_48x2_3)
           rem
-          rem Input: titleParadeActive (global) = whether to draw parade
+          rem Input: gameMode (global 0-2) = which screen to render
+          rem        titleParadeActive (global) = whether to draw parade character
           rem
-          rem Output: Title screen rendered, sprites cleared
+          rem Output: Screen rendered with correct bitmaps, sprites cleared
           rem
-          rem Mutates: player0x, player0y, player1x, player1y (cleared
-          rem to 0)
+          rem Mutates: player0x, player0y, player1x, player1y (cleared to 0)
+          rem          titlescreenWindow1-4 (set based on gameMode)
           rem
-          rem Called Routines: DrawParadeCharacter (bank14) - if
-          rem titleParadeActive set
+          rem Called Routines: DrawParadeCharacter (bank14) - if titleParadeActive set
           rem
-          rem Constraints: None
+          rem Constraints: Must be called every frame for modes 0-2
           player0x = 0
           player0y = 0
           player1x = 0
           player1y = 0
 
-          rem Load title screen bitmap data
-          rem Inline LoadTitleBitmap (configure titlescreen kernel
-          rem   bitmap)
-          rem Configure titlescreen kernel to show Title (ChaosFight)
-          rem   bitmap
-          rem Uses 48x2_3 minikernel - set window/height via assembly
-          rem   constants
-          rem Bitmap data in: Source/Generated/Art.ChaosFight.s
-          rem Other screens’ minikernels should have window=0 in their
-          rem   image files
-          rem The titlescreen kernel uses fixed labels
-          rem   (bmp_48x2_3_window, etc.)
-          rem These are set as constants in the .s image files
-          rem Title screen: bmp_48x2_3_window = 42, others = 0
+          rem Set window values based on gameMode to show correct bitmaps
+          rem CRITICAL: Window values must be set every frame (titlescreen kernel uses them)
+          rem gameMode 0 = Publisher Prelude, 1 = Author Prelude, 2 = Title Screen
+          if gameMode = 0 then goto DrawPublisherScreen
+          if gameMode = 1 then goto DrawAuthorScreen
+          rem Default: Title screen (gameMode = 2)
+          goto DrawTitleScreenOnly
 
-          rem Draw character parade if active
+DrawPublisherScreen
+          rem Publisher Prelude: Show AtariAge logo + AtariAge text
+          let titlescreenWindow1 = 42  ; AtariAge logo visible
+          let titlescreenWindow2 = 42  ; AtariAgeText visible
+          let titlescreenWindow3 = 0   ; ChaosFight hidden
+          let titlescreenWindow4 = 0   ; BRP hidden
+          goto DrawTitleScreenCommon
+
+DrawAuthorScreen
+          rem Author Prelude: Show BRP signature only
+          let titlescreenWindow1 = 0   ; AtariAge logo hidden
+          let titlescreenWindow2 = 0   ; AtariAgeText hidden
+          let titlescreenWindow3 = 0   ; ChaosFight hidden
+          let titlescreenWindow4 = 42  ; BRP visible
+          goto DrawTitleScreenCommon
+
+DrawTitleScreenOnly
+          rem Title Screen: Show ChaosFight title only
+          let titlescreenWindow1 = 0   ; AtariAge logo hidden
+          let titlescreenWindow2 = 0   ; AtariAgeText hidden
+          let titlescreenWindow3 = 42  ; ChaosFight visible
+          let titlescreenWindow4 = 0   ; BRP hidden
+
+DrawTitleScreenCommon
+          rem Draw character parade if active (Title screen only)
           if titleParadeActive then gosub DrawParadeCharacter bank14
 
-          rem Call titlescreen kernel to render the bitmap
+          rem Call titlescreen kernel to render the bitmap(s)
           rem titledrawscreen is defined in Source/TitleScreen/asm/titlescreen.s
+          rem Kernel uses titlescreenWindow1-4 runtime variables to select bitmaps
           asm
             jsr titledrawscreen
 end

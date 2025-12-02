@@ -874,6 +874,8 @@ HSHM_HandleLeft
 
           if playerCharacter[temp1] = CharacterFrooty then goto HSHM_LeftMomentum
 
+          if playerCharacter[temp1] = CharacterDragonOfStorms then goto HSHM_LeftDirectSubpixel
+
           let temp6 = playerCharacter[temp1]
 
           let temp6 = CharacterMovementSpeed[temp6]
@@ -885,6 +887,27 @@ HSHM_HandleLeft
           let playerVelocityX[temp1] = temp2
 
           let playerVelocityXL[temp1] = 0
+
+          goto HSHM_AfterLeftSet
+
+HSHM_LeftDirectSubpixel
+
+          rem Dragon of Storms: direct velocity with subpixel accuracy
+          rem Returns: Far (return otherbank)
+
+          let temp6 = playerCharacter[temp1]
+
+          let temp6 = CharacterMovementSpeed[temp6]
+
+          let temp2 = 0
+
+          let temp2 = temp2 - temp6
+
+          let playerVelocityX[temp1] = temp2
+
+          let playerVelocityXL[temp1] = 128
+
+          rem Subpixel: 128 = 0.5 pixels for smooth movement
 
           goto HSHM_AfterLeftSet
 
@@ -954,6 +977,8 @@ HSHM_HandleRight
 
           if playerCharacter[temp1] = CharacterFrooty then goto HSHM_RightMomentum
 
+          if playerCharacter[temp1] = CharacterDragonOfStorms then goto HSHM_RightDirectSubpixel
+
           let temp6 = playerCharacter[temp1]
 
           let temp6 = CharacterMovementSpeed[temp6]
@@ -961,6 +986,23 @@ HSHM_HandleRight
           let playerVelocityX[temp1] = temp6
 
           let playerVelocityXL[temp1] = 0
+
+          goto HSHM_AfterRightSet
+
+HSHM_RightDirectSubpixel
+
+          rem Dragon of Storms: direct velocity with subpixel accuracy
+          rem Returns: Far (return otherbank)
+
+          let temp6 = playerCharacter[temp1]
+
+          let temp6 = CharacterMovementSpeed[temp6]
+
+          let playerVelocityX[temp1] = temp6
+
+          let playerVelocityXL[temp1] = 128
+
+          rem Subpixel: 128 = 0.5 pixels for smooth movement
 
           goto HSHM_AfterRightSet
 

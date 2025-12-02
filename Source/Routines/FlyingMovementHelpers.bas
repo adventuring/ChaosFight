@@ -57,9 +57,13 @@ HFCM_LeftMomentum
           let playerVelocityXL[temp1] = 0
           goto HFCM_LeftFacing
 HFCM_LeftDirect
+          rem Dragon of Storms: direct velocity with subpixel accuracy
           let characterMovementSpeed = CharacterMovementSpeed[temp5]
-          let temp2 = playerX[temp1]
-          let playerX[temp1] = temp2 - characterMovementSpeed
+          let temp2 = 0
+          let temp2 = temp2 - characterMovementSpeed
+          let playerVelocityX[temp1] = temp2
+          let playerVelocityXL[temp1] = 128
+          rem Subpixel: 128 = 0.5 pixels for smooth movement
 HFCM_LeftFacing
           if (playerState[temp1] & 8) then return thisbank
           gosub GetPlayerAnimationStateFunction bank13
@@ -125,9 +129,11 @@ HFCM_RightMomentum
           let playerVelocityXL[temp1] = 0
           goto HFCM_RightFacing
 HFCM_RightDirect
+          rem Dragon of Storms: direct velocity with subpixel accuracy
           let characterMovementSpeed = CharacterMovementSpeed[temp5]
-          let temp2 = playerX[temp1]
-          let playerX[temp1] = temp2 + characterMovementSpeed
+          let playerVelocityX[temp1] = characterMovementSpeed
+          let playerVelocityXL[temp1] = 128
+          rem Subpixel: 128 = 0.5 pixels for smooth movement
 HFCM_RightFacing
           if (playerState[temp1] & 8) then return thisbank
           gosub GetPlayerAnimationStateFunction bank13

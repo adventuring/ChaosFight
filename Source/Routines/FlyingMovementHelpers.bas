@@ -62,8 +62,8 @@ HFCM_LeftDirect
           let temp2 = 0
           let temp2 = temp2 - characterMovementSpeed
           let playerVelocityX[temp1] = temp2
-          let playerVelocityXL[temp1] = 128
-          rem Subpixel: 128 = 0.5 pixels for smooth movement
+          let playerVelocityXL[temp1] = 1
+          rem Subpixel: 1 = 1/256 pixel for subpixel accuracy
 HFCM_LeftFacing
           if (playerState[temp1] & 8) then return thisbank
           gosub GetPlayerAnimationStateFunction bank13
@@ -132,8 +132,8 @@ HFCM_RightDirect
           rem Dragon of Storms: direct velocity with subpixel accuracy
           let characterMovementSpeed = CharacterMovementSpeed[temp5]
           let playerVelocityX[temp1] = characterMovementSpeed
-          let playerVelocityXL[temp1] = 128
-          rem Subpixel: 128 = 0.5 pixels for smooth movement
+          let playerVelocityXL[temp1] = 1
+          rem Subpixel: 1 = 1/256 pixel for subpixel accuracy
 HFCM_RightFacing
           if (playerState[temp1] & 8) then return thisbank
           gosub GetPlayerAnimationStateFunction bank13

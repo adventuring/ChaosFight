@@ -905,9 +905,9 @@ HSHM_LeftDirectSubpixel
 
           let playerVelocityX[temp1] = temp2
 
-          let playerVelocityXL[temp1] = 128
+          let playerVelocityXL[temp1] = 1
 
-          rem Subpixel: 128 = 0.5 pixels for smooth movement
+          rem Subpixel: 1 = 1/256 pixel for subpixel accuracy
 
           goto HSHM_AfterLeftSet
 
@@ -1000,9 +1000,9 @@ HSHM_RightDirectSubpixel
 
           let playerVelocityX[temp1] = temp6
 
-          let playerVelocityXL[temp1] = 128
+          let playerVelocityXL[temp1] = 1
 
-          rem Subpixel: 128 = 0.5 pixels for smooth movement
+          rem Subpixel: 1 = 1/256 pixel for subpixel accuracy
 
           goto HSHM_AfterRightSet
 

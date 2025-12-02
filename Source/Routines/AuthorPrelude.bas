@@ -5,7 +5,6 @@
           rem Displays the Interworldly author logo/artwork with music.
           rem This is the second screen shown at cold start.
           rem FLOW:
-          
           rem 1. Display 48×42 bitmap from Source/Art/Interworldly.xcf
           rem   (via titlescreen kernel)
           rem   2. Play Interworldly music
@@ -57,6 +56,7 @@ end
           rem Returns: Far (return otherbank)
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then AuthorPreludeComplete
+
           if joy1fire then AuthorPreludeComplete
 
           rem Check MegaDrive/Joy2b+ controllers if detected
@@ -64,23 +64,23 @@ end
           rem OR flags together and check for nonzero match
           let temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
           if temp1 then if !INPT0{7} then AuthorPreludeComplete
+
           let temp1 = controllerStatus & SetLeftPortJoy2bPlus
           if temp1 then if !INPT1{7} then AuthorPreludeComplete
 
           rem Player 2: Genesis Button C (INPT2) or Joy2b+ Button C/II (INPT2) or Joy2b+ Button III (INPT3)
           let temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
           if temp1 then if !INPT2{7} then AuthorPreludeComplete
+
           let temp1 = controllerStatus & SetRightPortJoy2bPlus
           if temp1 then if !INPT3{7} then AuthorPreludeComplete
 
           rem Music updated in MainLoopContinue (redundant call removed)
 
           rem Auto-advance after music completes + 0.5s
-
           if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete
 
           let preambleTimer = preambleTimer + 1
-
           return otherbank
 
 AuthorPreludeComplete
@@ -98,6 +98,7 @@ AuthorPreludeComplete
           rem Constraints: Must be colocated with AuthorPrelude
           let gameMode = ModeTitle
           gosub ChangeGameMode bank14
+
           return otherbank
           rem
           rem Bitmap Loading
@@ -106,9 +107,8 @@ AuthorPreludeComplete
           rem Generated from Source/Art/Interworldly.xcf →
           rem   Interworldly.png
           rem SkylineTool creates: Source/Generated/Art.Interworldly.s
-          rem   - BitmapInterworldly: 6 columns x 42 bytes (inverted-y)
+          rem   - BitmapInterworldly: 6 columns × 42 bytes (inverted-y)
           rem - BitmapInterworldlyColors: 84 color values
           rem   (double-height)
           rem The titlescreen kernel handles bitmap display
           rem   automatically - no explicit loading needed.
-

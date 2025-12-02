@@ -1,6 +1,5 @@
           rem ChaosFight - Source/Routines/VblankHandlers.bas
           rem Copyright © 2025 Bruce-Robert Pocock.
-
           rem Vblank Handler Dispatcher
           rem Handles mode-specific logic during vblank period
           rem Called from kernel vblank_bB_code hook via JSR
@@ -29,6 +28,7 @@ end
           on gameMode gosub VblankModePublisherPrelude VblankModeAuthorPrelude VblankModeTitleScreen VblankModeCharacterSelect VblankModeFallingAnimation VblankModeArenaSelect VblankModeGameMain VblankModeWinnerAnnouncement
           ; Execution continues at ongosub0 label
           goto VblankHandlerDone
+
           return otherbank
 
 VblankModePublisherPrelude
@@ -39,9 +39,11 @@ VblankModePublisherPrelude
           rem On first frame, BeginPublisherPrelude hasn't called StartMusic yet
           rem Check if music is initialized before calling PlayMusic to prevent crash
           if musicVoice0Pointer = 0 then goto VblankPublisherPreludeSkipMusic
+
           rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           rem When called from Vblank, stack is shallower than when called from MainLoop
           gosub PlayMusic bank15
+
 VblankPublisherPreludeSkipMusic
           rem No heavy logic needed - all handled in overscan
           return thisbank
@@ -52,9 +54,11 @@ VblankModeAuthorPrelude
           rem CRITICAL: Guard PlayMusic call - only call if music is initialized
           rem musicVoice0Pointer = 0 means music not started yet
           if musicVoice0Pointer = 0 then goto VblankAuthorPreludeSkipMusic
+
           rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           rem When called from Vblank, stack is shallower than when called from MainLoop
           gosub PlayMusic bank15
+
 VblankAuthorPreludeSkipMusic
           rem No heavy logic needed - all handled in overscan
           return thisbank
@@ -65,9 +69,11 @@ VblankModeTitleScreen
           rem CRITICAL: Guard PlayMusic call - only call if music is initialized
           rem musicVoice0Pointer = 0 means music not started yet
           if musicVoice0Pointer = 0 then goto VblankTitleScreenSkipMusic
+
           rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           rem When called from Vblank, stack is shallower than when called from MainLoop
           gosub PlayMusic bank15
+
 VblankTitleScreenSkipMusic
           rem Update character animations for character parade
           rem CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on stack
@@ -103,6 +109,7 @@ VblankModeGameMain
           rem Returns: Near (return thisbank)
           rem CRITICAL: Guard against being called when not in game mode
           if gameMode = ModeGame then goto VblankModeGameMainContinue
+
           return thisbank
 
 VblankModeGameMainContinue
@@ -137,6 +144,7 @@ VblankSharedUpdateCharacterAnimations
           let VblankUCA_quadtariActive = controllerStatus & SetQuadtariDetected
           for currentPlayer = 0 to 3
           if currentPlayer >= 2 && !VblankUCA_quadtariActive then goto VblankAnimationNextPlayer
+
           rem Skip if player is eliminated (health = 0)
           if playerHealth[currentPlayer] = 0 then goto VblankAnimationNextPlayer
 
@@ -147,6 +155,7 @@ VblankSharedUpdateCharacterAnimations
 
           rem Check if time to advance animation frame (every AnimationFrameDelay frames)
           if temp4 < AnimationFrameDelay then goto VblankDoneAdvanceInlined
+
 VblankAdvanceFrame
           let animationCounter_W[currentPlayer] = 0
           rem Advance to next frame in current animation action
@@ -157,9 +166,12 @@ VblankAdvanceFrame
 
           rem Check if we have completed the current action (8 frames per action)
           if temp4 >= FramesPerSequence then goto VblankHandleFrame7Transition
+
           goto VblankUpdateSprite
+
 VblankDoneAdvanceInlined
           goto VblankAnimationNextPlayer
+
 VblankHandleFrame7Transition
           rem Frame 7 completed, handle action-specific transitions
           rem CRITICAL: Inlined HandleAnimationTransition to save 4 bytes on stack
@@ -186,6 +198,7 @@ VblankTransitionToFallen
 VblankTransitionHandleJump
           rem Stay on frame 7 until Y velocity goes negative
           if 0 < playerVelocityY[currentPlayer] then VblankTransitionHandleJump_TransitionToFalling
+
           let temp2 = ActionJumping
           rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
           goto VblankSetPlayerAnimationInlined
@@ -209,8 +222,10 @@ VblankTransitionHandleFallBack
           let temp3 = temp2
           let temp2 = temp6
           gosub PlayfieldRead bank16
+
           let temp2 = temp3
           if temp1 then VblankTransitionHandleFallBack_HitWall
+
           rem No wall collision, transition to fallen
           let temp2 = ActionFallen
           rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
@@ -226,6 +241,7 @@ VblankSetPlayerAnimationInlined
           rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
           rem Set animation action for a player (inlined from AnimationSystem.bas)
           if temp2 >= AnimationSequenceCount then goto VblankUpdateSprite
+
           rem SCRAM write to currentAnimationSeq_W
           let currentAnimationSeq_W[currentPlayer] = temp2
           rem Start at first frame
@@ -243,26 +259,33 @@ VblankSetPlayerAnimationInlined
 VblankHandleAttackTransition
           let temp1 = currentAnimationSeq_R[currentPlayer]
           if temp1 < ActionAttackWindup then goto VblankUpdateSprite
+
           let temp1 = temp1 - ActionAttackWindup
           on temp1 goto VblankHandleWindupEnd VblankHandleExecuteEnd VblankHandleRecoveryEnd
+
           goto VblankUpdateSprite
 
 VblankHandleWindupEnd
           let temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then goto VblankUpdateSprite
+
           if temp1 >= 16 then let temp1 = 0
           let temp2 = CharacterWindupNextAction[temp1]
           if temp2 = 255 then goto VblankUpdateSprite
+
           rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
           goto VblankSetPlayerAnimationInlined
 
 VblankHandleExecuteEnd
           let temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then goto VblankUpdateSprite
+
           if temp1 = 6 then goto VblankHarpyExecute
+
           if temp1 >= 16 then let temp1 = 0
           let temp2 = CharacterExecuteNextAction[temp1]
           if temp2 = 255 then goto VblankUpdateSprite
+
           rem CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on stack
           goto VblankSetPlayerAnimationInlined
 
@@ -301,32 +324,39 @@ VblankUpdateSprite
           let temp6 = temp1
           rem Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
           if temp1 < 8 then goto VblankUpdateSprite_Bank2Dispatch
+
           if temp1 < 16 then goto VblankUpdateSprite_Bank3Dispatch
+
           if temp1 < 24 then goto VblankUpdateSprite_Bank4Dispatch
+
           goto VblankUpdateSprite_Bank5Dispatch
 
 VblankUpdateSprite_Bank2Dispatch
           let temp6 = temp1
           let temp5 = temp4
           gosub SetPlayerCharacterArtBank2 bank2
+
           goto VblankAnimationNextPlayer
 
 VblankUpdateSprite_Bank3Dispatch
           let temp6 = temp1 - 8
           let temp5 = temp4
           gosub SetPlayerCharacterArtBank3 bank3
+
           goto VblankAnimationNextPlayer
 
 VblankUpdateSprite_Bank4Dispatch
           let temp6 = temp1 - 16
           let temp5 = temp4
           gosub SetPlayerCharacterArtBank4 bank4
+
           goto VblankAnimationNextPlayer
 
 VblankUpdateSprite_Bank5Dispatch
           let temp6 = temp1 - 24
           let temp5 = temp4
           gosub SetPlayerCharacterArtBank5 bank5
+
           goto VblankAnimationNextPlayer
 
 VblankAnimationNextPlayer
@@ -335,6 +365,7 @@ VblankAnimationNextPlayer
           rem For game mode, continue with additional game logic
           rem For other modes, return immediately
           if gameMode = ModeGame then goto VblankModeGameMainAfterAnimations
+
           return thisbank
 
 VblankModeGameMainAfterAnimations
@@ -353,17 +384,22 @@ VblankModeGameMainAfterAnimations
           rem Optimized: Single loop for playfield collisions (walls, ceilings, ground)
           for currentPlayer = 0 to 3
           if currentPlayer >= 2 then goto VblankCheckQuadtariSkip
+
           goto VblankProcessCollision
 
 VblankCheckQuadtariSkip
           if controllerStatus & SetQuadtariDetected then goto VblankProcessCollision
+
           goto VblankGameMainQuadtariSkip
 
 VblankProcessCollision
           rem Check for Radish Goblin bounce movement (ground and wall bounces)
           gosub CheckPlayfieldCollisionAllDirections bank10
+
           if playerCharacter[currentPlayer] = CharacterRadishGoblin then gosub RadishGoblinCheckGroundBounce bank12
+
           if playerCharacter[currentPlayer] = CharacterRadishGoblin then gosub RadishGoblinCheckWallBounce bank12
+
           next
 
 VblankGameMainQuadtariSkip
@@ -381,6 +417,7 @@ VblankGameMainQuadtariSkip
 
           rem Check if game should end and transition to winner screen
           if systemFlags & SystemFlagGameStateEnding then VblankCheckGameEndTransition
+
           goto VblankGameEndCheckDone
 
 VblankCheckGameEndTransition
@@ -388,6 +425,7 @@ VblankCheckGameEndTransition
           rem Returns: Near (return thisbank)
           rem When timer reaches 0, transition to winner announcement
           if gameEndTimer_R = 0 then VblankTransitionToWinner
+
           rem Decrement game end timer
           let gameEndTimer_W = gameEndTimer_R - 1
           goto VblankGameEndCheckDone
@@ -397,6 +435,7 @@ VblankTransitionToWinner
           rem Returns: Near (return thisbank)
           let gameMode = ModeWinner
           gosub ChangeGameMode bank14
+
           return thisbank
 
 VblankGameEndCheckDone
@@ -426,9 +465,11 @@ VblankModeWinnerAnnouncement
           rem CRITICAL: Guard PlayMusic call - only call if music is initialized
           rem musicVoice0Pointer = 0 means music not started yet
           if musicVoice0Pointer = 0 then goto VblankWinnerAnnouncementSkipMusic
+
           rem CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           rem When called from Vblank, stack is shallower than when called from MainLoop
           gosub PlayMusic bank15
+
 VblankWinnerAnnouncementSkipMusic
           rem Update character animations for winner screen
           rem CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on stack
@@ -440,7 +481,5 @@ VblankHandlerDone
           rem Returns: Far (return otherbank)
           rem Called via cross-bank call from VblankHandlerTrampoline, so must use return otherbank
           return otherbank
-
           rem Note: vblank_bB_code constant is defined in Bank16.bas pointing to VblankHandlerTrampoline
           rem The trampoline calls this dispatcher via cross-bank call
-

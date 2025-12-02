@@ -6,7 +6,6 @@ end
           rem ChaosFight - Source/Routines/BeginAuthorPrelude.bas
           rem Setup routine for Author Prelude. Sets initial state
           rem   only.
-
           rem Setup routine for Author Prelude - sets initial state only
           rem
           rem Input: None (called from ChangeGameMode)
@@ -47,4 +46,3 @@ end
           rem SetupAuthorPrelude uses gosub (same-bank call, pushes 2 bytes), so return thisbank is correct
           rem SetupAuthorPrelude itself returns with return thisbank to handle the cross-bank call to ChangeGameMode
           return thisbank
-

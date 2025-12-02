@@ -58,6 +58,3 @@ end
           gosub SetPublisherWindowValues bank14
 
           return thisbank
-
-
-

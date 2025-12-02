@@ -34,7 +34,9 @@ end
           rem CRITICAL: Window values must be set every frame (titlescreen kernel uses them)
           rem gameMode 0 = Publisher Prelude, 1 = Author Prelude, 2 = Title Screen
           if gameMode = 0 then goto DrawPublisherScreen
+
           if gameMode = 1 then goto DrawAuthorScreen
+
           rem Default: Title screen (gameMode = 2)
           goto DrawTitleScreenOnly
 
@@ -71,17 +73,14 @@ DrawTitleScreenCommon
           asm
             jsr titledrawscreen
 end
-
           return otherbank
-
-
           rem
           rem Load Title Bitmap
           rem Loads the ChaosFight title bitmap data for titlescreen
           rem   kernel.
           rem Generated from Source/Art/ChaosFight.xcf → ChaosFight.png
           rem SkylineTool creates: Source/Generated/Art.ChaosFight.s
-          rem   - BitmapChaosFight: 6 columns x 42 bytes (inverted-y)
+          rem   - BitmapChaosFight: 6 columns × 42 bytes (inverted-y)
           rem - BitmapChaosFightColors: 84 color values (double-height)
 
 LoadTitleBitmap
@@ -95,24 +94,6 @@ end
           rem   bitmap
           rem Uses 48x2_3 minikernel - set window/height via assembly
           rem   constants
-          rem Other screens’ minikernels should have window=0 in their
+          rem Other screens' minikernels should have window=0 in their
               rem Bitmap data in: Source/Generated/Art.ChaosFight.s
           rem   image files
-          rem
-          rem Input: None
-          rem
-          rem Output: Title bitmap configured (via compile-time
-          rem constants)
-          rem
-          rem Mutates: None (compile-time configuration only)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Bitmap configuration is compile-time only, no
-          rem runtime changes
-          rem The titlescreen kernel uses fixed labels
-          rem   (bmp_48x2_3_window, etc.)
-          rem Title screen: bmp_48x2_3_window = 42, others = 0
-              rem These are set as constants in the .s image files
-
-

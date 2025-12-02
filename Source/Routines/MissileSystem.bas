@@ -7,7 +7,7 @@
           rem   can be:
 
 GetPlayerMissileBitFlag
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 GetPlayerMissileBitFlag
 end
@@ -194,12 +194,12 @@ end
           return otherbank
 
 UpdateOneMissile
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 UpdateOneMissile
 end
           rem
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           rem Update One Missile
           rem Updates a single player missile.
           rem Handles movement, gravity, collisions, and lifetime.
@@ -259,7 +259,7 @@ end
           gosub GetPlayerMissileBitFlag
           let temp4 = missileActive & temp6
           rem Not active, skip
-          if temp4  = 0 then return otherbank
+          if temp4  = 0 then return thisbank
 
           rem Preserve player index since GetMissileFlags uses temp1
           rem Use temp6 temporarily to save player index (temp6 is used
@@ -411,7 +411,7 @@ BoundsCheckDone
           gosub MissileCollPF bank8
           rem Issue #1188: Collision detected - check if should bounce or deactivate
           if !temp4 then goto PlayfieldCollisionDone
-          if temp5 & MissileFlagBounce then gosub HandleMissileBounce : return otherbank
+          if temp5 & MissileFlagBounce then gosub HandleMissileBounce : return thisbank
           goto DeactivateMissile
 PlayfieldCollisionDone
           rem No bounce - deactivate on background hit
@@ -600,7 +600,7 @@ MissileCheckNextPlayer
 MissileCollisionReturn
           return otherbank
 HandleMissileHit
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 HandleMissileHit
 end
@@ -749,7 +749,7 @@ KnockbackDone
 
           return otherbank
 HandleMissileBounce
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 HandleMissileBounce
 

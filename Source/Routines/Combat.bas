@@ -2,7 +2,7 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem COMBAT SYSTEM - Generic Subroutines Using Player Arrays
 GetWeightBasedDamage
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 GetWeightBasedDamage
 end
@@ -23,11 +23,14 @@ end
           rem Weight tiers: <=15 = 12 damage, <=25 = 18 damage, >25 = 22 damage
           let temp3 = CharacterWeights[temp1]
           if temp3 <= 15 then temp2 = 12 : return otherbank
+
           if temp3 <= 25 then temp2 = 18 : return otherbank
+
           let temp2 = 22
           return otherbank
+
 ApplyDamage
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 ApplyDamage
 
@@ -71,22 +74,22 @@ end
           rem Issue #1149: Use shared helper instead of duplicated logic
           let temp1 = playerCharacter[attackerID]
           gosub GetWeightBasedDamage
+
           let temp4 = temp2
           let temp1 = playerCharacter[defenderID]
           rem Calculate damage (considering defender state)
           gosub GetWeightBasedDamage
+
           rem Minimum damage
           let temp1 = temp4 - temp2
-          if temp1 < 1 then temp1 = 1
+          if temp1 < 1 then let temp1 = 1
 
           rem Check if player will die from this damage
           let temp2 = playerHealth[defenderID]
           rem Will die
           let temp3 = 0
-          if temp2 < temp1 then temp3 = 1
-
+          if temp2 < temp1 then let temp3 = 1
           rem If player will die, instantly vanish (eliminate)
-
           if temp3 then goto PlayerDies
 
           rem Player survives - apply damage and enter hurt state
@@ -99,15 +102,15 @@ end
 
           rem Calculate recovery frames (damage / 2, clamped 10-30)
           let temp4 = temp1 / 2
-          if temp4 < 10 then temp4 = 10
-          if temp4 > 30 then temp4 = 30
+          if temp4 < 10 then let temp4 = 10
+          if temp4 > 30 then let temp4 = 30
           let playerRecoveryFrames[defenderID] = temp4
 
           rem Set playerState bit 3 (recovery flag) when recovery frames are set
           let playerState[defenderID] = playerState[defenderID] | 8
 
           rem Issue #1180: Ursulo uppercut knock-up scaling with target weight
-          rem Ursulo’s punches toss opponents upward with launch height proportional to target weight
+          rem Ursulo's punches toss opponents upward with launch height proportional to target weight
           rem Lighter characters travel higher than heavyweights
           let temp1 = playerCharacter[attackerID]
           if temp1 = CharacterUrsulo then goto ApplyUrsuloKnockUp
@@ -157,7 +160,6 @@ ApplyUrsuloKnockUp
           rem Sound effect (tail call)
           goto PlayDamageSound
 
-
 PlayerDies
           rem Player dies - instantly vanish
           rem Returns: Far (return otherbank)
@@ -189,9 +191,8 @@ PlayerDies
           rem tail call
           goto PlayDamageSound
 
-
 CheckAttackHit
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 CheckAttackHit
 end
@@ -239,16 +240,20 @@ end
           rem hitboxBottom
           rem Defender right edge <= hitbox left edge (no overlap)
           if playerX[defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R then NoHit
+
           rem Defender left edge >= hitbox right edge (no overlap)
           if playerX[defenderID] >= cachedHitboxRight_R then NoHit
+
           rem Defender bottom edge <= hitbox top edge (no overlap)
           if playerY[defenderID] + PlayerSpriteHeight <= cachedHitboxTop_R then NoHit
+
           rem Defender top edge >= hitbox bottom edge (no overlap)
           if playerY[defenderID] >= cachedHitboxBottom_R then NoHit
 
           rem All bounds checked - defender is inside hitbox
           let hit = 1
           return otherbank
+
 NoHit
           rem Defender is outside hitbox bounds
           rem Returns: Far (return otherbank)
@@ -263,8 +268,9 @@ NoHit
           rem Constraints: Must be colocated with CheckAttackHit
           let hit = 0
           return otherbank
+
 CalculateAttackHitbox
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 CalculateAttackHitbox
 
@@ -289,7 +295,9 @@ end
           rem in on statement
           let temp1 = playerAttackType_R[attackerID]
           if temp1 = 0 then goto MeleeHitbox
+
           if temp1 = 1 then goto ProjectileHitbox
+
           if temp1 = 2 then goto AreaHitbox
 
 MeleeHitbox
@@ -313,6 +321,7 @@ MeleeHitbox
           rem Extract facing from playerState bit 3: 1=right (goto FacingRight), 0=left (goto FacingLeft)
           let temp2 = playerState[attackerID] & PlayerStateBitFacing
           if temp2 then goto FacingRight
+
           goto FacingLeft
 
 FacingRight
@@ -339,6 +348,7 @@ FacingRight
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
           return otherbank
+
 FacingLeft
           rem Hitbox extends 16 pixels forward from sprite left edge
           rem Returns: Far (return otherbank)
@@ -363,6 +373,7 @@ FacingLeft
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
           return otherbank
+
 ProjectileHitbox
           rem Projectile attacks handled by missile collision system
           rem Returns: Far (return otherbank)
@@ -387,6 +398,7 @@ ProjectileHitbox
           let cachedHitboxTop_W = 255
           let cachedHitboxBottom_W = 0
           return otherbank
+
 AreaHitbox
           rem Area hitbox covers radius around attacker center
           rem Returns: Far (return otherbank)
@@ -404,7 +416,7 @@ AreaHitbox
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with CalculateAttackHitbox
-          rem Area radius: 24 pixels (1.5x sprite width) centered on attacker
+          rem Area radius: 24 pixels (1.5× sprite width) centered on attacker
           rem Calculate attacker center (sprite midpoint)
           rem Center X = playerX + half sprite width
           let temp2 = playerX[attackerID] + 8
@@ -419,8 +431,9 @@ AreaHitbox
           rem Bottom edge: center + radius
           let cachedHitboxBottom_W = temp2 + 24
           return otherbank
+
 ProcessAttackerAttacks
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 ProcessAttackerAttacks
 end
@@ -456,9 +469,11 @@ end
           let temp1 = playerAttackType_R[attackerID]
           rem Cache hitbox for this attacker (calculated once, used for
           if temp1 = RangedAttack then return otherbank
+
           rem all
           rem   defenders)
           gosub CalculateAttackHitbox
+
           rem Hitbox values are already written into cachedHitbox*_W via aliasing
 
           rem Attack each defender
@@ -472,12 +487,14 @@ end
 
           rem Check if attack hits (uses cached hitbox)
           gosub CheckAttackHit
+
           if hit then gosub ApplyDamage
 
 NextDefender
           rem Returns: Far (return otherbank)
           next
-          return otherbank        
+          return otherbank
+
 ProcessAllAttacks
           rem Returns: Far (return otherbank)
           asm
@@ -509,6 +526,7 @@ end
           rem Issue #1147: Only evaluate live attacks (windup-through-recovery window)
           let temp1 = playerState[attackerID] & MaskPlayerStateAnimation
           if temp1 < ActionAttackWindupShifted then NextAttacker
+
           if temp1 > ActionAttackRecoveryShifted then NextAttacker
 
           gosub ProcessAttackerAttacks
@@ -532,6 +550,7 @@ CombatShowDamageIndicator
           rem Damage indicator system (handled inline)
           rem Returns: Far (return otherbank)
           return otherbank
+
 PlayDamageSound
           rem Damage sound effect handler
           rem Returns: Far (return otherbank)
@@ -558,4 +577,5 @@ PlayDamageSound
           rem Constraints: None
           let temp1 = SoundAttackHit
           gosub PlaySoundEffect bank15
+
           return otherbank

@@ -308,7 +308,7 @@ IsChaotica
           goto PlayMusic bank15
 
 CalculateMusicVoiceEnvelope
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           asm
 
@@ -319,7 +319,7 @@ CalculateMusicVoiceEnvelope
 end
 
           rem Helper: End of PlayMusic (label only)
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           rem
 
@@ -380,7 +380,7 @@ end
 CMVE_GetVoice0Vars
 
           rem Voice 0
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           let temp2 = musicVoice0TotalFrames_R
 
@@ -391,7 +391,7 @@ CMVE_GetVoice0Vars
 CMVE_CalcElapsed
 
           rem Calculate frames elapsed = TotalFrames - FrameCounter
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           let temp4 = temp2 - temp3
 
@@ -405,12 +405,12 @@ CMVE_CalcElapsed
 
           rem Sustain phase - use target AUDV (already set)
 
-          return otherbank
+          return thisbank
 
 CMVE_ApplyAttack
 
           rem Helper: Applies attack envelope (ramps up volume)
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return thisbank)
 
           rem
 
@@ -458,16 +458,16 @@ CMVE_ApplyAttack
 
           if temp6 > 15 then temp6 = 15
 
-          if temp1 = 0 then let AUDV0 = temp6 : return otherbank
+          if temp1 = 0 then let AUDV0 = temp6 : return thisbank
 
           let AUDV1 = temp6
 
-          return otherbank
+          return thisbank
 
 CMVE_ApplyDecay
 
           rem Helper: Applies decay envelope (ramps down volume)
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           rem
 
@@ -515,11 +515,11 @@ CMVE_ApplyDecay
 
           if temp6 > 15 then temp6 = 15
 
-          if temp1 = 0 then let AUDV0 = temp6 : return otherbank
+          if temp1 = 0 then let AUDV0 = temp6 : return thisbank
 
           let AUDV1 = temp6
 
-          return otherbank
+          return thisbank
 
 UpdateMusicVoice0
           rem Returns: Far (return thisbank)

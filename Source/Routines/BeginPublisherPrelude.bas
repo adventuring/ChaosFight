@@ -47,9 +47,11 @@ end
           rem Background: black (COLUBK starts black, no need to set)
 
           rem Start AtariToday music
-          rem BeginPublisherPrelude is called same-bank from SetupPublisherPrelude (both in bank14)
-          rem SetupPublisherPrelude uses gosub (same-bank call, pushes 2 bytes), so return thisbank is correct
-          rem SetupPublisherPrelude itself returns with return otherbank to handle the cross-bank call to ChangeGameMode
+          rem BeginPublisherPrelude calls SetPublisherWindowValues bank14 (cross-bank via BS_jsr)
+          rem SetPublisherWindowValues returns with return otherbank (jmp BS_return)
+          rem This means BeginPublisherPrelude MUST also return with return otherbank
+          rem Even though BeginPublisherPrelude is called same-bank from SetupPublisherPrelude,
+          rem the cross-bank call to SetPublisherWindowValues forces the entire chain to use far returns
           let temp1 = MusicAtariToday
           gosub StartMusic bank15
 

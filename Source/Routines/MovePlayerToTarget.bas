@@ -30,12 +30,12 @@ end
           return otherbank
 
 NudgePlayerFromPlayfield
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 NudgePlayerFromPlayfield
 end
           rem Nudge player away from playfield collision
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank from MovePlayerToTarget
           rem Input: temp1 = player index
           rem Output: Player position adjusted to avoid playfield
           let originalPlayerX_W = playerX[temp1]
@@ -44,10 +44,10 @@ end
 
           gosub MPT_NudgeLeft
 
-          return otherbank
+          return thisbank
 
 MPT_NudgeRight
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 MPT_NudgeRight
 end
@@ -55,10 +55,10 @@ end
           gosub MPT_CheckCollision
 
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_R
-          return otherbank
+          return thisbank
 
 MPT_NudgeLeft
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 MPT_NudgeLeft
 end
@@ -66,15 +66,15 @@ end
           gosub MPT_CheckCollision
 
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_R
-          return otherbank
+          return thisbank
 
 MPT_CheckCollision
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 MPT_CheckCollision
 end
           rem Check collision at current position
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank from MPT_NudgeRight/Left
           rem Input: temp1 = player index, playerX[temp1] = test position, originalPlayerY_R = Y
           rem Output: temp6 = 1 if collision, 0 if clear
           let temp2 = playerX[temp1] - ScreenInsetX
@@ -92,6 +92,6 @@ end
           let temp1 = temp4
           let temp3 = temp3 + 16
           let temp5 = temp3 / 16
-          rem MovePlayerToTarget is called cross-bank, so all return otherbank paths must use return otherbank
+          rem MPT_CheckCollision is called same-bank, so use return thisbank
           if temp5 < pfrows then let temp4 = temp1 : let temp1 = temp2 : let temp2 = temp5 : gosub PlayfieldRead bank16 : if temp1 then let temp6 = 1 : let temp1 = temp4
-          return otherbank
+          return thisbank

@@ -2,13 +2,13 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 DispatchCharacterJump
-          rem Returns: Far (return otherbank) - but uses goto internally, so tail calls don’t add stack
+          rem Returns: Near (return thisbank)
           asm
 DispatchCharacterJump
 
 end
           rem Dispatch to character-specific jump function
-          rem Returns: Far (return otherbank) - but uses goto internally, so tail calls don’t add stack
+          rem Returns: Near (return thisbank)
           rem
           rem Input: temp1 = player index (0-3), temp4 = character index (0-31)
           rem
@@ -29,20 +29,26 @@ end
           if temp4 = CharacterFrooty then goto DCJ_FrootyJump
           if temp4 = CharacterRoboTito then goto DCJ_RoboTitoJump
 DCJ_StandardJump
-          rem Tail call: goto instead of gosub to save 2 bytes on stack
-          goto StandardJump bank12
+          rem CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
+          gosub StandardJump bank12
+          return thisbank
 DCJ_BernieJump
-          rem Tail call: goto instead of gosub to save 2 bytes on stack
-          goto BernieJump bank12
+          rem CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
+          gosub BernieJump bank12
+          return thisbank
 DCJ_DragonJump
-          rem Tail call: goto instead of gosub to save 2 bytes on stack
-          goto DragonOfStormsJump bank12
+          rem CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
+          gosub DragonOfStormsJump bank12
+          return thisbank
 DCJ_HarpyJump
-          rem Tail call: goto instead of gosub to save 2 bytes on stack
-          goto HarpyJump bank12
+          rem CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
+          gosub HarpyJump bank12
+          return thisbank
 DCJ_FrootyJump
-          rem Tail call: goto instead of gosub to save 2 bytes on stack
-          goto FrootyJump bank12
+          rem CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
+          gosub FrootyJump bank12
+          return thisbank
 DCJ_RoboTitoJump
-          rem Tail call: goto instead of gosub to save 2 bytes on stack
-          goto RoboTitoJump
+          rem CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
+          gosub RoboTitoJump
+          return thisbank

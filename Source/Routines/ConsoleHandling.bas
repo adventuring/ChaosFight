@@ -117,7 +117,8 @@ Player2PauseDone
 
 DonePlayer2Pause
           rem Color/B&W switch - re-detect controllers when toggled
-          gosub CheckColorBWToggle
+          rem CRITICAL: Use bank13 even though same-bank to match return otherbank
+          gosub CheckColorBWToggle bank13
 
 #ifndef TV_SECAM
           rem 7800 Pause button - toggle Color/B&W mode (not in SECAM)

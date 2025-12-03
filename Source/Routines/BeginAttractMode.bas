@@ -32,10 +32,10 @@ end
           rem              loop)
           rem Initialize Attract Mode
           rem Background: black (COLUBK starts black, no need to set)
-          rem BeginAttractMode is called same-bank from SetupAttract (both in bank14)
-          rem SetupAttract uses gosub (same-bank call, pushes 2 bytes), so return thisbank is correct
-          rem SetupAttract itself returns with return thisbank to handle the cross-bank call to ChangeGameMode
-          return thisbank
+          rem BeginAttractMode is called cross-bank from SetupAttract
+          rem (gosub BeginAttractMode bank14 forces BS_jsr even though same bank)
+          rem so it must return with return otherbank to match
+          return otherbank
           rem Reset title screen timers for next cycle
           rem titleParadeTimer will be reset when we return to title
           rem   screen

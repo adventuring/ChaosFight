@@ -107,7 +107,7 @@ end
 
 
 CheckVisibleMissileCollision
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           asm
 
@@ -205,7 +205,7 @@ end
 
 
 CheckAOECollision
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           asm
 
@@ -341,7 +341,7 @@ end
           
 
 CheckAOEDirection_Right
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           asm
 
@@ -350,7 +350,7 @@ CheckAOEDirection_Right
 end
 
           rem
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           rem Check Aoe Direction - Right
 
@@ -413,7 +413,7 @@ end
 
 
 CheckAOEDirection_Left
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           asm
 
@@ -422,7 +422,7 @@ CheckAOEDirection_Left
 end
 
           rem
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           rem Check Aoe Direction - Left
 
@@ -485,14 +485,14 @@ end
 
 
 CacheAOERightHitbox
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           asm
 
 CacheAOERightHitbox
 
 end
           rem Cache right-facing AOE bounds for current attacker
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           rem Input: temp1 = attacker index, characterIndex = character ID
 
@@ -508,19 +508,19 @@ end
 
           let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
 
-          return otherbank
+          return thisbank
 
 
 
 CacheAOELeftHitbox
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           asm
 
 CacheAOELeftHitbox
 
 end
           rem Cache left-facing AOE bounds for current attacker
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           rem Input: temp1 = attacker index, characterIndex = character ID
 
@@ -536,12 +536,12 @@ end
 
           let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
 
-          return otherbank
+          return thisbank
 
 
 
 CheckPlayersAgainstCachedHitbox
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           asm
 
 CheckPlayersAgainstCachedHitbox
@@ -549,7 +549,7 @@ CheckPlayersAgainstCachedHitbox
 end
 
           rem Shared defender scan for missile/AOE collisions
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
 
           rem Input: temp1 = attacker index, cachedHitbox* = attacker bounds
 
@@ -573,7 +573,7 @@ end
 
           let temp4 = temp2
 
-          return otherbank
+          return thisbank
 
 CPB_NextPlayer
 

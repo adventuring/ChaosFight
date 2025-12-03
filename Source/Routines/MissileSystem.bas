@@ -7,12 +7,12 @@
           rem   can be:
 
 GetPlayerMissileBitFlag
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 GetPlayerMissileBitFlag
 end
           rem   - Ranged projectile (bullet, arrow, magic spell)
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem   - Mêlée attack visual (sword, fist, kick sprite)
           rem MISSILE VARIABLES (from Variables.bas):
           rem   missileX[0-3] (a-d) - X positions
@@ -43,7 +43,7 @@ end
           rem Calculate bit flag using O(1) array lookup:
           rem BitMask[playerIndex] (1, 2, 4, 8)
           let temp6 = BitMask[temp1]
-          return otherbank
+          return thisbank
 
 SpawnMissile
           rem Returns: Far (return otherbank)
@@ -600,12 +600,12 @@ MissileCheckNextPlayer
 MissileCollisionReturn
           return otherbank
 HandleMissileHit
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 HandleMissileHit
 end
           rem
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem Handle Missile Hit
           rem Processes a missile hitting a player.
           rem Applies damage, knockback, and visual/audio feedback.
@@ -747,15 +747,15 @@ KnockbackDone
 
           rem Spawn damage indicator visual (handled inline)
 
-          return otherbank
+          return thisbank
 HandleMissileBounce
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 HandleMissileBounce
 
 end
           rem
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem Handle Missile Bounce
           rem Handles wall bounce for missiles with bounce flag set.
           rem
@@ -814,7 +814,7 @@ BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc
 
           rem Continue bouncing (do not deactivate)
-          return otherbank
+          return thisbank
 DeactivateMissile
           rem
           rem Returns: Far (return otherbank)

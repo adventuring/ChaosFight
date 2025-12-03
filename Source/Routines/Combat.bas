@@ -2,12 +2,12 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem COMBAT SYSTEM - Generic Subroutines Using Player Arrays
 GetWeightBasedDamage
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           asm
 GetWeightBasedDamage
 end
           rem Calculate damage value based on character weight
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem Issue #1149: Deduplicated weight-tier calculation
           rem
           rem Input: temp1 = character index (0-31)
@@ -15,7 +15,7 @@ end
           rem
           rem Output: temp2 = damage value (12, 18, or 22)
           rem
-          rem Mutates: temp3 (used for weight lookup), temp2 (return otherbank value)
+          rem Mutates: temp3 (used for weight lookup), temp2 (return thisbank value)
           rem
           rem Called Routines: None
           rem
@@ -30,13 +30,13 @@ end
           return otherbank
 
 ApplyDamage
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           asm
 ApplyDamage
 
 end
           rem Apply damage from attacker to defender
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem
           rem Process:
           rem   1. Player begins hurt animation (ActionHit = 5)
@@ -120,7 +120,7 @@ end
 
 ApplyUrsuloKnockUp
           rem Issue #1180: Apply vertical knockback based on target weight
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem Lighter characters get launched higher (inverse relationship: lower weight = higher launch)
           rem
           rem Input: defenderID (global) = defender player index
@@ -162,7 +162,7 @@ ApplyUrsuloKnockUp
 
 PlayerDies
           rem Player dies - instantly vanish
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem
           rem Input: defenderID (from ApplyDamage) = defender player
           rem index
@@ -192,7 +192,7 @@ PlayerDies
           goto PlayDamageSound
 
 CheckAttackHit
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           asm
 CheckAttackHit
 end
@@ -200,7 +200,7 @@ end
           rem Inputs: attackerID, defenderID (must be set before
           rem   calling)
           rem
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem Uses cached hitbox values from ProcessAttackerAttacks
           rem   (cached once per attacker, reused for all defenders)
           rem Check if attack hits defender using AABB collision
@@ -252,11 +252,11 @@ end
 
           rem All bounds checked - defender is inside hitbox
           let hit = 1
-          return otherbank
+          return thisbank
 
 NoHit
           rem Defender is outside hitbox bounds
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem
           rem Input: None (called from CheckAttackHit)
           rem
@@ -267,16 +267,16 @@ NoHit
           rem Called Routines: None
           rem Constraints: Must be colocated with CheckAttackHit
           let hit = 0
-          return otherbank
+          return thisbank
 
 CalculateAttackHitbox
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           asm
 CalculateAttackHitbox
 
 end
           rem Compute attack hitbox bounds from attacker position and facing.
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem Inputs: attackerID (global), playerX[], playerY[], playerAttackType_R[],
           rem        playerState[] (for facing direction), PlayerSpriteWidth, PlayerSpriteHeight
           rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W,
@@ -302,7 +302,7 @@ end
 
 MeleeHitbox
           rem Mêlée hitbox extends PlayerSpriteWidth pixels in facing
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem direction
           rem
           rem Input: attackerID, playerState[] (from
@@ -326,7 +326,7 @@ MeleeHitbox
 
 FacingRight
           rem Hitbox extends 16 pixels forward from sprite right edge
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem
           rem Input: attackerID, playerX[], playerY[] (from
           rem MeleeHitbox)
@@ -347,11 +347,11 @@ FacingRight
           let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth + PlayerSpriteWidth
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
-          return otherbank
+          return thisbank
 
 FacingLeft
           rem Hitbox extends 16 pixels forward from sprite left edge
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem
           rem Input: attackerID, playerX[], playerY[] (from
           rem MeleeHitbox)
@@ -376,7 +376,7 @@ FacingLeft
 
 ProjectileHitbox
           rem Projectile attacks handled by missile collision system
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem Issue #1148: Skip projectile hitbox calculation since missiles
           rem handle their own collisions via MissileCollision routines
           rem
@@ -401,7 +401,7 @@ ProjectileHitbox
 
 AreaHitbox
           rem Area hitbox covers radius around attacker center
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem Issue #1148: Implement radius-based area-of-effect hitbox
           rem
           rem Input: attackerID (from CalculateAttackHitbox), playerX[],
@@ -433,12 +433,12 @@ AreaHitbox
           return otherbank
 
 ProcessAttackerAttacks
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           asm
 ProcessAttackerAttacks
 end
           rem Process attacks for one attacker against all defenders.
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem Input: attackerID (must be set before calling); facing handled by
           rem        CalculateAttackHitbox which caches bounds once per attacker.
           rem
@@ -468,7 +468,7 @@ end
           rem Issue #1148: Skip ranged attackers (handled by missile system)
           let temp1 = playerAttackType_R[attackerID]
           rem Cache hitbox for this attacker (calculated once, used for
-          if temp1 = RangedAttack then return otherbank
+          if temp1 = RangedAttack then return thisbank
 
           rem all
           rem   defenders)
@@ -491,17 +491,17 @@ end
           if hit then gosub ApplyDamage
 
 NextDefender
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           next
           return otherbank
 
 ProcessAllAttacks
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           asm
 ProcessAllAttacks
 end
           rem Process all attacks for all players
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           rem Process all attacks for all players (orchestrates attack
           rem processing for all active players)
           rem
@@ -533,7 +533,7 @@ end
 
 NextAttacker
           rem Helper: End of attacker loop iteration (label only)
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank
           next
           return otherbank
           rem Input: None (label only)

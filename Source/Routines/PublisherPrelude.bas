@@ -88,16 +88,15 @@ PublisherPreludeComplete
           rem
           rem Input: None (called from PublisherPreludeMain)
           rem
-          rem Output: gameMode set to ModeAuthorPrelude, ChangeGameMode
-          rem called
+          rem Output: gameMode set to ModeAuthorPrelude, BeginAuthorPrelude called
           rem
           rem Mutates: gameMode (global)
           rem
-          rem Called Routines: ChangeGameMode (bank14) - accesses game
-          rem mode state
+          rem Called Routines: BeginAuthorPrelude (bank14) - sets up author prelude
           rem Constraints: Must be colocated with PublisherPreludeMain
+          rem OPTIMIZATION: Call BeginAuthorPrelude directly to save 4 bytes (skip ChangeGameMode)
           let gameMode = ModeAuthorPrelude
-          gosub ChangeGameMode bank14
+          gosub BeginAuthorPrelude bank14
 
           return otherbank
           rem

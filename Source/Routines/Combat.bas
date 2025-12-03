@@ -22,9 +22,9 @@ end
           rem Constraints: Must be colocated with ApplyDamage
           rem Weight tiers: <=15 = 12 damage, <=25 = 18 damage, >25 = 22 damage
           let temp3 = CharacterWeights[temp1]
-          if temp3 <= 15 then temp2 = 12 : return otherbank
+          if temp3 <= 15 then let temp2 = 12 : return otherbank
 
-          if temp3 <= 25 then temp2 = 18 : return otherbank
+          if temp3 <= 25 then let temp2 = 18 : return otherbank
 
           let temp2 = 22
           return otherbank
@@ -151,7 +151,7 @@ ApplyUrsuloKnockUp
           rem Clamp to valid range (244-252)
           let temp4 = 244 + temp3
           rem Apply upward velocity to defender (negative value = upward)
-          if temp4 > 252 then temp4 = 252
+          if temp4 > 252 then let temp4 = 252
           let playerVelocityY[defenderID] = temp4
           rem Set jumping flag so gravity applies correctly and animation system handles airborne state
           let playerVelocityYL[defenderID] = 0
@@ -229,7 +229,7 @@ end
           rem   collision detection)
           rem playerX/playerY represent sprite top-left corner, sprite
           rem   is 16×16 pixels
-          rem Defender bounding box: [playerX, playerX+16] x [playerY,
+          rem Defender bounding box: [playerX, playerX+16] × [playerY,
           rem   playerY+16]
           rem Hitbox: [cachedHitboxLeft, cachedHitboxRight] x
           rem [cachedHitboxTop,
@@ -340,9 +340,9 @@ FacingRight
           rem
           rem Constraints: Must be colocated with CalculateAttackHitbox,
           rem MeleeHitbox
-          rem Attacker sprite: [playerX, playerX+16] x [playerY,
+          rem Attacker sprite: [playerX, playerX+16] × [playerY,
           rem   playerY+16]
-          rem Hitbox: [playerX+16, playerX+32] x [playerY, playerY+16]
+          rem Hitbox: [playerX+16, playerX+32] × [playerY, playerY+16]
           let cachedHitboxLeft_W = playerX[attackerID] + PlayerSpriteWidth
           let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth + PlayerSpriteWidth
           let cachedHitboxTop_W = playerY[attackerID]
@@ -365,9 +365,9 @@ FacingLeft
           rem
           rem Constraints: Must be colocated with CalculateAttackHitbox,
           rem MeleeHitbox
-          rem Attacker sprite: [playerX, playerX+16] x [playerY,
+          rem Attacker sprite: [playerX, playerX+16] × [playerY,
           rem   playerY+16]
-          rem Hitbox: [playerX-16, playerX] x [playerY, playerY+16]
+          rem Hitbox: [playerX-16, playerX] × [playerY, playerY+16]
           let cachedHitboxLeft_W = playerX[attackerID] - PlayerSpriteWidth
           let cachedHitboxRight_W = playerX[attackerID]
           let cachedHitboxTop_W = playerY[attackerID]
@@ -418,7 +418,7 @@ AreaHitbox
           rem Constraints: Must be colocated with CalculateAttackHitbox
           rem Area radius: 24 pixels (1.5× sprite width) centered on attacker
           rem Calculate attacker center (sprite midpoint)
-          rem Center X = playerX + half sprite width
+          rem Center × = playerX + half sprite width
           let temp2 = playerX[attackerID] + 8
           rem Left edge: center - radius
           let cachedHitboxLeft_W = temp2 - 24

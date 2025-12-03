@@ -245,7 +245,7 @@ CopyParticipantSpritePosition
 CopyParticipantSpritePosition
 end
           rem Copy participant position into multisprite hardware registers
-          rem Returns: Near (return thisbank)
+          rem Returns: Far (return otherbank)
           rem
           rem Input: temp1 = participant index (2 or 3, also equals sprite index)
           rem

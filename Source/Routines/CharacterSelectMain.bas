@@ -298,7 +298,7 @@ HCSC_CycleLeft
 
 HCSC_LeftFromRandom
 
-          if temp3 = 0 then temp1 = MaxCharacter : goto HCSC_CycleDone
+          if temp3 = 0 then let temp1 = MaxCharacter : goto HCSC_CycleDone
 
           if temp3 = 1 then gosub HCSC_GetPlayer2Tail : temp1 = temp6 : goto HCSC_CycleDone
 
@@ -349,7 +349,7 @@ HCSC_RightFromNoOrCPU
 
 HCSC_RightFromMax
 
-          if temp3 = 0 then temp1 = RandomCharacter : goto HCSC_CycleDone
+          if temp3 = 0 then let temp1 = RandomCharacter : goto HCSC_CycleDone
 
           if temp3 = 1 then gosub HCSC_GetPlayer2Tail : temp1 = temp6 : goto HCSC_CycleDone
 
@@ -456,13 +456,13 @@ end
 
           rem Player offset: 0=P1/P2, 2=P3/P4
 
-          if controllerStatus & SetQuadtariDetected then temp3 = qtcontroller * 2
+          if controllerStatus & SetQuadtariDetected then let temp3 = qtcontroller * 2
 
           gosub CharacterSelectHandleTwoPlayers
 
 
 
-          if controllerStatus & SetQuadtariDetected then qtcontroller = qtcontroller ^ 1 else qtcontroller = 0
+          if controllerStatus & SetQuadtariDetected then let qtcontroller = qtcontroller ^ 1 else qtcontroller = 0
 
           goto CharacterSelectInputComplete
 
@@ -490,9 +490,9 @@ end
 
           let temp4 = 0
 
-          if temp3 = 0 then temp4 = 255
+          if temp3 = 0 then let temp4 = 255
 
-          if controllerStatus & SetQuadtariDetected then temp4 = 255
+          if controllerStatus & SetQuadtariDetected then let temp4 = 255
 
 
 
@@ -508,15 +508,15 @@ ProcessPlayerInput
 
           rem Handle Player 1/3 input (joy0)
 
-          if joy0left then temp1 = temp3 : temp2 = 0 : gosub HandleCharacterSelectCycle
+          if joy0left then let temp1 = temp3 : temp2 = 0 : gosub HandleCharacterSelectCycle
 
-          if joy0right then temp1 = temp3 : temp2 = 1 : gosub HandleCharacterSelectCycle
+          if joy0right then let temp1 = temp3 : temp2 = 1 : gosub HandleCharacterSelectCycle
 
           rem NOTE: DASM raises ’Label mismatch’ if multiple banks re-include HandleCharacterSelectFire
 
-          if joy0up then temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if joy0up then let temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
 
-          if joy0fire then temp1 = temp3 : gosub HandleCharacterSelectFire bank7
+          if joy0fire then let temp1 = temp3 : gosub HandleCharacterSelectFire bank7
 
 
 
@@ -524,13 +524,13 @@ ProcessPlayerInput
 
           if !temp4 then return thisbank
 
-          if joy1left then temp1 = temp3 + 1 : temp2 = 0 : gosub HandleCharacterSelectCycle
+          if joy1left then let temp1 = temp3 + 1 : temp2 = 0 : gosub HandleCharacterSelectCycle
 
-          if joy1right then temp1 = temp3 + 1 : temp2 = 1 : gosub HandleCharacterSelectCycle
+          if joy1right then let temp1 = temp3 + 1 : temp2 = 1 : gosub HandleCharacterSelectCycle
 
-          if joy1up then temp1 = temp3 + 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if joy1up then let temp1 = temp3 + 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
 
-          if joy1fire then temp1 = temp3 + 1 : gosub HandleCharacterSelectFire bank7
+          if joy1fire then let temp1 = temp3 + 1 : gosub HandleCharacterSelectFire bank7
 
           return thisbank
 
@@ -581,7 +581,7 @@ end
 
           let temp1 = 1
 
-          if controllerStatus & SetQuadtariDetected then temp1 = 3
+          if controllerStatus & SetQuadtariDetected then let temp1 = 3
 
           for currentPlayer = 0 to temp1
 

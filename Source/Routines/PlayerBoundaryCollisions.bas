@@ -34,11 +34,11 @@ end
           rem Called Routines: CheckPlayerBoundary
           rem
           rem Constraints: All arenas support horizontal wraparound
-          rem (X < PlayerLeftWrapThreshold wraps to PlayerRightEdge, X > PlayerRightWrapThreshold
+          rem (X < PlayerLeftWrapThreshold wraps to PlayerRightEdge, × > PlayerRightWrapThreshold
           rem wraps to PlayerLeftEdge). Vertical boundaries clamp (Y < 20 clamped to 20,
           rem Y > ScreenBottom triggers elimination). Players 3/4 only checked if Quadtari detected.
           let temp3 = selectedArena_R
-          if temp3 = RandomArena then temp3 = rand : temp3 = temp3 & 15
+          if temp3 = RandomArena then let temp3 = rand : temp3 = temp3 & 15
 
           for temp1 = 0 to 3
               if temp1 < 2 then goto PBC_ProcessPlayer

@@ -5,7 +5,7 @@
           rem
           rem   high (pfres=8)
           rem   (var96-var127)
-          rem Use X for solid, . = empty
+          rem Use × for solid, . = empty
           rem Each arena has:
           rem   - ArenaXPlayfield: playfield pixel data
           rem

@@ -81,7 +81,7 @@ SelectApplyPreviewPosition
           asm
 SelectApplyPreviewPosition
 end
-          rem Input: temp1 = player index, temp2 = x position, temp3 = y position
+          rem Input: temp1 = player index, temp2 = X position, temp3 = y position
           rem Returns: Near (return thisbank)
           rem Called same-bank from SelectRenderPlayerPreview, so use return thisbank
           rem Optimized: Use on...goto jump table for O(1) dispatch
@@ -130,7 +130,7 @@ end
           let temp5 = temp2
           let temp2 = temp4
           let temp3 = ActionIdle
-          if temp5 = PlayerHandicapped then temp3 = ActionFallen
+          if temp5 = PlayerHandicapped then let temp3 = ActionFallen
           goto RenderPlayerPreviewInvoke
 RenderPlayerPreviewDefault
           let temp2 = 0

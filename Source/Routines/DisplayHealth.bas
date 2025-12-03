@@ -80,7 +80,7 @@ end
 
 FlashParticipant1
 
-          if frame & 8 then player0x = 200
+          if frame & 8 then let player0x = 200
 
 DoneParticipant1Flash
 
@@ -103,7 +103,7 @@ DoneParticipant1Flash
 
 FlashParticipant2
 
-          if frame & 8 then player1x = 200
+          if frame & 8 then let player1x = 200
 
 DoneParticipant2Flash
 
@@ -127,7 +127,7 @@ DoneParticipant2Flash
 
 FlashPlayer3
 
-          if frame & 8 then player2x = 200
+          if frame & 8 then let player2x = 200
 
 DonePlayer3Flash
 
@@ -154,7 +154,7 @@ DonePlayer3Flash
 
 FlashPlayer4
 
-          if frame & 8 then player3x = 200
+          if frame & 8 then let player3x = 200
 
 DonePlayer4Flash
 

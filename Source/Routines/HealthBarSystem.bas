@@ -86,7 +86,7 @@ end
 
           rem Clamp health to valid range (unsigned bytes cannot be negative)
 
-          if temp1 > PlayerHealthMax then temp1 = PlayerHealthMax
+          if temp1 > PlayerHealthMax then let temp1 = PlayerHealthMax
 
 
 
@@ -110,31 +110,31 @@ end
 
           rem 72-83 = 7 pixels
 
-          if temp1 > 83 then temp2 = 8 : goto P1SetPattern
+          if temp1 > 83 then let temp2 = 8 : goto P1SetPattern
 
           rem 60-71 = 6 pixels
 
-          if temp1 > 71 then temp2 = 7 : goto P1SetPattern
+          if temp1 > 71 then let temp2 = 7 : goto P1SetPattern
 
           rem 48-59 = 5 pixels
 
-          if temp1 > 59 then temp2 = 6 : goto P1SetPattern
+          if temp1 > 59 then let temp2 = 6 : goto P1SetPattern
 
           rem 36-47 = 4 pixels
 
-          if temp1 > 47 then temp2 = 5 : goto P1SetPattern
+          if temp1 > 47 then let temp2 = 5 : goto P1SetPattern
 
           rem 24-35 = 3 pixels
 
-          if temp1 > 35 then temp2 = 4 : goto P1SetPattern
+          if temp1 > 35 then let temp2 = 4 : goto P1SetPattern
 
           rem 12-23 = 2 pixels
 
-          if temp1 > 23 then temp2 = 3 : goto P1SetPattern
+          if temp1 > 23 then let temp2 = 3 : goto P1SetPattern
 
           rem 0-11 = 0 pixels (patternIndex already 0)
 
-          if temp1 > 11 then temp2 = 2 : goto P1SetPattern
+          if temp1 > 11 then let temp2 = 2 : goto P1SetPattern
 
 
 
@@ -218,7 +218,7 @@ UpdatePlayer2HealthBar
 
           rem Clamp health to valid range (unsigned bytes cannot be negative)
 
-          if temp1 > PlayerHealthMax then temp1 = PlayerHealthMax
+          if temp1 > PlayerHealthMax then let temp1 = PlayerHealthMax
 
 
 
@@ -242,31 +242,31 @@ UpdatePlayer2HealthBar
 
           rem 72-83 = 7 pixels
 
-          if temp1 > 83 then temp2 = 8 : goto P2SetPattern
+          if temp1 > 83 then let temp2 = 8 : goto P2SetPattern
 
           rem 60-71 = 6 pixels
 
-          if temp1 > 71 then temp2 = 7 : goto P2SetPattern
+          if temp1 > 71 then let temp2 = 7 : goto P2SetPattern
 
           rem 48-59 = 5 pixels
 
-          if temp1 > 59 then temp2 = 6 : goto P2SetPattern
+          if temp1 > 59 then let temp2 = 6 : goto P2SetPattern
 
           rem 36-47 = 4 pixels
 
-          if temp1 > 47 then temp2 = 5 : goto P2SetPattern
+          if temp1 > 47 then let temp2 = 5 : goto P2SetPattern
 
           rem 24-35 = 3 pixels
 
-          if temp1 > 35 then temp2 = 4 : goto P2SetPattern
+          if temp1 > 35 then let temp2 = 4 : goto P2SetPattern
 
           rem 12-23 = 2 pixels
 
-          if temp1 > 23 then temp2 = 3 : goto P2SetPattern
+          if temp1 > 23 then let temp2 = 3 : goto P2SetPattern
 
           rem 0-11 = 0 pixels (patternIndex already 0)
 
-          if temp1 > 11 then temp2 = 2 : goto P2SetPattern
+          if temp1 > 11 then let temp2 = 2 : goto P2SetPattern
 
 
 
@@ -591,7 +591,7 @@ end
 
           rem Clamp health to valid range
 
-          if PlayerHealthMax - 1 < temp1 then temp1 = PlayerHealthMax - 1
+          if PlayerHealthMax - 1 < temp1 then let temp1 = PlayerHealthMax - 1
 
           goto P3ConvertHealth
 
@@ -640,7 +640,7 @@ P4GetHealth
 
           rem Clamp health to valid range
 
-          if temp2 > 99 then temp2 = 99
+          if temp2 > 99 then let temp2 = 99
 
           goto P4ConvertHealth
 

@@ -31,12 +31,12 @@ end
           let temp1 = 0
 
           rem Player 1 (INPT0) - Genesis/Joy2b+ Button C/II
-          if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then temp1 = temp1 | 1
-          if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then temp1 = temp1 | 1
+          if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = temp1 | 1
+          if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 1
 
           rem Player 2 (INPT2) - Genesis/Joy2b+ Button C/II
-          if controllerStatus & SetRightPortGenesis then if (INPT2 & $80) = 0 then temp1 = temp1 | 2
-          if controllerStatus & SetRightPortJoy2bPlus then if (INPT2 & $80) = 0 then temp1 = temp1 | 2
+          if controllerStatus & SetRightPortGenesis then if (INPT2 & $80) = 0 then let temp1 = temp1 | 2
+          if controllerStatus & SetRightPortJoy2bPlus then if (INPT2 & $80) = 0 then let temp1 = temp1 | 2
 
           rem Players 3-4 cannot have enhanced controllers (require Quadtari)
           rem Bits 2-3 remain 0

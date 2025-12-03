@@ -651,13 +651,13 @@ end
 
 
 
-          rem Convert X to playfield coordinates
+          rem Convert × to playfield coordinates
 
           rem Playfield is 32 pf-pixels wide (4px wide each, so 128 screen pixels)
 
           
 
-          rem Convert X pixel to playfield column
+          rem Convert × pixel to playfield column
 
           let temp6 = temp2 - 16
 

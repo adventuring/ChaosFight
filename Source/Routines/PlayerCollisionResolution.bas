@@ -24,7 +24,7 @@ end
 
           rem dynamic activation.
 
-          if (controllerStatus & SetQuadtariDetected) = 0 then temp6 = 2 : goto PCR_SkipElse
+          if (controllerStatus & SetQuadtariDetected) = 0 then let temp6 = 2 : goto PCR_SkipElse
 
           let temp6 = 4
 
@@ -76,13 +76,13 @@ PCR_CheckDistance
 
           let temp3 = playerX[temp2] - playerX[temp1]
 
-          if temp3 < 0 then temp3 = 0 - temp3
+          if temp3 < 0 then let temp3 = 0 - temp3
 
           if temp3 >= PlayerCollisionDistance then goto PCR_NextInner
 
           let temp4 = playerY[temp2] - playerY[temp1]
 
-          if temp4 < 0 then temp4 = 0 - temp4
+          if temp4 < 0 then let temp4 = 0 - temp4
 
           rem Use bit shift instead of division (optimized for Atari 2600)
 
@@ -134,7 +134,7 @@ end
 
           let weightDifference = halfHeight1 - halfHeight2
 
-          if halfHeight1 < halfHeight2 then weightDifference = halfHeight2 - halfHeight1
+          if halfHeight1 < halfHeight2 then let weightDifference = halfHeight2 - halfHeight1
 
           let impulseStrength = weightDifference
 
@@ -295,7 +295,7 @@ PCR_SepLeft
 
           let weightDifference = halfHeight1 - halfHeight2
 
-          if halfHeight1 < halfHeight2 then weightDifference = halfHeight2 - halfHeight1
+          if halfHeight1 < halfHeight2 then let weightDifference = halfHeight2 - halfHeight1
 
           let impulseStrength = weightDifference
 

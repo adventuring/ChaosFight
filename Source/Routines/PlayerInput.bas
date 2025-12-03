@@ -632,11 +632,11 @@ HUIEB_RoboTitoAscend
 
 end
 
-          if temp4 > 31 then temp4 = 31
+          if temp4 > 31 then let temp4 = 31
 
           rem Compute head row and check ceiling contact
 
-          if temp4 & $80 then temp4 = 0
+          if temp4 & $80 then let temp4 = 0
 
           let temp3 = playerY[temp1]
 
@@ -795,7 +795,7 @@ HUIEB_ZoeJumpCheck
 
           let temp6 = 0
 
-          if (playerState[temp1] & 4) then temp6 = 1
+          if (playerState[temp1] & 4) then let temp6 = 1
 
           rem Zoe already used double-jump
 
@@ -1116,9 +1116,9 @@ HFCM_CheckLeftCollision
 
 end
 
-          if temp2 > 31 then temp2 = 31
+          if temp2 > 31 then let temp2 = 31
 
-          if temp2 & $80 then temp2 = 0
+          if temp2 & $80 then let temp2 = 0
 
 
 
@@ -1311,9 +1311,9 @@ HFCM_DoRightMovement
 
 end
 
-          if temp2 > 31 then temp2 = 31
+          if temp2 > 31 then let temp2 = 31
 
-          if temp2 & $80 then temp2 = 0
+          if temp2 & $80 then let temp2 = 0
 
 
 
@@ -1968,7 +1968,7 @@ HandlePauseInput
 
           let temp1 = 0
 
-          if switchselect then temp1 = 1
+          if switchselect then let temp1 = 1
 
 
 
@@ -1976,9 +1976,9 @@ HandlePauseInput
 
           rem Player 2)
 
-          if LeftPortJoy2bPlus then if !INPT1{7} then temp1 = 1
+          if LeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
 
-          if RightPortJoy2bPlus then if !INPT3{7} then temp1 = 1
+          if RightPortJoy2bPlus then if !INPT3{7} then let temp1 = 1
 
 Joy2bPauseDone
 
@@ -1996,7 +1996,7 @@ Joy2bPauseDone
 
           if systemFlags & SystemFlagPauseButtonPrev then goto DonePauseToggle
 
-          if systemFlags & SystemFlagGameStatePaused then systemFlags = systemFlags & ClearSystemFlagGameStatePaused else systemFlags = systemFlags | SystemFlagGameStatePaused
+          if systemFlags & SystemFlagGameStatePaused then let systemFlags = systemFlags & ClearSystemFlagGameStatePaused else systemFlags = systemFlags | SystemFlagGameStatePaused
 
 DonePauseToggle
 
@@ -2010,7 +2010,7 @@ DonePauseToggle
 
           rem Update previous button state for next frame
 
-          if temp1 then systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
+          if temp1 then let systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
 
 
 

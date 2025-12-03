@@ -163,7 +163,7 @@
           rem COMMON VARS - SCRAM (r000-r127/w000-w127) - sorted
           rem   numerically
           rem Array accessible as playerLocked[0] through playerLocked[3]
-          rem Bit-packed: 2 bits per player (4 players x 2 bits = 8 bits = 1 byte)
+          rem Bit-packed: 2 bits per player (4 players × 2 bits = 8 bits = 1 byte)
           rem Bits 0-1: Player 0 locked state (0=unlocked, 1=normal, 2=handicap)
           rem Bits 2-3: Player 1 locked state
           rem Bits 4-5: Player 2 locked state
@@ -657,7 +657,7 @@
           rem   missileLifetime[3]
           dim missileLifetime_R = r110
 
-          rem Game Mode: Missile velocities [0-3] for X and Y axes
+          rem Game Mode: Missile velocities [0-3] for × and Y axes
           rem   (standard RAM w,x)
           rem NOTE: These are REDIMMED in Admin Mode for character
           rem   select animation
@@ -986,7 +986,7 @@
           rem Gravity acceleration rate (normal or reduced)
 
           dim damageWeightProduct = var44
-          rem Intermediate value: damage x weight (used in fall damage
+          rem Intermediate value: damage × weight (used in fall damage
           rem   calculations)
 
           dim missileLifetimeValue = g

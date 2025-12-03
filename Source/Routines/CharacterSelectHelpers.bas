@@ -15,7 +15,7 @@ SelectStickLeft
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
 
-          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
 
           return thisbank
 
@@ -33,6 +33,6 @@ SelectStickRight
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
 
-          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
 
           return thisbank

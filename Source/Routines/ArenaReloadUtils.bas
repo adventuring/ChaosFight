@@ -14,12 +14,12 @@ end
           rem Get current arena index
           let temp1 = selectedArena_R
           rem Handle random arena (use stored random selection)
-          if temp1 = RandomArena then temp1 = rand & 31
+          if temp1 = RandomArena then let temp1 = rand & 31
 
           rem Get B&W mode state (same logic as GetBWMode)
           rem Check switchbw and colorBWOverride
           let temp2 = switchbw
-          if systemFlags & SystemFlagColorBWOverride then temp2 = 1
+          if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
 
 ReloadArenaColorsDispatch
           rem Returns: Far (return otherbank)

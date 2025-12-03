@@ -34,9 +34,9 @@ GetCharacterMissileMaxX
           asm
 GetCharacterMissileMaxX
 end
-          rem Return missile maximum X range.
+          rem Return missile maximum × range.
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMaxX lookup)
-          rem Output: temp2 = missile max X range
+          rem Output: temp2 = missile max × range
           rem Mutates: temp2 (result register - missile max X)
           rem Constraints: None (table lookup - missile max X)
           rem Use direct array access for O(1) lookup

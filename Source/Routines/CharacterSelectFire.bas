@@ -72,7 +72,7 @@ end
 
           let temp2 = 1
 
-          if joy1down then temp4 = 1 : goto HCSF_HandleFire
+          if joy1down then let temp4 = 1 : goto HCSF_HandleFire
 
           let temp4 = 0
 
@@ -113,7 +113,7 @@ HCSF_CheckJoy0
 
           let temp2 = 1
 
-          if joy0down then temp4 = 1 : goto HCSF_HandleFire
+          if joy0down then let temp4 = 1 : goto HCSF_HandleFire
 
           let temp4 = 0
 

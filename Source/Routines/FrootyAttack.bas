@@ -166,17 +166,17 @@ FrootyButtonReleased
 
           gosub SpawnMissile bank7
 
-          rem Charge is in 10 Hz ticks, convert to frames: charge * 6
+          rem Charge is in 10 Hz ticks, convert to frames: charge × 6
 
-          rem Lifetime = charge * 6 frames (each tick = 0.1s = 6 frames at 60fps)
+          rem Lifetime = charge × 6 frames (each tick = 0.1s = 6 frames at 60fps)
 
           rem Clamp to reasonable range (minimum 6 frames, maximum 180 frames = 3 seconds)
 
           let temp3 = temp2 * 6
 
-          if temp3 < 6 then temp3 = 6
+          if temp3 < 6 then let temp3 = 6
 
-          if temp3 > 180 then temp3 = 180
+          if temp3 > 180 then let temp3 = 180
 
           rem Set ricochet velocity - Frooty’s missile will bounce off bounds
 

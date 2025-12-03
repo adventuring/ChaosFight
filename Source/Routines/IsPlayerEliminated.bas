@@ -13,7 +13,7 @@ end
           rem Output: temp2 = 1 if eliminated, 0 if alive
           rem Mutates: temp2
           let temp2 = playerHealth[currentPlayer]
-          if temp2 = 0 then temp2 = 1 : goto IsEliminatedDone
+          if temp2 = 0 then let temp2 = 1 : goto IsEliminatedDone
           let temp2 = 0
 IsEliminatedDone
           return otherbank

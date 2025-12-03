@@ -48,7 +48,7 @@ end
 
           rem Lookup pointer from tables and combine into 16-bit value
 
-          rem Fix: Assign directly to high/low bytes instead of broken * 256 multiplication
+          rem Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
 
           let var40 = SongPointers1H[temp2]
 
@@ -125,7 +125,7 @@ end
 
           rem Lookup Voice 1 pointer from tables
 
-          rem Fix: Assign directly to high/low bytes instead of broken * 256 multiplication
+          rem Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
 
           let var40 = SongPointers1SecondH[temp2]
 

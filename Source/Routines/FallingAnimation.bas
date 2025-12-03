@@ -57,12 +57,12 @@ end
           rem Check if 4-player mode for target X
           if controllerStatus & SetQuadtariDetected then Player1Target4P
 
-          rem 2-player mode: target X = 53
+          rem 2-player mode: target × = 53
           let temp2 = 53
           goto Player1TargetDone
 
 Player1Target4P
-          rem Set Player 1 target X for 4-player mode
+          rem Set Player 1 target × for 4-player mode
           rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from FallingAnimation1)
@@ -75,7 +75,7 @@ Player1Target4P
           rem
           rem Constraints: Must be colocated with FallingAnimation1,
           rem Player1TargetDone
-          rem 4-player mode: target X = 32
+          rem 4-player mode: target × = 32
           let temp2 = 32
 
 Player1TargetDone
@@ -117,12 +117,12 @@ DonePlayer1Move
           let temp1 = 1
           if controllerStatus & SetQuadtariDetected then Player2Target4P
 
-          rem 2-player mode: target X = 107
+          rem 2-player mode: target × = 107
           let temp2 = 107
           goto Player2TargetDone
 
 Player2Target4P
-          rem Set Player 2 target X for 4-player mode
+          rem Set Player 2 target × for 4-player mode
           rem Returns: Far (return otherbank)
           rem
           rem Input: None (called from FallingAnimation1)
@@ -135,7 +135,7 @@ Player2Target4P
           rem
           rem Constraints: Must be colocated with FallingAnimation1,
           rem Player2TargetDone
-          rem 4-player mode: target X = 128
+          rem 4-player mode: target × = 128
           let temp2 = 128
 
 Player2TargetDone
@@ -175,7 +175,7 @@ DonePlayer2Move
           if playerCharacter[2] = NoCharacter then DonePlayer3Move
 
           let temp1 = 2
-          rem 4-player mode: target X = 64
+          rem 4-player mode: target × = 64
           let temp2 = 64
           let temp3 = 24
           gosub MovePlayerToTarget bank6
@@ -203,7 +203,7 @@ DonePlayer3Move
           if playerCharacter[3] = NoCharacter then DonePlayer4Move
 
           let temp1 = 3
-          rem 4-player mode: target X = 96
+          rem 4-player mode: target × = 96
           let temp2 = 96
           let temp3 = 24
           gosub MovePlayerToTarget bank6

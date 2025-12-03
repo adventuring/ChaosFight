@@ -145,7 +145,7 @@ end
           rem   physics
           let temp6 = CharacterMissileMomentumX[temp5]
           rem Get base X velocity
-          if temp4 = 0 then temp6 = 0 - temp6
+          if temp4 = 0 then let temp6 = 0 - temp6
           rem Apply facing direction (left = negative)
           let missileVelocityX[temp1] = temp6
 
@@ -509,9 +509,9 @@ MissileSysPF
           rem (from X=16 to X=144), 192 pixels tall
           rem pfread uses playfield coordinates: column (0-31), row
           rem (0-7)
-          rem Convert X pixel to playfield column: subtract ScreenInsetX (16),
+          rem Convert × pixel to playfield column: subtract ScreenInsetX (16),
           rem then divide by 4 (each quad-width pixel is 4 pixels wide)
-          rem Save original X in temp6 after removing screen inset
+          rem Save original × in temp6 after removing screen inset
           let temp6 = temp2
           rem Divide by 4 using bit shift (2 right shifts)
           let temp6 = temp6 - ScreenInsetX
@@ -519,9 +519,9 @@ MissileSysPF
           let temp6 = temp6 / 4
           rem Clamp column to valid range
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
-          if temp6 & $80 then temp6 = 0
+          if temp6 & $80 then let temp6 = 0
           rem temp3 is already in pixel coordinates, pfread will handle
-          if temp6 > 31 then temp6 = 31
+          if temp6 > 31 then let temp6 = 31
           rem   it
 
           rem Check if playfield pixel is set
@@ -655,8 +655,8 @@ end
           rem GetCharacterDamage inlined - weight-based damage calculation
           let temp1 = temp5
           let temp3 = CharacterWeights[temp1]
-          if temp3 <= 15 then temp2 = 12 : goto MissileDamageDone
-          if temp3 <= 25 then temp2 = 18 : goto MissileDamageDone
+          if temp3 <= 15 then let temp2 = 12 : goto MissileDamageDone
+          if temp3 <= 25 then let temp2 = 18 : goto MissileDamageDone
           let temp2 = 22
 MissileDamageDone
           let temp6 = temp2
@@ -766,7 +766,7 @@ end
           rem (inverts X velocity, applies friction damping)
           rem
           rem Input: temp1 = player index (0-3), temp5 = missile flags,
-          rem missileVelocityX[] (global array) = missile X velocities,
+          rem missileVelocityX[] (global array) = missile × velocities,
           rem MissileFlagFriction (global constant) = friction flag,
           rem MaxByteValue (global constant) = 255
           rem

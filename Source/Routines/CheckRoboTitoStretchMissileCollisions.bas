@@ -51,7 +51,7 @@ CRTSMC_IsStretching
 
           rem Check collision with other players
           rem Missile extends from playerY down by stretchHeight
-          rem Bounding box: X = missileX, Y = missileY, Width = 4, Height = stretchHeight
+          rem Bounding box: × = missileX, Y = missileY, Width = 4, Height = stretchHeight
           let temp6 = 0
 
 CRTSMC_CheckOtherPlayer

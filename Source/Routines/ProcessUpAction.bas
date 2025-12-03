@@ -81,8 +81,8 @@ PUA_RoboTitoAscend
             lsr temp2
             lsr temp2
 end
-          if temp2 > 31 then temp2 = 31
-          if temp2 & $80 then temp2 = 0
+          if temp2 > 31 then let temp2 = 31
+          if temp2 & $80 then let temp2 = 0
           rem Save playfield column (temp2 will be overwritten)
           let temp4 = temp2
           rem Compute head row and check ceiling contact
@@ -118,7 +118,7 @@ PUA_RoboTitoLatch
 PUA_ZoeJumpCheck
           rem Zoe Ryen: Allow single mid-air double-jump
           let temp6 = 0
-          if (playerState[temp1] & 4) then temp6 = 1
+          if (playerState[temp1] & 4) then let temp6 = 1
           rem Block double-jump if already used (characterStateFlags bit 3)
           if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then let temp3 = 0 : return thisbank
           rem Block jump during attack animations (states 13-15)

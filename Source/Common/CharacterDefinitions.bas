@@ -9,7 +9,7 @@
           rem   - Animation graphics tables and frame counts
           rem
           rem   - Attack type (mêlée or ranged)
-          rem   - Missile size (width x height)
+          rem   - Missile size (width × height)
           rem   - Missile emission height (on character sprite)
 
           rem CHARACTER NAMES (internal Documentation Only)
@@ -64,7 +64,7 @@ GetCharacterWeightSub
           rem   references
           rem Frame references are always written as 8 bytes (padded
           rem   with repeats)
-          rem Frame references are relative to the 8px x 16px 16-byte
+          rem Frame references are relative to the 8px × 16px 16-byte
           rem   bitmap set
           rem Format examples:
           rem   1 frame:  (1, 1, 1, 1, 1, 1, 1, 1)
@@ -72,12 +72,12 @@ GetCharacterWeightSub
           rem   4 frames: (1, 2, 3, 4, 1, 2, 3, 4)
           rem   8 frames: (1, 2, 3, 4, 5, 6, 7, 8)
           rem Animation frame reference tables (NumCharacters characters
-          rem   x 16 sequences x 8 bytes)
+          rem × 16 sequences × 8 bytes)
           rem Each character animation data is 128 bytes (16 sequences x
           rem   8 bytes)
           rem Graphics Data Structure
           rem Each character has:
-          rem   - 8px x 16px bitmap data (16 bytes per frame)
+          rem   - 8px × 16px bitmap data (16 bytes per frame)
           rem   - Frame references point to these 16-byte blocks
           rem
           rem   - Graphics data will be loaded from ROM
@@ -220,11 +220,11 @@ GetMissileFlagsSub
           rem    - Padding: fill with repeats (1->1,1,1,1,1,1,1,1)
 
           rem 4. Each character needs:
-          rem - 16 animation sequences x 8 bytes = 128 bytes frame
+          rem - 16 animation sequences × 8 bytes = 128 bytes frame
           rem   references
-          rem - Variable number of unique graphics frames x 32 bytes =
+          rem - Variable number of unique graphics frames × 32 bytes =
           rem   graphics data
-          rem - Total per character: ~128 + (unique_frames x 32) bytes
+          rem - Total per character: ~128 + (unique_frames × 32) bytes
 
           rem 5. Output file format: Source/Generated/CharacterData.bas
           rem    This file will be included in the build process

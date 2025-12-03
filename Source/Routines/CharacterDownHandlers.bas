@@ -30,7 +30,7 @@ end
 
           rem (global arrays) = player positions, ScreenInsetX (global
 
-          rem constant) = screen X inset
+          rem constant) = screen × inset
 
           rem
 
@@ -74,9 +74,9 @@ end
 
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
 
-          if temp2 & $80 then temp2 = 0
+          if temp2 & $80 then let temp2 = 0
 
-          if temp2 > 31 then temp2 = 31
+          if temp2 > 31 then let temp2 = 31
 
 
 
@@ -176,7 +176,7 @@ end
 
           rem SCRAM array) = character state flags, ScreenInsetX (global
 
-          rem constant) = screen X inset
+          rem constant) = screen × inset
 
           rem
 
@@ -276,7 +276,7 @@ HarpyNormalDown
 
           rem arrays) = player positions, ScreenInsetX (global constant)
 
-          rem = screen X inset
+          rem = screen × inset
 
           rem
 
@@ -314,9 +314,9 @@ HarpyNormalDown
 
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
 
-          if temp2 & $80 then temp2 = 0
+          if temp2 & $80 then let temp2 = 0
 
-          if temp2 > 31 then temp2 = 31
+          if temp2 > 31 then let temp2 = 31
 
 
 
@@ -408,7 +408,7 @@ end
 
           rem (global arrays) = player positions, ScreenInsetX (global
 
-          rem constant) = screen X inset
+          rem constant) = screen × inset
 
           rem
 
@@ -454,9 +454,9 @@ end
 
           rem Check for wraparound: if subtraction wrapped negative,
 
-          if temp2 & $80 then temp2 = 0
+          if temp2 & $80 then let temp2 = 0
 
-          if temp2 > 31 then temp2 = 31
+          if temp2 > 31 then let temp2 = 31
 
 
 

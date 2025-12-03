@@ -37,7 +37,7 @@ end
             0, 4, 2, 1, 1, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 end
 
-          rem Missile maximum X travel
+          rem Missile maximum × travel
           data CharacterMissileMaxX
             4, 8, 6, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
 end

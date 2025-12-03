@@ -50,8 +50,8 @@ GroundSearchBottom
 GroundSearchDone
           let temp3 = playerY[temp1]
           let temp3 = temp3 - temp2
-          if temp3 > 80 then temp3 = 80
-          if temp3 < 1 then temp3 = 1
+          if temp3 > 80 then let temp3 = 80
+          if temp3 < 1 then let temp3 = 1
           let missileStretchHeight_W[temp1] = temp3
           let characterSpecialAbility_W[temp1] = 0
           if playerY[temp1] <= 5 then goto RoboTitoCheckCeiling

@@ -33,7 +33,7 @@ CheckPlayerCollision
           rem Called Routines: None
           rem
           rem Constraints: Uses integer positions only (subpixel ignored
-          rem for collision). Checks X collision (16 pixel width) and Y
+          rem for collision). Checks × collision (16 pixel width) and Y
           rem collision (using CharacterHeights table). WARNING: temp3 is mutated during the routine; callers must read it immediately.
           rem Uses temp1-temp6 (temp4-5 reused after X/Y checks)
 
@@ -41,7 +41,7 @@ CheckPlayerCollision
           let temp4 = playerX[temp1]
           let temp5 = playerX[temp2]
 
-          rem Calculate absolute X distance between players
+          rem Calculate absolute × distance between players
           if temp4 >= temp5 then CalcXDistanceRight
 
           let temp6 = temp5 - temp4

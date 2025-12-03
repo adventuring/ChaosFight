@@ -32,7 +32,7 @@ CCJ_ConvertPlayerXToPlayfieldColumn
           asm
 CCJ_ConvertPlayerXToPlayfieldColumn
 end
-          rem Convert player X to playfield column (0-31)
+          rem Convert player × to playfield column (0-31)
           rem Returns: Far (return otherbank)
           rem Input: temp1 = player index
           rem Output: temp2 = playfield column
@@ -154,7 +154,7 @@ end
           if characterSpecialAbility_R[temp1] = 0 then return otherbank
 
           let temp2 = frame - harpyLastFlapFrame_R[temp1]
-          if temp2 > 127 then temp2 = 127
+          if temp2 > 127 then let temp2 = 127
           if temp2 < HarpyFlapCooldownFrames then return otherbank
 
           if playerY[temp1] <= 5 then goto HarpyFlapRecord

@@ -150,13 +150,13 @@ end
 
           if playerCharacter[temp1] <> CharacterRadishGoblin then return otherbank
 
-          rem Convert X to playfield column
+          rem Convert × to playfield column
 
           if playerVelocityY[temp1] <= 0 then goto RGBGB_ClearCheck
 
           let temp2 = playerX[temp1] - ScreenInsetX
 
-          if temp2 & $80 then temp2 = 0
+          if temp2 & $80 then let temp2 = 0
 
           asm
 
@@ -166,7 +166,7 @@ end
 
 end
 
-          if temp2 > 31 then temp2 = 31
+          if temp2 > 31 then let temp2 = 31
 
           rem Calculate feet row
 

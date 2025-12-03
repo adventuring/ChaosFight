@@ -452,11 +452,11 @@ CMVE_ApplyAttack
 
           let temp6 = temp6 + temp4
 
-          if temp6 & $80 then temp6 = 0
+          if temp6 & $80 then let temp6 = 0
 
           rem Set voice-specific AUDV
 
-          if temp6 > 15 then temp6 = 15
+          if temp6 > 15 then let temp6 = 15
 
           if temp1 = 0 then let AUDV0 = temp6 : return thisbank
 
@@ -509,11 +509,11 @@ CMVE_ApplyDecay
 
           let temp6 = temp6 - 1
 
-          if temp6 & $80 then temp6 = 0
+          if temp6 & $80 then let temp6 = 0
 
           rem Set voice-specific AUDV
 
-          if temp6 > 15 then temp6 = 15
+          if temp6 > 15 then let temp6 = 15
 
           if temp1 = 0 then let AUDV0 = temp6 : return thisbank
 

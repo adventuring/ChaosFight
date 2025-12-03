@@ -229,7 +229,7 @@ KnightGuySwingOut
 
 KnightGuySetPosition
           rem Calculate base X position (partially overlapping player)
-          rem Start position: player X + 8 pixels (halfway through
+          rem Start position: player × + 8 pixels (halfway through
           rem player sprite)
           rem Then apply swing offset in facing direction
           let temp2 = playerX[temp1] + 8

@@ -66,7 +66,7 @@ end
           rem Called Routines: AddVelocitySubpixelY (bank8) - adds
           rem gravity to vertical velocity,
           rem CCJ_ConvertPlayerXToPlayfieldColumn (bank13) - converts player
-          rem X to playfield column, Y divided by 16 (pfrowheight is always 16)
+          rem × to playfield column, Y divided by 16 (pfrowheight is always 16)
           rem row height, PAG_SetRoboTitoStretchPermission - sets
           rem RoboTito stretch permission on landing
           rem Constraints: Frooty (8) and Dragon of Storms (2) skip

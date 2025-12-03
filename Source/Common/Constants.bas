@@ -350,9 +350,9 @@
           const PlayerWrapOvershoot = PlayerSpriteHalfWidth
           rem Allow sprites to move partially off-screen before wrapping
           const PlayerLeftWrapThreshold = PlayerLeftEdge - PlayerWrapOvershoot
-          rem X value that triggers wrap-around from left edge
+          rem × value that triggers wrap-around from left edge
           const PlayerRightWrapThreshold = PlayerRightEdge + PlayerWrapOvershoot
-          rem X value that triggers wrap-around from right edge
+          rem × value that triggers wrap-around from right edge
           rem NOTE: EQU definitions for these constants are in Preamble.bas for DASM
           const PlayerCollisionDistance = 16
           rem Collision detection distance (sprite width in pixels)
@@ -363,7 +363,7 @@
           const MinimumVelocityThreshold = 1
           rem Minimum velocity threshold for missile deactivation (pixels/frame)
           const ScreenInsetX = 16
-          rem Usable X inset from each side (playable area starts at 16)
+          rem Usable × inset from each side (playable area starts at 16)
           const ScreenUsableWidth = 128
           rem Usable width inside insets
           const ScreenBottom = 192

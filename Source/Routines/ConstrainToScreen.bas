@@ -6,7 +6,7 @@ ConstrainToScreen
           rem Input: temp1 = player index (0-3)
           rem Output: playerX/Y constrained to PlayerLeftEdge..PlayerRightEdge (X) and 20-80 (Y); subpixels zeroed at clamps
           rem Mutates: playerX[], playerY[], playerSubpixelX_W/WL[], playerSubpixelY_W/WL[]
-          rem Constraints: X bounds PlayerLeftEdge..PlayerRightEdge, Y bounds 20-80
+          rem Constraints: × bounds PlayerLeftEdge..PlayerRightEdge, Y bounds 20-80
           rem Constrain X position using screen boundary constants
           rem SCRAM write to playerSubpixelX_W
           if playerX[temp1] < PlayerLeftEdge then let playerX[temp1] = PlayerLeftEdge

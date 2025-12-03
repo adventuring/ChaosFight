@@ -68,9 +68,9 @@ end
 
           let temp6 = temp6 / 4
 
-          if temp6 & $80 then temp6 = 0
+          if temp6 & $80 then let temp6 = 0
 
-          if temp6 > 31 then temp6 = 31
+          if temp6 > 31 then let temp6 = 31
 
 
 

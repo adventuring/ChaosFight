@@ -52,7 +52,7 @@ end
           rem After console detection, we need to initialize:
           rem   - RAM clearing (all RAM set to 0)
           rem   - Stack initialization (SP = $FF)
-          rem   - Register initialization (A = X = Y = 0)
+          rem   - Register initialization (A = × = Y = 0)
           rem   - Decimal mode disabled (CLD)
           rem This routine is designed to be included directly
           rem here and will fall through to continue.

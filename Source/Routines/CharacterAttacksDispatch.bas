@@ -166,7 +166,7 @@ CEJB_ReadButton0
           rem Shared button read for Player 0 enhanced controllers (Button C/II)
           rem Returns: Far (return otherbank)
 
-          if !INPT0{7} then temp3 = 1
+          if !INPT0{7} then let temp3 = 1
 
           goto CEJB_Done
 
@@ -191,7 +191,7 @@ CEJB_ReadButton2
           rem Shared button read for Player 1 enhanced controllers (Button C/II)
           rem Returns: Far (return otherbank)
 
-          if (INPT2 & $80) = 0 then temp3 = 1
+          if (INPT2 & $80) = 0 then let temp3 = 1
 
           goto CEJB_Done
 

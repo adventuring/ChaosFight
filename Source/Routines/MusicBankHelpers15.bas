@@ -27,7 +27,7 @@ end
           if temp1 > Bank15MaxSongID then goto LSP15_InvalidSong
           rem Calculate compact index: index = songID
           let temp2 = temp1
-          rem Fix: Assign directly to high/low bytes instead of broken * 256 multiplication
+          rem Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
           let var40 = SongPointers2H[temp2]
           let songPointer = SongPointers2L[temp2]
           rem LoadSongPointerBank15 is called from StartMusic which is called cross-bank
@@ -62,7 +62,7 @@ end
           if temp1 > Bank15MaxSongID then let songPointer = 0 : return thisbank
           rem Calculate compact index: index = songID
           let temp2 = temp1
-          rem Fix: Assign directly to high/low bytes instead of broken * 256 multiplication
+          rem Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
           let var40 = SongPointers2SecondH[temp2]
           let songPointer = SongPointers2SecondL[temp2]
           rem LoadSongVoice1PointerBank15 is called from StartMusic which is called cross-bank

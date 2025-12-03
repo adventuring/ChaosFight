@@ -170,7 +170,7 @@ end
           let temp1 = 0
 
           rem Always check Game Select switch first (works with any controller)
-          if switchselect then temp1 = 1 : return thisbank
+          if switchselect then let temp1 = 1 : return thisbank
 
           rem Then check enhanced pause buttons for the specified player
           rem Joy2B+ Button III uses different registers than Button II/C
@@ -183,16 +183,16 @@ CEP_CheckPlayer1
           rem Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
           rem Returns: Near (return thisbank)
           rem Called same-bank from CheckEnhancedPause, so use return thisbank
-          if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then temp1 = 1
-          if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then temp1 = 1
+          if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = 1
+          if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
           return thisbank
 
 CEP_CheckPlayer2
           rem Player 2: Check Genesis Button C (INPT2) or Joy2B+ Button III (INPT3)
           rem Returns: Near (return thisbank)
           rem Called same-bank from CheckEnhancedPause, so use return thisbank
-          if controllerStatus & SetRightPortGenesis then if (INPT2 & $80) = 0 then temp1 = 1
-          if controllerStatus & SetRightPortJoy2bPlus then if (INPT3 & $80) = 0 then temp1 = 1
+          if controllerStatus & SetRightPortGenesis then if (INPT2 & $80) = 0 then let temp1 = 1
+          if controllerStatus & SetRightPortJoy2bPlus then if (INPT3 & $80) = 0 then let temp1 = 1
           return thisbank
           rem
           rem Color/B&W switch change detection (triggers controller re-detect)
@@ -224,7 +224,7 @@ end
           rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           rem Optimized: Check Color/B&W switch state change directly
           let temp6 = 0
-          if switchbw then temp6 = 1
+          if switchbw then let temp6 = 1
           if temp6 = colorBWPrevious_R then DoneSwitchChange
           gosub DetectPads bank13
 

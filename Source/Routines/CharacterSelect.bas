@@ -150,7 +150,7 @@ SelectStickLeft
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
 
-          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
 
           return thisbank
 
@@ -168,7 +168,7 @@ SelectStickRight
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = CharacterBernie
 
-          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
 
           return thisbank
 
@@ -250,7 +250,7 @@ HandleCharacterSelectPlayerInput
           if joy1right then gosub SelectStickRight
 
           rem Handle fire button (selection)
-          if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if joy1up then let temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
 
           gosub HandleCharacterSelectFire bank6
 
@@ -264,7 +264,7 @@ HCSPI_UseJoy0
           if joy0right then gosub SelectStickRight
 
           rem Handle fire button (selection)
-          if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if joy0up then let temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
 
           gosub HandleCharacterSelectFire bank6
 

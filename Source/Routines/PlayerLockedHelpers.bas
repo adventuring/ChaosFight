@@ -52,9 +52,9 @@ end
 
           rem Invalid index check (temp1 should be 0-3)
 
-          rem if temp1 < 0 then temp2 = 0 : return
+          rem if temp1 < 0 then let temp2 = 0 : return
 
-          if temp1 > 3 then temp2 = 0 : GPL_lockedState = temp2 : return otherbank
+          if temp1 > 3 then let temp2 = 0 : GPL_lockedState = temp2 : return otherbank
 
 
 
@@ -68,7 +68,7 @@ end
 
 GetPlayerLockedP0
 
-          temp2 = playerLocked & 3
+          let temp2 = playerLocked & 3
 
           GPL_lockedState = temp2
 
@@ -76,7 +76,7 @@ GetPlayerLockedP0
 
 GetPlayerLockedP1
 
-          temp2 = (playerLocked / 4) & 3
+          let temp2 = (playerLocked / 4) & 3
 
           GPL_lockedState = temp2
 
@@ -84,7 +84,7 @@ GetPlayerLockedP1
 
 GetPlayerLockedP2
 
-          temp2 = (playerLocked / 16) & 3
+          let temp2 = (playerLocked / 16) & 3
 
           GPL_lockedState = temp2
 
@@ -92,7 +92,7 @@ GetPlayerLockedP2
 
 GetPlayerLockedP3
 
-          temp2 = (playerLocked / 64) & 3
+          let temp2 = (playerLocked / 64) & 3
 
           GPL_lockedState = temp2
 
@@ -171,13 +171,13 @@ SetPlayerLockedApply
           rem Clear the 2 bits for this player and set the new value
           rem Returns: Far (return otherbank)
 
-          if temp3 = 0 then playerLocked = (playerLocked & 252) | temp2 : return otherbank
+          if temp3 = 0 then let playerLocked = (playerLocked & 252) | temp2 : return otherbank
 
-          if temp3 = 1 then playerLocked = (playerLocked & 243) | (temp2 * 4) : return otherbank
+          if temp3 = 1 then let playerLocked = (playerLocked & 243) | (temp2 * 4) : return otherbank
 
-          if temp3 = 2 then playerLocked = (playerLocked & 207) | (temp2 * 16) : return otherbank
+          if temp3 = 2 then let playerLocked = (playerLocked & 207) | (temp2 * 16) : return otherbank
 
-          if temp3 = 3 then playerLocked = (playerLocked & 63) | (temp2 * 64) : return otherbank
+          if temp3 = 3 then let playerLocked = (playerLocked & 63) | (temp2 * 64) : return otherbank
 
 
 

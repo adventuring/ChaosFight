@@ -16,7 +16,7 @@ end
           rem Output: Player moved closer to target, or at target
           rem Mutates: playerX[], playerY[], temp4-temp6, distanceUp_W
 
-          rem Update X axis (one pixel per frame)
+          rem Update × axis (one pixel per frame)
           let temp4 = playerX[temp1]
           if temp4 < temp2 then let playerX[temp1] = temp4 + 1
           rem Update Y axis (one pixel per frame)
@@ -79,8 +79,8 @@ end
           rem Output: temp6 = 1 if collision, 0 if clear
           let temp2 = playerX[temp1] - ScreenInsetX
           let temp2 = temp2 / 4
-          if temp2 > 31 then temp2 = 31
-          if temp2 & $80 then temp2 = 0
+          if temp2 > 31 then let temp2 = 31
+          if temp2 & $80 then let temp2 = 0
           let temp3 = originalPlayerY_R
           let temp5 = temp3 / 16
           let temp6 = 0

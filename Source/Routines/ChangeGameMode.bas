@@ -54,7 +54,8 @@ SetupPublisherPrelude
           rem Constraints: Must be colocated with ChangeGameMode
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          gosub BeginPublisherPrelude
+          rem CRITICAL: Must use bank14 specifier even though same-bank to match return otherbank
+          gosub BeginPublisherPrelude bank14
 
           return otherbank
 
@@ -74,7 +75,8 @@ SetupAuthorPrelude
           rem Constraints: Must be colocated with ChangeGameMode
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          gosub BeginAuthorPrelude
+          rem CRITICAL: Must use bank14 specifier even though same-bank to match return otherbank
+          gosub BeginAuthorPrelude bank14
 
           return otherbank
 
@@ -94,7 +96,8 @@ SetupTitle
           rem Constraints: Must be colocated with ChangeGameMode
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          gosub BeginTitleScreen
+          rem CRITICAL: Must use bank14 specifier even though same-bank to match return otherbank
+          gosub BeginTitleScreen bank14
 
           return otherbank
 
@@ -215,7 +218,8 @@ SetupAttract
           rem Constraints: Must be colocated with ChangeGameMode
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          gosub BeginAttractMode
+          rem CRITICAL: Must use bank14 specifier even though same-bank to match return otherbank
+          gosub BeginAttractMode bank14
 
           return otherbank
           rem ============================================================

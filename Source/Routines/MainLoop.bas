@@ -21,7 +21,11 @@ end
           rem Entry point for entire game loop
           rem Increment frame counter (used for frame budgeting and timing)
           let frame = frame + 1
-          if switchreset then gosub WarmStart bank13
+          rem CRITICAL: Skip reset check on first frame after cold start to prevent stack overflow
+          rem During cold start, switchreset may read as true, causing WarmStart to be called
+          rem before the stack is fully initialized, leading to stack overflow at $d:f2d4
+          rem Skip reset check when frame = 1 (first frame after cold start)
+          if frame > 1 then if switchreset then gosub WarmStart bank13
           ; fall through to continue
 
           rem Optimized: Use on/gosub for space efficiency

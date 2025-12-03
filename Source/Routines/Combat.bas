@@ -496,12 +496,12 @@ NextDefender
           return otherbank
 
 ProcessAllAttacks
-          rem Returns: Near (return thisbank) - called same-bank
+          rem Returns: Far (return otherbank)
           asm
 ProcessAllAttacks
 end
           rem Process all attacks for all players
-          rem Returns: Near (return thisbank) - called same-bank
+          rem Returns: Far (return otherbank) - called cross-bank from VblankHandlers
           rem Process all attacks for all players (orchestrates attack
           rem processing for all active players)
           rem

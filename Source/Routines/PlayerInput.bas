@@ -810,11 +810,11 @@ HUIEB_JumpProceed
 
           if temp2 >= 13 then return otherbank
 
-          rem Dispatch character jump via dispatcher (proper cross-bank handling)
+          rem Dispatch character jump via dispatcher (same-bank call)
 
           let temp4 = playerCharacter[temp1]
 
-          gosub DispatchCharacterJump bank10
+          gosub DispatchCharacterJump
 
 HUIEB_JumpDone
 

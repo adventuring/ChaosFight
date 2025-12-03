@@ -66,13 +66,6 @@ end
           asm
 ShamoneAttackEnd
             echo "// Bank 10: ", [ShamoneAttackEnd - ShamoneAttackStart]d, " bytes = ShamoneAttack"
-          asm
-DispatchCharacterJumpStart
-end
-#include "Source/Routines/DispatchCharacterJump.bas"
-          asm
-DispatchCharacterJumpEnd
-            echo "// Bank 10: ", [DispatchCharacterJumpEnd - DispatchCharacterJumpStart]d, " bytes = DispatchCharacterJump"
 RoboTitoJumpStart
 end
 #include "Source/Routines/RoboTitoJump.bas"

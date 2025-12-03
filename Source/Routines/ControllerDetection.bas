@@ -53,9 +53,16 @@ CDP_CheckGenesis
           rem   detected)
           rem If Quadtari was previously detected, skip all other
           rem detection
-          if temp1 & SetQuadtariDetected then CDP_MergeStatus
+          if temp1 & SetQuadtariDetected then goto CDP_MergeStatus
 
           rem Genesis controllers pull INPT0 and INPT1 HIGH when idle
           rem Method: Ground paddle ports via VBLANK, wait a frame,
           rem   check levels
           rem Detect Genesis/MegaDrive controllers using correct method
+          rem TODO: Implement Genesis detection logic
+          
+CDP_MergeStatus
+          rem Merge detected capabilities into controllerStatus
+          rem Returns: Far (return otherbank)
+          let controllerStatus = controllerStatus | temp2
+          return otherbank

@@ -21,7 +21,6 @@ end
           rem - playerVelocityX[0-3] = High byte of 8.8 fixed-point X
           rem   velocity (var20-var23, ZPRAM)
           rem - playerVelocityXL[0-3] = Low byte of 8.8 fixed-point X
-          rem
           rem   velocity (var24-var27, ZPRAM)
           rem - playerVelocityY[0-3] = High byte of 8.8 fixed-point Y
           rem   velocity (var28-var31, ZPRAM)

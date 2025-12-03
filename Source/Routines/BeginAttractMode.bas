@@ -35,10 +35,10 @@ end
           rem BeginAttractMode is called same-bank from SetupAttract (both in bank14)
           rem SetupAttract uses gosub (same-bank call, pushes 2 bytes), so return thisbank is correct
           rem SetupAttract itself returns with return thisbank to handle the cross-bank call to ChangeGameMode
-          return thisbank          rem Reset title screen timers for next cycle
+          return thisbank
+          rem Reset title screen timers for next cycle
           rem titleParadeTimer will be reset when we return to title
           rem   screen
           rem Note: Attract mode immediately transitions to Publisher
           rem   Prelude
           rem This is handled in the AttractMode loop
-

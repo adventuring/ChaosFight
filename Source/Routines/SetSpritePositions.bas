@@ -123,40 +123,49 @@ end
           return otherbank
 
 SetSpritePositionsRenderMissiles
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 SetSpritePositionsRenderMissiles
 end
           if (controllerStatus & SetPlayers34Active) = 0 then goto RenderMissilesTwoPlayer
+
           let temp6 = frame & 1
           if temp6 then goto RenderMissilesOddFrame
+
           let temp1 = 0
           goto RenderMissilePair
+
 RenderMissilesOddFrame
           let temp1 = 2
           goto RenderMissilePair
+
 RenderMissilesTwoPlayer
           let temp1 = 0
+
 RenderMissilePair
           gosub SetSpritePositionsRenderPair
+
           return thisbank
+
 SetSpritePositionsRenderPair
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 SetSpritePositionsRenderPair
 end
           gosub RenderMissileForParticipant
+
           let temp1 = temp1 + 1
           gosub RenderMissileForParticipant
-          return otherbank
+
+          return thisbank
 
 RenderMissileForParticipant
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 RenderMissileForParticipant
 end
           rem Render projectile or RoboTito stretch missile for a participant
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           rem
           rem Input: temp1 = participant index (0-3)
           rem
@@ -184,12 +193,12 @@ RMF_MissileActive
           gosub SSP_WriteMissileRegisters
           return otherbank
 SSP_WriteMissileRegisters
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 SSP_WriteMissileRegisters
 end
           rem Write missile registers for selected hardware slot
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           rem Input: temp5 = missile select (0=missile0, 1=missile1), RMF_participant, RMF_character
           rem Use unified helper to write missile registers
           rem Save values to temp variables for unified helper (temp2-temp4 already used by caller, use temp6)
@@ -201,23 +210,27 @@ end
           let temp3 = missileNUSIZ_R[RMF_participant]
           let temp4 = CharacterMissileHeights[RMF_character]
           gosub SSP_WriteMissileRegistersUnified
-          return otherbank
+
+          return thisbank
+
 SSP_WriteMissileRegistersUnified
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 SSP_WriteMissileRegistersUnified
 end
           rem Unified helper to write missile registers for either missile0 or missile1
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           rem Input: temp5 = missile select (0=missile0, 1=missile1)
           rem        temp6 = X position, temp2 = Y position, temp3 = NUSIZ, temp4 = height
           if temp5 = 0 then goto SSP_WriteUnified0
+
           missile1x = temp6
           missile1y = temp2
           ENAM1 = 1
           NUSIZ1 = temp3
           missile1height = temp4
-          return otherbank
+          return thisbank
+
 SSP_WriteUnified0
           missile0x = temp6
           missile0y = temp2
@@ -225,13 +238,14 @@ SSP_WriteUnified0
           NUSIZ0 = temp3
           missile0height = temp4
           return thisbank
+
 CopyParticipantSpritePosition
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 CopyParticipantSpritePosition
 end
           rem Copy participant position into multisprite hardware registers
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           rem
           rem Input: temp1 = participant index (2 or 3, also equals sprite index)
           rem
@@ -289,12 +303,12 @@ RRTM_ReadStretchHeight
           gosub SSP_WriteStretchMissile
           return otherbank
 SSP_WriteStretchMissile
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 SSP_WriteStretchMissile
 end
           rem Write stretch missile registers for selected hardware slot
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           rem Input: temp5 = missile select (0=missile0, 1=missile1), temp1 = participant, temp4 = height
           rem Use unified helper with stretch-specific parameters (NUSIZ=0, position from player)
           let temp6 = playerX[temp1]
@@ -302,4 +316,5 @@ end
           rem temp4 already set to height
           let temp3 = 0
           gosub SSP_WriteMissileRegistersUnified
-          return otherbank
+
+          return thisbank

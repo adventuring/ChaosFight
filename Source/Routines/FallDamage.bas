@@ -21,6 +21,7 @@ CheckFallDamage
 
           rem Check for fall damage immunity (Frooty, DragonOfStorms)
           if currentCharacter = CharacterFrooty then return otherbank
+
           if currentCharacter = CharacterDragonOfStorms then return otherbank
 
           rem Calculate safe fall velocity threshold
@@ -42,7 +43,7 @@ CheckFallDamage
           rem Fall damage is environmental, so guard does not protect
 
           rem Calculate fall damage
-          rem Base damage = (velocity - safe_velocity) x
+          rem Base damage = (velocity - safe_velocity) ×
           rem   base_damage_multiplier
           rem Base damage multiplier: 2 (so 1 extra velocity = 2 × base
           rem   damage)
@@ -55,14 +56,16 @@ CheckFallDamage
           rem Heavy characters take more damage for the same impact
           rem   velocity
           rem Formula: damage_multiplier = weight / 20 (average weight)
-          rem Using integer math: damage = damage x (weight / 20)
+          rem Using integer math: damage = damage × (weight / 20)
           rem Use lookup table for weight/20, then multiply by damage
           rem temp2 = weight / 20 from lookup table
           rem Apply weight-based damage multiplier (temp2 = 0-5)
           let temp2 = WeightDividedBy20[currentCharacter]
-          if temp2 = 0 then temp4 = 0 : goto WeightMultDone
+          if temp2 = 0 then let temp4 = 0 : goto WeightMultDone
+
           rem temp2 is 2-5: multiply temp4 by temp2 using compact ASM
           if temp2 = 1 then goto WeightMultDone
+
           asm
             lda temp4
             ldx temp2
@@ -98,17 +101,18 @@ mult5:      sta temp3
             sta temp4
 multdone:
 end
+
 WeightMultDone
-          rem temp4 = damage x (weight / 20) (weight-based multiplier applied)
+          rem temp4 = damage × (weight / 20) (weight-based multiplier applied)
           rem Returns: Far (return otherbank)
 
           rem Apply damage reduction (NinjishGuy, RoboTito: half damage)
-          if currentCharacter = CharacterNinjishGuy then temp4 = temp4 / 2
-          if currentCharacter = CharacterRoboTito then temp4 = temp4 / 2
+          if currentCharacter = CharacterNinjishGuy then let temp4 = temp4 / 2
+
+          if currentCharacter = CharacterRoboTito then let temp4 = temp4 / 2
 
           rem Cap maximum fall damage at 50
-
-          if temp4 > 50 then temp4 = 50
+          if temp4 > 50 then let temp4 = 50
 
           rem Apply fall damage (byte-safe clamp)
           rem Use oldHealthValue for byte-safe clamp check
@@ -118,8 +122,10 @@ WeightMultDone
 
           rem Set recovery frames (damage/2, clamped 10-30)
           let temp2 = temp4 / 2
-          if temp2 < 10 then temp2 = 10
-          if temp2 > 30 then temp2 = 30
+          if temp2 < 10 then let temp2 = 10
+
+          if temp2 > 30 then let temp2 = 30
+
           let playerRecoveryFrames[currentPlayer] = temp2
 
           rem Synchronize playerState bit 3 with recovery frames
@@ -134,6 +140,7 @@ WeightMultDone
           gosub PlaySoundEffect bank15
 
           return otherbank
+
 CheckBernieStun
           rem Issue #1178: Bernie post-fall stun animation
           rem Returns: Far (return otherbank)
@@ -157,6 +164,7 @@ CheckBernieStun
           let temp3 = SafeFallVelocityThresholds[CharacterBernie]
           rem Safe landing, no stun needed
           if temp2 <= temp3 then return otherbank
+
           rem Fall velocity exceeds threshold - trigger stun
           rem Set stun timer to 1 second (frame-rate independent: 60fps NTSC, 50fps PAL/SECAM)
           rem Set recovery flag to prevent movement during stun
@@ -167,6 +175,7 @@ CheckBernieStun
           rem Animation state 8 (Fallen down) << 4 = 128
           let playerState[currentPlayer] = temp3 | ActionFallenDownShifted
           return otherbank
+
 FallDamageApplyGravity
           rem
           rem Returns: Far (return otherbank)
@@ -200,18 +209,20 @@ FallDamageApplyGravity
 
           rem Check for no-gravity characters (Frooty, DragonOfStorms)
           if currentCharacter = CharacterFrooty then return otherbank
+
           if currentCharacter = CharacterDragonOfStorms then return otherbank
 
           rem Apply gravity (default 2, Harpy 1)
           let temp6 = 2
-          if currentCharacter = CharacterHarpy then temp6 = 1
+          if currentCharacter = CharacterHarpy then let temp6 = 1
 
           rem Apply gravity acceleration
           let temp2 = temp2 + temp6
 
-          if temp2 > TerminalVelocity then temp2 = TerminalVelocity
+          if temp2 > TerminalVelocity then let temp2 = TerminalVelocity
 
           return otherbank
+
 CheckGroundCollision
           rem
           rem Returns: Far (return otherbank)
@@ -253,11 +264,12 @@ CheckGroundCollision
           let temp3 = playerY[currentPlayer]
 
           if temp3 < 176 then return otherbank
+
           let playerY[currentPlayer] = 176
           if temp2 <= 0 then return otherbank
+
           goto CheckFallDamage
 
-          return otherbank
 HandleFrootyVertical
           rem
           rem Returns: Far (return otherbank)
@@ -274,7 +286,9 @@ HandleFrootyVertical
           rem Check character type to confirm
           let currentCharacter = playerCharacter[currentPlayer]
           if currentCharacter = CharacterFrooty then goto FrootyFallDamage
+
           return otherbank
+
 FrootyFallDamage
           rem Frooty fall damage
           rem Returns: Far (return otherbank)
@@ -296,9 +310,11 @@ FrootyFallDamage
           rem Reuse oldHealthValue for byte-safe clamp check (not
           rem actually health, but same pattern)
           if playerY[currentPlayer] > oldHealthValue then let playerY[currentPlayer] = 0
+
           if playerY[currentPlayer] > 176 then let playerY[currentPlayer] = 176
 
           return otherbank
+
 HandleHarpySwoopAttack
           rem
           rem Returns: Far (return otherbank)
@@ -316,7 +332,9 @@ HandleHarpySwoopAttack
           rem Check character type to confirm
           let currentCharacter = playerCharacter[currentPlayer]
           if currentCharacter = CharacterHarpy then goto HarpyDive
+
           return otherbank
+
 HarpyDive
           rem Harpy dive
           rem Returns: Far (return otherbank)
@@ -329,13 +347,16 @@ HarpyDive
           rem Vertical: 4 pixels/frame (downward)
           rem Facing left: set negative momentum (252 = -4 in signed
           if temp6 = 0 then goto SetHorizontalMomentumRight
+
           rem   8-bit)
           let playerVelocityX[currentPlayer] = 252
           goto SetVerticalMomentum
+
 SetHorizontalMomentumRight
           rem Facing right: set positive momentum
           rem Returns: Far (return otherbank)
           let playerVelocityX[currentPlayer] = 4
+
 SetVerticalMomentum
           rem Set downward momentum (using temp variable for now)
           rem Returns: Far (return otherbank)
@@ -357,6 +378,7 @@ SetVerticalMomentum
           gosub SpawnMissile bank7
 
           return otherbank
+
 DivideBy20
           rem
           rem Returns: Far (return otherbank)
@@ -403,10 +425,13 @@ DivideBy100
           rem
           rem OUTPUT: temp2 = quotient (0, 1, or 2)
           rem Fast approximation for values 0-255
-          if temp2 > 200 then temp2 = 2 : return otherbank
-          if temp2 > 100 then temp2 = 1 : return otherbank
+          if temp2 > 200 then let temp2 = 2 : return otherbank
+
+          if temp2 > 100 then let temp2 = 1 : return otherbank
+
           let temp2 = 0
           return otherbank
+
 CalculateSafeFallDistance
           rem
           rem Returns: Far (return otherbank)
@@ -426,15 +451,20 @@ CalculateSafeFallDistance
 
           rem Check for fall damage immunity
           if currentCharacter = CharacterBernie then goto SetInfiniteFallDistance
+
           if currentCharacter = CharacterRoboTito then goto SetInfiniteFallDistance
+
           if currentCharacter = CharacterFrooty then goto SetInfiniteFallDistance
+
           if currentCharacter = CharacterDragonOfStorms then goto SetInfiniteFallDistance
+
           goto CalculateFallDistanceNormal
+
 SetInfiniteFallDistance
           let temp2 = InfiniteFallDistance
           return otherbank
-CalculateFallDistanceNormal
 
+CalculateFallDistanceNormal
           let temp3 = SafeFallVelocityThresholds[currentCharacter]
           let temp4 = temp3 - 1
           let temp2 = SquareTable[temp4]
@@ -442,7 +472,6 @@ CalculateFallDistanceNormal
             lsr temp2
             lsr temp2
 end
-          if currentCharacter = CharacterNinjishGuy then temp2 = temp2 * 2
+          if currentCharacter = CharacterNinjishGuy then let temp2 = temp2 * 2
 
           return otherbank
-

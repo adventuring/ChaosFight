@@ -83,11 +83,11 @@ end
           asm
 IsPlayerAliveEnd
             echo "// Bank 13: ", [IsPlayerAliveEnd - IsPlayerAliveStart]d, " bytes = IsPlayerAlive"
-CharacterControlsDownStart
+CharacterDownHandlersStart
 end
-#include "Source/Routines/CharacterControlsDown.bas"
+#include "Source/Routines/CharacterDownHandlers.bas"
           asm
-CharacterControlsDownEnd
-            echo "// Bank 13: ", [CharacterControlsDownEnd - CharacterControlsDownStart]d, " bytes = CharacterControlsDown"
+CharacterDownHandlersEnd
+            echo "// Bank 13: ", [CharacterDownHandlersEnd - CharacterDownHandlersStart]d, " bytes = CharacterDownHandlers"
 Bank13CodeEnds
 end

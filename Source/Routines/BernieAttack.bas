@@ -2,16 +2,11 @@
 
           rem Copyright © 2025 Bruce-Robert Pocock.
 
-
-
 BernieAttack
           rem Returns: Far (return otherbank)
-
           asm
 
 BernieAttack
-
-
 
 end
 
@@ -98,24 +93,15 @@ end
 
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
 
-          gosub SpawnMissile bank7
+          rem Attack facing direction
+          gosub PerformGenericAttack bank7
 
-          rem Flip facing (XOR with bit 0)
-
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
-
-          rem Attack in opposite direction (inline former PerformMeleeAttack)
-
+          rem Attack opposite direction (toggle facing)
           let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
 
-          gosub SpawnMissile bank7
+          gosub PerformGenericAttack bank7
 
-          rem Restore original facing (XOR again to flip back)
-
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
-
-          let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
+          rem Restore original facing direction
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | temp3
 
           return otherbank
-
-

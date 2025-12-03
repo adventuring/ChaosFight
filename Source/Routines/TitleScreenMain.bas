@@ -75,12 +75,16 @@ end
           rem Check standard controllers (Player 1 & 2)
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then TitleScreenComplete
+
           if joy1fire then TitleScreenComplete
 
           rem Check Quadtari controllers (Players 3 & 4 if active)
           if 0 = (controllerStatus & SetQuadtariDetected) then TitleDoneQuad
+
           if !INPT0{7} then TitleScreenComplete
+
           if !INPT2{7} then TitleScreenComplete
+
 TitleDoneQuad
           rem Skip Quadtari controller check (not in 4-player mode)
           rem Returns: Far (return otherbank)
@@ -102,8 +106,8 @@ TitleDoneQuad
           rem CRITICAL: Do NOT call DrawTitleScreen here - MainLoopDrawScreen (MainLoop.bas line 139)
           rem handles per-frame drawing. Calling it here would cause stack overflow (16-byte limit).
           rem TitleScreenMain is always called via MainLoop, so MainLoopDrawScreen will handle drawing.
-
           return otherbank
+
 TitleScreenComplete
           rem Transition to character select
           rem Returns: Far (return otherbank)
@@ -120,4 +124,5 @@ TitleScreenComplete
           rem Constraints: Must be colocated with TitleScreenMain
           let gameMode = ModeCharacterSelect
           gosub ChangeGameMode bank14
+
           return otherbank

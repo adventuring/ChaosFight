@@ -40,7 +40,7 @@ SelectDrawScreenLoop
           return otherbank
 
 SelectRenderPlayerPreview
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 SelectRenderPlayerPreview
 end
@@ -49,16 +49,21 @@ end
           rem Called same-bank from SelectDrawScreenLoop, so use return thisbank
           rem Optimized: Combined duplicate conditionals, early return thisbank for common case
           gosub PlayerPreviewSetPosition bank6
+
           gosub RenderPlayerPreview bank6
+
           let temp1 = currentPlayer
           gosub GetPlayerLocked bank6
+
           let temp5 = temp2
-          rem Unlocked state (most common) - set color and return otherbank early
-          if !temp5 then gosub SelectSetPlayerColorUnlocked : return otherbank
-          rem Handicap state - set dimmed color and return otherbank
-          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return otherbank
+          rem Unlocked state (most common) - set color and return thisbank early
+          if !temp5 then gosub SelectSetPlayerColorUnlocked : return thisbank
+
+          rem Handicap state - set dimmed color and return thisbank
+          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return thisbank
+
           rem Normal locked state - color already set by RenderPlayerPreview
-          return otherbank
+          return thisbank
 PlayerPreviewSetPosition
           rem Returns: Far (return otherbank)
           asm
@@ -162,7 +167,7 @@ SelectApplyPlayerColorP3
           return thisbank
 
 SelectSetPlayerColorUnlocked
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 SelectSetPlayerColorUnlocked
 end
@@ -171,19 +176,22 @@ end
           rem Called same-bank from SelectRenderPlayerPreview, so use return thisbank
           let temp2 = ColGrey(14)
           gosub SelectApplyPlayerColor
-          return otherbank
+
+          return thisbank
 
 SelectSetPlayerColorHandicap
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 SelectSetPlayerColorHandicap
 
 end
           rem Override sprite color to indicate handicap lock (dim player color)
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
+          rem Called same-bank from SelectRenderPlayerPreview, so use return thisbank
           let temp2 = SelectPlayerColorHandicap[currentPlayer]
           gosub SelectApplyPlayerColor
-          return otherbank
+
+          return thisbank
 
 SelectUpdateAnimations
           rem Returns: Far (return otherbank)
@@ -204,10 +212,10 @@ SelectUpdateAnimationLoop
 SelectUpdateAnimationNext
           let temp1 = temp1 + 1
           if temp1 < temp6 then goto SelectUpdateAnimationLoop
-          return thisbank
+          return otherbank
 
 SelectUpdatePlayerAnimation
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 SelectUpdatePlayerAnimation
 
@@ -232,11 +240,12 @@ end
           rem Constraints: Admin-only usage sharing SCRAM with game mode
           let temp2 = characterSelectPlayerAnimationTimer_R[temp1] + 1
           let characterSelectPlayerAnimationTimer_W[temp1] = temp2
-          if temp2 < AnimationFrameDelay then return otherbank
+          if temp2 < AnimationFrameDelay then return thisbank
+
           let characterSelectPlayerAnimationTimer_W[temp1] = 0
           let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
           let characterSelectPlayerAnimationFrame_W[temp1] = temp3
-          return otherbank
+          return thisbank
 CharacterSelectCheckControllerRescan
           rem Returns: Far (return otherbank)
           asm
@@ -253,6 +262,6 @@ end
 CharacterSelectDoRescan
           gosub DetectPads bank13
 CharacterSelectRescanDone
-          return thisbank
+          return otherbank
 
 

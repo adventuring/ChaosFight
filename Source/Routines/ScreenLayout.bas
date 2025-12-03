@@ -15,6 +15,6 @@ end
           rem
           rem Called Routines: None
           rem Constraints: Called for all screen layouts
-          pfrowheight = ScreenPfRowHeight
-          pfrows = ScreenPfRows
+          let pfrowheight = ScreenPfRowHeight
+          let pfrows = ScreenPfRows
           return otherbank

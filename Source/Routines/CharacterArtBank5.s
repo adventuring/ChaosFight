@@ -182,10 +182,10 @@ SetPlayerCharacterArtBank5
           ; Get base Frames pointer for character
           ; Restore bank-relative character index from Y (we saved it at the start)
           ; But wait, Y was overwritten with FrameMap index. We need to recalculate.
-          ; Actually, we can't recalculate easily. Let me use temp4 to save it.
+          ; Actually, we can’t recalculate easily. Let me use temp4 to save it.
           ; Actually, we already used temp4 for FrameMap high byte. Let me use a different approach.
-          ; We'll save it in temp4 after we're done with FrameMap high byte.
-          lda temp6           ; Reload bank-relative character index (it's still in temp6)
+          ; We’ll save it in temp4 after we’re done with FrameMap high byte.
+          lda temp6           ; Reload bank-relative character index (it’s still in temp6)
           tay                 ; Use as index
           lda CharacterSpriteLBank5,y
           sta temp4           ; Store Frames low byte in temp4

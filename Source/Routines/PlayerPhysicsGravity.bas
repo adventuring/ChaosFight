@@ -22,7 +22,6 @@ end
           rem playerVelocityY[0-3] - Vertical velocity (8.8 fixed-point)
           rem playerRecoveryFrames[0-3] - Recovery (hitstun) frames
           rem   remaining
-          rem
           rem   QuadtariDetected - Whether 4-player mode active
           rem   playerCharacter[] - Player 3/4 selections
           rem   playerCharacter[0-3] - Character type indices
@@ -38,7 +37,6 @@ end
           rem   (0.05px/frame²), TerminalVelocity (8px/frame)
           rem Applies gravity acceleration to jumping players and
           rem handles ground detection
-          rem
           rem Input: playerCharacter[] (global array) = character types,
           rem playerState[] (global array) = player states, playerX[],
           rem playerY[] (global arrays) = player positions,
@@ -51,10 +49,8 @@ end
           rem GravityReduced, TerminalVelocity (global constants) =
           rem gravity constants, characterSpecialAbility_R[] (global SCRAM
           rem array) = stretch permission (for RoboTito)
-          rem
           rem Output: Gravity applied to jumping players, ground
           rem detection performed, players clamped to ground on landing
-          rem
           rem Mutates: temp1-temp6 (used for calculations),
           rem playerVelocityY[], playerVelocityYL[] (global arrays) =
           rem vertical velocity, playerY[] (global array) = player Y
@@ -67,14 +63,12 @@ end
           rem missile heights (via PAG_SetRoboTitoStretchPermission),
           rem rowYPosition, rowCounter (global) = calculation
           rem temporaries
-          rem
           rem Called Routines: AddVelocitySubpixelY (bank8) - adds
           rem gravity to vertical velocity,
           rem CCJ_ConvertPlayerXToPlayfieldColumn (bank13) - converts player
           rem X to playfield column, Y divided by 16 (pfrowheight is always 16)
           rem row height, PAG_SetRoboTitoStretchPermission - sets
           rem RoboTito stretch permission on landing
-          rem
           rem Constraints: Frooty (8) and Dragon of Storms (2) skip
           rem gravity entirely. RoboTito (13) skips gravity when latched
           rem to ceiling
@@ -85,6 +79,7 @@ GravityLoop
           rem Quadtari)
           if temp1 >= 2 then goto GravityPlayerCheck
           goto GravityCheckCharacter
+
 GravityPlayerCheck
           rem Players 0-1 always active
           if (controllerStatus & SetQuadtariDetected) = 0 then goto GravityNextPlayer
@@ -93,25 +88,19 @@ GravityPlayerCheck
 
 GravityCheckCharacter
           let temp6 = playerCharacter[temp1]
-
           rem Skip gravity for characters that do not have it
           rem Frooty (8): Permanent flight, no gravity
           rem Dragon of Storms (2): Permanent flight, no gravity
           if temp6 = CharacterFrooty then goto GravityNextPlayer
           rem (hovering/flying like Frooty)
           if temp6 = CharacterDragonOfStorms then goto GravityNextPlayer
-
           rem RoboTito (13): Skip gravity when latched to ceiling
           if temp6 = CharacterRoboTito && (characterStateFlags_R[temp1] & 1) then goto GravityNextPlayer
-
           rem If NOT jumping, skip gravity (player is on ground)
-
           if (playerState[temp1] & PlayerStateBitJumping) = 0 then goto GravityNextPlayer
-
           rem Vertical velocity is persistently tracked using playerVelocityY[]
           rem and playerVelocityYL[] arrays (8.8 fixed-point format).
           rem Gravity acceleration is applied to the stored velocity each frame.
-
           rem Determine gravity acceleration rate based on character
           rem   (8.8 fixed-point subpixel)
           rem Uses tunable constants from Constants.bas for easy
@@ -120,26 +109,22 @@ GravityCheckCharacter
           rem Default gravity acceleration (normal rate)
           rem Harpy: reduced gravity rate
           if temp6 = CharacterHarpy then let gravityRate = GravityReduced
-
           rem Apply gravity acceleration to velocity subpixel part
           rem Use optimized inline addition instead of subroutine call
           let subpixelAccumulator = playerVelocityYL[temp1] + gravityRate
           let playerVelocityYL[temp1] = temp2
           if temp3 > 0 then let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
-
           rem Apply terminal velocity cap (prevents infinite
           rem   acceleration)
           rem Check if velocity exceeds terminal velocity (positive =
           rem downward)
           if playerVelocityY[temp1] > TerminalVelocity then let playerVelocityY[temp1] = TerminalVelocity : let playerVelocityYL[temp1] = 0
-
           rem Check playfield collision for ground detection (downward)
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
           gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
           rem Save playfield column (temp2 will be overwritten)
           let temp6 = temp2
-
           rem Calculate row where player feet are (bottom of sprite)
           rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
           let temp3 = playerY[temp1] + PlayerSpriteHeight
@@ -153,18 +138,15 @@ GravityCheckCharacter
 end
           rem feetRow = row where feet are
           let temp4 = temp2
-
           rem Check if there is a playfield pixel in the row below the
           rem   feet
           rem If feet are in row N, check row N+1 for ground
           rem Feet are at or below bottom of playfield, continue falling
           if temp4 >= pfrows then goto GravityNextPlayer
-
           rem rowBelow = row below feet
           let temp5 = temp4 + 1
           rem Beyond playfield bounds, check if at bottom
           if temp5 >= pfrows then goto GravityCheckBottom
-
           rem Check if playfield pixel exists in row below feet
           rem Track pfread result (1 = ground pixel set)
           let temp3 = 0
@@ -179,59 +161,51 @@ end
           rem Radish Goblin uses bounce movement system, skip standard landing
           if temp6 = CharacterRadishGoblin then goto GravityNextPlayer
           rem Standard landing logic for all other characters
-          
           rem Zero Y velocity (stop falling)
           let playerVelocityY[temp1] = 0
           let playerVelocityYL[temp1] = 0
-
           rem Calculate Y position for top of ground row using repeated
           rem   addition
           rem Loop to add pfrowheight to rowYPosition, rowBelow times
           let rowYPosition = 0
           let rowCounter = temp5
           if rowCounter = 0 then goto GravityRowCalcDone
+
 GravityRowCalcLoop
           let rowYPosition = rowYPosition + pfrowheight
           let rowCounter = rowCounter - 1
           if rowCounter > 0 then goto GravityRowCalcLoop
+
 GravityRowCalcDone
-          rem rowYPosition now contains rowBelow x pfrowheight (Y
+          rem rowYPosition now contains rowBelow × pfrowheight (Y
           rem   position of top of ground row)
           rem Clamp playerY so feet are at top of ground row
           let playerY[temp1] = rowYPosition - PlayerSpriteHeight
           rem Also sync subpixel position
           let playerSubpixelY_W[temp1] = playerY[temp1]
           let playerSubpixelY_WL[temp1] = 0
-
           rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
           let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitJumping)
           rem Clear bit 2 (jumping flag)
-
           rem Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
           if temp6 = 3 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
-
           rem If RoboTito, set stretch permission on landing
-
           if temp6 = CharacterRoboTito then goto PAG_SetRoboTitoStretchPermission
           goto GravityNextPlayer
 
 PAG_SetRoboTitoStretchPermission
           rem Set RoboTito stretch permission on landing (allows
           rem stretching again)
-          rem
           rem Input: temp1 (temp1) = player index (0-3),
           rem characterSpecialAbility_R[] (global SCRAM array) = stretch
           rem permission (for RoboTito)
-          rem
           rem Output: characterSpecialAbility_W[] (global SCRAM array) =
           rem stretch permission updated, missileStretchHeight_W[] (global
           rem SCRAM array) = stretch missile height cleared
-          rem
           rem Mutates: temp1-temp2 (used for calculations),
           rem characterSpecialAbility_W[] (global SCRAM array) = stretch
           rem permission, missileStretchHeight_W[] (global SCRAM array) =
           rem stretch missile heights
-          rem
           rem Called Routines: None
           rem Constraints: Only called for RoboTito character on landing
           rem Set stretch permission for this player (simple array assignment)
@@ -239,40 +213,38 @@ PAG_SetRoboTitoStretchPermission
           let characterSpecialAbility_W[temp1] = 1
           rem Clear stretch missile height on landing (not stretching)
           let missileStretchHeight_W[temp1] = 0
-          return thisbank
+          return otherbank
+
 GravityCheckBottom
           rem At bottom of playfield - treat as ground if feet are at
           rem bottom row
           rem Not at bottom row yet
           if temp4 < pfrows - 1 then goto GravityNextPlayer
-
           rem Skip standard landing logic for Radish Goblin (bounce system handles it)
           rem Radish Goblin uses bounce movement system, skip standard landing
           if temp6 = CharacterRadishGoblin then goto GravityNextPlayer
-
           rem Bottom row is always ground - clamp to bottom
-          rem Calculate (pfrows - 1) x pfrowheight using repeated
+          rem Calculate (pfrows - 1) × pfrowheight using repeated
           rem   addition
           let rowYPosition = 0
           let rowCounter = pfrows - 1
           if rowCounter = 0 then goto GravityBottomCalcDone
+
 GravityBottomCalcLoop
           let rowYPosition = rowYPosition + pfrowheight
           let rowCounter = rowCounter - 1
           if rowCounter > 0 then goto GravityBottomCalcLoop
+
 GravityBottomCalcDone
           let playerY[temp1] = rowYPosition - PlayerSpriteHeight
           rem Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
           let playerState[temp1] = playerState[temp1] & ($FF ^ 4)
           if temp6 = 3 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
-
           rem If RoboTito, set stretch permission on landing at bottom
-
           if temp6 = CharacterRoboTito then goto PAG_SetRoboTitoStretchPermission
 
 GravityNextPlayer
           rem Move to next player
           let temp1 = temp1 + 1
           if temp1 < 4 then goto GravityLoop
-
-          return thisbank
+          return otherbank

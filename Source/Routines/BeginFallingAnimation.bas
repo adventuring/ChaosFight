@@ -56,19 +56,21 @@ end
           let activePlayers = 0
 
           rem Set game screen layout (32×8 for playfield scanning) - inlined
-          pfrowheight = ScreenPfRowHeight
-          pfrows = ScreenPfRows
+          let pfrowheight = ScreenPfRowHeight
+          let pfrows = ScreenPfRows
 
           rem Background: black (COLUBK starts black, no need to set)
 
           rem Initialize player positions in quadrants
           rem Player 1: Top-left quadrant (unless NO)
           if playerCharacter[0] = NoCharacter then DonePlayer1Init
+
           let playerX[0] = 16
           rem Top-left X position
           let playerY[0] = 8
           rem Top-left Y position (near top)
           let activePlayers = activePlayers + 1
+
 DonePlayer1Init
           rem Player 1 initialization complete (skipped if not active)
           rem Returns: Far (return otherbank)
@@ -84,13 +86,14 @@ DonePlayer1Init
           rem Constraints: Must be colocated with BeginFallingAnimation
 
           rem Player 2: Top-right quadrant (unless NO)
-
           if playerCharacter[1] = NoCharacter then DonePlayer2Init
+
           let playerX[1] = 144
           rem Top-right X position
           let playerY[1] = 8
           rem Top-right Y position (near top)
           let activePlayers = activePlayers + 1
+
 DonePlayer2Init
           rem Player 2 initialization complete (skipped if not active)
           rem Returns: Far (return otherbank)
@@ -106,14 +109,16 @@ DonePlayer2Init
           rem Constraints: Must be colocated with BeginFallingAnimation
 
           rem Player 3: Bottom-left quadrant (if Quadtari and not NO)
-
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer3Init
+
           if playerCharacter[2] = NoCharacter then DonePlayer3Init
+
           let playerX[2] = 16
           rem Bottom-left X position
           let playerY[2] = 80
           rem Bottom-left Y position (near bottom)
           let activePlayers = activePlayers + 1
+
 DonePlayer3Init
           rem Player 3 initialization complete (skipped if not in
           rem Returns: Far (return otherbank)
@@ -130,19 +135,20 @@ DonePlayer3Init
           rem Constraints: Must be colocated with BeginFallingAnimation
 
           rem Player 4: Bottom-right quadrant (if Quadtari and not NO)
-
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer4Init
+
           if playerCharacter[3] = NoCharacter then DonePlayer4Init
+
           let playerX[3] = 144
           rem Bottom-right X position
           let playerY[3] = 80
           rem Bottom-right Y position (near bottom)
           let activePlayers = activePlayers + 1
+
 DonePlayer4Init
+          rem Player 4 initialization complete (skipped if not in
           rem Returns: Far (return otherbank)
-          return otherbank          rem Player 4 initialization complete (skipped if not in
           rem 4-player mode or not active)
-          rem Returns: Far (return otherbank)
           rem
           rem Input: None (label only, no execution)
           rem
@@ -153,6 +159,4 @@ DonePlayer4Init
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with BeginFallingAnimation
-
-
-
+          return otherbank

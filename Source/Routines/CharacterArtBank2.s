@@ -125,7 +125,9 @@ LocateCharacterArtBank2
           adc temp5           ; Add high byte of offset to high byte of base (with carry)
           sta temp5           ; Store result high byte
 
-          rts
+          ; CRITICAL: This routine may be called cross-bank, so must use BS_return
+          ; instead of rts to properly decode encoded return address
+          jmp BS_return
 
 ; =================================================================
 ; SET PLAYER CHARACTER ART - BANK 2

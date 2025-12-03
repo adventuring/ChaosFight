@@ -49,16 +49,18 @@ end
           if fallFrame > 3 then let fallFrame = 0
 
           rem Move Player 1 from quadrant to target (if active)
-
           rem playerIndex = 0 (player index), targetX = target X,
           if playerCharacter[0] = NoCharacter then DonePlayer1Move
+
           rem targetY = target Y (24)
           let temp1 = 0
           rem Check if 4-player mode for target X
           if controllerStatus & SetQuadtariDetected then Player1Target4P
+
           rem 2-player mode: target X = 53
           let temp2 = 53
           goto Player1TargetDone
+
 Player1Target4P
           rem Set Player 1 target X for 4-player mode
           rem Returns: Far (return otherbank)
@@ -75,6 +77,7 @@ Player1Target4P
           rem Player1TargetDone
           rem 4-player mode: target X = 32
           let temp2 = 32
+
 Player1TargetDone
           rem Player 1 target calculation complete
           rem Returns: Far (return otherbank)
@@ -89,7 +92,9 @@ Player1TargetDone
           rem Constraints: Must be colocated with FallingAnimation1
           let temp3 = 24
           gosub MovePlayerToTarget bank6
+
           if temp4 then let fallComplete = fallComplete + 1
+
 DonePlayer1Move
           rem reached = 1 if reached target
           rem Returns: Far (return otherbank)
@@ -106,14 +111,16 @@ DonePlayer1Move
           rem Constraints: Must be colocated with FallingAnimation1
 
           rem Move Player 2 from quadrant to target (if active)
-
           if playerCharacter[1] = NoCharacter then DonePlayer2Move
+
           rem Check if 4-player mode for target X
           let temp1 = 1
           if controllerStatus & SetQuadtariDetected then Player2Target4P
+
           rem 2-player mode: target X = 107
           let temp2 = 107
           goto Player2TargetDone
+
 Player2Target4P
           rem Set Player 2 target X for 4-player mode
           rem Returns: Far (return otherbank)
@@ -130,6 +137,7 @@ Player2Target4P
           rem Player2TargetDone
           rem 4-player mode: target X = 128
           let temp2 = 128
+
 Player2TargetDone
           rem Player 2 target calculation complete
           rem Returns: Far (return otherbank)
@@ -144,7 +152,9 @@ Player2TargetDone
           rem Constraints: Must be colocated with FallingAnimation1
           let temp3 = 24
           gosub MovePlayerToTarget bank6
+
           if temp4 then let fallComplete = fallComplete + 1
+
 DonePlayer2Move
           rem Player 2 movement complete (skipped if not active)
           rem Returns: Far (return otherbank)
@@ -160,15 +170,18 @@ DonePlayer2Move
           rem Constraints: Must be colocated with FallingAnimation1
 
           rem Move Player 3 from quadrant to target (if active)
-
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer3Move
+
           if playerCharacter[2] = NoCharacter then DonePlayer3Move
+
           let temp1 = 2
           rem 4-player mode: target X = 64
           let temp2 = 64
           let temp3 = 24
           gosub MovePlayerToTarget bank6
+
           if temp4 then let fallComplete = fallComplete + 1
+
 DonePlayer3Move
           rem Player 3 movement complete (skipped if not in 4-player
           rem Returns: Far (return otherbank)
@@ -185,15 +198,18 @@ DonePlayer3Move
           rem Constraints: Must be colocated with FallingAnimation1
 
           rem Move Player 4 from quadrant to target (if active)
-
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer4Move
+
           if playerCharacter[3] = NoCharacter then DonePlayer4Move
+
           let temp1 = 3
           rem 4-player mode: target X = 96
           let temp2 = 96
           let temp3 = 24
           gosub MovePlayerToTarget bank6
+
           if temp4 then let fallComplete = fallComplete + 1
+
 DonePlayer4Move
           rem Player 4 movement complete (skipped if not in 4-player
           rem Returns: Far (return otherbank)
@@ -210,7 +226,6 @@ DonePlayer4Move
           rem Constraints: Must be colocated with FallingAnimation1
 
           rem Check if all players have reached their targets
-
           if fallComplete >= activePlayers then FallingComplete1
 
           rem Set sprite positions and load character sprites
@@ -218,10 +233,11 @@ DonePlayer4Move
           rem Use dynamic sprite setting instead of relying on player
           rem   declarations
           gosub SetSpritePositions bank6
+
           gosub SetPlayerSprites bank6
 
           rem drawscreen called by MainLoop
-          return otherbank          goto FallingAnimation1 bank11
+          return otherbank
 
 FallingComplete1
           rem All players have reached row 2 positions
@@ -245,7 +261,9 @@ FallingComplete1
           rem Note: BeginGameLoop will use final positions from falling
           rem   animation
           gosub BeginGameLoop bank11
+
           rem Transition to Game Mode
           let gameMode = ModeGame
           gosub ChangeGameMode bank14
+
           return otherbank

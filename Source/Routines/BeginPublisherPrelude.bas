@@ -57,4 +57,4 @@ end
           rem Window values are set once during setup, not every frame
           gosub SetPublisherWindowValues bank14
 
-          return thisbank
+          return otherbank

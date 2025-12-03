@@ -42,21 +42,15 @@
 
           rem   - Must be included in bank 16 to preserve kernel locality
 
-
-
           rem Glyph lookup table: sprite type (0-2) -> glyph index
-
           data GlyphLookupTable
 
             GlyphQuestionMark, GlyphCPU, GlyphNo
 
 end
 
-
-
 SetPlayerGlyph
           rem Returns: Far (return otherbank)
-
           asm
 
 SetPlayerGlyph
@@ -75,26 +69,20 @@ end
           rem Otherwise assume temp1 already contains glyph index
 
           rem temp4 is 0-2, so this is sprite type lookup mode
-
           if temp4 > 2 then goto SetPlayerGlyphDirectMode
 
           rem Look up glyph index from table (overwrites temp1)
-
-          temp1 = GlyphLookupTable[temp4]
+          let temp1 = GlyphLookupTable[temp4]
 
 SetPlayerGlyphDirectMode
 
           rem Calculate offset into FontData (16 bytes per glyph)
           rem Returns: Far (return otherbank)
-
-          temp2 = temp1 * 16
-
-
+          let temp2 = temp1 * 16
 
           rem Set player pointer and height based on player index
 
           rem Calculate base address: FontData + temp2 (shared calculation)
-
           asm
 
             lda #<FontData
@@ -116,12 +104,10 @@ end
           rem Store to appropriate player pointer based on temp3 (using on...goto for efficiency)
 
           rem Fall through to P5 if temp3 > 4
-
           on temp3 goto SetPlayerGlyphP0 SetPlayerGlyphP1 SetPlayerGlyphP2 SetPlayerGlyphP3 SetPlayerGlyphP4 SetPlayerGlyphP5
 
 SetPlayerGlyphP5
           rem Returns: Far (return otherbank)
-
           asm
 
             lda temp4
@@ -137,12 +123,10 @@ SetPlayerGlyphP5
             sta player5height
 
 end
-
           return otherbank
 
 SetPlayerGlyphP0
           rem Returns: Far (return otherbank)
-
           asm
 
             lda temp4
@@ -158,12 +142,10 @@ SetPlayerGlyphP0
             sta player0height
 
 end
-
           return otherbank
 
 SetPlayerGlyphP1
           rem Returns: Far (return otherbank)
-
           asm
 
             lda temp4
@@ -179,12 +161,10 @@ SetPlayerGlyphP1
             sta player1height
 
 end
-
           return otherbank
 
 SetPlayerGlyphP2
           rem Returns: Far (return otherbank)
-
           asm
 
             lda temp4
@@ -200,12 +180,10 @@ SetPlayerGlyphP2
             sta player2height
 
 end
-
           return otherbank
 
 SetPlayerGlyphP3
           rem Returns: Far (return otherbank)
-
           asm
 
             lda temp4
@@ -221,12 +199,10 @@ SetPlayerGlyphP3
             sta player3height
 
 end
-
           return otherbank
 
 SetPlayerGlyphP4
           rem Returns: Far (return otherbank)
-
           asm
 
             lda temp4
@@ -242,17 +218,13 @@ SetPlayerGlyphP4
             sta player4height
 
 end
-
           return otherbank
-
-
 
           rem Backward compatibility wrappers
           rem Returns: Far (return otherbank)
 
 SetGlyph
           rem Returns: Far (return otherbank)
-
           asm
 
 SetGlyph
@@ -265,16 +237,11 @@ end
           rem Input: temp1 = glyph index, temp3 = player index
 
           rem Set temp4 to invalid value to force direct mode
-
           let temp4 = 255
-
           goto SetPlayerGlyph
-
-
 
 CopyGlyphToPlayer
           rem Returns: Far (return otherbank)
-
           asm
 
 CopyGlyphToPlayer
@@ -287,7 +254,4 @@ end
           rem Input: temp3 = player index, temp4 = sprite type (0-2)
 
           rem temp4 already set by caller, will trigger lookup mode
-
           goto SetPlayerGlyph
-
-

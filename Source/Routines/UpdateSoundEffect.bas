@@ -33,7 +33,6 @@ end
           if soundEffectPointer then gosub UpdateSoundEffectVoice0 bank15
 
           rem Update Voice 1
-
           if soundEffectPointer1 then gosub UpdateSoundEffectVoice1 bank15
-          return otherbank
 
+          return otherbank

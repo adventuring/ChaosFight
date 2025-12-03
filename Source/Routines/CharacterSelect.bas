@@ -47,13 +47,17 @@ CharacterSelectEntry
           rem CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
           rem Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) AND Right (INPT2 LOW, INPT3 HIGH)
           if INPT0{7} then goto CharacterSelectQuadtariAbsent
+
           if !INPT1{7} then goto CharacterSelectQuadtariAbsent
+
           if INPT2{7} then goto CharacterSelectQuadtariAbsent
+
           rem All checks passed - Quadtari detected
           if !INPT3{7} then goto CharacterSelectQuadtariAbsent
-          let controllerStatus = controllerStatus | SetQuadtariDetected
-CharacterSelectQuadtariAbsent
 
+          let controllerStatus = controllerStatus | SetQuadtariDetected
+
+CharacterSelectQuadtariAbsent
           rem Background: black (COLUBK starts black, no need to set)
           rem Always black background
 
@@ -94,7 +98,6 @@ end
           rem   1
           rem On odd frames (qtcontroller=1): handle controllers 2 and 3
           rem   (if Quadtari detected)
-
           if qtcontroller then goto CharacterSelectHandleQuadtari
 
           rem Handle Player 1 input (joy0 on even frames)
@@ -104,6 +107,7 @@ end
           rem Handle Player 2 input (joy1 on even frames)
           let temp1 = 1
           gosub HandleCharacterSelectPlayerInput
+
           rem Switch to odd frame mode for next iteration
           qtcontroller = 1
           goto CharacterSelectHandleComplete
@@ -111,6 +115,7 @@ end
 CharacterSelectHandleQuadtari
           rem Handle Player 3 input (joy0 on odd frames, Quadtari only)
           if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer3
+
           goto CharacterSelectHandleQuadtariDone
 
 CharacterSelectHandlePlayer3
@@ -120,6 +125,7 @@ CharacterSelectHandlePlayer3
 
           rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
           if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer4
+
           goto CharacterSelectHandleQuadtariDone
 
 CharacterSelectHandlePlayer4
@@ -143,8 +149,11 @@ SelectStickLeft
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
+
           if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+
           return thisbank
+
 SelectStickRight
           rem Handle stick-right navigation for the active player
           rem
@@ -158,25 +167,30 @@ SelectStickRight
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = CharacterBernie
-          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
-          return thisbank
-CharacterSelectHandleComplete
 
+          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+
+          return thisbank
+
+CharacterSelectHandleComplete
           rem Check if all players are ready to start (inline
           rem   SelAllReady)
           let readyCount  = 0
 
           rem Count locked players
-
           let temp1 = 0 : gosub GetPlayerLocked bank6 : if temp2 then let readyCount = readyCount + 1
+
           let temp1 = 1 : gosub GetPlayerLocked bank6 : if temp2 then let readyCount = readyCount + 1
+
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
 
           goto CharacterSelectDoneQuadtariPlayersInline
 
 CharacterSelectQuadtariPlayersInline
           let temp1 = 2 : gosub GetPlayerLocked bank6 : if temp2 then let readyCount = readyCount + 1
+
           let temp1 = 3 : gosub GetPlayerLocked bank6 : if temp2 then let readyCount = readyCount + 1
+
 CharacterSelectDoneQuadtariPlayersInline
           rem Check if enough players are ready
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline
@@ -191,20 +205,20 @@ CharacterSelectDoneQuadtariPlayersInline
 CharacterSelectQuadtariReadyInline
           rem Need at least 2 players ready for 4-player mode
           if readyCount>= 2 then goto CharacterSelectCompleted
-CharacterSelectDoneQuadtariReadyInline
 
+CharacterSelectDoneQuadtariReadyInline
           rem Draw character selection screen
           gosub CharacterSelectDrawScreen
 
           rem drawscreen called by MainLoop
-          return thisbank          goto CharacterSelectLoop
-
-
+          return thisbank
 
 CharacterSelectDrawScreen
           rem Draw character selection screen via shared renderer
           gosub SelectDrawScreen bank6
+
           return thisbank
+
 HandleCharacterSelectPlayerInput
           rem Unified handler for character select player input
           rem
@@ -226,23 +240,36 @@ HandleCharacterSelectPlayerInput
           let currentPlayer = temp1
           rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
           if temp1 = 0 then goto HCSPI_UseJoy0
+
           rem Players 1,3 use joy1
           if temp1 = 2 then goto HCSPI_UseJoy0
+
           if joy1left then gosub SelectStickLeft
+
           rem Unlock by moving up
           if joy1right then gosub SelectStickRight
+
           rem Handle fire button (selection)
           if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+
           gosub HandleCharacterSelectFire bank6
-          return thisbankHCSPI_UseJoy0
+
+          return thisbank
+
+HCSPI_UseJoy0
           rem Players 0,2 use joy0
           if joy0left then gosub SelectStickLeft
+
           rem Unlock by moving up
           if joy0right then gosub SelectStickRight
+
           rem Handle fire button (selection)
           if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+
           gosub HandleCharacterSelectFire bank6
+
           return thisbank
+
 CharacterSelectCompleted
           rem Character selection complete (stores selected characters
           rem and initializes facing directions)
@@ -266,20 +293,28 @@ CharacterSelectCompleted
           rem Initialize facing bit (bit 0) for all selected players
           rem (default: face right = 1)
           if playerCharacter[0] = NoCharacter then DoneCharacter1FacingSel
+
           let playerState[0] = playerState[0] | 1
+
 DoneCharacter1FacingSel
           if playerCharacter[1] = NoCharacter then DoneCharacter2FacingSel
+
           let playerState[1] = playerState[1] | 1
+
 DoneCharacter2FacingSel
           if playerCharacter[2] = NoCharacter then DoneCharacter3FacingSel
+
           let playerState[2] = playerState[2] | 1
+
 DoneCharacter3FacingSel
           if playerCharacter[3] = NoCharacter then DoneCharacter4FacingSel
-          let playerState[3] = playerState[3] | 1
-DoneCharacter4FacingSel
 
+          let playerState[3] = playerState[3] | 1
+
+DoneCharacter4FacingSel
           rem Proceed to falling animation
           return thisbank
+
 CharacterSelectDetectQuadtari
           rem Detect Quadtari adapter
           rem Detect Quadtari adapter (canonical detection: check paddle
@@ -310,19 +345,21 @@ CharacterSelectDetectQuadtari
 
           rem Check left side: if INPT1 is LOW then not detected
           if INPT0{7} then CharacterSelectQuadtariAbsent
+
           if !INPT1{7} then CharacterSelectQuadtariAbsent
 
           rem Check right side: if INPT2 is HIGH then not detected
 
           rem Check right side: if INPT3 is LOW then not detected
           if INPT2{7} then CharacterSelectQuadtariAbsent
+
           if !INPT3{7} then CharacterSelectQuadtariAbsent
 
           rem All checks passed - Quadtari detected
           goto CharacterSelectQuadtariDetected
 
 CharacterSelectQuadtariAbsent
-          return thisbank          rem Helper: Quadtari not detected in this detection cycle
+          rem Helper: Quadtari not detected in this detection cycle
           rem
           rem Input: None
           rem
@@ -337,6 +374,7 @@ CharacterSelectQuadtariAbsent
           rem   is absent. Monotonic detection means controllerStatus is never cleared here.
           rem   DetectPads (SELECT handler) is the sole routine that upgrades controller
           rem   status flags.
+          return thisbank
 
 CharacterSelectQuadtariDetected
           rem Helper: Quadtari detected - set detection flag

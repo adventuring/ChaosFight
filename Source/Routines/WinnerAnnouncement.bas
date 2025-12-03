@@ -20,12 +20,15 @@ end
           rem Constraints: Must be colocated with WinnerAdvanceToCharacterSelect
           rem Check for button press to advance immediately
           if joy0fire then WinnerAdvanceToCharacterSelect
+
           if joy1fire then WinnerAdvanceToCharacterSelect
+
           if switchselect then WinnerAdvanceToCharacterSelect
 
           rem Display win screen and continue loop
           rem drawscreen called by MainLoop
           gosub DisplayWinScreen bank16
+
           return otherbank
 
 WinnerAdvanceToCharacterSelect
@@ -43,5 +46,5 @@ WinnerAdvanceToCharacterSelect
           rem Constraints: Must be colocated with WinnerAnnouncementLoop
           let gameMode = ModeTitle
           gosub ChangeGameMode bank14
-          return otherbank
 
+          return otherbank

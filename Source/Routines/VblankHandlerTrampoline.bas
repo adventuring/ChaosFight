@@ -8,7 +8,7 @@
 VblankHandlerTrampoline
           rem Returns: Near (return thisbank)
           rem Cross-bank call to VblankHandlerDispatcher in Bank 11
-          rem Uses batariBASIC's cross-bank gosub mechanism
+          rem Uses batariBASIC’s cross-bank gosub mechanism
           rem Note: VblankHandlerDispatcher is defined in VblankHandlers.bas in Bank 11
           gosub VblankHandlerDispatcher bank11
 

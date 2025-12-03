@@ -59,9 +59,9 @@ HFCM_CheckLeftJoy0
 
 HFCM_DoLeft
 
-          gosub HFCM_AttemptMoveLeft bank7
-
-          goto HFCM_CheckRight
+          rem Tail call: goto instead of gosub to save 2 bytes on stack
+          rem HFCM_AttemptMoveLeft will return directly to InputHandleLeftPortPlayerFunction
+          goto HFCM_AttemptMoveLeft bank7
 
 HFCM_CheckRight
 
@@ -81,9 +81,9 @@ HFCM_CheckRightJoy0
 
 HFCM_DoRight
 
-          gosub HFCM_AttemptMoveRight bank7
-
-          goto HFCM_CheckVertical
+          rem Tail call: goto instead of gosub to save 2 bytes on stack
+          rem HFCM_AttemptMoveRight will return directly to InputHandleLeftPortPlayerFunction
+          goto HFCM_AttemptMoveRight bank7
 
 HFCM_CheckVertical
 

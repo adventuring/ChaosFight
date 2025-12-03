@@ -485,14 +485,12 @@ end
 
 
 CacheAOERightHitbox
-          rem Returns: Far (return thisbank)
-
+          rem Returns: Far (return otherbank)
           asm
 
 CacheAOERightHitbox
 
 end
-
           rem Cache right-facing AOE bounds for current attacker
           rem Returns: Far (return otherbank)
 
@@ -515,14 +513,12 @@ end
 
 
 CacheAOELeftHitbox
-          rem Returns: Far (return thisbank)
-
+          rem Returns: Far (return otherbank)
           asm
 
 CacheAOELeftHitbox
 
 end
-
           rem Cache left-facing AOE bounds for current attacker
           rem Returns: Far (return otherbank)
 
@@ -545,8 +541,7 @@ end
 
 
 CheckPlayersAgainstCachedHitbox
-          rem Returns: Far (return thisbank)
-
+          rem Returns: Far (return otherbank)
           asm
 
 CheckPlayersAgainstCachedHitbox

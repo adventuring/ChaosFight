@@ -94,12 +94,12 @@ end
           return otherbank
 
 LoadArenaColorsBW
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 LoadArenaColorsBW
 end
           rem Shared B&W color table loader
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           rem
           rem Input: None
           rem
@@ -116,7 +116,7 @@ end
             lda #>ArenaColorsBW
             sta pfcolortable+1
 end
-          return otherbank
+          return thisbank
 LoadArenaRandom
           rem Select random arena (0-31) using proper random number
           rem Returns: Far (return otherbank)

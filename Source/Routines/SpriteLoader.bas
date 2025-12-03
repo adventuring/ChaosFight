@@ -82,6 +82,11 @@ end
           asm
 ; Set currentCharacter from playerCharacter[currentPlayer]
 end
+          rem CRITICAL: Guard against invalid characters - prevent calling bank 2 when no characters on screen
+          rem Handle special sprite cases first (these are safe and don’t need bank dispatch)
+          if currentCharacter = NoCharacter then let temp3 = currentPlayer : let temp4 = SpriteNo : gosub CopyGlyphToPlayer bank16 : return otherbank
+          if currentCharacter = CPUCharacter then let temp3 = currentPlayer : let temp4 = SpriteCPU : gosub CopyGlyphToPlayer bank16 : return otherbank
+          if currentCharacter = RandomCharacter then let temp3 = currentPlayer : let temp4 = SpriteQuestionMark : gosub CopyGlyphToPlayer bank16 : return otherbank
           rem Inline LocateCharacterArt to reduce call chain depth (stack overflow fix)
           rem Returns: Far (return otherbank)
           rem CRITICAL: Inlined to reduce stack depth from 19 to 15 bytes (within 16-byte limit)
@@ -98,6 +103,7 @@ end
 
 LoadPlayerSprite_Bank2Dispatch
           rem Bank 2: Characters 0-7 (bank-relative 0-7)
+          rem CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank2 uses BS_return which requires return address
           let temp6 = temp1
           let temp5 = temp4
           gosub SetPlayerCharacterArtBank2 bank2
@@ -105,6 +111,7 @@ LoadPlayerSprite_Bank2Dispatch
 
 LoadPlayerSprite_Bank3Dispatch
           rem Bank 3: Characters 8-15 (bank-relative 0-7)
+          rem CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank3 uses BS_return which requires return address
           let temp6 = temp1 - 8
           let temp5 = temp4
           gosub SetPlayerCharacterArtBank3 bank3
@@ -112,6 +119,7 @@ LoadPlayerSprite_Bank3Dispatch
 
 LoadPlayerSprite_Bank4Dispatch
           rem Bank 4: Characters 16-23 (bank-relative 0-7)
+          rem CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank4 uses BS_return which requires return address
           let temp6 = temp1 - 16
           let temp5 = temp4
           gosub SetPlayerCharacterArtBank4 bank4
@@ -119,6 +127,7 @@ LoadPlayerSprite_Bank4Dispatch
 
 LoadPlayerSprite_Bank5Dispatch
           rem Bank 5: Characters 24-31 (bank-relative 0-7)
+          rem CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank5 uses BS_return which requires return address
           let temp6 = temp1 - 24
           let temp5 = temp4
           gosub SetPlayerCharacterArtBank5 bank5

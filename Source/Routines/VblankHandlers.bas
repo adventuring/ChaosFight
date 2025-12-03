@@ -36,7 +36,7 @@ VblankModePublisherPrelude
           rem Returns: Near (return thisbank)
           rem CRITICAL: Guard PlayMusic call - only call if music is initialized
           rem musicVoice0Pointer = 0 means music not started yet (StartMusic sets it to songPointer)
-          rem On first frame, BeginPublisherPrelude hasn't called StartMusic yet
+          rem On first frame, BeginPublisherPrelude hasn’t called StartMusic yet
           rem Check if music is initialized before calling PlayMusic to prevent crash
           if musicVoice0Pointer = 0 then goto VblankPublisherPreludeSkipMusic
 
@@ -140,6 +140,9 @@ VblankSharedUpdateCharacterAnimations
           rem Used by: VblankModeTitleScreen, VblankModeCharacterSelect, VblankModeFallingAnimation,
           rem   VblankModeArenaSelect, VblankModeGameMain, VblankModeWinnerAnnouncement
           rem Saves 4 bytes on stack by avoiding cross-bank call to UpdateCharacterAnimations bank12
+          rem CRITICAL: Skip sprite loading in Publisher Prelude and Author Prelude modes (no characters)
+          if gameMode = ModePublisherPrelude then return thisbank
+          if gameMode = ModeAuthorPrelude then return thisbank
           dim VblankUCA_quadtariActive = temp5
           let VblankUCA_quadtariActive = controllerStatus & SetQuadtariDetected
           for currentPlayer = 0 to 3
@@ -315,11 +318,18 @@ VblankHandleRecoveryEnd
 
 VblankUpdateSprite
           rem Update character sprite with current animation frame and action
+          rem CRITICAL: Guard against calling bank 2 when no characters on screen
+          let currentCharacter = playerCharacter[currentPlayer]
+          if currentCharacter = NoCharacter then goto VblankAnimationNextPlayer
+          if currentCharacter = CPUCharacter then goto VblankAnimationNextPlayer
+          if currentCharacter = RandomCharacter then goto VblankAnimationNextPlayer
+          rem CRITICAL: Validate character index is within valid range (0-MaxCharacter)
+          rem Uninitialized playerCharacter (0) is valid (Bernie), but values > MaxCharacter are invalid
+          if currentCharacter > MaxCharacter then goto VblankAnimationNextPlayer
           let temp2 = currentAnimationFrame_R[currentPlayer]
           let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
           rem CRITICAL: Inlined LoadPlayerSprite dispatcher to save 4 bytes on stack
-          let currentCharacter = playerCharacter[currentPlayer]
           let temp1 = currentCharacter
           let temp6 = temp1
           rem Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5

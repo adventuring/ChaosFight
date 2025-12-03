@@ -43,10 +43,13 @@ CheckPlayerCollision
 
           rem Calculate absolute X distance between players
           if temp4 >= temp5 then CalcXDistanceRight
+
           let temp6 = temp5 - temp4
           goto XDistanceDone
+
 CalcXDistanceRight
           let temp6 = temp4 - temp5
+
 XDistanceDone
           if temp6 >= PlayerSpriteWidth then NoCollision
 
@@ -75,10 +78,13 @@ end
 
           rem Compute absolute Y distance between player centers
           if temp4 >= temp5 then CalcYDistanceDown
+
           let temp6 = temp5 - temp4
           goto YDistanceDone
+
 CalcYDistanceDown
           let temp6 = temp4 - temp5
+
 YDistanceDone
           let totalHeight = halfHeight1 + halfHeight2
           if temp6 >= totalHeight then NoCollision
@@ -86,6 +92,7 @@ YDistanceDone
           rem Collision detected
           let temp3 = 1
           return thisbank
+
 NoCollision
           let temp3 = 0
           return thisbank

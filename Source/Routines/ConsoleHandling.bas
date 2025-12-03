@@ -91,10 +91,10 @@ end
 
 Player1PauseDone
           rem Debounce - wait for button release (drawscreen called by
-          rem Returns: Near (return thisbank)
-          rem Called same-bank from HandleConsoleSwitches, so use return thisbank
+          rem Returns: Far (return otherbank)
+          rem HandleConsoleSwitches is called cross-bank, so must use return otherbank
           rem MainLoop)
-          return thisbank
+          return otherbank
 
 DonePlayer1Pause
           let temp2 = 1
@@ -110,10 +110,10 @@ DonePlayer1Pause
 
 Player2PauseDone
           rem Debounce - wait for button release (drawscreen called by
-          rem Returns: Near (return thisbank)
-          rem Called same-bank from HandleConsoleSwitches, so use return thisbank
+          rem Returns: Far (return otherbank)
+          rem HandleConsoleSwitches is called cross-bank, so must use return otherbank
           rem MainLoop)
-          return thisbank
+          return otherbank
 
 DonePlayer2Pause
           rem Color/B&W switch - re-detect controllers when toggled
@@ -124,8 +124,20 @@ DonePlayer2Pause
           rem tail call
           goto Check7800Pause
 
+Check7800Pause
+          rem 7800 pause button handler (uses same pin as Color/B&W switch)
+          rem Returns: Far (return otherbank)
+          rem HandleConsoleSwitches is called cross-bank, so must use return otherbank
+          rem
+          rem Note: 7800 pause button behavior is handled by CheckColorBWToggle
+          rem which detects switchbw changes and toggles colorBWOverride.
+          rem This function is a placeholder for future 7800-specific pause handling.
+          rem
+          rem Constraints: NTSC/PAL only (not SECAM)
+          return otherbank
+
 #endif
-          return thisbank
+          return otherbank
 
 CheckEnhancedPause
           rem Returns: Near (return thisbank)
@@ -185,15 +197,15 @@ CEP_CheckPlayer2
           rem Color/B&W switch change detection (triggers controller re-detect)
 
 CheckColorBWToggle
-          rem Returns: Near (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 
 CheckColorBWToggle
 
 end
           rem Check switch state and trigger DetectPads when it flips
-          rem Returns: Near (return thisbank)
-          rem Called same-bank from HandleConsoleSwitches, so use return thisbank
+          rem Returns: Far (return otherbank)
+          rem HandleConsoleSwitches is called cross-bank, so must use return otherbank
           rem
           rem Input: switchbw (hardware) = Color/B&W switch state
           rem        colorBWPrevious_R (global SCRAM) = previous
@@ -245,12 +257,14 @@ DoneSwitchChange
           if temp1 then ReloadArenaColorsNow
           rem Check7800PauseButton
           rem   (NTSC/PAL only, not SECAM)
-          return thisbank
+          rem CRITICAL: CheckColorBWToggle is called from HandleConsoleSwitches which is
+          rem called cross-bank, so this return must be return otherbank
+          return otherbank
 
 ReloadArenaColorsNow
           rem Reload arena colors with current switch state
-          rem Returns: Near (return thisbank)
-          rem Called same-bank from CheckColorBWToggle, so use return thisbank
+          rem Returns: Far (return otherbank)
+          rem CheckColorBWToggle is called cross-bank, so must use return otherbank
           gosub ReloadArenaColors bank14
 
-          return thisbank
+          return otherbank

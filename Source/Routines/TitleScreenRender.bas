@@ -25,10 +25,10 @@ end
           rem Called Routines: DrawParadeCharacter (bank14) - if titleParadeActive set
           rem
           rem Constraints: Must be called every frame for modes 0-2
-          player0x = 0
-          player0y = 0
-          player1x = 0
-          player1y = 0
+          let player0x = 0
+          let player0y = 0
+          let player1x = 0
+          let player1y = 0
 
           rem Set window values based on gameMode to show correct bitmaps
           rem CRITICAL: Window values must be set every frame (titlescreen kernel uses them)
@@ -94,6 +94,6 @@ end
           rem   bitmap
           rem Uses 48x2_3 minikernel - set window/height via assembly
           rem   constants
-          rem Other screens' minikernels should have window=0 in their
-              rem Bitmap data in: Source/Generated/Art.ChaosFight.s
+          rem Other screens’ minikernels should have window=0 in their
+          rem Bitmap data in: Source/Generated/Art.ChaosFight.s
           rem   image files

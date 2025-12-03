@@ -31,12 +31,18 @@ end
           asm
 InputHandleAllPlayersEnd
             echo "// Bank 8: ", [InputHandleAllPlayersEnd - InputHandleAllPlayersStart]d, " bytes = InputHandleAllPlayers"
-ProcessUpInputStart
+HandleUpInputStart
 end
-#include "Source/Routines/ProcessUpInput.bas"
+#include "Source/Routines/HandleUpInput.bas"
           asm
-ProcessUpInputEnd
-            echo "// Bank 8: ", [ProcessUpInputEnd - ProcessUpInputStart]d, " bytes = ProcessUpInput"
+HandleUpInputEnd
+            echo "// Bank 8: ", [HandleUpInputEnd - HandleUpInputStart]d, " bytes = HandleUpInput"
+ProcessUpActionStart
+end
+#include "Source/Routines/ProcessUpAction.bas"
+          asm
+ProcessUpActionEnd
+            echo "// Bank 8: ", [ProcessUpActionEnd - ProcessUpActionStart]d, " bytes = ProcessUpAction"
 InputHandleLeftPortPlayerFunctionStart
 end
 #include "Source/Routines/InputHandleLeftPortPlayerFunction.bas"
@@ -73,6 +79,13 @@ end
           asm
 ProcessJumpInputEnd
             echo "// Bank 8: ", [ProcessJumpInputEnd - ProcessJumpInputStart]d, " bytes = ProcessJumpInput"
+          asm
+DispatchCharacterJumpStart
+end
+#include "Source/Routines/DispatchCharacterJump.bas"
+          asm
+DispatchCharacterJumpEnd
+            echo "// Bank 8: ", [DispatchCharacterJumpEnd - DispatchCharacterJumpStart]d, " bytes = DispatchCharacterJump"
 MissileCollisionStart
 end
 #include "Source/Routines/MissileCollision.bas"

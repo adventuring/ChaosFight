@@ -104,6 +104,11 @@ end
 
 
 
+          rem CRITICAL: Guard against calling bank 2 when no characters on screen
+          rem Handle special sprite cases first (these are safe and don’t need bank dispatch)
+          if temp1 = NoCharacter then return otherbank
+          if temp1 = CPUCharacter then return otherbank
+          if temp1 = RandomCharacter then return otherbank
           rem Save original character index in temp6
 
           let temp6 = temp1

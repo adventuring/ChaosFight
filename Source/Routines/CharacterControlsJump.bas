@@ -105,7 +105,7 @@ CCJ_FreeFlightUp
 CCJ_FreeFlightUp
 end
           rem Shared free flight upward movement (DragonOfStorms, Frooty)
-          rem Returns: Near (return thisbank)
+          rem Calling Convention: Near
           rem Input: temp1 = player index, temp2 = playfield column (from CCJ_ConvertPlayerXToPlayfieldColumn)
           rem Output: Upward velocity applied if clear above, jumping flag set
           rem Mutates: temp3-temp6, playerVelocityY[], playerVelocityYL[], playerState[]
@@ -170,26 +170,11 @@ HarpyFlapRecord
           if characterSpecialAbility_R[temp1] > 0 then let characterSpecialAbility_W[temp1] = characterSpecialAbility_R[temp1] - 1
           let harpyLastFlapFrame_W[temp1] = frame
           return otherbank
-          rem KNIGHT GUY (7) - STANDARD JUMP (dispatched directly to StandardJump)
-          rem Returns: Far (return otherbank)
-          rem Removed redundant wrapper function - DispatchCharacterJump calls StandardJump directly
 
 FrootyJump
-          rem Returns: Far (return otherbank)
           asm
-
 FrootyJump
-
 end
-          goto CCJ_FreeFlightCharacterJump
-          rem NINJISH GUY (10) - STANDARD JUMP (dispatched directly to StandardJump)
-          rem PORK CHOP (11) - STANDARD JUMP (dispatched directly to StandardJump)
-          rem RADISH GOBLIN (12) - STANDARD JUMP (dispatched directly to StandardJump)
-          rem Removed redundant wrapper functions - DispatchCharacterJump calls StandardJump directly
-          rem URSULO (14) - STANDARD JUMP (dispatched directly to StandardJump)
-          rem SHAMONE (15) - STANDARD JUMP (dispatched directly to StandardJump)
-          rem Removed redundant wrapper functions - DispatchCharacterJump calls StandardJump directly
-
 CCJ_FreeFlightCharacterJump
           rem Shared free-flight jump for DragonOfStorms (2) and Frooty (8)
           rem Returns: Far (return otherbank)
@@ -200,10 +185,3 @@ CCJ_FreeFlightCharacterJump
           gosub CCJ_FreeFlightUp
 
           return otherbank
-          rem NINJISH GUY (10) - STANDARD JUMP (dispatched directly to StandardJump)
-          rem PORK CHOP (11) - STANDARD JUMP (dispatched directly to StandardJump)
-          rem RADISH GOBLIN (12) - STANDARD JUMP (dispatched directly to StandardJump)
-          rem Removed redundant wrapper functions - DispatchCharacterJump calls StandardJump directly
-          rem URSULO (14) - STANDARD JUMP (dispatched directly to StandardJump)
-          rem SHAMONE (15) - STANDARD JUMP (dispatched directly to StandardJump)
-          rem Removed redundant wrapper functions - DispatchCharacterJump calls StandardJump directly

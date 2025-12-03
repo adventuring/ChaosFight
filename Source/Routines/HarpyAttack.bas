@@ -53,11 +53,13 @@ end
           rem Use explicit assignment to dodge unsupported multiply op
           rem When temp2=0 (left): want 252 (-4), when temp2≠ 0 (right): want 4
           let temp4 = 252
-          if temp2 then temp4 = 4
+          if temp2 then let temp4 = 4
+
 HarpySetLeftVelocity
           rem Label for documentation - velocity already set above
           rem Constraints: Must be colocated with HarpyAttack,
           rem HarpySetVerticalVelocity
+
 HarpySetVerticalVelocity
           rem Set vertical velocity for Harpy swoop
           rem
@@ -116,5 +118,4 @@ HarpySetVerticalVelocity
           rem - No missile spawned - character movement IS the attack
           rem - Hit players are damaged and pushed (knockback handled by
           rem   collision system)
-
           return thisbank

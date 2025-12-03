@@ -32,19 +32,19 @@ end
 
 DoneLeftPortMovement
 IHLP_FlyingMovement
-          gosub HandleFlyingCharacterMovement bank12
+          rem Tail call: goto instead of gosub to save 2 bytes on stack
+          goto HandleFlyingCharacterMovement bank12
 IHLP_DoneFlyingLeftRight
 
           rem Process UP input for character-specific behaviors
           rem Returns with temp3 = 1 if UP used for jump, 0 if special ability
-          gosub ProcessUpInput
+          gosub HandleUpInput
 
           rem Process jump input from enhanced buttons (must be identical
-          rem   effect to ProcessUpInput for all characters)
+          rem   effect to HandleUpInput for all characters)
           gosub ProcessJumpInput bank8
 InputDoneLeftPortJump
 
-          gosub HandleGuardInput bank12
           rem Process down/guard input
           gosub HandleGuardInput bank12
 

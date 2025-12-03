@@ -51,28 +51,33 @@ ArenaSelect1Loop
           rem              from MainLoop)
           rem Update character idle animations
           gosub SelectUpdateAnimations bank6
+
           rem Draw locked-in player characters
           gosub ArenaSelectDrawCharacters
+
           rem Check Game Select switch - return to Character Select
           rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
           if !switchselect then goto SkipReturnToCharacterSelect
-          goto ReturnToCharacterSelect
-SkipReturnToCharacterSelect
 
+          goto ReturnToCharacterSelect
+
+SkipReturnToCharacterSelect
           rem Check fire button hold detection (1 second to return to
           rem   Character Select)
           let temp1 = 0
           rem Check Player 1 fire button
           rem Check Player 2 fire button
           if joy0fire then let temp1 = 1
+
           rem Check Quadtari players (3 & 4) if active
           if joy1fire then let temp1 = 1
+
           rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
           if (controllerStatus & SetQuadtariDetected) <> 0 then goto CheckQuadtariFireHold
 
           rem If fire button held, increment timer
-
           if temp1 then goto IncrementFireHold
+
           rem Fire released, reset timer
           let fireHoldTimer_W = 0
           goto FireHoldCheckDone
@@ -83,43 +88,52 @@ IncrementFireHold
           rem FramesPerSecond frames = 1 second at current TV standard
           let fireHoldTimer_W = temp2
           if temp2 >= FramesPerSecond then goto ReturnToCharacterSelect
+
 FireHoldCheckDone
-
           rem Handle LEFT/RIGHT navigation for arena selection
-
           if joy0left then goto ArenaSelectLeft
+
           goto ArenaSelectDoneLeft
+
 ArenaSelectLeft
           rem Decrement arena, wrap from 0 to RandomArena (255)
           if selectedArena_R = 0 then let selectedArena_W = RandomArena : goto ArenaSelectLeftSound
+
           if selectedArena_R = RandomArena then let selectedArena_W = MaxArenaID : goto ArenaSelectLeftSound
+
           let temp2 = selectedArena_R
           let temp2 = temp2 - 1
           let selectedArena_W = temp2
+
 ArenaSelectLeftSound
           rem Play navigation sound
           let temp1 = SoundMenuNavigate
           gosub PlaySoundEffect bank15
-ArenaSelectDoneLeft
 
+ArenaSelectDoneLeft
           if joy0right then goto ArenaSelectRight
+
           goto ArenaSelectDoneRight
+
 ArenaSelectRight
           rem Increment arena, wrap from MaxArenaID to 0, then to
           rem RandomArena
           if selectedArena_R = MaxArenaID then let selectedArena_W = RandomArena : goto ArenaSelectRightSound
+
           if selectedArena_R = RandomArena then let selectedArena_W = 0 : goto ArenaSelectRightSound
+
           let temp2 = selectedArena_R
           let temp2 = temp2 + 1
           rem Wrap from 255 to 0 if needed
           let selectedArena_W = temp2
           if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0
+
 ArenaSelectRightSound
           rem Play navigation sound
           let temp1 = SoundMenuNavigate
           gosub PlaySoundEffect bank15
-ArenaSelectDoneRight
 
+ArenaSelectDoneRight
           rem Display arena number ( 1-32) or ?? (random)
           rem Display using player4 (tens digit) and player5 (ones
           rem   digit)
@@ -167,7 +181,9 @@ end
           rem Draw tens digit (player4) - only if tensDigit > 0 (for
           rem arenas 10-32)
           if temp2 > 0 then goto DrawTensDigit
+
           goto SkipTens
+
 DrawTensDigit
           rem Set P4 fixed position and color (arena digits)
           let temp1 = temp2
@@ -177,8 +193,8 @@ DrawTensDigit
           rem Use player4 for tens digit
           let temp3 = 4
           gosub SetGlyph bank16
-SkipTens
 
+SkipTens
           rem Draw ones digit (player5)
           let temp1 = temp4
           rem Set P5 fixed position and color (arena digits)
@@ -214,24 +230,25 @@ DisplayRandomArena
           gosub SetGlyph bank16
 
 DisplayDone
-
           rem Handle fire button press (confirm selection, start game)
-
           if joy0fire then goto ArenaSelectConfirm
+
           goto ArenaSelectDoneConfirm
+
 ArenaSelectConfirm
           rem Play selection sound
           let temp1 = SoundMenuSelect
           gosub PlaySoundEffect bank15
+
           rem tail call
           goto StartGame1
-ArenaSelectDoneConfirm
 
+ArenaSelectDoneConfirm
           rem Update sound effects (active sound effects need per-frame updates)
           gosub UpdateSoundEffect bank15
 
           rem drawscreen called by MainLoop
-          return thisbank
+          return otherbank
 
 CheckQuadtariFireHold
           rem Check Player 3 and 4 fire buttons (Quadtari)
@@ -249,9 +266,11 @@ CheckQuadtariFireHold
           rem Check Player 3 and 4 fire buttons (Quadtari)
           rem Player 3 fire button (left port, odd frame)
           if !INPT0{7} then let temp1 = 1
+
           rem Player 4 fire button (right port, odd frame)
           if !INPT2{7} then let temp1 = 1
-          return thisbank
+          return otherbank
+
 ReturnToCharacterSelect
           rem Return to Character Select screen
           rem
@@ -268,7 +287,9 @@ ReturnToCharacterSelect
           let fireHoldTimer_W = 0
           let gameMode = ModeCharacterSelect
           gosub ChangeGameMode bank14
-          return thisbank
+
+          return otherbank
+
 StartGame1
           rem Start game with selected arena
           rem
@@ -283,10 +304,10 @@ StartGame1
           rem Constraints: Must be colocated with ArenaSelect1
           let gameMode = ModeGame
           gosub ChangeGameMode bank14
-          return thisbank
+
+          return otherbank
           rem
           rem Character Display And Animation
-
 
 ArenaSelectDrawCharacters
           asm
@@ -326,10 +347,14 @@ end
           rem Playfield defined by ArenaSelect data; no per-frame register writes
           rem Draw Player 1 character (top left) if selected
           if playerCharacter[0] = NoCharacter then goto ArenaSelectDoneDrawP0
+
           if playerCharacter[0] = CPUCharacter then goto ArenaSelectDoneDrawP0
+
           if playerCharacter[0] = RandomCharacter then goto ArenaSelectDoneDrawP0
+
           let temp1 = 0
           gosub PlayerPreviewSetPosition bank6
+
           gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP0
@@ -347,10 +372,14 @@ ArenaSelectDoneDrawP0
           rem ArenaSelectDrawCharacters
           rem Draw Player 2 character (top right) if selected
           if playerCharacter[1] = NoCharacter then goto ArenaSelectDoneDrawP1
+
           if playerCharacter[1] = CPUCharacter then goto ArenaSelectDoneDrawP1
+
           if playerCharacter[1] = RandomCharacter then goto ArenaSelectDoneDrawP1
+
           let temp1 = 1
           gosub PlayerPreviewSetPosition bank6
+
           gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP1
@@ -370,11 +399,16 @@ ArenaSelectDoneDrawP1
           rem selected
           rem No Quadtari detected; park lower previews off-screen via shared helper
           if (controllerStatus & SetQuadtariDetected) = 0 then gosub SelectHideLowerPlayerPreviews bank6 : goto ArenaSelectDoneDrawP23
+
           if playerCharacter[2] = NoCharacter then goto ArenaSelectDoneDrawP2
+
           if playerCharacter[2] = CPUCharacter then goto ArenaSelectDoneDrawP2
+
           if playerCharacter[2] = RandomCharacter then goto ArenaSelectDoneDrawP2
+
           let temp1 = 2
           gosub PlayerPreviewSetPosition bank6
+
           gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP2
@@ -394,15 +428,19 @@ ArenaSelectDoneDrawP2
           rem Draw Player 4 character (bottom right) if Quadtari and
           rem selected
           if (controllerStatus & SetQuadtariDetected) = 0 then goto ArenaSelectDoneDrawP23
+
           if playerCharacter[3] = NoCharacter then goto ArenaSelectDoneDrawP23
+
           if playerCharacter[3] = CPUCharacter then goto ArenaSelectDoneDrawP23
+
           if playerCharacter[3] = RandomCharacter then goto ArenaSelectDoneDrawP23
+
           let temp1 = 3
           gosub PlayerPreviewSetPosition bank6
+
           gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP23
           rem Skip Player 3/4 character drawing (not in 4-player mode or
           rem not selected)
-          rem ArenaSelect1 is called cross-bank, so all return paths must use return thisbank
-          return thisbank
+          return otherbank

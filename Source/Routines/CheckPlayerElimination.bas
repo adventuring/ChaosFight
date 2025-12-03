@@ -65,7 +65,9 @@ end
           rem   not selected
           rem Use skip-over pattern to avoid complex || operator
           if currentPlayer = 2 then gosub UpdatePlayers34ActiveFlag bank14 : goto UpdatePlayers34Done
+
           if currentPlayer = 3 then gosub UpdatePlayers34ActiveFlag bank14
+
 UpdatePlayers34Done
           rem Returns: Far (return otherbank)
           asm
@@ -81,4 +83,3 @@ end
           rem Trigger elimination effects
           rem tail call
           goto TriggerEliminationEffects bank13
-

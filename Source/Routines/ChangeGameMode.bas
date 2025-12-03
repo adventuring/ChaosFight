@@ -33,6 +33,7 @@ end
           rem Use on...goto with near thunks (on...goto is near-call-only)
           rem Thunks ensure labels resolve correctly within same bank
           rem Thunks are placed at end of file to prevent fall-through
+          rem Note: on...goto pushes 2 bytes then immediately pops them (net zero stack change)
           on gameMode goto CGM_ThunkPublisherPrelude CGM_ThunkAuthorPrelude CGM_ThunkTitle CGM_ThunkCharacterSelect CGM_ThunkFallingAnimation CGM_ThunkArenaSelect CGM_ThunkGame CGM_ThunkWinner CGM_ThunkAttract
           rem Safety exit if gameMode is invalid
           return otherbank

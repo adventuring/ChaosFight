@@ -1,5 +1,6 @@
           rem ChaosFight - Source/Routines/DisplayWinScreen.bas
           rem Copyright © 2025 Bruce-Robert Pocock.
+
 DisplayWinScreen
           rem Returns: Far (return otherbank)
           asm
@@ -58,8 +59,8 @@ end
           rem Called from WinnerAnnouncementLoop per-frame loop
 
           rem Set screen layout (32×8 for character display) - inlined
-          pfrowheight = ScreenPfRowHeight
-          pfrows = ScreenPfRows
+          let pfrowheight = ScreenPfRowHeight
+          let pfrows = ScreenPfRows
 
           rem Load winner screen playfield pattern
           rem Set playfield pointers to WinnerScreenPlayfield data (optimized: load once, store twice)
@@ -95,6 +96,7 @@ end
 
           rem Check all players for ranking
           let temp1 = 0
+
 DWS_RankLoop
           rem Ranking loop - check all players for 2nd and 3rd place
           rem Returns: Far (return otherbank)
@@ -124,8 +126,8 @@ DWS_RankLoop
           let winScreenCandidateOrder = eliminationOrder_R[temp1]
 
           rem Check if this is 2nd place (higher order than current 2nd)
-
           if winScreenCandidateOrder > temp5 then DWS_UpdateSecond
+
           goto DWS_CheckThird
 
 DWS_UpdateSecond
@@ -166,7 +168,7 @@ DWS_CheckThird
           rem
           rem Constraints: Must be colocated with DisplayWinScreen,
           rem DWS_RankLoop, DWS_RankNext
-          if winScreenCandidateOrder > winScreenThirdPlaceOrder then let winScreenThirdPlaceOrder = winScreenCandidateOrder : temp4 = temp1
+          if winScreenCandidateOrder > winScreenThirdPlaceOrder then let winScreenThirdPlaceOrder = winScreenCandidateOrder : let temp4 = temp1
 
 DWS_RankNext
           rem Ranking loop continuation
@@ -191,9 +193,10 @@ DWS_RankNext
           rem   left (X=40), 3rd right (X=120)
 
           rem Position winner (always centered)
-
           if temp1 = 1 then DWS_Position1Player
+
           if temp1 = 2 then DWS_Position2Players
+
           goto DWS_Position3Players
 
 DWS_LoadIdleSprite
@@ -208,6 +211,7 @@ end
           let temp2 = 0
           let temp3 = 0
           gosub LoadCharacterSprite bank16
+
           return thisbank
 
 DWS_Position1Player
@@ -235,8 +239,11 @@ DWS_Position1Player
           let currentPlayer = 0
           rem Player 0
           gosub DWS_LoadIdleSprite
+
           gosub DWS_HidePlayers123
+
           return otherbank
+
 DWS_Position2Players
           rem 2 players: Winner centered, runner-up left
           rem Returns: Far (return otherbank)
@@ -265,14 +272,16 @@ DWS_Position2Players
           gosub DWS_LoadIdleSprite
 
           rem Runner-up (P1) - only if valid
-
           if temp3 = 255 then DWS_Hide2Player
+
           let playerX[1] = 40
           let playerY[1] = 192
           let currentCharacter = playerCharacter[temp3]
           let currentPlayer = 1
           gosub DWS_LoadIdleSprite
+
           goto DWS_Hide2PlayerDone
+
 DWS_Hide2Player
           rem Hide Player 2 (no runner-up)
           rem Returns: Far (return otherbank)
@@ -288,6 +297,7 @@ DWS_Hide2Player
           rem Constraints: Must be colocated with DisplayWinScreen,
           rem DWS_Position2Players, DWS_Hide2PlayerDone
           let playerX[1] = 0
+
 DWS_Hide2PlayerDone
           rem Hide Player 2 complete (label only)
           rem Returns: Far (return otherbank)
@@ -302,7 +312,9 @@ DWS_Hide2PlayerDone
           rem
           rem Constraints: Must be colocated with DisplayWinScreen
           gosub DWS_HidePlayers123
+
           return otherbank
+
 DWS_Position3Players
           rem 3+ players: Winner centered high, 2nd left, 3rd right
           rem Returns: Far (return otherbank)
@@ -333,14 +345,16 @@ DWS_Position3Players
           gosub DWS_LoadIdleSprite
 
           rem 2nd place (P1) - left platform
-
           if temp3 = 255 then DWS_Hide3Player2
+
           let playerX[1] = 40
           let playerY[1] = 192
           let currentCharacter = playerCharacter[temp3]
           let currentPlayer = 1
           gosub DWS_LoadIdleSprite
+
           goto DWS_Hide3Player2Done
+
 DWS_Hide3Player2
           rem Hide Player 2 (no 2nd place)
           rem Returns: Far (return otherbank)
@@ -356,6 +370,7 @@ DWS_Hide3Player2
           rem Constraints: Must be colocated with DisplayWinScreen,
           rem DWS_Position3Players, DWS_Hide3Player2Done
           let playerX[1] = 0
+
 DWS_Hide3Player2Done
           rem Hide Player 2 complete (label only)
           rem Returns: Far (return otherbank)
@@ -371,14 +386,16 @@ DWS_Hide3Player2Done
           rem Constraints: Must be colocated with DisplayWinScreen
 
           rem 3rd place (P2) - right platform
-
           if temp4 = 255 then DWS_Hide3Player3
+
           let playerX[2] = 120
           let playerY[2] = 192
           let currentCharacter = playerCharacter[temp4]
           let currentPlayer = 2
           gosub DWS_LoadIdleSprite
+
           goto DWS_Hide3Player3Done
+
 DWS_Hide3Player3
           rem Hide Player 3 (no 3rd place)
           rem Returns: Far (return otherbank)
@@ -394,6 +411,7 @@ DWS_Hide3Player3
           rem Constraints: Must be colocated with DisplayWinScreen,
           rem DWS_Position3Players, DWS_Hide3Player3Done
           let playerX[2] = 0
+
 DWS_Hide3Player3Done
           rem Hide Player 3 complete (label only)
           rem Returns: Far (return otherbank)
@@ -410,6 +428,7 @@ DWS_Hide3Player3Done
           rem Hide unused player
           let playerX[3] = 0
           return otherbank
+
 DWS_HidePlayers123
           rem Returns: Near (return thisbank)
           asm
@@ -442,7 +461,7 @@ end
           rem
           rem Constraints: Must reside in bank 15 (DisplayWinScreen.bas)
           let temp2 = systemFlags & SystemFlagColorBWOverride
-          if temp2 then temp2 = 1
+          if temp2 then let temp2 = 1
           return otherbank
 
 DWS_LoadColorColors
@@ -473,4 +492,3 @@ end
             sta pfcolortable+1
 end
           return thisbank
-

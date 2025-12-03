@@ -24,6 +24,9 @@ end
           rem Mutates: currentPlayer (0-3), animationCounter_W[], currentAnimationFrame_W[]
           rem Calls: UpdatePlayerAnimation (bank10), LoadPlayerSprite (bank16)
           rem Constraints: None
+          rem CRITICAL: Skip sprite loading in Publisher Prelude and Author Prelude modes (no characters)
+          if gameMode = ModePublisherPrelude then return otherbank
+          if gameMode = ModeAuthorPrelude then return otherbank
           dim UCA_quadtariActive = temp5
           let UCA_quadtariActive = controllerStatus & SetQuadtariDetected
           for currentPlayer = 0 to 3
@@ -270,7 +273,14 @@ UpdateSprite
           let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
           rem CRITICAL: Inlined LoadPlayerSprite dispatcher to save 4 bytes on stack
+          rem CRITICAL: Guard against calling bank 2 when no characters on screen
           let currentCharacter = playerCharacter[currentPlayer]
+          if currentCharacter = NoCharacter then goto AnimationNextPlayer
+          if currentCharacter = CPUCharacter then goto AnimationNextPlayer
+          if currentCharacter = RandomCharacter then goto AnimationNextPlayer
+          rem CRITICAL: Validate character index is within valid range (0-MaxCharacter)
+          rem Uninitialized playerCharacter (0) is valid (Bernie), but values > MaxCharacter are invalid
+          if currentCharacter > MaxCharacter then goto AnimationNextPlayer
           let temp1 = currentCharacter
           let temp6 = temp1
           rem Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
@@ -360,6 +370,12 @@ end
           rem Update character sprite immediately
           rem Frame is from this sprite 10fps counter, action from
           rem   currentAnimationSeq
+          rem CRITICAL: Guard against calling LoadPlayerSprite when no characters on screen
+          rem Check if player has a valid character before loading sprite
+          let temp1 = playerCharacter[currentPlayer]
+          if temp1 = NoCharacter then return otherbank
+          if temp1 = CPUCharacter then return otherbank
+          if temp1 = RandomCharacter then return otherbank
           rem Set up parameters for LoadPlayerSprite
           rem SCRAM read: Read from r081 (we just wrote 0, so this is 0)
           let temp2 = 0

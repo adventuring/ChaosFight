@@ -2,7 +2,7 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 HFCM_AttemptMoveLeft
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return otherbank) - called cross-bank from Bank 12
           asm
 HFCM_AttemptMoveLeft
 end
@@ -65,16 +65,16 @@ HFCM_LeftDirect
           let playerVelocityXL[temp1] = 1
           rem Subpixel: 1 = 1/256 pixel for subpixel accuracy
 HFCM_LeftFacing
-          if (playerState[temp1] & 8) then return thisbank
+          if (playerState[temp1] & 8) then return otherbank
           gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then HFCM_SetFacingLeft
           if temp2 > 9 then HFCM_SetFacingLeft
-          return thisbank
+          return otherbank
 HFCM_SetFacingLeft
           let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
-          return thisbank
+          return otherbank
 HFCM_AttemptMoveRight
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return otherbank) - called cross-bank from Bank 12
           asm
 HFCM_AttemptMoveRight
 end
@@ -135,12 +135,12 @@ HFCM_RightDirect
           let playerVelocityXL[temp1] = 1
           rem Subpixel: 1 = 1/256 pixel for subpixel accuracy
 HFCM_RightFacing
-          if (playerState[temp1] & 8) then return thisbank
+          if (playerState[temp1] & 8) then return otherbank
           gosub GetPlayerAnimationStateFunction bank13
           if temp2 < 5 then HFCM_SetFacingRight
           if temp2 > 9 then HFCM_SetFacingRight
-          return thisbank
+          return otherbank
 HFCM_SetFacingRight
           let playerState[temp1] = playerState[temp1] | 1
-          return thisbank
+          return otherbank
 

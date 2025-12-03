@@ -2,13 +2,13 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
 
 DispatchCharacterJump
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return otherbank) - but uses goto internally, so tail calls don’t add stack
           asm
 DispatchCharacterJump
 
 end
           rem Dispatch to character-specific jump function
-          rem Returns: Far (return otherbank)
+          rem Returns: Far (return otherbank) - but uses goto internally, so tail calls don’t add stack
           rem
           rem Input: temp1 = player index (0-3), temp4 = character index (0-31)
           rem
@@ -18,7 +18,7 @@ end
           rem
           rem Called Routines: Character-specific jump functions in bank12
           rem
-          rem Constraints: Must be in Bank 10. Jump functions are in Bank 12.
+          rem Constraints: Now in Bank 8 (same bank as ProcessJumpInput). Jump functions are in Bank 12.
           rem Handle out-of-range characters (>= 32)
           rem Characters 16-30 (unused) and Meth Hound mirror Shamone
           if temp4 >= 32 then goto DCJ_StandardJump
@@ -29,20 +29,20 @@ end
           if temp4 = CharacterFrooty then goto DCJ_FrootyJump
           if temp4 = CharacterRoboTito then goto DCJ_RoboTitoJump
 DCJ_StandardJump
-          gosub StandardJump bank12
-          return otherbank
+          rem Tail call: goto instead of gosub to save 2 bytes on stack
+          goto StandardJump bank12
 DCJ_BernieJump
-          gosub BernieJump bank12
-          return otherbank
+          rem Tail call: goto instead of gosub to save 2 bytes on stack
+          goto BernieJump bank12
 DCJ_DragonJump
-          gosub DragonOfStormsJump bank12
-          return otherbank
+          rem Tail call: goto instead of gosub to save 2 bytes on stack
+          goto DragonOfStormsJump bank12
 DCJ_HarpyJump
-          gosub HarpyJump bank12
-          return otherbank
+          rem Tail call: goto instead of gosub to save 2 bytes on stack
+          goto HarpyJump bank12
 DCJ_FrootyJump
-          gosub FrootyJump bank12
-          return otherbank
+          rem Tail call: goto instead of gosub to save 2 bytes on stack
+          goto FrootyJump bank12
 DCJ_RoboTitoJump
-          gosub RoboTitoJump
-          return otherbank
+          rem Tail call: goto instead of gosub to save 2 bytes on stack
+          goto RoboTitoJump

@@ -23,15 +23,69 @@ BudgetedHealthBarUpdate
           rem              UpdateHealthBarPlayer0-3 (all called via goto or gosub)
           rem Determine which player to update based on frame phase
           if framePhase = 0 then goto BudgetedHealthBarPlayer0
+
           if framePhase = 1 then goto BudgetedHealthBarPlayer1
+
           if framePhase = 2 then CheckPlayer2HealthUpdate
+
           goto CheckPlayer3HealthUpdate
+
 BudgetedHealthBarPlayer0
           rem Local trampoline so branch stays in range; tail-calls target
-          goto UpdateHealthBarPlayer0
+          rem Update Player 0 health bar (inline from UpdatePlayer1HealthBar pattern)
+          let temp6 = playerHealth[0]
+          asm
+            lda temp6
+            sta temp6
+            asl
+            asl
+            clc
+            adc temp6
+            asl
+            asl
+            clc
+            adc temp6
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta temp6
+end
+          if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
+          return thisbank
+
 BudgetedHealthBarPlayer1
           rem Local trampoline so branch stays in range; tail-calls target
-          goto UpdateHealthBarPlayer1
+          rem Update Player 1 health bar (inline from UpdatePlayer1HealthBar pattern)
+          let temp6 = playerHealth[1]
+          asm
+            lda temp6
+            sta temp6
+            asl
+            asl
+            clc
+            adc temp6
+            asl
+            asl
+            clc
+            adc temp6
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta temp6
+end
+          if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
+          return thisbank
+
 CheckPlayer2HealthUpdate
           rem Check if Player 3 health bar should be updated (4-player mode, active player)
           rem
@@ -44,14 +98,16 @@ CheckPlayer2HealthUpdate
           rem Called Routines: (inlined UpdateHealthBarPlayer2)
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer2HealthUpdate
+
           rem Update Player 3 health bar (inlined from UpdateHealthBarPlayer2)
           if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
+
           rem Input: playerHealth[] (global array) = player health values
           rem        HealthBarMaxLength (constant) = maximum health bar length
           rem Output: Score colors set for health digit display
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem Use inline assembly for division by 12 (multiply by 21 ÷ 256 ≈ 1 ÷ 12)
-          rem Algorithm: temp6 = (playerHealth[2] x 21) >> 8
+          rem Algorithm: temp6 = (playerHealth[2] × 21) >> 8
           asm
             lda playerHealth+2
             sta temp6
@@ -73,8 +129,9 @@ CheckPlayer2HealthUpdate
             lsr
             sta temp6
 end
-          if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
+          if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
           return thisbank
+
 DonePlayer2HealthUpdate
           rem Player 2 health update check complete (label only)
           rem
@@ -87,6 +144,7 @@ DonePlayer2HealthUpdate
           rem Called Routines: None
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate
           goto DonePlayer3HealthUpdate
+
 CheckPlayer3HealthUpdate
           rem Check if Player 4 health bar should be updated (4-player mode, active player)
           rem
@@ -99,14 +157,16 @@ CheckPlayer3HealthUpdate
           rem Called Routines: (inlined UpdateHealthBarPlayer3)
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
           if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer3HealthUpdate
+
           rem Update Player 4 health bar (inlined from UpdateHealthBarPlayer3)
           if playerCharacter[3] = NoCharacter then DonePlayer3HealthUpdate
+
           rem Input: playerHealth[] (global array) = player health values
           rem        HealthBarMaxLength (constant) = maximum health bar length
           rem Output: Score colors set for health digit display
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem Use inline assembly for division by 12 (multiply by 21 ÷ 256 ≈ 1 ÷ 12)
-          rem Algorithm: temp6 = (playerHealth[3] x 21) >> 8
+          rem Algorithm: temp6 = (playerHealth[3] × 21) >> 8
           asm
             lda playerHealth+3
             sta temp6
@@ -128,94 +188,17 @@ CheckPlayer3HealthUpdate
             lsr
             sta temp6
 end
-          if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
-          COLUPF = ColGray(14)
-          COLUP0 = ColGray(14)
-          rem Score minikernel requires all three color registers set to same color
-          COLUP1 = ColGray(14)
-          rem Players 3/4 health displayed as digits in score area
+          if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
           return thisbank
+
 DonePlayer3HealthUpdate
-          return thisbank
-UpdateHealthBarPlayer0
-          rem Update Player 1 health bar (framePhase 0)
+          rem Player 3 health update check complete (label only)
           rem
-          rem Input: playerHealth[] (global array) = player health values
-          rem        HealthBarMaxLength (constant) = maximum health bar length
+          rem Input: None (label only, no execution)
           rem
-          rem Output: Score colors set for health bar display
+          rem Output: None (label only)
           rem
-          rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
-          rem Constraints: None (note: actual maths is / 12½ but 12 is easy enough to fake it)
-          rem Use inline assembly for division by 12 (multiply by 21 ÷ 256 ≈ 1 ÷ 12)
-          rem Algorithm: temp6 = (playerHealth[0] x 21) >> 8
-          asm
-            lda playerHealth+0
-            sta temp6
-            asl
-            asl
-            clc
-            adc temp6
-            asl
-            asl
-            clc
-            adc temp6
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            sta temp6
-end
-          if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
-          COLUPF = ColGray(14)
-          COLUP0 = ColGray(14)
-          rem Score minikernel requires all three color registers set to same color
-          COLUP1 = ColGray(14)
-          rem Health bars for players 1/2 are displayed using score registers (pfscore/pfscore2)
-          return thisbank
-UpdateHealthBarPlayer1
-          rem Update Player 2 health bar (framePhase 1)
+          rem Mutates: None
           rem
-          rem Input: playerHealth[] (global array) = player health values
-          rem        HealthBarMaxLength (constant) = maximum health bar length
-          rem
-          rem Output: Score colors set for health bar display
-          rem
-          rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
-          rem Constraints: None (note: actual maths is / 12½ but 12 is easy enough to fake it)
-          rem Use inline assembly for division by 12 (multiply by 21 ÷ 256 ≈ 1 ÷ 12)
-          rem Algorithm: temp6 = (playerHealth[1] x 21) >> 8
-          asm
-            lda playerHealth+1
-            sta temp6
-            asl
-            asl
-            clc
-            adc temp6
-            asl
-            asl
-            clc
-            adc temp6
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            sta temp6
-end
-          if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
-          COLUPF = ColGray(14)
-          COLUP0 = ColGray(14)
-          rem Score minikernel requires all three color registers set to same color
-          COLUP1 = ColGray(14)
-          rem Health bars for players 1/2 are displayed using score registers (pfscore/pfscore2)
-          return thisbank
-
-
+          rem Called Routines: None
+          rem Constraints: Must be colocated with BudgetedHealthBarUpdate

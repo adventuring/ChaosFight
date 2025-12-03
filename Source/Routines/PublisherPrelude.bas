@@ -47,6 +47,11 @@
           rem No explicit loading needed - titlescreen kernel handles
           rem   bitmap display
 
+PublisherPreludeMain
+          rem Returns: Far (return otherbank)
+          asm
+PublisherPreludeMain
+end
           rem Check for button press on any controller to skip
           if joy0fire then goto PublisherPreludeComplete
 

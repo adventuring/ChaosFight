@@ -27,24 +27,40 @@ BudgetedCollisionCheck
 
           rem Check additional pairs based on frame phase
           if framePhase = 0 then BPC_Phase0
+
           if framePhase = 1 then BPC_Phase1
+
           if framePhase = 2 then BPC_Phase2
+
           return otherbank
+
 BPC_Phase0
           if playerCharacter[2] = NoCharacter then return otherbank
+
           gosub CheckCollisionP1vsP3
+
           return otherbank
+
 BPC_Phase1
           if playerCharacter[3] <> NoCharacter then gosub CheckCollisionP1vsP4
+
           if playerCharacter[2] = NoCharacter then return otherbank
+
           gosub CheckCollisionP2vsP3
+
           return otherbank
+
 BPC_Phase2
           if playerCharacter[3] <> NoCharacter then gosub CheckCollisionP2vsP4
+
           if playerCharacter[2] = NoCharacter then return otherbank
+
           if playerCharacter[3] = NoCharacter then return otherbank
+
           gosub CheckCollisionP3vsP4
+
           return otherbank
+
 CheckCollisionP1vsP2
           asm
 CheckCollisionP1vsP2
@@ -52,7 +68,9 @@ end
           let temp3 = 0
           let temp4 = 1
           gosub CheckCollisionPair
+
           return thisbank
+
 CheckCollisionPair
           asm
 CheckCollisionPair
@@ -60,20 +78,27 @@ end
           rem Input: temp3 = player 1 index, temp4 = player 2 index
           rem Output: separates players if collision detected
           if playerX[temp3] >= playerX[temp4] then BPC_CalcDiff
+
           let temp2 = playerX[temp4] - playerX[temp3]
           goto BPC_CheckSep
+
 BPC_CalcDiff
           let temp2 = playerX[temp3] - playerX[temp4]
+
 BPC_CheckSep
           if temp2 >= 16 then return thisbank
+
           if playerX[temp3] < playerX[temp4] then BPC_SepLeft
+
           let playerX[temp3] = playerX[temp3] + 1
           let playerX[temp4] = playerX[temp4] - 1
           return thisbank
+
 BPC_SepLeft
           let playerX[temp3] = playerX[temp3] - 1
           let playerX[temp4] = playerX[temp4] + 1
           return thisbank
+
 CheckCollisionP1vsP3
           asm
 CheckCollisionP1vsP3
@@ -81,7 +106,9 @@ end
           let temp3 = 0
           let temp4 = 2
           gosub CheckCollisionPair
+
           return thisbank
+
 CheckCollisionP1vsP4
           asm
 CheckCollisionP1vsP4
@@ -89,7 +116,9 @@ end
           let temp3 = 0
           let temp4 = 3
           gosub CheckCollisionPair
+
           return thisbank
+
 CheckCollisionP2vsP3
           asm
 CheckCollisionP2vsP3
@@ -97,7 +126,9 @@ end
           let temp3 = 1
           let temp4 = 2
           gosub CheckCollisionPair
+
           return thisbank
+
 CheckCollisionP2vsP4
           asm
 CheckCollisionP2vsP4
@@ -105,7 +136,9 @@ end
           let temp3 = 1
           let temp4 = 3
           gosub CheckCollisionPair
+
           return thisbank
+
 CheckCollisionP3vsP4
           asm
 CheckCollisionP3vsP4
@@ -113,6 +146,5 @@ end
           let temp3 = 2
           let temp4 = 3
           gosub CheckCollisionPair
+
           return thisbank
-
-

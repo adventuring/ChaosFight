@@ -52,12 +52,12 @@ PBC_NextPlayer
           next
           return thisbank
 CheckPlayerBoundary
-          rem Returns: Far (return thisbank)
+          rem Returns: Near (return thisbank)
           asm
 CheckPlayerBoundary
 end
           rem Check Player Boundary
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           rem Shared function to check boundary collisions for a single player
           rem Reduces code duplication from 4x to 1x implementation
           rem
@@ -76,12 +76,19 @@ end
           rem
           rem Constraints: Uses temp1 as player index, temp2 as scratch.
           if playerX[temp1] < PlayerLeftWrapThreshold then let playerX[temp1] = PlayerRightEdge : let playerSubpixelX_W[temp1] = PlayerRightEdge : let playerSubpixelX_WL[temp1] = 0
+
           if playerX[temp1] > PlayerRightWrapThreshold then let playerX[temp1] = PlayerLeftEdge : let playerSubpixelX_W[temp1] = PlayerLeftEdge : let playerSubpixelX_WL[temp1] = 0
+
           if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY_W[temp1] = 20 : let playerSubpixelY_WL[temp1] = 0 : let playerVelocityY[temp1] = 0 : let playerVelocityYL[temp1] = 0
-          if playerY[temp1] <= ScreenBottom then return otherbank
+
+          if playerY[temp1] <= ScreenBottom then return thisbank
+
           if playerCharacter[temp1] = CharacterBernie then goto CheckPlayerBoundary_BernieWrap
+
           let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank14
-          return otherbank
+
+          return thisbank
+
 CheckPlayerBoundary_BernieWrap
           let playerY[temp1] = 0 : let playerSubpixelY_W[temp1] = 0 : let playerSubpixelY_WL[temp1] = 0
           return thisbank

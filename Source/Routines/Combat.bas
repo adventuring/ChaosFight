@@ -110,7 +110,7 @@ end
           let playerState[defenderID] = playerState[defenderID] | 8
 
           rem Issue #1180: Ursulo uppercut knock-up scaling with target weight
-          rem Ursulo's punches toss opponents upward with launch height proportional to target weight
+          rem Ursulo’s punches toss opponents upward with launch height proportional to target weight
           rem Lighter characters travel higher than heavyweights
           let temp1 = playerCharacter[attackerID]
           if temp1 = CharacterUrsulo then goto ApplyUrsuloKnockUp

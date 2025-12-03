@@ -48,8 +48,8 @@ end
           rem   (FindWinner.bas)
 
           rem Set screen layout (32×8 for character display) - inlined
-          pfrowheight = ScreenPfRowHeight
-          pfrows = ScreenPfRows
+          let pfrowheight = ScreenPfRowHeight
+          let pfrows = ScreenPfRows
 
           rem Background: black (COLUBK starts black, no need to set)
 
@@ -59,10 +59,13 @@ end
 
           rem Get winner’s character index
           let temp1 = winnerPlayerIndex_R
-          if temp1 = 0 then temp2 = playerCharacter[0]
-          if temp1 = 1 then temp2 = playerCharacter[1]
-          if temp1 = 2 then temp2 = playerCharacter[2]
-          if temp1 = 3 then temp2 = playerCharacter[3]
+          if temp1 = 0 then let temp2 = playerCharacter[0]
+
+          if temp1 = 1 then let temp2 = playerCharacter[1]
+
+          if temp1 = 2 then let temp2 = playerCharacter[2]
+
+          if temp1 = 3 then let temp2 = playerCharacter[3]
 
           rem Look up full song ID from mapping table (table contains
           rem   song ID constants)
@@ -72,4 +75,3 @@ end
           gosub StartMusic bank15
 
           return otherbank
-

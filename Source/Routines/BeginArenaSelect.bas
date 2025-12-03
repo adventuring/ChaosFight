@@ -48,12 +48,10 @@ end
           rem   Select)
 
           rem Set screen layout (32×8 for character display) - inlined
-          pfrowheight = ScreenPfRowHeight
-          pfrows = ScreenPfRows
+          let pfrowheight = ScreenPfRowHeight
+          let pfrows = ScreenPfRows
 
           rem Background: black (COLUBK starts black, no need to set)
 
           rem Playfield layout is static; ArenaSelect renders via playfield data
           return otherbank
-
-

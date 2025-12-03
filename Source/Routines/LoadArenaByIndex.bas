@@ -15,8 +15,7 @@ end
           rem Mutates: PF1pointer, PF2pointer, temp2-temp5
           rem Constraints: PF0pointer remains glued to the status bar layout
           rem             Arena playfield data stored sequentially: PF1|PF2 (8 bytes each)
-
-          rem Calculate arena data pointer: Arena0Playfield + (arena_index x 24)
+          rem Calculate arena data pointer: Arena0Playfield + (arena_index × 24)
           rem Each arena stores 16 bytes of playfield data followed by 8 bytes of row colors (16 + 8 = 24)
           asm
             ; Optimized: Multiply by 24 = multiply by 8, then multiply by 3

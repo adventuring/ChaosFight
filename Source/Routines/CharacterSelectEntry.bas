@@ -37,10 +37,13 @@ CharacterSelectEntry
           let playerLocked = 0
           rem Lock Player 3 (NoCharacter)
           let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+
           rem Lock Player 4 (NoCharacter)
           let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic
           let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+
           rem   detection (upgrades only)
           rem Controller detection is handled by DetectPads with
           rem   monotonic state machine
@@ -57,13 +60,17 @@ CharacterSelectEntry
           rem CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
           rem Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) AND Right (INPT2 LOW, INPT3 HIGH)
           if INPT0{7} then goto CharacterSelectQuadtariAbsent
+
           if !INPT1{7} then goto CharacterSelectQuadtariAbsent
+
           if INPT2{7} then goto CharacterSelectQuadtariAbsent
+
           rem All checks passed - Quadtari detected
           if !INPT3{7} then goto CharacterSelectQuadtariAbsent
-          let controllerStatus = controllerStatus | SetQuadtariDetected
-CharacterSelectQuadtariAbsent
 
+          let controllerStatus = controllerStatus | SetQuadtariDetected
+
+CharacterSelectQuadtariAbsent
           rem Background: black (COLUBK starts black, no need to set)
 
           rem Initialization complete - per-frame loop handled by CharacterSelectInputEntry

@@ -30,7 +30,7 @@ end
           return otherbank
 
 NudgePlayerFromPlayfield
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 NudgePlayerFromPlayfield
 end
@@ -40,35 +40,36 @@ end
           rem Output: Player position adjusted to avoid playfield
           let originalPlayerX_W = playerX[temp1]
           let originalPlayerY_W = playerY[temp1]
-          rem MovePlayerToTarget is called cross-bank, so all return otherbank paths must use return otherbank
           gosub MPT_NudgeRight
+
           gosub MPT_NudgeLeft
+
           return otherbank
 
 MPT_NudgeRight
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 MPT_NudgeRight
 end
           let playerX[temp1] = originalPlayerX_R + 1
           gosub MPT_CheckCollision
-          rem MovePlayerToTarget is called cross-bank, so all return otherbank paths must use return otherbank
-          rem Returns: Far (return otherbank)
+
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_R
           return otherbank
+
 MPT_NudgeLeft
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 MPT_NudgeLeft
 end
           let playerX[temp1] = originalPlayerX_R - 1
           gosub MPT_CheckCollision
-          rem MovePlayerToTarget is called cross-bank, so all return otherbank paths must use return otherbank
-          rem Returns: Far (return otherbank)
+
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_R
           return otherbank
+
 MPT_CheckCollision
-          rem Returns: Far (return thisbank)
+          rem Returns: Far (return otherbank)
           asm
 MPT_CheckCollision
 end

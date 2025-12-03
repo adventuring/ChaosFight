@@ -26,7 +26,9 @@ BudgetedMissileCollisionCheck
           let temp6 = BitMask[temp1]
           let temp4 = missileActive & temp6
           if temp4 then gosub CheckAllMissileCollisions bank8
+
           return thisbank
+
 BudgetedMissileCollisionCheck2P
           rem Simple 2-player mode: alternate missiles
           let temp1 = frame & 1
@@ -36,6 +38,5 @@ BudgetedMissileCollisionCheck2P
           let temp6 = BitMask[temp1]
           let temp4 = missileActive & temp6
           if temp4 then gosub CheckAllMissileCollisions bank8
+
           return thisbank
-
-

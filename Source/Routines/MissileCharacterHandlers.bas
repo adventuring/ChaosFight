@@ -23,7 +23,9 @@ HarpyCheckDiveVelocity
           rem Constraints: Internal helper for SpawnMissile, only called
           rem for Harpy (character 6)
           if (characterStateFlags_R[temp1] & 4) then HarpyBoostDiveVelocity
+
           goto VelocityDone
+
 HarpyBoostDiveVelocity
           rem Helper: Increases Harpy downward velocity by 50% for dive
           rem attacks
@@ -47,10 +49,11 @@ HarpyBoostDiveVelocity
             sta velocityCalculation
 end
           let temp6 = temp6 + velocityCalculation
+
 VelocityDone
           let missileVelocityY[temp1] = temp6
-
           return thisbank
+
 HandleMegaxMissile
           rem
           rem HANDLE MEGAX MISSILE (stationary Fire Breath Visual)
@@ -99,9 +102,10 @@ HandleMegaxMissile
           rem Calculate X position based on player position and facing
           let temp2 = playerX[temp1]
           rem Facing left, spawn left
-          if temp4 = 0 then temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
+          if temp4 = 0 then let temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
+
           rem Facing right, spawn right
-          if temp4 = 1 then temp2 = temp2 + CharacterMissileSpawnOffsetRight[temp5]
+          if temp4 = 1 then let temp2 = temp2 + CharacterMissileSpawnOffsetRight[temp5]
 
           rem Calculate Y position (player Y + emission height)
           let temp3 = playerY[temp1] + temp5
@@ -131,6 +135,7 @@ end
           rem   deactivate
           rem ActionAttackExecute = 14, so if animationState ≠ 14,
           if temp6 = 14 then MegaxMissileActive
+
           rem Attack complete - deactivate missile
           goto DeactivateMissile
 
@@ -138,6 +143,7 @@ MegaxMissileActive
           rem Attack still active - missile stays visible
           rem Skip normal movement and collision checks
           return thisbank
+
 HandleKnightGuyMissile
           rem
           rem HANDLE KNIGHT GUY MISSILE (sword Swing Visual)
@@ -193,6 +199,7 @@ HandleKnightGuyMissile
 end
           rem If animation state is not ActionAttackExecute (14), attack is complete
           if temp6 = 14 then KnightGuyAttackActive
+
           rem Attack complete - deactivate missile
           goto DeactivateMissile
 
@@ -207,6 +214,7 @@ KnightGuyAttackActive
           rem Maximum swing distance: 4 pixels
           rem Frames 4-7: Returning to start
           if velocityCalculation < 4 then KnightGuySwingOut
+
           rem Calculate return offset: (7 - frame) pixels
           rem Frame 4: 3 pixels away, Frame 5: 2 pixels, Frame 6: 1
           rem pixel, Frame 7: 0 pixels
@@ -228,8 +236,8 @@ KnightGuySetPosition
           rem Base position: center of player sprite
 
           rem Apply swing offset in facing direction
-
           if temp4 = 0 then KnightGuySwingLeft
+
           rem Facing right: move right (positive offset)
           let temp2 = temp2 + velocityCalculation
           goto KnightGuySetY

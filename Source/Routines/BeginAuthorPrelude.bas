@@ -38,7 +38,8 @@ end
           gosub StartMusic bank15
 
           rem Set window values for Author screen (Interworldly only)
-          gosub SetAuthorWindowValues bank14
+          rem OPTIMIZATION: Same-bank call to save 2 bytes on stack
+          gosub SetAuthorWindowValues
 
           rem Note: Bitmap data is loaded automatically by titlescreen
           rem   kernel via includes

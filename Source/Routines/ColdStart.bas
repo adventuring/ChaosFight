@@ -85,12 +85,9 @@ end
 
           rem Step 5: Initialize game state and transition to first mode
           rem Set initial game mode (Publisher Prelude)
-          rem ChangeGameMode calls SetupPublisherPrelude and sets up
           let gameMode = ModePublisherPrelude
-          rem   music
-          gosub ChangeGameMode bank14
-
-          rem Step 6: Jump to MainLoop (in Bank 16)
-          rem MainLoop will handle the game mode dispatch and frame
-          rem   rendering
+          rem OPTIMIZATION: Call BeginPublisherPrelude directly to save 4 bytes
+          rem (skip ChangeGameMode dispatcher overhead)
+          gosub BeginPublisherPrelude bank14
+          rem Step 6: Tail call to MainLoop
           goto MainLoop bank16

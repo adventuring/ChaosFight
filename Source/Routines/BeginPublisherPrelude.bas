@@ -57,6 +57,7 @@ end
 
           rem Set window values for Publisher screen (AtariAge logo + AtariAge text)
           rem Window values are set once during setup, not every frame
-          gosub SetPublisherWindowValues bank14
+          rem OPTIMIZATION: Same-bank call to save 2 bytes on stack (both in bank14)
+          gosub SetPublisherWindowValues
 
           return otherbank

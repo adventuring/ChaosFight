@@ -54,10 +54,8 @@ SetupPublisherPrelude
           rem Constraints: Must be colocated with ChangeGameMode
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          rem CRITICAL: Must use bank14 specifier even though same-bank to match return otherbank
-          gosub BeginPublisherPrelude bank14
-
-          return otherbank
+          rem OPTIMIZATION: Tail call to save 4 bytes on stack
+          goto BeginPublisherPrelude bank14
 
 SetupAuthorPrelude
           rem Setup Author Prelude mode
@@ -75,10 +73,8 @@ SetupAuthorPrelude
           rem Constraints: Must be colocated with ChangeGameMode
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          rem CRITICAL: Must use bank14 specifier even though same-bank to match return otherbank
-          gosub BeginAuthorPrelude bank14
-
-          return otherbank
+          rem OPTIMIZATION: Tail call to save 4 bytes on stack
+          goto BeginAuthorPrelude bank14
 
 SetupTitle
           rem Setup Title Screen mode
@@ -96,10 +92,8 @@ SetupTitle
           rem Constraints: Must be colocated with ChangeGameMode
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          rem CRITICAL: Must use bank14 specifier even though same-bank to match return otherbank
-          gosub BeginTitleScreen bank14
-
-          return otherbank
+          rem OPTIMIZATION: Tail call to save 4 bytes on stack
+          goto BeginTitleScreen bank14
 
 SetupCharacterSelect
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
@@ -218,10 +212,8 @@ SetupAttract
           rem Constraints: Must be colocated with ChangeGameMode
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          rem CRITICAL: Must use bank14 specifier even though same-bank to match return otherbank
-          gosub BeginAttractMode bank14
-
-          return otherbank
+          rem OPTIMIZATION: Tail call to save 4 bytes on stack
+          goto BeginAttractMode bank14
           rem ============================================================
           rem Near thunks for on...goto jump table
           rem Placed at end to prevent accidental fall-through

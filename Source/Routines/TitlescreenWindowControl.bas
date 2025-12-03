@@ -1,10 +1,10 @@
 SetPublisherWindowValues
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 SetPublisherWindowValues
 end
           rem
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank from BeginPublisherPrelude
           rem ChaosFight - Source/Routines/TitlescreenWindowControl.bas
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem Titlescreen Window Control
@@ -46,16 +46,16 @@ end
           let titlescreenWindow2 = 42  ; AtariAgeText visible
           let titlescreenWindow3 = 0   ; ChaosFight hidden
           let titlescreenWindow4 = 0   ; BRP hidden
-          return otherbank
+          return thisbank
 
 SetAuthorWindowValues
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 SetAuthorWindowValues
 
 end
           rem Initialize window values for Author screen
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank from BeginAuthorPrelude
           rem Shows: BRP (slot 4)
           rem Hides: AtariAge logo (bmp_48x2_1), AtariAgeText
           rem   (bmp_48x2_2), ChaosFight (bmp_48x2_3)
@@ -75,15 +75,15 @@ end
           let titlescreenWindow2 = 0   ; AtariAgeText hidden
           let titlescreenWindow3 = 0   ; ChaosFight hidden
           let titlescreenWindow4 = 42  ; BRP visible
-          return otherbank
+          return thisbank
 
 SetTitleWindowValues
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank)
           asm
 SetTitleWindowValues
 end
           rem Initialize window values for Title screen
-          rem Returns: Far (return otherbank)
+          rem Returns: Near (return thisbank) - called same-bank from BeginTitleScreen
           rem Shows: ChaosFight (bmp_48x2_3) only
           rem Hides: AtariAge logo (bmp_48x2_1), AtariAgeText
           rem   (bmp_48x2_2), BRP (bmp_48x2_4)
@@ -103,5 +103,5 @@ end
           let titlescreenWindow2 = 0   ; AtariAgeText hidden
           let titlescreenWindow3 = 42  ; ChaosFight visible
           let titlescreenWindow4 = 0   ; Interworldly hidden
-          return otherbank
+          return thisbank
 

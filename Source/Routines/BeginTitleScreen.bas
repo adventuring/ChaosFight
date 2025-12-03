@@ -40,7 +40,8 @@ end
           gosub StartMusic bank15
 
           rem Set window values for Title screen (ChaosFight only)
-          gosub SetTitleWindowValues bank14
+          rem OPTIMIZATION: Same-bank call to save 2 bytes on stack
+          gosub SetTitleWindowValues
 
           rem Note: Bitmap data is loaded automatically by titlescreen
           rem   kernel via includes

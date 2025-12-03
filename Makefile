@@ -624,7 +624,7 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/SetPlayerSprites.bas \
 	Source/Routines/DisplayHealth.bas \
 	Source/Routines/PublisherPrelude.bas \
-	Source/Routines/ScreenLayout.bas \
+	Source/Routines/SetGameScreenLayout.bas \
 	Source/Routines/LoadSoundPointer.bas \
 	Source/Routines/LoadSoundNote.bas \
 	Source/Routines/LoadSoundNote1.bas \
@@ -635,7 +635,7 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/StopSoundEffects.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/SpriteLoaderCharacterArt.bas \
-	Source/Routines/SpritePointerInit.bas \
+	Source/Routines/InitializeSpritePointers.bas \
 	Source/Routines/TitleCharacterParade.bas \
 	Source/Routines/TitleScreenMain.bas \
 	Source/Routines/TitleScreenRender.bas \

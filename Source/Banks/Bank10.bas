@@ -82,7 +82,7 @@ CheckRoboTitoStretchMissileCollisionsEnd
           asm
 ScreenLayoutStart
 end
-#include "Source/Routines/ScreenLayout.bas"
+#include "Source/Routines/SetGameScreenLayout.bas"
           asm
 ScreenLayoutEnd
             echo "// Bank 10: ", [ScreenLayoutEnd - ScreenLayoutStart]d, " bytes = ScreenLayout"

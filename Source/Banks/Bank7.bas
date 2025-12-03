@@ -31,7 +31,7 @@ end
           asm
 BudgetedMissileCollisionsStart
 end
-#include "Source/Routines/BudgetedMissileCollisions.bas"
+#include "Source/Routines/BudgetedMissileCollisionCheck.bas"
           asm
 BudgetedMissileCollisionsEnd
             echo "// Bank 7: ", [BudgetedMissileCollisionsEnd - BudgetedMissileCollisionsStart]d, " bytes = BudgetedMissileCollisions"

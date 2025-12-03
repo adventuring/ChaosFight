@@ -92,7 +92,7 @@ CharacterSelectFireEnd
             echo "// Bank 6: ", [CharacterSelectFireEnd - CharacterSelectFireStart]d, " bytes = CharacterSelectFire"
 CharacterSelectHelpersStart
 end
-#include "Source/Routines/CharacterSelectHelpers.bas"
+#include "Source/Routines/SelectStickLeft.bas"
           asm
 CharacterSelectHelpersEnd
             echo "// Bank 6: ", [CharacterSelectHelpersEnd - CharacterSelectHelpersStart]d, " bytes = CharacterSelectHelpers"
@@ -106,7 +106,7 @@ MovePlayerToTargetEnd
           asm
 FramePhaseSchedulerStart
 end
-#include "Source/Routines/FramePhaseScheduler.bas"
+#include "Source/Routines/UpdateFramePhase.bas"
           asm
 FramePhaseSchedulerEnd
             echo "// Bank 6: ", [FramePhaseSchedulerEnd - FramePhaseSchedulerStart]d, " bytes = FramePhaseScheduler"

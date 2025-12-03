@@ -45,7 +45,7 @@ end
           asm
 Bank14AfterColdStart
 end
-#include "Source/Routines/SpritePointerInit.bas"
+#include "Source/Routines/InitializeSpritePointers.bas"
           asm
 Bank14AfterSpritePointerInit
 end

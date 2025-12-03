@@ -1,0 +1,20 @@
+SetGameScreenLayout
+          rem Returns: Far (return otherbank)
+          asm
+SetGameScreenLayout
+end
+          rem Set screen layout for all screens (32×8) with health bar
+          rem Returns: Far (return otherbank)
+          rem space
+          rem
+          rem Input: None
+          rem
+          rem Output: pfrowheight set to ScreenPfRowHeight, pfrows set to ScreenPfRows
+          rem
+          rem Mutates: pfrowheight (set to ScreenPfRowHeight), pfrows (set to ScreenPfRows)
+          rem
+          rem Called Routines: None
+          rem Constraints: Called for all screen layouts
+          let pfrowheight = ScreenPfRowHeight
+          let pfrows = ScreenPfRows
+          return otherbank

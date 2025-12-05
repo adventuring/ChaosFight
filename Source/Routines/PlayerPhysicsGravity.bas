@@ -65,7 +65,7 @@ end
           rem temporaries
           rem Called Routines: AddVelocitySubpixelY (bank8) - adds
           rem gravity to vertical velocity,
-          rem CCJ_ConvertPlayerXToPlayfieldColumn (bank13) - converts player
+          rem CCJ_ConvertPlayerXToPlayfieldColumn (bank12) - converts player
           rem × to playfield column, Y divided by 16 (pfrowheight is always 16)
           rem row height, PAG_SetRoboTitoStretchPermission - sets
           rem RoboTito stretch permission on landing
@@ -121,8 +121,12 @@ GravityCheckCharacter
           if playerVelocityY[temp1] > TerminalVelocity then let playerVelocityY[temp1] = TerminalVelocity : let playerVelocityYL[temp1] = 0
           rem Check playfield collision for ground detection (downward)
           rem Convert player X position to playfield column (0-31)
-          rem Use shared coordinate conversion subroutine
-          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
+          rem CRITICAL: Inlined CCJ_ConvertPlayerXToPlayfieldColumn to avoid cross-bank call and stack imbalance
+          rem Input: temp1 = player index
+          rem Output: temp2 = playfield column (saved to temp6)
+          let temp2 = playerX[temp1]
+          let temp2 = temp2 - ScreenInsetX
+          let temp2 = temp2 / 4
           rem Save playfield column (temp2 will be overwritten)
           let temp6 = temp2
           rem Calculate row where player feet are (bottom of sprite)
@@ -213,7 +217,9 @@ PAG_SetRoboTitoStretchPermission
           let characterSpecialAbility_W[temp1] = 1
           rem Clear stretch missile height on landing (not stretching)
           let missileStretchHeight_W[temp1] = 0
-          return otherbank
+          rem CRITICAL: Called via goto from PhysicsApplyGravity, must continue to GravityNextPlayer
+          rem Do not return - use goto to continue the loop
+          goto GravityNextPlayer
 
 GravityCheckBottom
           rem At bottom of playfield - treat as ground if feet are at

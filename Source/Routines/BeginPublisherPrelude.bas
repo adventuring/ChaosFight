@@ -34,7 +34,7 @@ end
           rem temp1 (passed to StartMusic)
           rem
           rem Called Routines: StartMusic (bank15) - starts AtariToday
-          rem music, SetPublisherWindowValues (bank14) - sets window values for bitmaps
+          rem music
           rem
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModePublisherPrelude
@@ -47,17 +47,15 @@ end
           rem Background: black (COLUBK starts black, no need to set)
 
           rem Start AtariToday music
-          rem BeginPublisherPrelude calls SetPublisherWindowValues bank14 (cross-bank via BS_jsr)
-          rem SetPublisherWindowValues returns with return otherbank (jmp BS_return)
-          rem This means BeginPublisherPrelude MUST also return with return otherbank
-          rem Even though BeginPublisherPrelude is called same-bank from SetupPublisherPrelude,
-          rem the cross-bank call to SetPublisherWindowValues forces the entire chain to use far returns
           let temp1 = MusicAtariToday
           gosub StartMusic bank15
 
           rem Set window values for Publisher screen (AtariAge logo + AtariAge text)
           rem Window values are set once during setup, not every frame
-          rem OPTIMIZATION: Same-bank call to save 2 bytes on stack (both in bank14)
-          gosub SetPublisherWindowValues
+          rem OPTIMIZATION: Inlined to save call overhead (only used once)
+          let titlescreenWindow1 = 42  ; AtariAge logo visible
+          let titlescreenWindow2 = 42  ; AtariAgeText visible
+          let titlescreenWindow3 = 0   ; ChaosFight hidden
+          let titlescreenWindow4 = 0   ; BRP hidden
 
           return otherbank

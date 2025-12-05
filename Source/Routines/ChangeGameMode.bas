@@ -130,7 +130,7 @@ SetupFallingAnimation
           rem Constraints: Must be colocated with ChangeGameMode
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          gosub BeginFallingAnimation bank12
+          gosub BeginFallingAnimation bank14
 
           return otherbank
 
@@ -150,7 +150,7 @@ SetupArenaSelect
           rem Constraints: Must be colocated with ChangeGameMode
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          gosub BeginArenaSelect bank12
+          gosub BeginArenaSelect bank14
 
           return otherbank
 
@@ -192,7 +192,7 @@ SetupWinner
           rem Constraints: Must be colocated with ChangeGameMode
           rem CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           rem ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          gosub BeginWinnerAnnouncement bank12
+          gosub BeginWinnerAnnouncement bank14
 
           return otherbank
 

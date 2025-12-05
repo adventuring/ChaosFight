@@ -495,7 +495,7 @@ HGI_HandleDownPressed
 
           if temp4 = CharacterRoboTito then goto DCD_HandleRoboTitoDown
 
-          goto StandardGuard bank13
+          goto StandardGuard bank12
 
 DCD_HandleRoboTitoDown
 
@@ -503,7 +503,7 @@ DCD_HandleRoboTitoDown
 
           if temp2 = 1 then return thisbank
 
-          goto StandardGuard bank13
+          goto StandardGuard bank12
 
 HGI_CheckGuardRelease
 
@@ -1638,7 +1638,7 @@ HGI_HandleDownPressed1
 
           if temp4 = CharacterRadishGoblin then goto HGI_HandleRadishGoblinDown1
 
-          goto StandardGuard bank13
+          goto StandardGuard bank12
 
 HGI_HandleRadishGoblinDown1
 
@@ -1647,7 +1647,7 @@ HGI_HandleRadishGoblinDown1
 
           gosub RadishGoblinHandleStickDown bank12
 
-          goto StandardGuard bank13
+          goto StandardGuard bank12
 
 DCD_HandleRoboTitoDown1
 
@@ -1655,7 +1655,7 @@ DCD_HandleRoboTitoDown1
 
           if temp2 = 1 then goto HGI_Done1
 
-          goto StandardGuard bank13
+          goto StandardGuard bank12
 
 HGI_CheckGuardRelease1
 
@@ -1871,7 +1871,7 @@ HGI_HandleDownPressed2
 
           if temp4 = CharacterRadishGoblin then goto HGI_HandleRadishGoblinDown2
 
-          goto StandardGuard bank13
+          goto StandardGuard bank12
 
 HGI_HandleRadishGoblinDown2
 
@@ -1880,7 +1880,7 @@ HGI_HandleRadishGoblinDown2
 
           gosub RadishGoblinHandleStickDown bank12
 
-          goto StandardGuard bank13
+          goto StandardGuard bank12
 
 DCD_HandleRoboTitoDown2
 
@@ -1888,7 +1888,7 @@ DCD_HandleRoboTitoDown2
 
           if temp2 = 1 then goto HGI_Done2
 
-          goto StandardGuard bank13
+          goto StandardGuard bank12
 
 HGI_CheckGuardRelease2
 

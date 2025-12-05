@@ -57,10 +57,6 @@ end
           asm
 Bank14AfterTitleCharacterParade
 end
-#include "Source/Routines/TitlescreenWindowControl.bas"
-          asm
-Bank14AfterTitlescreenWindowControl
-end
 #include "Source/Routines/AttractMode.bas"
           asm
 Bank14AfterAttractMode
@@ -139,8 +135,7 @@ Bank14CodeEnds
            echo "// Bank 14: ", [Bank14AfterSpritePointerInit - Bank14AfterColdStart]d, " bytes = SpritePointerInit"
            echo "// Bank 14: ", [Bank14AfterTitleScreenMain - Bank14AfterSpritePointerInit]d, " bytes = TitleScreenMain"
            echo "// Bank 14: ", [Bank14AfterTitleCharacterParade - Bank14AfterTitleScreenMain]d, " bytes = TitleCharacterParade"
-           echo "// Bank 14: ", [Bank14AfterTitlescreenWindowControl - Bank14AfterTitleCharacterParade]d, " bytes = TitlescreenWindowControl"
-           echo "// Bank 14: ", [Bank14AfterAttractMode - Bank14AfterTitlescreenWindowControl]d, " bytes = AttractMode"
+           echo "// Bank 14: ", [Bank14AfterAttractMode - Bank14AfterTitleCharacterParade]d, " bytes = AttractMode"
            echo "// Bank 14: ", [Bank14AfterAuthorPrelude - Bank14AfterAttractMode]d, " bytes = AuthorPrelude"
            echo "// Bank 14: ", [Bank14AfterLoadCharacterColors - Bank14AfterAuthorPrelude]d, " bytes = LoadCharacterColors"
            echo "// Bank 14: ", [Bank14AfterHandlePauseInput - Bank14AfterLoadCharacterColors]d, " bytes = HandlePauseInput"

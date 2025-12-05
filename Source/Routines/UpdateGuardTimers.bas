@@ -17,6 +17,6 @@ end
           rem player 3
           rem Optimized: Loop through all players instead of individual calls
           for temp1 = 0 to 3
-          gosub UpdateSingleGuardTimer bank10
+          gosub UpdateSingleGuardTimer bank6
           next
           return otherbank

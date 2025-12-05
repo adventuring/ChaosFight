@@ -51,7 +51,8 @@ end
           rem Returns: Far (return otherbank)
           rem Input: temp1 = player index
           rem Output: playerY[] updated when falling through
-          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
+          rem CRITICAL: CCJ_ConvertPlayerXToPlayfieldColumn is in Bank 12, use bank12 to match return otherbank
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank12
 
           let temp3 = playerY[temp1]
           let temp5 = temp3 + 16
@@ -180,7 +181,8 @@ CCJ_FreeFlightCharacterJump
           rem Returns: Far (return otherbank)
           rem Input: temp1 = player index
           rem Output: Upward velocity if clear above
-          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
+          rem CRITICAL: CCJ_ConvertPlayerXToPlayfieldColumn is in Bank 12, use bank12 to match return otherbank
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank12
 
           gosub CCJ_FreeFlightUp
 

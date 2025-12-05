@@ -50,5 +50,6 @@ DCJ_FrootyJump
           return thisbank
 DCJ_RoboTitoJump
           rem CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
-          gosub RoboTitoJump
+          rem CRITICAL: RoboTitoJump is in Bank 10, not Bank 8, so must use bank specifier
+          gosub RoboTitoJump bank10
           return thisbank

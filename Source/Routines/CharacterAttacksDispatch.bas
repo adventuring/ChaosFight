@@ -80,11 +80,11 @@ end
 
           rem Ursulo: claw swipe with mêlée tables
 
-          if temp4 = CharacterUrsulo then goto UrsuloAttack bank7
+          if temp4 = CharacterUrsulo then goto UrsuloAttack bank10
 
           rem Shamone: jump + mêlée special
 
-          if temp4 = CharacterShamone then goto ShamoneAttack bank7
+          if temp4 = CharacterShamone then goto ShamoneAttack bank10
 
 
 
@@ -96,7 +96,7 @@ end
 
           rem MethHound uses ShamoneAttack handler
 
-          if temp4 = CharacterMethHound then goto ShamoneAttack bank7
+          if temp4 = CharacterMethHound then goto ShamoneAttack bank10
 
 
 

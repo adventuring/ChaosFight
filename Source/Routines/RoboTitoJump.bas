@@ -11,18 +11,19 @@ end
           rem ROBO TITO (13) - Stretch to ceiling
           rem Input: temp1 = player index
           rem Output: Moves up 3px/frame, latches on ceiling contact
-          if (characterStateFlags_R[temp1] & 1) then return thisbank
+          if (characterStateFlags_R[temp1] & 1) then return otherbank
           if (playerState[temp1] & 4) then goto RoboTitoCannotStretch
           if characterSpecialAbility_R[temp1] = 0 then goto RoboTitoCannotStretch
           goto RoboTitoCanStretch
 
 RoboTitoCannotStretch
           let missileStretchHeight_W[temp1] = 0
-          return thisbank
+          return otherbank
 RoboTitoCanStretch
 RoboTitoStretching
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
-          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
+          rem CRITICAL: CCJ_ConvertPlayerXToPlayfieldColumn is in Bank 12, not Bank 13
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank12
           let temp4 = temp2
           let temp2 = playerY[temp1] + 16
           let temp5 = temp2 / 16
@@ -56,9 +57,10 @@ GroundSearchDone
           let characterSpecialAbility_W[temp1] = 0
           if playerY[temp1] <= 5 then goto RoboTitoCheckCeiling
           let playerY[temp1] = playerY[temp1] - 3
-          return thisbank
+          return otherbank
 RoboTitoCheckCeiling
-          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank13
+          rem CRITICAL: CCJ_ConvertPlayerXToPlayfieldColumn is in Bank 12, not Bank 13
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank12
           let temp3 = playerY[temp1]
           if temp3 <= 0 then goto RoboTitoLatch
           let temp4 = temp3 / 16
@@ -71,7 +73,7 @@ RoboTitoCheckCeiling
           if temp1 then goto RoboTitoLatch
           let temp1 = temp5
           let playerY[temp1] = playerY[temp1] - 3
-          return thisbank
+          return otherbank
 RoboTitoLatch
           dim RTL_stateFlags = temp5
           let RTL_stateFlags = characterStateFlags_R[temp1] | 1
@@ -86,5 +88,5 @@ RTL_ReduceHeight
           let temp2 = temp2 - 25
           let missileStretchHeight_W[temp1] = temp2
 RTL_HeightCleared
-          return thisbank
+          return otherbank
 

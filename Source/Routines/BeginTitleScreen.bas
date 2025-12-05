@@ -21,8 +21,7 @@ end
           rem         COLUBK (TIA register), temp1 (passed to
           rem         StartMusic)
           rem
-          rem Called Routines: StartMusic (bank1) - starts title music,
-          rem   SetTitleWindowValues (bank14) - sets window values
+          rem Called Routines: StartMusic (bank15) - starts title music
           rem
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModeTitle
@@ -40,8 +39,11 @@ end
           gosub StartMusic bank15
 
           rem Set window values for Title screen (ChaosFight only)
-          rem OPTIMIZATION: Same-bank call to save 2 bytes on stack
-          gosub SetTitleWindowValues
+          rem OPTIMIZATION: Inlined to save call overhead (only used once)
+          let titlescreenWindow1 = 0   ; AtariAge logo hidden
+          let titlescreenWindow2 = 0   ; AtariAgeText hidden
+          let titlescreenWindow3 = 42  ; ChaosFight visible
+          let titlescreenWindow4 = 0   ; Interworldly hidden
 
           rem Note: Bitmap data is loaded automatically by titlescreen
           rem   kernel via includes

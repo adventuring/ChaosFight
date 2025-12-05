@@ -59,15 +59,17 @@ end
 
 PUA_BernieFallThrough
           rem Bernie UP handled in BernieJump routine (fall through 1-row floors)
-          rem Tail call: goto instead of gosub to save 2 bytes on stack
+          rem CRITICAL: Must use gosub/return, not goto, because BernieJump returns otherbank
           let temp3 = 0
-          goto BernieJump bank12
+          gosub BernieJump bank12
+          return thisbank
 
 PUA_HarpyFlap
           rem Harpy UP handled in HarpyJump routine (flap to fly)
-          rem Tail call: goto instead of gosub to save 2 bytes on stack
+          rem CRITICAL: Must use gosub/return, not goto, because HarpyJump returns otherbank
           let temp3 = 0
-          goto HarpyJump bank12
+          gosub HarpyJump bank12
+          return thisbank
 
 PUA_RoboTitoAscend
           rem Ascend toward ceiling

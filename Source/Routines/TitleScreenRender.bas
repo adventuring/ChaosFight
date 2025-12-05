@@ -62,9 +62,11 @@ DrawTitleScreenOnly
           let titlescreenWindow2 = 0   ; AtariAgeText hidden
           let titlescreenWindow3 = 42  ; ChaosFight visible
           let titlescreenWindow4 = 0   ; BRP hidden
-          goto DrawTitleScreenCommon
 
 DrawTitleScreenCommon
+          asm
+DrawTitleScreenCommon
+end
           rem Draw character parade if active (Title screen only)
           if titleParadeActive then gosub DrawParadeCharacter bank14
 

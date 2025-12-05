@@ -157,7 +157,7 @@ HCSC_CheckJoy0
 
           rem Players 0,2 use joy0
 
-          if temp2 = 0 then HCSC_CheckJoy0Left
+          if temp2 = 0 then goto HCSC_CheckJoy0Left
 
           if !joy0right then return otherbank
 

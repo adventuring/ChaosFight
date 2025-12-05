@@ -64,9 +64,6 @@ DrawTitleScreenOnly
           let titlescreenWindow4 = 0   ; BRP hidden
 
 DrawTitleScreenCommon
-          asm
-DrawTitleScreenCommon
-end
           rem Draw character parade if active (Title screen only)
           if titleParadeActive then gosub DrawParadeCharacter bank14
 

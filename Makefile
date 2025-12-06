@@ -225,40 +225,16 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 
 # Convert MuseScore to MIDI
 %.midi: %.mscz
-	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
-		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \
-	elif which mscore; then \
 		mscore --export-to $@ $<; \
-	else \
-		flatpak run org.musescore.MuseScore --export-to $@ $<; \
-	fi
 
 %.flac: %.mscz
-	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
-		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \
-	elif which mscore; then \
 		mscore --export-to $@ $<; \
-	else \
-		flatpak run org.musescore.MuseScore --export-to $@ $<; \
-	fi
 
 %.ogg: %.mscz
-	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
-		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \
-	elif which mscore; then \
 		mscore --export-to $@ $<; \
-	else \
-		flatpak run org.musescore.MuseScore --export-to $@ $<; \
-	fi
 
 %.pdf: %.mscz
-	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
-		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \
-	elif which mscore; then \
 		mscore --export-to $@ $<; \
-	else \
-		flatpak run org.musescore.MuseScore --export-to $@ $<; \
-	fi
 
 # Convert MIDI to batariBASIC music data for NTSC (60Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
@@ -698,13 +674,13 @@ Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.
 # ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS
 # The .s file is the final assembly output that includes all generated assets
 Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
-	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -p100 -S -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -S -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 
 Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
-	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -p50 -S -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -S -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
 
 Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
-	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -p50 -S -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -S -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
 
 # Run emulator
 emu: $(ROM) Dist/$(GAME)$(GAMEYEAR).NTSC.pro

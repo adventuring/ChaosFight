@@ -1,0 +1,193 @@
+;;; ChaosFight - Source/Routines/TitleScreenMain.bas
+;;; Copyright © 2025 Bruce-Robert Pocock.
+
+
+TitleScreenMain .proc
+
+          ;; Title Screen - Per-frame Loop
+          ;; Returns: Far (return otherbank)
+          ;; Per-frame title screen display and input handling.
+          ;; Called from MainLoop each frame (gameMode 2).
+          ;; Dispatches to other modules for character parade and rendering.
+          ;; Setup is handled by BeginTitleScreen (called from ChangeGameMode)
+          ;; This function processes one frame and returns.
+          ;; AVAILABLE VARIABLES (from Variables.bas):
+          ;; titleParadeTimer - Frame counter for parade timing
+          ;; titleParadeCharacter - Current parade character
+          ;; (0-MaxCharacter)
+          ;; titleParadeX - X position of parade character
+          ;; titleParadeActive - Whether parade is currently running
+          ;; QuadtariDetected - Whether 4-player mode is active
+          ;; FLOW PER FRAME:
+          ;; 1. Update random number generator (every frame)
+          ;; 2. Handle input - any button press goes to character
+          ;; select
+          ;; 3. Update character parade
+          ;; 4. Draw screen
+          ;; 5. Return to MainLoop
+          ;; Per-frame title screen display and input handling
+          ;;
+          ;; Input: joy0fire, joy1fire (hardware) = button sta
+
+          ;; controllerStatus (global) = controller detection
+          ;; sta
+
+          ;; INPT0, INPT2 (hardware) = Quadtari controller
+          ;; sta
+
+          ;;
+          ;; Output: Dispatches to TitleScreenComplete or returns
+          ;;
+          ;; Mutates: rand (global) - random number generator sta
+
+          ;;
+          ;; Called Routines: UpdateCharacterParade (bank14) - accesses
+          ;; parade sta
+
+          ;; DrawTitleScreen (bank9) - accesses title screen sta
+
+          ;; titledrawscreen bank9 - accesses title screen graphics
+          ;;
+          ;; Constraints: Must be colocated with TitleSkipQuad,
+          ;; TitleScreenComplete
+          ;; Called from MainLoop each frame (gameMode 2)
+          ;; Update random number generator (inlined to save 2 bytes on sta
+
+          ;; CRITICAL: Inlined randomize routine (only called once, saves 2 bytes vs gosub)
+          ;;
+          ; Inlined randomize routine to save stack space
+          lda rand
+          lsr
+          .if  rand16_W
+CRITICAL:
+
+
+rand16:
+
+
+          ;; TODO: ; Must read from read port, perform operation in register, write to write port
+          ;; lda rand16_R (duplicate)
+          rol
+          sta rand16_W
+fi:
+
+          bcc TitleScreenRandomizeNoEor
+          eor #$B4
+TitleScreenRandomizeNoEor
+          ;; sta rand (duplicate)
+          .if  rand16_W
+;; CRITICAL: (duplicate)
+
+
+;; rand16: (duplicate)
+
+
+          ;; eor rand16_R (duplicate)
+fi:
+
+          ;; Handle input - any button press goes to character select
+          ;; Check standard controllers (Player 1 & 2)
+          ;; Use skip-over pattern to avoid complex || operator issues
+          ;; if joy0fire then TitleScreenComplete
+          ;; lda joy0fire (duplicate)
+          beq skip_5925
+          jmp TitleScreenComplete
+skip_5925:
+          
+
+          ;; if joy1fire then TitleScreenComplete
+          ;; lda joy1fire (duplicate)
+          ;; beq skip_7911 (duplicate)
+          ;; jmp TitleScreenComplete (duplicate)
+skip_7911:
+          
+
+          ;; Check Quadtari controllers (Players 3 & 4 if active)
+                    ;; if 0 = (controllerStatus & SetQuadtariDetected) then TitleDoneQuad
+
+                    ;; if !INPT0{7} then TitleScreenComplete
+          bit INPT0
+          bmi skip_8828
+          ;; jmp TitleScreenComplete (duplicate)
+skip_8828:
+
+                    ;; if !INPT2{7} then TitleScreenComplete
+          ;; bit INPT2 (duplicate)
+          ;; bmi skip_5351 (duplicate)
+          ;; jmp TitleScreenComplete (duplicate)
+skip_5351:
+
+TitleDoneQuad
+          ;; Skip Quadtari controller check (not in 4-player mode)
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: None (label only, no execution)
+          ;;
+          ;; Output: None (label only)
+          ;;
+          ;; Mutates: None
+          ;;
+          ;; Called Routines: None
+          ;;
+          ;; Constraints: Must be colocated with TitleScreenMain
+
+          ;; Update character parade animation
+          ;; Cross-bank call to UpdateCharacterParade in bank 14
+          ;; lda # >(return_point-1) (duplicate)
+          pha
+          ;; lda # <(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # >(UpdateCharacterParade-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(UpdateCharacterParade-1) (duplicate)
+          ;; pha (duplicate)
+                    ldx # 13
+          ;; jmp BS_jsr (duplicate)
+return_point:
+
+
+          ;; Draw title screen
+          ;; CRITICAL: Do NOT call DrawTitleScreen here - MainLoopDrawScreen (MainLoop.bas line 139)
+          ;; handles per-frame drawing. Calling it here would cause stack overflow (16-byte limit).
+          ;; TitleScreenMain is always called via MainLoop, so MainLoopDrawScreen will handle drawing.
+          jsr BS_return
+
+TitleScreenComplete
+          ;; Transition to character select
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: None (called from TitleScreenMain)
+          ;;
+          ;; Output: gameMode set to ModeCharacterSelect,
+          ;; ChangeGameMode called
+          ;;
+          ;; Mutates: gameMode (global)
+          ;;
+          ;; Called Routines: ChangeGameMode (bank14) - accesses game
+          ;; mode sta
+
+          ;; Constraints: Must be colocated with TitleScreenMain
+          ;; lda ModeCharacterSelect (duplicate)
+          ;; sta gameMode (duplicate)
+          ;; Cross-bank call to ChangeGameMode in bank 14
+          ;; lda # >(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # >(ChangeGameMode-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(ChangeGameMode-1) (duplicate)
+          ;; pha (duplicate)
+                    ;; ldx # 13 (duplicate)
+          ;; jmp BS_jsr (duplicate)
+;; return_point: (duplicate)
+
+
+          ;; jsr BS_return (duplicate)
+
+;; .pend (no matching .proc)
+
+.endif
+.endif
+
+.pend

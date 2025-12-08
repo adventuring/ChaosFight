@@ -1,0 +1,466 @@
+;;; ChaosFight - Source/Routines/SpriteLoaderCharacterArt.bas
+
+;;; Copyright © 2025 Bruce-Robert Pocock.
+
+
+
+
+LocateCharacterArt .proc
+
+
+          ;; batariBASIC wrapper for character art location with bank
+          ;; Returns: Far (return otherbank)
+
+          ;; Character Art Location Wrapper
+
+          ;; Wrapper that determines correct bank and switches to it
+
+          ;;
+          ;; Input: temp1 = character index (0-31)
+
+          ;; temp2 = animation frame (0-7) from sprite 10fps counter,
+
+          ;; NOT global frame
+
+          ;; temp3 = action (0-15)
+
+          ;; temp4 = player number (0-3)
+
+          ;;
+          ;; Output: Player sprite pointer set to character artwork
+
+          ;; Note: Frame is relative to sprite own 10fps counter, NOT
+
+          ;; global frame counter
+
+          ;; Determine which bank contains this character and calculate
+
+          ;; bank-relative index
+
+          ;;
+          ;; Input: temp1 = character index (0-31)
+
+          ;; temp2 = animation frame (0-7) from sprite 10fps
+
+          ;; counter
+
+          ;; temp3 = action (0-15)
+
+          ;; temp4 = player number (0-3)
+
+          ;;
+          ;; Output: Player sprite pointer set to character artwork via
+
+          ;; bank-specific routine
+
+          ;;
+          ;; Mutates: temp5 (set from temp4), temp6 (bank-relative
+
+          ;; character index)
+
+          ;; player0-3pointerlo/hi, player0-3height (via
+
+          ;; SetPlayerCharacterArtBankX)
+
+          ;;
+          ;; Called Routines: SetPlayerCharacterArtBank2 (bank2),
+
+          ;; SetPlayerCharacterArtBank3 (bank3),
+
+          ;; SetPlayerCharacterArtBank4 (bank4),
+
+          ;; SetPlayerCharacterArtBank5 (bank5)
+
+          ;; - These routines access character frame maps and sprite
+
+          ;; data in their banks
+
+          ;;
+          ;; Constraints: Must be colocated with Bank2Dispatch,
+
+          ;; Bank3Dispatch, Bank4Dispatch,
+
+          ;; Bank5Dispatch (all called via goto)
+
+          ;; Characters 0-7: Bank 2 (bank-relative 0-7)
+
+          ;; Characters 8-15: Bank 3 (bank-relative 0-7)
+
+          ;; Characters 16-23: Bank 4 (bank-relative 0-7)
+
+          ;; Characters 24-31: Bank 5 (bank-relative 0-7)
+
+
+
+          ;; CRITICAL: Guard against calling bank 2 when no characters on screen
+          ;; Handle special sprite cases first (these are safe and don’t need bank dispatch)
+          jsr BS_return
+          ;; jsr BS_return (duplicate)
+          ;; jsr BS_return (duplicate)
+          ;; Save original character index in temp6
+
+          lda temp1
+          sta temp6
+
+          ;; temp6 = bank-relative character index (0-7) - will be
+
+          ;; calculated per bank
+
+
+
+          ;; Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4,
+
+          ;; 24-31=Bank5
+
+          ;; ;; if temp1 < 8 then goto Bank2Dispatch          lda temp1          cmp 8          bcs .skip_8740          jmp
+          ;; lda temp1 (duplicate)
+          cmp # 8
+          bcs skip_8406
+          goto_label:
+
+          jmp goto_label
+skip_8406:
+
+          ;; lda temp1 (duplicate)
+          ;; cmp # 8 (duplicate)
+          ;; bcs skip_2471 (duplicate)
+          ;; jmp goto_label (duplicate)
+skip_2471:
+
+          
+
+          ;; ;; if temp1 < 16 then goto Bank3Dispatch          lda temp1          cmp 16          bcs .skip_4567          jmp
+          ;; lda temp1 (duplicate)
+          ;; cmp # 16 (duplicate)
+          ;; bcs skip_702 (duplicate)
+          ;; jmp goto_label (duplicate)
+skip_702:
+
+          ;; lda temp1 (duplicate)
+          ;; cmp # 16 (duplicate)
+          ;; bcs skip_3109 (duplicate)
+          ;; jmp goto_label (duplicate)
+skip_3109:
+
+          
+
+          ;; ;; if temp1 < 24 then goto Bank4Dispatch          lda temp1          cmp 24          bcs .skip_5602          jmp
+          ;; lda temp1 (duplicate)
+          ;; cmp # 24 (duplicate)
+          ;; bcs skip_921 (duplicate)
+          ;; jmp goto_label (duplicate)
+skip_921:
+
+          ;; lda temp1 (duplicate)
+          ;; cmp # 24 (duplicate)
+          ;; bcs skip_9612 (duplicate)
+          ;; jmp goto_label (duplicate)
+skip_9612:
+
+          
+
+          ;; jmp Bank5Dispatch (duplicate)
+
+
+
+Bank2Dispatch
+
+          ;; Load character art from Bank 2
+          ;; Returns: Far (return otherbank)
+
+          ;;
+          ;; Input: temp1 = character index (0-7), temp2 = animation
+
+          ;; frame, temp3 = action,
+
+          ;; temp4 = player number
+
+          ;;
+          ;; Output: Player sprite pointer set via
+
+          ;; SetPlayerCharacterArtBank2
+
+          ;;
+          ;; Mutates: temp5 (set from temp4), temp6 (bank-relative
+
+          ;; index 0-7)
+
+          ;;
+          ;; Called Routines: SetPlayerCharacterArtBank2 (bank2) -
+
+          ;; accesses Bank 2 character data
+
+          ;;
+          ;; Constraints: Must be colocated with LocateCharacterArt
+
+          ;; Bank 2: Characters 0-7
+
+          ;; Bank-relative index is same as character index (0-7)
+
+          ;; lda temp1 (duplicate)
+          ;; sta temp6 (duplicate)
+
+          ;; temp6 = bank-relative index (0-7)
+
+          ;; temp2 = animation frame, temp3 = action
+
+          ;; Copy player number to temp5 for bank routine
+
+          ;; lda temp4 (duplicate)
+          ;; sta temp5 (duplicate)
+
+          ;; Bank routine expects: temp6=char, temp2=frame,
+
+          ;; temp3=action, temp5=player
+
+          ;; Cross-bank call to SetPlayerCharacterArtBank2 in bank 2
+          ;; lda # >(return_point-1) (duplicate)
+          pha
+          ;; lda # <(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # >(SetPlayerCharacterArtBank2-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(SetPlayerCharacterArtBank2-1) (duplicate)
+          ;; pha (duplicate)
+                    ldx # 1
+          ;; jmp BS_jsr (duplicate)
+return_point:
+
+
+          ;; jsr BS_return (duplicate)
+
+
+
+Bank3Dispatch
+
+          ;; Load character art from Bank 3
+          ;; Returns: Far (return otherbank)
+
+          ;;
+          ;; Input: temp1 = character index (8-15), temp2 = animation
+
+          ;; frame, temp3 = action,
+
+          ;; temp4 = player number
+
+          ;;
+          ;; Output: Player sprite pointer set via
+
+          ;; SetPlayerCharacterArtBank3
+
+          ;;
+          ;; Mutates: temp5 (set from temp4), temp6 (bank-relative
+
+          ;; index 0-7)
+
+          ;;
+          ;; Called Routines: SetPlayerCharacterArtBank3 (bank3) -
+
+          ;; accesses Bank 3 character data
+
+          ;;
+          ;; Constraints: Must be colocated with LocateCharacterArt
+
+          ;; Bank 3: Characters 8-15
+
+          ;; Calculate bank-relative index: character index - 8
+
+          ;; ;; let temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
+          ;; lda temp1 (duplicate)
+          sec
+          sbc 8
+          ;; sta temp6 (duplicate)
+
+          ;; lda temp1 (duplicate)
+          ;; sec (duplicate)
+          ;; sbc 8 (duplicate)
+          ;; sta temp6 (duplicate)
+
+
+          ;; temp6 = bank-relative index (0-7)
+
+          ;; temp2 = animation frame, temp3 = action
+
+          ;; Copy player number to temp5 for bank routine
+
+          ;; lda temp4 (duplicate)
+          ;; sta temp5 (duplicate)
+
+          ;; Bank routine expects: temp6=char, temp2=frame,
+
+          ;; temp3=action, temp5=player
+
+          ;; Cross-bank call to SetPlayerCharacterArtBank3 in bank 3
+          ;; lda # >(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # >(SetPlayerCharacterArtBank3-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(SetPlayerCharacterArtBank3-1) (duplicate)
+          ;; pha (duplicate)
+                    ;; ldx # 2 (duplicate)
+          ;; jmp BS_jsr (duplicate)
+;; return_point: (duplicate)
+
+
+          ;; jsr BS_return (duplicate)
+
+
+
+Bank4Dispatch
+
+          ;; Load character art from Bank 4
+          ;; Returns: Far (return otherbank)
+
+          ;;
+          ;; Input: temp1 = character index (16-23), temp2 = animation
+
+          ;; frame, temp3 = action,
+
+          ;; temp4 = player number
+
+          ;;
+          ;; Output: Player sprite pointer set via
+
+          ;; SetPlayerCharacterArtBank4
+
+          ;;
+          ;; Mutates: temp5 (set from temp4), temp6 (bank-relative
+
+          ;; index 0-7)
+
+          ;;
+          ;; Called Routines: SetPlayerCharacterArtBank4 (bank4) -
+
+          ;; accesses Bank 4 character data
+
+          ;;
+          ;; Constraints: Must be colocated with LocateCharacterArt
+
+          ;; Bank 4: Characters 16-23
+
+          ;; Calculate bank-relative index: character index - 16
+
+          ;; ;; let temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
+          ;; lda temp1 (duplicate)
+          ;; sec (duplicate)
+          ;; sbc 16 (duplicate)
+          ;; sta temp6 (duplicate)
+
+          ;; lda temp1 (duplicate)
+          ;; sec (duplicate)
+          ;; sbc 16 (duplicate)
+          ;; sta temp6 (duplicate)
+
+
+          ;; temp6 = bank-relative index (0-7)
+
+          ;; temp2 = animation frame, temp3 = action
+
+          ;; Copy player number to temp5 for bank routine
+
+          ;; lda temp4 (duplicate)
+          ;; sta temp5 (duplicate)
+
+          ;; Bank routine expects: temp6=char, temp2=frame,
+
+          ;; temp3=action, temp5=player
+
+          ;; Cross-bank call to SetPlayerCharacterArtBank4 in bank 4
+          ;; lda # >(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # >(SetPlayerCharacterArtBank4-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(SetPlayerCharacterArtBank4-1) (duplicate)
+          ;; pha (duplicate)
+                    ;; ldx # 3 (duplicate)
+          ;; jmp BS_jsr (duplicate)
+;; return_point: (duplicate)
+
+
+          ;; jsr BS_return (duplicate)
+
+
+
+Bank5Dispatch
+
+          ;; Load character art from Bank 5
+          ;; Returns: Far (return otherbank)
+
+          ;;
+          ;; Input: temp1 = character index (24-31), temp2 = animation
+
+          ;; frame, temp3 = action,
+
+          ;; temp4 = player number
+
+          ;;
+          ;; Output: Player sprite pointer set via
+
+          ;; SetPlayerCharacterArtBank5
+
+          ;;
+          ;; Mutates: temp5 (set from temp4), temp6 (bank-relative
+
+          ;; index 0-7)
+
+          ;;
+          ;; Called Routines: SetPlayerCharacterArtBank5 (bank5) -
+
+          ;; accesses Bank 5 character data
+
+          ;;
+          ;; Constraints: Must be colocated with LocateCharacterArt
+
+          ;; Bank 5: Characters 24-31
+
+          ;; Calculate bank-relative index: character index - 24
+
+          ;; ;; let temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
+          ;; lda temp1 (duplicate)
+          ;; sec (duplicate)
+          ;; sbc 24 (duplicate)
+          ;; sta temp6 (duplicate)
+
+          ;; lda temp1 (duplicate)
+          ;; sec (duplicate)
+          ;; sbc 24 (duplicate)
+          ;; sta temp6 (duplicate)
+
+
+          ;; temp6 = bank-relative index (0-7)
+
+          ;; temp2 = animation frame, temp3 = action
+
+          ;; Copy player number to temp5 for bank routine
+
+          ;; lda temp4 (duplicate)
+          ;; sta temp5 (duplicate)
+
+          ;; Bank routine expects: temp6=char, temp2=frame,
+
+          ;; temp3=action, temp5=player
+
+          ;; Cross-bank call to SetPlayerCharacterArtBank5 in bank 5
+          ;; lda # >(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # >(SetPlayerCharacterArtBank5-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(SetPlayerCharacterArtBank5-1) (duplicate)
+          ;; pha (duplicate)
+                    ;; ldx # 4 (duplicate)
+          ;; jmp BS_jsr (duplicate)
+;; return_point: (duplicate)
+
+
+          ;; jsr BS_return (duplicate)
+
+
+
+.pend
+

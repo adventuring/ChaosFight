@@ -1,0 +1,325 @@
+;;; ChaosFight - Source/Routines/CheckRoboTitoStretchMissileCollisions.bas
+;;; Copyright © 2025 Bruce-Robert Pocock.
+
+CheckRoboTitoStretchMissileCollisions
+;;; Returns: Far (return otherbank)
+;; CheckRoboTitoStretchMissileCollisions (duplicate)
+          ;; Detects RoboTito stretch missile hits against other players
+          ;; Returns: Far (return otherbank)
+          ;; Inputs: playerCharacter[], playerState[], characterStateFlags_R[],
+          ;; missileStretchHeight_R[], playerX[], playerY[], playerHealth[]
+          ;; Outputs: Updates via HandleRoboTitoStretchMissileHit when collisions occur
+          ;; Mutates: temp1-temp6, playerState[], characterStateFlags_W[],
+          ;; missileStretchHeight_W[], characterSpecialAbility_W[]
+          ;; Calls: HandleRoboTitoStretchMissileHit
+          ;; Constraints: None
+
+          ;; Loop through all players
+          lda # 0
+          sta temp1
+
+
+CRTSMC_PlayerLoop .proc
+          ;; Check if player is RoboTito and stretching
+                    ;; if playerCharacter[temp1] = CharacterRoboTito then CRTSMC_IsRoboTito
+          jmp CRTSMC_NextPlayer
+
+.pend
+
+CRTSMC_IsRoboTito .proc
+          ;; Player is RoboTito, check stretching sta
+
+          ;; Check if stretching (not latched, ActionJumping animation
+          ;; = 10)
+          ;; Latched to ceiling, no stretch missile
+                    ;; let temp5 = characterStateFlags_R[temp1] & 1         
+          ;; lda temp1 (duplicate)
+          asl
+          tax
+          ;; lda characterStateFlags_R,x (duplicate)
+          ;; sta temp5 (duplicate)
+                    ;; if temp5 then goto CRTSMC_NextPlayer
+          ;; lda temp5 (duplicate)
+          beq skip_9216
+          ;; jmp CRTSMC_NextPlayer (duplicate)
+skip_9216:
+          ;; Mask bits 4-7 (animation sta
+
+                    ;; let playerStateTemp = playerState[temp1]         
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda playerState,x (duplicate)
+          ;; sta playerStateTemp (duplicate)
+          ;; Shift right by 4 to get animation sta
+
+          ;; lda playerStateTemp (duplicate)
+          and MaskPlayerStateAnimation
+          ;; sta playerStateTemp (duplicate)
+                    ;; let playerStateTemp = playerStateTemp / 16
+          ;; lda playerStateTemp (duplicate)
+          cmp # 10
+          bne skip_5369
+          ;; TODO: CRTSMC_IsStretching
+skip_5369:
+
+          ;; jmp CRTSMC_NextPlayer (duplicate)
+
+.pend
+
+CRTSMC_IsStretching .proc
+          ;; In stretching animation, check for stretch missile
+
+          ;; Check if stretch missile has height > 0
+                    ;; let temp2 = missileStretchHeight_R[temp1]         
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda missileStretchHeight_R,x (duplicate)
+          ;; sta temp2 (duplicate)
+          ;; lda temp2 (duplicate)
+          ;; bne skip_284 (duplicate)
+          ;; jmp CRTSMC_NextPlayer (duplicate)
+skip_284:
+
+
+                    ldx temp1
+                    ;; let temp3 = playerX,x + 7          lda temp1          asl          tax          lda playerX,x          sta temp3
+          ;; ;; let temp4 = playerY[temp1] + 16
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda playerY,x (duplicate)
+          clc
+          adc # 16
+          ;; sta temp4 (duplicate)
+
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda playerY,x (duplicate)
+          ;; sta temp4 (duplicate)
+
+          ;; Check collision with other players
+          ;; Missile extends from playerY down by stretchHeight
+          ;; Bounding box: × = missileX,y = missileY, Width = 4, Height = stretchHeight
+          ;; lda # 0 (duplicate)
+          ;; sta temp6 (duplicate)
+
+.pend
+
+CRTSMC_CheckOtherPlayer .proc
+          ;; Skip self
+          ;; lda temp6 (duplicate)
+          ;; cmp temp1 (duplicate)
+          ;; bne skip_2038 (duplicate)
+          ;; TODO: CRTSMC_DoneSelf
+skip_2038:
+
+
+          ;; Skip eliminated players
+
+                    ;; if !playerHealth[temp6] then CRTSMC_DoneSelf
+
+          ;; AABB collision check
+          ;; Missile left/right: missileX to missileX+1 (missile width
+          ;; = 1)
+          ;; Missile top/bottom: missileY to missileY+stretchHeight
+          ;; Player left/right: playerX to
+          ;; playerX+PlayerSpriteHalfWidth*2
+          ;; Player top/bottom: playerY to playerY+PlayerSpriteHeight
+          ;; Missile left edge >= player right edge, no collision
+                    ;; if temp3 >= playerX[temp6] + PlayerSpriteHalfWidth then CRTSMC_DoneSelf
+          ;; lda temp6 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda playerX,x (duplicate)
+          ;; clc (duplicate)
+          ;; adc PlayerSpriteHalfWidth (duplicate)
+          ;; sta temp6 (duplicate)
+          ;; lda temp3 (duplicate)
+          sec
+          sbc temp6
+          bcc skip_3883
+          ;; jmp CRTSMC_DoneSelf (duplicate)
+skip_3883:
+          ;; Missile right edge <= player left edge, no collision
+                    ;; if temp3 + 1 <= playerX[temp6] then CRTSMC_DoneSelf
+          ;; lda temp3 (duplicate)
+          ;; clc (duplicate)
+          ;; adc 1 (duplicate)
+          ;; sta temp6 (duplicate)
+          ;; lda temp6 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda playerX,x (duplicate)
+          ;; sec (duplicate)
+          ;; sbc temp6 (duplicate)
+          ;; bcc CRTSMC_DoneSelf (duplicate)
+          ;; beq CRTSMC_DoneSelf (duplicate)
+          ;; jmp skip_132 (duplicate)
+CRTSMC_DoneSelf:
+skip_132:
+          ;; Missile top edge >= player bottom edge, no collision
+                    ;; if temp4 >= playerY[temp6] + PlayerSpriteHeight then CRTSMC_DoneSelf
+          ;; lda temp6 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda playerY,x (duplicate)
+          ;; clc (duplicate)
+          ;; adc PlayerSpriteHeight (duplicate)
+          ;; sta temp6 (duplicate)
+          ;; lda temp4 (duplicate)
+          ;; sec (duplicate)
+          ;; sbc temp6 (duplicate)
+          ;; bcc skip_7158 (duplicate)
+          ;; jmp CRTSMC_DoneSelf (duplicate)
+skip_7158:
+          ;; Missile bottom edge <= player top edge, no collision
+                    ;; if temp4 + temp2 <= playerY[temp6] then CRTSMC_DoneSelf
+          ;; lda temp4 (duplicate)
+          ;; clc (duplicate)
+          ;; adc temp2 (duplicate)
+          ;; sta temp6 (duplicate)
+          ;; lda temp6 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda playerY,x (duplicate)
+          ;; sec (duplicate)
+          ;; sbc temp6 (duplicate)
+          ;; bcc CRTSMC_DoneSelf (duplicate)
+          ;; beq CRTSMC_DoneSelf (duplicate)
+          ;; jmp skip_8679 (duplicate)
+;; CRTSMC_DoneSelf: (duplicate)
+skip_8679:
+
+          ;; Collision detected! Handle stretch missile hit
+          ;; lda temp6 (duplicate)
+          ;; sta temp5 (duplicate)
+          jsr HandleRoboTitoStretchMissileHit
+
+          ;; jmp CRTSMC_NextPlayer (duplicate)
+
+          ;; After handling hit, skip remaining players for this RoboTito
+;; CRTSMC_DoneSelf (duplicate)
+          inc temp6
+          ;; ;; if temp6 < 4 then CRTSMC_CheckOtherPlayer
+          ;; lda temp6 (duplicate)
+          ;; cmp # 4 (duplicate)
+          bcs skip_7907
+          ;; jmp CRTSMC_CheckOtherPlayer (duplicate)
+skip_7907:
+
+          ;; lda temp6 (duplicate)
+          ;; cmp # 4 (duplicate)
+          ;; bcs skip_9404 (duplicate)
+          ;; jmp CRTSMC_CheckOtherPlayer (duplicate)
+skip_9404:
+
+
+
+.pend
+
+CRTSMC_NextPlayer .proc
+          ;; inc temp1 (duplicate)
+          ;; ;; if temp1 < 4 then goto CRTSMC_PlayerLoop          lda temp1          cmp 4          bcs .skip_8352          jmp
+          ;; lda temp1 (duplicate)
+          ;; cmp # 4 (duplicate)
+          ;; bcs skip_50 (duplicate)
+          goto_label:
+
+          ;; jmp goto_label (duplicate)
+skip_50:
+
+          ;; lda temp1 (duplicate)
+          ;; cmp # 4 (duplicate)
+          ;; bcs skip_3132 (duplicate)
+          ;; jmp goto_label (duplicate)
+skip_3132:
+
+          
+
+          rts
+.pend
+
+HandleRoboTitoStretchMissileHit .proc
+          ;; Resolves stretch missile collisions and resets stretch sta
+
+          ;; Inputs: temp1 = RoboTito player index, temp5 = hit player index
+          ;; Outputs: Updates playerState[], characterStateFlags_W[],
+          ;; characterSpecialAbility_W[]
+          ;; Mutates: temp2-temp3 (scratch), missileStretchHeight_W[]
+          ;; Calls: None
+          ;; Constraints: Keep contiguous with CRTSMC logic for bank locality
+          ;; owner), temp5 = hit player index (victim), playerState[]
+          ;; (global array) = player states, characterSpecialAbility_R[]
+          ;; (global SCRAM array) = stretch permission (for RoboTito),
+          ;; characterStateFlags_R[] (global SCRAM array) = character
+          ;; state flags
+          ;;
+          ;; Output: RoboTito falls, stretch missile removed, stretch
+          ;; permission cleared
+          ;;
+          ;; Mutates: missileStretchHeight_W[] (global SCRAM array) =
+          ;; stretch missile heights, playerState[] (global array) =
+          ;; player states, playerVelocityY[], playerVelocityYL[]
+          ;; (global arrays) = vertical velocity, characterSpecialAbility_W[]
+          ;; (global SCRAM array) = stretch permission,
+          ;; characterStateFlags_W[] (global SCRAM array) = character
+          ;; state flags, temp2-temp3 (used for calculations)
+          ;;
+          ;; Called Routines: None
+          ;; Constraints: None
+          ;; Vanish stretch missile (set height to 0)
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda 0 (duplicate)
+          ;; sta missileStretchHeight_W,x (duplicate)
+
+          ;; Set RoboTito to free fall
+          ;; ldx temp1 (duplicate)
+          ;; ldx temp1 (duplicate)
+          ;; lda playerState,x | PlayerStateBitJumping (duplicate)
+          ;; sta playerState,x (duplicate)
+          ;; ldx temp1 (duplicate)
+          ;; lda playerState,x (duplicate)
+          ora #ActionFallingShifted
+          ;; sta playerState,x (duplicate)
+
+          ;; Clear stretch permission for this player
+          ;; Optimized: Simple array assignment instead of bit manipulation
+          ;; Clear stretch permission
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda 0 (duplicate)
+          ;; sta characterSpecialAbility_W,x (duplicate)
+
+          ;; Clear latched flag if set (falling from ceiling)
+                    ;; let temp3 = characterStateFlags_R[temp1]         
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda characterStateFlags_R,x (duplicate)
+          ;; sta temp3 (duplicate)
+          ;; ;; let temp3 = temp3 & 254
+          ;; lda temp3 (duplicate)
+          ;; and # 254 (duplicate)
+          ;; sta temp3 (duplicate)
+
+          ;; lda temp3 (duplicate)
+          ;; and # 254 (duplicate)
+          ;; sta temp3 (duplicate)
+
+          ;; Clear bit 0 (latched flag)
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda temp3 (duplicate)
+          ;; sta characterStateFlags_W,x (duplicate)
+
+          ;; rts (duplicate)
+
+.pend
+

@@ -1,0 +1,121 @@
+;;; ChaosFight - Source/Routines/PlaySoundEffect.bas
+;;; Copyright © 2025 Bruce-Robert Pocock.
+
+
+PlaySoundEffect .proc
+
+          ;; SOUND EFFECT SUBSYSTEM - Polyphony 2 Implementation
+          ;; Returns: Far (return otherbank)
+          ;; Sound effects for gameplay (gameMode 6)
+          ;; Uses interleaved 4-byte streams: AUDCV, AUDF, Duration,
+          ;; Delay
+          ;; AUDCV = (AUDC << 4) | AUDV (packed into single byte)
+          ;;
+          ;; High byte of pointer = 0 indicates sound inactive
+          ;; Supports 2 simultaneous sound effects (one per voice)
+          ;; Music takes priority (no sounds if music active)
+          ;; Playsoundeffect - Start Sound Effect Playback
+          ;;
+          ;; Input: temp1 = sound ID (0-255)
+          ;; Plays sound effect if voice is free, else forgets it (no
+          ;; queuing)
+          ;; Start sound effect playback (plays sound if voice is free,
+          ;; else forgets it)
+          ;;
+          ;; Input: temp1 = sound ID (0-255), musicVoice0Pointer,
+          ;; musicVoice1Pointer (global 16-bit) = music voice pointers,
+          ;; soundEffectPointer, soundEffectPointer1 (global 16-bit) =
+          ;; sound effect pointers
+          ;;
+          ;; Output: Sound effect started on available voice (Voice 0
+          ;; preferred, Voice 1 fallback)
+          ;;
+          ;; Mutates: temp1 (used for sound ID), soundEffectPointer (global 16-bit)
+          ;; = sound pointer (via LoadSoundPointer), soundEffectPointer,
+          ;; soundEffectFrame_W (global SCRAM) = Voice 0 sound state (if Voice 0 used),
+          ;; soundEffectPointer1,
+          ;; soundEffectFrame1_W (global SCRAM) = Voice 1 sound sta
+
+          ;; (if Voice 1 used)
+          ;;
+          ;; Called Routines: LoadSoundPointer (bank15) - looks up
+          ;; sound pointer from Sounds bank, UpdateSoundEffectVoice0
+          ;; (tail call via goto) - starts Voice 0 playback,
+          ;; UpdateSoundEffectVoice1 (tail call via goto) - sta
+
+          ;; Voice 1 playback
+          ;;
+          ;; Constraints: Music takes priority (no sounds if music
+          ;; active). No queuing - sound forgotten if both voices busy.
+          ;; Voice 0 tried first, Voice 1 as fallback
+          ;; Check if music is active (music takes priority)
+          jsr BS_return
+          ;; jsr BS_return (duplicate)
+
+          ;; Lookup sound pointer from Sounds bank (Bank15)
+          ;; Cross-bank call to LoadSoundPointer in bank 15
+          lda # >(return_point-1)
+          pha
+          ;; lda # <(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # >(LoadSoundPointer-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(LoadSoundPointer-1) (duplicate)
+          ;; pha (duplicate)
+                    ldx # 14
+          jmp BS_jsr
+return_point:
+
+
+          ;; Try Voice 0 first
+
+          ;; if soundEffectPointer then TryVoice1
+          ;; lda soundEffectPointer (duplicate)
+          beq skip_8620
+          ;; jmp TryVoice1 (duplicate)
+skip_8620:
+          
+
+          ;; Voice 0 is free - LoadSoundPointer already set soundEffectPointer
+          ;; lda # 1 (duplicate)
+          sta soundEffectFrame_W
+          ;; tail call
+          ;; jmp UpdateSoundEffectVoice0 (duplicate)
+
+.pend
+
+TryVoice1 .proc
+          ;; Helper: Tries Voice 1 if Voice 0 is busy
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: soundEffectPointer (global 16-bit) = sound pointer (set by LoadSoundPointer),
+          ;; soundEffectPointer1 (global 16-bit) = Voice 1 pointer
+          ;;
+          ;; Output: Sound effect started on Voice 1 if free
+          ;;
+          ;; Mutates: soundEffectPointer1,
+          ;; soundEffectFrame1_W (global SCRAM) = Voice 1 sound sta
+
+          ;;
+          ;; Called Routines: UpdateSoundEffectVoice1 (tail call via
+          ;; goto) - starts Voice 1 playback
+          ;;
+          ;; Constraints: Internal helper for PlaySoundEffect, only
+          ;; called when Voice 0 is busy
+          ;; Try Voice 1
+          ;; jsr BS_return (duplicate)
+
+          ;; Copy soundEffectPointer (var41.var42) to soundEffectPointer1 (var43.var44)
+          ;; lda var41 (duplicate)
+          ;; sta var43 (duplicate)
+          ;; Voice 1 is free - use it
+          ;; lda var42 (duplicate)
+          ;; sta var44 (duplicate)
+          ;; lda # 1 (duplicate)
+          ;; sta soundEffectFrame1_W (duplicate)
+          ;; tail call
+          ;; jmp UpdateSoundEffectVoice1 (duplicate)
+
+
+.pend
+

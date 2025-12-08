@@ -1,48 +1,48 @@
-; Generic 48x2 bitmap kernel that handles all 4 bitmap sets
-; For backwards compatibility, draw_bmp_48x2_3 defaults to ChaosFight (index 3)
+;;;; Generic 48x2 bitmap kernel that handles all 4 bitmap sets
+;;;; For backwards compatibility, draw_bmp_48x2_3 defaults to ChaosFight (index 3)
 
-draw_bmp_48x2_3
-	; Hardcoded to ChaosFight bitmap (index 3)
-          lda #<(bmp_48x2_3_colors-1+bmp_48x2_3_height-bmp_48x2_3_window)
+draw_bmp_48x2_3:
+	;; Hardcoded to ChaosFight bitmap (index 3)
+          lda # <(bmp_48x2_3_colors-1+bmp_48x2_3_height-bmp_48x2_3_window)
           sta aux5+0
-          lda #>(bmp_48x2_3_colors-1+bmp_48x2_3_height-bmp_48x2_3_window)
-          sta aux5+1
+          ;; lda # >(bmp_48x2_3_colors-1+bmp_48x2_3_height-bmp_48x2_3_window) (duplicate)
+          ;; sta aux5+1 (duplicate)
 
-          ldy #11
-bmp_48x2_3_pointersetup
-          lda bmp_48x2_3_values,y
-          sta scorepointers,y
+          ldy # 11
+bmp_48x2_3_pointersetup:
+          ;; lda bmp_48x2_3_values,y (duplicate)
+          ;; sta scorepointers,y (duplicate)
           dey
-          lda bmp_48x2_3_values,y
-          sta scorepointers,y
-          dey
+          ;; lda bmp_48x2_3_values,y (duplicate)
+          ;; sta scorepointers,y (duplicate)
+          ;; dey (duplicate)
           bpl bmp_48x2_3_pointersetup
 
-	; Use runtime window variable
-          ifnconst titlescreenWindow3
-          ldy #(bmp_48x2_3_window-1)
-          else
-          ldy titlescreenWindow3
-          dey
-          endif
+	;; Use runtime window variable
+          .if ! titlescreenWindow3
+          ;; ldy # (bmp_48x2_3_window-1) (duplicate)
+          .else
+          ;; ldy titlescreenWindow3 (duplicate)
+          ;; dey (duplicate)
+          .fi
           sty aux2
 
           iny
-          lda (aux5),y
-          dey
+          ;; lda (aux5),y (duplicate)
+          ;; dey (duplicate)
 
-          sta COLUP0
-          sta COLUP1
-          sta HMCLR
+          ;; sta COLUP0 (duplicate)
+          ;; sta COLUP1 (duplicate)
+          ;; sta HMCLR (duplicate)
 
-          lda titlescreencolor
-          sta COLUPF
+          ;; lda titlescreencolor (duplicate)
+          ;; sta COLUPF (duplicate)
 
-          lda titlescreencolor
-          sta aux4
+          ;; lda titlescreencolor (duplicate)
+          ;; sta aux4 (duplicate)
 
-          lda #0
-          sta PF1
-          sta PF2
+          ;; lda # 0 (duplicate)
+          ;; sta PF1 (duplicate)
+          ;; sta PF2 (duplicate)
 
           jmp draw_bmp_48x2_X

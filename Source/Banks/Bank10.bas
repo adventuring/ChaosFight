@@ -2,90 +2,61 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
-          rem Sprite rendering (character art loader, player rendering, elimination) +
-          rem   character attacks system and falling animation controller
-
+          rem Gameplay loop (init/main/collision resolution/animation)
           bank 10
-
           asm
-Bank10DataEnds
+Bank11DataEnds
 end
 
           asm
-PlayerBoundaryCollisionsStart
+GameLoopInitStart
 end
-#include "Source/Routines/PlayerBoundaryCollisions.bas"
+#include "Source/Routines/GameLoopInit.bas"
           asm
-PlayerBoundaryCollisionsEnd
-            echo "// Bank 10: ", [PlayerBoundaryCollisionsEnd - PlayerBoundaryCollisionsStart]d, " bytes = PlayerBoundaryCollisions"
-PlayerPlayfieldCollisionsStart
+GameLoopInitEnd
+            echo "// Bank 10: ", [GameLoopInitEnd - GameLoopInitStart]d, " bytes = GameLoopInit"
+          asm
+GameLoopMainStart
 end
-#include "Source/Routines/PlayerPlayfieldCollisions.bas"
+#include "Source/Routines/GameLoopMain.bas"
           asm
-PlayerPlayfieldCollisionsEnd
-            echo "// Bank 10: ", [PlayerPlayfieldCollisionsEnd - PlayerPlayfieldCollisionsStart]d, " bytes = PlayerPlayfieldCollisions"
+GameLoopMainEnd
+            echo "// Bank 10: ", [GameLoopMainEnd - GameLoopMainStart]d, " bytes = GameLoopMain"
           asm
-CharacterAttacksDispatchStart
+PlayerCollisionResolutionStart
 end
-#include "Source/Routines/CharacterAttacksDispatch.bas"
+#include "Source/Routines/PlayerCollisionResolution.bas"
           asm
-CharacterAttacksDispatchEnd
-            echo "// Bank 10: ", [CharacterAttacksDispatchEnd - CharacterAttacksDispatchStart]d, " bytes = CharacterAttacksDispatch"
-          asm
-ProcessAttackInputStart
+PlayerCollisionResolutionEnd
+            echo "// Bank 10: ", [PlayerCollisionResolutionEnd - PlayerCollisionResolutionStart]d, " bytes = PlayerCollisionResolution"
 end
-#include "Source/Routines/ProcessAttackInput.bas"
           asm
-ProcessAttackInputEnd
-            echo "// Bank 10: ", [ProcessAttackInputEnd - ProcessAttackInputStart]d, " bytes = ProcessAttackInput"
-          asm
-BernieAttackStart
+DisplayHealthStart
 end
-#include "Source/Routines/BernieAttack.bas"
+#include "Source/Routines/DisplayHealth.bas"
           asm
-BernieAttackEnd
-            echo "// Bank 10: ", [BernieAttackEnd - BernieAttackStart]d, " bytes = BernieAttack"
+DisplayHealthEnd
+            echo "// Bank 10: ", [DisplayHealthEnd - DisplayHealthStart]d, " bytes = DisplayHealth"
           asm
-HarpyAttackStart
+HealthBarSystemStart
 end
-#include "Source/Routines/HarpyAttack.bas"
+#include "Source/Routines/HealthBarSystem.bas"
           asm
-HarpyAttackEnd
-            echo "// Bank 10: ", [HarpyAttackEnd - HarpyAttackStart]d, " bytes = HarpyAttack"
+HealthBarSystemEnd
+            echo "// Bank 10: ", [HealthBarSystemEnd - HealthBarSystemStart]d, " bytes = HealthBarSystem"
           asm
-UrsuloAttackStart
+FallingAnimationStart
 end
-#include "Source/Routines/UrsuloAttack.bas"
+#include "Source/Routines/FallingAnimation.bas"
           asm
-UrsuloAttackEnd
-            echo "// Bank 10: ", [UrsuloAttackEnd - UrsuloAttackStart]d, " bytes = UrsuloAttack"
+FallingAnimationEnd
+            echo "// Bank 10: ", [FallingAnimationEnd - FallingAnimationStart]d, " bytes = FallingAnimation"
           asm
-ShamoneAttackStart
+VblankHandlersStart
 end
-#include "Source/Routines/ShamoneAttack.bas"
+#include "Source/Routines/VblankHandlers.bas"
           asm
-ShamoneAttackEnd
-            echo "// Bank 10: ", [ShamoneAttackEnd - ShamoneAttackStart]d, " bytes = ShamoneAttack"
-RoboTitoJumpStart
-end
-#include "Source/Routines/RoboTitoJump.bas"
-          asm
-RoboTitoJumpEnd
-            echo "// Bank 10: ", [RoboTitoJumpEnd - RoboTitoJumpStart]d, " bytes = RoboTitoJump"
-          asm
-CheckRoboTitoStretchMissileCollisionsStart
-end
-#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
-          asm
-CheckRoboTitoStretchMissileCollisionsEnd
-            echo "// Bank 10: ", [CheckRoboTitoStretchMissileCollisionsEnd - CheckRoboTitoStretchMissileCollisionsStart]d, " bytes = CheckRoboTitoStretchMissileCollisions"
-          asm
-ScreenLayoutStart
-end
-#include "Source/Routines/SetGameScreenLayout.bas"
-          asm
-ScreenLayoutEnd
-            echo "// Bank 10: ", [ScreenLayoutEnd - ScreenLayoutStart]d, " bytes = ScreenLayout"
-
-Bank10CodeEnds
+VblankHandlersEnd
+            echo "// Bank 10: ", [VblankHandlersEnd - VblankHandlersStart]d, " bytes = VblankHandlers"
+Bank11CodeEnds
 end

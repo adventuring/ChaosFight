@@ -1,76 +1,89 @@
           rem ChaosFight - Source/Banks/Bank9.bas
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem
-          rem SPECIAL PURPOSE BANK: Titlescreen System
-          rem Graphics assets, titlescreen kernel, preambles, attract mode,
-          rem   winner screen data, character data tables
-
+          rem GENERAL CODE BANK (shared memory budget - 8 banks total)
+          rem Sprite rendering (character art loader, player rendering, elimination) +
+          rem   character attacks system and falling animation controller
           bank 9
-
-          rem data must precede code
-          rem all Title Screen modes must be in this bank
-          rem Bitmap data is packed at page-aligned addresses:
-          rem   Art.AtariAge.s at $f100 (bmp_48x2_1)
-          rem   Art.AtariAgeText.s at $f200 (bmp_48x2_2)
-          rem   Art.ChaosFight.s at $f300 (bmp_48x2_3)
-          rem   Art.Author.s at $f400 (bmp_48x2_4)
-          rem Colors, PF1, PF2, and background are at $f500 (in titlescreen_colors.s)
           asm
-Bank9DataStart
-ArtAtariAgeStart
-#include "Source/Generated/Art.AtariAge.s"
-ArtAtariAgeEnd
-            echo "// Bank 9: ", [ArtAtariAgeEnd - ArtAtariAgeStart]d, " bytes = Art.AtariAge"
-ArtAtariAgeTextStart
-#include "Source/Generated/Art.AtariAgeText.s"
-ArtAtariAgeTextEnd
-            echo "// Bank 9: ", [ArtAtariAgeTextEnd - ArtAtariAgeTextStart]d, " bytes = Art.AtariAgeText"
-ArtChaosFightStart
-#include "Source/Generated/Art.ChaosFight.s"
-ArtChaosFightEnd
-            echo "// Bank 9: ", [ArtChaosFightEnd - ArtChaosFightStart]d, " bytes = Art.ChaosFight"
-ArtAuthorStart
-#include "Source/Generated/Art.Author.s"
-ArtAuthorEnd
-            echo "// Bank 9: ", [ArtAuthorEnd - ArtAuthorStart]d, " bytes = Art.Author"
-            ; Colors must be included here, right after bitmap data,
-            ;   before titlescreen.s includes other files that advance past $f500
-TitlescreenColorsStart
-#include "Source/TitleScreen/titlescreen_colors.s"
-TitlescreenColorsEnd
-            echo "// Bank 9: ", [TitlescreenColorsEnd - TitlescreenColorsStart]d, " bytes = titlescreen_colors"
-            ; Optional bitmap index offsets (all are 0) - data must be in data segment
-bmp_48x2_1_index_value
-bmp_48x2_2_index_value
-bmp_48x2_3_index_value
-bmp_48x2_4_index_value
-          BYTE 0
-Bank9DataEnds
+Bank10DataEnds
 end
 
           asm
-TitlescreenAsmStart
-#include "Source/TitleScreen/asm/titlescreen.s"
-TitlescreenAsmEnd
-            echo "// Bank 9: ", [TitlescreenAsmEnd - TitlescreenAsmStart]d, " bytes = titlescreen.s"
-TitleScreenRenderStart
+PlayerBoundaryCollisionsStart
 end
-#include "Source/Routines/TitleScreenRender.bas"
+#include "Source/Routines/PlayerBoundaryCollisions.bas"
           asm
-TitleScreenRenderEnd
-            echo "// Bank 9: ", [TitleScreenRenderEnd - TitleScreenRenderStart]d, " bytes = TitleScreenRender"
-CharacterSelectMainStart
+PlayerBoundaryCollisionsEnd
+            echo "// Bank 9: ", [PlayerBoundaryCollisionsEnd - PlayerBoundaryCollisionsStart]d, " bytes = PlayerBoundaryCollisions"
+PlayerPlayfieldCollisionsStart
 end
-#include "Source/Routines/CharacterSelectMain.bas"
+#include "Source/Routines/PlayerPlayfieldCollisions.bas"
           asm
-CharacterSelectMainEnd
-            echo "// Bank 9: ", [CharacterSelectMainEnd - CharacterSelectMainStart]d, " bytes = CharacterSelectMain"
-SpriteLoaderCharacterArtStart
-end
-#include "Source/Routines/SpriteLoaderCharacterArt.bas"
+PlayerPlayfieldCollisionsEnd
+            echo "// Bank 9: ", [PlayerPlayfieldCollisionsEnd - PlayerPlayfieldCollisionsStart]d, " bytes = PlayerPlayfieldCollisions"
           asm
-SpriteLoaderCharacterArtEnd
-            echo "// Bank 9: ", [SpriteLoaderCharacterArtEnd - SpriteLoaderCharacterArtStart]d, " bytes = SpriteLoaderCharacterArt"
-Bank9CodeEnds
+CharacterAttacksDispatchStart
 end
+#include "Source/Routines/CharacterAttacksDispatch.bas"
+          asm
+CharacterAttacksDispatchEnd
+            echo "// Bank 9: ", [CharacterAttacksDispatchEnd - CharacterAttacksDispatchStart]d, " bytes = CharacterAttacksDispatch"
+          asm
+ProcessAttackInputStart
+end
+#include "Source/Routines/ProcessAttackInput.bas"
+          asm
+ProcessAttackInputEnd
+            echo "// Bank 9: ", [ProcessAttackInputEnd - ProcessAttackInputStart]d, " bytes = ProcessAttackInput"
+          asm
+BernieAttackStart
+end
+#include "Source/Routines/BernieAttack.bas"
+          asm
+BernieAttackEnd
+            echo "// Bank 9: ", [BernieAttackEnd - BernieAttackStart]d, " bytes = BernieAttack"
+          asm
+HarpyAttackStart
+end
+#include "Source/Routines/HarpyAttack.bas"
+          asm
+HarpyAttackEnd
+            echo "// Bank 9: ", [HarpyAttackEnd - HarpyAttackStart]d, " bytes = HarpyAttack"
+          asm
+UrsuloAttackStart
+end
+#include "Source/Routines/UrsuloAttack.bas"
+          asm
+UrsuloAttackEnd
+            echo "// Bank 9: ", [UrsuloAttackEnd - UrsuloAttackStart]d, " bytes = UrsuloAttack"
+          asm
+ShamoneAttackStart
+end
+#include "Source/Routines/ShamoneAttack.bas"
+          asm
+ShamoneAttackEnd
+            echo "// Bank 9: ", [ShamoneAttackEnd - ShamoneAttackStart]d, " bytes = ShamoneAttack"
+RoboTitoJumpStart
+end
+#include "Source/Routines/RoboTitoJump.bas"
+          asm
+RoboTitoJumpEnd
+            echo "// Bank 9: ", [RoboTitoJumpEnd - RoboTitoJumpStart]d, " bytes = RoboTitoJump"
+          asm
+CheckRoboTitoStretchMissileCollisionsStart
+end
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
+          asm
+CheckRoboTitoStretchMissileCollisionsEnd
+            echo "// Bank 9: ", [CheckRoboTitoStretchMissileCollisionsEnd - CheckRoboTitoStretchMissileCollisionsStart]d, " bytes = CheckRoboTitoStretchMissileCollisions"
+          asm
+ScreenLayoutStart
+end
+#include "Source/Routines/SetGameScreenLayout.bas"
+          asm
+ScreenLayoutEnd
+            echo "// Bank 9: ", [ScreenLayoutEnd - ScreenLayoutStart]d, " bytes = ScreenLayout"
 
+Bank10CodeEnds
+end

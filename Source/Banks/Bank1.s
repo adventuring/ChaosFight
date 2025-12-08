@@ -1,0 +1,64 @@
+;;; ChaosFight - Source/Banks/Bank1.s
+;;;Copyright © 2025 Bruce-Robert Pocock.
+
+;;;ASSET BANK: Character Art Assets (separate memory budget)
+;;;Character sprites (0-7): Bernie, Curler, DragonOfStorms, ZoeRyen,
+          ;; FatTony, Megax, Harpy, KnightGuy + MissileCollision routine
+
+          ;; Set file offset for Bank 1 at the top of the file
+          .offs (1 * $1000) - $f000  ; Adjust file offset for Bank 1
+
+          * = $F100
+          .if * != $F100
+              .error "Bank 1: not starting at $f100"
+          .fi
+Bank1DataStart:
+BernieDataStart:
+.include "Source/Generated/Bernie.s"
+BernieDataEnd:
+            .warn format("// Bank 1: %d bytes = Bernie data", [BernieDataEnd - BernieDataStart])
+CurlerDataStart:
+.include "Source/Generated/Curler.s"
+CurlerDataEnd:
+            .warn format("// Bank 1: %d bytes = Curler data", [CurlerDataEnd - CurlerDataStart])
+DragonOfStormsDataStart:
+.include "Source/Generated/DragonOfStorms.s"
+DragonOfStormsDataEnd:
+            .warn format("// Bank 1: %d bytes = Dragon Of Storms data", [DragonOfStormsDataEnd - DragonOfStormsDataStart])
+ZoeRyenDataStart:
+.include "Source/Generated/ZoeRyen.s"
+ZoeRyenDataEnd:
+            .warn format("// Bank 1: %d bytes = Zoe Ryen data", [ZoeRyenDataEnd - ZoeRyenDataStart])
+FatTonyDataStart:
+.include "Source/Generated/FatTony.s"
+FatTonyDataEnd:
+            .warn format("// Bank 1: %d bytes = Fat Tony data", [FatTonyDataEnd - FatTonyDataStart])
+MegaxDataStart:
+.include "Source/Generated/Megax.s"
+MegaxDataEnd:
+            .warn format("// Bank 1: %d bytes = Megax data", [MegaxDataEnd - MegaxDataStart])
+HarpyDataStart:
+.include "Source/Generated/Harpy.s"
+HarpyDataEnd:
+            .warn format("// Bank 1: %d bytes = Harpy data", [HarpyDataEnd - HarpyDataStart])
+KnightGuyDataStart:
+.include "Source/Generated/KnightGuy.s"
+KnightGuyDataEnd:
+            .warn format("// Bank 1: %d bytes = Knight Guy data", [KnightGuyDataEnd - KnightGuyDataStart])
+Bank1DataEnds:
+
+            ;; Character art lookup routines for Bank 1:(characters 0-7)
+CharacterArtBank2Start:
+            .include "Source/Routines/CharacterArtBank2.s"
+CharacterArtBank2End:
+            .warn format("// Bank 1: %d bytes = Character Art lookup routines", [CharacterArtBank2End - CharacterArtBank2Start])
+Bank1CodeEnds:
+
+          ;; Include BankSwitching.s in Bank 1
+          ;; Wrap in .block to create namespace Bank1BS (avoids duplicate definitions)
+Bank1BS: .block
+          current_bank = 1
+          * = $FFE0 - bscode_length  ;;; CPU address: Bankswitch code starts here, ends just before $FFE0
+          ;; Note: .offs was set at top of file, no need to reset it
+          .include "Source/Common/BankSwitching.s"
+          .bend

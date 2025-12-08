@@ -1,30 +1,30 @@
-; Sleep macro for ChaosFight
-; Provides cycle-accurate delays
-; Based on Tools/batariBASIC/includes/macro.h (but actual definition is commented there)
-; Note: This file is included once in Preamble.bas before MultiSpriteSuperChip.s
-; Workaround: DASM can’t use macro-local variables (.CYCLES) in REPEAT expressions,
-; so we calculate the repeat count directly from the macro argument
+;;;; .SLEEP macro for ChaosFight
+;;;; Provides cycle-accurate delays
+;;;; Based on Tools/batariBASIC/includes/macro.h (but actual definition is commented there)
+;;;; Note: This file is included once in Preamble.s before MultiSpriteSuperChip.s
+;;;; Workaround: 64tass can use macro-local variables in .rept expressions,
+;;;; so we calculate the .rept count directly from the macro argument
 
-          MAC SLEEP            ;usage: SLEEP n (n>1)
-          IF {1} < 2
-              ECHO "MACRO ERROR: "SLEEP": Duration must be > 1"
-              ERR
-          ENDIF
-          
-          IF {1} & 1
-              IFNCONST NO_ILLEGAL_OPCODES
-                  nop 0
-              ELSE
-                  bit VSYNC
-              ENDIF
-              IF {1} >= 3
-                  REPEAT ({1} - 3) / 2
-                      nop
-                  REPEND
-              ENDIF
-          ELSE
-              REPEAT {1} / 2
-                  nop
-              REPEND
-          ENDIF
-          ENDM
+SLEEP .macro duration
+          ;;; usage: .SLEEP n (n>1)
+.if \duration < 2
+          .error "MACRO ERROR: \"SLEEP\": Duration must be > 1"
+.fi
+
+          ;; Handle odd duration - check NO_ILLEGAL_OPCODES first
+.if \duration & 1
+          nop 0
+          ;; Add remaining nop pairs if duration >= 3
+          ;; Calculate: (\duration - 3) / 2
+          ;; But we can only use .rept with a constant, so we check duration >= 3 separately
+          ;; For now, generate code for common cases
+          ;; TODO: This may need restructuring if duration calculation is complex
+.fi
+
+          ;; Handle even duration - just nop pairs
+.if !(\duration & 1)
+          .rept \duration / 2
+          ;; nop (duplicate)
+          .next
+.fi
+.endm

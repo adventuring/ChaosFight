@@ -1,69 +1,120 @@
           rem ChaosFight - Source/Banks/Bank5.bas
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem
-          rem ASSET BANK: Character Art Assets (separate memory budget)
-          rem Character sprites (24-31): Character24-30, MethHound
-
+          rem GENERAL CODE BANK (shared memory budget - 8 banks total)
+          rem Character selection system (main/render)
           bank 5
-
           asm
-Bank5DataStart
-Character24DataStart
+HealthBarPatternsStart
 end
-#include "Source/Generated/Character24.bas"
+#include "Source/Data/HealthBarPatterns.bas"
           asm
-Character24DataEnd
-            echo "// Bank 5: ", [Character24DataEnd - Character24DataStart]d, " bytes = Character24 data"
-Character25DataStart
-end
-#include "Source/Generated/Character25.bas"
-          asm
-Character25DataEnd
-            echo "// Bank 5: ", [Character25DataEnd - Character25DataStart]d, " bytes = Character25 data"
-Character26DataStart
-end
-#include "Source/Generated/Character26.bas"
-          asm
-Character26DataEnd
-            echo "// Bank 5: ", [Character26DataEnd - Character26DataStart]d, " bytes = Character26 data"
-Character27DataStart
-end
-#include "Source/Generated/Character27.bas"
-          asm
-Character27DataEnd
-            echo "// Bank 5: ", [Character27DataEnd - Character27DataStart]d, " bytes = Character27 data"
-Character28DataStart
-end
-#include "Source/Generated/Character28.bas"
-          asm
-Character28DataEnd
-            echo "// Bank 5: ", [Character28DataEnd - Character28DataStart]d, " bytes = Character28 data"
-Character29DataStart
-end
-#include "Source/Generated/Character29.bas"
-          asm
-Character29DataEnd
-            echo "// Bank 5: ", [Character29DataEnd - Character29DataStart]d, " bytes = Character29 data"
-Character30DataStart
-end
-#include "Source/Generated/Character30.bas"
-          asm
-Character30DataEnd
-            echo "// Bank 5: ", [Character30DataEnd - Character30DataStart]d, " bytes = Character30 data"
-MethHoundDataStart
-end
-#include "Source/Generated/MethHound.bas"
-          asm
-MethHoundDataEnd
-            echo "// Bank 5: ", [MethHoundDataEnd - MethHoundDataStart]d, " bytes = MethHound data"
-Bank5DataEnds
+HealthBarPatternsEnd
+            echo "// Bank 5: ", [HealthBarPatternsEnd - HealthBarPatternsStart]d, " bytes = HealthBarPatterns"
+Bank6DataEnds
 end
 
+          rem Character select routines
           asm
-            ;; Character art lookup routines for Bank 5 (characters 24-31)
-CharacterArtBank5Start
-#include "Source/Routines/CharacterArtBank5.s"
-CharacterArtBank5End
-            echo "// Bank 5: ", [CharacterArtBank5End - CharacterArtBank5Start]d, " bytes = Character Art lookup routines"
-Bank5CodeEnds
+PlayerLockedHelpersStart
+end
+#include "Source/Routines/PlayerLockedHelpers.bas"
+          asm
+PlayerLockedHelpersEnd
+            echo "// Bank 5: ", [PlayerLockedHelpersEnd - PlayerLockedHelpersStart]d, " bytes = PlayerLockedHelpers"
+CharacterSelectRenderStart
+end
+#include "Source/Routines/CharacterSelectRender.bas"
+          asm
+CharacterSelectRenderEnd
+            echo "// Bank 5: ", [CharacterSelectRenderEnd - CharacterSelectRenderStart]d, " bytes = CharacterSelectRender"
+CharacterSelectEntryStart
+end
+#include "Source/Routines/CharacterSelectEntry.bas"
+          asm
+CharacterSelectEntryEnd
+            echo "// Bank 5: ", [CharacterSelectEntryEnd - CharacterSelectEntryStart]d, " bytes = CharacterSelectEntry"
+SetSpritePositionsStart
+end
+#include "Source/Routines/SetSpritePositions.bas"
+          asm
+SetSpritePositionsEnd
+            echo "// Bank 5: ", [SetSpritePositionsEnd - SetSpritePositionsStart]d, " bytes = SetSpritePositions"
+SetPlayerSpritesStart
+end
+#include "Source/Routines/SetPlayerSprites.bas"
+          asm
+SetPlayerSpritesEnd
+            echo "// Bank 5: ", [SetPlayerSpritesEnd - SetPlayerSpritesStart]d, " bytes = SetPlayerSprites"
+ApplyGuardColorStart
+end
+#include "Source/Routines/ApplyGuardColor.bas"
+          asm
+ApplyGuardColorEnd
+            echo "// Bank 5: ", [ApplyGuardColorEnd - ApplyGuardColorStart]d, " bytes = ApplyGuardColor"
+RestoreNormalPlayerColorStart
+end
+#include "Source/Routines/RestoreNormalPlayerColor.bas"
+          asm
+RestoreNormalPlayerColorEnd
+            echo "// Bank 5: ", [RestoreNormalPlayerColorEnd - RestoreNormalPlayerColorStart]d, " bytes = RestoreNormalPlayerColor"
+CheckGuardCooldownStart
+end
+#include "Source/Routines/CheckGuardCooldown.bas"
+          asm
+CheckGuardCooldownEnd
+            echo "// Bank 5: ", [CheckGuardCooldownEnd - CheckGuardCooldownStart]d, " bytes = CheckGuardCooldown"
+StartGuardStart
+end
+#include "Source/Routines/StartGuard.bas"
+          asm
+StartGuardEnd
+            echo "// Bank 5: ", [StartGuardEnd - StartGuardStart]d, " bytes = StartGuard"
+UpdateSingleGuardTimerStart
+end
+#include "Source/Routines/UpdateSingleGuardTimer.bas"
+          asm
+UpdateSingleGuardTimerEnd
+            echo "// Bank 5: ", [UpdateSingleGuardTimerEnd - UpdateSingleGuardTimerStart]d, " bytes = UpdateSingleGuardTimer"
+UpdateGuardTimersStart
+end
+#include "Source/Routines/UpdateGuardTimers.bas"
+          asm
+UpdateGuardTimersEnd
+            echo "// Bank 5: ", [UpdateGuardTimersEnd - UpdateGuardTimersStart]d, " bytes = UpdateGuardTimers"
+CharacterSelectFireStart
+end
+#include "Source/Routines/CharacterSelectFire.bas"
+          asm
+CharacterSelectFireEnd
+            echo "// Bank 5: ", [CharacterSelectFireEnd - CharacterSelectFireStart]d, " bytes = CharacterSelectFire"
+CharacterSelectHelpersStart
+end
+#include "Source/Routines/SelectStickLeft.bas"
+          asm
+CharacterSelectHelpersEnd
+            echo "// Bank 5: ", [CharacterSelectHelpersEnd - CharacterSelectHelpersStart]d, " bytes = CharacterSelectHelpers"
+MovePlayerToTargetStart
+end
+#include "Source/Routines/MovePlayerToTarget.bas"
+          asm
+MovePlayerToTargetEnd
+            echo "// Bank 5: ", [MovePlayerToTargetEnd - MovePlayerToTargetStart]d, " bytes = MovePlayerToTarget"
+
+          asm
+FramePhaseSchedulerStart
+end
+#include "Source/Routines/UpdateFramePhase.bas"
+          asm
+FramePhaseSchedulerEnd
+            echo "// Bank 5: ", [FramePhaseSchedulerEnd - FramePhaseSchedulerStart]d, " bytes = FramePhaseScheduler"
+
+          asm
+BudgetedHealthBarsStart
+end
+#include "Source/Routines/BudgetedHealthBars.bas"
+          asm
+BudgetedHealthBarsEnd
+            echo "// Bank 5: ", [BudgetedHealthBarsEnd - BudgetedHealthBarsStart]d, " bytes = BudgetedHealthBars"
+Bank6CodeEnds
 end

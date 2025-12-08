@@ -1,80 +1,80 @@
-
-draw_gameselect_display
-          lda #0
+.proc draw_gameselect_display
+          lda # 0
           sta GRP0
-          sta GRP1
+          ;; sta GRP1 (duplicate)
 
-          ldy #4
+          ldy # 4
           sty aux2
 
-          lda bmp_gameselect_color
-          sta COLUP0
-          sta COLUP1
+          ;; lda bmp_gameselect_color (duplicate)
+          ;; sta COLUP0 (duplicate)
+          ;; sta COLUP1 (duplicate)
 
-	;change gamenumber to a BCD number and stick it in temp5
-          lda gamenumber
-          sta temp3 
-          lda #0
-          sta temp4
-          ldx #8
+	;;change gamenumber to a BCD number and stick it in temp5
+          ;; lda gamenumber (duplicate)
+          ;; sta temp3 (duplicate)
+          ;; lda # 0 (duplicate)
+          ;; sta temp4 (duplicate)
+          ldx # 8
           clc
           sed
-converttobcd
+converttobcd:
           asl temp3
-          lda temp4
+          ;; lda temp4 (duplicate)
           adc temp4
-          sta temp4
+          ;; sta temp4 (duplicate)
           dex
           bne converttobcd
           cld
 
-          lda temp4
+          ;; lda temp4 (duplicate)
           and #$0f
-          sta temp3
-          asl
-          asl
-          clc
-          adc temp3 ; *5
-          clc
-          adc #<(font_gameselect_img)
-          sta scorepointers+10
+          ;; sta temp3 (duplicate)
+          ;; asl (duplicate)
+          ;; asl (duplicate)
+          ;; clc (duplicate)
+          ;; adc temp3 ;;; *5 (duplicate)
+          ;; clc (duplicate)
+          ;; adc # <(font_gameselect_img) (duplicate)
+          ;; sta scorepointers+10 (duplicate)
 
-          lda temp4
-          and #$f0
+          ;; lda temp4 (duplicate)
+          ;; and #$f0 (duplicate)
           lsr
-          lsr
-          sta temp3
-          lsr
-          lsr
-          clc
-          adc temp3 ; *5
-          clc
-          adc #<(font_gameselect_img)
-          sta scorepointers+8
+          ;; lsr (duplicate)
+          ;; sta temp3 (duplicate)
+          ;; lsr (duplicate)
+          ;; lsr (duplicate)
+          ;; clc (duplicate)
+          ;; adc temp3 ;;; *5 (duplicate)
+          ;; clc (duplicate)
+          ;; adc # <(font_gameselect_img) (duplicate)
+          ;; sta scorepointers+8 (duplicate)
 
 
-        ;setup score pointers to point at my bitmap slices instead
-          lda #<(bmp_gameselect_CHAR0)
-          sta scorepointers+0
-          lda #>(bmp_gameselect_CHAR0)
-          sta scorepointers+1
-          lda #<(bmp_gameselect_CHAR1)
-          sta scorepointers+2
-          lda #>(bmp_gameselect_CHAR1)
-          sta scorepointers+3
-          lda #<(bmp_gameselect_CHAR2)
-          sta scorepointers+4
-          lda #>(bmp_gameselect_CHAR2)
-          sta scorepointers+5
-          lda #<(bmp_gameselect_CHAR3)
-          sta scorepointers+6
-          lda #>(bmp_gameselect_CHAR3)
-          sta scorepointers+7
+        ;;setup score pointers to point at my bitmap slices instead
+          ;; lda # <(bmp_gameselect_CHAR0) (duplicate)
+          ;; sta scorepointers+0 (duplicate)
+          ;; lda # >(bmp_gameselect_CHAR0) (duplicate)
+          ;; sta scorepointers+1 (duplicate)
+          ;; lda # <(bmp_gameselect_CHAR1) (duplicate)
+          ;; sta scorepointers+2 (duplicate)
+          ;; lda # >(bmp_gameselect_CHAR1) (duplicate)
+          ;; sta scorepointers+3 (duplicate)
+          ;; lda # <(bmp_gameselect_CHAR2) (duplicate)
+          ;; sta scorepointers+4 (duplicate)
+          ;; lda # >(bmp_gameselect_CHAR2) (duplicate)
+          ;; sta scorepointers+5 (duplicate)
+          ;; lda # <(bmp_gameselect_CHAR3) (duplicate)
+          ;; sta scorepointers+6 (duplicate)
+          ;; lda # >(bmp_gameselect_CHAR3) (duplicate)
+          ;; sta scorepointers+7 (duplicate)
 
-          lda #>(font_gameselect_img)
-          sta scorepointers+9
+          ;; lda # >(font_gameselect_img) (duplicate)
+          ;; sta scorepointers+9 (duplicate)
 
-          lda #>(font_gameselect_img)
-          sta scorepointers+11
+          ;; lda # >(font_gameselect_img) (duplicate)
+          ;; sta scorepointers+11 (duplicate)
 
           jmp draw_bmp_48x1_X
+.pend

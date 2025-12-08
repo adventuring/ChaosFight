@@ -1,0 +1,438 @@
+;;; ChaosFight - Source/Routines/SetSpritePositions.bas
+;;; Copyright © 2025 Bruce-Robert Pocock.
+
+;;; Missile active mask lookup for participants 0-3
+SetSpriteMissileMask:
+              .byte 1, 2, 4, 8
+
+CopyParticipantSpritePosition:
+          ;; Returns: Near (return thisbank)
+          ;; Copy participant position into multisprite hardware registers
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: temp1 = participant index (2 or 3, also equals sprite index)
+          ;;
+          ;; Output: player2/3 registers updated if participant is active
+          ;;
+          ;; Unified sprite position assignment (temp1 = 2 → player2, temp1 = 3 → player3)
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+          lda playerY,x
+          sta temp3
+          lda temp1
+          cmp # 2
+          bne CPS_WritePlayer3
+          lda temp2
+          sta player2x
+          lda temp3
+          sta player2y
+          rts
+CPS_WritePlayer3:
+          lda temp2
+          sta player3x
+          lda temp3
+          sta player3y
+          rts
+
+SetSpritePositions
+          ;; Returns: Far (return otherbank)
+;; SetSpritePositions (duplicate)
+
+          ;; Player Sprite Rendering
+          ;; Returns: Far (return otherbank)
+          ;; Handles sprite positioning, colors, and graphics for all
+          ;; players.
+          ;; SPRITE ASSIGNMENTS (MULTISPRITE KERNEL):
+          ;; Participant 1 (array [0]): P0 sprite (player0x/player0y,
+          ;; COLUP0)
+          ;; Participant 2 (array [1]): P1 sprite (player1x/player1y,
+          ;; _COLUP1 - virtual sprite)
+          ;; Participant 3 (array [2]): P2 sprite (player2x/player2y,
+          ;; COLUP2)
+          ;; Participant 4 (array [3]): P3 sprite (player3x/player3y,
+          ;; COLUP3)
+          ;; MISSILE SPRITES:
+          ;; 2-player mode: missile0 = Participant 1, missile1 =
+          ;; Participant 2 (no multiplexing)
+          ;; 4-player mode: missile0 and missile1 multiplexed between
+          ;; all 4 participants (even/odd frames)
+          ;; AVAILABLE VARIABLES:
+          ;; playerX[0-3], playerY[0-3] - Positions
+          ;; playerState[0-3] - State flags
+          ;; playerRecoveryFrames[0-3] - Hitstun frames
+          ;; missileActive (bit flags) - Projectile states (bit 0=P0,
+          ;;
+          ;; bit 1=P1, bit 2=P2, bit 3=P3)
+          ;; missileX[0-3], missileY[0-3] - Projectile positions
+          ;; controllerStatus flags (SetQuadtariDetected, SetPlayers34Active)
+          ;; Set Sprite Positions
+          ;; Update hardware sprite position registers for all active players and missiles.
+          ;;
+          ;; Input: playerX[], playerY[] (global arrays) = player
+          ;; positions, missileX[] (global array) = missile X
+          ;; positions, missileY_R[] (global SCRAM array) = missile Y
+          ;; positions, missileActive (global) = missile active flags,
+          ;; playerCharacter[] (global array) = character types,
+          ;; controllerStatus (global) = controller sta
+
+          ;; playerHealth[] (global array) = player
+          ;; health, frame (global) = frame counter, missileNUSIZ[]
+          ;; (global array) = missile size registers,
+          ;; CharacterMissileHeights[] (global data table) = missile
+          ;; heights, characterStateFlags_R[] (global SCRAM array) =
+          ;; character state flags, playerState[] (global array) =
+          ;; player states, missileStretchHeight_R[] (global SCRAM
+          ;; array) = stretch missile heights
+          ;;
+          ;; Output: All sprite positions set, missile positions set
+          ;; with frame multiplexing in 4-player mode
+          ;;
+          ;; Mutates: player0x, player0y, player1x, player1y, player2x,
+          ;; player2y, player3x, player3y (TIA registers) = sprite
+          ;; positions, missile0x, missile0y, missile1x, missile1y (TIA
+          ;; registers) = missile positions, ENAM0, ENAM1 (TIA
+          ;; registers) = missile enable flags, missile0height,
+          ;; missile1height (TIA registers) = missile heights, NUSIZ0,
+          ;; NUSIZ1 (TIA registers) = missile size registers,
+          ;; temp1-temp6 (used for calculations)
+          ;;
+          ;; Called Routines: RenderRoboTitoStretchMissile - renders RoboTito
+          ;; stretch missiles when no projectile is active
+          ;;
+          ;; Constraints: 4-player mode uses frame multiplexing (even
+          ;; frames = P1/P2, odd frames = P3/P4)
+          ;; Set player sprite positions
+          ;; player0x = (duplicate) playerX[0]
+          ;; player0y = (duplicate) playerY[0]
+          ;; player1x = (duplicate) playerX[1]
+          ;; player1y = (duplicate) playerY[1]
+
+          ;; Set positions for participants 3 & 4 in 4-player mode
+          ;; (multisprite kernel)
+          ;; Participant 3 (array [2]): P2 sprite (player2x/player2y,
+          ;; COLUP2)
+          ;; Participant 4 (array [3]): P3 sprite (player3x/player3y,
+          ;; COLUP3)
+          ;; Missiles are available for projectiles since participants
+          ;; use proper sprites
+          ;; Set Participant 3 & 4 positions (arrays [2] & [3] → P2 & P3 sprites)
+          ;; Loop over participants 2-3 instead of duplicate calls
+          ;; TODO: for temp1 = 2 to 3
+          jsr CopyParticipantSpritePosition
+
+SSP_NextParticipant .proc
+
+          ;; Set missile positions for projectiles
+          ;; Hardware missiles: missile0 and missile1 (only 2 physical
+          ;; missiles available on TIA)
+          ;; In 2-player mode: missile0 = Participant 1, missile1 =
+          ;; Participant 2 (no multiplexing needed)
+          ;; In 4-player mode: Use frame multiplexing to support 4
+          ;; logical missiles with 2 hardware missiles:
+          ;; Even frames: missile0 = Participant 1 (array [0]),
+          ;; missile1 = Participant 2 (array [1])
+          ;; Odd frames: missile0 = Participant 3 (array [2]), missile1
+          ;; = Participant 4 (array [3])
+          ;; Use missileActive bit flags: bit 0 = Participant 1, bit 1
+          ;; = Participant 2, bit 2 = Participant 3, bit 3 =
+          ;; Participant 4
+
+          ;; Check if participants 3 or 4 are active (selected and not
+          ;; eliminated)
+          ;; Use this flag instead of QuadtariDetected for missile
+          ;; multiplexing
+          ;; because we only need to multiplex when participants 3 or 4
+          ;; are actually in the game
+          ENAM0 = 0
+          ENAM1 = 0
+          ;; TODO: missile0height = 0
+          ;; TODO: missile1height = 0
+          ;; jsr SetSpritePositionsRenderMissiles (duplicate)
+          ;; jsr BS_return (duplicate)
+
+SetSpritePositionsRenderMissiles
+          ;; Returns: Near (return thisbank)
+;; SetSpritePositionsRenderMissiles (duplicate)
+          lda controllerStatus
+          and SetPlayers34Active
+          cmp # 0
+          bne SSP_CheckTwoPlayer
+          jmp RenderMissilesTwoPlayer
+SSP_CheckTwoPlayer:
+
+
+          ;; ;; let temp6 = frame & 1
+          ;; lda frame (duplicate)
+          ;; and # 1 (duplicate)
+          sta temp6
+
+          ;; lda frame (duplicate)
+          ;; and # 1 (duplicate)
+          ;; sta temp6 (duplicate)
+
+                    ;; if temp6 then goto RenderMissilesOddFrame
+          ;; lda temp6 (duplicate)
+          beq SSP_CheckEvenFrame
+          ;; jmp RenderMissilesOddFrame (duplicate)
+SSP_CheckEvenFrame:
+
+          ;; lda # 0 (duplicate)
+          ;; sta temp1 (duplicate)
+          ;; jmp RenderMissilePair (duplicate)
+
+RenderMissilesOddFrame
+          ;; lda # 2 (duplicate)
+          ;; sta temp1 (duplicate)
+          ;; jmp RenderMissilePair (duplicate)
+
+RenderMissilesTwoPlayer
+          ;; lda # 0 (duplicate)
+          ;; sta temp1 (duplicate)
+
+RenderMissilePair
+          ;; jsr SetSpritePositionsRenderPair (duplicate)
+
+          rts
+
+SetSpritePositionsRenderPair
+          ;; Returns: Near (return thisbank)
+;; SetSpritePositionsRenderPair (duplicate)
+          ;; jsr RenderMissileForParticipant (duplicate)
+
+          inc temp1
+          ;; jsr RenderMissileForParticipant (duplicate)
+
+          ;; rts (duplicate)
+
+RenderMissileForParticipant
+          ;; Returns: Near (return thisbank)
+;; RenderMissileForParticipant (duplicate)
+          ;; Render projectile or RoboTito stretch missile for a participant
+          ;; Returns: Near (return thisbank)
+          ;;
+          ;; Input: temp1 = participant index (0-3)
+          ;;
+          ;; Output: missile registers updated for the selected participant
+          ;;
+          ;; Mutates: temp1-temp5 (used for calculations), missile registers
+          ;;
+          ;; TODO: dim RMF_participant = temp1
+          ;; TODO: dim RMF_select = temp2
+          ;; TODO: dim RMF_mask = temp3
+          ;; TODO: dim RMF_character = temp4
+          ;; TODO: dim RMF_active = temp5
+          ;; ;; let RMF_select = RMF_participant & 1
+          ;; lda RMF_participant (duplicate)
+          ;; and # 1 (duplicate)
+          ;; sta RMF_select (duplicate)
+
+          ;; lda RMF_participant (duplicate)
+          ;; and # 1 (duplicate)
+          ;; sta RMF_select (duplicate)
+
+                    ;; let RMF_mask = SetSpriteMissileMask[RMF_participant]         
+          ;; lda RMF_participant (duplicate)
+          asl
+          tax
+          ;; lda SetSpriteMissileMask,x (duplicate)
+          ;; sta RMF_mask (duplicate)
+          ;; lda missileActive (duplicate)
+          ;; and RMF_mask (duplicate)
+          ;; sta RMF_active (duplicate)
+                    ;; if RMF_active then goto RMF_MissileActive
+          ;; lda RMF_active (duplicate)
+          ;; beq RMF_CheckMissileActive (duplicate)
+          ;; jmp RMF_MissileActive (duplicate)
+RMF_CheckMissileActive:
+          ;; lda RMF_select (duplicate)
+          ;; sta temp2 (duplicate)
+          ;; Cross-bank call to RenderRoboTitoStretchMissile in bank 8
+          ;; lda # >(RMF_ReturnPoint-1) (duplicate)
+          pha
+          ;; lda # <(RMF_ReturnPoint-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # >(RenderRoboTitoStretchMissile-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(RenderRoboTitoStretchMissile-1) (duplicate)
+          ;; pha (duplicate)
+                    ldx # 7
+          ;; jmp BS_jsr (duplicate)
+RMF_ReturnPoint:
+
+          ;; jsr BS_return (duplicate)
+
+.pend
+
+RMF_MissileActive .proc
+          ;; Returns: Far (return otherbank)
+                    ;; let RMF_character = playerCharacter[RMF_participant]         
+          ;; lda RMF_participant (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda playerCharacter,x (duplicate)
+          ;; sta RMF_character (duplicate)
+          ;; lda RMF_select (duplicate)
+          ;; sta temp5 (duplicate)
+          ;; jsr SSP_WriteMissileRegisters (duplicate)
+          ;; jsr BS_return (duplicate)
+.pend
+
+SSP_WriteMissileRegisters .proc
+          ;; Write missile registers for selected hardware slot
+          ;; Returns: Near (return thisbank)
+          ;; Input: temp5 = missile select (0=missile0, 1=missile1), RMF_participant, RMF_character
+          ;; Use unified helper to write missile registers
+          ;; Save values to temp variables for unified helper (temp2-temp4 already used by caller, use temp6)
+          ;; temp2 = Y position
+                    ;; let temp6 = missileX[RMF_participant]          lda RMF_participant          asl          tax          lda missileX,x          sta temp6
+          ;; temp3 = NUSIZ value
+          ;; let temp2 = missileY_R[RMF_participant]
+          ;; lda RMF_participant (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda missileY_R,x (duplicate)
+          ;; sta temp2 (duplicate)
+          ;; temp4 = height (overwrite RMF_character after reading it)
+          ;; let temp3 = missileNUSIZ_R[RMF_participant]
+          ;; lda RMF_participant (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda missileNUSIZ_R,x (duplicate)
+          ;; sta temp3 (duplicate)
+                    ;; let temp4 = CharacterMissileHeights[RMF_character]
+          ;; lda RMF_character (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda CharacterMissileHeights,x (duplicate)
+          ;; sta temp4 (duplicate)
+          ;; lda RMF_character (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda CharacterMissileHeights,x (duplicate)
+          ;; sta temp4 (duplicate)
+          ;; jsr SSP_WriteMissileRegistersUnified (duplicate)
+
+          ;; rts (duplicate)
+
+SSP_WriteMissileRegistersUnified
+          ;; Returns: Near (return thisbank)
+;; SSP_WriteMissileRegistersUnified (duplicate)
+          ;; Unified helper to write missile registers for either missile0 or missile1
+          ;; Returns: Near (return thisbank)
+          ;; Input: temp5 = missile select (0=missile0, 1=missile1)
+          ;; temp6 = X position, temp2 = Y position, temp3 = NUSIZ, temp4 = height
+          ;; lda temp5 (duplicate)
+          ;; cmp # 0 (duplicate)
+          ;; bne SSP_CheckMissile0 (duplicate)
+          ;; jmp SSP_WriteUnified0 (duplicate)
+SSP_CheckMissile0:
+
+
+          ;; TODO: missile1x = temp6
+          ;; TODO: missile1y = temp2
+          ;; ENAM1 = 1 (duplicate)
+          NUSIZ1 = temp3
+          ;; TODO: missile1height = temp4
+          ;; rts (duplicate)
+
+SSP_WriteUnified0
+          ;; TODO: missile0x = temp6
+          ;; TODO: missile0y = temp2
+          ;; ENAM0 = 1 (duplicate)
+          NUSIZ0 = temp3
+          ;; TODO: missile0height = temp4
+          ;; rts (duplicate)
+RenderRoboTitoStretchMissile
+          ;; Returns: Far (return otherbank)
+;; RenderRoboTitoStretchMissile (duplicate)
+
+          ;; Render RoboTito stretch visual missiles for whichever hardware slot
+          ;; Returns: Far (return otherbank)
+          ;; is currently multiplexed to the participant.
+          ;;
+          ;; Input: temp1 = participant index (0-3)
+          ;; temp2 = hardware missile select (0 = missile0, 1 = missile1)
+          ;;
+          ;; Output: Selected missile rendered as stretch visual if player is
+          ;; RoboTito, stretching upward, and stretch height > 0
+          ;;
+          ;; Mutates: temp1-temp4 (used for calculations), missile registers
+          ;;
+          ;; Constraints: Caller supplies participant/missile pairing so this
+          ;; routine does not perform frame-parity dispatch.
+                    ;; if playerCharacter[temp1] = CharacterRoboTito then RRTM_CheckStretch
+          ;; jsr BS_return (duplicate)
+
+.pend
+
+RRTM_CheckStretch .proc
+          ;; Returns: Far (return otherbank)
+          ;; jsr BS_return (duplicate)
+                    ;; let temp3 = playerState[temp1]         
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda playerState,x (duplicate)
+          ;; sta temp3 (duplicate)
+          ;; ;; let temp3 = temp3 & 240
+          ;; lda temp3 (duplicate)
+          ;; and # 240 (duplicate)
+          ;; sta temp3 (duplicate)
+
+          ;; lda temp3 (duplicate)
+          ;; and # 240 (duplicate)
+          ;; sta temp3 (duplicate)
+
+                    ;; let temp3 = temp3 / 16
+          ;; lda temp3 (duplicate)
+          ;; cmp # 10 (duplicate)
+          ;; bne RRTM_CheckStretchActive (duplicate)
+          ;; TODO: RRTM_ReadStretchHeight
+RRTM_CheckStretchActive:
+
+          ;; jsr BS_return (duplicate)
+.pend
+
+RRTM_ReadStretchHeight .proc
+                    ;; let temp4 = missileStretchHeight_R[temp1]         
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda missileStretchHeight_R,x (duplicate)
+          ;; sta temp4 (duplicate)
+          ;; jsr BS_return (duplicate)
+          ;; lda temp2 (duplicate)
+          ;; sta temp5 (duplicate)
+          ;; jsr SSP_WriteStretchMissile (duplicate)
+          ;; jsr BS_return (duplicate)
+.pend
+
+SSP_WriteStretchMissile .proc
+          ;; Write stretch missile registers for selected hardware slot
+          ;; Returns: Near (return thisbank)
+          ;; Input: temp5 = missile select (0=missile0, 1=missile1), temp1 = participant, temp4 = height
+          ;; Use unified helper with stretch-specific parameters (NUSIZ=0, position from player)
+                    ;; let temp6 = playerX[temp1]          lda temp1          asl          tax          lda playerX,x          sta temp6
+                    ;; let temp2 = playerY[temp1]
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda playerY,x (duplicate)
+          ;; sta temp2 (duplicate)
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda playerY,x (duplicate)
+          ;; sta temp2 (duplicate)
+          ;; temp4 already set to height
+          ;; lda # 0 (duplicate)
+          ;; sta temp3 (duplicate)
+          ;; jsr SSP_WriteMissileRegistersUnified (duplicate)
+
+          ;; rts (duplicate)
+
+.pend
+

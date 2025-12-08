@@ -1,0 +1,161 @@
+;;; ChaosFight - Source/Routines/HarpyAttack.bas
+;;; Copyright © 2025 Bruce-Robert Pocock.
+
+
+HarpyAttack .proc
+          ;;
+          ;; Returns: Far (return otherbank)
+          ;; Harpy (character 6) - Diagonal downward swoop attack
+          ;; Attack moves the character along a 45° downward path; the sprite acts
+          ;; as the hitbox for the 5-frame swoop animation.
+          ;; Input: temp1 = attacker player index (0-3)
+          ;; playerState[] (global array) = player state flags
+          ;; characterStateFlags_R[] (global SCRAM array) =
+          ;; character state flags
+          ;; MaskPlayerStateFlags (constant) = bitmask to
+          ;; preserve state flags
+          ;; ActionAttackExecuteShifted (constant) = attack
+          ;; execution animation sta
+
+          ;; PlayerStateBitFacing (constant) = facing direction
+          ;; bit
+          ;;
+          ;; Output: Animation state set, player velocity set for
+          ;; diagonal swoop, jumping flag set,
+          ;; swoop attack flag set
+          ;;
+          ;; Mutates: temp1-temp5 (used for calculations),
+          ;; playerState[] (animation state and jumping flag set),
+          ;; playerVelocityX[], playerVelocityXL[],
+          ;; playerVelocityY[], playerVelocityYL[] (set for
+          ;; swoop),
+          ;; characterStateFlags_W[] (swoop attack flag set)
+          ;;
+          ;; Called Routines: None
+          ;;
+          ;; Constraints: Must be colocated with HarpySetLeftVelocity,
+          ;; HarpySetVerticalVelocity (called via goto)
+
+          ;; Set attack animation sta
+
+          ;; Use temp1 directly for indexed addressing (batariBASIC
+          ;; does not resolve dim aliases)
+          ;; Set animation state 14 (attack execution)
+                    ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+
+          ;; Get facing direction (bit 0: 0=left, 1=right)
+                    ;; let temp2 = playerState[temp1] & PlayerStateBitFacing         
+          lda temp1
+          asl
+          tax
+          ;; lda playerState,x (duplicate)
+          sta temp2
+
+          ;; Set diagonal velocity at 45° angle (4 pixels/frame
+          ;; horizontal, 4 pixels/frame vertical)
+          ;; Horizontal: 4 pixels/frame in facing direction
+          ;; Use explicit assignment to dodge unsupported multiply op
+          ;; When temp2=0 (left): want 252 (-4), when temp2≠ 0 (right): want 4
+          ;; lda # 252 (duplicate)
+          ;; sta temp4 (duplicate)
+                    ;; if temp2 then let temp4 = 4          lda temp2          beq skip_9324
+skip_9324:
+          jmp skip_9324
+
+.pend
+
+HarpySetLeftVelocity .proc
+          ;; Label for documentation - velocity already set above
+          ;; Constraints: Must be colocated with HarpyAttack,
+          ;; HarpySetVerticalVelocity
+
+.pend
+
+HarpySetVerticalVelocity .proc
+          ;; Set vertical velocity for Harpy swoop
+          ;;
+          ;; Input: None (called from HarpyAttack)
+          ;;
+          ;; Output: temp3 set to 4, player velocity arrays set
+          ;;
+          ;; Mutates: temp3 (temp3 set to 4), playerVelocityX[],
+          ;; playerVelocityXL[],
+          ;; playerVelocityY[], playerVelocityYL[],
+          ;; playerState[], characterStateFlags_W[]
+          ;;
+          ;; Called Routines: None
+          ;;
+          ;; Constraints: Must be colocated with HarpyAttack,
+          ;; HarpySetLeftVelocity
+          ;; Vertical: 4 pixels/frame downward (positive Y = down)
+          ;; lda # 4 (duplicate)
+          ;; sta temp3 (duplicate)
+
+          ;; Set player velocity for diagonal swoop (45° angle:
+          ;; 4px/frame X, 4px/frame Y) - inlined for performance
+          ;; Use temp1 directly for indexed addressing (batariBASIC
+          ;; does not resolve dim aliases)
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda temp4 (duplicate)
+          ;; sta playerVelocityX,x (duplicate)
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda 0 (duplicate)
+          ;; sta playerVelocityXL,x (duplicate)
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda temp3 (duplicate)
+          ;; sta playerVelocityY,x (duplicate)
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda 0 (duplicate)
+          ;; sta playerVelocityYL,x (duplicate)
+
+          ;; Set jumping state so character can move vertically during
+          ;; swoop
+          ;; This allows vertical movement without being on ground
+          ;; Use temp1 directly for indexed addressing (batariBASIC
+          ;; does not resolve dim aliases)
+          ;; Set bit 2 (jumping flag)
+                    ;; let playerState[temp1] = playerState[temp1] | 4
+
+          ;; Set swoop attack flag for collision detection
+          ;; bit 2 = swoop active (used to extend hitbox below
+          ;; character during swoop)
+          ;; Collision system will check for hits below character
+          ;; during swoop
+          ;; Fix RMW: Read from _R, modify, write to _W
+          ;; Use temp1 directly for indexed addressing (batariBASIC
+          ;; does not resolve dim aliases)
+                    ;; let temp5 = characterStateFlags_R[temp1] | 4         
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda characterStateFlags_R,x (duplicate)
+          ;; sta temp5 (duplicate)
+          ;; lda temp1 (duplicate)
+          ;; asl (duplicate)
+          ;; tax (duplicate)
+          ;; lda temp5 (duplicate)
+          ;; sta characterStateFlags_W,x (duplicate)
+
+          ;; Attack behavior:
+          ;; - Character moves diagonally down at 45° (4px/frame X,
+          ;; 4px/frame Y)
+          ;; - Attack hitbox is below character during movement
+          ;; - 5-frame attack animation duration (handled by animation
+          ;; system)
+          ;; - Movement continues until collision or attack animation
+          ;; completes
+          ;; - No missile spawned - character movement IS the attack
+          ;; - Hit players are damaged and pushed (knockback handled by
+          ;; collision system)
+          rts
+
+.pend
+

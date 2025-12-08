@@ -1,0 +1,147 @@
+;;; ChaosFight - Source/Routines/ConsoleDetection.bas
+;;; Copyright © 2025 Bruce-Robert Pocock.
+;;; Console Detection
+;;; Detects whether running on Atari 2600 or 7800 console
+;;; Based on DetectConsole.s assembly implementation
+          ;; DETECTION LOGIC:
+          ;; if $D0 contains $2C and #$D1 contains $A9 then
+          ;; system = 7800 // game was loaded from Harmony menu on a
+          ;; 7800
+          ;; else if both contain $00 then
+          ;; system = ZP RAM $80 // game was flashed to Harmony/Melody
+          ;; so CDFJ
+          ;; // driver checked $D0 and #$D1 for us and saved
+          ;; // results in $80
+          ;; else
+          ;; system = 2600 // game was loaded from Harmony menu on a
+          ;; 2600
+          ;; Main console detection routine
+
+ConsoleDetHW:
+;; ConsoleDetHW (duplicate)
+          ;; Detect whether running on Atari 2600 or 7800 console
+          ;;
+          ;; Input: $D0, $D1 (hardware registers) = console detection
+          ;; values
+          ;; $80 (zero-page RAM) = CDFJ driver detection result
+          ;; (if flashed)
+          ;;
+          ;; Output: systemFlags initialized to 0, then updated with
+          ;; SystemFlag7800 if 7800 detected
+          ;;
+          ;; Mutates: systemFlags (initialized to 0, then SystemFlag7800
+          ;; set or cleared), temp1 (used for hardware register reads)
+          ;;
+          ;; Called Routines: None (reads hardware registers directly)
+          ;;
+          ;; Constraints: Must be colocated with CheckFlashed, Is7800,
+          ;; Is2600 (all called via goto)
+          ;; MUST run before any code modifies $D0/$D1
+          ;; registers
+          ;; Entry point for console detection (called
+          ;; from ColdStart)
+          ;; Initialize systemFlags to 0 (assume 2600 console initially)
+          lda # 0
+          sta systemFlags
+          ;; No need to read prior value since it contains random garbage at sta
+
+
+          ;; Check $D0 value
+          ;; lda $D0 (duplicate)
+          ;; sta temp1 (duplicate)
+          ;; lda temp1 (duplicate)
+          cmp # 0
+          bne skip_3125
+          jmp CheckFlashed
+skip_3125:
+
+
+          ;; Check if $D0 = $2C (7800 indicator)
+
+          ;; lda temp1 (duplicate)
+          ;; cmp ConsoleDetectD0 (duplicate)
+          ;; bne skip_4702 (duplicate)
+          ;; jmp CheckD1 (duplicate)
+skip_4702:
+
+          ;; jmp Is2600 (duplicate)
+
+
+CheckD1 .proc
+          ;; Check $D1 value for 7800 confirmation
+          ;; lda $D1 (duplicate)
+          ;; sta temp1 (duplicate)
+          ;; lda temp1 (duplicate)
+          ;; cmp ConsoleDetectD1 (duplicate)
+          ;; bne skip_3707 (duplicate)
+          ;; jmp Is7800 (duplicate)
+skip_3707:
+
+          ;; 7800 detected: $D0=$2C and #$D1=$A9
+          ;; jmp Is2600 (duplicate)
+
+.pend
+
+CheckFlashed .proc
+          ;; Check if game was flashed to Harmony/Melody (both $D0 and
+          ;; $D1 are $00)
+          ;;
+          ;; Input: $D1 (hardware register) = console detection value
+          ;; $80 (zero-page RAM) = CDFJ driver detection result
+          ;;
+          ;; Output: Dispatches to Is7800 or Is2600
+          ;;
+          ;; Mutates: temp1 (used for hardware register reads)
+          ;;
+          ;; Called Routines: None
+          ;;
+          ;; Constraints: Must be colocated with ConsoleDetHW, Is7800,
+          ;; Is2600
+          ;; Check if $D1 is also $00 (flashed game)
+          ;; lda $D1 (duplicate)
+          ;; sta temp1 (duplicate)
+                    ;; if temp1 then goto Is2600
+          ;; lda temp1 (duplicate)
+          beq skip_4218
+          ;; jmp Is2600 (duplicate)
+skip_4218:
+
+          ;; Both $D0 and #$D1 are $00 - check $80 for CDFJ driver
+          ;; result
+          ;; lda $80 (duplicate)
+          ;; sta temp1 (duplicate)
+          ;; lda temp1 (duplicate)
+          ;; cmp # 0 (duplicate)
+          ;; bne skip_585 (duplicate)
+          ;; jmp Is2600 (duplicate)
+skip_585:
+
+
+          ;; fall through to Is7800
+          ;; CDFJ driver detected 7800
+
+.pend
+
+Is7800 .proc
+          ;; 7800 console detected
+          ;;
+          ;; Input: systemFlags (global) = system flags
+          ;;
+          ;; Output: systemFlags updated with SystemFlag7800 set
+          ;;
+          ;; Mutates: systemFlags (SystemFlag7800 set)
+          ;;
+          ;; Called Routines: None
+          ;; Constraints: Must be colocated with ConsoleDetHW
+          ;; lda SystemFlag7800 (duplicate)
+          ;; sta systemFlags (duplicate)
+          ;; jmp ConsoleDetected (duplicate)
+
+.pend
+
+Is2600 .proc
+          ;; 2600 console detected
+ConsoleDetected
+
+.pend
+

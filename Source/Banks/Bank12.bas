@@ -2,59 +2,90 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
-          rem Character data system (definitions, cycles, fall damage) +
-          rem Titlescreen graphics and kernel
-
+          rem Input system (movement, player input, guard effects)
           bank 12
-
-          rem Character data tables
-#include "Source/Data/CharacterThemeSongIndices.bas"
-
           asm
-Bank12DataEnds
-end
-
-#include "Source/Routines/UpdateAttackCooldowns.bas"
-          asm
-Bank12AfterUpdateAttackCooldowns
-end
-#include "Source/Routines/HandleFlyingCharacterMovement.bas"
-          asm
-Bank12AfterHandleFlyingCharacterMovement
-end
-#include "Source/Routines/HandleGuardInput.bas"
-          asm
-Bank12AfterHandleGuardInput
-end
-#include "Source/Routines/StandardGuard.bas"
-          asm
-Bank12AfterStandardGuard
-end
-#include "Source/Routines/RadishGoblinMovement.bas"
-          asm
-Bank12AfterRadishGoblinMovement
-end
-#include "Source/Routines/CharacterControlsJump.bas"
-          asm
-Bank12AfterCharacterControlsJump
-end
-#include "Source/Routines/AnimationSystem.bas"
-          asm
-Bank12AfterAnimationSystem
-end
-#include "Source/Routines/DeactivatePlayerMissiles.bas"
-          asm
-Bank12AfterDeactivatePlayerMissiles
+Bank13DataEnds
 end
 
           asm
-Bank12CodeEnds
-           echo "// Bank 12: ", [Bank12AfterUpdateAttackCooldowns - Bank12DataEnds]d, " bytes = UpdateAttackCooldowns"
-           echo "// Bank 12: ", [Bank12AfterHandleFlyingCharacterMovement - Bank12AfterUpdateAttackCooldowns]d, " bytes = HandleFlyingCharacterMovement (CharacterDamage removed - was empty)"
-           echo "// Bank 12: ", [Bank12AfterHandleGuardInput - Bank12AfterHandleFlyingCharacterMovement]d, " bytes = HandleGuardInput"
-           echo "// Bank 12: ", [Bank12AfterStandardGuard - Bank12AfterHandleGuardInput]d, " bytes = StandardGuard"
-           echo "// Bank 12: ", [Bank12AfterRadishGoblinMovement - Bank12AfterStandardGuard]d, " bytes = RadishGoblinMovement"
-           echo "// Bank 12: ", [Bank12AfterCharacterControlsJump - Bank12AfterRadishGoblinMovement]d, " bytes = CharacterControlsJump"
-           echo "// Bank 12: ", [Bank12AfterAnimationSystem - Bank12AfterCharacterControlsJump]d, " bytes = AnimationSystem"
-           echo "// Bank 12: ", [Bank12AfterDeactivatePlayerMissiles - Bank12AfterAnimationSystem]d, " bytes = DeactivatePlayerMissiles"
+CheckPlayerCollisionStart
+end
+#include "Source/Routines/CheckPlayerCollision.bas"
+          asm
+CheckPlayerCollisionEnd
+            echo "// Bank 12: ", [CheckPlayerCollisionEnd - CheckPlayerCollisionStart]d, " bytes = CheckPlayerCollision"
+ControllerDetectionStart
+end
+#include "Source/Routines/ControllerDetection.bas"
+          asm
+ControllerDetectionEnd
+            echo "// Bank 12: ", [ControllerDetectionEnd - ControllerDetectionStart]d, " bytes = ControllerDetection"
+GetPlayerAnimationStateFunctionStart
+end
+#include "Source/Routines/GetPlayerAnimationStateFunction.bas"
+          asm
+GetPlayerAnimationStateFunctionEnd
+            echo "// Bank 12: ", [GetPlayerAnimationStateFunctionEnd - GetPlayerAnimationStateFunctionStart]d, " bytes = GetPlayerAnimationStateFunction"
+PlayerPhysicsGravityStart
+end
+#include "Source/Routines/PlayerPhysicsGravity.bas"
+          asm
+PlayerPhysicsGravityEnd
+            echo "// Bank 12: ", [PlayerPhysicsGravityEnd - PlayerPhysicsGravityStart]d, " bytes = PlayerPhysicsGravity"
+InitializeMovementSystemStart
+end
+#include "Source/Routines/InitializeMovementSystem.bas"
+          asm
+InitializeMovementSystemEnd
+            echo "// Bank 12: ", [InitializeMovementSystemEnd - InitializeMovementSystemStart]d, " bytes = InitializeMovementSystem"
+ConstrainToScreenStart
+end
+#include "Source/Routines/ConstrainToScreen.bas"
+          asm
+ConstrainToScreenEnd
+            echo "// Bank 12: ", [ConstrainToScreenEnd - ConstrainToScreenStart]d, " bytes = ConstrainToScreen"
+AddVelocitySubpixelYStart
+end
+#include "Source/Routines/AddVelocitySubpixelY.bas"
+          asm
+AddVelocitySubpixelYEnd
+            echo "// Bank 12: ", [AddVelocitySubpixelYEnd - AddVelocitySubpixelYStart]d, " bytes = AddVelocitySubpixelY"
+ProcessStandardMovementStart
+end
+#include "Source/Routines/ProcessStandardMovement.bas"
+          asm
+ProcessStandardMovementEnd
+            echo "// Bank 12: ", [ProcessStandardMovementEnd - ProcessStandardMovementStart]d, " bytes = ProcessStandardMovement"
+ConsoleHandlingStart
+end
+#include "Source/Routines/ConsoleHandling.bas"
+          asm
+ConsoleHandlingEnd
+            echo "// Bank 12: ", [ConsoleHandlingEnd - ConsoleHandlingStart]d, " bytes = ConsoleHandling"
+TriggerEliminationEffectsStart
+end
+#include "Source/Routines/TriggerEliminationEffects.bas"
+          asm
+TriggerEliminationEffectsEnd
+            echo "// Bank 12: ", [TriggerEliminationEffectsEnd - TriggerEliminationEffectsStart]d, " bytes = TriggerEliminationEffects"
+IsPlayerEliminatedStart
+end
+#include "Source/Routines/IsPlayerEliminated.bas"
+          asm
+IsPlayerEliminatedEnd
+            echo "// Bank 12: ", [IsPlayerEliminatedEnd - IsPlayerEliminatedStart]d, " bytes = IsPlayerEliminated"
+IsPlayerAliveStart
+end
+#include "Source/Routines/IsPlayerAlive.bas"
+          asm
+IsPlayerAliveEnd
+            echo "// Bank 12: ", [IsPlayerAliveEnd - IsPlayerAliveStart]d, " bytes = IsPlayerAlive"
+CharacterDownHandlersStart
+end
+#include "Source/Routines/CharacterDownHandlers.bas"
+          asm
+CharacterDownHandlersEnd
+            echo "// Bank 12: ", [CharacterDownHandlersEnd - CharacterDownHandlersStart]d, " bytes = CharacterDownHandlers"
+Bank13CodeEnds
 end

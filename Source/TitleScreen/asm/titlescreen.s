@@ -1,221 +1,212 @@
 
-#include "TitleScreen/asm/layoutmacros.s"
-; titlescreen_layout.s macro expanded inline below (line 85-88) - include removed to avoid macro definition processing
+.include "TitleScreen/asm/layoutmacros.s"
+;; titlescreen_layout.s macro expanded inline below (line 85-88) - .include removed to avoid macro definition processing
 
-; Optional bitmap index offsets - data (BYTE 0) moved to Bank9.bas data segment
-; Symbol definitions only (no data) - these are compile-time constants
-bmp_48x2_1_index SET bmp_48x2_1_index_value
-bmp_48x2_2_index SET bmp_48x2_2_index_value
-bmp_48x2_3_index SET bmp_48x2_3_index_value
-bmp_48x2_4_index SET bmp_48x2_4_index_value
-scorefade = 0
+;; Optional bitmap index offsets - data (.byte 0) moved to Bank9.bas data segment
+;; Symbol definitions only (no data) - these are compile-time consta
+
+bmp_48x2_1_index = bmp_48x2_1_index_value
+bmp_48x2_2_index = bmp_48x2_2_index_value
+bmp_48x2_3_index = bmp_48x2_3_index_value
+bmp_48x2_4_index = bmp_48x2_4_index_value
+scorefade_1:= 0
 score_kernel_fade = 0
 
-titledrawscreen
-title_eat_overscan
- 	;bB runs in overscan. Wait for the overscan to run out...
+titledrawscreen:
+title_eat_overscan:
+ 	;;bB runs in overscan. Wait for the overscan to run out...
 	clc
           lda INTIM
           bmi title_eat_overscan
-          ; Fall through to title_do_vertical_sync (no alignment needed)
+          ;; Fall through to title_do_vertical_sync (no alignment needed)
           
-title_do_vertical_sync
-          lda #2
-          sta WSYNC ;one line with VSYNC
-          sta VSYNC ;enable VSYNC
-          sta WSYNC ;one line with VSYNC
-          sta WSYNC ;one line with VSYNC
-          lda #0
-          sta WSYNC ;one line with VSYNC
-          sta VSYNC ;turn off VSYNC
+title_do_vertical_sync:
+          ;; lda # 2 (duplicate)
+          sta WSYNC ;;;one line with VSYNC
+          ;; sta VSYNC ;;;enable VSYNC (duplicate)
+          ;; sta WSYNC ;;;one line with VSYNC (duplicate)
+          ;; sta WSYNC ;;;one line with VSYNC (duplicate)
+          ;; lda # 0 (duplicate)
+          ;; sta WSYNC ;;;one line with VSYNC (duplicate)
+          ;; sta VSYNC ;;;turn off VSYNC (duplicate)
 
-          ; VBLANK: Use Reference cycle-exact timing
-          ifnconst vblank_time
-          ifconst _TV_PAL
-          lda #42+128
-          sta TIM64T
-          else
-          ifconst _TV_SECAM
-          lda #42+128
-          sta TIM64T
-          else
-          lda #37+128
-          sta TIM64T
-          endif
-          endif
-          else
-          lda #vblank_time+128
-          sta TIM64T
-          endif
+          ;; VBLANK: Use Reference cycle-exact timing
+          .if ! vblank_time
+          .if TVStandard == 1
+          ;; lda # 42+128 (duplicate)
+          ;; sta TIM64T (duplicate)
+          .else
+          .if TVStandard == 2
+          ;; lda # 42+128 (duplicate)
+          ;; sta TIM64T (duplicate)
+          .else
+          ;; lda # 37+128 (duplicate)
+          ;; sta TIM64T (duplicate)
+          .fi
+          .fi
+          .else
+          ;; lda # vblank_time+128 (duplicate)
+          ;; sta TIM64T (duplicate)
+          .fi
 
 titleframe = missile0x
-          inc titleframe ; increment the frame counter
+          inc titleframe ;;; increment the frame counter
 
-	; Removed unused .title_vblank conditional
+	;; Removed unused .title_vblank conditional
 
-title_vblank_loop
-          lda INTIM
-          bmi title_vblank_loop
-          lda #0
-          sta WSYNC
-          sta VBLANK
-          sta ENAM0
-          sta ENABL
+title_vblank_loop:
+          ;; lda INTIM (duplicate)
+          ;; bmi title_vblank_loop (duplicate)
+          ;; lda # 0 (duplicate)
+          ;; sta WSYNC (duplicate)
+          ;; sta VBLANK (duplicate)
+          ;; sta ENAM0 (duplicate)
+          ;; sta ENABL (duplicate)
 
-title_playfield
+title_playfield:
 
-; ======== BEGIN of the custom kernel!!!!! All of the work is done in the playfield.
+;; ======== BEGIN of the custom kernel!!!!! All of the work is done in the playfield.
 
-          lda #230
-          sta TIM64T
+          ;; lda # 230 (duplicate)
+          ;; sta TIM64T (duplicate)
 
-          lda #1
-          sta CTRLPF
-          clc
+          ;; lda # 1 (duplicate)
+          ;; sta CTRLPF (duplicate)
+          ;; clc (duplicate)
 
-          lda #0
-          sta REFP0
-          sta REFP1
-          sta WSYNC
-          sta COLUBK
-          ; Clear playfield to prevent garbage display
-          sta PF0
-          sta PF1
-          sta PF2
+          ;; lda # 0 (duplicate)
+          ;; sta REFP0 (duplicate)
+          ;; sta REFP1 (duplicate)
+          ;; sta WSYNC (duplicate)
+          ;; sta COLUBK (duplicate)
+          ;; Clear playfield to prevent garbage display
+          ;; sta PF0 (duplicate)
+          ;; sta PF1 (duplicate)
+          ;; sta PF2 (duplicate)
 
-; Manually expanded titlescreenlayout macro (labels must be column aligned)
-; For 48×42 bitmaps using ×2 drawing style (double-height mode)
-; Each bitmap row is displayed as 2 scanlines: 42 rows → 84 scanlines on screen
-; Three admin screens use four minikernel slots:
-;   - 48x2_1: AtariAge logo bitmap
-;   - 48x2_2: AtariAge text bitmap
-;   - 48x2_3: ChaosFight title bitmap
-;   - 48x2_4: BRP signature bitmap (Author screen)
-; Publisher screen: Shows 48x2_1 (logo) + 48x2_2 (text) - both window=42
-; Author screen: Shows only 48x2_4 (BRP) - window=42
-; Title screen: Shows only 48x2_3 (ChaosFight) - window=42
-; Each screen activates only its minikernel by setting height/window = 0 for others
-          draw_48x2_1
-          draw_48x2_2
-          draw_48x2_3
-          draw_48x2_4
+;; Manually expanded titlescreenlayout macro (labels must be column aligned)
+;; For 48×42 bitmaps using ×2 drawing style (double-height mode)
+;; Each bitmap row is displayed as 2 scanlines: 42 rows → 84 scanlines on screen
+;; Three admin screens use four minikernel slots:
+;;   - 48x2_1: AtariAge logo bitmap
+;;   - 48x2_2: AtariAge text bitmap
+;;   - 48x2_3: ChaosFight title bitmap
+;;   - 48x2_4: BRP signature bitmap (Author screen)
+;; Publisher screen: Shows 48x2_1 (logo) + 48x2_2 (text) - both window=42
+;; Author screen: Shows only 48x2_4 (BRP) - window=42
+;; Title screen: Shows only 48x2_3 (ChaosFight) - window=42
+;; Each screen activates only its minikernel by setting height/window = 0 for others
+draw_48x2_1_1:
 
-          jmp PFWAIT ; kernel is done. Finish off the screen
+draw_48x2_2_1:
 
-          #include "TitleScreen/asm/position48.s"
-          #include "TitleScreen/titlescreen_color.s"
-          ; titlescreen_colors.s is now included in Bank9.bas after bitmap data,
-          ;   not here, to avoid origin reverse-indexed errors
+draw_48x2_3_1:
 
-	; Unused 48x1 kernels removed - only 48x2 bitmaps are active
+draw_48x2_4_1:
 
-	; Load per-bitmap pointer tables and wrappers
-          #include "TitleScreen/asm/48x2_1_kernel.s"
-          #include "TitleScreen/asm/48x2_2_kernel.s"
-          #include "TitleScreen/asm/48x2_3_kernel.s"
-          #include "TitleScreen/asm/48x2_4_kernel.s"
 
-          #include "TitleScreen/asm/draw_bmp_48x2_X.s"
+          jmp PFWAIT ;;; kernel is done. Finish off the screen
 
-	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
+          .include "TitleScreen/asm/position48.s"
+          .include "TitleScreen/titlescreen_color.s"
+          ;; titlescreen_colors.s is now included in Bank9.bas after bitmap data,
+          ;;   not here, to avoid origin reverse-indexed errors
 
-          ifconst mk_score_on
-#include "TitleScreen/asm/score_kernel.s"
-          endif ;mk_score_on
+	;; Unused 48x1 kernels removed - only 48x2 bitmaps are active
 
-	; Gameselect minikernel removed - not used (mk_gameselect_on = 0)
-	; Gameselect symbols defined as stubs to avoid unresolved symbol errors
-	; These are referenced by batariBASIC compiler output but never used
-          ifnconst bmp_gameselect_color
-bmp_gameselect_color
-          endif
+	;; Load per-bitmap pointer tables and wrappers
+          .include "TitleScreen/asm/48x2_1_kernel.s"
+          .include "TitleScreen/asm/48x2_2_kernel.s"
+          .include "TitleScreen/asm/48x2_3_kernel.s"
+          .include "TitleScreen/asm/48x2_4_kernel.s"
+
+          .include "TitleScreen/asm/draw_bmp_48x2_X.s"
+
+	;; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
+
+          .if  mk_score_on
+.include "TitleScreen/asm/score_kernel.s"
+          .fi ;;;mk_score_on
+
+	;; Gameselect minikernel removed - not used (mk_gameselect_on = 0)
+	;; Gameselect symbols defined as stubs to avoid unresolved symbol errors
+	;; These are referenced by batariBASIC compiler output but never used
+bmp_gameselect_color:
           .byte $00
-          ifnconst bmp_gameselect_CHAR0
-bmp_gameselect_CHAR0
-          endif
+bmp_gameselect_CHAR0:
           .byte $00, $00, $00, $00, $00
-          ifnconst bmp_gameselect_CHAR1
-bmp_gameselect_CHAR1
-          endif
+bmp_gameselect_CHAR1:
           .byte $00, $00, $00, $00, $00
-          ifnconst bmp_gameselect_CHAR2
-bmp_gameselect_CHAR2
-          endif
+bmp_gameselect_CHAR2:
           .byte $00, $00, $00, $00, $00
-          ifnconst bmp_gameselect_CHAR3
-bmp_gameselect_CHAR3
-          endif
+bmp_gameselect_CHAR3:
           .byte $00, $00, $00, $00, $00
-          ifnconst font_gameselect_img
-font_gameselect_img
-          endif
+font_gameselect_img:
           .byte $00
-          ifnconst gamenumber
-gamenumber
-          endif
+gamenumber_ts:
+gamenumber_titlescreen:
           .byte $00
 
-PFWAIT
-          lda INTIM
+PFWAIT:
+          ;; lda INTIM (duplicate)
           bne PFWAIT
-          sta WSYNC
+          ;; sta WSYNC (duplicate)
 
-OVERSCAN
-          ; Overscan: Use Reference cycle-exact timing
-          ifnconst overscan_time
-          ifconst _TV_PAL
-          lda #34+128
-          sta TIM64T
-          else
-          ifconst _TV_SECAM
-          lda #34+128
-          sta TIM64T
-          else
-          lda #30+128
-          sta TIM64T
-          endif
-          endif
-          else
-          lda #overscan_time+128-5
-          sta TIM64T
-          endif
+OVERSCAN:
+          ;; Overscan: Use Reference cycle-exact timing
+          .if ! overscan_time
+          .if TVStandard == 1
+          ;; lda # 34+128 (duplicate)
+          ;; sta TIM64T (duplicate)
+          .else
+          .if TVStandard == 2
+          ;; lda # 34+128 (duplicate)
+          ;; sta TIM64T (duplicate)
+          .else
+          ;; lda # 30+128 (duplicate)
+          ;; sta TIM64T (duplicate)
+          .fi
+          .fi
+          .else
+          ;; lda # overscan_time+128-5 (duplicate)
+          ;; sta TIM64T (duplicate)
+          .fi
 
-	;fix height variables we borrowed
-          ifconst player9height
-          ldy #8
-          lda #0
-          sta player0height
+	;;fix height variables we borrowed
+          .if  player9height
+          ldy # 8
+          ;; lda # 0 (duplicate)
+          ;; sta player0height (duplicate)
 TitleScreenFixPlayerHeights:
-.playerheightfixloop
-          sta player1height,y
-          ifconst _NUSIZ1
-          sta _NUSIZ1,y
-          endif
+playerheightfixloop:
+          ;; sta player1height,y (duplicate)
+          ;; .if _NUSIZ1 != 0  ;;; Commented out - code inside is duplicate
           dey
-          bpl .playerheightfixloop
-          endif
+          bpl playerheightfixloop
+          ;; .fi  ;;; Commented out
+          .fi  ;;; Close .if player9height
 
-          lda #%11000010
-          sta WSYNC
-          sta VBLANK
+          ;; lda # %11000010 (duplicate)
+          ;; sta WSYNC (duplicate)
+          ;; sta VBLANK (duplicate)
           rts
 
-	; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
-	; Note: Bitmap image data is now included from generated Art.*.s files in Bank9
-	; The TitleScreen/48x2_N_image.s files are NOT included here to avoid duplicate definitions
-	; ifconst mk_48x2_1_on
-	;	include "TitleScreen/48x2_1_image.s"
-	; endif
-	; ifconst mk_48x2_2_on
-	;	include "TitleScreen/48x2_2_image.s"
-	; endif
-	; ifconst mk_48x2_3_on
-	;	include "TitleScreen/48x2_3_image.s"
-	; endif
-	; ifconst mk_48x2_4_on
-	;	include "TitleScreen/48x2_4_image.s"
-	; endif
+	;; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
+	;; Bitmap image data is included from generated Art.*.s files in Bank8
+	;; The TitleScreen/48x2_N_image.s files are NOT included here to avoid duplicate definitions
+	;; .if  mk_48x2_1_on
+	;;	.include "TitleScreen/48x2_1_image.s"
+	;; .fi
+	;; .if  mk_48x2_2_on
+	;;	.include "TitleScreen/48x2_2_image.s"
+	;; .fi
+	;; .if  mk_48x2_3_on
+	;;	.include "TitleScreen/48x2_3_image.s"
+	;; .fi
+	;; .if  mk_48x2_4_on
+	;;	.include "TitleScreen/48x2_4_image.s"
+	;; .fi
 
-	; Removed unused player, score, and gameselect minikernels
+	;; Removed unused player, score, and gameselect minikernels
 
-          rts
+          ;; rts (duplicate)

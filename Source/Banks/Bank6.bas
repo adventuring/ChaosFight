@@ -1,122 +1,69 @@
           rem ChaosFight - Source/Banks/Bank6.bas
-          rem Copyright © 2025 Bruce-Robert Pocock.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
-          rem Character selection system (main/render)
-
+          rem Missile system (tables, physics, collision) + combat system
           bank 6
+          asm
+CharacterMissileTablesStart
+end
+#include "Source/Data/CharacterMissileTables.bas"
+          asm
+CharacterMissileTablesEnd
+            echo "// Bank 6: ", [CharacterMissileTablesEnd - CharacterMissileTablesStart]d, " bytes = CharacterMissileTables"
+CharacterMissileDataStart
+end
+#include "Source/Routines/CharacterMissileData.bas"
+          asm
+CharacterMissileDataEnd
+            echo "// Bank 6: ", [CharacterMissileDataEnd - CharacterMissileDataStart]d, " bytes = CharacterMissileData"
+CharacterDataTablesStart
+end
+#include "Source/Data/CharacterDataTables.bas"
+          asm
+CharacterDataTablesEnd
+            echo "// Bank 6: ", [CharacterDataTablesEnd - CharacterDataTablesStart]d, " bytes = CharacterDataTables"
+Bank7DataEnds
+end
 
           asm
-HealthBarPatternsStart
+BudgetedMissileCollisionsStart
 end
-#include "Source/Data/HealthBarPatterns.bas"
+#include "Source/Routines/BudgetedMissileCollisionCheck.bas"
           asm
-HealthBarPatternsEnd
-            echo "// Bank 6: ", [HealthBarPatternsEnd - HealthBarPatternsStart]d, " bytes = HealthBarPatterns"
-Bank6DataEnds
+BudgetedMissileCollisionsEnd
+            echo "// Bank 6: ", [BudgetedMissileCollisionsEnd - BudgetedMissileCollisionsStart]d, " bytes = BudgetedMissileCollisions"
+          asm
+MissileSystemStart
 end
-
-          rem Character select routines
+#include "Source/Routines/MissileSystem.bas"
           asm
-PlayerLockedHelpersStart
+MissileSystemEnd
+            echo "// Bank 6: ", [MissileSystemEnd - MissileSystemStart]d, " bytes = MissileSystem"
+MissileCharacterHandlersStart
 end
-#include "Source/Routines/PlayerLockedHelpers.bas"
+#include "Source/Routines/MissileCharacterHandlers.bas"
           asm
-PlayerLockedHelpersEnd
-            echo "// Bank 6: ", [PlayerLockedHelpersEnd - PlayerLockedHelpersStart]d, " bytes = PlayerLockedHelpers"
-CharacterSelectRenderStart
+MissileCharacterHandlersEnd
+            echo "// Bank 6: ", [MissileCharacterHandlersEnd - MissileCharacterHandlersStart]d, " bytes = MissileCharacterHandlers"
+CombatStart
 end
-#include "Source/Routines/CharacterSelectRender.bas"
+#include "Source/Routines/Combat.bas"
           asm
-CharacterSelectRenderEnd
-            echo "// Bank 6: ", [CharacterSelectRenderEnd - CharacterSelectRenderStart]d, " bytes = CharacterSelectRender"
-CharacterSelectEntryStart
+CombatEnd
+            echo "// Bank 6: ", [CombatEnd - CombatStart]d, " bytes = Combat"
+          asm
+PerformGenericAttackStart
 end
-#include "Source/Routines/CharacterSelectEntry.bas"
+#include "Source/Routines/PerformGenericAttack.bas"
           asm
-CharacterSelectEntryEnd
-            echo "// Bank 6: ", [CharacterSelectEntryEnd - CharacterSelectEntryStart]d, " bytes = CharacterSelectEntry"
-SetSpritePositionsStart
+PerformGenericAttackEnd
+            echo "// Bank 6: ", [PerformGenericAttackEnd - PerformGenericAttackStart]d, " bytes = PerformGenericAttack"
+FlyingMovementHelpersStart
 end
-#include "Source/Routines/SetSpritePositions.bas"
+#include "Source/Routines/FlyingMovementHelpers.bas"
           asm
-SetSpritePositionsEnd
-            echo "// Bank 6: ", [SetSpritePositionsEnd - SetSpritePositionsStart]d, " bytes = SetSpritePositions"
-SetPlayerSpritesStart
-end
-#include "Source/Routines/SetPlayerSprites.bas"
-          asm
-SetPlayerSpritesEnd
-            echo "// Bank 6: ", [SetPlayerSpritesEnd - SetPlayerSpritesStart]d, " bytes = SetPlayerSprites"
-ApplyGuardColorStart
-end
-#include "Source/Routines/ApplyGuardColor.bas"
-          asm
-ApplyGuardColorEnd
-            echo "// Bank 6: ", [ApplyGuardColorEnd - ApplyGuardColorStart]d, " bytes = ApplyGuardColor"
-RestoreNormalPlayerColorStart
-end
-#include "Source/Routines/RestoreNormalPlayerColor.bas"
-          asm
-RestoreNormalPlayerColorEnd
-            echo "// Bank 6: ", [RestoreNormalPlayerColorEnd - RestoreNormalPlayerColorStart]d, " bytes = RestoreNormalPlayerColor"
-CheckGuardCooldownStart
-end
-#include "Source/Routines/CheckGuardCooldown.bas"
-          asm
-CheckGuardCooldownEnd
-            echo "// Bank 6: ", [CheckGuardCooldownEnd - CheckGuardCooldownStart]d, " bytes = CheckGuardCooldown"
-StartGuardStart
-end
-#include "Source/Routines/StartGuard.bas"
-          asm
-StartGuardEnd
-            echo "// Bank 6: ", [StartGuardEnd - StartGuardStart]d, " bytes = StartGuard"
-UpdateSingleGuardTimerStart
-end
-#include "Source/Routines/UpdateSingleGuardTimer.bas"
-          asm
-UpdateSingleGuardTimerEnd
-            echo "// Bank 6: ", [UpdateSingleGuardTimerEnd - UpdateSingleGuardTimerStart]d, " bytes = UpdateSingleGuardTimer"
-UpdateGuardTimersStart
-end
-#include "Source/Routines/UpdateGuardTimers.bas"
-          asm
-UpdateGuardTimersEnd
-            echo "// Bank 6: ", [UpdateGuardTimersEnd - UpdateGuardTimersStart]d, " bytes = UpdateGuardTimers"
-CharacterSelectFireStart
-end
-#include "Source/Routines/CharacterSelectFire.bas"
-          asm
-CharacterSelectFireEnd
-            echo "// Bank 6: ", [CharacterSelectFireEnd - CharacterSelectFireStart]d, " bytes = CharacterSelectFire"
-CharacterSelectHelpersStart
-end
-#include "Source/Routines/SelectStickLeft.bas"
-          asm
-CharacterSelectHelpersEnd
-            echo "// Bank 6: ", [CharacterSelectHelpersEnd - CharacterSelectHelpersStart]d, " bytes = CharacterSelectHelpers"
-MovePlayerToTargetStart
-end
-#include "Source/Routines/MovePlayerToTarget.bas"
-          asm
-MovePlayerToTargetEnd
-            echo "// Bank 6: ", [MovePlayerToTargetEnd - MovePlayerToTargetStart]d, " bytes = MovePlayerToTarget"
-
-          asm
-FramePhaseSchedulerStart
-end
-#include "Source/Routines/UpdateFramePhase.bas"
-          asm
-FramePhaseSchedulerEnd
-            echo "// Bank 6: ", [FramePhaseSchedulerEnd - FramePhaseSchedulerStart]d, " bytes = FramePhaseScheduler"
-
-          asm
-BudgetedHealthBarsStart
-end
-#include "Source/Routines/BudgetedHealthBars.bas"
-          asm
-BudgetedHealthBarsEnd
-            echo "// Bank 6: ", [BudgetedHealthBarsEnd - BudgetedHealthBarsStart]d, " bytes = BudgetedHealthBars"
-Bank6CodeEnds
+FlyingMovementHelpersEnd
+            echo "// Bank 6: ", [FlyingMovementHelpersEnd - FlyingMovementHelpersStart]d, " bytes = FlyingMovementHelpers"
+Bank7CodeEnds
 end

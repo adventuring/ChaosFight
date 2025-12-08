@@ -1,0 +1,131 @@
+;;; ChaosFight - Source/Routines/BernieAttack.bas
+
+;;; Copyright © 2025 Bruce-Robert Pocock.
+
+
+BernieAttack .proc
+
+
+          ;; Executes Bernies ground-thump area attack
+          ;; Returns: Far (return otherbank)
+
+          ;; Each character has a unique attack subroutine that:
+
+          ;; 1. Calls either PerformMeleeAttack or PerformRangedAttack
+
+          ;; 2. Sets the appropriate animation sta
+
+
+          ;; 3. Handles any character-specific attack logic
+
+          ;; Input for all attack routines:
+
+          ;; temp1 = attacker player index (0-3)
+
+          ;;
+          ;; All other needed data (X,y, facing direction, etc.) is
+
+          ;; looked up
+
+          ;; from the player arrays using temp1 as the index
+
+          ;; Bernie (character 0) - Ground Thump area-of-effect attack
+
+          ;;
+          ;; Input: temp1 = attacker player index (0-3)
+
+          ;; playerState[] (global array) = player state flags
+
+          ;; MaskPlayerStateFlags (constant) = bitmask to
+
+          ;; preserve state flags
+
+          ;; ActionAttackExecuteShifted (constant) = attack
+
+          ;; execution animation sta
+
+
+          ;; PlayerStateBitFacing (constant) = facing direction
+
+          ;; bit
+
+          ;;
+          ;; Output: Two mêlée attacks executed (left and right),
+
+          ;; facing direction restored
+
+          ;;
+          ;; Mutates: temp1, temp3 (used for calculations),
+
+          ;; playerState[] (animation state set, facing toggled and
+
+          ;; restored),
+
+          ;; missile state (via PerformMeleeAttack)
+
+          ;;
+          ;; Called Routines: PerformMeleeAttack (bank7) - executes mêlée
+
+          ;; attack via shared tables
+
+          ;; Constraints: None
+
+          ;; Area-of-effect attack: hits both left and right
+
+          ;; simultaneously
+
+          ;; Save original facing direction
+
+          ;; Set animation state (PerformMeleeAttack also sets it, but
+
+                    ;; let temp3 = playerState[temp1] & PlayerStateBitFacing         
+          lda temp1
+          asl
+          tax
+          ;; lda playerState,x (duplicate)
+          sta temp3
+
+          ;; we need it set first)
+
+          ;; Attack in facing direction (inline former PerformMeleeAttack)
+
+                    ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+
+          ;; Attack facing direction
+          ;; Cross-bank call to PerformGenericAttack in bank 7
+          ;; lda # >(return_point-1) (duplicate)
+          pha
+          ;; lda # <(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # >(PerformGenericAttack-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(PerformGenericAttack-1) (duplicate)
+          ;; pha (duplicate)
+                    ldx # 6
+          jmp BS_jsr
+return_point:
+
+
+          ;; Attack opposite direction (toggle facing)
+                    ;; let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
+
+          ;; Cross-bank call to PerformGenericAttack in bank 7
+          ;; lda # >(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(return_point-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # >(PerformGenericAttack-1) (duplicate)
+          ;; pha (duplicate)
+          ;; lda # <(PerformGenericAttack-1) (duplicate)
+          ;; pha (duplicate)
+                    ;; ldx # 6 (duplicate)
+          ;; jmp BS_jsr (duplicate)
+;; return_point: (duplicate)
+
+
+          ;; Restore original facing direction
+                    ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | temp3
+          jsr BS_return
+
+.pend
+

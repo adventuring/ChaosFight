@@ -12,26 +12,25 @@ verify-calls:
 	@./Tools/audit-calling-conventions
 
 # Precious intermediate files
-.PRECIOUS: %.s %.png %.midi %.bas
+.PRECIOUS: %.s %.png %.midi
 
 # Don't delete PNG files automatically - they are intermediate but should be preserved
 # between builds if XCF hasn't changed
 .SECONDARY: $(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 
 # Tools and directories
-BB_DIR = Tools/batariBASIC
-BB_MAIN = bin/2600basic
-BB_PREPROCESS = bin/preprocess
-BB_POSTPROCESS = bin/postprocess
-BB_OPTIMIZE = bin/optimize
-DASM = bin/dasm
-BB_FILTER = bin/bbfilter
-POSTINC = $(abspath Tools/batariBASIC)
+64TASS = 64tass
 PATH := $(abspath bin):$(PATH)
 export PATH
 STELLA = stella
 # -i taken out for now from gimp
 GIMP = gimp --batch-interpreter plug-in-script-fu-eval -c --no-shm
+
+# Common 64tass assembly flags
+ASFLAGS = -Wall -Wno-branch-page -C -a --m6502 \
+	-I.. -I. -I../Source -I../Source/Common -I../Source/Routines \
+	-DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) \
+	-DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\"
 
 # Ready system
 READYDATE = 20251104
@@ -124,7 +123,7 @@ endif
 RELEASE_TAG = v$(PROJECT_VERSION)
 
 # Assembly files (exclude preprocessed, generated files, and reference files)
-ALL_SOURCES = $(shell find Source -name \*.bas -not -path "Source/Generated/*" -not -path "Source/Reference/*")
+ALL_SOURCES = $(shell find Source -name \*.s -not -path "Source/Generated/*" -not -path "Source/Reference/*")
 
 .PHONY: all clean emu game help doc nowready ready web
 
@@ -158,7 +157,7 @@ Dist/:
 
 # Build game
 game: \
-	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).s) \
 	Dist/$(GAME)$(GAMEYEAR).NTSC.a26 \
 	Dist/$(GAME)$(GAMEYEAR).NTSC.sym \
 	Dist/$(GAME)$(GAMEYEAR).NTSC.lst \
@@ -212,7 +211,7 @@ MUSIC_NAMES = AtariToday Interworldly Chaotica
 # Character 16: Character16Theme (placeholder)
 # Characters 17-30: Character*Theme (placeholders for future characters)
 # Character 31 (MethHound): DucksAway (reuses DucksAway from character 15)
-# Bank allocation: Bernie/OCascadia/Revontuli/EXO sit in Bank 15, the rest live in Bank 1
+# Bank allocation: Bernie/OCascadia/Revontuli/EXO sit in Bank 14, the rest live in Bank 0
 GAME_THEME_SONGS = Bernie OCascadia Revontuli EXO Grizzards MagicalFairyForce Bolero LowRes RoboTito SongOfTheBear DucksAway \
 	Character16Theme Character17Theme Character18Theme Character19Theme Character20Theme Character21Theme Character22Theme Character23Theme \
 	Character24Theme Character25Theme Character26Theme Character27Theme Character28Theme Character29Theme Character30Theme
@@ -236,47 +235,48 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 %.pdf: %.mscz
 		mscore --export-to $@ $<; \
 
-# Convert MIDI to batariBASIC music data for NTSC (60Hz)
+# Convert MIDI to 64tass assembly music data for NTSC (60Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 # Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
-Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
+# Note: SkylineTool now generates 64tass assembly directly (.s files)
+Source/Generated/Song.%.NTSC.s: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting music $< to $@ for NTSC..."
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+	bin/skyline-tool compile-midi "$<" "64tass" "60" "$@"
 
 # Special rule: Title song is generated from Chaotica source files
-Source/Generated/Song.Title.NTSC.bas: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool | Source/Generated/
+Source/Generated/Song.Title.NTSC.s: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting Chaotica music $< to Song.Title $@ for NTSC..."
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+	bin/skyline-tool compile-midi "$<" "64tass" "60" "$@"
 
-Source/Generated/Song.Title.PAL.bas: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool | Source/Generated/
+Source/Generated/Song.Title.PAL.s: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting Chaotica music $< to Song.Title $@ for PAL..."
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+	bin/skyline-tool compile-midi "$<" "64tass" "50" "$@"
 
 # SECAM music files are not generated - SECAM build uses PAL music files via conditional includes
 
-# Convert MIDI to batariBASIC music data for PAL (50Hz)
+# Convert MIDI to 64tass assembly music data for PAL (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 # Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
-Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
+Source/Generated/Song.%.PAL.s: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting music $< to $@ for PAL..."
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+	bin/skyline-tool compile-midi "$<" "64tass" "50" "$@"
 
 # SECAM music files are not generated - SECAM build uses PAL music files via conditional includes
 
 # Sound effect files use Sound. prefix instead of Song. prefix
-# Convert MIDI to batariBASIC sound data for NTSC (60Hz)
+# Convert MIDI to 64tass assembly sound data for NTSC (60Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 # Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
-Source/Generated/Sound.%.NTSC.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
+Source/Generated/Sound.%.NTSC.s: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting sound $< to $@ for NTSC..."
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+	bin/skyline-tool compile-midi "$<" "64tass" "60" "$@"
 
-# Convert MIDI to batariBASIC sound data for PAL (50Hz)
+# Convert MIDI to 64tass assembly sound data for PAL (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 # Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
-Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
+Source/Generated/Sound.%.PAL.s: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting sound $< to $@ for PAL..."
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+	bin/skyline-tool compile-midi "$<" "64tass" "50" "$@"
 
 # SECAM sound files are not generated - SECAM build uses PAL sound files via conditional includes
 
@@ -285,7 +285,6 @@ Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/sk
 # Generate list of character sprite files
 CHARACTER_XCF = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).xcf)
 CHARACTER_PNG = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png)
-CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).bas)
 
 # Convert XCF to PNG for sprites (characters and special sprites)
 # Make will only regenerate if XCF is newer than PNG (based on file timestamps)
@@ -297,7 +296,7 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 # Special sprites (QuestionMark, CPU, No) are hard-coded in individual files
 
 # Explicit PNG dependencies for character sprites (ensures PNG generation from XCF)
-# Use pattern rule to ensure PNG is generated from XCF before .bas compilation
+# Use pattern rule to ensure PNG is generated from XCF before .s compilation
 $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Source/Art/%.xcf | Source/Art/
 	@echo "Converting $< to $@..."
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
@@ -305,19 +304,20 @@ $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Sou
 # Generate character sprite files from PNG using chaos character compiler
 # PNG files are generated from XCF via %.png: %.xcf pattern rule or explicit rules above
 # Explicitly depend on both PNG and XCF to ensure proper build ordering in parallel builds
-$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png Source/Art/%.xcf bin/skyline-tool | Source/Generated/
+# Note: SkylineTool now generates 64tass assembly directly (.s files)
+$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).s): Source/Generated/%.s: Source/Art/%.png Source/Art/%.xcf bin/skyline-tool | Source/Generated/
 	@echo "Generating character sprite data for $*..."
 	bin/skyline-tool compile-chaos-character "$@" "$(filter %.png,$^)"
 
-# Convert Numbers PNG to batariBASIC data using SkylineTool
+# Convert Numbers PNG to 64tass assembly data using SkylineTool
 # PNG files are generated from XCF via %.png: %.xcf pattern rule
 # Explicitly depend on XCF to ensure proper build ordering in parallel builds
-Source/Generated/Numbers.bas: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/skyline-tool | Source/Generated/
+Source/Generated/Numbers.s: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/skyline-tool | Source/Generated/
 	@echo "Converting Numbers font $< to $@..."
 	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
 # Fonts are universal (not TV-specific)
-# Source/Generated/Numbers.bas is used directly by SetPlayerGlyph.bas
+# Source/Generated/Numbers.s is used directly by SetPlayerGlyph.s
 
 # Convert 48×42 PNG to titlescreen kernel assembly format
 # Uses compile-batari-48px with titlescreen-kernel-p flag for color-per-line + double-height
@@ -401,84 +401,83 @@ Source/TitleScreen/titlescreen_colors.s: \
 	@echo "   rorg \$$f500" >> "$@"
 	@echo "" >> "$@"
 	@echo ";;; Include color tables, PF1, PF2, and background for all titlescreen bitmaps" >> "$@"
-	@echo "          include \"Source/Generated/Art.AtariAge.colors.s\"" >> "$@"
-	@echo "          include \"Source/Generated/Art.AtariAgeText.colors.s\"" >> "$@"
-	@echo "          include \"Source/Generated/Art.ChaosFight.colors.s\"" >> "$@"
-	@echo "          include \"Source/Generated/Art.Author.colors.s\"" >> "$@"
+	@echo "          .include \"Source/Generated/Art.AtariAge.colors.s\"" >> "$@"
+	@echo "          .include \"Source/Generated/Art.AtariAgeText.colors.s\"" >> "$@"
+	@echo "          .include \"Source/Generated/Art.ChaosFight.colors.s\"" >> "$@"
+	@echo "          .include \"Source/Generated/Art.Author.colors.s\"" >> "$@"
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf | Source/Art/
 	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
-# Convert PNG font to batariBASIC data
-Source/Generated/Font.bas: Source/Art/Font.png bin/skyline-tool | Source/Generated/
-	@echo "Converting font $< to $@ for NTSC..."
+# Convert PNG font to 64tass assembly data
+Source/Generated/Font.s: Source/Art/Font.png bin/skyline-tool | Source/Generated/
+	@echo "Converting font $< to $@..."
 	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
-# Build game - accurate dependencies based on actual includes
-# CRITICAL: cpp preprocessor processes includes immediately, so all generated files
-# that are included via #include directives MUST exist before cpp runs.
-# Character files are dependencies of Bank2/3/4/5.bas (defined above).
-# Bitmap files are dependencies of Bank1.bas (defined above).
-# Numbers font is needed by SetPlayerGlyph.bas (in Bank16), must exist before cpp runs.
-# Bank15.bas includes Sound.*.bas files, so they must be dependencies here.
-# Bitmap .s files must exist before cpp runs, so they need PNG dependencies.
-# 2600basic_variable_redefs.h must exist before cpp preprocessing (MultiSpriteSuperChip.s includes it)
-Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas: Source/Platform/NTSC.bas \
-	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas Source/Banks/Bank16.bas \
-	Source/Generated/Numbers.bas \
+# Generate final assembly file from platform entry point (64tass format)
+# All source files are already in .s format and use .include directives
+Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Source/Platform/NTSC.s \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).s) \
+	Source/Banks/Bank0.s Source/Banks/Bank1.s Source/Banks/Bank2.s Source/Banks/Bank3.s Source/Banks/Bank4.s Source/Banks/Bank11.s Source/Banks/Bank15.s \
+	Source/Generated/Numbers.s \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.Author.s \
 	Source/TitleScreen/titlescreen_colors.s \
-	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
-	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Object/2600basic_variable_redefs.h | Source/Generated/
-	cpp -P -I. -ISource -IObject -ITools/batariBASIC/includes -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.s) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.s) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.s) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
+	@echo "Generating final assembly file from NTSC platform entry point..."
+	cp $< $@
 
-Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas: Source/Platform/PAL.bas \
-	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas Source/Banks/Bank16.bas \
-	Source/Generated/Numbers.bas \
+# Generate final assembly file from PAL platform entry point (64tass format)
+Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Source/Platform/PAL.s \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).s) \
+	Source/Banks/Bank0.s Source/Banks/Bank1.s Source/Banks/Bank2.s Source/Banks/Bank3.s Source/Banks/Bank4.s Source/Banks/Bank11.s Source/Banks/Bank15.s \
+	Source/Generated/Numbers.s \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.Author.s \
 	Source/TitleScreen/titlescreen_colors.s \
-	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
-	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Object/2600basic_variable_redefs.h | Source/Generated/
-	cpp -P -I. -ISource -IObject -ITools/batariBASIC/includes -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.s) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.s) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.s) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
+	@echo "Generating final assembly file from PAL platform entry point..."
+	cp $< $@
 
-# SECAM build uses PAL music/sound files via conditional includes in Bank15/16.bas
-Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas: Source/Platform/SECAM.bas \
-	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas Source/Banks/Bank16.bas \
-	Source/Generated/Numbers.bas \
+# Generate final assembly file from SECAM platform entry point (64tass format)
+# SECAM build uses PAL music/sound files via conditional includes
+Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Source/Platform/SECAM.s \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).s) \
+	Source/Banks/Bank0.s Source/Banks/Bank1.s Source/Banks/Bank2.s Source/Banks/Bank3.s Source/Banks/Bank4.s Source/Banks/Bank11.s Source/Banks/Bank15.s \
+	Source/Generated/Numbers.s \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.Author.s \
 	Source/TitleScreen/titlescreen_colors.s \
-	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
-	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Object/2600basic_variable_redefs.h | Source/Generated/
-	cpp -P -I. -ISource -IObject -ITools/batariBASIC/includes -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.s) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.s) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.s) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
+	@echo "Generating final assembly file from SECAM platform entry point..."
+	cp $< $@
+
 
 # Bank file dependencies - each bank explicitly depends on the files it includes
-Source/Banks/Bank1.bas:
+Source/Banks/Bank0.s:
 
-Source/Banks/Bank2.bas: Source/Generated/Bernie.bas Source/Generated/Curler.bas Source/Generated/DragonOfStorms.bas Source/Generated/ZoeRyen.bas Source/Generated/FatTony.bas Source/Generated/Megax.bas Source/Generated/Harpy.bas Source/Generated/KnightGuy.bas
+Source/Banks/Bank1.s: Source/Generated/Bernie.s Source/Generated/Curler.s Source/Generated/DragonOfStorms.s Source/Generated/ZoeRyen.s Source/Generated/FatTony.s Source/Generated/Megax.s Source/Generated/Harpy.s Source/Generated/KnightGuy.s
 
-Source/Banks/Bank3.bas: Source/Generated/Frooty.bas Source/Generated/Nefertem.bas Source/Generated/NinjishGuy.bas Source/Generated/PorkChop.bas Source/Generated/RadishGoblin.bas Source/Generated/RoboTito.bas Source/Generated/Ursulo.bas Source/Generated/Shamone.bas
+Source/Banks/Bank2.s: Source/Generated/Frooty.s Source/Generated/Nefertem.s Source/Generated/NinjishGuy.s Source/Generated/PorkChop.s Source/Generated/RadishGoblin.s Source/Generated/RoboTito.s Source/Generated/Ursulo.s Source/Generated/Shamone.s
 
-Source/Banks/Bank4.bas: Source/Generated/Character16.bas Source/Generated/Character17.bas Source/Generated/Character18.bas Source/Generated/Character19.bas Source/Generated/Character20.bas Source/Generated/Character21.bas Source/Generated/Character22.bas Source/Generated/Character23.bas
+Source/Banks/Bank3.s: Source/Generated/Character16.s Source/Generated/Character17.s Source/Generated/Character18.s Source/Generated/Character19.s Source/Generated/Character20.s Source/Generated/Character21.s Source/Generated/Character22.s Source/Generated/Character23.s
 
-Source/Banks/Bank5.bas: Source/Generated/Character24.bas Source/Generated/Character25.bas Source/Generated/Character26.bas Source/Generated/Character27.bas Source/Generated/Character28.bas Source/Generated/Character29.bas Source/Generated/Character30.bas Source/Generated/MethHound.bas
+Source/Banks/Bank4.s: Source/Generated/Character24.s Source/Generated/Character25.s Source/Generated/Character26.s Source/Generated/Character27.s Source/Generated/Character28.s Source/Generated/Character29.s Source/Generated/Character30.s Source/Generated/MethHound.s
 
-Source/Banks/Bank16.bas: Source/Generated/Numbers.bas
+Source/Banks/Bank11.s:
+
+Source/Banks/Bank15.s: Source/Generated/Numbers.s
 
 # Shared dependencies for all TV standards
 BUILD_DEPS = $(ALL_SOURCES)  \
+	Source/Banks/Bank0.bas \
 	Source/Banks/Bank1.bas \
 	Source/Banks/Bank2.bas \
 	Source/Banks/Bank3.bas \
@@ -494,7 +493,6 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Banks/Bank13.bas \
 	Source/Banks/Bank14.bas \
 	Source/Banks/Bank15.bas \
-	Source/Banks/Bank16.bas \
 	Source/Banks/Banks.bas \
 	Source/Common/AssemblyConfig.bas \
 	Source/Common/CharacterDefinitions.bas \
@@ -617,70 +615,26 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/TitleScreenRender.bas \
 	Source/Routines/TitlescreenWindowControl.bas \
 	Source/Routines/WinnerAnnouncement.bas \
-	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
-	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
-	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)\
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.s) \
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.s) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.s) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.s) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.s) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.s)\
 # Explicitly depend on character and bitmap PNG files to ensure they are generated
-Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas $(BUILD_DEPS) \
-	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Source/Generated/Numbers.bas bin/preprocess | Source/Generated/
-	bin/preprocess < $< > $@
+# Combined .s files are generated from batariBASIC assembly output
+# The conversion script converts DASM syntax to 64tass syntax 
 
-Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas $(BUILD_DEPS) \
-	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Source/Generated/Numbers.bas bin/preprocess | Source/Generated/
-	bin/preprocess < $< > $@
+# Assemble combined .s file → ARCH.a26 + ARCH.lst + ARCH.sym
+# Using 64tass directly on the assembly file with build-time defines
+Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s | Dist/ Object/
+	cd Object && $(64TASS) $(ASFLAGS) -o ../Dist/$(GAME)$(GAMEYEAR).NTSC.a26 -L ../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -l ../Dist/$(GAME)$(GAMEYEAR).NTSC.sym ../$<
 
-Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas $(BUILD_DEPS) \
-	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Source/Generated/Numbers.bas bin/preprocess | Source/Generated/
-	bin/preprocess < $< > $@
+Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s | Dist/ Object/
+	cd Object && $(64TASS) $(ASFLAGS) -o ../Dist/$(GAME)$(GAMEYEAR).PAL.a26 -L ../Dist/$(GAME)$(GAMEYEAR).PAL.lst -l ../Dist/$(GAME)$(GAMEYEAR).PAL.sym ../$<
 
-# Create empty variable redefs file if it doesn't exist (will be populated by batariBASIC)
-# batariBASIC expects this file to be named 2600basic_variable_redefs.h
-Object/2600basic_variable_redefs.h: | Object/
-	@touch $@
-
-# Step 2: Compile .preprocessed.bas → $(GAME)$(GAMEYEAR).bB.ARCH.s
-Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic | Object/
-	cd Object && > 2600basic_variable_redefs.h && bB=$(POSTINC) timeout 300 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
-
-Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic | Object/
-	cd Object && > 2600basic_variable_redefs.h && bB=$(POSTINC) timeout 300 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s 2>/dev/null
-
-Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic | Object/
-	cd Object && > 2600basic_variable_redefs.h && bB=$(POSTINC) timeout 300 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s 2>/dev/null
-
-# Step 3: Postprocess $(GAME)$(GAMEYEAR).bB.ARCH.s → ARCH.s (final assembly)
-# postprocess requires includes.bB to be in the current working directory
-# (it's created by 2600basic in Object/), so run postprocess from Object/
-# postprocess also needs $(GAME)$(GAMEYEAR).bB.asm to exist (listed in includes.bB), so create symlink
-# Fix ## token pasting: cpp should expand ColGreen(6) → _COL_Green_L6, but if ##
-# remains, replace it with _ (e.g., _COL_Green_L##6 → _COL_Green_L6)
-# Depend on Source/Common/includes.bB since it's symlinked in the recipe and used by postprocess
-Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Object/$(GAME)$(GAMEYEAR).bB.NTSC.s Source/Common/includes.bB bin/postprocess bin/optimize | Source/Generated/ Object/NTSC/
-	cd Object/NTSC && ln -sf ../$(GAME)$(GAMEYEAR).bB.NTSC.s bB.asm && ln -sf ../../Source/Common/includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize > ../../$@
-
-Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Object/$(GAME)$(GAMEYEAR).bB.PAL.s Source/Common/includes.bB bin/postprocess bin/optimize | Source/Generated/ Object/PAL/
-	cd Object/PAL && ln -sf ../$(GAME)$(GAMEYEAR).bB.PAL.s bB.asm && ln -sf ../../Source/Common/includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize > ../../$@ 
-
-Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.s Source/Common/includes.bB bin/postprocess bin/optimize | Source/Generated/ Object/SECAM/
-	cd Object/SECAM && ln -sf ../$(GAME)$(GAMEYEAR).bB.SECAM.s bB.asm && ln -sf ../../Source/Common/includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize > ../../$@ 
-
-# Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
-# ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS
-# The .s file is the final assembly output that includes all generated assets
-Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
-	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -S -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
-
-Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
-	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -S -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
-
-Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
-	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -v4 -S -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
+Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s | Dist/ Object/
+	cd Object && $(64TASS) $(ASFLAGS) -o ../Dist/$(GAME)$(GAMEYEAR).SECAM.a26 -L ../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -l ../Dist/$(GAME)$(GAMEYEAR).SECAM.sym ../$<
 
 # Run emulator
 emu: $(ROM) Dist/$(GAME)$(GAMEYEAR).NTSC.pro
@@ -697,13 +651,10 @@ clean:
 	rm -f Source/Songs/*.midi
 	rm -f $(GAME)*.aux $(GAME)*.cp $(GAME)*.cps $(GAME)*.toc $(GAME)*.log
 	git submodule foreach git clean --force
-	rm -f bin/2600basic bin/preprocess bin/postprocess bin/optimize \
-		bin/bbfilter bin/dasm bin/buildapp bin/skyline-tool bin/zx7mini
+	rm -f bin/buildapp bin/skyline-tool bin/zx7mini
 
 quickclean:
 	rm -rf Dist Object
-	rm -f Source/Generated/$(GAME)$(GAMEYEAR)*.bas
-	rm -f Source/Generated/$(GAME)$(GAMEYEAR)*.preprocessed.bas
 	rm -f Source/Generated/$(GAME)$(GAMEYEAR)*.s
 	rm -f $(GAME)*.aux $(GAME)*.cp $(GAME)*.cps $(GAME)*.toc $(GAME)*.log
 

@@ -64,4 +64,4 @@ Bank0MinSongID = 7     ;; Bank14MaxSongID + 1
 ;;; Bank switching labels - defined in Banks.s after Bank1.s is included
 ;;; Note: BS_return and BS_jsr are sequential - BS_jsr comes after BS_return
 ;;; Forward declarations removed - will be defined in Banks.s as Bank0BS.BS_return and Bank0BS.BS_jsr
-;;; Global labels BS_return and BS_return reference Bank 0 block; all banks have identical addresses
+;;; Global labels BS_return and BS_jsr reference Bank 0 block; all banks have identical addresses

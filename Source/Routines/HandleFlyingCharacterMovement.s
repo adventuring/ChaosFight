@@ -82,12 +82,15 @@ skip_712:
 .pend
 
 HFCM_DoLeft .proc
-
-          ;; Tail call: goto instead of gosub to save 2 bytes on sta
-
+          ;; Tail call: Cross-bank call to HFCM_AttemptMoveLeft in Bank 6
           ;; HFCM_AttemptMoveLeft will return directly to InputHandleLeftPortPlayerFunction
-          ;; jmp HFCM_AttemptMoveLeft (duplicate)
-
+          ;; (skipping HandleFlyingCharacterMovement's return)
+          lda # >(HFCM_AttemptMoveLeft-1)
+          pha
+          lda # <(HFCM_AttemptMoveLeft-1)
+          pha
+          ldx # 5
+          jmp BS_jsr
 .pend
 
 HFCM_CheckRight .proc
@@ -124,12 +127,15 @@ skip_3184:
 .pend
 
 HFCM_DoRight .proc
-
-          ;; Tail call: goto instead of gosub to save 2 bytes on sta
-
+          ;; Tail call: Cross-bank call to HFCM_AttemptMoveRight in Bank 6
           ;; HFCM_AttemptMoveRight will return directly to InputHandleLeftPortPlayerFunction
-          ;; jmp HFCM_AttemptMoveRight (duplicate)
-
+          ;; (skipping HandleFlyingCharacterMovement's return)
+          lda # >(HFCM_AttemptMoveRight-1)
+          pha
+          lda # <(HFCM_AttemptMoveRight-1)
+          pha
+          ldx # 5
+          jmp BS_jsr
 .pend
 
 HFCM_CheckVertical .proc

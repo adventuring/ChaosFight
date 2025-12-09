@@ -13,166 +13,106 @@ DispatchCharacterJump .proc
           ;;
           ;; Mutates: temp1 (passed to jump functions), temp4 (character index)
           ;;
-          ;; Called Routines: Character-specific jump functions in bank12
+          ;; Called Routines: Character-specific jump functions in bank11
           ;;
-          ;; Constraints: Now in Bank 8 (same bank as ProcessJumpInput). Jump functions are in Bank 12.
+          ;; Constraints: Now in Bank 7 (same bank as ProcessJumpInput). Jump functions are in Bank 11.
           ;; Handle out-of-range characters (>= 32)
           ;; Characters 16-30 (unused) and Meth Hound mirror Shamone
           ;; if temp4 >= 32 then goto DCJ_StandardJump
           lda temp4
           cmp 32
+          bcs DCJ_StandardJump
 
-          bcc skip_6033
+          ;; Check for specific characters
+          lda temp4
+          cmp CharacterBernie
+          beq DCJ_BernieJump
 
-          jmp skip_6033
+          lda temp4
+          cmp CharacterDragonOfStorms
+          beq DCJ_DragonJump
 
-          skip_6033:
-          ;; if temp4 >= 16 then goto DCJ_StandardJump
-          ;; lda temp4 (duplicate)
-          ;; cmp 16 (duplicate)
+          lda temp4
+          cmp CharacterHarpy
+          beq DCJ_HarpyJump
 
-          ;; bcc skip_1019 (duplicate)
+          lda temp4
+          cmp CharacterFrooty
+          beq DCJ_FrootyJump
 
-          ;; jmp skip_1019 (duplicate)
+          lda temp4
+          cmp CharacterRoboTito
+          beq DCJ_RoboTitoJump
 
-          skip_1019:
-          ;; lda temp4 (duplicate)
-          ;; cmp CharacterBernie (duplicate)
-          bne skip_539
-          ;; jmp DCJ_BernieJump (duplicate)
-skip_539:
-
-          ;; lda temp4 (duplicate)
-          ;; cmp CharacterDragonOfStorms (duplicate)
-          ;; bne skip_2630 (duplicate)
-          ;; jmp DCJ_DragonJump (duplicate)
-skip_2630:
-
-          ;; lda temp4 (duplicate)
-          ;; cmp CharacterHarpy (duplicate)
-          ;; bne skip_1796 (duplicate)
-          ;; jmp DCJ_HarpyJump (duplicate)
-skip_1796:
-
-          ;; lda temp4 (duplicate)
-          ;; cmp CharacterFrooty (duplicate)
-          ;; bne skip_3871 (duplicate)
-          ;; jmp DCJ_FrootyJump (duplicate)
-skip_3871:
-
-          ;; lda temp4 (duplicate)
-          ;; cmp CharacterRoboTito (duplicate)
-          ;; bne skip_3489 (duplicate)
-          ;; jmp DCJ_RoboTitoJump (duplicate)
-skip_3489:
+          ;; Default: StandardJump for all other characters
+          jmp DCJ_StandardJump
 
 .pend
 
 DCJ_StandardJump .proc
-          ;; CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
-          ;; Cross-bank call to StandardJump in bank 12
-          ;; lda # >(return_point-1) (duplicate)
+          ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call StandardJump
+          ;; Cross-bank call to StandardJump in bank 11
+          lda # >(StandardJump-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(StandardJump-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(StandardJump-1) (duplicate)
-          ;; pha (duplicate)
-                    ldx # 11
-          ;; jmp BS_jsr (duplicate)
-return_point:
-
-          rts
+          lda # <(StandardJump-1)
+          pha
+          ldx # 10
+          jmp BS_jsr
 .pend
 
 DCJ_BernieJump .proc
-          ;; CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
-          ;; Cross-bank call to BernieJump in bank 12
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(BernieJump-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(BernieJump-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 11 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call BernieJump
+          ;; Cross-bank call to BernieJump in bank 11
+          lda # >(BernieJump-1)
+          pha
+          lda # <(BernieJump-1)
+          pha
+          ldx # 10
+          jmp BS_jsr
+.pend
 
-          ;; rts (duplicate)
-DCJ_DragonJump
-          ;; CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
-          ;; Cross-bank call to DragonOfStormsJump in bank 12
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(DragonOfStormsJump-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(DragonOfStormsJump-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 11 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
-
-          ;; rts (duplicate)
+DCJ_DragonJump .proc
+          ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call CCJ_FreeFlightCharacterJump
+          ;; DragonOfStormsJump is empty and should call CCJ_FreeFlightCharacterJump
+          ;; Cross-bank call to CCJ_FreeFlightCharacterJump in bank 11
+          lda # >(CCJ_FreeFlightCharacterJump-1)
+          pha
+          lda # <(CCJ_FreeFlightCharacterJump-1)
+          pha
+          ldx # 10
+          jmp BS_jsr
 .pend
 
 DCJ_HarpyJump .proc
-          ;; CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
-          ;; Cross-bank call to HarpyJump in bank 12
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(HarpyJump-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(HarpyJump-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 11 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
-
-          ;; rts (duplicate)
+          ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call HarpyJump
+          ;; Cross-bank call to HarpyJump in bank 11
+          lda # >(HarpyJump-1)
+          pha
+          lda # <(HarpyJump-1)
+          pha
+          ldx # 10
+          jmp BS_jsr
 .pend
 
 DCJ_FrootyJump .proc
-          ;; CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
-          ;; Cross-bank call to FrootyJump in bank 12
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(FrootyJump-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(FrootyJump-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 11 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
-
-          ;; rts (duplicate)
+          ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call FrootyJump
+          ;; Cross-bank call to FrootyJump in bank 11
+          lda # >(FrootyJump-1)
+          pha
+          lda # <(FrootyJump-1)
+          pha
+          ldx # 10
+          jmp BS_jsr
 .pend
 
 DCJ_RoboTitoJump .proc
-          ;; CRITICAL: Must use gosub/return, not goto, because ProcessUpAction expects return
-          ;; CRITICAL: RoboTitoJump is in Bank 10, not Bank 8, so must use bank specifier
+          ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call RoboTitoJump
           ;; Cross-bank call to RoboTitoJump in bank 10
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(RoboTitoJump-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(RoboTitoJump-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 9 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
-
-          ;; rts (duplicate)
-
+          lda # >(RoboTitoJump-1)
+          pha
+          lda # <(RoboTitoJump-1)
+          pha
+          ldx # 9
+          jmp BS_jsr
 .pend
 

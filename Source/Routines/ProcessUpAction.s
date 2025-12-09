@@ -69,18 +69,14 @@ skip_2587:
 skip_8150:
 
           ;; Standard jump - block during attack animations (states 13-15)
-          ;; rts (duplicate)
-
+          ;; Tail call to DispatchCharacterJump - it returns directly to our caller
                     ;; let temp4 = playerCharacter[temp1]         
           ;; lda temp1 (duplicate)
           ;; asl (duplicate)
           ;; tax (duplicate)
           ;; lda playerCharacter,x (duplicate)
           sta temp4
-          jsr DispatchCharacterJump
-          ;; lda # 1 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; rts (duplicate)
+          jmp DispatchCharacterJump
 
 
 PUA_BernieFallThrough .proc

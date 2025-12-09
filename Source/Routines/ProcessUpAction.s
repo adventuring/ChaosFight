@@ -30,8 +30,10 @@ ProcessUpAction
 
           ;; Check Shamone form switching first (Shamone <-> MethHound)
           ;; Switch Shamone -> MethHound
-          rts
+          ;; TODO: Implement Shamone form switching
+          ;; rts  ;; REMOVED: Early return was causing execution to fall through to wrong bank
           ;; Switch MethHound -> Shamone
+          ;; TODO: Implement MethHound -> Shamone switching
           ;; rts (duplicate)
 
           ;; Robo Tito: Stretch (ascend toward ceiling; auto-latch on contact)

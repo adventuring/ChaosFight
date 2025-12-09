@@ -27,7 +27,7 @@ STELLA = stella
 GIMP = xvfb-run -a --server-args="-screen 0 1920x1080x24" gimp --batch-interpreter plug-in-script-fu-eval -c --no-shm
 
 # Common 64tass assembly flags
-ASFLAGS = -Wall -Wno-branch-page -C -a --m6502 -b \
+ASFLAGS = -Wall -Wno-branch-page -C -a --m6502 -b --ascii \
 	-I.. -I. -I../Source -I../Source/Common -I../Source/Routines \
 	-DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) \
 	-DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\"
@@ -43,55 +43,6 @@ SkylineTool/zx7mini/zx7mini.c:
 bin/zx7mini:	SkylineTool/zx7mini/zx7mini.c | bin/
 	$(CC) SkylineTool/zx7mini/zx7mini.c -o bin/zx7mini
 	chmod +x bin/zx7mini
-
-# batariBASIC tool links
-# Explicitly mark upstream tool binaries as fixed files so GNU make
-# doesn't try to regenerate them with the built-in ".sh →" implicit rule
-Tools/batariBASIC/dasm.Linux.x64:
-	@:
-
-Tools/batariBASIC/preprocess: Tools/batariBASIC/preprocess.lex
-	$(MAKE) -C Tools/batariBASIC preprocess
-
-Tools/batariBASIC/postprocess: Tools/batariBASIC/postprocess.c
-	$(MAKE) -C Tools/batariBASIC postprocess
-
-Tools/batariBASIC/optimize: Tools/batariBASIC/optimize.lex
-	$(MAKE) -C Tools/batariBASIC optimize
-
-Tools/batariBASIC/bbfilter: Tools/batariBASIC/bbfilter.c
-	$(MAKE) -C Tools/batariBASIC bbfilter
-
-bin/preprocess: Tools/batariBASIC/preprocess | bin/
-	cp "$<" "$@"
-	chmod +x "$@"
-
-bin/postprocess: Tools/batariBASIC/postprocess | bin/
-	cp "$<" "$@"
-	chmod +x "$@"
-
-bin/optimize: Tools/batariBASIC/optimize | bin/
-	cp "$<" "$@"
-	chmod +x "$@"
-
-Tools/batariBASIC/2600basic: Tools/batariBASIC/2600bas.c Tools/batariBASIC/statements.c Tools/batariBASIC/keywords.c Tools/batariBASIC/statements.h Tools/batariBASIC/keywords.h
-	$(MAKE) -C Tools/batariBASIC 2600basic
-
-bin/2600basic: Tools/batariBASIC/2600basic | bin/
-	cp "$<" "$@"
-	chmod +x "$@"
-
-bin/bbfilter: Tools/batariBASIC/bbfilter | bin/
-	cp "$<" "$@"
-	chmod +x "$@"
-
-# DASM: build from the local Tools/dasm sources so we get our patched diagnostics
-Tools/dasm/bin/dasm: $(wildcard Tools/dasm/src/*.c) $(wildcard Tools/dasm/src/*.h)
-	$(MAKE) -C Tools/dasm
-
-bin/dasm: Tools/dasm/bin/dasm | bin/
-	cp "$<" "$@"
-	chmod +x "$@"
 
 skyline-tool:	bin/skyline-tool
 
@@ -621,9 +572,7 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.s) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.s) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.s)\
-# Explicitly depend on character and bitmap PNG files to ensure they are generated
-# Combined .s files are generated from batariBASIC assembly output
-# The conversion script converts DASM syntax to 64tass syntax 
+# Explicitly depend on character and bitmap PNG files to ensure they are generated 
 
 # Assemble combined .s file → ARCH.a26 + ARCH.lst + ARCH.sym
 # Using 64tass directly on the assembly file with build-time defines

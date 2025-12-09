@@ -547,12 +547,9 @@ r127 = $F0FF
 pfres = 8
           .fi
 ;; Default values - can be overridden by platform files or other includes
-;; Match actual 64kSC bankswitch stub size (BankSwitching.s: BS_return includes BS_jsr label, padded to 24 bytes)
-;; $18 = 24 bytes, so bankswitch code runs right up to $FFE0 before EFSC header
-;; Default values - defined unconditionally (forward references are fine)
-;; Match actual 64kSC bankswitch stub size (BankSwitching.s: BS_return includes BS_jsr label, padded to 24 bytes)
-;; $18 = 24 bytes, so bankswitch code runs right up to $FFE0 before EFSC header
-bscode_length = $18
+;; Match actual 64kSC bankswitch stub size (BankSwitching.s: BS_return 21 bytes + BS_jsr 3 bytes + rts 1 byte = 25 bytes)
+;; $19 = 25 bytes, so bankswitch code ends at $FFE0 with RTS
+bscode_length = $19
 multisprite = 2
 superchip = 1
 bankswitch = 64

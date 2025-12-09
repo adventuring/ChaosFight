@@ -24,7 +24,7 @@ LoadCharacterSprite .proc
           ;; Special sprite cases (NoCharacter, CPUCharacter, RandomCharacter) are safe to handle
           ;; but normal character loading must be guarded
           ;; Handle special sprite cases first (these are safe)
-          ;; Cross-bank call to CopyGlyphToPlayer in bank 16
+          ;; Cross-bank call to CopyGlyphToPlayer in bank 15
           lda # >(return_point-1)
           pha
           ;; lda # <(return_point-1) (duplicate)

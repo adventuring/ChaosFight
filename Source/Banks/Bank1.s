@@ -59,17 +59,18 @@ CharacterArtBank2End:
             .warn format("// Bank 1: %d bytes = Character Art lookup routines", [CharacterArtBank2End - CharacterArtBank2Start])
 Bank1CodeEnds:
 
+          ;; CRITICAL: Jump to bank switching code location to avoid placing code in gap
+          ;; Set CPU address before block to ensure no code is placed in the gap between
+          ;; Bank1CodeEnds and the bank switching code
+          * = $FFE0 - bscode_length
+          .if * < Bank1CodeEnds
+              .error format("Bank 1 overflow: Code ends at $%04x but bank switching starts at $%04x", Bank1CodeEnds, *)
+          .fi
+
           ;; Include BankSwitching.s in Bank 1
           ;; Wrap in .block to create namespace Bank1BS (avoids duplicate definitions)
+          ;; Note: * = is set above, so BankSwitching.s will be placed at the correct address
 Bank1BS: .block
           current_bank = 1
-          ;; Set file offset and CPU address for bankswitch code
-          ;; File offset: (1 * $1000) + ($FFE0 - bscode_length - $F000) = $1FC8
-          ;; CPU address: $FFE0 - bscode_length = $FFC8
-          ;; With top-level .offs = (1 * $1000) - $F000: file_offset = CPU_address + (1 * $1000) - $F000
-          ;; When * = $FFC8: file_offset = $FFC8 + $1000 - $F000 = (1 * $1000) + $FC8
-          ;; We want file_offset = (1 * $1000) + $0FC8, so additional .offs = $0FC8 - $FC8 = $F40
-          * = $FFE0 - bscode_length
-          
           .include "Source/Common/BankSwitching.s"
           .bend

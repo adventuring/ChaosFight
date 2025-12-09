@@ -64,20 +64,7 @@ ColdStart .proc
           ;; uses cross-bank mechanism, so the return otherbank matches.
           ;; Cross-bank call to InitializeSpritePointers in bank 14
           ;; For 64k banks: encode bank number (13, 0-based) in high byte of return address
-          lda # (((>(return_point-1)) & $0F) | $D0)  ;;; Bank 14 (0-based 13) = $D0
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(InitializeSpritePointers-1)
-          pha
-          lda # <(InitializeSpritePointers-1)
-          pha
-          ldx # 13  ;;; Target bank 14 (0-based index 13)
-          jmp BS_jsr
-return_point:
-
-
-          ;; Step 3: Initialize TIA color registers to safe defaults
+          ;; Step 2: Initialize TIA color registers to safe defaults
           ;; Prevents undefined colors on cold sta
 
           ;; Background: black (COLUBK starts black, no need to set)

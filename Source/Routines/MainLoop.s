@@ -20,21 +20,29 @@ MainLoop .proc
           inc frame
           ;; CRITICAL: Skip reset check on first frame after cold start to prevent stack overflow
           ;; During cold start, switchreset may read as true, causing WarmStart to be called
-          ;; before the stack is fully initialized, leading to stack overflow at $d:f2d4
-          ;; Skip reset check when frame = 1 (first frame after cold sta
-
+          ;; before the stack is fully initialized, leading to stack overflow
+          ;; Skip reset check when frame = 1 (first frame after cold start)
+          lda frame
+          cmp #1
+          beq skip_reset_check
+          ;; Check if reset switch is pressed (SWCHB bit 0: 0 = pressed, 1 = not pressed)
+          lda SWCHB
+          and #1
+          bne skip_reset_check  ;;; Bit 0 = 1 means reset not pressed, skip
+          ;; Reset switch pressed - call WarmStart
           ;; Cross-bank call to WarmStart in bank 13
           lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(WarmStart-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(WarmStart-1) (duplicate)
-          ;; pha (duplicate)
-                    ldx # 12
+          lda # <(return_point-1)
+          pha
+          lda # >(WarmStart-1)
+          pha
+          lda # <(WarmStart-1)
+          pha
+          ldx # 12
           jmp BS_jsr
 return_point:
+skip_reset_check:
 
           ;; TODO: ; fall through to continue
 

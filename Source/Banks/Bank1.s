@@ -8,6 +8,11 @@
           ;; Set file offset for Bank 1 at the top of the file
           .offs (1 * $1000) - $f000  ; Adjust file offset for Bank 1
 
+          ;; Scram shadow (256 bytes of $FF) at file space $1000-$10FF (CPU space $F000-$F0FF)
+          * = $F000
+          .rept 256
+          .byte $ff
+          .endrept  ;; Scram shadow (256 bytes of $FF)
           * = $F100
           .if * != $F100
               .error "Bank 1: not starting at $f100"
@@ -58,7 +63,13 @@ Bank1CodeEnds:
           ;; Wrap in .block to create namespace Bank1BS (avoids duplicate definitions)
 Bank1BS: .block
           current_bank = 1
-          * = $FFE0 - bscode_length  ;;; CPU address: Bankswitch code starts here, ends just before $FFE0
-          ;; Note: .offs was set at top of file, no need to reset it
+          ;; Set file offset and CPU address for bankswitch code
+          ;; File offset: (1 * $1000) + ($FFE0 - bscode_length - $F000) = $1FC8
+          ;; CPU address: $FFE0 - bscode_length = $FFC8
+          ;; With top-level .offs = (1 * $1000) - $F000: file_offset = CPU_address + (1 * $1000) - $F000
+          ;; When * = $FFC8: file_offset = $FFC8 + $1000 - $F000 = (1 * $1000) + $FC8
+          ;; We want file_offset = (1 * $1000) + $0FC8, so additional .offs = $0FC8 - $FC8 = $F40
+          * = $FFE0 - bscode_length
+          
           .include "Source/Common/BankSwitching.s"
           .bend

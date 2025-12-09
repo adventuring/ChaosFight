@@ -60,30 +60,30 @@ LocateCharacterArtBank2 .proc
           ;;; Save bank-relative character index (we'll need it for both FrameMap and Frames)
           lda temp6
           pha
-          ;;;; Save on sta
+          ;; Save on sta
 
 
           ;;; Get FrameMap pointer for character
           ldy temp6
-          ;;;; Bank-relative character index (0-7) as Y
+          ;; Bank-relative character index (0-7) as Y
           ;; lda CharacterFrameMapLBank2,y (duplicate)
           sta temp1
-          ;;;; Store FrameMap low .byte in temp1
+          ;; Store FrameMap low .byte in temp1
           ;; lda CharacterFrameMapHBank2,y (duplicate)
           ;; pha (duplicate)
-          ;;;;; Save FrameMap high .byte on sta
+          ;; Save FrameMap high .byte on sta
 
 
           ;;; Calculate FrameMap index: FrameMap_index = action * 8 + frame
           ;;; action is in temp3 (0-15), frame is in temp2 (0-7)
           ;; lda temp3 (duplicate)
-          ;;;;; Load action
+          ;; Load action
           asl
-          ;;;;; action << 1
+          ;; action << 1
           ;; asl (duplicate)
-          ;;;;; action << 2
+          ;; action << 2
           ;; asl (duplicate)
-          ;;;;; action << 3 (action * 8)
+          ;; action << 3 (action * 8)
           clc
 frame:
 
@@ -92,37 +92,37 @@ action:
 
 
           tay
-          ;;;;; Use as index into FrameMap (0-127)
+          ;; Use as index into FrameMap (0-127)
 
           ;;; Set up indirect pointer for FrameMap lookup
           pla
-          ;;;;; Restore FrameMap high .byte
+          ;; Restore FrameMap high .byte
           ;; sta temp5 (duplicate)
-          ;;;;; Store in temp5 for indirect addressing
+          ;; Store in temp5 for indirect addressing
           ;;; temp1/temp5 now point to FrameMap
 
           ;;; Look up actual frame index from FrameMap
-          ;; lda (temp1),y       ;;;;; Load FrameMap[FrameMap_index] - this is the actual frame index (8-bit) (duplicate)
+          ;; lda (temp1),y       ;; Load FrameMap[FrameMap_index] - this is the actual frame index (8-bit) (duplicate)
           ;; sta temp1 (duplicate)
-          ;;;;; Store actual frame index low .byte in temp1
+          ;; Store actual frame index low .byte in temp1
 
           ;;; Zero-extend frame index to 16-bit (clear high .byte)
           ;; lda # 0 (duplicate)
           ;; sta temp2 (duplicate)
-          ;;;;; temp2 = frame_index high .byte (zero-extended)
+          ;; temp2 = frame_index high .byte (zero-extended)
           ;;; Now temp1/temp2 = 16-bit frame_index (0-255, zero-extended)
 
           ;;; Get base Frames pointer for character
           ;; pla (duplicate)
-          ;;;;; Restore bank-relative character index
+          ;; Restore bank-relative character index
           ;; tay (duplicate)
-          ;;;;; Use as index
+          ;; Use as index
           ;; lda CharacterSpriteLBank2,y (duplicate)
           ;; sta temp4 (duplicate)
-          ;;;;; Store Frames low .byte in temp4
+          ;; Store Frames low .byte in temp4
           ;; lda CharacterSpriteHBank2,y (duplicate)
           ;; sta temp5 (duplicate)
-          ;;;;; Store Frames high .byte in temp5
+          ;; Store Frames high .byte in temp5
 
           ;;; Calculate .byte offset: offset = frame_index * 16 (frame_index << 4)
           ;;; temp1/temp2 = 16-bit frame_index (0-255, zero-extended)
@@ -131,37 +131,37 @@ action:
 
           ;;; Multiply 16-bit frame_index by 16 (shift left 4 times)
           ;; lda temp1 (duplicate)
-          ;;;;; Load frame_index low .byte
+          ;; Load frame_index low .byte
           ;; asl (duplicate)
-          ;;;;; << 1 (multiply by 2)
+          ;; << 1 (multiply by 2)
           rol temp2
-          ;;;;; Rotate carry into high .byte
+          ;; Rotate carry into high .byte
           ;; asl (duplicate)
-          ;;;;; << 1 (multiply by 4)
+          ;; << 1 (multiply by 4)
           ;; rol temp2 (duplicate)
-          ;;;;; Rotate carry into high .byte
+          ;; Rotate carry into high .byte
           ;; asl (duplicate)
-          ;;;;; << 1 (multiply by 8)
+          ;; << 1 (multiply by 8)
           ;; rol temp2 (duplicate)
-          ;;;;; Rotate carry into high .byte
+          ;; Rotate carry into high .byte
           ;; asl (duplicate)
-          ;;;;; << 1 (multiply by 16)
+          ;; << 1 (multiply by 16)
           ;; rol temp2 (duplicate)
-          ;;;;; Rotate carry into high .byte
+          ;; Rotate carry into high .byte
           ;;; Now A = low .byte of offset, temp2 = high .byte of offset
 
           ;;; Add offset to base Frames address (16-bit addition)
           ;; clc (duplicate)
           adc temp4
-          ;;;;; Add low .byte of offset to low .byte of base
+          ;; Add low .byte of offset to low .byte of base
           ;; sta temp4 (duplicate)
-          ;;;;; Store result low .byte
+          ;; Store result low .byte
           ;; lda temp2 (duplicate)
-          ;;;;; Load high .byte of offset
+          ;; Load high .byte of offset
           ;; adc temp5 (duplicate)
-          ;;;;; Add high .byte of offset to high .byte of base (with carry)
+          ;; Add high .byte of offset to high .byte of base (with carry)
           ;; sta temp5 (duplicate)
-          ;;;;; Store result high .byte
+          ;; Store result high .byte
 
           ;;; CRITICAL: This routine may be called cross-bank, so must use BS_return
           ;;; instead of rts to properly decode encoded return address
@@ -184,33 +184,33 @@ SetPlayerCharacterArtBank2 .proc
           ;;; CRITICAL: Optimized to avoid pha/pla to keep peak stack usage <= 16 bytes
           ;;; Save player number in X register instead of stack (saves 1 .byte peak stack usage)
           ldx temp5
-          ;;;;; Save player number in X register
+          ;; Save player number in X register
 
           ;;; INLINED LocateCharacterArtBank2 (saves 2 bytes on stack by avoiding jsr
 
           ;;; Save bank-relative character index in Y register temporarily (saves 1 .byte peak stack usage)
           ;; ldy temp6 (duplicate)
-          ;;;;; Save bank-relative character index in Y register
+          ;; Save bank-relative character index in Y register
 
           ;;; Get FrameMap pointer for character
           ;;; Y already has bank-relative character index (0-7)
           ;; lda CharacterFrameMapLBank2,y (duplicate)
           ;; sta temp1 (duplicate)
-          ;;;;; Store FrameMap low .byte in temp1
+          ;; Store FrameMap low .byte in temp1
           ;; lda CharacterFrameMapHBank2,y (duplicate)
           ;; sta temp4 (duplicate)
-          ;;;;; Save FrameMap high .byte in temp4 temporarily (saves 1 .byte peak stack usage)
+          ;; Save FrameMap high .byte in temp4 temporarily (saves 1 .byte peak stack usage)
 
           ;;; Calculate FrameMap index: FrameMap_index = action * 8 + frame
           ;;; action is in temp3 (0-15), frame is in temp2 (0-7)
           ;; lda temp3 (duplicate)
-          ;;;;; Load action
+          ;; Load action
           ;; asl (duplicate)
-          ;;;;; action << 1
+          ;; action << 1
           ;; asl (duplicate)
-          ;;;;; action << 2
+          ;; action << 2
           ;; asl (duplicate)
-          ;;;;; action << 3 (action * 8)
+          ;; action << 3 (action * 8)
           ;; clc (duplicate)
 ;; frame: (duplicate)
 
@@ -219,38 +219,38 @@ SetPlayerCharacterArtBank2 .proc
 
 
           ;; tay (duplicate)
-          ;;;;; Use as index into FrameMap (0-127)
+          ;; Use as index into FrameMap (0-127)
 
           ;;; Set up indirect pointer for FrameMap lookup
           ;; lda temp4 (duplicate)
-          ;;;;; Restore FrameMap high .byte from temp4
+          ;; Restore FrameMap high .byte from temp4
           ;; sta temp5 (duplicate)
-          ;;;;; Store in temp5 for indirect addressing
+          ;; Store in temp5 for indirect addressing
           ;;; temp1/temp5 now point to FrameMap
 
           ;;; Look up actual frame index from FrameMap
-          ;; lda (temp1),y       ;;;;; Load FrameMap[FrameMap_index] - this is the actual frame index (8-bit) (duplicate)
+          ;; lda (temp1),y       ;; Load FrameMap[FrameMap_index] - this is the actual frame index (8-bit) (duplicate)
           ;; sta temp1 (duplicate)
-          ;;;;; Store actual frame index low .byte in temp1
+          ;; Store actual frame index low .byte in temp1
 
           ;;; Zero-extend frame index to 16-bit (clear high .byte)
           ;; lda # 0 (duplicate)
           ;; sta temp2 (duplicate)
-          ;;;;; temp2 = frame_index high .byte (zero-extended)
+          ;; temp2 = frame_index high .byte (zero-extended)
           ;;; Now temp1/temp2 = 16-bit frame_index (0-255, zero-extended)
 
           ;;; Get base Frames pointer for character
           ;; lda temp6 (duplicate)
-          ;;;;; Reload bank-relative character index from temp6 (instead of sta
+          ;; Reload bank-relative character index from temp6 (instead of sta
 
           ;; tay (duplicate)
-          ;;;;; Use as index
+          ;; Use as index
           ;; lda CharacterSpriteLBank2,y (duplicate)
           ;; sta temp4 (duplicate)
-          ;;;;; Store Frames low .byte in temp4
+          ;; Store Frames low .byte in temp4
           ;; lda CharacterSpriteHBank2,y (duplicate)
           ;; sta temp5 (duplicate)
-          ;;;;; Store Frames high .byte in temp5
+          ;; Store Frames high .byte in temp5
 
           ;;; Calculate .byte offset: offset = frame_index * 16 (frame_index << 4)
           ;;; temp1/temp2 = 16-bit frame_index (0-255, zero-extended)
@@ -259,37 +259,37 @@ SetPlayerCharacterArtBank2 .proc
 
           ;;; Multiply 16-bit frame_index by 16 (shift left 4 times)
           ;; lda temp1 (duplicate)
-          ;;;;; Load frame_index low .byte
+          ;; Load frame_index low .byte
           ;; asl (duplicate)
-          ;;;;; << 1 (multiply by 2)
+          ;; << 1 (multiply by 2)
           ;; rol temp2 (duplicate)
-          ;;;;; Rotate carry into high .byte
+          ;; Rotate carry into high .byte
           ;; asl (duplicate)
-          ;;;;; << 1 (multiply by 4)
+          ;; << 1 (multiply by 4)
           ;; rol temp2 (duplicate)
-          ;;;;; Rotate carry into high .byte
+          ;; Rotate carry into high .byte
           ;; asl (duplicate)
-          ;;;;; << 1 (multiply by 8)
+          ;; << 1 (multiply by 8)
           ;; rol temp2 (duplicate)
-          ;;;;; Rotate carry into high .byte
+          ;; Rotate carry into high .byte
           ;; asl (duplicate)
-          ;;;;; << 1 (multiply by 16)
+          ;; << 1 (multiply by 16)
           ;; rol temp2 (duplicate)
-          ;;;;; Rotate carry into high .byte
+          ;; Rotate carry into high .byte
           ;;; Now A = low .byte of offset, temp2 = high .byte of offset
 
           ;;; Add offset to base Frames address (16-bit addition)
           ;; clc (duplicate)
           ;; adc temp4 (duplicate)
-          ;;;;; Add low .byte of offset to low .byte of base
+          ;; Add low .byte of offset to low .byte of base
           ;; sta temp4 (duplicate)
-          ;;;;; Store result low .byte
+          ;; Store result low .byte
           ;; lda temp2 (duplicate)
-          ;;;;; Load high .byte of offset
+          ;; Load high .byte of offset
           ;; adc temp5 (duplicate)
-          ;;;;; Add high .byte of offset to high .byte of base (with carry)
+          ;; Add high .byte of offset to high .byte of base (with carry)
           ;; sta temp5 (duplicate)
-          ;;;;; Store result high .byte
+          ;; Store result high .byte
           ;;; END INLINED LocateCharacterArtBank2
           ;;; After inlined LocateCharacterArtBank2:
           ;;;   temp4 = sprite data pointer low .byte (ROM address)
@@ -301,7 +301,7 @@ SetPlayerCharacterArtBank2 .proc
           ;;; Restore player number from X register (saved at sta
 
           stx temp6
-          ;;;;; Store player number in temp6 (safe to use)
+          ;; Store player number in temp6 (safe to use)
 
           ;;; Copy sprite data from ROM to RAM buffer
           ;;; Source: ROM address in temp4/temp5
@@ -318,27 +318,27 @@ SetPlayerCharacterArtBank2 .proc
           ;;; Optimized: Use computed offset instead of separate copy routines
           ;;; Calculate destination offset: player * 16
           ;; lda temp6 (duplicate)
-          ;;;;; Load player number (0-3)
+          ;; Load player number (0-3)
           ;; asl (duplicate)
-          ;;;;; player * 2
+          ;; player * 2
           ;; asl (duplicate)
-          ;;;;; player * 4
+          ;; player * 4
           ;; asl (duplicate)
-          ;;;;; player * 8
+          ;; player * 8
           ;; asl (duplicate)
-          ;;;;; player * 16
+          ;; player * 16
           tax
-          ;;;;; Store offset in X for later use
+          ;; Store offset in X for later use
 
           ;;; Copy 16 bytes from ROM (temp4/temp5) to playerFrameBuffer_W[offset to offset+15]
           ;;; Use X as base offset,y as loop counter (countdown from 16 to 1)
-          ;; TODO: ldy #$0f            ;;;;; Start at 16 ($10)
+          ;; TODO: ldy #$0f            ;; Start at 16 ($10)
 CopyLoopBank2:
-          ;; lda (temp4),y       ;;;;; Read from ROM (indirect addressing via temp4/temp5) (duplicate)
+          ;; lda (temp4),y       ;; Read from ROM (indirect addressing via temp4/temp5) (duplicate)
           ;; sta w000,x (duplicate)
-          ;;;;; Write to SCRAM (absolute indexed addressing with X base)
+          ;; Write to SCRAM (absolute indexed addressing with X base)
           inx
-          ;;;;; Increment destination offset
+          ;; Increment destination offset
           dey
           ;; TODO: bpl CopyLoopBank2
 
@@ -349,10 +349,10 @@ SetHeightBank2:
 
           ;;; This saves 1 .byte on stack (no pha/pla needed)
           ;; ldx temp6 (duplicate)
-          ;;;;; Load player number from temp6 (0-3) - already set at line 155
+          ;; Load player number from temp6 (0-3) - already set at line 155
           ;; lda # 16 (duplicate)
-          ;;;;; All sprites are 16 scanlines
-          ;; sta player0height,x ;;;;; Store using indexed addressing (player0height=$B0, so $B0+x = correct address) (duplicate)
+          ;; All sprites are 16 scanlines
+          ;; sta player0height,x ;; Store using indexed addressing (player0height=$B0, so $B0+x = correct address) (duplicate)
           ;;; CRITICAL: This routine is called cross-bank via gosub ... bank2
           ;;; Must use jmp BS_return instead of rts to properly decode encoded return address
           ;; jmp BS_return (duplicate)

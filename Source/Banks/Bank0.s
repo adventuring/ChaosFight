@@ -12,6 +12,10 @@
           ;; Since .rorg $F000 is active, Bank 0 file space $0000-$0FFF maps to CPU $F000-$FFFF
           ;; The scram (256 bytes of $FF) is at file space $0000-$00FF (CPU space $F000-$F0FF)
           ;; "Start of data" is at file space $0100 (CPU space $F100), after the scram
+          * = $F000
+          .rept 256
+          .byte $ff
+          .endrept
           * = $F100
           .if * != $F100
               .error "Bank 0: data must start at $F100"
@@ -252,7 +256,6 @@ Bank0CodeEnds:
           ;; Wrap in .block to create namespace Bank0BS (avoids duplicate definitions)
 Bank0BS: .block
           current_bank = 0
-          * = $FFE0 - bscode_length  ;;; CPU address: Bankswitch code starts here, ends just before $FFE0
-          ;; Note: .offs was set at top of file, no need to reset it
+          * = $FFE0 - bscode_length
           .include "Source/Common/BankSwitching.s"
           .bend

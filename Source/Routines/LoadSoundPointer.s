@@ -51,7 +51,7 @@ skip_3853:
           asl
           tax
           ;; lda SoundPointersL,x (duplicate)
-          sta var42         
+          sta soundEffectPointerH         
           ;; lda temp1 (duplicate)
           ;; asl (duplicate)
           ;; tax (duplicate)

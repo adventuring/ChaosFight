@@ -24,10 +24,10 @@ PATH := $(abspath bin):$(PATH)
 export PATH
 STELLA = stella
 # -i taken out for now from gimp
-GIMP = gimp --batch-interpreter plug-in-script-fu-eval -c --no-shm
+GIMP = xvfb-run -a --server-args="-screen 0 1920x1080x24" gimp --batch-interpreter plug-in-script-fu-eval -c --no-shm
 
 # Common 64tass assembly flags
-ASFLAGS = -Wall -Wno-branch-page -C -a --m6502 \
+ASFLAGS = -Wall -Wno-branch-page -C -a --m6502 -b \
 	-I.. -I. -I../Source -I../Source/Common -I../Source/Routines \
 	-DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) \
 	-DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\"
@@ -398,7 +398,7 @@ Source/TitleScreen/titlescreen_colors.s: \
 	@echo ";;; Color tables, PF1, PF2, and background for all titlescreen bitmaps" >> "$@"
 	@echo ";;; Combined at \$$f500 (after bitmap data at \$$f100-\$$f400)" >> "$@"
 	@echo "" >> "$@"
-	@echo "   rorg \$$f500" >> "$@"
+	@echo "   * = \$$f500" >> "$@"
 	@echo "" >> "$@"
 	@echo ";;; Include color tables, PF1, PF2, and background for all titlescreen bitmaps" >> "$@"
 	@echo "          .include \"Source/Generated/Art.AtariAge.colors.s\"" >> "$@"

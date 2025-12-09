@@ -15,10 +15,10 @@ BS_return:
           tsx
           lda 2,x          ;; get encoded high .byte of return address from stack (no A/X save, so offset is 2)
           tay              ;; save encoded .byte for restoration
-          lsr              ;; accumulator mode (implicit A)
-          lsr              ;; accumulator mode (implicit A)
-          lsr              ;; accumulator mode (implicit A)
-          lsr              ;; accumulator mode (implicit A) - bank now in low nybble
+          lsr a            ;; accumulator mode (explicit A)
+          lsr a            ;; accumulator mode (explicit A)
+          lsr a            ;; accumulator mode (explicit A)
+          lsr a            ;; accumulator mode (explicit A) - bank now in low nybble
           sta temp7        ;; save bank number in zero-page variable (saves 1 .byte on stack vs pha)
           tya              ;; get saved encoded .byte
           ora #$f0         ;; restore to $Fx format
@@ -69,12 +69,12 @@ BS_jsr:
           ;; CRITICAL: EFSC header must be at $FFE0-$FFEF, not at bankswitch_hotspot ($FFF8)
           ;; Set file offset and CPU address for EFSC header
           ;; File offset: (current_bank * $1000) + ($FFE0 - $F000) = (current_bank * $1000) + $0FE0
-          ;; CPU address: $FFE0
-          .offs (current_bank * $1000) + ($FFE0 - $F000) - $FFE0
-          * = $FFE0
+          ;; File offset is already set by bank file's .offs before including this file
+          ;; We only need to set CPU address - file offset will advance automatically
+          * = $ffe0
 EFSC_Header:
-          .text "EFSC", 0
-          .text "BRPocock", 0
+          .byte $45, $46, $53, $43, 0  ;; "EFSC"
+          .byte $42, $52, $50, $6f, $63, $6f, $63, $6b, 0  ;; "BRPocock"
           ;; Game year
           .byte 26, current_bank
 
@@ -82,7 +82,8 @@ EFSC_Header:
           ;; Set file offset and CPU address for Reset code
           ;; File offset: (current_bank * $1000) + ($FFF0 - $F000) = (current_bank * $1000) + $0FF0
           ;; CPU address: $FFF0
-          .offs (current_bank * $1000) + ($FFF0 - $F000) - $FFF0
+          ;; File offset advances automatically after EFSC header (16 bytes)
+          ;; We only need to set CPU address
           * = $fff0
 Reset:
           ;; CRITICAL: Switch to Bank 13 (0-based) where startup code (ColdStart) is located
@@ -97,8 +98,9 @@ Reset:
           ;; Set file offset and CPU address for IRQ/BRK handler code
           ;; File offset: (current_bank * $1000) + ($FFF6 - $F000) = (current_bank * $1000) + $0FF6
           ;; CPU address: $FFF6
-          .offs (current_bank * $1000) + ($FFF6 - $F000) - $FFF6
-          * = $fff6
+          ;; File offset advances automatically after Reset handler (6 bytes)
+          ;; We only need to set CPU address
+Break:
           ;; CRITICAL: Switch to Bank 12 (0-based) where WarmStart is located
           ;; Bank switching occurs via accessing specific addresses
           ;; Bank N (0-based index) = $FFE0 + N
@@ -111,13 +113,15 @@ Reset:
           ;; Set file offset and CPU address for vectors
           ;; File offset: (current_bank * $1000) + ($FFFC - $F000) = (current_bank * $1000) + $0FFC
           ;; CPU address: $FFFC
-          .offs (current_bank * $1000) + ($FFFC - $F000) - $FFFC
+          ;; File offset advances automatically after IRQ handler (6 bytes)
+          ;; We only need to set CPU address
           * = $fffc
           ;; $fffc: Reset vector (points to Reset at CPU $FFF0)
           .word Reset
-          ;; $fffe: IRQ/BRK vector (points to code at CPU $FFF6 which switches to Bank 13 and jumps to WarmStart)
-          .word $fff6
+          ;; $fffe: IRQ/BRK vector (points to code at CPU $FFF6 which switches to Bank 12 and jumps to WarmStart)
+          .word Break
 
           ;; CPU address space check: should end at exactly $10000
           ;; Note: This check is disabled because * = for file offset resets CPU address calculation
           ;; The actual overflow will be caught during final assembly
+          ;; CRITICAL: File must be padded to exactly 64k - this is handled by the build system

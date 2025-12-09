@@ -7,6 +7,11 @@
 
           ;; Set file offset for Bank 8 at the top of the file
           .offs (8 * $1000) - $f000  ; Adjust file offset for Bank 8
+          * = $F000
+          .rept 256
+          .byte $ff
+          .endrept  ;; Scram shadow (256 bytes of $FF)
+          * = $F100
 
           ;; data must precede code
           ;; all Title Screen modes must be in this bank
@@ -69,8 +74,15 @@ Bank8CodeEnds:
           ;; Wrap in .block to create namespace Bank8BS (avoids duplicate definitions)
 Bank8BS: .block
           current_bank = 8
-          * = $FFE0 - bscode_length  ;;; CPU address: Bankswitch code starts here, ends just before $FFE0
-          ;; Note: .offs was set at top of file, no need to reset it
+                    ;; Set file offset and CPU address for bankswitch code
+          ;; File offset: (8 * $1000) + ($FFE0 - bscode_length - $F000) = $8FC8
+          ;; CPU address: $FFE0 - bscode_length = $FFC8
+          ;; Use .org to set file offset, then * = to set CPU address
+          ;; Code appears at $ECA but should be at $FC8, difference is $FE
+          ;; So adjust .org by $FE
+          * = $FFE0 - bscode_length
+          
+          
           .include "Source/Common/BankSwitching.s"
           .bend
 

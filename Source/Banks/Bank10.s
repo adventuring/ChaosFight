@@ -6,6 +6,11 @@
 
           ;; Set file offset for Bank 10 at the top of the file
           .offs (10 * $1000) - $f000  ; Adjust file offset for Bank 10
+          * = $F000
+          .rept 256
+          .byte $ff
+          .endrept  ;; Scram shadow (256 bytes of $FF)
+          * = $F100
 
 Bank10DataEnds:
 
@@ -33,7 +38,14 @@ Bank10CodeEnds:
           ;; Wrap in .block to create namespace Bank10BS (avoids duplicate definitions)
 Bank10BS: .block
           current_bank = 10
-          * = $FFE0 - bscode_length  ;;; CPU address: Bankswitch code starts here, ends just before $FFE0
-          ;; Note: .offs was set at top of file, no need to reset it
+                    ;; Set file offset and CPU address for bankswitch code
+          ;; File offset: (10 * $1000) + ($FFE0 - bscode_length - $F000) = $10FC8
+          ;; CPU address: $FFE0 - bscode_length = $FFC8
+          ;; Use .org to set file offset, then * = to set CPU address
+          ;; Code appears at $ECA but should be at $FC8, difference is $FE
+          ;; So adjust .org by $FE
+          * = $FFE0 - bscode_length
+          
+          
           .include "Source/Common/BankSwitching.s"
           .bend

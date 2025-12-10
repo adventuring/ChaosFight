@@ -353,7 +353,6 @@ CheckFacingDirection:
 
           lda temp6
           cmp # 0
-          bne CheckAOEDirection_Right
           ;; jmp CheckAOEDirection_Left
 
 
@@ -384,11 +383,9 @@ CheckBernieAOE .proc
 
 
 
-CheckAOEDirection_Right
           ;; Returns: Near (return thisbank) - called same-bank
 
 
-CheckAOEDirection_Right
 
 
           ;;
@@ -448,11 +445,10 @@ CheckAOEDirection_Right
 
 
 
-CheckAOEDirection_Left
+CheckAOEDirection_Left:
           ;; Returns: Near (return thisbank) - called same-bank
 
 
-CheckAOEDirection_Left
 
 
           ;;
@@ -524,7 +520,11 @@ CacheAOERightHitbox .proc
           ;; Output: cachedHitboxLeft/Right/Top/Bottom populated
 
                     ;; let aoeOffset = CharacterAOEOffsets[characterIndex]
-                    lda characterIndex          asl          tax          lda CharacterAOEOffsets,x          sta aoeOffset
+          lda characterIndex
+          asl
+          tax
+          lda CharacterAOEOffsets,x
+          sta aoeOffset
 
           ;; let cachedHitboxLeft_W = playerX[temp1]
           lda temp1
@@ -565,7 +565,11 @@ CacheAOELeftHitbox .proc
           ;; Output: cachedHitboxLeft/Right/Top/Bottom populated
 
                     ;; let aoeOffset = CharacterAOEOffsets[characterIndex]
-                    lda characterIndex          asl          tax          lda CharacterAOEOffsets,x          sta aoeOffset
+          lda characterIndex
+          asl
+          tax
+          lda CharacterAOEOffsets,x
+          sta aoeOffset
 
           ;; let cachedHitboxRight_W = playerX[temp1] + PlayerSpriteWidth - 1 - aoeOffset
           lda temp1

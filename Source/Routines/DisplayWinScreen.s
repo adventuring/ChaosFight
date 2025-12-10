@@ -126,9 +126,9 @@ DWS_RankLoop .proc
           ;; Skip if this is the winner
           lda temp1
           cmp temp2
-          bne skip_2447
+          bne GetEliminationOrder
           ;; TODO: DWS_RankNext
-skip_2447:
+GetEliminationOrder:
 
 
           ;; Get this player’s elimination order (SCRAM read)
@@ -208,21 +208,21 @@ DWS_RankNext .proc
           ;; if temp1 < 4 then goto DWS_RankLoop
           lda temp1
           cmp 4
-          bcs .skip_6175
+          bcs PositionCharacters
           jmp
           lda temp1
           cmp # 4
-          bcs skip_8911
+          bcs PositionCharacters
           goto_label:
 
-          jmp goto_label
-skip_8911:
+          jmp DWS_RankLoop
+PositionCharacters:
 
           lda temp1
           cmp # 4
-          bcs skip_8620
-          jmp goto_label
-skip_8620:
+          bcs PositionCharactersDone
+          jmp DWS_RankLoop
+PositionCharactersDone:
 
           
 
@@ -235,16 +235,16 @@ skip_8620:
           ;; Position winner (always centered)
           lda temp1
           cmp # 1
-          bne skip_3654
-          ;; TODO: DWS_Position1Player
-skip_3654:
+          bne CheckTwoPlayers
+          jmp DWS_Position1Player
+CheckTwoPlayers:
 
 
           lda temp1
           cmp # 2
-          bne skip_9466
-          ;; TODO: DWS_Position2Players
-skip_9466:
+          bne PositionThreePlayers
+          jmp DWS_Position2Players
+PositionThreePlayers:
 
 
           jmp DWS_Position3Players
@@ -364,9 +364,9 @@ DWS_Position2Players
           ;; Runner-up (P1) - only if valid
           lda temp3
           cmp # 255
-          bne skip_6581
-          ;; TODO: DWS_Hide2Player
-skip_6581:
+          bne PositionRunnerUp
+          jmp DWS_Hide2Player
+PositionRunnerUp:
 
 
           lda 1
@@ -476,9 +476,9 @@ DWS_Position3Players
           ;; 2nd place (P1) - left platform
           lda temp3
           cmp # 255
-          bne skip_5564
-          ;; TODO: DWS_Hide3Player2
-skip_5564:
+          bne PositionSecondPlace
+          jmp DWS_Hide3Player2
+PositionSecondPlace:
 
 
           lda 1
@@ -542,9 +542,9 @@ DWS_Hide3Player2Done
           ;; 3rd place (P2) - right platform
           lda temp4
           cmp # 255
-          bne skip_8912
-          ;; TODO: DWS_Hide3Player3
-skip_8912:
+          bne PositionThirdPlace
+          jmp DWS_Hide3Player3
+PositionThirdPlace:
 
 
           lda 2
@@ -656,9 +656,9 @@ DWS_GetBWMode .proc
           sta temp2
           if temp2 then let temp2 = 1
           lda temp2
-          beq skip_6171
-          jmp skip_6171
-skip_6171:
+          beq DWS_GetBWModeDone
+          jmp DWS_GetBWModeDone
+DWS_GetBWModeDone:
           jsr BS_return
 
 .pend

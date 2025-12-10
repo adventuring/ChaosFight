@@ -1,4 +1,8 @@
 ;;; ChaosFight - Source/Routines/ProcessJumpInput.bas
+          ;; Forward declaration for cross-bank call
+          ;; CheckEnhancedJumpButton is defined in CharacterAttacksDispatch.s (Bank 9)
+CheckEnhancedJumpButton = CheckEnhancedJumpButton
+
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 

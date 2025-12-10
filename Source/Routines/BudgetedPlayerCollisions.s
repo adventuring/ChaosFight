@@ -1,4 +1,7 @@
 ;;; ChaosFight - Source/Routines/BudgetedPlayerCollisions.bas
+          ;; Forward declaration
+CheckCollisionPair:
+
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 CheckCollisionP1vsP2:
@@ -94,7 +97,6 @@ BPC_Phase2 .proc
 
           jsr BS_return
 
-CheckCollisionPair:
           ;; Input: temp3 = player 1 index, temp4 = player 2 index
           ;; Output: separates players if collision detected
                     if playerX[temp3] >= playerX[temp4] then BPC_CalcDiff

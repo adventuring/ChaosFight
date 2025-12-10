@@ -40,11 +40,11 @@ ProcessUpAction:
           tax
           lda playerCharacter,x
           cmp # CharacterBernie
-          bne skip_7306
+          bne CheckHarpy
 
           jmp PUA_BernieFallThrough
 
-skip_7306:
+CheckHarpy:
 
           ;; Harpy: Flap (fly)
           ;; if playerCharacter[temp1] = CharacterHarpy then goto PUA_HarpyFlap
@@ -53,11 +53,11 @@ skip_7306:
           tax
           lda playerCharacter,x
           cmp # CharacterHarpy
-          bne skip_2587
+          bne CheckZoeRyen
 
           jmp PUA_HarpyFlap
 
-skip_2587:
+CheckZoeRyen:
 
           ;; For all other characters, UP is jump
           ;; Check Zoe Ryen for double-jump capability
@@ -67,11 +67,11 @@ skip_2587:
           tax
           lda playerCharacter,x
           cmp # CharacterZoeRyen
-          bne skip_8150
+          bne StandardJump
 
           jmp PUA_ZoeJumpCheck
 
-skip_8150:
+StandardJump:
 
           ;; Standard jump - block during attack animations (states 13-15)
           ;; Tail call to DispatchCharacterJump - it returns directly to our caller
@@ -194,11 +194,11 @@ skip_9153:
             lsr temp2
           lda temp2
           cmp # 0
-          bne skip_4246
+          bne CheckCeilingPixel
 
           jmp PUA_RoboTitoLatch
 
-skip_4246:
+CheckCeilingPixel:
 
           lda temp2
           sec
@@ -226,18 +226,18 @@ return_point_pua8:
 
           ;; if temp1 then goto PUA_RoboTitoLatch
           lda temp1
-          beq skip_6148
+          beq CheckDownPressed
 
           jmp PUA_RoboTitoLatch
 
-skip_6148:
+CheckDownPressed:
           ;; Clear latch if DOWN pressed (check appropriate port)
           lda currentPlayer
           sta temp1
           ;; if temp1 & 2 = 0 then goto PUA_CheckJoy0Down
           ;; if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
           ;; lda joy1down (undefined - commented out)
-          beq skip_7336
+          beq ProcessUpActionDone
 
           lda temp1
           asl
@@ -246,7 +246,7 @@ skip_6148:
           and # 254
           sta characterStateFlags_W,x
 
-skip_7336:
+ProcessUpActionDone:
           lda # 0
           sta temp3
           rts
@@ -254,10 +254,10 @@ skip_7336:
 PUA_CheckJoy0Down .proc
           ;; if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
           lda joy0down
-          beq skip_9849
+          beq ProcessUpActionDoneLabel
 
-skip_9849:
-          jmp skip_9849
+ProcessUpActionDoneLabel:
+          jmp ProcessUpActionDoneLabel
 
           lda # 0
           sta temp3
@@ -295,11 +295,11 @@ PUA_ZoeJumpCheck .proc
           ;; Set double-jump flag if jumping in air
           lda temp6
           cmp # 1
-          bne skip_6415
+          bne SetJumpFlag
 
           ;; let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
 
-skip_6415:
+SetJumpFlag:
 
           lda # 1
           sta temp3

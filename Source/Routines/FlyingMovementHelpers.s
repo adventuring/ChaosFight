@@ -130,7 +130,7 @@ CheckDragonOfStormsLeft:
           jmp HFCM_LeftDirect
 HFCM_LeftStandard:
 
-                    let playerVelocityX[temp1] = $ff
+          ;; let playerVelocityX[temp1] = $ff
           lda temp1
           asl
           tax
@@ -146,7 +146,7 @@ HFCM_LeftMomentum .proc
           tax
           lda CharacterMovementSpeed,x
           sta characterMovementSpeed
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] - characterMovementSpeed
+          ;; let playerVelocityX[temp1] = playerVelocityX[temp1] - characterMovementSpeed
           lda temp1
           asl
           tax
@@ -227,7 +227,7 @@ HFCM_LeftFacingDone:
 .pend
 
 HFCM_SetFacingLeft .proc
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          ;; let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           jsr BS_return
 .pend
 

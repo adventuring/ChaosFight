@@ -48,7 +48,7 @@ CCJ_ConvertPlayerXToPlayfieldColumn:
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
           ;; Output: temp2 = playfield column
-          ;; FIXME: This should be inlined.
+          ;; FIXME: #1250 This should be inlined.
           ;; let temp2 = playerX[temp1]         
           lda temp1
           asl

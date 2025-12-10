@@ -282,7 +282,7 @@ UpdateAllMissiles .proc
           ;;
           ;; Constraints: None
           ;; Optimized: Loop through all player missiles instead of individual calls
-          ;; TODO: for temp1 = 0 to 3
+          ;; TODO: #1254 for temp1 = 0 to 3
           jsr UpdateOneMissile
 .pend
 
@@ -1099,7 +1099,7 @@ CheckMissilePlayerCollision
           ;; Optimized: Loop through all players instead of copy-paste code
           ;; This reduces ROM footprint by ~150 bytes
           ;; Skip owner player
-          ;; TODO: for temp6 = 0 to 3
+          ;; TODO: #1254 for temp6 = 0 to 3
           ;; Skip eliminated players
           lda temp6
           cmp temp1

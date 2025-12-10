@@ -39,7 +39,7 @@ UpdatePlayerMovement .proc
           ;; Mutates: currentPlayer, player positions (via UpdatePlayerMovementSingle)
           ;; Called Routines: UpdatePlayerMovementSingle
           ;; Constraints: Must be colocated with UpdatePlayerMovementQuadtariSkip (goto target)
-          ;; TODO: for currentPlayer = 0 to 1
+          ;; TODO: #1254 for currentPlayer = 0 to 1
           ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
           lda # >(return_point-1)
           pha
@@ -68,7 +68,7 @@ next_label_1_L59 .proc
 
 UpdatePlayerMovementQuadtari:
 
-          ;; TODO: for currentPlayer = 2 to 3
+          ;; TODO: #1254 for currentPlayer = 2 to 3
           ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
           lda # >(return_point2-1)
           pha

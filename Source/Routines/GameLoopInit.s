@@ -83,9 +83,9 @@ return_point:
 
 
           ;; Set screen layout for gameplay (32×8 game layout) - inlined
-          ;; TODO: pfrowheight = ScreenPfRowHeight
+          ;; TODO: #1266 pfrowheight = ScreenPfRowHeight
           ;; SuperChip variables var0-var15 available in gameplay
-          ;; TODO: pfrows = ScreenPfRows
+          ;; TODO: #1266 pfrows = ScreenPfRows
 
           ;; Initialize player positions
           ;; 2-Player Game: P1 at 1/3 width (53), P2 at 2/3 width (107)
@@ -240,7 +240,7 @@ InitPositionsDone
           ;; Initialize player health (apply handicap if selected)
           ;; PlayerLocked value: 0=unlocked, 1=normal (100% health),
           ;; Optimized: Simplified player health initialization
-          ;; TODO: for currentPlayer = 0 to 3
+          ;; TODO: #1254 for currentPlayer = 0 to 3
           lda currentPlayer
           sta GPL_playerIndex
           ;; Cross-bank call to GetPlayerLocked in bank 6
@@ -275,7 +275,7 @@ PlayerHealthInitDone
 next_label_1_L278:.proc
 
           ;; Initialize player timers
-          ;; TODO: for currentPlayer = 0 to 3
+          ;; TODO: #1254 for currentPlayer = 0 to 3
           lda currentPlayer
           asl
           tax

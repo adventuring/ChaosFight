@@ -72,7 +72,7 @@ GetPlayerLockedP0 .proc
           sta temp2
 
 
-          ;; TODO: GPL_lockedState = temp2
+          ;; TODO: #1291 GPL_lockedState = temp2
 
           rts
 
@@ -82,7 +82,7 @@ GetPlayerLockedP1 .proc
 
           ;; let temp2 = (playerLocked / 4) & 3
 
-          ;; TODO: GPL_lockedState = temp2
+          ;; TODO: #1291 GPL_lockedState = temp2
 
           rts
 
@@ -99,7 +99,7 @@ GetPlayerLockedP2 .proc
           and # 3
           sta temp2
 
-          ;; TODO: GPL_lockedState = temp2
+          ;; TODO: #1291 GPL_lockedState = temp2
 
           rts
 
@@ -118,7 +118,7 @@ GetPlayerLockedP3 .proc
           and # 3
           sta temp2
 
-          ;; TODO: GPL_lockedState = temp2
+          ;; TODO: #1291 GPL_lockedState = temp2
 
           rts
 

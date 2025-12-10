@@ -9,7 +9,7 @@ IsPlayerAlive:
           ;; Is Player Alive
           ;; Check if specified player is alive (health > 0).
           ;;
-          ;; FIXME: Inline and remove calls to this routine.
+          ;; FIXME: #1252 Inline and remove calls to this routine.
           ;;
           ;; Input: currentPlayer (global) = player index (0-3)
           ;; playerHealth[] (global array) = player health values

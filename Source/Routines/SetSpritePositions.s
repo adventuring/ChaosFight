@@ -133,7 +133,7 @@ SetSpritePositions:
           ;; use proper sprites
           ;; Set Participant 3 & 4 positions (arrays [2] & [3] → P2 & P3 sprites)
           ;; Loop over participants 2-3 instead of duplicate calls
-          ;; TODO: for temp1 = 2 to 3
+          ;; TODO: #1254 for temp1 = 2 to 3
           jsr CopyParticipantSpritePosition
 
 SSP_NextParticipant .proc

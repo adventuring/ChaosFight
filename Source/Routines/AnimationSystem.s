@@ -24,7 +24,7 @@ UpdateCharacterAnimations:
           lda controllerStatus
           and # SetQuadtariDetected
           sta UCA_quadtariActive
-          ;; TODO: for currentPlayer = 0 to 3
+          ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; if currentPlayer >= 2 && !UCA_quadtariActive then goto AnimationNextPlayer
           lda currentPlayer
           cmp # 3
@@ -959,7 +959,7 @@ InitializeAnimationSystem
           ;; Initialize all players to idle animation
           lda ActionIdle
           sta temp2
-          ;; TODO: for currentPlayer = 0 to 3
+          ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; Cross-bank call to SetPlayerAnimation in bank 12
           lda # >(return_point-1)
           pha

@@ -28,7 +28,7 @@ ProcessUpAction:
           ;; Constraints: Must be colocated with helpers in same bank
 
           ;; Check Shamone form switching first (Shamone <-> MethHound)
-          ;; TODO: Implement Shamone <-> MethHound form switching
+          ;; TODO: #1249 Implement Shamone <-> MethHound form switching
 
           ;; Robo Tito: Stretch (ascend toward ceiling; auto-latch on contact)
           ;; if playerCharacter[temp1] = CharacterRoboTito then goto PUA_RoboTitoAscend

@@ -105,7 +105,7 @@ UpdateGuardTimerActive .proc
           lda temp3
           cmp # 0
           bne SkipExpiredCheck
-          ;; TODO: GuardTimerExpired
+          jmp GuardTimerExpired
 SkipExpiredCheck:
 
           ;; check)
@@ -120,7 +120,7 @@ SkipExpiredCheck:
           lda temp3
           cmp # 0
           bne GuardTimerStillActive
-          ;; TODO: GuardTimerExpired
+          jmp GuardTimerExpired
 GuardTimerStillActive:
 
           jsr BS_return

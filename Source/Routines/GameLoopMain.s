@@ -200,7 +200,7 @@ return_point:
 
 
           ;; Issue #1177: Update Frooty charge system every frame
-          ;; TODO: for currentPlayer = 0 to 3
+          ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; if currentPlayer >= 2 then goto FrootyChargeQuadtariCheck
           lda currentPlayer
           cmp 2

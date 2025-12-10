@@ -13,7 +13,7 @@ UpdateGuardTimers .proc
           ;; Constraints: Tail call to UpdateSingleGuardTimer for
           ;; player 3
           ;; Optimized: Loop through all players instead of individual calls
-          ;; TODO: for temp1 = 0 to 3
+          ;; TODO: #1254 for temp1 = 0 to 3
           ;; Cross-bank call to UpdateSingleGuardTimer in bank 6
           lda # >(return_point-1)
           pha

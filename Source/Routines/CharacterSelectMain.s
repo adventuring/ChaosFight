@@ -784,7 +784,7 @@ CharacterSelectHandleRandomRolls .proc
           sta temp1
 CharacterSelectRollRandomPlayer:
 
-          ;; TODO: for currentPlayer = 0 to temp1
+          ;; TODO: #1254 for currentPlayer = 0 to temp1
 
           jsr CharacterSelectRollRandomPlayer
 
@@ -935,7 +935,7 @@ CharacterSelectQuadtariReady .proc
           lda # 0
           sta readyCount
 
-          ;; TODO: for currentPlayer = 0 to 3
+          ;; TODO: #1254 for currentPlayer = 0 to 3
 
           lda currentPlayer
           sta temp1
@@ -1052,7 +1052,7 @@ CharacterSelectFinish .proc
 
           ;; (default: face right = 1)
 
-          ;; TODO: for currentPlayer = 0 to 3
+          ;; TODO: #1254 for currentPlayer = 0 to 3
 
           ;; if playerCharacter[currentPlayer] = NoCharacter then goto CharacterSelectSkipFacing
 

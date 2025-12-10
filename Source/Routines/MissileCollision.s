@@ -445,7 +445,8 @@ CheckBernieAOE .proc
 
 
 
-CheckAOEDirection_Left:
+Left:
+
           ;; Returns: Near (return thisbank) - called same-bank
 
 
@@ -622,12 +623,12 @@ CheckPlayersAgainstCachedHitbox .proc
           lda MissileHitNotFound
           sta temp4
 
-          ;; TODO: for temp2 = 0 to 3
+          ;; TODO: #1254 for temp2 = 0 to 3
 
           lda temp2
           cmp temp1
           bne CheckPlayerHealth
-          ;; TODO: CPB_NextPlayer
+          jmp CPB_NextPlayer
 CheckPlayerHealth:
 
 

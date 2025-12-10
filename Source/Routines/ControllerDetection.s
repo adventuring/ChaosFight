@@ -81,7 +81,7 @@ CDP_CheckGenesis .proc
           ;; Method: Ground paddle ports via VBLANK, wait a frame,
           ;; check levels
           ;; Detect Genesis/MegaDrive controllers using correct method
-          ;; TODO: Implement Genesis detection logic
+          ;; TODO: #1251 Implement Genesis detection logic
 
 .pend
 

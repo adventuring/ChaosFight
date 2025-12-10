@@ -17,7 +17,7 @@ FindWinner .proc
           ;; Invalid initially
 
           ;; Check each player using FOR loop
-          ;; TODO: for currentPlayer = 0 to 3
+          ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; Cross-bank call to IsPlayerEliminated in bank 13
           lda # >(return_point-1)
           pha

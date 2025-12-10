@@ -49,7 +49,7 @@ CheckAllPlayerEliminations:
           ;;
           ;; Constraints: None
           ;; Check each player for elimination using FOR loop
-          ;; TODO: for currentPlayer = 0 to 3
+          ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; Cross-bank call to CheckPlayerElimination in bank 14
           lda # >(CAPE_return_point_1-1)
           pha

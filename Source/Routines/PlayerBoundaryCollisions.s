@@ -44,7 +44,7 @@ CheckBoundaryCollisions:
 
 SkipRandomArena:
 
-          ;; TODO: for temp1 = 0 to 3
+          ;; TODO: #1254 for temp1 = 0 to 3
           ;; if temp1 < 2 then goto PBC_ProcessPlayer
           lda temp1
           cmp # 2

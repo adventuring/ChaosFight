@@ -580,7 +580,7 @@ ConvertToBCDLoop
             dey
             ; decrement tens counter
 
-          ;; TODO: bpl ConvertToBCDLoop
+          ;; TODO: #1265 bpl ConvertToBCDLoop
 
             cld
             ; clear decimal mode
@@ -787,19 +787,19 @@ SetScoreBytes .proc
           ;; Write raw byte values: $ee/$CF/$ee or health BCD values
 
 
-          ;; TODO: lda temp4
+          ;; TODO: #1265 lda temp4
 
-          ;; TODO: sta score
+          ;; TODO: #1265 sta score
 
-          ;; TODO: ; Middle 2 digits always "CF" (literal hex - bad BCD)
+          ;; TODO: #1265 ; Middle 2 digits always "CF" (literal hex - bad BCD)
 
-          ;; TODO: lda # $CF
+          ;; TODO: #1265 lda # $CF
 
-          ;; TODO: sta score+1
+          ;; TODO: #1265 sta score+1
 
-          ;; TODO: lda temp5
+          ;; TODO: #1265 lda temp5
 
-          ;; TODO: sta score+2
+          ;; TODO: #1265 sta score+2
 
 
 
@@ -838,17 +838,17 @@ DisplayCF2026 .proc
           ;; score+2 (digits 4-5) = $26 (26)
 
 
-          ;; TODO: lda # $CF
+          ;; TODO: #1265 lda # $CF
 
-          ;; TODO: sta score
+          ;; TODO: #1265 sta score
 
-          ;; TODO: lda # $20
+          ;; TODO: #1265 lda # $20
 
-          ;; TODO: sta score+1
+          ;; TODO: #1265 sta score+1
 
-          ;; TODO: lda # $26
+          ;; TODO: #1265 lda # $26
 
-          ;; TODO: sta score+2
+          ;; TODO: #1265 sta score+2
 
 
 

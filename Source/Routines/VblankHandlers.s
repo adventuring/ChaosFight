@@ -23,7 +23,7 @@ VblankHandlerDispatcher .proc
           ;; Mode handlers return with return thisbank (pops 2 bytes from near call)
           ;; VblankHandlerDispatcher must return with return otherbank (pops 4 bytes from cross-bank call)
           jsr VblankModePublisherPrelude
-          ;; TODO: ; Execution continues at ongosub0 label
+          ;; Execution continues at ongosub0 label
           jmp VblankHandlerDone
 
           jsr BS_return
@@ -217,7 +217,7 @@ VblankSharedUpdateCharacterAnimations
           lda controllerStatus
           and SetQuadtariDetected
           sta VblankUCA_quadtariActive
-          ;; TODO: for currentPlayer = 0 to 3
+          ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; if currentPlayer >= 2 && !VblankUCA_quadtariActive then goto VblankAnimationNextPlayer
           lda currentPlayer
           cmp # 3
@@ -1019,7 +1019,7 @@ return_point:
 
 
           ;; Optimized: Single loop for playfield collisions (walls, ceilings, ground)
-          ;; TODO: for currentPlayer = 0 to 3
+          ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; if currentPlayer >= 2 then goto VblankCheckQuadtariSkip
           lda currentPlayer
           cmp 2

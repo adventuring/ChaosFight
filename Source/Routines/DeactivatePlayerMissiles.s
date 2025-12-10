@@ -2,7 +2,8 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-DeactivatePlayerMissiles .proc
+DeactivatePlayerMissiles:
+.proc
           ;;
           ;; Deactivate Player Missiles
           ;; Input: currentPlayer (0-3), missileActive flags
@@ -17,7 +18,9 @@ DeactivatePlayerMissiles .proc
           and missileActive
           sta missileActive
           rts
-          and masks to clear player missile bits (inverted BitMask values)
+
+          ;; and masks to clear player missile bits (inverted BitMask values)
+
 PlayerANDMask:
           .byte 7
 

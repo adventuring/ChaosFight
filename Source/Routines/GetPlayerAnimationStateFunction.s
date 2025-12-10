@@ -1,10 +1,8 @@
 ;;; ChaosFight - Source/Routines/GetPlayerAnimationStateFunction.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-GetPlayerAnimationStateFunction
-;;; Returns: Far (return otherbank)
-GetPlayerAnimationStateFunction
-
+GetPlayerAnimationStateFunction:
+          ;; Returns: Far (return otherbank)
           ;; Animation State Helper
           ;; Input: temp1 = player index (0-3), playerState[]
           ;; Output: temp2 = animation state (bits 4-7 of playerState)
@@ -21,5 +19,4 @@ GetPlayerAnimationStateFunction
           sta temp2
           ;; (0-15)
           jsr BS_return
-
 

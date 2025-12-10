@@ -43,8 +43,6 @@ GlyphLookupTable:
 
 SetPlayerGlyph:
 .proc
-
-
           ;; Unified function supports two input modes:
           ;; Returns: Far (return otherbank)
 
@@ -61,8 +59,9 @@ SetPlayerGlyph:
           cmp # 3
           bcc UseLookupMode
 
-UseLookupMode:
+          jmp SetPlayerGlyphDirectMode
 
+UseLookupMode:
 
           ;; Look up glyph index from table (overwrites temp1)
           ;; let temp1 = GlyphLookupTable[temp4]         

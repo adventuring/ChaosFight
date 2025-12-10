@@ -36,29 +36,23 @@ CheckNegativeVelocityLabel:
           asl
           tax
           lda playerVelocityX,x
-          and $80
+          and #$80
           beq ClearSubpixel
+
           inc playerVelocityX,x
+
 ClearSubpixel:
 
-          lda temp1
-          asl
-          tax
-          lda playerVelocityX,x
-          and $80
-          beq ClearSubpixelLabel
-          inc playerVelocityX,x
-ClearSubpixelLabel:
-
-
-                    if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
+          if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
           lda temp1
           asl
           tax
           lda playerVelocityX,x
           bne ApplyFrictionDone
+
           lda # 0
           sta playerVelocityXL,x
+
 ApplyFrictionDone:
           rts
 

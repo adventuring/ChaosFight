@@ -3,7 +3,7 @@
 
 
 CheckFallDamage .proc
-;;; Applies character-specific fall damage when players land
+          ;; Applies character-specific fall damage when players land
           ;; Returns: Far (return otherbank)
           ;; Inputs: currentPlayer (global) = player index (0-3), temp2 = landing velocity (positive downward)
           ;; currentCharacter (global hint, refreshed internally), playerCharacter[], playerState[], playerHealth[], playerRecoveryFrames[]
@@ -24,15 +24,14 @@ CheckFallDamage .proc
           ;; Issue #1178: Bernie post-fall stun - check before immunity
           ;; Bernie is immune to fall damage but still gets stunned from high falls
           lda currentCharacter
-          cmp CharacterBernie
+          cmp # CharacterBernie
           bne CheckFallDamageImmunity
+
           jmp CheckBernieStun
+
 CheckFallDamageImmunity:
 
-
           ;; Check for fall damage immunity (Frooty, DragonOfStorms)
-          jsr BS_return
-
           jsr BS_return
 
           ;; Calculate safe fall velocity threshold
@@ -63,12 +62,7 @@ CheckFallDamageImmunity:
           ;; base_damage_multiplier
           ;; Base damage multiplier: 2 (so 1 extra velocity = 2 × base
           ;; damage)
-          ;; let temp4 = temp2 - temp3          lda temp2          sec          sbc temp3          sta temp4
-          lda temp2
-          sec
-          sbc temp3
-          sta temp4
-
+          ;; let temp4 = temp2 - temp3
           lda temp2
           sec
           sbc temp3

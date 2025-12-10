@@ -10,8 +10,6 @@
 
 
 StartMusic .proc
-
-
           ;; MUSIC SUBSYSTEM - Polyphony 2 Implementation
           ;; Returns: Far (return otherbank)
 
@@ -24,7 +22,7 @@ StartMusic .proc
           ;;
           ;; Delay
 
-          AUDCV = (AUDC << 4) | AUDV (packed into single byte)
+          ;; AUDCV = (AUDC << 4) | AUDV (packed into single byte)
 
           ;; High byte of pointer = 0 indicates voice inactive
 

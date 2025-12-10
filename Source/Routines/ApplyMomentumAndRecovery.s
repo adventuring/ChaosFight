@@ -6,7 +6,6 @@
           ;; is plenty; see Issue #875 if you are tempted to clone it again.
 
 ApplyMomentumAndRecovery .proc
-
           ;; Returns: Far (return otherbank)
           ;; Apply Momentum and Recovery
           ;; Updates recovery frames and applies velocity during
@@ -37,6 +36,7 @@ ApplyMomentumAndRecovery .proc
           ;; Loop through all players (0-3)
           lda # 0
           sta temp1
+
 .pend
 
 MomentumRecoveryLoop .proc
@@ -47,34 +47,34 @@ MomentumRecoveryLoop .proc
           lda temp1
           cmp # 2
           bcs CheckQuadtariActive
+
           jmp MomentumRecoveryProcess
+
 CheckQuadtariActive:
 
-          lda temp1
-          cmp # 2
-          bcs CheckPlayer2Character
-          jmp MomentumRecoveryProcess
-CheckPlayer2Character:
-
-
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne CheckPlayer2NoCharacter
+
           jmp MomentumRecoveryNext
+
 CheckPlayer2NoCharacter:
 
           ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto MomentumRecoveryNext
           lda temp1
           cmp # 2
           bne CheckPlayer3Character
-          lda 2
+
+          lda # 2
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckPlayer3Character
+
           jmp MomentumRecoveryNext
+
 CheckPlayer3Character:
 
           lda temp1

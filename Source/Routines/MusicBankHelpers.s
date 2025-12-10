@@ -15,13 +15,9 @@
 
 
 
-LoadSongPointer
+LoadSongPointer:
           ;; Returns: Far (return otherbank)
-
-
           ;; Lookup 16-bit song pointer for Bank 1 songs.
-          ;; Returns: Far (return otherbank)
-
           ;; Input: temp1 = song ID (Bank0MinSongID-28), SongPointers1L[]/SongPointers1H[]
 
           ;; Output: songPointer updated (points to Song_Voice0 stream)
@@ -32,31 +28,29 @@ LoadSongPointer
 
           lda temp1
           cmp # 29
-          bcc skip_6352
-skip_6352:
+          bcc CheckBank0MinSongID
 
+          jmp LSP_InvalidSong
+
+CheckBank0MinSongID:
 
           ;; Check if songs handled by other banks (0-Bank14MaxSongID)
 
           ;; if temp1 < Bank0MinSongID then goto LSP_InvalidSong
           lda temp1
-          cmp Bank0MinSongID
-          bcs skip_4480
+          cmp # Bank0MinSongID
+          bcs CalculateIndex
+
           jmp LSP_InvalidSong
-skip_4480:
-          
+
+CalculateIndex:
 
           ;; Calculate compact index: songID - Bank0MinSongID (song Bank0MinSongID → 0)
 
-          ;; let temp2 = temp1 - Bank0MinSongID          lda temp1          sec          sbc Bank0MinSongID          sta temp2
+          ;; let temp2 = temp1 - Bank0MinSongID
           lda temp1
           sec
-          sbc Bank0MinSongID
-          sta temp2
-
-          lda temp1
-          sec
-          sbc Bank0MinSongID
+          sbc # Bank0MinSongID
           sta temp2
 
 
@@ -135,8 +129,8 @@ LoadSongVoice1PointerBank1
 
           lda temp1
           cmp # 29
-          bcc skip_6043
-skip_6043:
+          bcc CheckBank0MinSongIDVoice1
+CheckBank0MinSongIDVoice1:
 
 
           ;; Check if songs handled by other banks (0-Bank14MaxSongID)
@@ -144,9 +138,9 @@ skip_6043:
           ;; if temp1 < Bank0MinSongID then goto LSV1P_InvalidSong
           lda temp1
           cmp Bank0MinSongID
-          bcs skip_9878
+          bcs CalculateIndexVoice1
           jmp LSV1P_InvalidSong
-skip_9878:
+CalculateIndexVoice1:
           
 
           ;; Calculate compact index: songID - Bank0MinSongID (song Bank0MinSongID → 0)

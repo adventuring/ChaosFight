@@ -303,9 +303,9 @@ CheckAOECollision
           ;; (return value)
 
           ;;
-          ;; Called Routines: CheckAOEDirection_Right - checks AOE
+          ;; Called Routines: CheckAOEDirection.Right - checks AOE
 
-          ;; collision facing right, CheckAOEDirection_Left - checks
+          ;; collision facing right, CheckAOEDirection.Left - checks
 
           ;; AOE collision facing left, CheckBernieAOE - special case
 
@@ -353,10 +353,10 @@ CheckFacingDirection:
 
           lda temp6
           cmp # 0
-          ;; jmp CheckAOEDirection_Left
+          ;; jmp CheckAOEDirection.Left
 
 
-          ;; jmp CheckAOEDirection_Right
+          ;; jmp CheckAOEDirection.Right
 
 
 

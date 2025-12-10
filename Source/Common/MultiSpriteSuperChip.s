@@ -584,11 +584,11 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
           shakescreen = 0
           ;;; vblank_time is conditionally defined based on TVStandard
           .if TVStandard == 1
-            vblank_time = 58
+                    vblank_time = 58
           .elsif TVStandard == 2
-            vblank_time = 58
+                    vblank_time = 58
           .else
-            vblank_time = 43
+                    vblank_time = 43
           .fi
           scorefade = 0
           ;; NO_ILLEGAL_OPCODES = 0 (duplicate - already defined above)
@@ -601,16 +601,16 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
           mincycles = 232
           pfcenter = 0
           FASTFETCH = 0
-;;           minikernel = 0
+          ;;           minikernel = 0
           vertical_reflect = 1
           no_blank_lines = 0
           PFmaskvalue = 0
-  ;; NOT is a batariBASIC keyword (bitwise NOT operator), not a constant - do not define
+          ;; NOT is a batariBASIC keyword (bitwise NOT operator), not a constant - do not define
           ;; NOTE: playfieldRow is defined via dim in Variables.s, not here
-  ;; FontData is defined in Source/Generated/Numbers.bas - do not define here
-  ;; Forward assignments are not supported - use the actual label from Numbers.bas
+          ;; FontData is defined in Source/Generated/Numbers.bas - do not define here
+          ;; Forward assignments are not supported - use the actual label from Numbers.bas
           gamenumber = $00
-;;           mk_score_on = 1
+          ;;           mk_score_on = 1
           mk_gameselect_on = 0
   ;; qtcontroller is defined above at line 978 as $E7 (multisprite uses q=$E7)
   ;; frame is a user variable that must be dimmed - not provided by kernel

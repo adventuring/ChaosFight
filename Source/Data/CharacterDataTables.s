@@ -23,7 +23,7 @@ CharacterAttackTypes_end:
           ;; Global label for cross-bank access to CharacterAttackTypes data table
 asm:
 
-CharacterAttackTypes = CharacterAttackTypes
+          ;; CharacterAttackTypes = CharacterAttackTypes (duplicate - already defined above)
 asm_end:
 
           ;; Area-of-effect offsets

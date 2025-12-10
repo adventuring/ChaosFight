@@ -415,7 +415,7 @@ skip_2466:
           lda temp6
           cmp colorBWPrevious_R
           bne skip_8969
-          jmp CharacterSelectRescanDone
+          jsr BS_return
 skip_8969:
 
           ;; Cross-bank call to DetectPads in bank 13
@@ -433,7 +433,7 @@ return_point_8:
 
           lda switchbw
           sta colorBWPrevious_W
-          jmp CharacterSelectRescanDone
+          jsr BS_return
 .pend
 
 CharacterSelectDoRescan .proc
@@ -450,7 +450,7 @@ CharacterSelectDoRescan .proc
           jmp BS_jsr
 return_point_9:
 
-CharacterSelectRescanDone::
+CharacterSelectRescanDone:
 
 
 

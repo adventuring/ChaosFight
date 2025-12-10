@@ -15,7 +15,7 @@ BudgetedMissileCollisionCheck
           ;; Frame 2: Check Game Player 2 missile vs all players
           ;; Frame 3: Check Game Player 3 missile vs all players
           ;; Use missileActive bit flags: bit 0 = Player 0, bit 1 = Player 1,
-          bit 2 = Player 2, bit 3 = Player 3
+          ;; bit 2 = Player 2, bit 3 = Player 3
           ;; Use CheckAllMissileCollisions from MissileCollision.bas which checks one player missile
           lda controllerStatus
           and SetQuadtariDetected
@@ -29,7 +29,7 @@ skip_9367:
           sta temp1
           ;; framePhase 0-3 maps to Game Players 0-3
           ;; Calculate bit flag using O(1) array lookup: BitMask[playerIndex] (1, 2, 4, 8)
-                    let temp6 = BitMask[temp1]         
+          ;; let temp6 = BitMask[temp1]
           lda temp1
           asl
           tax
@@ -68,7 +68,7 @@ BudgetedMissileCollisionCheck2P
           ;; Use frame bit to alternate: 0 = Player 0, 1 = Player 1
           ;; BitMask[playerIndex] (1, 2, 4, 8)
           ;; Calculate bit flag using O(1) array lookup:
-                    let temp6 = BitMask[temp1]         
+          ;; let temp6 = BitMask[temp1]
           lda temp1
           asl
           tax

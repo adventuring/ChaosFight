@@ -29,7 +29,11 @@ MovePlayerToTarget .proc
           bcc skip_6165
           beq skip_6165
           jmp let_label
-skip_6165: playerX[temp1] = temp4 - 1
+skip_6165:
+          lda temp4
+          sec
+          sbc # 1
+          sta playerX,x
           ;; let temp4 = playerY[temp1]         
           lda temp1
           asl
@@ -45,7 +49,11 @@ skip_6165: playerX[temp1] = temp4 - 1
           bcc skip_2624
           beq skip_2624
           jmp let_label
-skip_2624: playerY[temp1] = temp4 - 1
+skip_2624:
+          lda temp4
+          sec
+          sbc # 1
+          sta playerY,x
           jsr NudgePlayerFromPlayfield
           jsr NudgePlayerFromPlayfield
           jsr BS_return
@@ -110,10 +118,10 @@ MPT_NudgeLeft .proc
 skip_2842:
 
           rts
+.pend
 
-MPT_CheckCollision
+MPT_CheckCollision:
           ;; Returns: Near (return thisbank)
-MPT_CheckCollision
           ;; Check collision at current position
           ;; Returns: Near (return thisbank) - called same-bank from MPT_NudgeRight/Left
           ;; Input: temp1 = player index, playerX[temp1] = test position, originalPlayerY_R = Y
@@ -189,7 +197,7 @@ skip_8161:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+return_point_move_outer:
 
           rts
 

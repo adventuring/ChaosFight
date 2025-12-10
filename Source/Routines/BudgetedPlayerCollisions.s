@@ -12,8 +12,8 @@ CheckCollisionP1vsP2:
 
           rts
 
-BudgetedCollisionCheck
-;;; Budget Collision Detection
+BudgetedCollisionCheck:
+          ;; Budget Collision Detection
           ;; Instead of checking all 6 collision pairs every frame in 4-player mode,
           ;; check 2 pairs per frame. This spreads the work across 3 frames.
           ;;
@@ -25,7 +25,7 @@ BudgetedCollisionCheck
           ;; Pair 4: P2 vs P4
           ;; Pair 5: P3 vs P4
           ;;
-          SCHEDULE:
+          ;; SCHEDULE:
           ;; Frame 0: Pairs 0, 1 (P1 vs P2, P1 vs P3)
           ;; Frame 1: Pairs 2, 3 (P1 vs P4, P2 vs P3)
           ;; Frame 2: Pairs 4, 5 (P2 vs P4, P3 vs P4)
@@ -40,26 +40,28 @@ BudgetedCollisionCheck
           lda framePhase
           cmp # 0
           bne BPC_CheckPhase0
-          ;; TODO: BPC_Phase0
-BPC_CheckPhase0:
 
+          ;; TODO: BPC_Phase0
+
+BPC_CheckPhase0:
 
           lda framePhase
           cmp # 1
           bne BPC_CheckPhase1
-          ;; TODO: BPC_Phase1
-BPC_CheckPhase1:
 
+          ;; TODO: BPC_Phase1
+
+BPC_CheckPhase1:
 
           lda framePhase
           cmp # 2
           bne BPC_CheckPhase2
+
           ;; TODO: BPC_Phase2
+
 BPC_CheckPhase2:
 
-
           jsr BS_return
-
 
 BPC_Phase0 .proc
           jsr BS_return
@@ -92,8 +94,7 @@ BPC_Phase2 .proc
 
           jsr BS_return
 
-CheckCollisionPair
-CheckCollisionPair
+CheckCollisionPair:
           ;; Input: temp3 = player 1 index, temp4 = player 2 index
           ;; Output: separates players if collision detected
                     if playerX[temp3] >= playerX[temp4] then BPC_CalcDiff

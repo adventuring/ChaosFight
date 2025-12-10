@@ -4,11 +4,8 @@
 
 
 
-CheckAllMissileCollisions
+CheckAllMissileCollisions:
           ;; Returns: Far (return otherbank)
-
-
-
 
           ;; Missile Collision System
           ;; Returns: Far (return otherbank)
@@ -69,10 +66,9 @@ CheckAllMissileCollisions
 
           ;; bit flag: BitMask[playerIndex] (1, 2, 4, 8 for players 0-3)
 
-          lda MissileHitNotFound
+          lda # MissileHitNotFound
           sta temp4
 
-                    ;; let temp6 = BitMask[temp1]
           ;; let temp6 = BitMask[temp1]
           lda temp1
           asl
@@ -251,7 +247,6 @@ CheckAOECollision
           ;; Returns: Near (return thisbank) - called same-bank
 
 
-CheckAOECollision
 
 
           ;;
@@ -272,12 +267,12 @@ CheckAOECollision
           ;; away rapidly.
 
           ;;
-          INPUT:
+          ;; INPUT:
 
           ;; temp1 = attacker player index (0-3)
 
           ;;
-          OUTPUT:
+          ;; OUTPUT:
 
           ;; temp4 = hit player index (0-3), or 255 if no hit
 
@@ -360,11 +355,11 @@ skip_1021:
           lda temp6
           cmp # 0
           bne skip_3727
-          jmp CheckAOEDirection_Left
+          ;; jmp CheckAOEDirection_Left
 skip_3727:
 
 
-          jmp CheckAOEDirection_Right
+          ;; jmp CheckAOEDirection_Right
 
 
 
@@ -634,9 +629,9 @@ CheckPlayersAgainstCachedHitbox .proc
 skip_5252:
 
 
-                    if playerHealth[temp2] = 0 then CPB_NextPlayer
+          ;; if playerHealth[temp2] = 0 then CPB_NextPlayer
 
-                    if playerX[temp2] + PlayerSpriteWidth <= cachedHitboxLeft_R then CPB_NextPlayer
+          ;; if playerX[temp2] + PlayerSpriteWidth <= cachedHitboxLeft_R then CPB_NextPlayer
           lda temp2
           asl
           tax
@@ -653,7 +648,7 @@ skip_5252:
 CPB_NextPlayer:
 skip_9492:
 
-                    if playerX[temp2] >= cachedHitboxRight_R then CPB_NextPlayer
+          ;; if playerX[temp2] >= cachedHitboxRight_R then CPB_NextPlayer
           lda temp2
           asl
           tax
@@ -664,7 +659,7 @@ skip_9492:
           jmp CPB_NextPlayer
 skip_3163:
 
-                    if playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R then CPB_NextPlayer
+          ;; if playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R then CPB_NextPlayer
           lda temp2
           asl
           tax
@@ -678,10 +673,10 @@ skip_3163:
           bcc CPB_NextPlayer
           beq CPB_NextPlayer
           jmp skip_8040
-CPB_NextPlayer:
+CPB_NextPlayer_dup11:
 skip_8040:
 
-                    if playerY[temp2] >= cachedHitboxBottom_R then CPB_NextPlayer
+          ;; if playerY[temp2] >= cachedHitboxBottom_R then CPB_NextPlayer
           lda temp2
           asl
           tax
@@ -698,9 +693,8 @@ skip_9459:
 
 .pend
 
-CPB_NextPlayer .proc
-
-.pend (no matching .proc)
+CPB_NextPlayer:
+          rts
 
 next_label_1_L693:.proc
 
@@ -721,12 +715,12 @@ next_label_1_L693:.proc
           ;; Uses pfread to check playfield pixel at missile position.
 
           ;;
-          INPUT:
+          ;; INPUT:
 
           ;; temp1 = player index (0-3)
 
           ;;
-          OUTPUT:
+          ;; OUTPUT:
 
           ;; temp4 = 1 if hit playfield, 0 if clear
 
@@ -761,7 +755,11 @@ next_label_1_L693:.proc
           ;; Get missile X/Y position
 
                     ;; let temp2 = missileX[temp1]
-                    lda temp1          asl          tax          lda missileX,x          sta temp2
+                    lda temp1
+                    asl
+                    tax
+                    lda missileX,x
+                    sta temp2
 
           ;; let temp3 = missileY_R[temp1]
           lda temp1
@@ -848,5 +846,4 @@ return_point_1_L825:
 
 
 
-.pend (extra - no matching .proc)
 

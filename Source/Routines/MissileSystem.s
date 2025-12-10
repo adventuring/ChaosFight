@@ -50,16 +50,15 @@ GetPlayerMissileBitFlag .proc
 .pend
 
 SpawnMissile .proc
-
           ;;
           ;; Returns: Far (return otherbank)
           ;; Spawn Missile
           ;; Creates a new missile/attack visual for a player.
           ;; Called when player presses attack button.
           ;;
-          INPUT:
+          ;; INPUT:
           ;; temp1 = player index (0-3)
-          PROCESS:
+          ;; PROCESS:
           ;; 1. Look up character type for this player
           ;; 2. Read missile properties from character data
           ;; 3. Set missile X/Y based on player position, facing, and
@@ -147,16 +146,16 @@ SpawnMissile .proc
           ;; Facing left, spawn left
           lda temp4
           cmp # 0
-          bne skip_8091
+          bne CheckFacingRight
           ;; let missileX[temp1] = missileX[temp1] + CharacterMissileSpawnOffsetLeft[temp5]
-skip_8091:
+CheckFacingRight:
 
           ;; Facing right, spawn right
           lda temp4
           cmp # 1
-          bne skip_3827
+          bne SpawnOffsetDone
           ;; let missileX[temp1] = missileX[temp1] + CharacterMissileSpawnOffsetRight[temp5]
-skip_3827:
+SpawnOffsetDone:
 
 
           ;; Set active bit for this player missile
@@ -215,19 +214,19 @@ skip_3827:
           ;; Get base X velocity
           lda temp4
           cmp # 0
-          bne skip_35
-          ;; let temp6 = 0 - temp6          lda 0          sec          sbc temp6          sta temp6
+          bne ApplyFacingDirectionDone
+          ;; let temp6 = 0 - temp6
           lda 0
           sec
           sbc temp6
           sta temp6
+ApplyFacingDirectionDone:
 
           lda 0
           sec
           sbc temp6
           sta temp6
 
-skip_35:
 
           ;; Apply facing direction (left = negative)
           lda temp1
@@ -252,9 +251,9 @@ skip_35:
           ;; Handler extracted to MissileCharacterHandlers.bas
           lda temp5
           cmp # 6
-          bne skip_7121
+          bne VelocityDone
           jmp HarpyCheckDiveVelocity
-skip_7121:
+VelocityDone:
 
           ;; VelocityDone label is in MissileCharacterHandlers.bas (same bank)
           jmp VelocityDone
@@ -411,9 +410,9 @@ UpdateOneMissile
           sta temp6
           lda temp6
           cmp CharacterMegax
-          bne skip_3745
+          bne CheckKnightGuy
           jmp HandleMegaxMissile
-skip_3745:
+CheckKnightGuy:
 
 
           ;; Special handling for Knight Guy (character 7): sword swing visual
@@ -421,9 +420,9 @@ skip_3745:
           ;; Handler extracted to MissileCharacterHandlers.bas
           lda temp6
           cmp CharacterKnightGuy
-          bne skip_6589
+          bne CheckGravityFlag
           jmp HandleKnightGuyMissile
-skip_6589:
+CheckGravityFlag:
 
 
           ;; Apply gravity if flag is set
@@ -431,9 +430,9 @@ skip_6589:
           lda temp5
           and MissileFlagGravity
           cmp # 0
-          bne skip_4156
+          bne ApplyGravity
           jmp GravityDone
-skip_4156:
+ApplyGravity:
 
           ;; let temp3 = temp3 + GravityPerFrame
           ;; Add gravity (1 pixel/frame down)
@@ -451,9 +450,9 @@ GravityDone
           lda temp5
           and MissileFlagFriction
           cmp # 0
-          bne skip_4219
+          bne CheckVelocityNonZero
           jmp FrictionDone
-skip_4219:
+CheckVelocityNonZero:
 
           ;; Get current X velocity
           ;; let missileVelocityXCalc = missileVelocityX[temp1]         
@@ -465,9 +464,9 @@ skip_4219:
           ;; Zero velocity, no friction to apply
           lda missileVelocityXCalc
           cmp # 0
-          bne skip_3181
+          bne ApplyFriction
           jmp FrictionDone
-skip_3181:
+ApplyFriction:
 
 
           ;; Apply ice-like friction: reduce by CurlingFrictionCoefficient/256 per frame
@@ -491,7 +490,7 @@ FrictionPositive
           ;; Apply reduction: subtract for positive, add for negative (both reduce magnitude)
           lda missileVelocityXCalc
           cmp # 128
-          bcc skip_7223
+          bcc FrictionPositive
           ;; let missileVelocityXCalc = missileVelocityXCalc + velocityCalculation else let missileVelocityXCalc = missileVelocityXCalc - velocityCalculation          lda missileVelocityXCalc          sec          sbc velocityCalculation          sta missileVelocityXCalc
           lda missileVelocityXCalc
           sec
@@ -503,7 +502,7 @@ FrictionPositive
           sbc velocityCalculation
           sta missileVelocityXCalc
 
-skip_7223:
+FrictionPositive:
 
           lda temp1
           asl
@@ -551,9 +550,9 @@ FrictionDone
           sta temp6
           lda temp6
           cmp CharacterFrooty
-          bne skip_761
+          bne CheckHorizontalWrap
           jmp FrootyRicochetCheck
-skip_761:
+CheckHorizontalWrap:
 
 
           ;; Wrap around horizontally using shared player thresholds
@@ -568,8 +567,8 @@ skip_761:
           lda temp2
           sec
           sbc PlayerRightWrapThreshold
-          bcc skip_3001
-          beq skip_3001
+          bcc CheckVerticalBounds
+          beq CheckVerticalBounds
           lda temp1
           asl
           tax
@@ -577,7 +576,7 @@ skip_761:
           sta missileX,x
           lda PlayerLeftEdge
           sta temp2
-skip_3001:
+CheckVerticalBounds:
 
           ;; Check vertical bounds (deactivate if off-screen)
           lda temp4
@@ -586,36 +585,36 @@ skip_3001:
           lda temp3
           sec
           sbc ScreenBottom
-          bcc skip_8760
-          beq skip_8760
+          bcc CheckTopBound
+          beq CheckTopBound
           jmp DeactivateMissile
-skip_8760:
+CheckTopBound:
 
           lda temp3
           sec
           sbc ScreenBottom
-          bcc skip_8334
-          beq skip_8334
+          bcc CheckTopWrapThreshold
+          beq CheckTopWrapThreshold
           jmp DeactivateMissile
-skip_8334:
+CheckTopWrapThreshold:
 
 
           ;; if temp3 > ScreenTopWrapThreshold then goto DeactivateMissile
           lda temp3
           sec
           sbc ScreenTopWrapThreshold
-          bcc skip_5438
-          beq skip_5438
+          bcc BoundsCheckDone
+          beq BoundsCheckDone
           jmp DeactivateMissile
-skip_5438:
+BoundsCheckDone:
 
           lda temp3
           sec
           sbc ScreenTopWrapThreshold
-          bcc skip_354
-          beq skip_354
+          bcc BoundsCheckComplete
+          beq BoundsCheckComplete
           jmp DeactivateMissile
-skip_354:
+BoundsCheckComplete:
 
 
           jmp BoundsCheckDone
@@ -635,26 +634,26 @@ FrootyRicochetCheck .proc
           ;; if temp2 < PlayerLeftWrapThreshold then goto FrootyRicochetLeft
           lda temp2
           cmp PlayerLeftWrapThreshold
-          bcs skip_8063
+          bcs CheckRightRicochet
           jmp FrootyRicochetLeft
-skip_8063:
+CheckRightRicochet:
           
           ;; if temp2 > PlayerRightWrapThreshold then goto FrootyRicochetRight
           lda temp2
           sec
           sbc PlayerRightWrapThreshold
-          bcc skip_4449
-          beq skip_4449
+          bcc FrootyRicochetVerticalCheck
+          beq FrootyRicochetVerticalCheck
           jmp FrootyRicochetRight
-skip_4449:
+FrootyRicochetVerticalCheck:
 
           lda temp2
           sec
           sbc PlayerRightWrapThreshold
-          bcc skip_6866
-          beq skip_6866
+          bcc CheckVerticalRicochet
+          beq CheckVerticalRicochet
           jmp FrootyRicochetRight
-skip_6866:
+CheckVerticalRicochet:
 
 
           jmp FrootyRicochetVerticalCheck
@@ -692,35 +691,35 @@ FrootyRicochetVerticalCheck .proc
           ;; if temp3 < 20 then goto FrootyRicochetTop          lda temp3          cmp 20          bcs .skip_6296          jmp
           lda temp3
           cmp # 20
-          bcs skip_214
+          bcs CheckBottomRicochet
           goto_label:
 
           jmp goto_label
-skip_214:
+CheckBottomRicochet:
 
           lda temp3
           cmp # 20
-          bcs skip_3130
+          bcs CheckScreenBottom
           jmp goto_label
-skip_3130:
+CheckScreenBottom:
 
           
           ;; if temp3 > ScreenBottom then goto FrootyRicochetBottom
           lda temp3
           sec
           sbc ScreenBottom
-          bcc skip_2992
-          beq skip_2992
+          bcc FrootyBoundsDone
+          beq FrootyBoundsDone
           jmp FrootyRicochetBottom
-skip_2992:
+FrootyBoundsDone:
 
           lda temp3
           sec
           sbc ScreenBottom
-          bcc skip_8640
-          beq skip_8640
+          bcc FrootyRicochetComplete
+          beq FrootyRicochetComplete
           jmp FrootyRicochetBottom
-skip_8640:
+FrootyRicochetComplete:
 
 
           jmp BoundsCheckDone
@@ -761,9 +760,9 @@ BoundsCheckDone
           lda temp5
           and MissileFlagHitBackground
           cmp # 0
-          bne skip_8110
+          bne CheckPlayfieldCollision
           jmp PlayfieldCollisionDone
-skip_8110:
+CheckPlayfieldCollision:
 
           ;; Cross-bank call to MissileCollPF in bank 8
           lda # >(return_point-1)
@@ -780,9 +779,9 @@ return_point:
 
           ;; Issue #1188: Collision detected - check if should bounce or deactivate
           lda temp4
-          bne skip_1997
+          bne HandleBounce
           jmp PlayfieldCollisionDone
-skip_1997:
+HandleBounce:
 
           jsr HandleMissileBounce
           jmp DeactivateMissile
@@ -808,9 +807,9 @@ return_point:
           ;; Check if hit was found (temp4 ≠ MissileHitNotFound)
           lda temp4
           cmp MissileHitNotFound
-          bne skip_8749
+          bne CheckGuardStatus
           jmp MissileSystemNoHit
-skip_8749:
+CheckGuardStatus:
 
 
           ;; Issue #1188: Check if hit player is guarding before handling hit
@@ -823,9 +822,9 @@ skip_8749:
           ;; Guarding - bounce instead of damage
           lda temp6
           cmp # 0
-          bne skip_1567
+          bne HandleGuardBounce
           jmp HandleMissileDamage
-skip_1567:
+HandleGuardBounce:
 
           ;; Guard bounce: play sound, invert velocity, reduce by 25%
           lda SoundGuardBlock
@@ -891,24 +890,24 @@ MissileSystemNoHit .proc
           ;; collision)
           lda missileLifetimeValue
           cmp MissileLifetimeInfinite
-          bne skip_8726
+          bne DecrementLifetime
                     goto MissileUpdateComplete
-skip_8726:
+DecrementLifetime:
 
           dec missileLifetimeValue
           lda missileLifetimeValue
           cmp # 0
-          bne skip_1561
+          bne LifetimeNotExpired
           jmp DeactivateMissile
-skip_1561:
+LifetimeNotExpired:
 
           ;; tail call
           dec missileLifetimeValue
           lda missileLifetimeValue
           cmp # 0
-          bne skip_1561
+          bne LifetimeStillActive
           jmp DeactivateMissile
-skip_1561:
+LifetimeStillActive:
 
           lda temp1
           asl
@@ -1007,10 +1006,10 @@ MissileSysPF .proc
           ;; temp3 is already in pixel coordinates, pfread will handle
           lda temp6
           cmp # 32
-          bcc skip_5047
+          bcc ColumnInRange
           lda # 31
           sta temp6
-skip_5047:
+ColumnInRange:
 
           ;; it
 
@@ -1104,9 +1103,9 @@ CheckMissilePlayerCollision
           ;; Skip eliminated players
           lda temp6
           cmp temp1
-          bne skip_3102
+          bne CheckPlayerHealth
           jmp MissileCheckNextPlayer
-skip_3102:
+CheckPlayerHealth:
 
           ;; AABB collision check: missile vs player bounding box
           ;; if playerHealth[temp6] = 0 then goto MissileCheckNextPlayer
@@ -1114,9 +1113,9 @@ skip_3102:
           asl
           tax
           lda playerHealth,x
-          bne skip_1475
+          bne CheckAABBCollision
           jmp MissileCheckNextPlayer
-skip_1475:
+CheckAABBCollision:
           ;; if temp2 >= playerX[temp6] + PlayerSpriteHalfWidth then goto MissileCheckNextPlayer
           ;; if temp2 + MissileAABBSize <= playerX[temp6] then goto MissileCheckNextPlayer
           lda temp2
@@ -1129,10 +1128,10 @@ skip_1475:
           lda playerX,x
           sec
           sbc temp6
-          bcc skip_6361
-          beq skip_6361
+          bcc CheckVerticalCollision
+          beq CheckVerticalCollision
           jmp MissileCheckNextPlayer
-skip_6361:
+CheckVerticalCollision:
           ;; if temp3 >= playerY[temp6] + PlayerSpriteHeight then goto MissileCheckNextPlayer
           lda temp6
           asl
@@ -1144,9 +1143,9 @@ skip_6361:
           lda temp3
           sec
           sbc temp6
-          bcc skip_690
+          bcc CheckBottomCollision
           jmp MissileCheckNextPlayer
-skip_690:
+CheckBottomCollision:
           ;; Collision detected - return otherbank hit player index
           ;; if temp3 + MissileAABBSize <= playerY[temp6] then goto MissileCheckNextPlayer
           lda temp3
@@ -1159,10 +1158,10 @@ skip_690:
           lda playerY,x
           sec
           sbc temp6
-          bcc skip_8688
-          beq skip_8688
+          bcc CollisionDetected
+          beq CollisionDetected
           jmp MissileCheckNextPlayer
-skip_8688:
+CollisionDetected:
           lda temp6
           sta temp4
           jmp MissileCollisionReturn
@@ -1244,11 +1243,11 @@ HandleMissileHit .proc
                     if temp3 <= 25 then let temp2 = 18 : goto MissileDamageDone
           lda temp3
           cmp # 26
-          bcs skip_5549
+          bcs HeavyCharacterDamage
           lda # 18
           sta temp2
           jmp MissileDamageDone
-skip_5549:
+HeavyCharacterDamage:
           lda # 22
           sta temp2
 MissileDamageDone
@@ -1262,9 +1261,9 @@ MissileDamageDone
 
           lda temp5
           cmp # 6
-          bne skip_3235
+          bne DiveCheckDone
           jmp HarpyCheckDive
-skip_3235:
+DiveCheckDone:
 
           jmp DiveCheckDone
 .pend
@@ -1276,9 +1275,9 @@ HarpyCheckDive .proc
           lda characterStateFlags_R[temp1]
           and 4
           cmp # 0
-          bne skip_6724
+          bne ApplyDiveBonus
           jmp DiveCheckDone
-skip_6724:
+ApplyDiveBonus:
 
           ;; Apply 1.5× damage for diving attacks (temp6 + temp6 ÷ 2 =
           ;; 1.5 × temp6)
@@ -1308,14 +1307,14 @@ DiveCheckDone
           lda playerHealth,x
           sec
           sbc oldHealthValue
-          bcc skip_9990
-          beq skip_9990
+          bcc ApplyKnockback
+          beq ApplyKnockback
           lda temp4
           asl
           tax
           lda # 0
           sta playerHealth,x
-skip_9990:
+ApplyKnockback:
 
           ;; Apply knockback (weight-based scaling - heavier characters
           ;; resist more)
@@ -1347,11 +1346,11 @@ skip_9990:
           lda characterWeight
           cmp 50
 
-          bcc skip_5458
+          bcc LightCharacterKnockback
 
-          jmp skip_5458
+          jmp LightCharacterKnockback
 
-          skip_5458:
+          LightCharacterKnockback:
           lda KnockbackImpulse
           sta impulseStrength
           jmp WeightBasedKnockbackApply
@@ -1379,24 +1378,24 @@ WeightBasedKnockbackScale .proc
           sta temp2
           lda temp2
           cmp # 201
-          bcc skip_4019
+          bcc CheckMediumWeight
           ;; let impulseStrength = 2 : goto WeightBasedKnockbackApply
-skip_4019:
+CheckMediumWeight:
 
           lda temp2
           cmp # 101
-          bcc skip_4159
+          bcc CheckLightWeight
           ;; let impulseStrength = 1 : goto WeightBasedKnockbackApply
-skip_4159:
+CheckLightWeight:
 
           lda # 0
           sta impulseStrength
           lda impulseStrength
           cmp # 0
-          bne skip_7646
+          bne SetMinimumImpulse
           lda # 1
           sta impulseStrength
-skip_7646:
+SetMinimumImpulse:
 
 .pend
 
@@ -1525,9 +1524,9 @@ HandleMissileBounce .proc
           lda temp5
           and MissileFlagFriction
           cmp # 0
-          bne skip_9352
+          bne ApplyFrictionDamping
           jmp BounceDone
-skip_9352:
+ApplyFrictionDamping:
 
           ;; Use bit shift instead of division to avoid complexity
           ;; issues

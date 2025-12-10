@@ -18,7 +18,6 @@
           ;; Main console detection routine
 
 ConsoleDetHW:
-ConsoleDetHW
           ;; Detect whether running on Atari 2600 or 7800 console
           ;;
           ;; Input: $D0, $D1 (hardware registers) = console detection
@@ -45,7 +44,6 @@ ConsoleDetHW
           sta systemFlags
           ;; No need to read prior value since it contains random garbage at sta
 
-
           ;; Check $D0 value
           lda $d0
           sta temp1
@@ -58,22 +56,26 @@ skip_3125:
           ;; Check if $D0 = $2C (7800 indicator)
 
           lda temp1
-          cmp ConsoleDetectD0
+          cmp # ConsoleDetectD0
           bne skip_4702
+
           jmp CheckD1
+
 skip_4702:
 
           jmp Is2600
 
-
-CheckD1 .proc
+CheckD1:
+.proc
           ;; Check $D1 value for 7800 confirmation
           lda $D1
           sta temp1
           lda temp1
-          cmp ConsoleDetectD1
+          cmp # ConsoleDetectD1
           bne skip_3707
+
           jmp Is7800
+
 skip_3707:
 
           ;; 7800 detected: $D0=$2C and #$D1=$A9
@@ -81,7 +83,8 @@ skip_3707:
 
 .pend
 
-CheckFlashed .proc
+CheckFlashed:
+.proc
           ;; Check if game was flashed to Harmony/Melody (both $D0 and
           ;; $D1 are $00)
           ;;
@@ -99,10 +102,12 @@ CheckFlashed .proc
           ;; Check if $D1 is also $00 (flashed game)
           lda $D1
           sta temp1
-                    if temp1 then goto Is2600
+          ;; if temp1 then goto Is2600
           lda temp1
           beq skip_4218
+
           jmp Is2600
+
 skip_4218:
 
           ;; Both $D0 and #$D1 are $00 - check $80 for CDFJ driver
@@ -112,16 +117,18 @@ skip_4218:
           lda temp1
           cmp # 0
           bne skip_585
-          jmp Is2600
-skip_585:
 
+          jmp Is2600
+
+skip_585:
 
           ;; fall through to Is7800
           ;; CDFJ driver detected 7800
 
 .pend
 
-Is7800 .proc
+Is7800:
+.proc
           ;; 7800 console detected
           ;;
           ;; Input: systemFlags (global) = system flags
@@ -132,15 +139,17 @@ Is7800 .proc
           ;;
           ;; Called Routines: None
           ;; Constraints: Must be colocated with ConsoleDetHW
-          lda SystemFlag7800
+          lda # SystemFlag7800
           sta systemFlags
           jmp ConsoleDetected
 
 .pend
 
-Is2600 .proc
+Is2600:
+.proc
           ;; 2600 console detected
-ConsoleDetected
+
+ConsoleDetected:
 
 .pend
 

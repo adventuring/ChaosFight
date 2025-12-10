@@ -613,6 +613,8 @@ CacheAOELeftHitbox .proc
 
 .pend
 
+.pend
+
 CheckPlayersAgainstCachedHitbox .proc
 
 

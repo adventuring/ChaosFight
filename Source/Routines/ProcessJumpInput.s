@@ -3,7 +3,6 @@
 
 
 ProcessJumpInput .proc
-
           ;;
           ;; Returns: Far (return otherbank)
           ;; Shared Jump Input Handler
@@ -34,8 +33,9 @@ ProcessJumpInput .proc
           pha
           lda # <(CheckEnhancedJumpButton-1)
           pha
-                    ldx # 9
+          ldx # 9
           jmp BS_jsr
+
 return_point:
 
           ;; If enhanced button not pressed, return (no action)

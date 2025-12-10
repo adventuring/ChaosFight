@@ -1,7 +1,7 @@
 ;;; ChaosFight - Source/Routines/ProcessUpAction.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-ProcessUpAction
+ProcessUpAction:
           ;; Shared UP Action Handler
           ;; Executes character-specific UP behavior (UP = Button C = Button II, no exceptions)
           ;;
@@ -39,9 +39,11 @@ ProcessUpAction
           asl
           tax
           lda playerCharacter,x
-          cmp CharacterBernie
+          cmp # CharacterBernie
           bne skip_7306
+
           jmp PUA_BernieFallThrough
+
 skip_7306:
 
           ;; Harpy: Flap (fly)
@@ -50,9 +52,11 @@ skip_7306:
           asl
           tax
           lda playerCharacter,x
-          cmp CharacterHarpy
+          cmp # CharacterHarpy
           bne skip_2587
+
           jmp PUA_HarpyFlap
+
 skip_2587:
 
           ;; For all other characters, UP is jump
@@ -62,9 +66,11 @@ skip_2587:
           asl
           tax
           lda playerCharacter,x
-          cmp CharacterZoeRyen
+          cmp # CharacterZoeRyen
           bne skip_8150
+
           jmp PUA_ZoeJumpCheck
+
 skip_8150:
 
           ;; Standard jump - block during attack animations (states 13-15)
@@ -76,7 +82,6 @@ skip_8150:
           lda playerCharacter,x
           sta temp4
           jmp DispatchCharacterJump
-
 
 PUA_BernieFallThrough .proc
           ;; Bernie UP handled in BernieJump routine (fall through 1-row floors)
@@ -92,8 +97,9 @@ PUA_BernieFallThrough .proc
           pha
           lda # <(BernieJump-1)
           pha
-                    ldx # 11
+          ldx # 11
           jmp BS_jsr
+
 return_point:
 
           rts
@@ -114,13 +120,14 @@ PUA_HarpyFlap .proc
           pha
           lda # <(HarpyJump-1)
           pha
-                    ldx # 11
+          ldx # 11
           jmp BS_jsr
+
 return_point_pua5:
 
           rts
 
-PUA_RoboTitoAscend
+PUA_RoboTitoAscend:
           ;; Ascend toward ceiling
           ;; let temp6 = playerCharacter[temp1]
           lda temp1
@@ -147,15 +154,15 @@ PUA_RoboTitoAscend
           tax
           lda playerX,x
           sta temp2
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; let temp2 = temp2 - ScreenInsetX
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
             lsr temp2
@@ -163,8 +170,10 @@ PUA_RoboTitoAscend
           lda temp2
           cmp # 32
           bcc skip_9153
+
           lda # 31
           sta temp2
+
 skip_9153:
 
           ;; if temp2 & $80 then let temp2 = 0
@@ -185,7 +194,9 @@ skip_9153:
           lda temp2
           cmp # 0
           bne skip_4246
+
           jmp PUA_RoboTitoLatch
+
 skip_4246:
 
           lda temp2
@@ -207,14 +218,17 @@ skip_4246:
           pha
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
+
 return_point_pua8:
 
           ;; if temp1 then goto PUA_RoboTitoLatch
           lda temp1
           beq skip_6148
+
           jmp PUA_RoboTitoLatch
+
 skip_6148:
           ;; Clear latch if DOWN pressed (check appropriate port)
           lda currentPlayer
@@ -223,25 +237,31 @@ skip_6148:
           ;; if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
           ;; lda joy1down (undefined - commented out)
           beq skip_7336
+
           lda temp1
           asl
           tax
           lda characterStateFlags_R,x
           and # 254
           sta characterStateFlags_W,x
+
 skip_7336:
           lda # 0
           sta temp3
           rts
-.pend
 
 PUA_CheckJoy0Down .proc
-          ;; if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq skip_9849
+          ;; if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
+          lda joy0down
+          beq skip_9849
+
 skip_9849:
           jmp skip_9849
+
           lda # 0
           sta temp3
           rts
+
 .pend
 
 PUA_RoboTitoLatch .proc
@@ -259,8 +279,10 @@ PUA_ZoeJumpCheck .proc
           ;; if (playerState[temp1] & 4) then let temp6 = 1
           ;; Block double-jump if already used (characterStateFlags bit 3)
           rts
+
           ;; Block jump during attack animations (states 13-15)
           rts
+
           ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
@@ -268,17 +290,19 @@ PUA_ZoeJumpCheck .proc
           lda playerCharacter,x
           sta temp4
           jsr DispatchCharacterJump
+
           ;; Set double-jump flag if jumping in air
           lda temp6
           cmp # 1
           bne skip_6415
+
           ;; let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
+
 skip_6415:
 
           lda # 1
           sta temp3
           rts
-
 
 .pend
 

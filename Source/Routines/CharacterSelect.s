@@ -74,22 +74,22 @@ CharacterSelectEntry .proc
 
                     if !INPT1{7} then goto CharacterSelectQuadtariAbsent
           bit INPT1
-          bmi skip_5888
+          bmi CheckINPT2
           jmp CharacterSelectQuadtariAbsent
-skip_5888:
+CheckINPT2:
 
           ;; if INPT2{7} then goto CharacterSelectQuadtariAbsent
           bit INPT2
-          bpl skip_4108
+          bpl CheckINPT3
           jmp CharacterSelectQuadtariAbsent
-skip_4108:
+CheckINPT3:
 
           ;; All checks passed - Quadtari detected
                     if !INPT3{7} then goto CharacterSelectQuadtariAbsent
           bit INPT3
-          bmi skip_7109
+          bmi SetQuadtariDetected
           jmp CharacterSelectQuadtariAbsent
-skip_7109:
+SetQuadtariDetected:
           lda controllerStatus
           ora SetQuadtariDetected
           sta controllerStatus
@@ -140,9 +140,9 @@ CharacterSelectLoop .proc
           ;; (if Quadtari detected)
           ;; if qtcontroller then goto CharacterSelectHandleQuadtari
           lda qtcontroller
-          beq skip_9978
+          beq HandleEvenFrameInput
           jmp CharacterSelectHandleQuadtari
-skip_9978:
+HandleEvenFrameInput:
 
           ;; Handle Player 1 input (joy0 on even frames)
           lda # 0
@@ -315,37 +315,37 @@ return_point: : if temp2 then goto CharacterSelectCompleted
 
 lda temp2
 
-beq skip_1268
+beq CheckPlayer2Locked
 
-skip_1268:
-          jmp skip_1268
-
-          lda temp2
-
-          beq skip_4268
-
-          jmp skip_4268:
+CheckPlayer2Locked:
+          jmp CheckPlayer2Locked
 
           lda temp2
 
-          beq skip_37
+          beq CheckPlayer2LockedLabel
 
-          jmp skip_37:
-
-          ;; ;;           ;; let temp1 = 1 : gosub GetPlayerLocked bank6 : if temp2 then goto CharacterSelectCompleted          lda temp2          beq skip_2410
-skip_2410:
-          jmp skip_2410
-          lda temp2
-
-          beq skip_4768
-
-          jmp skip_4768:
+          jmp CheckPlayer2LockedLabel:
 
           lda temp2
 
-          beq skip_8352
+          beq CheckPlayer2LockedLabel2
 
-          jmp skip_8352:
+          jmp CheckPlayer2LockedLabel2:
+
+          ;; ;;           ;; let temp1 = 1 : gosub GetPlayerLocked bank6 : if temp2 then goto CharacterSelectCompleted          lda temp2          beq CheckPlayer2LockedLabel3
+CheckPlayer2LockedLabel3:
+          jmp CheckPlayer2LockedLabel3
+          lda temp2
+
+          beq CharacterSelectDoneQuadtariReadyInline
+
+          jmp CharacterSelectDoneQuadtariReadyInline:
+
+          lda temp2
+
+          beq CharacterSelectDoneQuadtariReadyInlineLabel
+
+          jmp CharacterSelectDoneQuadtariReadyInlineLabel:
 
           jmp CharacterSelectDoneQuadtariReadyInline
 
@@ -357,11 +357,11 @@ CharacterSelectQuadtariReadyInline .proc
           lda readyCount
           cmp 2
 
-          bcc skip_1942
+          bcc CharacterSelectDoneQuadtariReadyInline
 
-          jmp skip_1942
+          jmp CharacterSelectDoneQuadtariReadyInline
 
-          skip_1942:
+          CharacterSelectDoneQuadtariReadyInline:
 
 CharacterSelectDoneQuadtariReadyInline
           ;; Draw character selection screen
@@ -415,17 +415,17 @@ HandleCharacterSelectPlayerInput .proc
           ;; Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
           lda temp1
           cmp # 0
-          bne skip_290
+          bne CheckPlayer2Joy0
           jmp HCSPI_UseJoy0
-skip_290:
+CheckPlayer2Joy0:
 
 
           ;; Players 1,3 use joy1
           lda temp1
           cmp # 2
-          bne skip_9848
+          bne UseJoy1
           jmp HCSPI_UseJoy0
-skip_9848:
+UseJoy1:
 
 
           jsr SelectStickLeft
@@ -547,9 +547,9 @@ DoneCharacter1FacingSel
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_8511
+          bne SetPlayer2Facing
           jmp DoneCharacter2FacingSel
-skip_8511:
+SetPlayer2Facing:
 
                     let playerState[1] = playerState[1]
           lda 1
@@ -568,9 +568,9 @@ DoneCharacter2FacingSel
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_4461
+          bne SetPlayer3Facing
           jmp DoneCharacter3FacingSel
-skip_4461:
+SetPlayer3Facing:
 
                     let playerState[2] = playerState[2]
           lda 2
@@ -589,9 +589,9 @@ DoneCharacter3FacingSel
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_5900
+          bne SetPlayer4Facing
           jmp DoneCharacter4FacingSel
-skip_5900:
+SetPlayer4Facing:
 
                     let playerState[3] = playerState[3]
           lda 3
@@ -642,30 +642,30 @@ CharacterSelectDetectQuadtari .proc
           ;; Check left side: if INPT1 is LOW then not detected
                     if INPT0{7} then CharacterSelectQuadtariAbsent
           bit INPT0
-          bpl skip_460
+          bpl CheckINPT1Detect
           jmp CharacterSelectQuadtariAbsent
-skip_460:
+CheckINPT1Detect:
 
                     if !INPT1{7} then CharacterSelectQuadtariAbsent
           bit INPT1
-          bmi skip_9316
+          bmi CheckINPT2Detect
           jmp CharacterSelectQuadtariAbsent
-skip_9316:
+CheckINPT2Detect:
 
           ;; Check right side: if INPT2 is HIGH then not detected
 
           ;; Check right side: if INPT3 is LOW then not detected
                     if INPT2{7} then CharacterSelectQuadtariAbsent
           bit INPT2
-          bpl skip_7185
+          bpl CheckINPT3Detect
           jmp CharacterSelectQuadtariAbsent
-skip_7185:
+CheckINPT3Detect:
 
                     if !INPT3{7} then CharacterSelectQuadtariAbsent
           bit INPT3
-          bmi skip_8722
+          bmi CharacterSelectQuadtariDetected
           jmp CharacterSelectQuadtariAbsent
-skip_8722:
+CharacterSelectQuadtariDetected:
 
           ;; All checks passed - Quadtari detected
           jmp CharacterSelectQuadtariDetected

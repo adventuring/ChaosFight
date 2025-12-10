@@ -4,12 +4,8 @@
 
 
 
-CheckAllPlayerCollisions
+CheckAllPlayerCollisions:
           ;; Returns: Far (return otherbank)
-
-
-CheckAllPlayerCollisions
-
 
           ;; Check Multi-player Collisions
           ;; Returns: Far (return otherbank)
@@ -23,93 +19,97 @@ CheckAllPlayerCollisions
           ;; dynamic activation.
 
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
-          bne skip_7014
+          bne Use4PlayerMode
+
           ;; let temp6 = 2 : goto PCR_SkipElse
-skip_7014:
+
+Use4PlayerMode:
 
           lda # 4
           sta temp6
 
-
 PCR_SkipElse .proc
-
           lda # 0
           sta temp1
 
 .pend
 
 PCR_OuterLoop .proc
-
           rts
 
-                    if temp1 >= 2 then PCR_CheckP1Active
+          if temp1 >= 2 then PCR_CheckP1Active
+
           jmp PCR_InnerLoop
 
 .pend
 
 PCR_CheckP1Active .proc
-
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
-          bne skip_3512
-          jmp PCR_NextOuter
-skip_3512:
+          bne CheckPlayer2Character
 
+          jmp PCR_NextOuter
+
+CheckPlayer2Character:
 
           ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto PCR_NextOuter
           lda temp1
           cmp # 2
-          bne skip_5726
-          lda 2
+          bne CheckPlayer3Character
+
+          lda # 2
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
-          bne skip_5726
+          cmp # NoCharacter
+          bne CheckPlayer3Character
+
           jmp PCR_NextOuter
-skip_5726:
+
+CheckPlayer3Character:
 
           lda temp1
           cmp # 2
-          bne skip_6410
-          lda 2
+          bne CheckPlayer3Active
+
+          lda # 2
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_6410
+          bne CheckPlayer3Active
           jmp PCR_NextOuter
-skip_6410:
+CheckPlayer3Active:
 
 
 
           ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto PCR_NextOuter
           lda temp1
           cmp # 3
-          bne skip_5117
+          bne PCR_InnerLoop
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_5117
+          bne PCR_InnerLoop
           jmp PCR_NextOuter
-skip_5117:
+PCR_InnerLoop:
 
           lda temp1
           cmp # 3
-          bne skip_5638
+          bne PCR_CheckPair
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_5638
+          bne PCR_CheckPair
           jmp PCR_NextOuter
-skip_5638:
+PCR_CheckPair:
 
 
 
@@ -130,11 +130,11 @@ PCR_CheckPair .proc
           lda temp2
           cmp temp6
 
-          bcc skip_6297
+          bcc PCR_CheckP2Active
 
-          jmp skip_6297
+          jmp PCR_CheckP2Active
 
-          skip_6297:
+          PCR_CheckP2Active:
 
                     if temp2 >= 2 then PCR_CheckP2Active
           jmp PCR_CheckDista
@@ -147,62 +147,62 @@ PCR_CheckP2Active .proc
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_1720
+          bne CheckP2Character
           jmp PCR_NextInner
-skip_1720:
+CheckP2Character:
 
 
           ;; if temp2 = 2 && playerCharacter[2] = NoCharacter then goto PCR_NextInner
           lda temp2
           cmp # 2
-          bne skip_6991
+          bne CheckP2Character3
           lda 2
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_6991
+          bne CheckP2Character3
           jmp PCR_NextInner
-skip_6991:
+CheckP2Character3:
 
           lda temp2
           cmp # 2
-          bne skip_6083
+          bne CheckP2CharacterActive
           lda 2
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_6083
+          bne CheckP2CharacterActive
           jmp PCR_NextInner
-skip_6083:
+CheckP2CharacterActive:
 
 
 
           ;; if temp2 = 3 && playerCharacter[3] = NoCharacter then goto PCR_NextInner
           lda temp2
           cmp # 3
-          bne skip_9173
+          bne PCR_CheckDistance
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_9173
+          bne PCR_CheckDistance
           jmp PCR_NextInner
-skip_9173:
+PCR_CheckDistance:
 
           lda temp2
           cmp # 3
-          bne skip_9326
+          bne CheckDistanceActive
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_9326
+          bne CheckDistanceActive
           jmp PCR_NextInner
-skip_9326:
+CheckDistanceActive:
 
 
 
@@ -215,18 +215,18 @@ PCR_CheckDistance .proc
           asl
           tax
           lda playerHealth,x
-          bne skip_6722
+          bne CheckPlayer2Health
           jmp PCR_NextInner
-skip_6722:
+CheckPlayer2Health:
 
           ;; if playerHealth[temp2] = 0 then goto PCR_NextInner
           lda temp2
           asl
           tax
           lda playerHealth,x
-          bne skip_2348
+          bne CalculateXDistance
           jmp PCR_NextInner
-skip_2348:
+CalculateXDistance:
 
           ;; let temp3 = playerX[temp2] - playerX[temp1]         
           lda temp2
@@ -238,21 +238,21 @@ skip_2348:
           ;; ;; if temp3 < 0 then let temp3 = 0 - temp3          lda 0          sec          sbc temp3          sta temp3
           lda temp3
           cmp # 0
-          bcs skip_9541
+          bcs CheckCollisionDistance
           jmp let_label
-skip_9541:
+CheckCollisionDistance:
 
           lda temp3
           cmp # 0
-          bcs skip_3442
+          bcs CheckDistanceThreshold
           jmp let_label
-skip_3442:
+CheckDistanceThreshold:
 
           lda temp3
           cmp # 0
-          bcs skip_8952
+          bcs CalculateYDistance
           jmp let_label
-skip_8952:
+CalculateYDistance:
 
 
 
@@ -261,11 +261,11 @@ skip_8952:
           cmp PlayerCollisionDista
 
 
-          bcc skip_3330
+          bcc CheckCollisionDistanceThreshold
 
-          jmp skip_3330
+          jmp CheckCollisionDistanceThreshold
 
-          skip_3330:
+          CheckCollisionDistanceThreshold:
 
           ;; let temp4 = playerY[temp2] - playerY[temp1]         
           lda temp2
@@ -277,21 +277,21 @@ skip_8952:
           ;; ;; if temp4 < 0 then let temp4 = 0 - temp4          lda 0          sec          sbc temp4          sta temp4
           lda temp4
           cmp # 0
-          bcs skip_2095
+          bcs CheckTotalHeight
           jmp let_label
-skip_2095:
+CheckTotalHeight:
 
           lda temp4
           cmp # 0
-          bcs skip_858
+          bcs CheckHeightThreshold
           jmp let_label
-skip_858:
+CheckHeightThreshold:
 
           lda temp4
           cmp # 0
-          bcs skip_2874
+          bcs CalculateWeights
           jmp let_label
-skip_2874:
+CalculateWeights:
 
 
 
@@ -333,20 +333,20 @@ skip_2874:
           ;; let totalHeight = halfHeight1 + halfHeight2
           lda totalHeight
           cmp # 0
-          bne skip_6830
+          bne CheckHeightCollision
           jmp PCR_NextInner
-skip_6830:
+CheckHeightCollision:
 
 
           ;; if temp4 >= totalHeight then goto PCR_NextInner
           lda temp4
           cmp totalHeight
 
-          bcc skip_4825
+          bcc CalculateWeights
 
-          jmp skip_4825
+          jmp CalculateWeights
 
-          skip_4825:
+          CalculateWeights:
 
                     ;; let characterWeight = CharacterWeights[temp1]
                     lda temp1          asl          tax          lda CharacterWeights,x          sta characterWeight
@@ -372,9 +372,9 @@ skip_6830:
           ;; let totalWeight = halfHeight1 + halfHeight2
           lda totalWeight
           cmp # 0
-          bne skip_8818
+          bne CalculateWeightDifference
           jmp PCR_NextInner
-skip_8818:
+CalculateWeightDifference:
 
 
           ;; if playerX[temp1] < playerX[temp2] then goto PCR_SepLeft
@@ -399,11 +399,11 @@ skip_8818:
           lda halfHeight1
           cmp halfHeight2
 
-          bcc skip_3823
+          bcc DoubleImpulseStrength
 
-          jmp skip_3823
+          jmp DoubleImpulseStrength
 
-          skip_3823:
+          DoubleImpulseStrength:
 
 
             lda impulseStrength
@@ -417,31 +417,31 @@ skip_8818:
           lda totalWeight
           cmp 128
 
-          bcc skip_8448
+          bcc CheckDiv64
 
-          jmp skip_8448
+          jmp CheckDiv64
 
-          skip_8448:
+          CheckDiv64:
 
           ;; if totalWeight >= 64 then goto PCR_Div64_1
           lda totalWeight
           cmp 64
 
-          bcc skip_9025
+          bcc CheckDiv32
 
-          jmp skip_9025
+          jmp CheckDiv32
 
-          skip_9025:
+          CheckDiv32:
 
           ;; if totalWeight >= 32 then goto PCR_Div32_1
           lda totalWeight
           cmp 32
 
-          bcc skip_6860
+          bcc DivBy16
 
-          jmp skip_6860
+          jmp DivBy16
 
-          skip_6860:
+          DivBy16:
 
 
             lda impulseStrength
@@ -552,17 +552,17 @@ PCR_ApplyImpulse .proc
 
           lda impulseStrength
           cmp # 0
-          bne skip_7839
+          bne CheckImpulseDirection
           lda # 1
           sta impulseStrength
-skip_7839:
+CheckImpulseDirection:
 
 
           lda temp5
           cmp # 0
-          bne skip_9808
+          bne ApplyImpulseLeft
           jmp PCR_ImpulseRightDir
-skip_9808:
+ApplyImpulseLeft:
 
 
                     if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength
@@ -586,12 +586,12 @@ skip_4706:
           tax
           lda playerVelocityX,x
           cmp # 253
-          bcs skip_5956
+          bcs ClampPlayer2VelocityMax
           lda playerVelocityX,x
           sec
           sbc impulseStrength
           sta playerVelocityX,x
-skip_5956:
+ClampPlayer2VelocityMax:
 
                     if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252
           lda temp2
@@ -600,11 +600,11 @@ skip_5956:
           lda playerVelocityX,x
           sec
           sbc 252
-          bcc skip_7440
-          beq skip_7440
+          bcc PCR_ImpulseDone
+          beq PCR_ImpulseDone
           lda 252
           sta playerVelocityX,x
-skip_7440:
+PCR_ImpulseDone:
           jmp PCR_ImpulseDone
 
 .pend
@@ -620,11 +620,11 @@ PCR_ImpulseRightDir .proc
           lda playerVelocityX,x
           sec
           sbc 252
-          bcc skip_4743
-          beq skip_4743
+          bcc ClampPlayer1VelocityMax
+          beq ClampPlayer1VelocityMax
           lda 252
           sta playerVelocityX,x
-skip_4743:
+ClampPlayer1VelocityMax:
 
                     if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX
           lda temp2
@@ -632,10 +632,10 @@ skip_4743:
           tax
           lda playerVelocityX,x
           cmp 4
-          bcs skip_9126
+          bcs ClampPlayer2Velocity
           lda playerVelocityX
           sta playerVelocityX,x
-skip_9126:[temp2] + impulseStrength
+ClampPlayer2Velocity:[temp2] + impulseStrength
 
                     if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           lda temp2
@@ -644,11 +644,11 @@ skip_9126:[temp2] + impulseStrength
           lda playerVelocityX,x
           sec
           sbc 4
-          bcc skip_6614
-          beq skip_6614
+          bcc PCR_ImpulseDone
+          beq PCR_ImpulseDone
           lda 4
           sta playerVelocityX,x
-skip_6614:
+PCR_ImpulseDone:
 
 PCR_ImpulseDone
           lda temp1
@@ -689,11 +689,11 @@ PCR_SepLeft .proc
           lda halfHeight1
           cmp halfHeight2
 
-          bcc skip_4531
+          bcc DoubleImpulseStrengthLeft
 
-          jmp skip_4531
+          jmp DoubleImpulseStrengthLeft
 
-          skip_4531:
+          DoubleImpulseStrengthLeft:
 
 
             lda impulseStrength
@@ -707,31 +707,31 @@ PCR_SepLeft .proc
           lda totalWeight
           cmp 128
 
-          bcc skip_8021
+          bcc CheckDiv64Left
 
-          jmp skip_8021
+          jmp CheckDiv64Left
 
-          skip_8021:
+          CheckDiv64Left:
 
           ;; if totalWeight >= 64 then goto PCR_Div64_2
           lda totalWeight
           cmp 64
 
-          bcc skip_3486
+          bcc CheckDiv32Left
 
-          jmp skip_3486
+          jmp CheckDiv32Left
 
-          skip_3486:
+          CheckDiv32Left:
 
           ;; if totalWeight >= 32 then goto PCR_Div32_2
           lda totalWeight
           cmp 32
 
-          bcc skip_2933
+          bcc DivBy16Left
 
-          jmp skip_2933
+          jmp DivBy16Left
 
-          skip_2933:
+          DivBy16Left:
 
 
             lda impulseStrength
@@ -855,9 +855,9 @@ PCR_NextOuter .proc
           ;; if temp1 < temp6 then goto PCR_OuterLoop
           lda temp1
           cmp temp6
-          bcs skip_7180
+          bcs PCR_NextOuterDone
           jmp PCR_OuterLoop
-skip_7180:
+PCR_NextOuterDone:
 
           
 

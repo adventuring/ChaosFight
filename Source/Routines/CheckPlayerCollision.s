@@ -18,9 +18,11 @@ XDistanceDone:
           if temp6 >= PlayerSpriteWidth then NoCollision
           cmp # PlayerSpriteWidth
           bcc XDistanceCheckCollision
+
           lda # 0
           sta temp3
           jmp CPC_Done
+
 XDistanceCheckCollision:
           lda # 1
           sta temp3
@@ -30,6 +32,7 @@ XDistanceCheckCollision:
           lda temp3
           cmp # 0
           beq CPC_Done
+
           ;;
           ;; Load player Y positions into temporaries
           ;; let temp4 = playerY[temp1]
@@ -50,7 +53,9 @@ XDistanceCheckCollision:
           lda temp4
           cmp temp5
           bcc YDistanceCalcRight
+
           jmp CPC_CalcYDistance
+
 YDistanceCalcRight:
           ;; let temp6 = temp5 - temp4
           lda temp5
@@ -59,7 +64,7 @@ YDistanceCalcRight:
           sta temp6
           jmp YDistanceDone
 
-CPC_CalcYDistance
+CPC_CalcYDistance:
           ;; Returns: Near (return thisbank)
           ;; Calculate Y distance (temp4 - temp5)
           ;; Returns: Near (return thisbank)
@@ -81,7 +86,7 @@ CPC_CalcYDistance
           sta temp6
           jmp YDistanceDone
 
-YDistanceDone
+YDistanceDone:
           ;; Returns: Near (return thisbank)
           ;; Y distance calculated - check for collision
           ;; Returns: Near (return thisbank)
@@ -106,20 +111,22 @@ YDistanceDone
           lda CharacterHeights,x
           cmp temp6
           bcs YDistanceCheckCollision
+
           lda # 0
           sta temp3
           jmp CPC_Done
+
 YDistanceCheckCollision:
           lda # 1
           sta temp3
 
-CPC_Done
+CPC_Done:
           ;; Returns: Near (return thisbank)
           ;; Collision check complete - return result in temp3
           ;; Returns: Far (return otherbank)
           rts
 
-CheckPlayerCollision
+CheckPlayerCollision:
           ;;
           ;; Collision Detection With Subpixel Precision
           ;; Check collision between two players using integer
@@ -156,14 +163,13 @@ CheckPlayerCollision
           ;; Uses temp1-temp6 (temp4-5 reused after X/Y checks)
 
           ;; Load player X positions into temporaries
-                    ;; let temp4 = playerX[temp1]
-                    lda temp1          asl          tax          lda playerX,x          sta temp4
-          ;; let temp5 = playerX[temp2]
-          lda temp2
+          ;; let temp4 = playerX[temp1]
+          lda temp1
           asl
           tax
           lda playerX,x
-          sta temp5         
+          sta temp4
+          ;; let temp5 = playerX[temp2]
           lda temp2
           asl
           tax
@@ -171,14 +177,9 @@ CheckPlayerCollision
           sta temp5
 
           ;; Calculate absolute × distance between players
-                    if temp4 >= temp5 then CalcXDistanceRight
+          if temp4 >= temp5 then CalcXDistanceRight
 
-          ;; let temp6 = temp5 - temp4          lda temp5          sec          sbc temp4          sta temp6
-          lda temp5
-          sec
-          sbc temp4
-          sta temp6
-
+          ;; let temp6 = temp5 - temp4
           lda temp5
           sec
           sbc temp4
@@ -186,14 +187,8 @@ CheckPlayerCollision
 
           jmp XDistanceDone
 
-
 CalcXDistanceRight .proc
-          ;; let temp6 = temp4 - temp5          lda temp4          sec          sbc temp5          sta temp6
-          lda temp4
-          sec
-          sbc temp5
-          sta temp6
-
+          ;; let temp6 = temp4 - temp5
           lda temp4
           sec
           sbc temp5
@@ -205,6 +200,7 @@ CalcXDistanceRight .proc
           sbc temp5
           sta temp6
           jmp XDistanceDone
+
 .pend
 
 CalcYDistanceDown .proc

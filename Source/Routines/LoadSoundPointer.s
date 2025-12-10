@@ -41,18 +41,19 @@ LoadSoundPointer .proc
           lda temp1
           cmp # 10
           bcc SoundIDInRange
+
+          jmp LoadSoundPointerOutOfRange
+
 SoundIDInRange:
 
-
-                    ;; let var41 = SoundPointersH[temp1]
-                    lda temp1          asl          tax          lda SoundPointersH,x          sta var41
-
-          ;; let var42 = SoundPointersL[temp1]
+          ;; let var41 = SoundPointersH[temp1]
           lda temp1
           asl
           tax
-          lda SoundPointersL,x
-          sta soundEffectPointerH         
+          lda SoundPointersH,x
+          sta var41
+
+          ;; let var42 = SoundPointersL[temp1]
           lda temp1
           asl
           tax
@@ -64,7 +65,6 @@ SoundIDInRange:
 .pend
 
 LoadSoundPointerOutOfRange .proc
-
           ;; Set pointer to 0 (var41.var42 = 0.0)
           ;; Returns: Far (return otherbank)
 
@@ -76,8 +76,7 @@ LoadSoundPointerOutOfRange .proc
           lda # 0
           sta var42
 
-LoadSoundPointerReturn
-
+LoadSoundPointerReturn:
           rts
 
 .pend

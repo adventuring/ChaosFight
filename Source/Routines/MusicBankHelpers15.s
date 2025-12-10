@@ -7,8 +7,7 @@
           ;; Bank 15
           ;; Duplicate of MusicBankHelpers.bas but for Bank 15 songs
 
-LoadSongPointerBank15
-LoadSongPointerBank15
+LoadSongPointerBank15:
           ;; Lookup song pointer from tables (Bank 15 songs: 0-Bank14MaxSongID)
           ;;
           ;; Input: temp1 = song ID (Bank 15 songs: 0-Bank14MaxSongID),
@@ -21,52 +20,37 @@ LoadSongPointerBank15
           ;; Constraints: Only songs 0-Bank14MaxSongID live in Bank 15. Index mapping:
           ;; song ID maps directly (index = songID). Returns songPointer = 0 if song not in this bank.
           ;; Bounds check: only songs 0-Bank14MaxSongID reside in Bank 15
-          ;; if temp1 < 0 then goto LSP15_InvalidSong          lda temp1          cmp 0          bcs .skip_6825          jmp
-          lda temp1
-          cmp # 0
-          bcs CheckUpperBound
-          MBH15_goto_label:
-
-          jmp goto_label
-CheckUpperBound:
-
+          ;; if temp1 < 0 then goto LSP15_InvalidSong
           lda temp1
           cmp # 0
           bcs CheckMaxSongID
-          jmp goto_label
+
+          jmp LSP15_InvalidSong
+
 CheckMaxSongID:
 
-          
           ;; if temp1 > Bank14MaxSongID then goto LSP15_InvalidSong
           lda temp1
           sec
-          sbc Bank14MaxSongID
+          sbc # Bank14MaxSongID
           bcc SongIDInRange
           beq SongIDInRange
+
           jmp LSP15_InvalidSong
+
 SongIDInRange:
-
-          lda temp1
-          sec
-          sbc Bank14MaxSongID
-          bcc SongIDValid
-          beq SongIDValid
-          jmp LSP15_InvalidSong
-SongIDValid:
-
 
           ;; Calculate compact index: index = songID
           lda temp1
           sta temp2
           ;; Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
-                    ;; let var40 = SongPointers2H[temp2]
-                    lda temp2          asl          tax          lda SongPointers2H,x          sta var40
-          ;; let songPointer = SongPointers2L[temp2]
+          ;; let var40 = SongPointers2H[temp2]
           lda temp2
           asl
           tax
-          lda SongPointers2L,x
-          sta songPointer
+          lda SongPointers2H,x
+          sta var40
+          ;; let songPointer = SongPointers2L[temp2]
           lda temp2
           asl
           tax
@@ -75,7 +59,8 @@ SongIDValid:
           ;; LoadSongPointerBank15 is called from StartMusic which is called cross-bank
           ;; Therefore it must always use return thisbank, even when called same-bank
           rts
-LSP15_InvalidSong
+
+LSP15_InvalidSong:
           lda # 0
           sta songPointer
           ;; LoadSongPointerBank15 is called from StartMusic which is called cross-bank

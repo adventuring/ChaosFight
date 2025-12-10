@@ -1,8 +1,8 @@
 ;;; ChaosFight - Source/Routines/BudgetedMissileCollisions.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-BudgetedMissileCollisionCheck
-;;; Budget Missile Collision Detection
+BudgetedMissileCollisionCheck:
+          ;; Budget Missile Collision Detection
           ;; Check missile collisions for at most 2 missiles per frame.
           ;;
           ;; SCHEDULE (2-player mode):
@@ -15,14 +15,16 @@ BudgetedMissileCollisionCheck
           ;; Frame 2: Check Game Player 2 missile vs all players
           ;; Frame 3: Check Game Player 3 missile vs all players
           ;; Use missileActive bit flags: bit 0 = Player 0, bit 1 = Player 1,
-          bit 2 = Player 2, bit 3 = Player 3
+          ;; bit 2 = Player 2, bit 3 = Player 3
           ;; Use CheckAllMissileCollisions from MissileCollision.bas which checks one player missile
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne Use4PlayerMode
-Use4PlayerMode:
 
+          jmp BudgetedMissileCollisionCheck2P
+
+Use4PlayerMode:
 
           ;; 4-player mode: check one missile per frame
           lda framePhase
@@ -47,20 +49,16 @@ Use4PlayerMode:
           pha
           lda # <(CheckAllMissileCollisions-1)
           pha
-                    ldx # 7
+          ldx # 7
           jmp BS_jsr
-return_point:
 
+return_point:
 
           rts
 
-BudgetedMissileCollisionCheck2P
+BudgetedMissileCollisionCheck2P:
           ;; Simple 2-player mode: alternate missiles
           ;; let temp1 = frame & 1
-          lda frame
-          and # 1
-          sta temp1
-
           lda frame
           and # 1
           sta temp1
@@ -78,18 +76,18 @@ BudgetedMissileCollisionCheck2P
           and temp6
           sta temp4
           ;; Cross-bank call to CheckAllMissileCollisions in bank 8
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(CheckAllMissileCollisions-1)
           pha
           lda # <(CheckAllMissileCollisions-1)
           pha
-                    ldx # 7
+          ldx # 7
           jmp BS_jsr
-return_point:
 
+return_point2:
 
           rts
 

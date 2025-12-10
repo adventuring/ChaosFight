@@ -139,17 +139,17 @@ HandleMegaxMissile .proc
           ;; Facing left, spawn left
           lda temp4
           cmp # 0
-          bne skip_4908
+          bne CheckFacingRight
           ;; let temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
-skip_4908:
+CheckFacingRight:
 
 
           ;; Facing right, spawn right
           lda temp4
           cmp # 1
-          bne skip_7180
+          bne CalculateYPosition
           ;; let temp2 = temp2 + CharacterMissileSpawnOffsetRight[temp5]
-skip_7180:
+CalculateYPosition:
 
 
           ;; Calculate Y position (player Y + emission height)

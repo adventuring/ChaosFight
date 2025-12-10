@@ -11,28 +11,26 @@ HFCM_AttemptMoveLeft .proc
           tax
           lda playerX,x
           sta temp2
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; let temp2 = temp2 - ScreenInsetX
           lda temp2
           sec
-          sbc ScreenInsetX
-          sta temp2
-
-          lda temp2
-          sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
             lsr temp2
             lsr temp2
           lda temp2
           cmp # 32
-          bcc skip_520
+          bcc ColumnInRange
+
           lda # 31
           sta temp2
-skip_520:
+
+ColumnInRange:
 
           ;; if temp2 & $80 then let temp2 = 0
           jsr BS_return
+
           lda temp2
           sec
           sbc # 1
@@ -64,11 +62,13 @@ skip_520:
           pha
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
+
 return_point:
 
           jsr BS_return
+
           lda temp4
           clc
           adc # 16
@@ -81,29 +81,30 @@ return_point:
           sta temp7
           ;; if temp7 >= pfrows then goto HFCM_ApplyLeft
           lda temp7
-          cmp pfrows
+          cmp # pfrows
 
-          bcc skip_1152
+          bcc RowInRange
 
-          jmp skip_1152
+          jmp HFCM_ApplyLeft
 
-skip_1152:
+RowInRange:
           lda temp3
           sta temp1
           lda temp7
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
-return_point_fmh2:
+
+return_point2:
 
           jsr BS_return
 .pend

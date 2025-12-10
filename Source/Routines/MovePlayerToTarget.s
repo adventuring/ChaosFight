@@ -26,14 +26,15 @@ MovePlayerToTarget .proc
           lda temp4
           sec
           sbc temp2
-          bcc skip_6165
-          beq skip_6165
-          ;; jmp let_label
-skip_6165:
+          bcc MovePlayerXRight
+          beq MovePlayerXRight
+
           lda temp4
           sec
           sbc # 1
           sta playerX,x
+
+MovePlayerXRight:
           ;; let temp4 = playerY[temp1]         
           lda temp1
           asl
@@ -46,14 +47,15 @@ skip_6165:
           lda temp4
           sec
           sbc temp3
-          bcc skip_2624
-          beq skip_2624
-          ;; jmp let_label
-skip_2624:
+          bcc MovePlayerYDown
+          beq MovePlayerYDown
+
           lda temp4
           sec
           sbc # 1
           sta playerY,x
+
+MovePlayerYDown:
           jsr NudgePlayerFromPlayfield
           jsr NudgePlayerFromPlayfield
           jsr BS_return
@@ -65,13 +67,13 @@ NudgePlayerFromPlayfield .proc
           ;; Returns: Near (return thisbank) - called same-bank from MovePlayerToTarget
           ;; Input: temp1 = player index
           ;; Output: Player position adjusted to avoid playfield
-          ;; let originalPlayerX_W = playerX[temp1]          lda temp1          asl          tax          lda playerX,x          sta originalPlayerX_W
-          ;; let originalPlayerY_W = playerY[temp1]
+          ;; let originalPlayerX_W = playerX[temp1]
           lda temp1
           asl
           tax
-          lda playerY,x
-          sta originalPlayerY_W
+          lda playerX,x
+          sta originalPlayerX_W
+          ;; let originalPlayerY_W = playerY[temp1]
           lda temp1
           asl
           tax

@@ -12,8 +12,6 @@
 
 
 RadishGoblinHandleInput .proc
-
-
           ;; Handle joystick input for Radish Goblin bounce movement
           ;; Returns: Far (return otherbank)
 
@@ -28,26 +26,26 @@ RadishGoblinHandleInput .proc
           ;; if temp1 & 2 = 0 then goto RGHI_Joy0
           lda joy1left
           bne RGHI_Left
-          jmp RGHI_CheckRight
-RGHI_Left:
 
+          jmp RGHI_CheckRight
+
+RGHI_Left:
 
           jmp RGHI_Left
 
 .pend
 
 RGHI_Joy0 .proc
-
           lda joy0left
           bne RGHI_Left
-          jmp RGHI_CheckRight
-RGHI_Left:
 
+          jmp RGHI_CheckRight
+
+RGHI_Left:
 
 .pend
 
 RGHI_Left .proc
-
           ;; let temp4 = playerCharacter[temp1]
           lda temp1
           asl
@@ -61,17 +59,12 @@ RGHI_Left .proc
           tax
           lda CharacterMovementSpeed,x
           sta temp6
-          lda temp4
-          asl
-          tax
-          lda CharacterMovementSpeed,x
-          sta temp6
 
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
                     if (playerState[temp1] & 8) then goto RGHI_AfterLeft

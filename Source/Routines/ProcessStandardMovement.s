@@ -25,9 +25,9 @@ ProcessStandardMovement .proc
           ;; if temp1 & 2 = 0 then goto PSM_UseJoy0
           ;; Left movement: set negative velocity
           lda joy1left
-          bne skip_4227
+          bne PSM_ApplyLeftJoy1
           jmp PSM_CheckRightJoy1
-skip_4227:
+PSM_ApplyLeftJoy1:
 
                     if playerCharacter[temp1] = CharacterFrooty then PSM_LeftMomentum1
                     ;; let temp6 = playerCharacter[temp1]
@@ -105,21 +105,21 @@ PSM_AfterLeftSet1 .proc
           ;; if temp2 < 5 then PSM_InlineNoLeft
           lda temp2
           cmp # 5
-          bcs skip_2509
+          bcs CheckAnimationState10Left
           jmp PSM_InlineNoLeft
-skip_2509:
+CheckAnimationState10Left:
 
           lda temp2
           cmp # 5
-          bcs skip_7662
+          bcs CheckAnimationState10LeftLabel
           jmp PSM_InlineNoLeft
-skip_7662:
+CheckAnimationState10LeftLabel:
 
 
           lda temp2
           cmp # 10
-          bcc skip_2790
-skip_2790:
+          bcc PSM_InlineDoneLeft
+PSM_InlineDoneLeft:
 
 
 .pend
@@ -137,9 +137,9 @@ PSM_InlineNoLeft .proc
 
 PSM_InlineDoneLeft
           lda temp3
-          bne skip_6938
+          bne PSM_InlineDoneLeft
                     let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
-skip_6938:
+PSM_InlineDoneLeft:
 
 
 .pend
@@ -368,9 +368,9 @@ PSM_InlineNoLeft0 .proc
 
 PSM_InlineDoneLeft0
           lda temp3
-          bne skip_6938
+          bne PSM_InlineDoneLeft
                     let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
-skip_6938:
+PSM_InlineDoneLeft:
 
 
 .pend

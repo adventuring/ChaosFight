@@ -120,15 +120,15 @@ HFCM_ApplyLeft .proc
           sta temp5
           lda temp5
           cmp # 8
-          bne skip_4757
+          bne CheckDragonOfStormsLeft
           jmp HFCM_LeftMomentum
-skip_4757:
+CheckDragonOfStormsLeft:
 
           lda temp5
           cmp # 2
-          bne skip_4970
+          bne HFCM_LeftStandard
           jmp HFCM_LeftDirect
-skip_4970:
+HFCM_LeftStandard:
 
                     let playerVelocityX[temp1] = $ff
           lda temp1
@@ -207,21 +207,21 @@ return_point_fmh3:
           ;; if temp2 < 5 then HFCM_SetFacingLeft
           lda temp2
           cmp # 5
-          bcs skip_4100
+          bcs CheckAnimationState10Left
           jmp HFCM_SetFacingLeft
-skip_4100:
+CheckAnimationState10Left:
 
           lda temp2
           cmp # 5
-          bcs skip_7239
+          bcs CheckAnimationState10LeftLabel
           jmp HFCM_SetFacingLeft
-skip_7239:
+CheckAnimationState10LeftLabel:
 
 
           lda temp2
           cmp # 10
-          bcc skip_3320
-skip_3320:
+          bcc HFCM_LeftFacingDone
+HFCM_LeftFacingDone:
 
           jsr BS_return
 .pend
@@ -255,10 +255,10 @@ HFCM_AttemptMoveRight .proc
             lsr temp2
           lda temp2
           cmp # 32
-          bcc skip_520
+          bcc ColumnInRangeRight
           lda # 31
           sta temp2
-skip_520:
+ColumnInRangeRight:
 
           ;; if temp2 & $80 then let temp2 = 0
           jsr BS_return
@@ -312,11 +312,11 @@ return_point_fmh4:
           lda temp7
           cmp pfrows
 
-          bcc skip_7847
+          bcc RowInRangeRight
 
-          jmp skip_7847
+          jmp RowInRangeRight
 
-          skip_7847:
+          RowInRangeRight:
           lda temp3
           sta temp1
           lda temp7
@@ -348,15 +348,15 @@ HFCM_ApplyRight .proc
           sta temp5
           lda temp5
           cmp # 8
-          bne skip_7311
+          bne CheckDragonOfStormsRight
           jmp HFCM_RightMomentum
-skip_7311:
+CheckDragonOfStormsRight:
 
           lda temp5
           cmp # 2
-          bne skip_5774
+          bne HFCM_RightStandard
           jmp HFCM_RightDirect
-skip_5774:
+HFCM_RightStandard:
 
           lda temp1
           asl
@@ -426,21 +426,21 @@ return_point_fmh6:
           ;; if temp2 < 5 then HFCM_SetFacingRight
           lda temp2
           cmp # 5
-          bcs skip_6152
+          bcs CheckAnimationState10Right
           jmp HFCM_SetFacingRight
-skip_6152:
+CheckAnimationState10Right:
 
           lda temp2
           cmp # 5
-          bcs skip_9641
+          bcs CheckAnimationState10RightLabel
           jmp HFCM_SetFacingRight
-skip_9641:
+CheckAnimationState10RightLabel:
 
 
           lda temp2
           cmp # 10
-          bcc skip_8619
-skip_8619:
+          bcc HFCM_RightFacingDone
+HFCM_RightFacingDone:
 
           jsr BS_return
 .pend

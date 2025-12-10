@@ -94,8 +94,8 @@ HandleConsoleSwitches
           jsr CheckEnhancedPause
 
           lda temp1
-          bne skip_2900
-skip_2900:
+          bne CheckSelectPressed
+CheckSelectPressed:
 
           ;; Re-detect controllers when Select is pressed
           ;; Cross-bank call to DetectPads in bank 13
@@ -115,9 +115,9 @@ return_point:
           lda systemFlags
           and SystemFlagGameStatePaused
           cmp # 0
-          bne skip_1411
+          bne SetPausedFlag
           ;; let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
-skip_1411:
+SetPausedFlag:
 
           lda systemFlags
           and ClearSystemFlagGameStatePaused
@@ -137,8 +137,8 @@ DonePlayer1Pause
           jsr CheckEnhancedPause
 
           lda temp1
-          bne skip_4884
-skip_4884:
+          bne CheckSelectPressedP2
+CheckSelectPressedP2:
 
           ;; Re-detect controllers when Select is pressed
           ;; Cross-bank call to DetectPads in bank 13
@@ -158,9 +158,9 @@ return_point:
           lda systemFlags
           and SystemFlagGameStatePaused
           cmp # 0
-          bne skip_3376
+          bne SetPausedFlagP2
           ;; let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
-skip_3376:
+SetPausedFlagP2:
 
           lda systemFlags
           and ClearSystemFlagGameStatePaused
@@ -245,16 +245,16 @@ CheckEnhancedPause .proc
           ;; Joy2B+ Button III uses different registers than Button II/C
           lda temp2
           cmp # 0
-          bne skip_9581
+          bne CheckPlayer2Pause
           jmp CEP_CheckPlayer1
-skip_9581:
+CheckPlayer2Pause:
 
 
           lda temp2
           cmp # 1
-          bne skip_8204
+          bne CheckEnhancedPauseDone
           jmp CEP_CheckPlayer2
-skip_8204:
+CheckEnhancedPauseDone:
 
           rts
 
@@ -268,12 +268,12 @@ CEP_CheckPlayer1 .proc
                     if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
           lda controllerStatus
           and SetLeftPortJoy2bPlus
-          beq skip_4516
+          beq CEP_CheckPlayer1Done
           bit INPT1
-          bmi skip_4516
+          bmi CEP_CheckPlayer1Done
           lda # 1
           sta temp1
-skip_4516:
+CEP_CheckPlayer1Done:
           rts
 
 .pend
@@ -285,18 +285,18 @@ CEP_CheckPlayer2 .proc
           lda INPT2
           and # 128
           cmp # 0
-          bne skip_6018
+          bne CheckINPT3
           lda # 1
           sta temp1
-skip_6018:
+CheckINPT3:
 
           lda INPT3
           and # 128
           cmp # 0
-          bne skip_4127
+          bne CEP_CheckPlayer2Done
           lda # 1
           sta temp1
-skip_4127:
+CEP_CheckPlayer2Done:
 
           rts
           ;;
@@ -332,14 +332,14 @@ CheckColorBWToggle .proc
           sta temp6
           if switchbw then let temp6 = 1
           lda switchbw
-          beq skip_1649
-          jmp skip_1649
-skip_1649:
+          beq CheckSwitchChanged
+          jmp CheckSwitchChanged
+CheckSwitchChanged:
           lda temp6
           cmp colorBWPrevious_R
-          bne skip_7622
+          bne TriggerDetectPads
           ;; TODO: DoneSwitchChange
-skip_7622:
+TriggerDetectPads:
 
           ;; Cross-bank call to DetectPads in bank 13
           lda # >(return_point-1)
@@ -385,9 +385,9 @@ DoneSwitchChange
           ;; Note: colorBWOverride check handled in
           if temp1 then ReloadArenaColorsNow
           lda temp1
-          beq skip_9286
+          beq CheckColorBWToggleDone
           jmp ReloadArenaColorsNow
-skip_9286:
+CheckColorBWToggleDone:
           
           ;; Check7800PauseButton
           ;; (NTSC/PAL only, not SECAM)

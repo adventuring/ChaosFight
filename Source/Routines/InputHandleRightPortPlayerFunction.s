@@ -23,11 +23,11 @@ InputHandleRightPortPlayerFunction:
           lda temp2
           cmp # 13
 
-          bcc skip_9612
+          bcc CheckGuardStatus
 
           jmp DoneRightPortMovement
 
-skip_9612:
+CheckGuardStatus:
 
           ;; Process left/right movement (with playfield collision for
           ;; flying characters)
@@ -41,11 +41,11 @@ skip_9612:
           ;; Guarding - block movement
           ;; if temp6 then goto DoneRightPortMovement
           lda temp6
-          beq skip_7029
+          beq CheckFlyingCharacter
 
           jmp DoneRightPortMovement
 
-skip_7029:
+CheckFlyingCharacter:
 
           ;; Frooty (8) and Dragon of Storms (2) need collision checks
           ;; for horizontal movement
@@ -57,19 +57,19 @@ skip_7029:
           sta temp5
           lda temp5
           cmp # 8
-          bne skip_3821
+          bne CheckDragonOfStorms
 
           jmp IHRP_FlyingMovement
 
-skip_3821:
+CheckDragonOfStorms:
 
           lda temp5
           cmp # 2
-          bne skip_2215
+          bne ProcessStandardMovement
 
           jmp IHRP_FlyingMovement
 
-skip_2215:
+ProcessStandardMovement:
 
           ;; Standard horizontal movement (uses shared routine)
           ;; Cross-bank call to ProcessStandardMovement in bank 13
@@ -120,9 +120,9 @@ InputDoneRightPortJump
           ;; Check joy1down (right port uses joy1)
           ;; lda joy1down (undefined - use INPT4 or similar)
           lda INPT4
-          bne skip_8210
+          bne IHRP_HandleDownPressed
           jmp IHRP_CheckGuardRelease
-skip_8210:
+IHRP_HandleDownPressed:
 
 
 .pend
@@ -139,34 +139,34 @@ IHRP_HandleDownPressed .proc
           lda temp4
           cmp 32
 
-          bcc skip_104
+          bcc CheckCharacterDown
 
-          jmp skip_104
+          jmp CheckCharacterDown
 
-          skip_104:
+          CheckCharacterDown:
           lda temp4
           cmp # 2
-          bne skip_7070
+          bne CheckHarpyDown
           jmp DragonOfStormsDown
-skip_7070:
+CheckHarpyDown:
 
           lda temp4
           cmp # 6
-          bne skip_7956
+          bne CheckFrootyDown
           jmp HarpyDown
-skip_7956:
+CheckFrootyDown:
 
           lda temp4
           cmp # 8
-          bne skip_8836
+          bne CheckRoboTitoDown
           jmp FrootyDown
-skip_8836:
+CheckRoboTitoDown:
 
           lda temp4
           cmp # 13
-          bne skip_4027
+          bne UseStandardGuard
           jmp IHRP_HandleRoboTitoDown
-skip_4027:
+UseStandardGuard:
 
           ;; Same-bank call (both in Bank 12) - saves 2 bytes vs cross-bank
           jmp StandardGuard
@@ -189,9 +189,9 @@ return_point:
 
           lda temp2
           cmp # 1
-          bne skip_9606
+          bne UseStandardGuard
           jmp IHRP_ProcessAttack
-skip_9606:
+UseStandardGuard:
 
           jmp StandardGuard
 
@@ -207,9 +207,9 @@ IHRP_CheckGuardRelease .proc
           sta temp6
           ;; Not guarding, nothing to do
           lda temp6
-          bne skip_8955
+          bne StopGuardEarly
           jmp IHRP_ProcessAttack
-skip_8955:
+StopGuardEarly:
 
           ;; Stop guard early and start cooldown
           ;; let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)

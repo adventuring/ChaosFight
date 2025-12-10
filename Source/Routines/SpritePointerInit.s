@@ -1,6 +1,5 @@
 
 InitializeSpritePointers .proc
-
           ;;
           ;; Returns: Far (return otherbank)
           ;; ChaosFight - Source/Routines/SpritePointerInit.bas
@@ -56,26 +55,20 @@ InitializeSpritePointers .proc
           ;; Note: player1pointerlo[0] is actually player1pointerlo
           ;; memory location
           ;; player1pointerlo[1] is player2pointerlo, etc.
-            lda #$90
-            ; Low byte for r016 ($F090)
-            sta player1pointerlo  ; Player 1 pointer low byte
-            lda #$F0
-            ; High byte (SCRAM read port)
-            sta player1pointerhi  ; Player 1 pointer high byte
+          lda #$90
+          sta player1pointerlo
+          lda #$F0
+          sta player1pointerhi
 
-            lda #$A0
-            ; Low byte for r032 ($F0A0)
-            sta player2pointerlo  ; Player 2 pointer low byte
-            lda #$F0
-            ; High byte (SCRAM read port)
-            sta player2pointerhi  ; Player 2 pointer high byte
+          lda #$A0
+          sta player2pointerlo
+          lda #$F0
+          sta player2pointerhi
 
-            lda #$B0
-            ; Low byte for r048 ($F0B0)
-            sta player3pointerlo  ; Player 3 pointer low byte
-            lda #$F0
-            ; High byte (SCRAM read port)
-            sta player3pointerhi  ; Player 3 pointer high byte
+          lda #$B0
+          sta player3pointerlo
+          lda #$F0
+          sta player3pointerhi
 
           ;; Note: Kernel will adjust these pointers for Y offsets
           ;; automatically

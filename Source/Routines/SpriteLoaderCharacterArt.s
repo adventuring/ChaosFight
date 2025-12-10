@@ -6,8 +6,6 @@
 
 
 LocateCharacterArt .proc
-
-
           ;; batariBASIC wrapper for character art location with bank
           ;; Returns: Far (return otherbank)
 
@@ -73,7 +71,7 @@ LocateCharacterArt .proc
 
           ;; - These routines access character frame maps and sprite
 
-          data in their banks
+          ;; data in their banks
 
           ;;
           ;; Constraints: Must be colocated with Bank2Dispatch,
@@ -115,47 +113,47 @@ LocateCharacterArt .proc
           ;; if temp1 < 8 then goto Bank2Dispatch          lda temp1          cmp 8          bcs .skip_8740          jmp
           lda temp1
           cmp # 8
-          bcs skip_8406
+          bcs CheckBank3
           goto_label:
 
-          jmp goto_label
-skip_8406:
+          jmp Bank2Dispatch
+CheckBank3:
 
           lda temp1
           cmp # 8
-          bcs skip_2471
-          jmp goto_label
-skip_2471:
+          bcs CheckBank3Label
+          jmp Bank2Dispatch
+CheckBank3Label:
 
           
 
           ;; if temp1 < 16 then goto Bank3Dispatch          lda temp1          cmp 16          bcs .skip_4567          jmp
           lda temp1
           cmp # 16
-          bcs skip_702
-          jmp goto_label
-skip_702:
+          bcs CheckBank4
+          jmp Bank3Dispatch
+CheckBank4:
 
           lda temp1
           cmp # 16
-          bcs skip_3109
-          jmp goto_label
-skip_3109:
+          bcs CheckBank4Label
+          jmp Bank3Dispatch
+CheckBank4Label:
 
           
 
           ;; if temp1 < 24 then goto Bank4Dispatch          lda temp1          cmp 24          bcs .skip_5602          jmp
           lda temp1
           cmp # 24
-          bcs skip_921
-          jmp goto_label
-skip_921:
+          bcs Bank5Dispatch
+          jmp Bank4Dispatch
+Bank5Dispatch:
 
           lda temp1
           cmp # 24
-          bcs skip_9612
-          jmp goto_label
-skip_9612:
+          bcs Bank5DispatchDone
+          jmp Bank4Dispatch
+Bank5DispatchDone:
 
           
 

@@ -6,8 +6,6 @@
 
 
 UpdateCharacterParade .proc
-
-
           ;; Title Screen Character Parade
           ;; Returns: Far (return otherbank)
 
@@ -23,7 +21,7 @@ UpdateCharacterParade .proc
 
           ;; titleParadeActive - Boolean: parade currently running
 
-          TIMING:
+          ;; TIMING:
 
           ;; - Parade starts after ~4 seconds (TitleParadeDelayFrames frames, TV-dependent)
 
@@ -106,8 +104,9 @@ UpdateCharacterParade .proc
           ;; Check if we need to start a new character
 
           lda titleParadeActive
-          bne skip_4983
-skip_4983:
+          bne MoveParadeCharacter
+          jmp StartNewParadeCharacter
+MoveParadeCharacter:
 
 
 
@@ -206,8 +205,9 @@ MoveParadeCharacter .proc
 
           lda titleParadeX
           cmp # 171
-          bcc skip_6836
-skip_6836:
+          bcc UpdateCharacterParadeDone
+          jmp ParadeCharacterLeft
+UpdateCharacterParadeDone:
 
 
           jsr BS_return

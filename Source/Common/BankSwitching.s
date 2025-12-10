@@ -25,6 +25,7 @@ BS_return:
           ora #$f0
           sta 2, x
           ldx temp7
+
 BS_jsr:
           ;; Bankswitch: $ffe0 + X where X is 0-based bank number
           nop $ffe0, x

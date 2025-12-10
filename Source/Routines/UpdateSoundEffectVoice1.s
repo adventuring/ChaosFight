@@ -3,7 +3,6 @@
 
 
 UpdateSoundEffectVoice1 .proc
-
           ;; Returns: Far (return otherbank)
           ;; Updatesoundeffectvoice1 - Update Voice 1 Sound Effect
           ;; Update Voice 1 sound effect playback (decrements frame
@@ -32,6 +31,7 @@ UpdateSoundEffectVoice1 .proc
           lda temp5
           sta soundEffectFrame1_W
           jsr BS_return
+
           ;; Frame counter reached 0 - load next note from Sounds bank
           ;; Cross-bank call to LoadSoundNote1 in bank 15
           lda # >(return_point-1)
@@ -42,8 +42,9 @@ UpdateSoundEffectVoice1 .proc
           pha
           lda # <(LoadSoundNote1-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
+
 return_point:
 
           ;; LoadSoundNote1 will:

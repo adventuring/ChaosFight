@@ -3,13 +3,12 @@
 
 
 PlaySoundEffect .proc
-
           ;; SOUND EFFECT SUBSYSTEM - Polyphony 2 Implementation
           ;; Returns: Far (return otherbank)
           ;; Sound effects for gameplay (gameMode 6)
           ;; Uses interleaved 4-byte streams: AUDCV, AUDF, Duration,
           ;; Delay
-          AUDCV = (AUDC << 4) | AUDV (packed into single byte)
+          ;; AUDCV = (AUDC << 4) | AUDV (packed into single byte)
           ;;
           ;; High byte of pointer = 0 indicates sound inactive
           ;; Supports 2 simultaneous sound effects (one per voice)
@@ -20,7 +19,7 @@ PlaySoundEffect .proc
           ;; Plays sound effect if voice is free, else forgets it (no
           ;; queuing)
           ;; Start sound effect playback (plays sound if voice is free,
-          else forgets it)
+          ;; else forgets it)
           ;;
           ;; Input: temp1 = sound ID (0-255), musicVoice0Pointer,
           ;; musicVoice1Pointer (global 16-bit) = music voice pointers,
@@ -50,7 +49,6 @@ PlaySoundEffect .proc
           ;; Voice 0 tried first, Voice 1 as fallback
           ;; Check if music is active (music takes priority)
           jsr BS_return
-          jsr BS_return
 
           ;; Lookup sound pointer from Sounds bank (Bank15)
           ;; Cross-bank call to LoadSoundPointer in bank 15
@@ -62,19 +60,20 @@ PlaySoundEffect .proc
           pha
           lda # <(LoadSoundPointer-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
-return_point:
 
+return_point:
 
           ;; Try Voice 0 first
 
           if soundEffectPointer then TryVoice1
           lda soundEffectPointer
-          beq skip_8620
+          beq UseVoice0
+
           jmp TryVoice1
-skip_8620:
-          
+
+UseVoice0:
 
           ;; Voice 0 is free - LoadSoundPointer already set soundEffectPointer
           lda # 1

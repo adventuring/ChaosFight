@@ -21,7 +21,7 @@ UpdateSoundEffect .proc
           ;; UpdateSoundEffectVoice0 and UpdateSoundEffectVoice1)
           ;;
           ;; Called Routines: UpdateSoundEffectVoice0 - updates Voice 0
-          if active, UpdateSoundEffectVoice1 - updates Voice 1 if
+          ;; if active, UpdateSoundEffectVoice1 - updates Voice 1 if
           ;; active
           ;;
           ;; Constraints: Called every frame from MainLoop for gameMode
@@ -36,25 +36,25 @@ UpdateSoundEffect .proc
           pha
           lda # <(UpdateSoundEffectVoice0-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
-return_point:
 
+return_point:
 
           ;; Update Voice 1
           ;; Cross-bank call to UpdateSoundEffectVoice1 in bank 15
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(UpdateSoundEffectVoice1-1)
           pha
           lda # <(UpdateSoundEffectVoice1-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
-return_point:
 
+return_point2:
 
           jsr BS_return
 

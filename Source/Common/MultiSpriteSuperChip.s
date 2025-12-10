@@ -9,7 +9,6 @@
 ;; CRITICAL: Define memory address variables FIRST to allow DASM to resolve forward references
 ;; These must be defined before any code that uses them
 .weak
-.weak
 missile1height = $A4
 missile0height = $A5
 ;; playfieldRow is defined via dim in Variables.s
@@ -161,7 +160,6 @@ stack4 = $f9
 ;; Preserve the RETURN macro expected by multisprite-generated assembly.
 .endweak
 ;; This must be defined early so it is available to all included files.
-.endweak
           RETURN .macro
           .if !bankswitch
           rts

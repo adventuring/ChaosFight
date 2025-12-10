@@ -1,7 +1,8 @@
 ;;; ChaosFight - Source/Routines/ProcessJumpInput.bas
           ;; Forward declaration for cross-bank call
           ;; CheckEnhancedJumpButton is defined in CharacterAttacksDispatch.s (Bank 9)
-CheckEnhancedJumpButton = CheckEnhancedJumpButton
+          ;; Cross-bank call: CheckEnhancedJumpButton is defined in CharacterAttacksDispatch.s (Bank 9)
+          ;; The BS_jsr mechanism handles cross-bank symbol resolution at link time
 
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 

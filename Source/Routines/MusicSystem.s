@@ -113,9 +113,9 @@ StartMusic .proc
           ;; if temp1 < Bank0MinSongID then goto LoadSongFromBank15
           lda temp1
           cmp Bank0MinSongID
-          bcs skip_3704
+          bcs LoadSongFromBank1
           jmp LoadSongFromBank15
-skip_3704:
+LoadSongFromBank1:
 
           
 

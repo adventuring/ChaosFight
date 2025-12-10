@@ -40,6 +40,19 @@ CPS_WritePlayer3:
           rts
 
 SetSpritePositions:
+
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: temp1 = player index, temp2 = (document other inputs)
+          ;;
+          ;; Output: (document return values and state changes)
+          ;;
+          ;; Mutates: temp1-temp6 (as used), player position/velocity arrays
+          ;;
+          ;; Called Routines: (document subroutines called)
+          ;;
+          ;; Constraints: (document colocation/bank requirements)
+
           ;; Returns: Far (return otherbank)
 
           ;; Player Sprite Rendering

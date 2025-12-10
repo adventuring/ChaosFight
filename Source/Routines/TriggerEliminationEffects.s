@@ -53,67 +53,67 @@ TEE_return_point_1:
           ;; Off-screen
           lda currentPlayer
           cmp # 0
-          bne skip_4443
+          bne CheckPlayer1Hide
           lda # 200
           sta player0x
-skip_4443:
+CheckPlayer1Hide:
 
           lda currentPlayer
           cmp # 1
-          bne skip_699
+          bne CheckPlayer2Hide
           lda # 200
           sta player1x
-skip_699:
+CheckPlayer2Hide:
 
           ;; Player 3 uses player2 sprite (multisprite)
           lda currentPlayer
           cmp # 2
-          bne skip_4508
+          bne CheckPlayer3Hide
           lda # 200
           sta player2x
-skip_4508:
+CheckPlayer3Hide:
 
           ;; Player 4 uses player3 sprite (multisprite)
           lda currentPlayer
           cmp # 3
-          bne skip_7810
+          bne DeactivateMissiles
           lda # 200
           sta player3x
-skip_7810:
+DeactivateMissiles:
 
           ;; Stop any active missiles for this player - inlined
           ;; Clear missile active bit for this player (DeactivatePlayerMissiles)
           lda currentPlayer
           cmp # 0
-          bne skip_9458
+          bne ClearMissileBit1
           lda missileActive
           and #$FE
           sta missileActive
-skip_9458:
+ClearMissileBit1:
 
           lda currentPlayer
           cmp # 1
-          bne skip_498
+          bne ClearMissileBit2
           lda missileActive
           and #$FD
           sta missileActive
-skip_498:
+ClearMissileBit2:
 
           lda currentPlayer
           cmp # 2
-          bne skip_6929
+          bne ClearMissileBit3
           lda missileActive
           and #$FB
           sta missileActive
-skip_6929:
+ClearMissileBit3:
 
           lda currentPlayer
           cmp # 3
-          bne skip_5725
+          bne TriggerEliminationEffectsDone
           lda missileActive
           and #$F7
           sta missileActive
-skip_5725:
+TriggerEliminationEffectsDone:
 
           jsr BS_return
 

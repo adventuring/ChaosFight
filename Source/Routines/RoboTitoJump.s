@@ -10,16 +10,20 @@ RoboTitoJump .proc
           ;; Input: temp1 = player index
           ;; Output: Moves up 3px/frame, latches on ceiling contact
           jsr BS_return
-                    if (playerState[temp1] & 4) then goto RoboTitoCannotStretch
+
+          if (playerState[temp1] & 4) then goto RoboTitoCannotStretch
           ;; if characterSpecialAbility_R[temp1] = 0 then goto RoboTitoCannotStretch
           lda temp1
           asl
           tax
           lda characterSpecialAbility_R,x
           bne RoboTitoCanStretch
+
           jmp RoboTitoCannotStretch
+
 RoboTitoCanStretch:
-          jmp RoboTitoCanStretch
+
+          jmp RoboTitoStretching
 
 .pend
 
@@ -27,16 +31,17 @@ RoboTitoCannotStretch .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta missileStretchHeight_W,x
           jsr BS_return
+
 .pend
 
 RoboTitoCanStretch .proc
 .pend
 
 RoboTitoStretching .proc
-                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
           ;; CRITICAL: CCJ_ConvertPlayerXToPlayfieldColumn is in Bank 12, not Bank 13
           ;; Cross-bank call to CCJ_ConvertPlayerXToPlayfieldColumn in bank 12
           lda # >(return_point-1)
@@ -47,8 +52,9 @@ RoboTitoStretching .proc
           pha
           lda # <(CCJ_ConvertPlayerXToPlayfieldColumn-1)
           pha
-                    ldx # 11
+          ldx # 11
           jmp BS_jsr
+
 return_point:
 
           lda temp2
@@ -66,13 +72,13 @@ return_point:
 GroundSearchLoop .proc
           ;; if temp5 >= pfrows then goto GroundSearchBottom
           lda temp5
-          cmp pfrows
+          cmp # pfrows
 
           bcc CheckPlayfieldPixel
 
           jmp GroundSearchBottom
 
-          CheckPlayfieldPixel:
+CheckPlayfieldPixel:
           lda # 0
           sta temp6
           lda temp1

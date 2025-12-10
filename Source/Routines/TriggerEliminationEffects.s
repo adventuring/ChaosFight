@@ -1,10 +1,7 @@
 ;;; ChaosFight - Source/Routines/TriggerEliminationEffects.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-TriggerEliminationEffects
-;;; Returns: Far (return otherbank)
-TriggerEliminationEffects
-
+TriggerEliminationEffects:
           ;; Returns: Far (return otherbank)
           ;; Trigger elimination audio/visual effects for currentPlayer.
           ;; Input: currentPlayer (0-3), SoundPlayerEliminated
@@ -20,7 +17,7 @@ TriggerEliminationEffects
           ;; removes player missiles
           ;; Constraints: None
           ;; Play elimination sound effect
-          lda SoundPlayerEliminated
+          lda # SoundPlayerEliminated
           sta temp5
           lda temp5
           sta temp1
@@ -34,8 +31,9 @@ TriggerEliminationEffects
           pha
           lda # <(PlaySoundEffect-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
+
 TEE_return_point_1:
 
           ;; Set elimination visual effect timer
@@ -54,29 +52,36 @@ TEE_return_point_1:
           lda currentPlayer
           cmp # 0
           bne CheckPlayer1Hide
+
           lda # 200
           sta player0x
+
 CheckPlayer1Hide:
 
           lda currentPlayer
           cmp # 1
           bne CheckPlayer2Hide
+
           lda # 200
           sta player1x
+
 CheckPlayer2Hide:
 
           ;; Player 3 uses player2 sprite (multisprite)
           lda currentPlayer
           cmp # 2
           bne CheckPlayer3Hide
+
           lda # 200
           sta player2x
+
 CheckPlayer3Hide:
 
           ;; Player 4 uses player3 sprite (multisprite)
           lda currentPlayer
           cmp # 3
           bne DeactivateMissiles
+
           lda # 200
           sta player3x
 DeactivateMissiles:

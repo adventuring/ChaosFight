@@ -57,13 +57,17 @@ PublisherPreludeMain .proc
           ;; if joy0fire then goto PublisherPreludeComplete
           lda joy0fire
           beq CheckJoy1Fire
+
           jmp PublisherPreludeComplete
+
 CheckJoy1Fire:
 
           ;; if joy1fire then goto PublisherPreludeComplete
           lda joy1fire
           beq CheckEnhancedControllers
+
           jmp PublisherPreludeComplete
+
 CheckEnhancedControllers:
 
           ;; Check MegaDrive/Joy2b+ controllers if detected
@@ -73,9 +77,12 @@ CheckEnhancedControllers:
           ;; if temp1 then if !INPT0{7} then goto PublisherPreludeComplete
           lda temp1
           beq CheckRightPortControllers
+
           bit INPT0
           bmi CheckRightPortControllers
+
           jmp PublisherPreludeComplete
+
 CheckRightPortControllers:
 
 lda temp1

@@ -147,28 +147,23 @@ skip_4423:
           pha
           lda # <(PF_ProcessHorizontalCollision-1)
           pha
-                    ldx # 9
+          ldx # 9
           jmp BS_jsr
+
 return_point_1_L184:
-
-
-
-
 
 PFCheckRight .proc
           ;; Returns: Far (return otherbank)
 
           ;; if temp6 >= 31 then goto PFCheckUp
           lda temp6
-          cmp 31
+          cmp # 31
 
           bcc skip_4136
 
-          jmp skip_4136
+          jmp PFCheckUp
 
-          skip_4136:
-
-
+skip_4136:
 
           lda temp6
           clc
@@ -179,20 +174,18 @@ PFCheckRight .proc
           sta temp3
 
           ;; Cross-bank call to PF_ProcessHorizontalCollision in bank 10
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(PF_ProcessHorizontalCollision-1)
           pha
           lda # <(PF_ProcessHorizontalCollision-1)
           pha
-                    ldx # 9
+          ldx # 9
           jmp BS_jsr
-return_point:
 
-
-
+return_point2:
 
 .pend
 
@@ -202,11 +195,10 @@ PFCheckUp .proc
           lda playfieldRow
           cmp # 0
           bne skip_6982
+
           jmp PFCheckDown_Body
+
 skip_6982:
-
-
-
 
           lda playfieldRow
           sec
@@ -217,28 +209,28 @@ skip_6982:
           sta temp2
 
           ;; Cross-bank call to PF_CheckRowColumns in bank 10
-          lda # >(return_point-1)
+          lda # >(return_point3-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point3-1)
           pha
           lda # >(PF_CheckRowColumns-1)
           pha
           lda # <(PF_CheckRowColumns-1)
           pha
-                    ldx # 9
+          ldx # 9
           jmp BS_jsr
-return_point:
 
+return_point3:
 
           ;; if temp4 then goto PFBlockUp
           lda temp4
           beq skip_8518
+
           jmp PFBlockUp
+
 skip_8518:
 
           jmp PFCheckDown_Body
-
-
 
 .pend
 

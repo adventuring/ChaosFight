@@ -3,7 +3,7 @@
 
 
 AddVelocitySubpixelY .proc
-;;; Add fractional gravity to Y velocity (subpixel component).
+          ;; Add fractional gravity to Y velocity (subpixel component).
           ;; Input: temp1 = player index (0-3), temp2 = subpixel amount (0-255)
           ;; Output: playerVelocityYL[] incremented; playerVelocityY[] increments on carry
           ;; Mutates: temp2-temp4, playerVelocityY[], playerVelocityYL[]
@@ -25,6 +25,7 @@ AddVelocitySubpixelY .proc
           lda temp3
           cmp # 1
           bcc NoCarryToInteger
+
 NoCarryToInteger:
 
           lda temp1
@@ -33,6 +34,7 @@ NoCarryToInteger:
           lda temp2
           sta playerVelocityYL,x
           rts
+
 .pend
 
 VelocityYCarry .proc

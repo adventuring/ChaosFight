@@ -1,9 +1,8 @@
 ;;; ChaosFight - Source/Routines/PlayerBoundaryCollisions.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-CheckBoundaryCollisions
-;;; Returns: Far (return otherbank)
-CheckBoundaryCollisions
+CheckBoundaryCollisions:
+          ;; Returns: Far (return otherbank)
           ;; Player Physics - Boundary Collisions
           ;; Returns: Far (return otherbank)
           ;; Handles horizontal wraparound and vertical clamps for all players.
@@ -38,45 +37,52 @@ CheckBoundaryCollisions
           lda selectedArena_R
           sta temp3
           lda temp3
-          cmp RandomArena
+          cmp # RandomArena
           bne SkipRandomArena
+
           ;; let temp3 = rand : temp3 = temp3 & 15
+
 SkipRandomArena:
 
-
           ;; TODO: for temp1 = 0 to 3
-          ;; if temp1 < 2 then goto PBC_ProcessPlayer          lda temp1          cmp 2          bcs .skip_8159          jmp
+          ;; if temp1 < 2 then goto PBC_ProcessPlayer
           lda temp1
           cmp # 2
           bcs CheckQuadtari
-          goto_label:
 
-          jmp goto_label
+          jmp PBC_ProcessPlayer
+
 CheckQuadtari:
 
           lda temp1
           cmp # 2
           bcs Skip2PlayerCheck
-          jmp goto_label
+
+          jmp PBC_ProcessPlayer
+
 Skip2PlayerCheck:
 
-          
           ;; if controllerStatus & SetQuadtariDetected then goto PBC_CheckActivePlayer
           jmp PBC_NextPlayer
 
 PBC_CheckActivePlayer .proc
           ;; if playerCharacter[temp1] = NoCharacter then goto PBC_NextPlayer
+
 .pend
 
 PBC_ProcessPlayer .proc
           jsr CheckPlayerBoundary
+
 .pend
 
 PBC_NextPlayer .proc
+
 .pend
 
-next_label_1_L78:.proc
+next_label_1_L78:
+.proc
           rts
+
 .pend
 
 CheckPlayerBoundary .proc

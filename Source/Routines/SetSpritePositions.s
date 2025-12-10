@@ -25,11 +25,13 @@ CopyParticipantSpritePosition:
           lda temp1
           cmp # 2
           bne CPS_WritePlayer3
+
           lda temp2
           sta player2x
           lda temp3
           sta player2y
           rts
+
 CPS_WritePlayer3:
           lda temp2
           sta player3x
@@ -37,7 +39,7 @@ CPS_WritePlayer3:
           sta player3y
           rts
 
-SetSpritePositions
+SetSpritePositions:
           ;; Returns: Far (return otherbank)
 
           ;; Player Sprite Rendering
@@ -149,18 +151,19 @@ SSP_NextParticipant .proc
           ;; TODO: missile0height = 0
           ;; TODO: missile1height = 0
           jsr SetSpritePositionsRenderMissiles
+
           jsr BS_return
 
-SetSpritePositionsRenderMissiles
+SetSpritePositionsRenderMissiles:
           ;; Returns: Near (return thisbank)
-SetSpritePositionsRenderMissiles
           lda controllerStatus
-          and SetPlayers34Active
+          and # SetPlayers34Active
           cmp # 0
           bne SSP_CheckTwoPlayer
-          jmp RenderMissilesTwoPlayer
-SSP_CheckTwoPlayer:
 
+          jmp RenderMissilesTwoPlayer
+
+SSP_CheckTwoPlayer:
 
           ;; let temp6 = frame & 1
           lda frame
@@ -174,30 +177,31 @@ SSP_CheckTwoPlayer:
           ;; if temp6 then goto RenderMissilesOddFrame
           lda temp6
           beq SSP_CheckEvenFrame
+
           jmp RenderMissilesOddFrame
+
 SSP_CheckEvenFrame:
 
           lda # 0
           sta temp1
           jmp RenderMissilePair
 
-RenderMissilesOddFrame
+RenderMissilesOddFrame:
           lda # 2
           sta temp1
           jmp RenderMissilePair
 
-RenderMissilesTwoPlayer
+RenderMissilesTwoPlayer:
           lda # 0
           sta temp1
 
-RenderMissilePair
+RenderMissilePair:
           jsr SetSpritePositionsRenderPair
 
           rts
 
-SetSpritePositionsRenderPair
+SetSpritePositionsRenderPair:
           ;; Returns: Near (return thisbank)
-SetSpritePositionsRenderPair
           jsr RenderMissileForParticipant
 
           inc temp1
@@ -205,9 +209,8 @@ SetSpritePositionsRenderPair
 
           rts
 
-RenderMissileForParticipant
+RenderMissileForParticipant:
           ;; Returns: Near (return thisbank)
-RenderMissileForParticipant
           ;; Render projectile or RoboTito stretch missile for a participant
           ;; Returns: Near (return thisbank)
           ;;
@@ -243,7 +246,9 @@ RenderMissileForParticipant
           ;; if RMF_active then goto RMF_MissileActive
           lda RMF_active
           beq RMF_CheckMissileActive
+
           jmp RMF_MissileActive
+
 RMF_CheckMissileActive:
           lda RMF_select
           sta temp2
@@ -256,8 +261,9 @@ RMF_CheckMissileActive:
           pha
           lda # <(RenderRoboTitoStretchMissile-1)
           pha
-                    ldx # 7
+          ldx # 7
           jmp BS_jsr
+
 RMF_ReturnPoint:
 
           jsr BS_return

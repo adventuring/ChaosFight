@@ -3,7 +3,6 @@
 
 
 SetPlayerSprites .proc
-
           ;;
           ;; Returns: Far (return otherbank)
           ;; Set Player Sprites
@@ -47,15 +46,21 @@ SetPlayerSprites .proc
           lda # 0
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    ;; let temp2 = playerRecoveryFrames[0]
-                    lda 0          asl          tax          lda playerRecoveryFrames,x          sta temp2
+          ;; let temp2 = playerRecoveryFrames[0]
+          lda # 0
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          sta temp2
           ;; let temp3 = playerState[0]
-          lda 0
+          lda # 0
           asl
           tax
           lda playerState,x
-          sta temp3 & PlayerStateBitGuarding
-          lda 0
+          sta temp3
+          and # PlayerStateBitGuarding
+          sta temp3
+          lda # 0
           asl
           tax
           lda playerState,x
@@ -69,23 +74,24 @@ SetPlayerSprites .proc
           pha
           lda # <(LoadCharacterColors-1)
           pha
-                    ldx # 13
+          ldx # 13
           jmp BS_jsr
+
 return_point:
 
           COLUP0 = temp6
-Player1ColorDone
+
+Player1ColorDone:
 
           ;; Set sprite reflection based on facing direction (bit 3:
           ;; 0=left, 1=right) - matches REFP0 bit 3 for direct copy
-            lda playerState
-            and # PlayerStateBitFacing
-            sta REFP0
-
+          lda playerState
+          and # PlayerStateBitFacing
+          sta REFP0
 
           ;; Load sprite data from character definition
           ;; let currentCharacter = playerCharacter[0]         
-          lda 0
+          lda # 0
           asl
           tax
           lda playerCharacter,x
@@ -97,18 +103,18 @@ Player1ColorDone
           lda # 0
           sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(LoadCharacterSprite-1)
           pha
           lda # <(LoadCharacterSprite-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
-return_point:
 
+return_point2:
 
           ;; Set Player 2 color and sprite
           ;; Use LoadCharacterColors for consistent color handling
@@ -118,29 +124,35 @@ return_point:
           lda # 1
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    ;; let temp2 = playerRecoveryFrames[1]
-                    lda 1          asl          tax          lda playerRecoveryFrames,x          sta temp2
+          ;; let temp2 = playerRecoveryFrames[1]
+          lda # 1
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          sta temp2
           ;; let temp3 = playerState[1]
-          lda 1
+          lda # 1
           asl
           tax
           lda playerState,x
-          sta temp3 & PlayerStateBitGuarding
-          lda 1
+          sta temp3
+          and # PlayerStateBitGuarding
+          sta temp3
+          lda # 1
           asl
           tax
           lda playerState,x
           sta temp3
           ;; Cross-bank call to LoadCharacterColors in bank 14
-          lda # >(return_point-1)
+          lda # >(return_point3-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point3-1)
           pha
           lda # >(LoadCharacterColors-1)
           pha
           lda # <(LoadCharacterColors-1)
           pha
-                    ldx # 13
+          ldx # 13
           jmp BS_jsr
 return_point:
 

@@ -31,11 +31,13 @@ UpdatePlayerMovementSingle .proc
           lda temp3
           cmp # 1
           bcc NoXCarry
-                    let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
+
+          let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
+
 NoXCarry:
 
           ;; Apply integer velocity component
-                    let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + playerVelocityX[currentPlayer]
+          let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + playerVelocityX[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -52,7 +54,7 @@ NoXCarry:
           tax
           sta playerSubpixelX_W,x
           ;; Sync integer position for rendering
-                    let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
+          let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -77,11 +79,13 @@ NoXCarry:
           lda temp3
           cmp # 1
           bcc NoYCarry
-                    let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + 1
+
+          let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + 1
+
 NoYCarry:
 
           ;; Apply integer velocity component
-                    let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + playerVelocityY[currentPlayer]
+          let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + playerVelocityY[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -98,7 +102,7 @@ NoYCarry:
           tax
           sta playerSubpixelY_W,x
           ;; Sync integer position for rendering
-                    let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
+          let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
           lda currentPlayer
           asl
           tax

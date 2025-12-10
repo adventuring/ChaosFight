@@ -307,9 +307,9 @@ PlayMusic .proc
 
           lda currentSongID_R
           cmp # 26
-          bne skip_1628
+          bne PlayMusicDone
           jmp IsChaotica
-skip_1628:
+PlayMusicDone:
 
 
           jsr BS_return
@@ -387,9 +387,9 @@ CalculateMusicVoiceEnvelope .proc
 
           lda temp1
           cmp # 0
-          bne skip_1004
+          bne CMVE_GetVoice1Vars
           ;; TODO: CMVE_GetVoice0Vars
-skip_1004:
+CMVE_GetVoice1Vars:
 
 
           ;; Voice 1
@@ -452,9 +452,9 @@ CMVE_CalcElapsed .proc
           sbc NoteDecayFrames
           bcc CMVE_ApplyDecay
           beq CMVE_ApplyDecay
-          jmp skip_7171
+          jmp CMVE_ApplySustain
 CMVE_ApplyDecay:
-skip_7171:
+CMVE_ApplySustain:
 
           ;; Sustain phase - use target AUDV (already set)
 
@@ -516,18 +516,18 @@ CMVE_ApplyAttack .proc
                     if temp6 & $80 then let temp6 = 0
           lda temp6
           and #$80
-          beq skip_3128
+          beq ClampAUDV
           lda # 0
           sta temp6
-skip_3128:
+ClampAUDV:
 
           ;; Set voice-specific AUDV
           lda temp6
           cmp # 16
-          bcc skip_8808
+          bcc SetAUDV
           lda # 15
           sta temp6
-skip_8808:
+SetAUDV:
 
 
           rts
@@ -594,18 +594,18 @@ CMVE_ApplyDecay .proc
                     if temp6 & $80 then let temp6 = 0
           lda temp6
           and #$80
-          beq skip_3128
+          beq ClampAUDV
           lda # 0
           sta temp6
-skip_3128:
+ClampAUDV:
 
           ;; Set voice-specific AUDV
           lda temp6
           cmp # 16
-          bcc skip_8808
+          bcc SetAUDV
           lda # 15
           sta temp6
-skip_8808:
+SetAUDV:
 
 
           rts

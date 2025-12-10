@@ -127,12 +127,12 @@ spritesort5 = $D9
 scorecolor = $DA
 rand = $DB
 ;; Multisprite letter variables (different addresses than standard batariBASIC)
-;; Single-char variable aliases removed - use actual memory addresses directly
+;; Single-char variable aliases not used - use actual memory addresses directly
 ;; Memory addresses: $dc-$ef (20 bytes for a-z variables)
 ;; Note: qtcontroller uses $e7 (same as L/l would have used)
 qtcontroller = $e7
 ;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
-;; Z/z removed - use SCRAM for any variables that were using z
+;; Z/z not available - use SCRAM - use SCRAM for any variables that were using z
 ;; stack1-4 are stack addresses ($f6-$f9) - defined as constants for kernel code
 ;; but they are NOT variables - they are stack space that kernel may use directly
 stack1 = $f6
@@ -199,7 +199,7 @@ stack4 = $f9
 ;; var23 = $BB (commented - defined in Variables.s)
 ;; var24 = $BC (commented - defined in Variables.s)
 ;; var25 = $BD (commented - defined in Variables.s)
-;; Variable aliases removed - use actual memory addresses directly
+;; Variable aliases not used - use actual memory addresses directly
 ;; Memory layout:
 ;; - var0-var47: $A4-$D3 (zero-page RAM)
 ;; - SuperChip RAM write ports: $F000-$F07F (w000-w127)
@@ -429,7 +429,7 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           Y = $EF
 ;;           y = $EF
 ;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
-;; Z/z removed - use SCRAM for any variables that were using z
+;; Z/z not available - use SCRAM - use SCRAM for any variables that were using z
 ;; stack1-4 are stack addresses ($f6-$f9) - defined as constants for kernel code
 ;; but they are NOT variables - they are stack space that kernel may use directly
 ;;           stack1 = $F6
@@ -486,7 +486,7 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           var24 = $BC
           var25 = $BD
           var26 = $BE
-          ;; var27-var47 aliases removed - use actual memory addresses directly
+          ;; var27-var47 aliases not used - use actual memory addresses directly
 ;; Letter variables (u, v, w, x, y) for zero-page addressing
 ;; u = $EB
 ;; U = $EB

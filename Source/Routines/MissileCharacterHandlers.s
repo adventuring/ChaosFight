@@ -205,9 +205,9 @@ skip_7180:
           ActionAttackExecute = 14, so if animationState ≠ 14,
           lda temp6
           cmp # 14
-          bne skip_3841
+          bne DeactivateMissile
           ;; TODO: MegaxMissileActive
-skip_3841:
+DeactivateMissile:
 
 
           ;; Attack complete - deactivate missile
@@ -291,9 +291,9 @@ HandleKnightGuyMissile .proc
           If animation state is not ActionAttackExecute (14), attack is complete
           lda temp6
           cmp # 14
-          bne skip_6521
+          bne DeactivateMissile
           ;; TODO: KnightGuyAttackActive
-skip_6521:
+DeactivateMissile:
 
 
           ;; Attack complete - deactivate missile
@@ -320,15 +320,15 @@ KnightGuyAttackActive .proc
           ;; if velocityCalculation < 4 then KnightGuySwingOut
           lda velocityCalculation
           cmp # 4
-          bcs skip_4206
+          bcs KnightGuySwingReturn
           jmp KnightGuySwingOut
-skip_4206:
+KnightGuySwingReturn:
 
           lda velocityCalculation
           cmp # 4
-          bcs skip_3567
+          bcs KnightGuySwingReturnLabel
           jmp KnightGuySwingOut
-skip_3567:
+KnightGuySwingReturnLabel:
 
 
 
@@ -372,9 +372,9 @@ KnightGuySetPosition
           ;; Apply swing offset in facing direction
           lda temp4
           cmp # 0
-          bne skip_6244
+          bne KnightGuySwingRight
           ;; TODO: KnightGuySwingLeft
-skip_6244:
+KnightGuySwingRight:
 
 
           ;; Facing right: move right (positive offset)

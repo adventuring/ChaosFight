@@ -113,9 +113,8 @@ CheckAllMissileCollisions:
 
           lda temp6
           cmp # 0
-          bne skip_4483
+          bne CheckVisibleMissileCollision
           jmp CheckAOECollision
-skip_4483:
 
 
           ;; tail call
@@ -336,9 +335,9 @@ CheckAOECollision
 
           lda temp5
           cmp CharacterBernie
-          bne skip_1021
-          ;; TODO: CheckBernieAOE
-skip_1021:
+          bne CheckFacingDirection
+          jmp CheckBernieAOE
+CheckFacingDirection:
 
 
 
@@ -354,9 +353,9 @@ skip_1021:
 
           lda temp6
           cmp # 0
-          bne skip_3727
+          bne CheckAOEDirection_Right
           ;; jmp CheckAOEDirection_Left
-skip_3727:
+CheckAOEDirection_Right:
 
 
           ;; jmp CheckAOEDirection_Right
@@ -624,9 +623,9 @@ CheckPlayersAgainstCachedHitbox .proc
 
           lda temp2
           cmp temp1
-          bne skip_5252
+          bne CheckPlayerHealth
           ;; TODO: CPB_NextPlayer
-skip_5252:
+CheckPlayerHealth:
 
 
           ;; if playerHealth[temp2] = 0 then CPB_NextPlayer
@@ -644,9 +643,9 @@ skip_5252:
           sbc cachedHitboxLeft_R
           bcc CPB_NextPlayer
           beq CPB_NextPlayer
-          jmp skip_9492
+          jmp CheckRightEdge
 CPB_NextPlayer:
-skip_9492:
+CheckRightEdge:
 
           ;; if playerX[temp2] >= cachedHitboxRight_R then CPB_NextPlayer
           lda temp2
@@ -655,9 +654,9 @@ skip_9492:
           lda playerX,x
           sec
           sbc cachedHitboxRight_R
-          bcc skip_3163
+          bcc CheckVerticalOverlap
           jmp CPB_NextPlayer
-skip_3163:
+CheckVerticalOverlap:
 
           ;; if playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R then CPB_NextPlayer
           lda temp2
@@ -672,9 +671,9 @@ skip_3163:
           sbc cachedHitboxTop_R
           bcc CPB_NextPlayer
           beq CPB_NextPlayer
-          jmp skip_8040
+          jmp CheckBottomEdge
 CPB_NextPlayer_dup11:
-skip_8040:
+CheckBottomEdge:
 
           ;; if playerY[temp2] >= cachedHitboxBottom_R then CPB_NextPlayer
           lda temp2
@@ -683,9 +682,9 @@ skip_8040:
           lda playerY,x
           sec
           sbc cachedHitboxBottom_R
-          bcc skip_9459
+          bcc HitDetected
           jmp CPB_NextPlayer
-skip_9459:
+HitDetected:
           lda temp2
           sta temp4
 

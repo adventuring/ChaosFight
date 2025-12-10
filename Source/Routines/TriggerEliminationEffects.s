@@ -89,6 +89,7 @@ DeactivateMissiles:
           lda missileActive
           and #$FE
           sta missileActive
+          jmp TriggerEliminationEffectsDone
 ClearMissileBit1:
 
           lda currentPlayer
@@ -97,6 +98,7 @@ ClearMissileBit1:
           lda missileActive
           and #$FD
           sta missileActive
+          jmp TriggerEliminationEffectsDone
 ClearMissileBit2:
 
           lda currentPlayer
@@ -105,6 +107,7 @@ ClearMissileBit2:
           lda missileActive
           and #$FB
           sta missileActive
+          jmp TriggerEliminationEffectsDone
 ClearMissileBit3:
 
           lda currentPlayer

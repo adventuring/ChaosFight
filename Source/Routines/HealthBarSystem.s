@@ -104,7 +104,7 @@ UpdatePlayer1HealthBar .proc
           lda temp1
           cmp # 84
           bcc skip_3169
-                    let temp2 = 8 : goto P1SetPattern
+          ;; let temp2 = 8 : goto P1SetPattern
 skip_3169:
 
 
@@ -112,7 +112,7 @@ skip_3169:
           lda temp1
           cmp # 72
           bcc skip_183
-                    let temp2 = 7 : goto P1SetPattern
+          ;; let temp2 = 7 : goto P1SetPattern
 skip_183:
 
 
@@ -120,7 +120,7 @@ skip_183:
           lda temp1
           cmp # 60
           bcc skip_5281
-                    let temp2 = 6 : goto P1SetPattern
+          ;; let temp2 = 6 : goto P1SetPattern
 skip_5281:
 
 
@@ -128,7 +128,7 @@ skip_5281:
           lda temp1
           cmp # 48
           bcc skip_1969
-                    let temp2 = 5 : goto P1SetPattern
+          ;; let temp2 = 5 : goto P1SetPattern
 skip_1969:
 
 
@@ -136,7 +136,7 @@ skip_1969:
           lda temp1
           cmp # 36
           bcc skip_9302
-                    let temp2 = 4 : goto P1SetPattern
+          ;; let temp2 = 4 : goto P1SetPattern
 skip_9302:
 
 
@@ -144,7 +144,7 @@ skip_9302:
           lda temp1
           cmp # 24
           bcc skip_9226
-                    let temp2 = 3 : goto P1SetPattern
+          ;; let temp2 = 3 : goto P1SetPattern
 skip_9226:
 
 
@@ -152,7 +152,7 @@ skip_9226:
           lda temp1
           cmp # 12
           bcc skip_4428
-                    let temp2 = 2 : goto P1SetPattern
+          ;; let temp2 = 2 : goto P1SetPattern
 skip_4428:
 
 
@@ -188,7 +188,7 @@ P1SetPattern .proc
 
           ;; function, so no bank prefix needed
 
-                    let temp3 = HealthBarPatterns[temp2]         
+          ;; let temp3 = HealthBarPatterns[temp2]         
           lda temp2
           asl
           tax
@@ -267,7 +267,7 @@ UpdatePlayer2HealthBar .proc
           lda temp1
           cmp # 84
           bcc skip_4534
-                    let temp2 = 8 : goto P2SetPattern
+          ;; let temp2 = 8 : goto P2SetPattern
 skip_4534:
 
 
@@ -275,7 +275,7 @@ skip_4534:
           lda temp1
           cmp # 72
           bcc skip_9565
-                    let temp2 = 7 : goto P2SetPattern
+          ;; let temp2 = 7 : goto P2SetPattern
 skip_9565:
 
 
@@ -283,7 +283,7 @@ skip_9565:
           lda temp1
           cmp # 60
           bcc skip_8978
-                    let temp2 = 6 : goto P2SetPattern
+          ;; let temp2 = 6 : goto P2SetPattern
 skip_8978:
 
 
@@ -291,7 +291,7 @@ skip_8978:
           lda temp1
           cmp # 48
           bcc skip_7424
-                    let temp2 = 5 : goto P2SetPattern
+          ;; let temp2 = 5 : goto P2SetPattern
 skip_7424:
 
 
@@ -299,7 +299,7 @@ skip_7424:
           lda temp1
           cmp # 36
           bcc skip_8762
-                    let temp2 = 4 : goto P2SetPattern
+          ;; let temp2 = 4 : goto P2SetPattern
 skip_8762:
 
 
@@ -307,7 +307,7 @@ skip_8762:
           lda temp1
           cmp # 24
           bcc skip_1470
-                    let temp2 = 3 : goto P2SetPattern
+          ;; let temp2 = 3 : goto P2SetPattern
 skip_1470:
 
 
@@ -315,7 +315,7 @@ skip_1470:
           lda temp1
           cmp # 12
           bcc skip_6939
-                    let temp2 = 2 : goto P2SetPattern
+          ;; let temp2 = 2 : goto P2SetPattern
 skip_6939:
 
 
@@ -351,7 +351,7 @@ P2SetPattern .proc
 
           ;; function, so no bank prefix needed
 
-                    let temp3 = HealthBarPatterns[temp2]         
+          ;; let temp3 = HealthBarPatterns[temp2]         
           lda temp2
           asl
           tax
@@ -414,7 +414,8 @@ UpdatePlayer12HealthBars .proc
 
           ;; Update P1 health bar
 
-                    let temp1 = playerHealth[0]          lda 0          asl          tax          lda playerHealth,x          sta temp1
+                    ;; let temp1 = playerHealth[0]
+                    lda 0          asl          tax          lda playerHealth,x          sta temp1
 
           jsr UpdatePlayer1HealthBar
 
@@ -422,7 +423,7 @@ UpdatePlayer12HealthBars .proc
 
           ;; Update P2 health bar
 
-                    let temp1 = playerHealth[1]
+          ;; let temp1 = playerHealth[1]
           lda 1
           asl
           tax
@@ -629,7 +630,7 @@ skip_9352:
 
           ;; (playerCharacter = NoCharacter) or eliminated
 
-                    let temp1 = playerHealth[2]         
+          ;; let temp1 = playerHealth[2]         
           lda 2
           asl
           tax
@@ -638,7 +639,7 @@ skip_9352:
 
           ;; Check if Player 3 is eliminated (health = 0)
 
-                    if playerCharacter[2] = NoCharacter then goto P3UseAA
+          ;; if playerCharacter[2] = NoCharacter then goto P3UseAA
           lda temp1
           cmp # 0
           bne skip_8659
@@ -692,7 +693,7 @@ P4GetHealth .proc
 
           ;; (playerCharacter = NoCharacter) or eliminated
 
-                    let temp2 = playerHealth[3]         
+          ;; let temp2 = playerHealth[3]         
           lda 3
           asl
           tax
@@ -701,7 +702,7 @@ P4GetHealth .proc
 
           ;; Check if Player 4 is eliminated (health = 0)
 
-                    if playerCharacter[3] = NoCharacter then goto P4UseAA
+          ;; if playerCharacter[3] = NoCharacter then goto P4UseAA
           lda temp2
           cmp # 0
           bne skip_9418

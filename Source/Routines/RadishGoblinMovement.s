@@ -25,7 +25,7 @@ RadishGoblinHandleInput .proc
 
           jsr BS_return
 
-                    if temp1 & 2 = 0 then goto RGHI_Joy0
+          ;; if temp1 & 2 = 0 then goto RGHI_Joy0
           lda joy1left
           bne skip_2716
           jmp RGHI_CheckRight
@@ -48,14 +48,14 @@ skip_5517:
 
 RGHI_Left .proc
 
-          let temp4 = playerCharacter[temp1]
+          ;; let temp4 = playerCharacter[temp1]
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta temp4
 
-                    let temp6 = CharacterMovementSpeed[temp4]
+          ;; let temp6 = CharacterMovementSpeed[temp4]
           lda temp4
           asl
           tax
@@ -133,7 +133,7 @@ RGHI_AfterLeft .proc
 
 RGHI_CheckRight .proc
 
-                    if temp1 & 2 = 0 then goto RGHI_CheckRightJoy0
+          ;; if temp1 & 2 = 0 then goto RGHI_CheckRightJoy0
           lda temp1
           and # 2
           bne skip_116
@@ -153,14 +153,14 @@ RGHI_CheckRightJoy0 .proc
 
 RGHI_Right .proc
 
-          let temp4 = playerCharacter[temp1]
+          ;; let temp4 = playerCharacter[temp1]
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta temp4
 
-                    let temp6 = CharacterMovementSpeed[temp4]
+          ;; let temp6 = CharacterMovementSpeed[temp4]
           lda temp4
           asl
           tax
@@ -307,7 +307,7 @@ skip_1692:
 
 
 
-                    let temp2 = playerX[temp1] - ScreenInsetX         
+          ;; let temp2 = playerX[temp1] - ScreenInsetX         
           lda temp1
           asl
           tax
@@ -333,7 +333,7 @@ skip_4090:
           lda temp2
           sta temp6
 
-                    let temp2 = playerY[temp1] + PlayerSpriteHeight         
+          ;; let temp2 = playerY[temp1] + PlayerSpriteHeight         
           lda temp1
           asl
           tax
@@ -350,7 +350,7 @@ skip_4090:
             lsr temp2
 
 
-          if temp2 >= pfrows then goto RGBGB_ClearCheck
+          ;; if temp2 >= pfrows then goto RGBGB_ClearCheck
           lda temp2
           cmp pfrows
 
@@ -367,7 +367,7 @@ skip_4090:
 
           ;; Check ground pixel
 
-          if temp5 >= pfrows then goto RGBGB_ClearCheck
+          ;; if temp5 >= pfrows then goto RGBGB_ClearCheck
           lda temp5
           cmp pfrows
 
@@ -411,16 +411,16 @@ skip_1733:
 
           ;; Check if moved away from contact
 
-                    if radishGoblinBounceState_R[temp1] = 1 then goto RGBGB_ClearCheck
+          ;; if radishGoblinBounceState_R[temp1] = 1 then goto RGBGB_ClearCheck
 
-          let temp2 = playerY[temp1]
+          ;; let temp2 = playerY[temp1]
           lda temp1
           asl
           tax
           lda playerY,x
           sta temp2
 
-                    let temp3 = radishGoblinLastContactY_R[temp1]
+          ;; let temp3 = radishGoblinLastContactY_R[temp1]
           lda temp1
           asl
           tax
@@ -432,7 +432,7 @@ skip_1733:
           lda radishGoblinLastContactY_R,x
           sta temp3
 
-                    if temp2 < temp3 then goto RGBGB_ClearState
+          ;; if temp2 < temp3 then goto RGBGB_ClearState
           lda temp2
           cmp temp3
           bcs skip_7054
@@ -490,7 +490,7 @@ RGBGB_CalcBounce .proc
           lda # 0
           sta temp3
 
-          if temp1 >= 2 then goto RGBGB_CheckStick
+          ;; if temp1 >= 2 then goto RGBGB_CheckStick
           lda temp1
           cmp 2
 
@@ -583,14 +583,14 @@ RGBGB_ClearCheck .proc
 
           rts
 
-          let temp2 = playerY[temp1]
+          ;; let temp2 = playerY[temp1]
           lda temp1
           asl
           tax
           lda playerY,x
           sta temp2
 
-                    let temp3 = radishGoblinLastContactY_R[temp1]
+          ;; let temp3 = radishGoblinLastContactY_R[temp1]
           lda temp1
           asl
           tax
@@ -602,7 +602,7 @@ RGBGB_ClearCheck .proc
           lda radishGoblinLastContactY_R,x
           sta temp3
 
-                    if temp2 < temp3 then goto RGBGB_ClearState2
+          ;; if temp2 < temp3 then goto RGBGB_ClearState2
           lda temp2
           cmp temp3
           bcs skip_7229

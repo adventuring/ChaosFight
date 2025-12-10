@@ -24,7 +24,7 @@ HandleFlyingCharacterMovement .proc
 
           ;; for players 1,3
 
-                    let temp5 = playerCharacter[temp1]         
+          ;; let temp5 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -146,9 +146,10 @@ HFCM_CheckVertical .proc
           lda currentPlayer
           sta temp1
 
-                    let temp5 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp5
+                    ;; let temp5 = playerCharacter[temp1]
+                    lda temp1          asl          tax          lda playerCharacter,x          sta temp5
 
-                    let characterMovementSpeed = CharacterMovementSpeed[temp5]
+          ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
           asl
           tax
@@ -167,13 +168,13 @@ HFCM_CheckVertical .proc
 skip_6783:
 
 
-                    if joy1up then goto HFCM_VertUp
+          ;; if joy1up then goto HFCM_VertUp
           lda joy1up
           beq skip_3244
           jmp HFCM_VertUp
 skip_3244:
 
-                    if joy1down then goto HFCM_VertDown
+          ;; if joy1down then goto HFCM_VertDown
           lda joy1down
           beq skip_9526
           jmp HFCM_VertDown
@@ -185,13 +186,13 @@ skip_9526:
 
 HFCM_VertJoy0 .proc
 
-                    if joy0up then goto HFCM_VertUp
+          ;; if joy0up then goto HFCM_VertUp
           lda joy0up
           beq skip_6096
           jmp HFCM_VertUp
 skip_6096:
 
-                    if joy0down then goto HFCM_VertDown
+          ;; if joy0down then goto HFCM_VertDown
           lda joy0down
           beq skip_3350
           jmp HFCM_VertDown

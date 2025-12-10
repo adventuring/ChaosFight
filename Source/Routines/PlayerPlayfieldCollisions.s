@@ -190,7 +190,7 @@ return_point_1_L184:
 PFCheckRight .proc
           ;; Returns: Far (return otherbank)
 
-          if temp6 >= 31 then goto PFCheckUp
+          ;; if temp6 >= 31 then goto PFCheckUp
           lda temp6
           cmp 31
 
@@ -262,7 +262,7 @@ skip_6982:
 return_point:
 
 
-                    if temp4 then goto PFBlockUp
+          ;; if temp4 then goto PFBlockUp
           lda temp4
           beq skip_8518
           jmp PFBlockUp
@@ -279,7 +279,7 @@ PFBlockUp .proc
           ;; Skip zeroing velocity for Radish Goblin (bounce system handles it)
           ;; Returns: Far (return otherbank)
 
-                    if playerCharacter[currentPlayer] = CharacterRadishGoblin then goto PFBlockUpClamp
+          ;; if playerCharacter[currentPlayer] = CharacterRadishGoblin then goto PFBlockUpClamp
 
                     if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           lda currentPlayer
@@ -385,9 +385,9 @@ PF_CheckColumnSpan .proc
 
 PFCS_SampleLoop .proc
 
-                    if rowCounter & $80 then goto PFCS_Advance
+          ;; if rowCounter & $80 then goto PFCS_Advance
 
-          if rowCounter >= pfrows then goto PFCS_Advance
+          ;; if rowCounter >= pfrows then goto PFCS_Advance
           lda rowCounter
           cmp pfrows
           bcc skip_5083
@@ -428,7 +428,7 @@ PFCS_Advance .proc
 
           inc temp3
 
-          if temp3 >= 3 then goto PFCS_Done
+          ;; if temp3 >= 3 then goto PFCS_Done
           lda temp3
           cmp 3
 
@@ -555,7 +555,7 @@ skip_6294:
 
 PRC_CheckRight .proc
 
-          if temp6 >= 31 then goto PRC_Done
+          ;; if temp6 >= 31 then goto PRC_Done
           lda temp6
           cmp 31
 
@@ -650,9 +650,9 @@ return_point:
           lda currentPlayer
           sta temp1
 
-                    if playerCharacter[temp1] = CharacterRadishGoblin then goto PHC_ClampOnly
+          ;; if playerCharacter[temp1] = CharacterRadishGoblin then goto PHC_ClampOnly
 
-                    if PHC_direction then goto PHC_CheckRightVelocity
+          ;; if PHC_direction then goto PHC_CheckRightVelocity
           lda PHC_direction
           beq skip_3527
           jmp PHC_CheckRightVelocity
@@ -671,7 +671,7 @@ PHC_ClampOnly
           lda temp6
           sta rowYPosition
 
-                    if PHC_direction then goto PHC_ClampRight
+          ;; if PHC_direction then goto PHC_ClampRight
           lda PHC_direction
           beq skip_5775
           jmp PHC_ClampRight
@@ -818,7 +818,7 @@ PFCheckDown_Body .proc
 return_point:
 
 
-                    if temp4 then goto PFBlockDown
+          ;; if temp4 then goto PFBlockDown
           lda temp4
           beq skip_5737
           jmp PFBlockDown

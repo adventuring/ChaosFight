@@ -110,7 +110,7 @@ StartMusic .proc
 
           ;; Route to correct bank based on song ID
 
-                    if temp1 < Bank0MinSongID then goto LoadSongFromBank15
+          ;; if temp1 < Bank0MinSongID then goto LoadSongFromBank15
           lda temp1
           cmp Bank0MinSongID
           bcs skip_3704
@@ -511,7 +511,7 @@ CMVE_ApplyAttack .proc
 
           ;; Check for wraparound: clamp to 0 if negative
 
-                    let temp6 = temp6 + temp4
+          ;; let temp6 = temp6 + temp4
 
                     if temp6 & $80 then let temp6 = 0
           lda temp6
@@ -585,7 +585,7 @@ CMVE_ApplyDecay .proc
           sta temp6
 
 
-                    let temp6 = temp6 + temp3
+          ;; let temp6 = temp6 + temp3
 
           ;; Check for wraparound: clamp to 0 if negative
 

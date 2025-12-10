@@ -44,7 +44,7 @@ HarpyAttack .proc
                     let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
 
           ;; Get facing direction (bit 0: 0=left, 1=right)
-                    let temp2 = playerState[temp1] & PlayerStateBitFacing         
+          ;; let temp2 = playerState[temp1] & PlayerStateBitFacing         
           lda temp1
           asl
           tax
@@ -132,7 +132,7 @@ HarpySetVerticalVelocity .proc
           ;; Fix RMW: Read from _R, modify, write to _W
           ;; Use temp1 directly for indexed addressing (batariBASIC
           ;; does not resolve dim aliases)
-                    let temp5 = characterStateFlags_R[temp1] | 4         
+          ;; let temp5 = characterStateFlags_R[temp1] | 4         
           lda temp1
           asl
           tax

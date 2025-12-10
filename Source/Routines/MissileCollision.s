@@ -8,7 +8,6 @@ CheckAllMissileCollisions
           ;; Returns: Far (return otherbank)
 
 
-CheckAllMissileCollisions
 
 
           ;; Missile Collision System
@@ -68,12 +67,18 @@ CheckAllMissileCollisions
 
           ;; Optimized: Calculate missile active bit flag with formula
 
-          bit flag: BitMask[playerIndex] (1, 2, 4, 8 for players 0-3)
+          ;; bit flag: BitMask[playerIndex] (1, 2, 4, 8 for players 0-3)
 
           lda MissileHitNotFound
           sta temp4
 
-                    let temp6 = BitMask[temp1]          lda temp1          asl          tax          lda BitMask,x          sta temp6
+                    ;; let temp6 = BitMask[temp1]
+          ;; let temp6 = BitMask[temp1]
+          lda temp1
+          asl
+          tax
+          lda BitMask,x
+          sta temp6
 
           lda missileActive
           and temp6
@@ -87,7 +92,7 @@ CheckAllMissileCollisions
 
           ;; Cache character index for downstream routines
 
-          let characterIndex = playerCharacter[temp1]
+          ;; let characterIndex = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -98,7 +103,7 @@ CheckAllMissileCollisions
 
           ;; Visible missile when width > 0, otherwise treat as AOE
 
-                    let temp6 = CharacterMissileWidths[characterIndex]
+          ;; let temp6 = CharacterMissileWidths[characterIndex]
           lda characterIndex
           asl
           tax
@@ -129,7 +134,6 @@ CheckVisibleMissileCollision
           ;; Returns: Near (return thisbank) - called same-bank
 
 
-CheckVisibleMissileCollision
 
 
           ;;
@@ -144,7 +148,7 @@ CheckVisibleMissileCollision
           ;; Uses axis-aligned bounding box (AABB) collision detection.
 
           ;;
-          INPUT:
+          ;; INPUT:
 
           ;; temp1 = attacker player index (0-3, missile owner)
 
@@ -187,18 +191,24 @@ CheckVisibleMissileCollision
 
           ;; Ensure character index matches current attacker
 
-                    let characterIndex = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta characterIndex
+                    ;; let characterIndex = playerCharacter[temp1]
+          ;; let characterIndex = playerCharacter[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta characterIndex
 
 
 
-          let cachedHitboxLeft_W = missileX[temp1]
+          ;; let cachedHitboxLeft_W = missileX[temp1]
           lda temp1
           asl
           tax
           lda missileX,x
           sta cachedHitboxLeft_W
 
-          let cachedHitboxTop_W = missileY_R[temp1]
+          ;; let cachedHitboxTop_W = missileY_R[temp1]
           lda temp1
           asl
           tax
@@ -209,7 +219,7 @@ CheckVisibleMissileCollision
 
           ;; Derive hitbox bounds from missile dimensions
 
-                    let temp6 = CharacterMissileWidths[characterIndex]
+          ;; let temp6 = CharacterMissileWidths[characterIndex]
           lda characterIndex
           asl
           tax
@@ -221,16 +231,16 @@ CheckVisibleMissileCollision
           lda CharacterMissileWidths,x
           sta temp6
 
-                    let cachedHitboxRight_W = cachedHitboxLeft_R + temp6
+          ;; let cachedHitboxRight_W = cachedHitboxLeft_R + temp6
 
-                    let temp6 = CharacterMissileHeights[characterIndex]         
+          ;; let temp6 = CharacterMissileHeights[characterIndex]         
           lda characterIndex
           asl
           tax
           lda CharacterMissileHeights,x
           sta temp6
 
-                    let cachedHitboxBottom_W = cachedHitboxTop_R + temp6
+          ;; let cachedHitboxBottom_W = cachedHitboxTop_R + temp6
           jsr CheckPlayersAgainstCachedHitbox
 
           jsr BS_return
@@ -309,7 +319,7 @@ CheckAOECollision
 
           ;; Constraints: Bernie (character 0) hits both left and right simultaneously
 
-                    let characterIndex = playerCharacter[temp1]         
+          ;; let characterIndex = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -340,7 +350,7 @@ skip_1021:
 
           ;; Normal character: Check only facing direction
 
-                    let temp6 = playerState[temp1] & PlayerStateBitFacing         
+          ;; let temp6 = playerState[temp1] & PlayerStateBitFacing         
           lda temp1
           asl
           tax
@@ -520,9 +530,10 @@ CacheAOERightHitbox .proc
 
           ;; Output: cachedHitboxLeft/Right/Top/Bottom populated
 
-                    let aoeOffset = CharacterAOEOffsets[characterIndex]          lda characterIndex          asl          tax          lda CharacterAOEOffsets,x          sta aoeOffset
+                    ;; let aoeOffset = CharacterAOEOffsets[characterIndex]
+                    lda characterIndex          asl          tax          lda CharacterAOEOffsets,x          sta aoeOffset
 
-                    let cachedHitboxLeft_W = playerX[temp1]
+          ;; let cachedHitboxLeft_W = playerX[temp1]
           lda temp1
           asl
           tax
@@ -534,16 +545,16 @@ CacheAOERightHitbox .proc
           lda playerX,x
           sta cachedHitboxLeft_W
 
-                    let cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
+          ;; let cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
 
-                    let cachedHitboxTop_W = playerY[temp1]         
+          ;; let cachedHitboxTop_W = playerY[temp1]         
           lda temp1
           asl
           tax
           lda playerY,x
           sta cachedHitboxTop_W
 
-                    let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
+          ;; let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
 
           rts
 
@@ -560,9 +571,10 @@ CacheAOELeftHitbox .proc
 
           ;; Output: cachedHitboxLeft/Right/Top/Bottom populated
 
-                    let aoeOffset = CharacterAOEOffsets[characterIndex]          lda characterIndex          asl          tax          lda CharacterAOEOffsets,x          sta aoeOffset
+                    ;; let aoeOffset = CharacterAOEOffsets[characterIndex]
+                    lda characterIndex          asl          tax          lda CharacterAOEOffsets,x          sta aoeOffset
 
-          let cachedHitboxRight_W = playerX[temp1] + PlayerSpriteWidth - 1 - aoeOffset
+          ;; let cachedHitboxRight_W = playerX[temp1] + PlayerSpriteWidth - 1 - aoeOffset
           lda temp1
           asl
           tax
@@ -581,7 +593,7 @@ CacheAOELeftHitbox .proc
           sta cachedHitboxLeft_W
 
 
-                    let cachedHitboxTop_W = playerY[temp1]
+          ;; let cachedHitboxTop_W = playerY[temp1]
           lda temp1
           asl
           tax
@@ -593,7 +605,7 @@ CacheAOELeftHitbox .proc
           lda playerY,x
           sta cachedHitboxTop_W
 
-                    let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
+          ;; let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
 
           rts
 
@@ -748,9 +760,10 @@ next_label_1_L693:.proc
 
           ;; Get missile X/Y position
 
-                    let temp2 = missileX[temp1]          lda temp1          asl          tax          lda missileX,x          sta temp2
+                    ;; let temp2 = missileX[temp1]
+                    lda temp1          asl          tax          lda missileX,x          sta temp2
 
-                    let temp3 = missileY_R[temp1]
+          ;; let temp3 = missileY_R[temp1]
           lda temp1
           asl
           tax

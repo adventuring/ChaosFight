@@ -78,7 +78,7 @@ BernieAttack .proc
 
           ;; Set animation state (PerformMeleeAttack also sets it, but
 
-                    let temp3 = playerState[temp1] & PlayerStateBitFacing         
+          ;; let temp3 = playerState[temp1] & PlayerStateBitFacing         
           lda temp1
           asl
           tax

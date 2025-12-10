@@ -23,10 +23,21 @@ HarpyCheckDiveVelocity .proc
           ;;
           ;; Constraints: Internal helper for SpawnMissile, only called
           ;; for Harpy (character 6)
-                    if (characterStateFlags_R[temp1] & 4) then HarpyBoostDiveVelocity
-          jmp VelocityDone
-
+          ;; if (characterStateFlags_R[temp1] & 4) then HarpyBoostDiveVelocity
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          and # 4
+          beq VelocityDone
+          jsr HarpyBoostDiveVelocity
+VelocityDone:
+          rts
 .pend
+
+VelocityDone:
+          ;; Global label for cross-file reference from MissileSystem.s (same bank)
+          rts
 
 HarpyBoostDiveVelocity .proc
           ;; Helper: Increases Harpy downward velocity by 50% for dive
@@ -48,9 +59,9 @@ HarpyBoostDiveVelocity .proc
             lda temp6
             lsr
             sta velocityCalculation
-                    let temp6 = temp6 + velocityCalculation
+          ;; let temp6 = temp6 + velocityCalculation
 
-VelocityDone
+VelocityDone:
           lda temp1
           asl
           tax
@@ -101,7 +112,7 @@ HandleMegaxMissile .proc
                     let temp4 = playerState[temp1] & PlayerStateBitFacing          lda temp1          asl          tax          lda playerState,x          sta temp4
 
           ;; Get emission height from character data
-          let temp5 = CharacterMissileEmissionHeights[temp5]
+          ;; let temp5 = CharacterMissileEmissionHeights[temp5]
           lda temp5
           asl
           tax
@@ -111,7 +122,7 @@ HandleMegaxMissile .proc
           ;; Lock missile position to player position (adjacent, no
           ;; movement)
           ;; Calculate X position based on player position and facing
-                    let temp2 = playerX[temp1]
+          ;; let temp2 = playerX[temp1]
           lda temp1
           asl
           tax
@@ -126,7 +137,7 @@ HandleMegaxMissile .proc
           lda temp4
           cmp # 0
           bne skip_4908
-                    let temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
+          ;; let temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
 skip_4908:
 
 
@@ -134,7 +145,7 @@ skip_4908:
           lda temp4
           cmp # 1
           bne skip_7180
-                    let temp2 = temp2 + CharacterMissileSpawnOffsetRight[temp5]
+          ;; let temp2 = temp2 + CharacterMissileSpawnOffsetRight[temp5]
 skip_7180:
 
 
@@ -169,7 +180,7 @@ skip_7180:
           ;; Animation state is in bits 4-7 of playerState
           ActionAttackExecute = 14 (0xE)
           ;; Extract animation state (bits 4-7)
-                    let temp6 = playerState[temp1]
+          ;; let temp6 = playerState[temp1]
           lda temp1
           asl
           tax
@@ -249,7 +260,7 @@ HandleKnightGuyMissile .proc
                     let temp4 = playerState[temp1] & PlayerStateBitFacing          lda temp1          asl          tax          lda playerState,x          sta temp4
 
           ;; Get emission height from character data
-          let temp5 = CharacterMissileEmissionHeights[temp5]
+          ;; let temp5 = CharacterMissileEmissionHeights[temp5]
           lda temp5
           asl
           tax
@@ -258,7 +269,7 @@ HandleKnightGuyMissile .proc
 
           ;; Check if attack animation is complete
           ;; Extract animation state (bits 4-7)
-                    let temp6 = playerState[temp1]
+          ;; let temp6 = playerState[temp1]
           lda temp1
           asl
           tax
@@ -290,7 +301,7 @@ skip_6521:
 KnightGuyAttackActive .proc
           ;; Get current animation frame within Execute sequence (0-7)
           ;; Read from SCRAM and calculate offset immediately
-                    let velocityCalculation = currentAnimationFrame_R[temp1]         
+          ;; let velocityCalculation = currentAnimationFrame_R[temp1]         
           lda temp1
           asl
           tax
@@ -347,7 +358,7 @@ KnightGuySetPosition
           ;; Start position: player × + 8 pixels (halfway through
           ;; player sprite)
           Then apply swing offset in facing direction
-                    let temp2 = playerX[temp1] + 8         
+          ;; let temp2 = playerX[temp1] + 8         
           lda temp1
           asl
           tax
@@ -364,7 +375,7 @@ skip_6244:
 
 
           ;; Facing right: move right (positive offset)
-                    let temp2 = temp2 + velocityCalculation
+          ;; let temp2 = temp2 + velocityCalculation
           jmp KnightGuySetY
 
 .pend
@@ -377,7 +388,7 @@ KnightGuySwingLeft .proc
 
 KnightGuySetY .proc
           ;; Calculate Y position (player Y + emission height)
-                    let temp3 = playerY[temp1]
+          ;; let temp3 = playerY[temp1]
           lda temp1
           asl
           tax

@@ -109,7 +109,7 @@ skip_4728:
 skip_4971:
 
           If fire button held, increment timer
-                    if temp1 then goto IncrementFireHold
+          ;; if temp1 then goto IncrementFireHold
           lda temp1
           beq skip_68
           jmp IncrementFireHold
@@ -128,7 +128,7 @@ IncrementFireHold
 
           lda temp2
           sta fireHoldTimer_W
-          if temp2 >= FramesPerSecond then goto ReturnToCharacterSelect
+          ;; if temp2 >= FramesPerSecond then goto ReturnToCharacterSelect
           lda temp2
           cmp FramesPerSecond
 
@@ -140,7 +140,7 @@ IncrementFireHold
 
 FireHoldCheckDone
           ;; Handle LEFT/RIGHT navigation for arena selection
-                    if joy0left then goto ArenaSelectLeft
+          ;; if joy0left then goto ArenaSelectLeft
           lda joy0left
           beq skip_3919
           jmp ArenaSelectLeft
@@ -155,13 +155,13 @@ ArenaSelectLeft .proc
           lda selectedArena_R
           cmp # 0
           bne skip_3849
-                    let selectedArena_W = RandomArena : goto ArenaSelectLeftSound
+          ;; let selectedArena_W = RandomArena : goto ArenaSelectLeftSound
 skip_3849:
 
           lda selectedArena_R
           cmp RandomArena
           bne skip_9093
-                    let selectedArena_W = MaxArenaID : goto ArenaSelectLeftSound
+          ;; let selectedArena_W = MaxArenaID : goto ArenaSelectLeftSound
 skip_9093:
 
           lda selectedArena_R
@@ -191,7 +191,7 @@ return_point:
 
 
 ArenaSelectDoneLeft
-                    if joy0right then goto ArenaSelectRight
+          ;; if joy0right then goto ArenaSelectRight
           lda joy0right
           beq skip_1901
           jmp ArenaSelectRight
@@ -207,13 +207,13 @@ ArenaSelectRight .proc
           lda selectedArena_R
           cmp MaxArenaID
           bne skip_4092
-                    let selectedArena_W = RandomArena : goto ArenaSelectRightSound
+          ;; let selectedArena_W = RandomArena : goto ArenaSelectRightSound
 skip_4092:
 
           lda selectedArena_R
           cmp RandomArena
           bne skip_2709
-                    let selectedArena_W = 0 : goto ArenaSelectRightSound
+          ;; let selectedArena_W = 0 : goto ArenaSelectRightSound
 skip_2709:
 
           lda selectedArena_R
@@ -425,7 +425,7 @@ return_point:
 
 DisplayDone
           ;; Handle fire button press (confirm selection, start game)
-                    if joy0fire then goto ArenaSelectConfirm
+          ;; if joy0fire then goto ArenaSelectConfirm
           lda joy0fire
           beq skip_1340
           jmp ArenaSelectConfirm
@@ -607,9 +607,9 @@ ArenaSelectDrawCharacters .proc
 
           ;; Playfield defined by ArenaSelect data; no per-frame register writes
           ;; Draw Player 1 character (top left) if selected
-                    if playerCharacter[0] = NoCharacter then goto ArenaSelectDoneDrawP0
+          ;; if playerCharacter[0] = NoCharacter then goto ArenaSelectDoneDrawP0
 
-                    if playerCharacter[0] = CPUCharacter then goto ArenaSelectDoneDrawP0
+          ;; if playerCharacter[0] = CPUCharacter then goto ArenaSelectDoneDrawP0
           lda # 0
           asl
           tax
@@ -619,7 +619,7 @@ ArenaSelectDrawCharacters .proc
           jmp ArenaSelectDoneDrawP0
 skip_2941:
 
-                    if playerCharacter[0] = RandomCharacter then goto ArenaSelectDoneDrawP0
+          ;; if playerCharacter[0] = RandomCharacter then goto ArenaSelectDoneDrawP0
           lda # 0
           asl
           tax
@@ -672,9 +672,9 @@ ArenaSelectDoneDrawP0
           ;; Constraints: Must be colocated with
           ;; ArenaSelectDrawCharacters
           ;; Draw Player 2 character (top right) if selected
-                    if playerCharacter[1] = NoCharacter then goto ArenaSelectDoneDrawP1
+          ;; if playerCharacter[1] = NoCharacter then goto ArenaSelectDoneDrawP1
 
-                    if playerCharacter[1] = CPUCharacter then goto ArenaSelectDoneDrawP1
+          ;; if playerCharacter[1] = CPUCharacter then goto ArenaSelectDoneDrawP1
           lda # 1
           asl
           tax
@@ -684,7 +684,7 @@ ArenaSelectDoneDrawP0
           jmp ArenaSelectDoneDrawP1
 skip_7826:
 
-                    if playerCharacter[1] = RandomCharacter then goto ArenaSelectDoneDrawP1
+          ;; if playerCharacter[1] = RandomCharacter then goto ArenaSelectDoneDrawP1
           lda # 1
           asl
           tax
@@ -753,9 +753,9 @@ ArenaSelectDoneDrawP1
 return_point:
 
 
-                    if playerCharacter[2] = NoCharacter then goto ArenaSelectDoneDrawP2
+          ;; if playerCharacter[2] = NoCharacter then goto ArenaSelectDoneDrawP2
 
-                    if playerCharacter[2] = CPUCharacter then goto ArenaSelectDoneDrawP2
+          ;; if playerCharacter[2] = CPUCharacter then goto ArenaSelectDoneDrawP2
           lda # 2
           asl
           tax
@@ -765,7 +765,7 @@ return_point:
           jmp ArenaSelectDoneDrawP2
 skip_5567:
 
-                    if playerCharacter[2] = RandomCharacter then goto ArenaSelectDoneDrawP2
+          ;; if playerCharacter[2] = RandomCharacter then goto ArenaSelectDoneDrawP2
           lda # 2
           asl
           tax
@@ -828,9 +828,9 @@ ArenaSelectDoneDrawP2
 skip_4430:
 
 
-                    if playerCharacter[3] = NoCharacter then goto ArenaSelectDoneDrawP23
+          ;; if playerCharacter[3] = NoCharacter then goto ArenaSelectDoneDrawP23
 
-                    if playerCharacter[3] = CPUCharacter then goto ArenaSelectDoneDrawP23
+          ;; if playerCharacter[3] = CPUCharacter then goto ArenaSelectDoneDrawP23
           lda # 3
           asl
           tax
@@ -840,7 +840,7 @@ skip_4430:
           jmp ArenaSelectDoneDrawP23
 skip_1993:
 
-                    if playerCharacter[3] = RandomCharacter then goto ArenaSelectDoneDrawP23
+          ;; if playerCharacter[3] = RandomCharacter then goto ArenaSelectDoneDrawP23
           lda # 3
           asl
           tax

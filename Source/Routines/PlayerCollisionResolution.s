@@ -26,7 +26,7 @@ CheckAllPlayerCollisions
           and SetQuadtariDetected
           cmp # 0
           bne skip_7014
-                    let temp6 = 2 : goto PCR_SkipElse
+          ;; let temp6 = 2 : goto PCR_SkipElse
 skip_7014:
 
           lda # 4
@@ -126,7 +126,7 @@ PCR_InnerLoop .proc
 
 PCR_CheckPair .proc
 
-          if temp2 >= temp6 then goto PCR_NextOuter
+          ;; if temp2 >= temp6 then goto PCR_NextOuter
           lda temp2
           cmp temp6
 
@@ -210,7 +210,7 @@ skip_9326:
 
 PCR_CheckDistance .proc
 
-                    if playerHealth[temp1] = 0 then goto PCR_NextInner
+          ;; if playerHealth[temp1] = 0 then goto PCR_NextInner
           lda temp1
           asl
           tax
@@ -219,7 +219,7 @@ PCR_CheckDistance .proc
           jmp PCR_NextInner
 skip_6722:
 
-                    if playerHealth[temp2] = 0 then goto PCR_NextInner
+          ;; if playerHealth[temp2] = 0 then goto PCR_NextInner
           lda temp2
           asl
           tax
@@ -228,7 +228,7 @@ skip_6722:
           jmp PCR_NextInner
 skip_2348:
 
-                    let temp3 = playerX[temp2] - playerX[temp1]         
+          ;; let temp3 = playerX[temp2] - playerX[temp1]         
           lda temp2
           asl
           tax
@@ -256,7 +256,7 @@ skip_8952:
 
 
 
-          if temp3 >= PlayerCollisionDistance then goto PCR_NextInner
+          ;; if temp3 >= PlayerCollisionDistance then goto PCR_NextInner
           lda temp3
           cmp PlayerCollisionDista
 
@@ -267,7 +267,7 @@ skip_8952:
 
           skip_3330:
 
-                    let temp4 = playerY[temp2] - playerY[temp1]         
+          ;; let temp4 = playerY[temp2] - playerY[temp1]         
           lda temp2
           asl
           tax
@@ -297,7 +297,8 @@ skip_2874:
 
           ;; Use bit shift instead of division (optimized for Atari 2600)
 
-                    let characterHeight = CharacterHeights[temp1]          lda temp1          asl          tax          lda CharacterHeights,x          sta characterHeight
+                    ;; let characterHeight = CharacterHeights[temp1]
+                    lda temp1          asl          tax          lda CharacterHeights,x          sta characterHeight
 
 
             lda characterHeight
@@ -309,7 +310,7 @@ skip_2874:
 
           ;; Use bit shift instead of division (optimized for Atari 2600)
 
-                    let characterHeight = CharacterHeights[temp2]
+          ;; let characterHeight = CharacterHeights[temp2]
           lda temp2
           asl
           tax
@@ -329,7 +330,7 @@ skip_2874:
             sta halfHeight2
 
 
-                    let totalHeight = halfHeight1 + halfHeight2
+          ;; let totalHeight = halfHeight1 + halfHeight2
           lda totalHeight
           cmp # 0
           bne skip_6830
@@ -337,7 +338,7 @@ skip_2874:
 skip_6830:
 
 
-          if temp4 >= totalHeight then goto PCR_NextInner
+          ;; if temp4 >= totalHeight then goto PCR_NextInner
           lda temp4
           cmp totalHeight
 
@@ -347,12 +348,13 @@ skip_6830:
 
           skip_4825:
 
-                    let characterWeight = CharacterWeights[temp1]          lda temp1          asl          tax          lda CharacterWeights,x          sta characterWeight
+                    ;; let characterWeight = CharacterWeights[temp1]
+                    lda temp1          asl          tax          lda CharacterWeights,x          sta characterWeight
 
           lda characterWeight
           sta halfHeight1
 
-                    let characterWeight = CharacterWeights[temp2]
+          ;; let characterWeight = CharacterWeights[temp2]
           lda temp2
           asl
           tax
@@ -367,7 +369,7 @@ skip_6830:
           lda characterWeight
           sta halfHeight2
 
-                    let totalWeight = halfHeight1 + halfHeight2
+          ;; let totalWeight = halfHeight1 + halfHeight2
           lda totalWeight
           cmp # 0
           bne skip_8818
@@ -375,7 +377,7 @@ skip_6830:
 skip_8818:
 
 
-                    if playerX[temp1] < playerX[temp2] then goto PCR_SepLeft
+          ;; if playerX[temp1] < playerX[temp2] then goto PCR_SepLeft
 
           ;; let weightDifference = halfHeight1 - halfHeight2          lda halfHeight1          sec          sbc halfHeight2          sta weightDifference
           lda halfHeight1
@@ -393,7 +395,7 @@ skip_8818:
           lda weightDifference
           sta impulseStrength
 
-          if halfHeight1 >= halfHeight2 then goto PCR_ApplyImpulseRight
+          ;; if halfHeight1 >= halfHeight2 then goto PCR_ApplyImpulseRight
           lda halfHeight1
           cmp halfHeight2
 
@@ -411,7 +413,7 @@ skip_8818:
             sta impulseStrength
 
 
-          if totalWeight >= 128 then goto PCR_Div128_1
+          ;; if totalWeight >= 128 then goto PCR_Div128_1
           lda totalWeight
           cmp 128
 
@@ -421,7 +423,7 @@ skip_8818:
 
           skip_8448:
 
-          if totalWeight >= 64 then goto PCR_Div64_1
+          ;; if totalWeight >= 64 then goto PCR_Div64_1
           lda totalWeight
           cmp 64
 
@@ -431,7 +433,7 @@ skip_8818:
 
           skip_9025:
 
-          if totalWeight >= 32 then goto PCR_Div32_1
+          ;; if totalWeight >= 32 then goto PCR_Div32_1
           lda totalWeight
           cmp 32
 
@@ -683,7 +685,7 @@ PCR_SepLeft .proc
           lda weightDifference
           sta impulseStrength
 
-          if halfHeight1 >= halfHeight2 then goto PCR_ApplyImpulseLeft
+          ;; if halfHeight1 >= halfHeight2 then goto PCR_ApplyImpulseLeft
           lda halfHeight1
           cmp halfHeight2
 
@@ -701,7 +703,7 @@ PCR_SepLeft .proc
             sta impulseStrength
 
 
-          if totalWeight >= 128 then goto PCR_Div128_2
+          ;; if totalWeight >= 128 then goto PCR_Div128_2
           lda totalWeight
           cmp 128
 
@@ -711,7 +713,7 @@ PCR_SepLeft .proc
 
           skip_8021:
 
-          if totalWeight >= 64 then goto PCR_Div64_2
+          ;; if totalWeight >= 64 then goto PCR_Div64_2
           lda totalWeight
           cmp 64
 
@@ -721,7 +723,7 @@ PCR_SepLeft .proc
 
           skip_3486:
 
-          if totalWeight >= 32 then goto PCR_Div32_2
+          ;; if totalWeight >= 32 then goto PCR_Div32_2
           lda totalWeight
           cmp 32
 
@@ -850,7 +852,7 @@ PCR_NextOuter .proc
 
           inc temp1
 
-                    if temp1 < temp6 then goto PCR_OuterLoop
+          ;; if temp1 < temp6 then goto PCR_OuterLoop
           lda temp1
           cmp temp6
           bcs skip_7180

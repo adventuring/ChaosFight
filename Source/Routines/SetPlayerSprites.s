@@ -47,8 +47,9 @@ SetPlayerSprites .proc
           lda # 0
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    let temp2 = playerRecoveryFrames[0]          lda 0          asl          tax          lda playerRecoveryFrames,x          sta temp2
-                    let temp3 = playerState[0]
+                    ;; let temp2 = playerRecoveryFrames[0]
+                    lda 0          asl          tax          lda playerRecoveryFrames,x          sta temp2
+          ;; let temp3 = playerState[0]
           lda 0
           asl
           tax
@@ -83,7 +84,7 @@ Player1ColorDone
 
 
           ;; Load sprite data from character definition
-                    let currentCharacter = playerCharacter[0]         
+          ;; let currentCharacter = playerCharacter[0]         
           lda 0
           asl
           tax
@@ -117,8 +118,9 @@ return_point:
           lda # 1
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    let temp2 = playerRecoveryFrames[1]          lda 1          asl          tax          lda playerRecoveryFrames,x          sta temp2
-                    let temp3 = playerState[1]
+                    ;; let temp2 = playerRecoveryFrames[1]
+                    lda 1          asl          tax          lda playerRecoveryFrames,x          sta temp2
+          ;; let temp3 = playerState[1]
           lda 1
           asl
           tax
@@ -165,7 +167,7 @@ Player2ReflectionDone:
 
 
           ;; Load sprite data from character definition
-                    let currentCharacter = playerCharacter[1]         
+          ;; let currentCharacter = playerCharacter[1]         
           lda 1
           asl
           tax
@@ -205,7 +207,7 @@ return_point:
           jmp DonePlayer3Sprite
 skip_2154:
 
-                    if playerCharacter[2] = NoCharacter then goto DonePlayer3Sprite
+          ;; if playerCharacter[2] = NoCharacter then goto DonePlayer3Sprite
           ;; if ! playerHealth[2] then goto DonePlayer3Sprite
           lda 2
           asl
@@ -231,8 +233,9 @@ skip_5360:
           lda # 2
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    let temp2 = playerRecoveryFrames[2]          lda 2          asl          tax          lda playerRecoveryFrames,x          sta temp2
-                    let temp3 = playerState[2]
+                    ;; let temp2 = playerRecoveryFrames[2]
+                    lda 2          asl          tax          lda playerRecoveryFrames,x          sta temp2
+          ;; let temp3 = playerState[2]
           lda 2
           asl
           tax
@@ -278,7 +281,7 @@ Player3ReflectionDone:
 
 
           ;; Load sprite data from character definition
-                    let currentCharacter = playerCharacter[2]         
+          ;; let currentCharacter = playerCharacter[2]         
           lda 2
           asl
           tax
@@ -315,7 +318,7 @@ DonePlayer3Sprite
           jmp DonePlayer4Sprite
 skip_9777:
 
-                    if playerCharacter[3] = NoCharacter then goto DonePlayer4Sprite
+          ;; if playerCharacter[3] = NoCharacter then goto DonePlayer4Sprite
           ;; if ! playerHealth[3] then goto DonePlayer4Sprite
           lda 3
           asl
@@ -342,8 +345,9 @@ skip_9007:
           lda # 3
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    let temp2 = playerRecoveryFrames[3]          lda 3          asl          tax          lda playerRecoveryFrames,x          sta temp2
-                    let temp3 = playerState[3]
+                    ;; let temp2 = playerRecoveryFrames[3]
+                    lda 3          asl          tax          lda playerRecoveryFrames,x          sta temp2
+          ;; let temp3 = playerState[3]
           lda 3
           asl
           tax
@@ -388,7 +392,7 @@ Player4ReflectionDone:
 
 
           ;; Load sprite data from character definition
-                    let currentCharacter = playerCharacter[3]         
+          ;; let currentCharacter = playerCharacter[3]         
           lda 3
           asl
           tax

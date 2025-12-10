@@ -80,9 +80,6 @@ return_point:
 
 .pend
 
-next_label_2 .proc
-.pend
-
 UpdatePlayerMovementQuadtariSkip .proc
           jsr BS_return
 

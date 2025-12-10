@@ -162,7 +162,7 @@ HCSF_HandleFire .proc
 
           ;; Check for handicap mode (down+fire = 75% health)
 
-                    if playerCharacter[temp1] = RandomCharacter then goto HCSF_HandleRandom
+          ;; if playerCharacter[temp1] = RandomCharacter then goto HCSF_HandleRandom
 
           if temp4 then HCSF_HandleHandicap
           lda temp4

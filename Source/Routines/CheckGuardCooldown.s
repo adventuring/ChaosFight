@@ -2,8 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-CheckGuardCooldown:
-.proc
+CheckGuardCooldown .proc
 
           ;;
           ;; Returns: Far (return otherbank)
@@ -57,8 +56,7 @@ CooldownExpired:
 
 .pend
 
-GuardCooldownBlocked:
-.proc
+GuardCooldownBlocked .proc
           ;; Currently guarding or in cooldown - not allowed to sta
 
           ;; Returns: Far (return otherbank)

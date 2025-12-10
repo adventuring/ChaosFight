@@ -2,8 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-StartGuard:
-.proc
+StartGuard .proc
           ;;
           ;; Start Guard
           ;; Activate guard state for the specified player.

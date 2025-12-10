@@ -32,20 +32,20 @@ CRTSMC_IsRoboTito .proc
           ;; Check if stretching (not latched, ActionJumping animation
           ;; = 10)
           ;; Latched to ceiling, no stretch missile
-                    let temp5 = characterStateFlags_R[temp1] & 1         
+          ;; let temp5 = characterStateFlags_R[temp1] & 1         
           lda temp1
           asl
           tax
           lda characterStateFlags_R,x
           sta temp5
-                    if temp5 then goto CRTSMC_NextPlayer
+          ;; if temp5 then goto CRTSMC_NextPlayer
           lda temp5
           beq skip_9216
           jmp CRTSMC_NextPlayer
 skip_9216:
           ;; Mask bits 4-7 (animation sta
 
-                    let playerStateTemp = playerState[temp1]         
+          ;; let playerStateTemp = playerState[temp1]         
           lda temp1
           asl
           tax
@@ -56,7 +56,7 @@ skip_9216:
           lda playerStateTemp
           and MaskPlayerStateAnimation
           sta playerStateTemp
-                    let playerStateTemp = playerStateTemp / 16
+          ;; let playerStateTemp = playerStateTemp / 16
           lda playerStateTemp
           cmp # 10
           bne skip_5369
@@ -71,7 +71,7 @@ CRTSMC_IsStretching .proc
           ;; In stretching animation, check for stretch missile
 
           ;; Check if stretch missile has height > 0
-                    let temp2 = missileStretchHeight_R[temp1]         
+          ;; let temp2 = missileStretchHeight_R[temp1]         
           lda temp1
           asl
           tax
@@ -297,7 +297,7 @@ HandleRoboTitoStretchMissileHit .proc
           sta characterSpecialAbility_W,x
 
           ;; Clear latched flag if set (falling from ceiling)
-                    let temp3 = characterStateFlags_R[temp1]         
+          ;; let temp3 = characterStateFlags_R[temp1]         
           lda temp1
           asl
           tax

@@ -123,7 +123,7 @@ temp4 = player number (0-3)
           ;; TODO: ; LoadPlayerSpriteDispatch (called via goto)
 ; Get character index for this player from playerCharacter array
           ;; TODO: ; Use currentPlayer global variable (set by caller)
-                    let currentCharacter = playerCharacter[currentPlayer]         
+          ;; let currentCharacter = playerCharacter[currentPlayer]         
           lda currentPlayer
           asl
           tax

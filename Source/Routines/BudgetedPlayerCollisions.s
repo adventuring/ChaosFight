@@ -102,7 +102,7 @@ CheckCollisionPair
           jmp BPC_CheckSep
 
 BPC_CalcDiff
-                    let temp2 = playerX[temp3]
+          ;; let temp2 = playerX[temp3]
           lda temp3
           asl
           tax

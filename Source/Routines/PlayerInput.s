@@ -85,7 +85,7 @@ GetPlayerAnimationStateFunction
 
           ;; Output: temp2 = animation state (bits 4-7 of playerState)
 
-                    let temp2 = playerState[temp1] & 240         
+          ;; let temp2 = playerState[temp1] & 240         
           lda temp1
           asl
           tax
@@ -94,7 +94,7 @@ GetPlayerAnimationStateFunction
 
           ;; Mask bits 4-7 (value 240 = %11110000)
 
-                    let temp2 = temp2 / 16
+          ;; let temp2 = temp2 / 16
 
           ;; Shift right by 4 (divide by 16) to get animation sta
 
@@ -167,7 +167,7 @@ InputHandleAllPlayers .proc
 
           ;; InputSkipPlayer4Input (all called via goto or gosub)
 
-                    if qtcontroller then goto InputHandleQuadtariPlayers
+          ;; if qtcontroller then goto InputHandleQuadtariPlayers
           lda qtcontroller
           beq skip_514
           jmp InputHandleQuadtariPlayers
@@ -177,7 +177,7 @@ skip_514:
 
           ;; Even frame: Handle Players 1 & 2 - only if alive
 
-                    let currentPlayer = 0 : gosub IsPlayerAlive bank13
+          ;; let currentPlayer = 0 : gosub IsPlayerAlive bank13
           lda temp2
           cmp # 0
           bne skip_299
@@ -187,7 +187,7 @@ skip_299:
 
                     if (playerState[0] & 8) then goto InputDonePlayer0Input
 
-                    let temp1 = 0
+          ;; let temp1 = 0
           lda # 0
           sta temp1 : gosub InputHandleLeftPortPlayerFunction
 
@@ -215,7 +215,7 @@ InputDonePlayer0Input
 
 
 
-                    let currentPlayer = 1 : gosub IsPlayerAlive bank13
+          ;; let currentPlayer = 1 : gosub IsPlayerAlive bank13
           lda 1
           sta currentPlayer
           lda # >(return_point-1)
@@ -355,9 +355,9 @@ InputHandleQuadtariPlayers .proc
 skip_9975:
 
 
-                    if playerCharacter[2] = NoCharacter then goto InputDonePlayer3Input
+          ;; if playerCharacter[2] = NoCharacter then goto InputDonePlayer3Input
 
-                    let currentPlayer = 2 : gosub IsPlayerAlive bank13
+          ;; let currentPlayer = 2 : gosub IsPlayerAlive bank13
           lda 2
           sta currentPlayer
           lda # >(return_point-1)
@@ -380,7 +380,7 @@ skip_2411:
 
                     if (playerState[2] & 8) then goto InputDonePlayer3Input
 
-                    let temp1 = 2
+          ;; let temp1 = 2
           lda # 2
           sta temp1 : gosub InputHandleLeftPortPlayerFunction
 
@@ -412,9 +412,9 @@ InputDonePlayer3Input
 skip_3451:
 
 
-                    if playerCharacter[3] = NoCharacter then goto InputDonePlayer4Input
+          ;; if playerCharacter[3] = NoCharacter then goto InputDonePlayer4Input
 
-                    let currentPlayer = 3 : gosub IsPlayerAlive bank13
+          ;; let currentPlayer = 3 : gosub IsPlayerAlive bank13
           lda 3
           sta currentPlayer
           lda # >(return_point-1)
@@ -437,7 +437,7 @@ skip_4413:
 
                     if (playerState[3] & 8) then goto InputDonePlayer4Input
 
-                    let temp1 = 3
+          ;; let temp1 = 3
           lda # 3
           sta temp1 : gosub InputHandleRightPortPlayerFunction
 
@@ -545,7 +545,7 @@ HGI_HandleDownPressed .proc
           ;; DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           ;; Returns: Far (return otherbank)
 
-                    let temp4 = playerCharacter[temp1]         
+          ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -613,7 +613,7 @@ HGI_CheckGuardRelease .proc
           ;; DOWN released - check for early guard release
           ;; Returns: Far (return otherbank)
 
-                    let temp2 = playerState[temp1] & 2         
+          ;; let temp2 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
@@ -721,11 +721,11 @@ HUIEB_HandleUp .proc
 
           ;; Check Bernie fall-through
 
-                    if playerCharacter[temp1] = CharacterRoboTito then goto HUIEB_RoboTitoAscend
+          ;; if playerCharacter[temp1] = CharacterRoboTito then goto HUIEB_RoboTitoAscend
 
           ;; Check Harpy flap
 
-                    if playerCharacter[temp1] = CharacterBernie then goto HUIEB_BernieFallThrough
+          ;; if playerCharacter[temp1] = CharacterBernie then goto HUIEB_BernieFallThrough
           lda temp1
           asl
           tax
@@ -737,7 +737,7 @@ skip_2293:
 
           ;; For all other characters, UP is jump
 
-                    if playerCharacter[temp1] = CharacterHarpy then goto HUIEB_HarpyFlap
+          ;; if playerCharacter[temp1] = CharacterHarpy then goto HUIEB_HarpyFlap
           lda temp1
           asl
           tax
@@ -761,9 +761,10 @@ HUIEB_RoboTitoAscend
           lda temp2
           sta temp5
 
-                    let temp6 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+                    ;; let temp6 = playerCharacter[temp1]
+                    lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-                    let temp6 = CharacterMovementSpeed[temp6]
+          ;; let temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -779,7 +780,7 @@ HUIEB_RoboTitoAscend
 
                     let playerY[temp1] = playerY[temp1] - temp6
 
-                    let temp4 = playerX[temp1]         
+          ;; let temp4 = playerX[temp1]         
           lda temp1
           asl
           tax
@@ -816,7 +817,7 @@ skip_6225:
 
                     if temp4 & $80 then let temp4 = 0
 
-                    let temp3 = playerY[temp1]         
+          ;; let temp3 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -876,7 +877,7 @@ return_point:
 
           ;; Clear latch if DOWN pressed (check appropriate joy port)
 
-                    if temp1 then goto HUIEB_RoboTitoLatch
+          ;; if temp1 then goto HUIEB_RoboTitoLatch
           lda temp1
           beq skip_8947
           jmp HUIEB_RoboTitoLatch
@@ -997,9 +998,9 @@ HUIEB_CheckEnhanced .proc
 
           ;; Note: For Harpy, UP is flap, so jump via enhanced buttons only
 
-                    if playerCharacter[temp1] = CharacterShamone then goto HUIEB_EnhancedCheck
+          ;; if playerCharacter[temp1] = CharacterShamone then goto HUIEB_EnhancedCheck
 
-                    if playerCharacter[temp1] = CharacterMethHound then goto HUIEB_EnhancedCheck
+          ;; if playerCharacter[temp1] = CharacterMethHound then goto HUIEB_EnhancedCheck
           lda temp1
           asl
           tax
@@ -1009,7 +1010,7 @@ HUIEB_CheckEnhanced .proc
           jmp HUIEB_EnhancedCheck
 skip_2790:
 
-                    if playerCharacter[temp1] = CharacterBernie then goto HUIEB_EnhancedCheck
+          ;; if playerCharacter[temp1] = CharacterBernie then goto HUIEB_EnhancedCheck
           lda temp1
           asl
           tax
@@ -1021,7 +1022,7 @@ skip_6652:
 
           ;; Bernie and Harpy also use enhanced buttons for jump
 
-                    if playerCharacter[temp1] = CharacterHarpy then goto HUIEB_EnhancedCheck
+          ;; if playerCharacter[temp1] = CharacterHarpy then goto HUIEB_EnhancedCheck
           lda temp1
           asl
           tax
@@ -1095,7 +1096,7 @@ HUIEB_ExecuteJump .proc
 
           ;; Allow Zoe Ryen a single mid-air double-jump
 
-                    if playerCharacter[temp1] = CharacterZoeRyen then goto HUIEB_ZoeJumpCheck
+          ;; if playerCharacter[temp1] = CharacterZoeRyen then goto HUIEB_ZoeJumpCheck
 
           ;; Already jumping, cannot jump again
           jsr BS_return
@@ -1127,7 +1128,7 @@ HUIEB_JumpProceed .proc
 
           ;; Dispatch character jump via dispatcher (same-bank call)
 
-                    let temp4 = playerCharacter[temp1]         
+          ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -1215,9 +1216,9 @@ HSHM_HandleLeft .proc
           ;; Left movement: set negative velocity
           ;; Returns: Far (return otherbank)
 
-                    if playerCharacter[temp1] = CharacterFrooty then goto HSHM_LeftMomentum
+          ;; if playerCharacter[temp1] = CharacterFrooty then goto HSHM_LeftMomentum
 
-                    if playerCharacter[temp1] = CharacterDragonOfStorms then goto HSHM_LeftDirectSubpixel
+          ;; if playerCharacter[temp1] = CharacterDragonOfStorms then goto HSHM_LeftDirectSubpixel
           lda temp1
           asl
           tax
@@ -1227,9 +1228,10 @@ HSHM_HandleLeft .proc
           jmp HSHM_LeftDirectSubpixel
 skip_7951:
 
-                    let temp6 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+                    ;; let temp6 = playerCharacter[temp1]
+                    lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-                    let temp6 = CharacterMovementSpeed[temp6]
+          ;; let temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1277,9 +1279,10 @@ HSHM_LeftDirectSubpixel .proc
           ;; Dragon of Storms: direct velocity with subpixel accuracy
           ;; Returns: Far (return otherbank)
 
-                    let temp6 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+                    ;; let temp6 = playerCharacter[temp1]
+                    lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-                    let temp6 = CharacterMovementSpeed[temp6]
+          ;; let temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1326,9 +1329,10 @@ HSHM_LeftDirectSubpixel .proc
 
 HSHM_LeftMomentum .proc
 
-                    let temp6 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+                    ;; let temp6 = playerCharacter[temp1]
+                    lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-                    let temp6 = CharacterMovementSpeed[temp6]
+          ;; let temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1459,9 +1463,9 @@ HSHM_HandleRight .proc
           ;; Right movement: set positive velocity
           ;; Returns: Far (return otherbank)
 
-                    if playerCharacter[temp1] = CharacterFrooty then goto HSHM_RightMomentum
+          ;; if playerCharacter[temp1] = CharacterFrooty then goto HSHM_RightMomentum
 
-                    if playerCharacter[temp1] = CharacterDragonOfStorms then goto HSHM_RightDirectSubpixel
+          ;; if playerCharacter[temp1] = CharacterDragonOfStorms then goto HSHM_RightDirectSubpixel
           lda temp1
           asl
           tax
@@ -1471,9 +1475,10 @@ HSHM_HandleRight .proc
           jmp HSHM_RightDirectSubpixel
 skip_9323:
 
-                    let temp6 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+                    ;; let temp6 = playerCharacter[temp1]
+                    lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-                    let temp6 = CharacterMovementSpeed[temp6]
+          ;; let temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1506,9 +1511,10 @@ HSHM_RightDirectSubpixel .proc
           ;; Dragon of Storms: direct velocity with subpixel accuracy
           ;; Returns: Far (return otherbank)
 
-                    let temp6 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+                    ;; let temp6 = playerCharacter[temp1]
+                    lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-                    let temp6 = CharacterMovementSpeed[temp6]
+          ;; let temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1540,9 +1546,10 @@ HSHM_RightDirectSubpixel .proc
 
 HSHM_RightMomentum .proc
 
-                    let temp6 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+                    ;; let temp6 = playerCharacter[temp1]
+                    lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-                    let temp6 = CharacterMovementSpeed[temp6]
+          ;; let temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1658,7 +1665,7 @@ HandleFlyingCharacterMovement .proc
 
           ;; Determine which joy port to use based on player index
 
-                    let temp5 = playerCharacter[temp1]         
+          ;; let temp5 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -1669,9 +1676,9 @@ HandleFlyingCharacterMovement .proc
 
           ;; Players 1,3 use joy1
 
-                    if temp1 & 2 = 0 then goto HFCM_UseJoy0
+          ;; if temp1 & 2 = 0 then goto HFCM_UseJoy0
 
-                    if joy1left then goto HFCM_CheckLeftCollision
+          ;; if joy1left then goto HFCM_CheckLeftCollision
           lda joy1left
           beq skip_7089
           jmp HFCM_CheckLeftCollision
@@ -1686,7 +1693,7 @@ HFCM_UseJoy0 .proc
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
-                    if joy0left then goto HFCM_CheckLeftCollision
+          ;; if joy0left then goto HFCM_CheckLeftCollision
           lda joy0left
           beq skip_9079
           jmp HFCM_CheckLeftCollision
@@ -1699,7 +1706,7 @@ HFCM_CheckLeftCollision
           ;; Convert player position to playfield coordinates
           ;; Returns: Far (return otherbank)
 
-                    let temp2 = playerX[temp1]         
+          ;; let temp2 = playerX[temp1]         
           lda temp1
           asl
           tax
@@ -1740,7 +1747,7 @@ skip_9735:
 
 
 
-                    if temp2 <= 0 then goto HFCM_CheckRightMovement
+          ;; if temp2 <= 0 then goto HFCM_CheckRightMovement
           lda temp2
           beq HFCM_CheckRightMovement
           bmi HFCM_CheckRightMovement
@@ -1763,7 +1770,7 @@ skip_8359:
 
           ;; Check player current row (check both top and bottom of sprite)
 
-                    let temp4 = playerY[temp1]         
+          ;; let temp4 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -1852,7 +1859,7 @@ skip_2454:
 
           ;; Do not check if beyond screen
 
-          if temp6 >= pfrows then goto HFCM_MoveLeftOK
+          ;; if temp6 >= pfrows then goto HFCM_MoveLeftOK
           lda temp6
           cmp pfrows
 
@@ -2064,7 +2071,7 @@ HFCM_DoRightMovement .proc
           ;; Convert player position to playfield coordinates
           ;; Returns: Far (return otherbank)
 
-                    let temp2 = playerX[temp1]         
+          ;; let temp2 = playerX[temp1]         
           lda temp1
           asl
           tax
@@ -2120,7 +2127,7 @@ skip_9735:
 
           ;; Check player current row (check both top and bottom of sprite)
 
-                    let temp4 = playerY[temp1]         
+          ;; let temp4 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -2207,7 +2214,7 @@ skip_955:
 
           ;; Do not check if beyond screen
 
-          if temp6 >= pfrows then goto HFCM_MoveRightOK
+          ;; if temp6 >= pfrows then goto HFCM_MoveRightOK
           lda temp6
           cmp pfrows
 
@@ -2380,20 +2387,20 @@ SPF_InlineDone2
 skip_1841:
 
 
-                    if temp1 & 2 = 0 then goto HFCM_VertJoy0
+          ;; if temp1 & 2 = 0 then goto HFCM_VertJoy0
           lda temp1
           and # 2
           bne skip_244
           jmp HFCM_VertJoy0
 skip_244:
 
-                    if joy1up then goto HFCM_VertUp
+          ;; if joy1up then goto HFCM_VertUp
           lda joy1up
           beq skip_3244
           jmp HFCM_VertUp
 skip_3244:
 
-                    if joy1down then goto HFCM_VertDown
+          ;; if joy1down then goto HFCM_VertDown
           lda joy1down
           beq skip_9526
           jmp HFCM_VertDown
@@ -2405,13 +2412,13 @@ skip_9526:
 
 HFCM_VertJoy0 .proc
 
-                    if joy0up then goto HFCM_VertUp
+          ;; if joy0up then goto HFCM_VertUp
           lda joy0up
           beq skip_6096
           jmp HFCM_VertUp
 skip_6096:
 
-                    if joy0down then goto HFCM_VertDown
+          ;; if joy0down then goto HFCM_VertDown
           lda joy0down
           beq skip_3350
           jmp HFCM_VertDown
@@ -2484,7 +2491,7 @@ return_point:
 
           ;; Block movement during attack windup/execute/recovery
 
-          if temp2 >= 13 then goto DoneLeftPortMovement
+          ;; if temp2 >= 13 then goto DoneLeftPortMovement
           lda temp2
           cmp 13
 
@@ -2504,7 +2511,7 @@ return_point:
 
           ;; for horizontal movement
 
-                    let temp5 = playerCharacter[temp1]         
+          ;; let temp5 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -2600,7 +2607,7 @@ IHLP_DoneFlyingLeftRight
 
           ;; Players 0,2 use joy0; Players 1,3 use joy1
 
-                    if playerCharacter[temp1] = CharacterFrooty then goto HGI_Done1
+          ;; if playerCharacter[temp1] = CharacterFrooty then goto HGI_Done1
           lda temp1
           cmp # 0
           bne skip_6012
@@ -2645,14 +2652,14 @@ HGI_HandleDownPressed1 .proc
           ;; DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           ;; Returns: Far (return otherbank)
 
-                    let temp4 = playerCharacter[temp1]         
+          ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta temp4
 
-          if temp4 >= 32 then goto HGI_Done1
+          ;; if temp4 >= 32 then goto HGI_Done1
           lda temp4
           cmp 32
 
@@ -2756,7 +2763,7 @@ HGI_CheckGuardRelease1 .proc
           ;; DOWN released - check for early guard release
           ;; Returns: Far (return otherbank)
 
-                    let temp2 = playerState[temp1] & 2         
+          ;; let temp2 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
@@ -2819,7 +2826,7 @@ HGI_Done1
 
           ;; Block attack input during attack windup/execute/recovery
 
-          if temp2 >= 13 then goto InputDoneLeftPortAttack
+          ;; if temp2 >= 13 then goto InputDoneLeftPortAttack
           lda temp2
           cmp 13
 
@@ -2831,7 +2838,7 @@ HGI_Done1
 
           ;; Check if player is guarding - guard blocks attacks
 
-                    let temp2 = playerState[temp1] & 2         
+          ;; let temp2 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
@@ -2840,7 +2847,7 @@ HGI_Done1
 
           ;; Guarding - block attack input
 
-                    if temp2 then goto InputDoneLeftPortAttack
+          ;; if temp2 then goto InputDoneLeftPortAttack
           lda temp2
           beq skip_5855
           jmp InputDoneLeftPortAttack
@@ -2854,7 +2861,7 @@ skip_8700:
 
                     if (playerState[temp1] & PlayerStateBitFacing) then goto InputDoneLeftPortAttack
 
-                    let temp4 = playerCharacter[temp1]         
+          ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -2928,7 +2935,7 @@ return_point:
 
           ;; Block movement during attack windup/execute/recovery
 
-          if temp2 >= 13 then goto DoneRightPortMovement
+          ;; if temp2 >= 13 then goto DoneRightPortMovement
           lda temp2
           cmp 13
 
@@ -2946,7 +2953,7 @@ return_point:
 
           ;; Check if player is guarding - guard blocks movement
 
-                    let temp6 = playerState[temp1] & 2         
+          ;; let temp6 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
@@ -2957,7 +2964,7 @@ return_point:
 
           ;; Guarding - block movement
 
-                    if temp6 then goto DoneRightPortMovement
+          ;; if temp6 then goto DoneRightPortMovement
           lda temp6
           beq skip_7029
           jmp DoneRightPortMovement
@@ -2969,7 +2976,7 @@ skip_7029:
 
           ;; for horizontal movement
 
-                    let temp5 = playerCharacter[temp1]         
+          ;; let temp5 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -3065,7 +3072,7 @@ IHRP_DoneFlyingLeftRight
 
           ;; Players 0,2 use joy0; Players 1,3 use joy1
 
-                    if playerCharacter[temp1] = CharacterFrooty then goto HGI_Done2
+          ;; if playerCharacter[temp1] = CharacterFrooty then goto HGI_Done2
           lda temp1
           cmp # 0
           bne skip_4636
@@ -3110,14 +3117,14 @@ HGI_HandleDownPressed2 .proc
           ;; DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           ;; Returns: Far (return otherbank)
 
-                    let temp4 = playerCharacter[temp1]         
+          ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta temp4
 
-          if temp4 >= 32 then goto HGI_Done2
+          ;; if temp4 >= 32 then goto HGI_Done2
           lda temp4
           cmp 32
 
@@ -3221,7 +3228,7 @@ HGI_CheckGuardRelease2 .proc
           ;; DOWN released - check for early guard release
           ;; Returns: Far (return otherbank)
 
-                    let temp2 = playerState[temp1] & 2         
+          ;; let temp2 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
@@ -3282,7 +3289,7 @@ HGI_Done2
 
           ;; Block attack input during attack windup/execute/recovery
 
-          if temp2 >= 13 then goto InputDoneRightPortAttack
+          ;; if temp2 >= 13 then goto InputDoneRightPortAttack
           lda temp2
           cmp 13
 
@@ -3292,7 +3299,7 @@ HGI_Done2
 
           skip_7237:
 
-                    let temp2 = playerState[temp1] & 2 PlayerStateBitGuarding         
+          ;; let temp2 = playerState[temp1] & 2 PlayerStateBitGuarding         
           lda temp1
           asl
           tax
@@ -3301,7 +3308,7 @@ HGI_Done2
 
           ;; Guarding - block attack input
 
-                    if temp2 then goto InputDoneRightPortAttack
+          ;; if temp2 then goto InputDoneRightPortAttack
           lda temp2
           beq skip_4608
           jmp InputDoneRightPortAttack
@@ -3315,7 +3322,7 @@ skip_3584:
 
                     if (playerState[temp1] & PlayerStateBitFacing) then goto InputDoneRightPortAttack
 
-                    let temp4 = playerCharacter[temp1]         
+          ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -3406,7 +3413,7 @@ skip_7483:
 
           ;; Toggle pause flag in systemFlags
 
-                    if systemFlags & SystemFlagPauseButtonPrev then goto DonePauseToggle
+          ;; if systemFlags & SystemFlagPauseButtonPrev then goto DonePauseToggle
           lda systemFlags
           and SystemFlagPauseButtonPrev
           beq skip_3278

@@ -118,7 +118,7 @@ return_point:
           and SystemFlagGameStatePaused
           cmp # 0
           bne skip_1411
-                    let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
+          ;; let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
 skip_1411:
 
           lda systemFlags
@@ -161,7 +161,7 @@ return_point:
           and SystemFlagGameStatePaused
           cmp # 0
           bne skip_3376
-                    let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
+          ;; let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
 skip_3376:
 
           lda systemFlags
@@ -192,10 +192,11 @@ DonePlayer2Pause
 return_point:
 
 
-          ;; TODO: #ifndef TV_SECAM
           ;; 7800 Pause button - toggle Color/B&W mode (not in SECAM)
+          .if TVStandard != SECAM
           ;; tail call
           jmp Check7800Pause
+          .fi
 
 .pend
 
@@ -209,9 +210,6 @@ Check7800Pause .proc
           ;; This function is a placeholder for future 7800-specific pause handling.
           ;;
           ;; Constraints: NTSC/PAL only (not SECAM)
-          jsr BS_return
-
-          ;; TODO: #.fi
           jsr BS_return
 
 .pend

@@ -20,8 +20,8 @@ BudgetedMissileCollisionCheck
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_9367
-skip_9367:
+          bne Use4PlayerMode
+Use4PlayerMode:
 
 
           ;; 4-player mode: check one missile per frame
@@ -39,9 +39,9 @@ skip_9367:
           and temp6
           sta temp4
           ;; Cross-bank call to CheckAllMissileCollisions in bank 8
-          lda # >(return_point-1)
+          lda # >(return_point_bmc-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point_bmc-1)
           pha
           lda # >(CheckAllMissileCollisions-1)
           pha
@@ -49,7 +49,7 @@ skip_9367:
           pha
                     ldx # 7
           jmp BS_jsr
-return_point:
+return_point_bmc:
 
 
           rts
@@ -88,7 +88,7 @@ BudgetedMissileCollisionCheck2P
           pha
                     ldx # 7
           jmp BS_jsr
-return_point:
+return_point_90:
 
 
           rts

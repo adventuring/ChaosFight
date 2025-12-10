@@ -56,7 +56,7 @@ DragonOfStormsDown
 
           ;; Check collision before moving
 
-                    let temp2 = playerX[temp1]         
+          ;; let temp2 = playerX[temp1]         
           lda temp1
           asl
           tax
@@ -104,7 +104,7 @@ skip_2621:
 
           ;; Check row below player (feet at bottom of sprite)
 
-                    let temp3 = playerY[temp1]         
+          ;; let temp3 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -120,7 +120,7 @@ skip_2621:
 
           ;; feetY = feet Y position
 
-                    let temp4 = temp3 / 16
+          ;; let temp4 = temp3 / 16
 
           ;; feetRow = row below feet
 
@@ -265,7 +265,7 @@ HarpyDown .proc
 
           ;; Jumping bit set, airborne
 
-                    let temp2 = playerY[temp1]         
+          ;; let temp2 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -375,7 +375,7 @@ HarpyNormalDown .proc
 
           ;; Check collision before moving
 
-                    let temp2 = playerX[temp1]         
+          ;; let temp2 = playerX[temp1]         
           lda temp1
           asl
           tax
@@ -423,7 +423,7 @@ skip_2621:
 
           ;; Check row below player (feet at bottom of sprite)
 
-                    let temp3 = playerY[temp1]         
+          ;; let temp3 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -439,7 +439,7 @@ skip_2621:
 
           ;; feetY = feet Y position
 
-                    let temp4 = temp3 / 16
+          ;; let temp4 = temp3 / 16
 
           ;; feetRow = row below feet
 
@@ -569,7 +569,7 @@ FrootyDown .proc
 
           ;; Check collision before moving
 
-                    let temp2 = playerX[temp1]         
+          ;; let temp2 = playerX[temp1]         
           lda temp1
           asl
           tax
@@ -619,7 +619,7 @@ skip_2621:
 
           ;; Check row below player (feet at bottom of sprite)
 
-                    let temp3 = playerY[temp1]         
+          ;; let temp3 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -628,7 +628,7 @@ skip_2621:
 
           ;; pfrowheight is always 16, so divide by 16
 
-                    let temp4 = temp3 / 16
+          ;; let temp4 = temp3 / 16
 
           ;; feetY = feet Y position
 
@@ -888,7 +888,7 @@ StandardGuard = .StandardGuard
 
           ;; Harpy (6): DOWN = fly down (reduced gravity)
 
-                    let temp4 = playerCharacter[temp1]         
+          ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax

@@ -106,7 +106,7 @@ FrootyButtonHeld
 
           ;; Get current state (bit 7 = charging flag, bits 0-2 = frame counter 0-5)
 
-                    let temp3 = frootyChargeState_R[temp1]         
+          ;; let temp3 = frootyChargeState_R[temp1]         
           lda temp1
           asl
           tax
@@ -157,7 +157,7 @@ skip_5475:
 
           ;; At max charge, don’t increment further, but still update frame counter
 
-                    if frootyChargeTimer_R[temp1] >= 30 then goto FrootyUpdateFrameCounter
+          ;; if frootyChargeTimer_R[temp1] >= 30 then goto FrootyUpdateFrameCounter
 
                     let frootyChargeTimer_W[temp1] = frootyChargeTimer_R[temp1]
           lda temp1
@@ -197,7 +197,7 @@ FrootyButtonReleased
 
           ;; Returns: Far (return otherbank)
 
-                    let temp3 = frootyChargeState_R[temp1]         
+          ;; let temp3 = frootyChargeState_R[temp1]         
           lda temp1
           asl
           tax
@@ -228,7 +228,7 @@ skip_4109:
 
           ;; Reset charge state and timer
 
-                    let temp2 = frootyChargeTimer_R[temp1]         
+          ;; let temp2 = frootyChargeTimer_R[temp1]         
           lda temp1
           asl
           tax
@@ -273,7 +273,7 @@ return_point:
 
           ;; Clamp to reasonable range (minimum 6 frames, maximum 180 frames = 3 seconds)
 
-                    let temp3 = temp2 * 6
+          ;; let temp3 = temp2 * 6
 
           ;; if temp3 < 6 then let temp3 = 6
           lda temp3

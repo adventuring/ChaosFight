@@ -201,5 +201,3 @@ return_point_move_outer:
 
           rts
 
-.pend
-

@@ -30,14 +30,14 @@ FindLastEliminated:
           lda temp4
           sec
           sbc temp4
-          bcc skip_5738
+          bcc SkipUpdateWinner
 
-          beq skip_5738
+          beq SkipUpdateWinner
 
           lda currentPlayer
           sta winnerPlayerIndex_W
 
-skip_5738:
+SkipUpdateWinner:
 .pend
 
 FLE_next_label_1:

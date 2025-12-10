@@ -39,7 +39,7 @@ GetPlayerMissileBitFlag .proc
           ;; Constraints: None
           ;; Calculate bit flag using O(1) array lookup:
           ;; BitMask[playerIndex] (1, 2, 4, 8)
-                    let temp6 = BitMask[temp1]         
+          ;; let temp6 = BitMask[temp1]         
           lda temp1
           asl
           tax
@@ -83,7 +83,7 @@ SpawnMissile .proc
           ;; state flags (for Harpy dive mode), CharacterMissileSpawnOffsetLeft[],
           ;; CharacterMissileSpawnOffsetRight[] = spawn
           ;; offsets, PlayerStateBitFacing (global constant) = facing
-          bit mask
+          ;; bit mask
           ;;
           ;; Output: Missile spawned at correct position with initial
           ;; velocity and lifetime
@@ -102,10 +102,15 @@ SpawnMissile .proc
           ;; Constraints: Only one missile per player at a time. Harpy
           ;; dive mode increases downward velocity by 50%
           ;; Get character type for this player
-                    let temp5 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp5
+          ;; let temp5 = playerCharacter[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp5
 
           ;; Read missile emission height from character data table
-                    let temp6 = CharacterMissileEmissionHeights[temp5]
+          ;; let temp6 = CharacterMissileEmissionHeights[temp5]
           lda temp5
           asl
           tax
@@ -121,7 +126,7 @@ SpawnMissile .proc
           ;; position and facing
           ;; Facing is stored in playerState bit 0: 0=left, 1=right
           ;; Get facing direction
-                    let temp4 = playerState[temp1] & PlayerStateBitFacing         
+          ;; let temp4 = playerState[temp1] & PlayerStateBitFacing
           lda temp1
           asl
           tax
@@ -129,8 +134,8 @@ SpawnMissile .proc
           sta temp4
 
           ;; Set missile position using array access (write to _W port)
-                    let missileX[temp1] = playerX[temp1]
-                    let missileY_W[temp1] = playerY[temp1]
+          ;; ;; let missileX[temp1] = playerX[temp1]
+          ;; ;; let missileY_W[temp1] = playerY[temp1]
           lda temp1
           asl
           tax
@@ -143,19 +148,19 @@ SpawnMissile .proc
           lda temp4
           cmp # 0
           bne skip_8091
-                    let missileX[temp1] = missileX[temp1] + CharacterMissileSpawnOffsetLeft[temp5]
+          ;; let missileX[temp1] = missileX[temp1] + CharacterMissileSpawnOffsetLeft[temp5]
 skip_8091:
 
           ;; Facing right, spawn right
           lda temp4
           cmp # 1
           bne skip_3827
-                    let missileX[temp1] = missileX[temp1] + CharacterMissileSpawnOffsetRight[temp5]
+          ;; let missileX[temp1] = missileX[temp1] + CharacterMissileSpawnOffsetRight[temp5]
 skip_3827:
 
 
           ;; Set active bit for this player missile
-          bit 0 = P1, bit 1 = P2, bit 2 = P3, bit 3 = P4
+          ;; bit 0 = P1, bit 1 = P2, bit 2 = P3, bit 3 = P4
           ;; Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           jsr GetPlayerMissileBitFlag
           lda missileActive
@@ -163,7 +168,12 @@ skip_3827:
           sta missileActive
 
           ;; Initialize lifetime counter from character data table
-                    let missileLifetimeValue = CharacterMissileLifetime[temp5]          lda temp5          asl          tax          lda CharacterMissileLifetime,x          sta missileLifetimeValue
+          ;; let missileLifetimeValue = CharacterMissileLifetime[temp5]
+          lda temp5
+          asl
+          tax
+          lda CharacterMissileLifetime,x
+          sta missileLifetimeValue
 
           ;; Store lifetime in player-specific variable
           ;; Using individual variables for each player missile
@@ -176,7 +186,7 @@ skip_3827:
 
           ;; Cache missile flags at spawn to avoid per-frame lookups
           ;; Flags are immutable per character, so cache once at spawn
-          let temp2 = CharacterMissileFlags[temp5]
+          ;; let temp2 = CharacterMissileFlags[temp5]
           lda temp5
           asl
           tax
@@ -191,7 +201,7 @@ skip_3827:
 
           ;; Initialize velocity from character data for friction
           ;; physics
-                    let temp6 = CharacterMissileMomentumX[temp5]
+          ;; let temp6 = CharacterMissileMomentumX[temp5]
           lda temp5
           asl
           tax
@@ -228,10 +238,10 @@ skip_35:
 
           ;; Optimized: Use precomputed NUSIZ table instead of arithmetic
           ;; NUSIZ values precomputed in CharacterMissileNUSIZ table
-                    let missileNUSIZ_W[temp1] = CharacterMissileNUSIZ[temp5]
+          ;; let missileNUSIZ_W[temp1] = CharacterMissileNUSIZ[temp5]
 
           ;; Get Y velocity
-                    let temp6 = CharacterMissileMomentumY[temp5]         
+          ;; let temp6 = CharacterMissileMomentumY[temp5]         
           lda temp5
           asl
           tax
@@ -246,7 +256,7 @@ skip_35:
           jmp HarpyCheckDiveVelocity
 skip_7121:
 
-          ;; VelocityDone label is in MissileCharacterHandlers.bas
+          ;; VelocityDone label is in MissileCharacterHandlers.bas (same bank)
           jmp VelocityDone
 
           jsr BS_return
@@ -358,9 +368,10 @@ UpdateOneMissile
           ;; Save player index temporarily
 
           ;; Get current velocities from stored arrays
-                    let temp2 = missileVelocityX[temp1]          lda temp1          asl          tax          lda missileVelocityX,x          sta temp2
+                    ;; let temp2 = missileVelocityX[temp1]
+                    lda temp1          asl          tax          lda missileVelocityX,x          sta temp2
           ;; X velocity (already facing-adjusted from spawn)
-          let temp3 = missileVelocityY[temp1]
+          ;; let temp3 = missileVelocityY[temp1]
           lda temp1
           asl
           tax
@@ -371,7 +382,7 @@ UpdateOneMissile
           ;; Use cached missile flags (set at spawn) instead of lookup
           ;; This avoids two CharacterMissileFlags lookups per frame
           ;; Get cached flags (set at spawn time)
-                    let temp5 = missileFlags_R[temp1]
+          ;; let temp5 = missileFlags_R[temp1]
           lda temp1
           asl
           tax
@@ -392,7 +403,7 @@ UpdateOneMissile
           ;; Megax missile stays adjacent to player during attack, no movement
           ;; Handler extracted to MissileCharacterHandlers.bas
           ;; Get character ID for handler dispatch
-                    let temp6 = playerCharacter[temp1]         
+          ;; let temp6 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -424,7 +435,7 @@ skip_6589:
           jmp GravityDone
 skip_4156:
 
-                    let temp3 = temp3 + GravityPerFrame
+          ;; let temp3 = temp3 + GravityPerFrame
           ;; Add gravity (1 pixel/frame down)
           lda temp1
           asl
@@ -445,7 +456,7 @@ GravityDone
 skip_4219:
 
           ;; Get current X velocity
-                    let missileVelocityXCalc = missileVelocityX[temp1]         
+          ;; let missileVelocityXCalc = missileVelocityX[temp1]         
           lda temp1
           asl
           tax
@@ -503,13 +514,13 @@ skip_7223:
           lda missileVelocityXCalc
           sta temp2
           ;; Check if velocity dropped below threshold
-                    if missileVelocityXCalc < MinimumVelocityThreshold && missileVelocityXCalc > -MinimumVelocityThreshold then goto DeactivateMissile
+          ;; if missileVelocityXCalc < MinimumVelocityThreshold && missileVelocityXCalc > -MinimumVelocityThreshold then goto DeactivateMissile
 FrictionDone
 
           ;; Issue #1188: Update missile position and check bounds (consolidated)
           ;; Update X position
           ;; Update Y position (Read-Modify-Write)
-                    let missileX[temp1] = missileX[temp1]
+          ;; let missileX[temp1] = missileX[temp1]
           lda temp1
           asl
           tax
@@ -518,7 +529,7 @@ FrictionDone
           asl
           tax
           sta missileX,x + temp2
-                    let temp4 = missileY_R[temp1] + temp3         
+          ;; let temp4 = missileY_R[temp1] + temp3         
           lda temp1
           asl
           tax
@@ -532,7 +543,7 @@ FrictionDone
 
           ;; Issue #1177: Frooty lollipop ricochet - check before wrap/deactivate
           ;; Frooty’s projectile bounces off arena bounds instead of wrapping/deactivating
-                    let temp6 = playerCharacter[temp1]         
+          ;; let temp6 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -546,7 +557,7 @@ skip_761:
 
 
           ;; Wrap around horizontally using shared player thresholds
-                    let temp2 = missileX[temp1]         
+          ;; let temp2 = missileX[temp1]         
           lda temp1
           asl
           tax
@@ -615,13 +626,13 @@ FrootyRicochetCheck .proc
           ;; Issue #1177: Frooty lollipop ricochets off arena bounds
           ;; Returns: Far (return otherbank)
           ;; Check horizontal bounds and reverse X velocity
-                    let temp2 = missileX[temp1]         
+          ;; let temp2 = missileX[temp1]         
           lda temp1
           asl
           tax
           lda missileX,x
           sta temp2
-                    if temp2 < PlayerLeftWrapThreshold then goto FrootyRicochetLeft
+          ;; if temp2 < PlayerLeftWrapThreshold then goto FrootyRicochetLeft
           lda temp2
           cmp PlayerLeftWrapThreshold
           bcs skip_8063
@@ -657,7 +668,7 @@ FrootyRicochetLeft .proc
           tax
           lda PlayerLeftWrapThreshold
           sta missileX,x
-                    let missileVelocityX[temp1] = 0 - missileVelocityX[temp1]
+          ;; let missileVelocityX[temp1] = 0 - missileVelocityX[temp1]
           jmp FrootyRicochetVerticalCheck
 .pend
 
@@ -669,7 +680,7 @@ FrootyRicochetRight .proc
           tax
           lda PlayerRightWrapThreshold
           sta missileX,x
-                    let missileVelocityX[temp1] = 0 - missileVelocityX[temp1]
+          ;; let missileVelocityX[temp1] = 0 - missileVelocityX[temp1]
 .pend
 
 FrootyRicochetVerticalCheck .proc
@@ -723,7 +734,7 @@ FrootyRicochetTop .proc
           tax
           lda 20
           sta missileY_W,x
-                    let missileVelocityY[temp1] = 0 - missileVelocityY[temp1]
+          ;; let missileVelocityY[temp1] = 0 - missileVelocityY[temp1]
           jmp BoundsCheckDone
 .pend
 
@@ -735,13 +746,13 @@ FrootyRicochetBottom .proc
           tax
           lda ScreenBottom
           sta missileY_W,x
-                    let missileVelocityY[temp1] = 0 - missileVelocityY[temp1]
+          ;; let missileVelocityY[temp1] = 0 - missileVelocityY[temp1]
 BoundsCheckDone
 
           ;; Check collision with playfield if flag is set
           ;; Reload cached missile flags (temp5 was overwritten with Y position above)
           ;; Get cached flags again (restore after temp5 was used for Y position)
-                    let temp5 = missileFlags_R[temp1]         
+          ;; let temp5 = missileFlags_R[temp1]         
           lda temp1
           asl
           tax
@@ -803,7 +814,7 @@ skip_8749:
 
 
           ;; Issue #1188: Check if hit player is guarding before handling hit
-                    let temp6 = playerState[temp4] & 2         
+          ;; let temp6 = playerState[temp4] & 2         
           lda temp4
           asl
           tax
@@ -849,7 +860,7 @@ return_point:
             lsr
             lsr
             sta velocityCalculation
-                    let missileVelocityX[temp1] = temp6 - velocityCalculation
+          ;; let missileVelocityX[temp1] = temp6 - velocityCalculation
           ;; Continue without deactivating - missile bounces
           jmp MissileSystemNoHit
 
@@ -869,7 +880,7 @@ MissileSystemNoHit .proc
 
           ;; Decrement lifetime counter and check expiration
           ;; Retrieve current lifetime for this missile
-                    let missileLifetimeValue = missileLifetime_R[temp1]         
+          ;; let missileLifetimeValue = missileLifetime_R[temp1]         
           lda temp1
           asl
           tax
@@ -942,8 +953,9 @@ MissileSysPF .proc
           ;; missile position. X coordinate converted to playfield column
           ;; (0-31) by subtracting ScreenInsetX and dividing by 4.
           ;; Get missile X/Y position (read from _R port)
-                    let temp2 = missileX[temp1]          lda temp1          asl          tax          lda missileX,x          sta temp2
-                    let temp3 = missileY_R[temp1]
+                    ;; let temp2 = missileX[temp1]
+                    lda temp1          asl          tax          lda missileX,x          sta temp2
+          ;; let temp3 = missileY_R[temp1]
           lda temp1
           asl
           tax
@@ -1060,8 +1072,9 @@ CheckMissilePlayerCollision
           ;; (health = 0). Uses axis-aligned bounding box (AABB)
           ;; collision detection
           ;; Get missile X/Y position (read from _R port)
-                    let temp2 = missileX[temp1]          lda temp1          asl          tax          lda missileX,x          sta temp2
-                    let temp3 = missileY_R[temp1]
+                    ;; let temp2 = missileX[temp1]
+                    lda temp1          asl          tax          lda missileX,x          sta temp2
+          ;; let temp3 = missileY_R[temp1]
           lda temp1
           asl
           tax
@@ -1096,7 +1109,7 @@ CheckMissilePlayerCollision
 skip_3102:
 
           ;; AABB collision check: missile vs player bounding box
-                    if playerHealth[temp6] = 0 then goto MissileCheckNextPlayer
+          ;; if playerHealth[temp6] = 0 then goto MissileCheckNextPlayer
           lda temp6
           asl
           tax
@@ -1104,8 +1117,8 @@ skip_3102:
           bne skip_1475
           jmp MissileCheckNextPlayer
 skip_1475:
-                    if temp2 >= playerX[temp6] + PlayerSpriteHalfWidth then goto MissileCheckNextPlayer
-                    if temp2 + MissileAABBSize <= playerX[temp6] then goto MissileCheckNextPlayer
+          ;; if temp2 >= playerX[temp6] + PlayerSpriteHalfWidth then goto MissileCheckNextPlayer
+          ;; if temp2 + MissileAABBSize <= playerX[temp6] then goto MissileCheckNextPlayer
           lda temp2
           clc
           adc MissileAABBSize
@@ -1120,7 +1133,7 @@ skip_1475:
           beq skip_6361
           jmp MissileCheckNextPlayer
 skip_6361:
-                    if temp3 >= playerY[temp6] + PlayerSpriteHeight then goto MissileCheckNextPlayer
+          ;; if temp3 >= playerY[temp6] + PlayerSpriteHeight then goto MissileCheckNextPlayer
           lda temp6
           asl
           tax
@@ -1135,7 +1148,7 @@ skip_6361:
           jmp MissileCheckNextPlayer
 skip_690:
           ;; Collision detected - return otherbank hit player index
-                    if temp3 + MissileAABBSize <= playerY[temp6] then goto MissileCheckNextPlayer
+          ;; if temp3 + MissileAABBSize <= playerY[temp6] then goto MissileCheckNextPlayer
           lda temp3
           clc
           adc MissileAABBSize
@@ -1158,10 +1171,8 @@ skip_8688:
 MissileCheckNextPlayer .proc
 .pend
 
-next_label_2 .proc
-MissileCollisionReturn
+MissileCollisionReturn:
           jsr BS_return
-.pend (no matching .proc)
 
 HandleMissileHit .proc
           ;;
@@ -1209,7 +1220,8 @@ HandleMissileHit .proc
           ;; knockback). Minimum 1 pixel knockback even for heaviest
           ;; characters
           ;; Get character type for damage calculation
-                    let temp5 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp5
+                    ;; let temp5 = playerCharacter[temp1]
+                    lda temp1          asl          tax          lda playerCharacter,x          sta temp5
 
           ;; Apply damage from attacker to defender
           lda temp1
@@ -1217,7 +1229,7 @@ HandleMissileHit .proc
           ;; GetCharacterDamage inlined - weight-based damage calculation
           lda temp5
           sta temp1
-                    let temp3 = CharacterWeights[temp1]
+          ;; let temp3 = CharacterWeights[temp1]
           lda temp1
           asl
           tax
@@ -1275,20 +1287,20 @@ skip_6724:
             lsr temp2
           lda temp2
           sta velocityCalculation
-                    let temp6 = temp6 + velocityCalculation
+          ;; let temp6 = temp6 + velocityCalculation
 DiveCheckDone
 
           ;; Guard check is handled before HandleMissileHit is called
           ;; This function only handles damage application
 
           ;; Apply damage
-                    let oldHealthValue = playerHealth[temp4]         
+          ;; let oldHealthValue = playerHealth[temp4]         
           lda temp4
           asl
           tax
           lda playerHealth,x
           sta oldHealthValue
-                    let playerHealth[temp4] = playerHealth[temp4] - temp6
+          ;; let playerHealth[temp4] = playerHealth[temp4] - temp6
                     if playerHealth[temp4] > oldHealthValue then let playerHealth[temp4] = 0
           lda temp4
           asl
@@ -1309,7 +1321,7 @@ skip_9990:
           ;; resist more)
           ;; Calculate direction: if missile moving right, push
           ;; defender right
-                    let temp2 = missileX[temp1]         
+          ;; let temp2 = missileX[temp1]         
           lda temp1
           asl
           tax
@@ -1318,20 +1330,20 @@ skip_9990:
 
           ;; Issue #1188: Weight-based knockback scaling (simplified)
           ;; Heavier characters resist knockback more (weight 5-100)
-                    let temp6 = playerCharacter[temp4]         
+          ;; let temp6 = playerCharacter[temp4]         
           lda temp4
           asl
           tax
           lda playerCharacter,x
           sta temp6
           ;; Light characters (weight < 50): full knockback
-                    let characterWeight = CharacterWeights[temp6]         
+          ;; let characterWeight = CharacterWeights[temp6]         
           lda temp6
           asl
           tax
           lda CharacterWeights,x
           sta characterWeight
-          if characterWeight >= 50 then goto WeightBasedKnockbackScale
+          ;; if characterWeight >= 50 then goto WeightBasedKnockbackScale
           lda characterWeight
           cmp 50
 
@@ -1368,13 +1380,13 @@ WeightBasedKnockbackScale .proc
           lda temp2
           cmp # 201
           bcc skip_4019
-                    let impulseStrength = 2 : goto WeightBasedKnockbackApply
+          ;; let impulseStrength = 2 : goto WeightBasedKnockbackApply
 skip_4019:
 
           lda temp2
           cmp # 101
           bcc skip_4159
-                    let impulseStrength = 1 : goto WeightBasedKnockbackApply
+          ;; let impulseStrength = 1 : goto WeightBasedKnockbackApply
 skip_4159:
 
           lda # 0
@@ -1391,8 +1403,8 @@ skip_7646:
 WeightBasedKnockbackApply .proc
           ;; Apply knockback: missile from left pushes right, from right pushes left
           ;; Returns: Far (return otherbank)
-                    if temp2 >= playerX[temp4] then goto KnockbackRight
-                    let playerVelocityX[temp4] = playerVelocityX[temp4]
+          ;; if temp2 >= playerX[temp4] then goto KnockbackRight
+          ;; let playerVelocityX[temp4] = playerVelocityX[temp4]
           lda temp4
           asl
           tax
@@ -1405,7 +1417,7 @@ WeightBasedKnockbackApply .proc
 .pend
 
 KnockbackRight .proc
-                    let playerVelocityX[temp4] = playerVelocityX[temp4] - impulseStrength
+          ;; let playerVelocityX[temp4] = playerVelocityX[temp4] - impulseStrength
 KnockbackDone
           ;; Zero subpixel when applying knockback impulse
           ;; Returns: Far (return otherbank)
@@ -1424,7 +1436,7 @@ KnockbackDone
           ;; 10 frames of hitstun
 
           ;; Synchronize playerState bit 3 with recovery frames
-                    let playerState[temp4] = playerState[temp4] | 8
+          ;; let playerState[temp4] = playerState[temp4] | 8
           ;; Set bit 3 (recovery flag) when recovery frames are set
 
           ;; Play hit sound effect
@@ -1480,7 +1492,7 @@ HandleMissileBounce .proc
           ;; friction flag set, velocity reduced by 50% (half). Missile
           ;; continues bouncing (not deactivated)
           ;; Get current X velocity
-                    let missileVelocityXCalc = missileVelocityX[temp1]         
+          ;; let missileVelocityXCalc = missileVelocityX[temp1]         
           lda temp1
           asl
           tax
@@ -1575,7 +1587,7 @@ BounceDone
           ;;
           ;; Constraints: None
           ;; Clear active bit for this player missile
-                    let temp6 = BitMask[temp1]         
+          ;; let temp6 = BitMask[temp1]         
           lda temp1
           asl
           tax
@@ -1597,7 +1609,4 @@ BounceDone
           and temp6
           sta missileActive
           jsr BS_return
-
-
-.pend (extra - no matching .proc)
 

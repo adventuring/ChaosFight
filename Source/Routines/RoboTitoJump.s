@@ -11,7 +11,7 @@ RoboTitoJump .proc
           ;; Output: Moves up 3px/frame, latches on ceiling contact
           jsr BS_return
                     if (playerState[temp1] & 4) then goto RoboTitoCannotStretch
-                    if characterSpecialAbility_R[temp1] = 0 then goto RoboTitoCannotStretch
+          ;; if characterSpecialAbility_R[temp1] = 0 then goto RoboTitoCannotStretch
           lda temp1
           asl
           tax
@@ -53,18 +53,18 @@ return_point:
 
           lda temp2
           sta temp4
-                    let temp2 = playerY[temp1] + 16         
+          ;; let temp2 = playerY[temp1] + 16         
           lda temp1
           asl
           tax
           lda playerY,x
           sta temp2
-                    let temp5 = temp2 / 16
+          ;; let temp5 = temp2 / 16
 
 .pend
 
 GroundSearchLoop .proc
-          if temp5 >= pfrows then goto GroundSearchBottom
+          ;; if temp5 >= pfrows then goto GroundSearchBottom
           lda temp5
           cmp pfrows
 
@@ -111,7 +111,7 @@ skip_5697:
 .pend
 
 GroundFound .proc
-                    let temp2 = temp5 / 16
+          ;; let temp2 = temp5 / 16
           jmp GroundSearchDone
 
 .pend
@@ -121,7 +121,7 @@ GroundSearchBottom .proc
           sta temp2
 
 GroundSearchDone
-                    let temp3 = playerY[temp1]         
+          ;; let temp3 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -169,7 +169,7 @@ skip_9194:
           tax
           lda 0
           sta characterSpecialAbility_W,x
-                    if playerY[temp1] <= 5 then goto RoboTitoCheckCeiling
+          ;; if playerY[temp1] <= 5 then goto RoboTitoCheckCeiling
                     let playerY[temp1] = playerY[temp1]
           lda temp1
           asl
@@ -197,21 +197,21 @@ RoboTitoCheckCeiling .proc
           jmp BS_jsr
 return_point:
 
-                    let temp3 = playerY[temp1]         
+          ;; let temp3 = playerY[temp1]         
           lda temp1
           asl
           tax
           lda playerY,x
           sta temp3
-                    if temp3 <= 0 then goto RoboTitoLatch
-                    let temp4 = temp3 / 16
+          ;; if temp3 <= 0 then goto RoboTitoLatch
+          ;; let temp4 = temp3 / 16
           lda temp3
           lsr
           lsr
           lsr
           lsr
           sta temp4
-                    if temp4 <= 0 then goto RoboTitoLatch
+          ;; if temp4 <= 0 then goto RoboTitoLatch
           lda temp4
           beq RoboTitoLatch
           bmi RoboTitoLatch
@@ -238,7 +238,7 @@ skip_6419:
           jmp BS_jsr
 return_point:
 
-                    if temp1 then goto RoboTitoLatch
+          ;; if temp1 then goto RoboTitoLatch
           lda temp1
           beq skip_4515
           jmp RoboTitoLatch
@@ -263,13 +263,13 @@ RoboTitoLatch .proc
           lda RTL_stateFlags
           sta characterStateFlags_W,x
                     let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
-                    let temp2 = missileStretchHeight_R[temp1]         
+          ;; let temp2 = missileStretchHeight_R[temp1]         
           lda temp1
           asl
           tax
           lda missileStretchHeight_R,x
           sta temp2
-                    if temp2 <= 0 then goto RTL_HeightCleared
+          ;; if temp2 <= 0 then goto RTL_HeightCleared
           lda temp2
           cmp # 26
           bcc skip_4784

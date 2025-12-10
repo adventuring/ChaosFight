@@ -63,7 +63,7 @@ BeginWinnerAnnouncement .proc
           lda temp1
           cmp # 0
           bne skip_3841
-                    let temp2 = playerCharacter[0]         
+          ;; let temp2 = playerCharacter[0]         
           lda 0
           asl
           tax
@@ -75,7 +75,7 @@ skip_3841:
           lda temp1
           cmp # 1
           bne skip_7445
-                    let temp2 = playerCharacter[1]         
+          ;; let temp2 = playerCharacter[1]         
           lda 1
           asl
           tax
@@ -87,7 +87,7 @@ skip_7445:
           lda temp1
           cmp # 2
           bne skip_6650
-                    let temp2 = playerCharacter[2]         
+          ;; let temp2 = playerCharacter[2]         
           lda 2
           asl
           tax
@@ -99,7 +99,7 @@ skip_6650:
           lda temp1
           cmp # 3
           bne skip_3547
-                    let temp2 = playerCharacter[3]         
+          ;; let temp2 = playerCharacter[3]         
           lda 3
           asl
           tax
@@ -111,7 +111,7 @@ skip_3547:
           ;; Look up full song ID from mapping table (table contains
           ;; song ID consta
 
-                    let temp1 = CharacterThemeSongIndices[temp2]         
+          ;; let temp1 = CharacterThemeSongIndices[temp2]         
           lda temp2
           asl
           tax

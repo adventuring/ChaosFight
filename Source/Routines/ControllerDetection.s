@@ -26,36 +26,36 @@ DetectPads .proc
           lda # 0
           sta temp2
 
-          ;; TODO: #ifndef TV_SECAM
+          ;; Clear system flags for NTSC/PAL (not SECAM)
+          .if TVStandard != SECAM
           lda systemFlags
           and ClearSystemFlagColorBWOverride
           sta systemFlags
           lda systemFlags
           and ClearSystemFlagPauseButtonPrev
           sta systemFlags
-
-          ;; TODO: #.fi
+          .fi
           ;; Check for Quadtari
                     if INPT0{7} then CDP_CheckRightSide
 
                     if !INPT1{7} then CDP_CheckRightSide
           bit INPT1
-          bmi skip_7772
+          bmi CheckLeftSideQuadtari
           jmp CDP_CheckRightSide
-skip_7772:
+CheckLeftSideQuadtari:
           jmp CDP_QuadtariFound
 
 .pend
 
 CDP_CheckRightSide .proc
-                    if INPT2{7} then goto CDP_CheckGenesis
+          ;; if INPT2{7} then goto CDP_CheckGenesis
 
           ;; fall through to CDP_QuadtariFound
                     if !INPT3{7} then goto CDP_CheckGenesis
           bit INPT3
-          bmi skip_725
+          bmi CheckRightSideQuadtari
           jmp CDP_CheckGenesis
-skip_725:
+CheckRightSideQuadtari:
 
 CDP_QuadtariFound
           ;; Returns: Far (return otherbank)
@@ -72,7 +72,7 @@ CDP_CheckGenesis .proc
           ;; detected)
           If Quadtari was previously detected, skip all other
           ;; detection
-                    if temp1 & SetQuadtariDetected then goto CDP_MergeStatus
+          ;; if temp1 & SetQuadtariDetected then goto CDP_MergeStatus
 
           ;; Genesis controllers pull INPT0 and INPT1 HIGH when idle
           ;; Method: Ground paddle ports via VBLANK, wait a frame,

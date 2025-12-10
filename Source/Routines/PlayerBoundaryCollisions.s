@@ -39,33 +39,33 @@ CheckBoundaryCollisions
           sta temp3
           lda temp3
           cmp RandomArena
-          bne skip_7276
-                    let temp3 = rand : temp3 = temp3 & 15
-skip_7276:
+          bne SkipRandomArena
+          ;; let temp3 = rand : temp3 = temp3 & 15
+SkipRandomArena:
 
 
           ;; TODO: for temp1 = 0 to 3
           ;; if temp1 < 2 then goto PBC_ProcessPlayer          lda temp1          cmp 2          bcs .skip_8159          jmp
           lda temp1
           cmp # 2
-          bcs skip_2435
+          bcs CheckQuadtari
           goto_label:
 
           jmp goto_label
-skip_2435:
+CheckQuadtari:
 
           lda temp1
           cmp # 2
-          bcs skip_2705
+          bcs Skip2PlayerCheck
           jmp goto_label
-skip_2705:
+Skip2PlayerCheck:
 
           
-                    if controllerStatus & SetQuadtariDetected then goto PBC_CheckActivePlayer
+          ;; if controllerStatus & SetQuadtariDetected then goto PBC_CheckActivePlayer
           jmp PBC_NextPlayer
 
 PBC_CheckActivePlayer .proc
-                    if playerCharacter[temp1] = NoCharacter then goto PBC_NextPlayer
+          ;; if playerCharacter[temp1] = NoCharacter then goto PBC_NextPlayer
 .pend
 
 PBC_ProcessPlayer .proc
@@ -108,13 +108,13 @@ CheckPlayerBoundary .proc
           lda playerX,x
           sec
           sbc PlayerRightWrapThreshold
-          bcc skip_141
-          beq skip_141
+          bcc SkipRightWrap
+          beq SkipRightWrap
           lda PlayerLeftEdge
           sta playerX,x
           lda PlayerLeftEdge
           sta playerSubpixelX_W,x
-skip_141: : let playerSubpixelX_WL[temp1] = 0
+SkipRightWrap: : let playerSubpixelX_WL[temp1] = 0
 
                     if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY_W[temp1] = 20 : let playerSubpixelY_WL[temp1] = 0
           lda temp1
@@ -122,26 +122,26 @@ skip_141: : let playerSubpixelX_WL[temp1] = 0
           tax
           lda playerY,x
           cmp 20
-          bcs skip_8639
+          bcs SkipTopClamp
           lda 20
           sta playerY,x
           lda 20
           sta playerSubpixelY_W,x
           lda # 0
           sta playerSubpixelY_WL,x
-skip_8639: : let playerVelocityY[temp1] = 0 : let playerVelocityYL[temp1] = 0
+SkipTopClamp: : let playerVelocityY[temp1] = 0 : let playerVelocityYL[temp1] = 0
 
           rts
 
-                    if playerCharacter[temp1] = CharacterBernie then goto CheckPlayerBoundary_BernieWrap
+          ;; if playerCharacter[temp1] = CharacterBernie then goto CheckPlayerBoundary_BernieWrap
           lda temp1
           asl
           tax
           lda playerCharacter,x
           cmp CharacterBernie
-          bne skip_8254
+          bne SkipBernieWrap
           jmp CheckPlayerBoundary_BernieWrap
-skip_8254:
+SkipBernieWrap:
 
                     let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank14
           lda temp1

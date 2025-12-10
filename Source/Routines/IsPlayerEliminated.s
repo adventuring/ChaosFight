@@ -18,11 +18,11 @@ IsPlayerEliminated:
           sta temp2
           lda temp2
           cmp # 0
-          bne skip_9901
+          bne PlayerNotEliminated
 
           ;; let temp2 = 1 : goto IsEliminatedDone
 
-skip_9901:
+PlayerNotEliminated:
 
           lda # 0
           sta temp2

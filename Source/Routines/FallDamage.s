@@ -14,7 +14,7 @@ CheckFallDamage .proc
           ;; Constraints: Must remain colocated with fall-damage helpers that reuse temp scratch bytes
 
           ;; Get character type for this player
-                    let currentCharacter = playerCharacter[currentPlayer]         
+          ;; let currentCharacter = playerCharacter[currentPlayer]         
           lda currentPlayer
           asl
           tax
@@ -39,7 +39,7 @@ skip_9340:
           ;; Formula: safe_velocity = 120 ÷ weight
           ;; Use lookup table to avoid variable division
           ;; Pre-computed values in SafeFallVelocityThresholds table
-                    let temp3 = SafeFallVelocityThresholds[currentCharacter]         
+          ;; let temp3 = SafeFallVelocityThresholds[currentCharacter]         
           lda currentCharacter
           asl
           tax
@@ -75,7 +75,7 @@ skip_9340:
           sta temp4
 
           ;; Multiply by 2 to double the base damage
-                    let temp4 = temp4 * 2
+          ;; let temp4 = temp4 * 2
 
           ;; Apply weight-based damage multiplier: the bigger they
           ;; are, the harder they fall
@@ -86,7 +86,7 @@ skip_9340:
           ;; Use lookup table for weight/20, then multiply by damage
           ;; temp2 = weight / 20 from lookup table
           ;; Apply weight-based damage multiplier (temp2 = 0-5)
-                    let temp2 = WeightDividedBy20[currentCharacter]         
+          ;; let temp2 = WeightDividedBy20[currentCharacter]         
           lda currentCharacter
           asl
           tax
@@ -95,7 +95,7 @@ skip_9340:
           lda temp2
           cmp # 0
           bne skip_7704
-                    let temp4 = 0 : goto WeightMultDone
+          ;; let temp4 = 0 : goto WeightMultDone
 skip_7704:
 
 
@@ -199,7 +199,7 @@ skip_6992:
 
           ;; Apply fall damage (byte-safe clamp)
           ;; Use oldHealthValue for byte-safe clamp check
-                    let oldHealthValue = playerHealth[currentPlayer]         
+          ;; let oldHealthValue = playerHealth[currentPlayer]         
           lda currentPlayer
           asl
           tax
@@ -266,7 +266,7 @@ skip_1266:
           ;; Set bit 3 (recovery flag) when recovery frames are set
 
           ;; Set animation state to recovering (state 9)
-                    let temp2 = playerState[currentPlayer] & MaskPlayerStateLower         
+          ;; let temp2 = playerState[currentPlayer] & MaskPlayerStateLower         
           lda currentPlayer
           asl
           tax
@@ -313,7 +313,7 @@ CheckBernieStun .proc
           ;; Constraints: Must be colocated with CheckFallDamage
           ;; Check if fall velocity exceeds safe threshold (would trigger fall damage)
           ;; Bernie’s safe fall velocity threshold
-                    let temp3 = SafeFallVelocityThresholds[CharacterBernie]         
+          ;; let temp3 = SafeFallVelocityThresholds[CharacterBernie]         
           lda CharacterBernie
           asl
           tax
@@ -332,7 +332,7 @@ CheckBernieStun .proc
           sta playerRecoveryFrames,x
           ;; Set animation state to ’Fallen down’ (state 8, shifted = 128)
                     let playerState[currentPlayer] = playerState[currentPlayer] | PlayerStateBitRecovery
-                    let temp3 = playerState[currentPlayer] & MaskPlayerStateFlags         
+          ;; let temp3 = playerState[currentPlayer] & MaskPlayerStateFlags         
           lda currentPlayer
           asl
           tax
@@ -373,7 +373,7 @@ FallDamageApplyGravity .proc
           ;; Called Routines: None
           ;; Constraints: None
           ;; Get character type
-                    let currentCharacter = playerCharacter[currentPlayer]         
+          ;; let currentCharacter = playerCharacter[currentPlayer]         
           lda currentPlayer
           asl
           tax
@@ -397,7 +397,7 @@ skip_8668:
 
 
           ;; Apply gravity acceleration
-                    let temp2 = temp2 + temp6
+          ;; let temp2 = temp2 + temp6
 
                     if temp2 > TerminalVelocity then let temp2 = TerminalVelocity
           lda temp2
@@ -447,9 +447,10 @@ CheckGroundCollision
           ;; update but BEFORE momentum is cleared
           lda temp1
           sta currentPlayer
-                    let currentCharacter = playerCharacter[currentPlayer]          lda currentPlayer          asl          tax          lda playerCharacter,x          sta currentCharacter
+                    ;; let currentCharacter = playerCharacter[currentPlayer]
+                    lda currentPlayer          asl          tax          lda playerCharacter,x          sta currentCharacter
           ;; Get player Y position
-                    let temp3 = playerY[currentPlayer]
+          ;; let temp3 = playerY[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -489,7 +490,7 @@ HandleFrootyVertical .proc
           lda temp1
           sta currentPlayer
           ;; Check character type to confirm
-                    let currentCharacter = playerCharacter[currentPlayer]         
+          ;; let currentCharacter = playerCharacter[currentPlayer]         
           lda currentPlayer
           asl
           tax
@@ -524,7 +525,7 @@ FrootyFallDamage .proc
           ;; Clamp to screen bounds
           ;; Byte-safe clamp: if wrapped below 0, the new value will
           ;; exceed the old
-                    let oldHealthValue = playerY[currentPlayer]         
+          ;; let oldHealthValue = playerY[currentPlayer]         
           lda currentPlayer
           asl
           tax
@@ -566,7 +567,7 @@ HandleHarpySwoopAttack .proc
           lda temp1
           sta currentPlayer
           ;; Check character type to confirm
-                    let currentCharacter = playerCharacter[currentPlayer]         
+          ;; let currentCharacter = playerCharacter[currentPlayer]         
           lda currentPlayer
           asl
           tax
@@ -588,7 +589,7 @@ HarpyDive .proc
           ;; Returns: Far (return otherbank)
 
           ;; Get facing direction from playerState bit 0
-                    let temp6 = playerState[currentPlayer] & PlayerStateBitFacing         
+          ;; let temp6 = playerState[currentPlayer] & PlayerStateBitFacing         
           lda currentPlayer
           asl
           tax
@@ -636,7 +637,7 @@ SetVerticalMomentum .proc
           ;; Set animation state to swooping attack
           ;; This could be animation state 10 or special attack
           ;; animation
-                    let temp6 = playerState[currentPlayer] & MaskPlayerStateLower         
+          ;; let temp6 = playerState[currentPlayer] & MaskPlayerStateLower         
           lda currentPlayer
           asl
           tax
@@ -746,7 +747,7 @@ CalculateSafeFallDistance .proc
           ;; Get character type and weight
           lda temp1
           sta currentPlayer
-                    let currentCharacter = playerCharacter[currentPlayer]         
+          ;; let currentCharacter = playerCharacter[currentPlayer]         
           lda currentPlayer
           asl
           tax
@@ -799,12 +800,13 @@ SetInfiniteFallDistance .proc
 .pend
 
 CalculateFallDistanceNormal .proc
-                    let temp3 = SafeFallVelocityThresholds[currentCharacter]          lda currentCharacter          asl          tax          lda SafeFallVelocityThresholds,x          sta temp3
+                    ;; let temp3 = SafeFallVelocityThresholds[currentCharacter]
+                    lda currentCharacter          asl          tax          lda SafeFallVelocityThresholds,x          sta temp3
           lda temp3
           sec
           sbc # 1
           sta temp4
-                    let temp2 = SquareTable[temp4]
+          ;; let temp2 = SquareTable[temp4]
           lda temp4
           asl
           tax
@@ -820,7 +822,7 @@ CalculateFallDistanceNormal .proc
           lda currentCharacter
           cmp CharacterNinjishGuy
           bne skip_4750
-                    let temp2 = temp2 * 2
+          ;; let temp2 = temp2 * 2
 skip_4750:
 
           jsr BS_return

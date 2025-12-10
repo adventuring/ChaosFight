@@ -80,7 +80,7 @@ GetPlayerLockedP0 .proc
 
 GetPlayerLockedP1 .proc
 
-                    let temp2 = (playerLocked / 4) & 3
+          ;; let temp2 = (playerLocked / 4) & 3
 
           ;; TODO: GPL_lockedState = temp2
 
@@ -90,7 +90,7 @@ GetPlayerLockedP1 .proc
 
 GetPlayerLockedP2 .proc
 
-                    let temp2 = (temp2 / 16) & 3
+          ;; let temp2 = (temp2 / 16) & 3
           lda temp2
           lsr
           lsr
@@ -107,7 +107,7 @@ GetPlayerLockedP2 .proc
 
 GetPlayerLockedP3 .proc
 
-                    let temp2 = (temp2 / 64) & 3
+          ;; let temp2 = (temp2 / 64) & 3
           lda temp2
           lsr
           lsr
@@ -163,7 +163,7 @@ SetPlayerLocked .proc
 
           ;; Determine player index from currentPlayer when valid
 
-          if temp3 > 3 then goto SetPlayerLockedUseTemp
+          ;; if temp3 > 3 then goto SetPlayerLockedUseTemp
           lda currentPlayer
           sta temp3
 

@@ -32,13 +32,13 @@ XDistanceCheckCollision:
           beq CPC_Done
           ;;
           ;; Load player Y positions into temporaries
-          let temp4 = playerY[temp1]
+          ;; let temp4 = playerY[temp1]
           lda temp1
           asl
           tax
           lda playerY,x
           sta temp4
-          let temp5 = playerY[temp2]
+          ;; let temp5 = playerY[temp2]
           lda temp2
           asl
           tax
@@ -52,7 +52,7 @@ XDistanceCheckCollision:
           bcc YDistanceCalcRight
           jmp CPC_CalcYDistance
 YDistanceCalcRight:
-          let temp6 = temp5 - temp4
+          ;; let temp6 = temp5 - temp4
           lda temp5
           sec
           sbc temp4
@@ -74,7 +74,7 @@ CPC_CalcYDistance
           ;;
           ;; Constraints: None
           ;;
-          let temp6 = temp4 - temp5
+          ;; let temp6 = temp4 - temp5
           lda temp4
           sec
           sbc temp5
@@ -156,8 +156,9 @@ CheckPlayerCollision
           ;; Uses temp1-temp6 (temp4-5 reused after X/Y checks)
 
           ;; Load player X positions into temporaries
-                    let temp4 = playerX[temp1]          lda temp1          asl          tax          lda playerX,x          sta temp4
-                    let temp5 = playerX[temp2]
+                    ;; let temp4 = playerX[temp1]
+                    lda temp1          asl          tax          lda playerX,x          sta temp4
+          ;; let temp5 = playerX[temp2]
           lda temp2
           asl
           tax
@@ -208,14 +209,14 @@ CalcXDistanceRight .proc
 
 CalcYDistanceDown .proc
           ;; Fetch character half-height values using shared SCRAM scratch variables
-          let characterIndex = playerCharacter[temp1]
+          ;; let characterIndex = playerCharacter[temp1]
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta characterIndex
           ;; Use bit shift instead of division (optimized for Atari 2600)
-          let characterHeight = CharacterHeights[characterIndex]
+          ;; let characterHeight = CharacterHeights[characterIndex]
           lda characterIndex
           asl
           tax
@@ -225,14 +226,14 @@ CalcYDistanceDown .proc
             lsr
             sta halfHeight1
 
-          let characterIndex = playerCharacter[temp2]
+          ;; let characterIndex = playerCharacter[temp2]
           lda temp2
           asl
           tax
           lda playerCharacter,x
           sta characterIndex
           ;; Use bit shift instead of division (optimized for Atari 2600)
-                    let characterHeight = CharacterHeights[characterIndex]
+          ;; let characterHeight = CharacterHeights[characterIndex]
           lda characterIndex
           asl
           tax

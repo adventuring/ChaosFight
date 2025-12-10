@@ -13,7 +13,7 @@ GetPlayerAnimationStateFunction
           ;; Constraints: None
           ;; Shift right by 4 (divide by 16) to get animation sta
 
-                    let temp2 = playerState[temp1] / 16         
+          ;; let temp2 = playerState[temp1] / 16         
           lda temp1
           asl
           tax

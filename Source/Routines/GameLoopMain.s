@@ -49,14 +49,14 @@ skip_978:
           and # 128
           cmp # 0
           bne skip_3413
-                    let temp1 = temp1 | 2
+          ;; let temp1 = temp1 | 2
 skip_3413:
 
           lda INPT2
           and # 128
           cmp # 0
           bne skip_1297
-                    let temp1 = temp1 | 2
+          ;; let temp1 = temp1 | 2
 skip_1297:
 
 
@@ -205,7 +205,7 @@ return_point:
 
           ;; Issue #1177: Update Frooty charge system every frame
           ;; TODO: for currentPlayer = 0 to 3
-          if currentPlayer >= 2 then goto FrootyChargeQuadtariCheck
+          ;; if currentPlayer >= 2 then goto FrootyChargeQuadtariCheck
           lda currentPlayer
           cmp 2
 

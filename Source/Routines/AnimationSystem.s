@@ -49,7 +49,7 @@ UCA_CheckQuadtari:
 
           ;; CRITICAL: Inlined UpdatePlayerAnimation to reduce stack depth from 19 to 17 bytes
           ;; Skip if player is eliminated (health = 0)
-                    if playerHealth[currentPlayer] = 0 then goto AnimationNextPlayer
+          ;; if playerHealth[currentPlayer] = 0 then goto AnimationNextPlayer
           lda currentPlayer
           asl
           tax
@@ -92,7 +92,7 @@ UCA_CheckCharacter:
           sta animationCounter_W,x
 
           ;; Check if time to advance animation frame (every AnimationFrameDelay frames)
-                    if temp4 < AnimationFrameDelay then goto DoneAdvanceInlined
+          ;; if temp4 < AnimationFrameDelay then goto DoneAdvanceInlined
           lda temp4
           cmp AnimationFrameDelay
           bcs UPA_CheckAnimationSpeed
@@ -133,14 +133,14 @@ AdvanceFrame .proc
           ;; Frame is from sprite 10fps counter
           ;; (currentAnimationFrame), not global frame
           ;; SCRAM read-modify-write: currentAnimationFrame_R → currentAnimationFrame_W
-                    let temp4 = currentAnimationFrame_R[currentPlayer]
+          ;; let temp4 = currentAnimationFrame_R[currentPlayer]
          
           lda currentPlayer
           asl
           tax
           lda currentAnimationFrame_R,x
           sta temp4
-                    let temp4 = 1 + temp4
+          ;; let temp4 = 1 + temp4
           lda temp4
           clc
           adc # 1
@@ -159,7 +159,7 @@ AdvanceFrame .proc
           ;; per action)
           ;; Use temp variable from previous increment
           ;; (temp4)
-          if temp4 >= FramesPerSequence then goto HandleFrame7Transition
+          ;; if temp4 >= FramesPerSequence then goto HandleFrame7Transition
           lda temp4
           cmp FramesPerSequence
 
@@ -191,14 +191,14 @@ HandleFrame7Transition
           ;; CRITICAL: Inlined HandleAnimationTransition to save 4 bytes on sta
 
           ;; (was: gosub HandleAnimationTransition bank12)
-                    let temp1 = currentAnimationSeq_R[currentPlayer]
+          ;; let temp1 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
           asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-                    if ActionAttackRecovery < temp1 then goto AnimationTransitionLoopAnimation
+          ;; if ActionAttackRecovery < temp1 then goto AnimationTransitionLoopAnimation
           lda ActionAttackRecovery
           cmp temp1
           bcs skip_613
@@ -264,7 +264,7 @@ AnimationTransitionHandleJump_TransitionToFalling
 AnimationTransitionHandleFallBack
           ;; Check wall collision using pfread
           ;; Convert player X position to playfield column (0-31)
-                    let temp5 = playerX[currentPlayer]
+          ;; let temp5 = playerX[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -293,7 +293,7 @@ AnimationTransitionHandleFallBack
           sta temp5
 
           ;; Convert player Y position to playfield row (0-7)
-                    let temp6 = playerY[currentPlayer]
+          ;; let temp6 = playerY[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -360,14 +360,14 @@ AnimationTransitionHandleFallBack_HitWall
           jmp AnimationSetPlayerAnimationInlined
 
 AnimationHandleAttackTransition
-                    let temp1 = currentAnimationSeq_R[currentPlayer]
+          ;; let temp1 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
           asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-                    if temp1 < ActionAttackWindup then goto UpdateSprite
+          ;; if temp1 < ActionAttackWindup then goto UpdateSprite
           lda temp1
           cmp ActionAttackWindup
           bcs skip_3489
@@ -379,7 +379,7 @@ skip_3489:
           jmp UpdateSprite
 
 AnimationHandleWindupEnd
-                    let temp1 = playerCharacter[currentPlayer]
+          ;; let temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -391,7 +391,7 @@ AnimationHandleWindupEnd
           tax
           lda playerCharacter,x
           sta temp1
-          if temp1 >= 32 then goto UpdateSprite
+          ;; if temp1 >= 32 then goto UpdateSprite
           lda temp1
           cmp 32
 
@@ -411,7 +411,7 @@ AnimationHandleWindupEnd
           sta .skip_4121
 
           label_unknown:
-                    let temp2 = CharacterWindupNextAction[temp1]         
+          ;; let temp2 = CharacterWindupNextAction[temp1]         
           lda temp1
           asl
           tax
@@ -428,14 +428,14 @@ skip_4504:
           jmp AnimationSetPlayerAnimationInlined
 
 AnimationHandleExecuteEnd
-                    let temp1 = playerCharacter[currentPlayer]
+          ;; let temp1 = playerCharacter[currentPlayer]
          
           lda currentPlayer
           asl
           tax
           lda playerCharacter,x
           sta temp1
-          if temp1 >= 32 then goto UpdateSprite
+          ;; if temp1 >= 32 then goto UpdateSprite
           lda temp1
           cmp 32
 
@@ -461,7 +461,7 @@ skip_6753:
           sta .skip_4121
 
           label_unknown:
-          let temp2 = CharacterExecuteNextAction[temp1]
+          ;; let temp2 = CharacterExecuteNextAction[temp1]
           lda temp1
           asl
           tax
@@ -536,7 +536,7 @@ AnimationSetPlayerAnimationInlined
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
           ;; Set animation action for a player (inlined from AnimationSystem.bas)
-          if temp2 >= AnimationSequenceCount then goto UpdateSprite
+          ;; if temp2 >= AnimationSequenceCount then goto UpdateSprite
           lda temp2
           cmp AnimationSequenceCount
 
@@ -568,7 +568,7 @@ AnimationSetPlayerAnimationInlined
           ;; Set up parameters for sprite loading (frame=0, action=temp2, player=currentPlayer)
           lda # 0
           sta temp2
-                    let temp3 = currentAnimationSeq_R[currentPlayer]
+          ;; let temp3 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
           asl
@@ -622,13 +622,13 @@ UpdateSprite .proc
           ;; SCRAM read: Read from r081
           ;; where dim entries concatenate with subsequent consta
 
-                    let temp2 = currentAnimationFrame_R[currentPlayer]
+          ;; let temp2 = currentAnimationFrame_R[currentPlayer]
           lda currentPlayer
           asl
           tax
           lda currentAnimationFrame_R,x
           sta temp2
-                    let temp3 = currentAnimationSeq_R[currentPlayer]
+          ;; let temp3 = currentAnimationSeq_R[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -645,7 +645,7 @@ UpdateSprite .proc
           ;; CRITICAL: Inlined LoadPlayerSprite dispatcher to save 4 bytes on sta
 
           ;; CRITICAL: Guard against calling bank 2 when no characters on screen
-                    let currentCharacter = playerCharacter[currentPlayer]
+          ;; let currentCharacter = playerCharacter[currentPlayer]
          
           lda currentPlayer
           asl
@@ -919,7 +919,7 @@ SetPlayerAnimation
           ;; currentAnimationSeq
           ;; CRITICAL: Guard against calling LoadPlayerSprite when no characters on screen
           ;; Check if player has a valid character before loading sprite
-                    let temp1 = playerCharacter[currentPlayer]
+          ;; let temp1 = playerCharacter[currentPlayer]
          
           lda currentPlayer
           asl
@@ -933,7 +933,7 @@ SetPlayerAnimation
           ;; SCRAM read: Read from r081 (we just wrote 0, so this is 0)
           lda # 0
           sta temp2
-                    let temp3 = currentAnimationSeq_R[currentPlayer]
+          ;; let temp3 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
           asl
@@ -995,14 +995,14 @@ next_label_2_1:.proc
 HandleAnimationTransition
           ;; Returns: Far (return thisbank)
 HandleAnimationTransition
-                    let temp1 = currentAnimationSeq_R[currentPlayer]
+          ;; let temp1 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
           asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-                    if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation
+          ;; if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation
           lda ActionAttackRecovery
           cmp temp1
           bcs skip_6040
@@ -1073,7 +1073,7 @@ TransitionHandleFallBack
           ;; Returns: Far (return otherbank)
           If hit wall: goto idle, else: goto fallen
           ;; Convert player X position to playfield column (0-31)
-                    let temp5 = playerX[currentPlayer]
+          ;; let temp5 = playerX[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -1102,7 +1102,7 @@ TransitionHandleFallBack
           sta temp5
 
           ;; Convert player Y position to playfield row (0-7)
-                    let temp6 = playerY[currentPlayer]
+          ;; let temp6 = playerY[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -1174,7 +1174,7 @@ TransitionHandleFallBack_HitWall
 
 HandleAttackTransition
           ;; Returns: Far (return otherbank)
-                    let temp1 = currentAnimationSeq_R[currentPlayer]
+          ;; let temp1 = currentAnimationSeq_R[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -1195,7 +1195,7 @@ HandleAttackTransition
           jmp HandleWindupEnd
           jsr BS_return
 HandleWindupEnd
-                    let temp1 = playerCharacter[currentPlayer]
+          ;; let temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -1219,7 +1219,7 @@ HandleWindupEnd
           sta .skip_4121
 
           label_unknown:
-                    let temp2 = CharacterWindupNextAction[temp1]         
+          ;; let temp2 = CharacterWindupNextAction[temp1]         
           lda temp1
           asl
           tax
@@ -1230,7 +1230,7 @@ HandleWindupEnd
 
 HandleExecuteEnd
           ;; Returns: Far (return otherbank)
-                    let temp1 = playerCharacter[currentPlayer]
+          ;; let temp1 = playerCharacter[currentPlayer]
          
           lda currentPlayer
           asl
@@ -1255,7 +1255,7 @@ skip_2609:
           sta .skip_4121
 
           label_unknown:
-          let temp2 = CharacterExecuteNextAction[temp1]
+          ;; let temp2 = CharacterExecuteNextAction[temp1]
           lda temp1
           asl
           tax

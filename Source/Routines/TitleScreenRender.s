@@ -55,14 +55,14 @@ skip_8757:
 
 DrawPublisherScreen .proc
           ;; Publisher Prelude: Show AtariAge logo + AtariAge text
-                    let titlescreenWindow1 = 42  ; AtariAge logo visible
-                    let titlescreenWindow2 = 42  ; AtariAgeText visible
+          ;; let titlescreenWindow1 = 42  ; AtariAge logo visible
+          ;; let titlescreenWindow2 = 42  ; AtariAgeText visible
           lda # 42
           sta titlescreenWindow2
-                    let titlescreenWindow3 = 0  ; ChaosFight hidden
+          ;; let titlescreenWindow3 = 0  ; ChaosFight hidden
           lda # 0
           sta titlescreenWindow3
-                    let titlescreenWindow4 = 0  ; BRP hidden
+          ;; let titlescreenWindow4 = 0  ; BRP hidden
           lda # 0
           sta titlescreenWindow4
           jmp DrawTitleScreenCommon
@@ -71,28 +71,28 @@ DrawPublisherScreen .proc
 
 DrawAuthorScreen .proc
           ;; Author Prelude: Show BRP signature only
-                    let titlescreenWindow1 = 0   ; AtariAge logo hidden
-                    let titlescreenWindow2 = 0  ; AtariAgeText hidden
+          ;; let titlescreenWindow1 = 0   ; AtariAge logo hidden
+          ;; let titlescreenWindow2 = 0  ; AtariAgeText hidden
           lda # 0
           sta titlescreenWindow2
-                    let titlescreenWindow3 = 0  ; ChaosFight hidden
+          ;; let titlescreenWindow3 = 0  ; ChaosFight hidden
           lda # 0
           sta titlescreenWindow3
-                    let titlescreenWindow4 = 42  ; BRP visible
+          ;; let titlescreenWindow4 = 42  ; BRP visible
           lda # 42
           sta titlescreenWindow4
           jmp DrawTitleScreenCommon
 
 DrawTitleScreenOnly
           ;; Title Screen: Show ChaosFight title only
-                    let titlescreenWindow1 = 0   ; AtariAge logo hidden
-                    let titlescreenWindow2 = 0  ; AtariAgeText hidden
+          ;; let titlescreenWindow1 = 0   ; AtariAge logo hidden
+          ;; let titlescreenWindow2 = 0  ; AtariAgeText hidden
           lda # 0
           sta titlescreenWindow2
-                    let titlescreenWindow3 = 42  ; ChaosFight visible
+          ;; let titlescreenWindow3 = 42  ; ChaosFight visible
           lda # 42
           sta titlescreenWindow3
-                    let titlescreenWindow4 = 0  ; BRP hidden
+          ;; let titlescreenWindow4 = 0  ; BRP hidden
           lda # 0
           sta titlescreenWindow4
 

@@ -43,7 +43,7 @@ return_point:
 
 
           ;; Set animation state to attacking
-                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           ;; Set animation state 14 (attack execution)
           ;; Check immediate collision with other players in mêlée
           ;; range

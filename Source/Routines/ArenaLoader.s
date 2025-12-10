@@ -81,7 +81,7 @@ return_point:
           jmp BS_jsr
 return_point:
 
-                    if temp6 then goto LA_LoadBWColors
+          ;; if temp6 then goto LA_LoadBWColors
           lda temp6
           beq skip_9916
           jmp LA_LoadBWColors
@@ -212,7 +212,7 @@ return_point:
           jmp BS_jsr
 return_point:
 
-                    if temp6 then goto LAR_LoadBWColors
+          ;; if temp6 then goto LAR_LoadBWColors
           lda temp6
           beq skip_4691
           jmp LAR_LoadBWColors

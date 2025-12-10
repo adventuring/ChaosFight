@@ -13,7 +13,7 @@ AddVelocitySubpixelY .proc
           lda temp2
           sta temp4
           ;; Use saved amount in accumulator
-          let subpixelAccumulator = playerVelocityYL[temp1] + temp4
+          ;; let subpixelAccumulator = playerVelocityYL[temp1] + temp4
           lda temp1
           asl
           tax
@@ -24,8 +24,8 @@ AddVelocitySubpixelY .proc
           ;; No carry: temp3 = 0, use low byte directly
           lda temp3
           cmp # 1
-          bcc skip_2086
-skip_2086:
+          bcc NoCarryToInteger
+NoCarryToInteger:
 
           lda temp1
           asl

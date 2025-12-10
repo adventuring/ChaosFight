@@ -68,14 +68,14 @@ return_point:
           ;; Set window values for Publisher screen (AtariAge logo + AtariAge text)
           ;; Window values are set once during setup, not every frame
           ;; OPTIMIZATION: Inlined to save call overhead (only used once)
-                    let titlescreenWindow1 = 42  ; AtariAge logo visible
-                    let titlescreenWindow2 = 42  ; AtariAgeText visible
+          ;; let titlescreenWindow1 = 42  ; AtariAge logo visible
+          ;; let titlescreenWindow2 = 42  ; AtariAgeText visible
           lda # 42
           sta titlescreenWindow2
-                    let titlescreenWindow3 = 0  ; ChaosFight hidden
+          ;; let titlescreenWindow3 = 0  ; ChaosFight hidden
           lda # 0
           sta titlescreenWindow3
-                    let titlescreenWindow4 = 0  ; BRP hidden
+          ;; let titlescreenWindow4 = 0  ; BRP hidden
           lda # 0
           sta titlescreenWindow4
           jsr BS_return

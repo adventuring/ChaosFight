@@ -165,7 +165,7 @@ skip_3871:
 
           ;; Characters 16-30: Basic mêlée attacks
 
-                    if temp4 >= 16 && temp4 <= 30 then goto PerformGenericAttack bank7
+          ;; if temp4 >= 16 && temp4 <= 30 then goto PerformGenericAttack bank7
 
 
 
@@ -183,11 +183,8 @@ skip_9432:
 
 
 
-CheckEnhancedJumpButton
+CheckEnhancedJumpButton:
           ;; Returns: Far (return otherbank)
-
-
-CheckEnhancedJumpButton
 
 
 

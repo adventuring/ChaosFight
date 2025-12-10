@@ -17,7 +17,7 @@ UpdatePlayerMovementSingle .proc
           jsr BS_return
           ;; Apply X Velocity To X Position (8.8 fixed-point)
           ;; Use batariBASIC’s built-in 16-bit addition for carry detection
-                    let subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]         
+          ;; let subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]         
           lda currentPlayer
           asl
           tax
@@ -30,9 +30,9 @@ UpdatePlayerMovementSingle .proc
           sta playerSubpixelX_WL,x
           lda temp3
           cmp # 1
-          bcc skip_6578
+          bcc NoXCarry
                     let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
-skip_6578:
+NoXCarry:
 
           ;; Apply integer velocity component
                     let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + playerVelocityX[currentPlayer]
@@ -63,7 +63,7 @@ skip_6578:
           sta playerX,x
           ;; Apply Y Velocity To Y Position (8.8 fixed-point)
           ;; Use batariBASIC’s built-in 16-bit addition for carry detection
-                    let subpixelAccumulator = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]         
+          ;; let subpixelAccumulator = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]         
           lda currentPlayer
           asl
           tax
@@ -76,9 +76,9 @@ skip_6578:
           sta playerSubpixelY_WL,x
           lda temp3
           cmp # 1
-          bcc skip_2398
+          bcc NoYCarry
                     let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + 1
-skip_2398:
+NoYCarry:
 
           ;; Apply integer velocity component
                     let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + playerVelocityY[currentPlayer]

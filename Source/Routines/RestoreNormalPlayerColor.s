@@ -2,8 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-RestoreNormalPlayerColor:
-.proc
+RestoreNormalPlayerColor .proc
           ;; Provide shared entry point for restoring normal player colors
           ;; after guard tinting. Color reload executed by rendering code.
           ;;

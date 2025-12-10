@@ -1,27 +1,25 @@
 ;;; ChaosFight - Source/Routines/InputHandleLeftPortPlayerFunction.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-InputHandleLeftPortPlayerFunction
-InputHandleLeftPortPlayerFunction
+InputHandleLeftPortPlayerFunction:
 
           ;;
           ;; LEFT PORT PLAYER INPUT HANDLER (joy0 - Players 1 & 3)
           ;;
           ;; INPUT: temp1 = player index (0 or 2)
           ;; USES: joy0left, joy0right, joy0up, joy0down, joy0fire
-          ;; Cache animation state at start (used for movement, jump,
+          ;; Cache animation state at start (used for movement, jump, and attack checks)
           lda temp1
           sta currentPlayer
-          and attack checks)
           ;; block movement during attack animations (states 13-15)
-                    let temp2 = playerState[temp1] / 16         
+          ;; let temp2 = playerState[temp1] / 16         
           lda temp1
           asl
           tax
           lda playerState,x
           sta temp2
           ;; Block movement during attack windup/execute/recovery
-          if temp2 >= 13 then goto DoneLeftPortMovement
+          ;; if temp2 >= 13 then goto DoneLeftPortMovement
           lda temp2
           cmp 13
 
@@ -35,7 +33,7 @@ InputHandleLeftPortPlayerFunction
           ;; flying characters)
           ;; Frooty (8) and Dragon of Storms (2) need collision checks
           ;; for horizontal movement
-                    let temp5 = playerCharacter[temp1]         
+          ;; let temp5 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -110,7 +108,7 @@ InputDoneLeftPortJump
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+return_point_ihlpf2:
 
 
           ;; Process attack input
@@ -125,7 +123,7 @@ return_point:
           pha
                     ldx # 9
           jmp BS_jsr
-return_point:
+return_point_ihlpf3:
 
 InputDoneLeftPortAttack
 

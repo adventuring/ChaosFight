@@ -70,7 +70,7 @@ CharacterSelectEntry .proc
           ;; Check for Quadtari adapter (inlined for performance)
           ;; CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
           ;; Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) and Right (INPT2 LOW, INPT3 HIGH)
-                    if INPT0{7} then goto CharacterSelectQuadtariAbsent
+          ;; if INPT0{7} then goto CharacterSelectQuadtariAbsent
 
                     if !INPT1{7} then goto CharacterSelectQuadtariAbsent
           bit INPT1
@@ -78,7 +78,7 @@ CharacterSelectEntry .proc
           jmp CharacterSelectQuadtariAbsent
 skip_5888:
 
-                    if INPT2{7} then goto CharacterSelectQuadtariAbsent
+          ;; if INPT2{7} then goto CharacterSelectQuadtariAbsent
           bit INPT2
           bpl skip_4108
           jmp CharacterSelectQuadtariAbsent
@@ -138,7 +138,7 @@ CharacterSelectLoop .proc
           ;; 1
           ;; On odd frames (qtcontroller=1): handle controllers 2 and 3
           ;; (if Quadtari detected)
-                    if qtcontroller then goto CharacterSelectHandleQuadtari
+          ;; if qtcontroller then goto CharacterSelectHandleQuadtari
           lda qtcontroller
           beq skip_9978
           jmp CharacterSelectHandleQuadtari
@@ -353,7 +353,7 @@ skip_2410:
 
 CharacterSelectQuadtariReadyInline .proc
           ;; Need at least 2 players ready for 4-player mode
-          if readyCount>= 2 then goto CharacterSelectCompleted
+          ;; if readyCount>= 2 then goto CharacterSelectCompleted
           lda readyCount
           cmp 2
 

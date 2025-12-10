@@ -133,7 +133,7 @@ skip_2447:
 
 
           ;; Get this player’s elimination order (SCRAM read)
-                    let winScreenCandidateOrder = eliminationOrder_R[temp1]         
+          ;; let winScreenCandidateOrder = eliminationOrder_R[temp1]         
           lda temp1
           asl
           tax
@@ -306,7 +306,7 @@ DWS_Position1Player
           lda 192
           sta playerY,x
           ;; Load winner sprite
-                    let currentCharacter = playerCharacter[temp2]         
+          ;; let currentCharacter = playerCharacter[temp2]         
           lda temp2
           asl
           tax
@@ -352,7 +352,7 @@ DWS_Position2Players
           tax
           lda 192
           sta playerY,x
-                    let currentCharacter = playerCharacter[temp2]         
+          ;; let currentCharacter = playerCharacter[temp2]         
           lda temp2
           asl
           tax
@@ -380,7 +380,7 @@ skip_6581:
           tax
           lda 192
           sta playerY,x
-                    let currentCharacter = playerCharacter[temp3]         
+          ;; let currentCharacter = playerCharacter[temp3]         
           lda temp3
           asl
           tax
@@ -464,7 +464,7 @@ DWS_Position3Players
           tax
           lda 128
           sta playerY,x
-                    let currentCharacter = playerCharacter[temp2]         
+          ;; let currentCharacter = playerCharacter[temp2]         
           lda temp2
           asl
           tax
@@ -492,7 +492,7 @@ skip_5564:
           tax
           lda 192
           sta playerY,x
-                    let currentCharacter = playerCharacter[temp3]         
+          ;; let currentCharacter = playerCharacter[temp3]         
           lda temp3
           asl
           tax
@@ -558,7 +558,7 @@ skip_8912:
           tax
           lda 192
           sta playerY,x
-                    let currentCharacter = playerCharacter[temp4]         
+          ;; let currentCharacter = playerCharacter[temp4]         
           lda temp4
           asl
           tax

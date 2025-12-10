@@ -14,8 +14,9 @@ StandardJump .proc
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
           ;; Output: Upward velocity applied, jumping flag set
-                    let temp2 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp2
-                    let temp2 = CharacterJumpVelocities[temp2]
+                    ;; let temp2 = playerCharacter[temp1]
+                    lda temp1          asl          tax          lda playerCharacter,x          sta temp2
+          ;; let temp2 = CharacterJumpVelocities[temp2]
           lda temp2
           asl
           tax
@@ -48,7 +49,7 @@ CCJ_ConvertPlayerXToPlayfieldColumn
           ;; Input: temp1 = player index
           ;; Output: temp2 = playfield column
           ;; FIXME: This should be inlined.
-                    let temp2 = playerX[temp1]         
+          ;; let temp2 = playerX[temp1]         
           lda temp1
           asl
           tax
@@ -100,7 +101,7 @@ BernieJump .proc
 return_point:
 
 
-                    let temp3 = playerY[temp1]         
+          ;; let temp3 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -110,7 +111,7 @@ return_point:
           clc
           adc # 16
           sta temp5
-                    let temp6 = temp5 / 16
+          ;; let temp6 = temp5 / 16
           lda # 0
           sta temp4
           lda temp1
@@ -140,7 +141,7 @@ skip_5294:
           sta temp1
           jsr BS_return
 
-                    if temp6 >= pfrows - 1 then goto BernieCheckBottomWrap
+          ;; if temp6 >= pfrows - 1 then goto BernieCheckBottomWrap
           lda temp6
           clc
           adc # 1
@@ -239,13 +240,13 @@ CCJ_FreeFlightUp .proc
           ;; Input: temp1 = player index, temp2 = playfield column (from CCJ_ConvertPlayerXToPlayfieldColumn)
           ;; Output: Upward velocity applied if clear above, jumping flag set
           ;; Mutates: temp3-temp6, playerVelocityY[], playerVelocityYL[], playerState[]
-                    let temp3 = playerY[temp1]         
+          ;; let temp3 = playerY[temp1]         
           lda temp1
           asl
           tax
           lda playerY,x
           sta temp3
-                    let temp4 = temp3 / 16
+          ;; let temp4 = temp3 / 16
           rts
 
           dec temp4
@@ -329,7 +330,7 @@ skip_1730:
 
           jsr BS_return
 
-                    if playerY[temp1] <= 5 then goto HarpyFlapRecord
+          ;; if playerY[temp1] <= 5 then goto HarpyFlapRecord
           lda temp1
           asl
           tax

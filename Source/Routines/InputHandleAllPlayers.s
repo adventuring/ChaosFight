@@ -65,7 +65,7 @@ InputHandleAllPlayers .proc
 
           ;; InputSkipPlayer4Input (all called via goto or gosub)
 
-                    if qtcontroller then goto InputHandleQuadtariPlayers
+          ;; if qtcontroller then goto InputHandleQuadtariPlayers
           lda qtcontroller
           beq skip_514
           jmp InputHandleQuadtariPlayers
@@ -75,7 +75,7 @@ skip_514:
 
           ;; Even frame: Handle Players 1 & 2 - only if alive
 
-                    let currentPlayer = 0 : gosub IsPlayerAlive bank13
+          ;; let currentPlayer = 0 : gosub IsPlayerAlive bank13
           lda temp2
           cmp # 0
           bne skip_4896
@@ -85,7 +85,7 @@ skip_4896:
 
                     if (playerState[0] & 8) then InputDonePlayer0Input
 
-                    let temp1 = 0
+          ;; let temp1 = 0
           lda # 0
           sta temp1 : gosub InputHandleLeftPortPlayerFunction
 
@@ -113,7 +113,7 @@ InputDonePlayer0Input
 
 
 
-                    let currentPlayer = 1 : gosub IsPlayerAlive bank13
+          ;; let currentPlayer = 1 : gosub IsPlayerAlive bank13
           lda 1
           sta currentPlayer
           lda # >(return_point-1)
@@ -254,7 +254,7 @@ skip_2681:
 
                     if playerCharacter[2] = NoCharacter then InputDonePlayer3Input
 
-                    let currentPlayer = 2 : gosub IsPlayerAlive bank13
+          ;; let currentPlayer = 2 : gosub IsPlayerAlive bank13
           lda 2
           sta currentPlayer
           lda # >(return_point-1)
@@ -277,7 +277,7 @@ skip_8643:
 
                     if (playerState[2] & 8) then InputDonePlayer3Input
 
-                    let temp1 = 2
+          ;; let temp1 = 2
           lda # 2
           sta temp1 : gosub InputHandleLeftPortPlayerFunction
 
@@ -310,7 +310,7 @@ skip_8739:
 
                     if playerCharacter[3] = NoCharacter then InputDonePlayer4Input
 
-                    let currentPlayer = 3 : gosub IsPlayerAlive bank13
+          ;; let currentPlayer = 3 : gosub IsPlayerAlive bank13
           lda 3
           sta currentPlayer
           lda # >(return_point-1)
@@ -333,7 +333,7 @@ skip_21:
 
                     if (playerState[3] & 8) then InputDonePlayer4Input
 
-                    let temp1 = 3
+          ;; let temp1 = 3
           lda # 3
           sta temp1 : gosub InputHandleRightPortPlayerFunction
 

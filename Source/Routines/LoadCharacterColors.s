@@ -59,26 +59,23 @@ LoadCharacterColors .proc
           ;; Hurt state - SECAM uses magenta, others use dimmed colors
 
           lda temp2
-          bne skip_4192
+          bne ApplyHurtColor
           jmp NormalColorState
-skip_4192:
+ApplyHurtColor:
 
 
-          ;; TODO: #ifdef TV_SECAM
-
+          ;; Load player color - SECAM uses fixed magenta, NTSC/PAL use player-specific colors
+          .if TVStandard == SECAM
           lda ColMagenta(12)
           sta temp6
-
-          ;; TODO: #else
-
-                    let temp6 = PlayerColors6[currentPlayer]         
+          .else
+          ;; let temp6 = PlayerColors6[currentPlayer]         
           lda currentPlayer
           asl
           tax
           lda PlayerColors6,x
           sta temp6
-
-          ;; TODO: #.fi
+          .fi
 
           jsr BS_return
 
@@ -92,7 +89,7 @@ NormalColorState .proc
 
           ;; Returns: Far (return otherbank)
 
-                    let temp6 = PlayerColors12[currentPlayer]         
+          ;; let temp6 = PlayerColors12[currentPlayer]         
           lda currentPlayer
           asl
           tax

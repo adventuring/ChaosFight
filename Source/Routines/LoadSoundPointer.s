@@ -40,13 +40,14 @@ LoadSoundPointer .proc
 
           lda temp1
           cmp # 10
-          bcc skip_3853
-skip_3853:
+          bcc SoundIDInRange
+SoundIDInRange:
 
 
-                    let var41 = SoundPointersH[temp1]          lda temp1          asl          tax          lda SoundPointersH,x          sta var41
+                    ;; let var41 = SoundPointersH[temp1]
+                    lda temp1          asl          tax          lda SoundPointersH,x          sta var41
 
-                    let var42 = SoundPointersL[temp1]
+          ;; let var42 = SoundPointersL[temp1]
           lda temp1
           asl
           tax

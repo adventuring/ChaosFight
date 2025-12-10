@@ -56,15 +56,15 @@ CharacterSelectEntry .proc
           lda # 0
           sta playerLocked
           ;; Lock Player 3 (NoCharacter)
-                    let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+          ;; let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
 
           ;; Lock Player 4 (NoCharacter)
-                    let temp1 = 2
+          ;; let temp1 = 2
           lda # 2
           sta temp1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
 
           ;; NOTE: Do NOT clear controllerStatus flags here - monotonic
-                    let temp1 = 3
+          ;; let temp1 = 3
           lda # 3
           sta temp1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
 
@@ -87,7 +87,7 @@ CharacterSelectEntry .proc
           ;; Check for Quadtari adapter (inlined for performance)
           ;; CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
           ;; Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) and Right (INPT2 LOW, INPT3 HIGH)
-                    if INPT0{7} then goto CharacterSelectQuadtariAbsent
+          ;; if INPT0{7} then goto CharacterSelectQuadtariAbsent
 
                     if !INPT1{7} then goto CharacterSelectQuadtariAbsent
           bit INPT1
@@ -95,7 +95,7 @@ CharacterSelectEntry .proc
           jmp CharacterSelectQuadtariAbsent
 skip_5888:
 
-                    if INPT2{7} then goto CharacterSelectQuadtariAbsent
+          ;; if INPT2{7} then goto CharacterSelectQuadtariAbsent
           bit INPT2
           bpl skip_4108
           jmp CharacterSelectQuadtariAbsent

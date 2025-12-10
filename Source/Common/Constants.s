@@ -9,6 +9,15 @@
           ;; Build day in julian day format (1-366, set by Makefile)
           BuildDay = BUILD_DAY
 
+          ;; TV Standard constants (matches TVStandard enum values)
+          ;; These match the TVStandard values set by platform files:
+          ;; NTSC.s: TVStandard = 0
+          ;; PAL.s: TVStandard = 1
+          ;; SECAM.s: TVStandard = 2
+          NTSC = 0
+          PAL = 1
+          SECAM = 2
+
           ;; Game URL: https://interworldly.com/games/ChaosFight
           NumArenas = 16
           MaxArenaID = 1

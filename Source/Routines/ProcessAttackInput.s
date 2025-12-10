@@ -51,7 +51,7 @@ ProcessAttackInput .proc
 
           ;; Check if player is guarding - guard blocks attacks
 
-                    let temp2 = playerState[temp1] & 2         
+          ;; let temp2 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
@@ -95,7 +95,7 @@ PAI_ExecuteAttack .proc
 
           jsr BS_return
 
-                    let temp4 = playerCharacter[temp1]         
+          ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax

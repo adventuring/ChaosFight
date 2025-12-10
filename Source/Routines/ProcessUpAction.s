@@ -2,7 +2,6 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 ProcessUpAction
-ProcessUpAction
           ;; Shared UP Action Handler
           ;; Executes character-specific UP behavior (UP = Button C = Button II, no exceptions)
           ;;
@@ -32,10 +31,10 @@ ProcessUpAction
           ;; TODO: Implement Shamone <-> MethHound form switching
 
           ;; Robo Tito: Stretch (ascend toward ceiling; auto-latch on contact)
-                    if playerCharacter[temp1] = CharacterRoboTito then goto PUA_RoboTitoAscend
+          ;; if playerCharacter[temp1] = CharacterRoboTito then goto PUA_RoboTitoAscend
 
           ;; Bernie: Drop (fall through thin floors)
-                    if playerCharacter[temp1] = CharacterBernie then goto PUA_BernieFallThrough
+          ;; if playerCharacter[temp1] = CharacterBernie then goto PUA_BernieFallThrough
           lda temp1
           asl
           tax
@@ -46,7 +45,7 @@ ProcessUpAction
 skip_7306:
 
           ;; Harpy: Flap (fly)
-                    if playerCharacter[temp1] = CharacterHarpy then goto PUA_HarpyFlap
+          ;; if playerCharacter[temp1] = CharacterHarpy then goto PUA_HarpyFlap
           lda temp1
           asl
           tax
@@ -58,7 +57,7 @@ skip_2587:
 
           ;; For all other characters, UP is jump
           ;; Check Zoe Ryen for double-jump capability
-                    if playerCharacter[temp1] = CharacterZoeRyen then goto PUA_ZoeJumpCheck
+          ;; if playerCharacter[temp1] = CharacterZoeRyen then goto PUA_ZoeJumpCheck
           lda temp1
           asl
           tax
@@ -70,7 +69,7 @@ skip_8150:
 
           ;; Standard jump - block during attack animations (states 13-15)
           ;; Tail call to DispatchCharacterJump - it returns directly to our caller
-                    let temp4 = playerCharacter[temp1]         
+          ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -117,14 +116,19 @@ PUA_HarpyFlap .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+return_point_pua5:
 
           rts
 
 PUA_RoboTitoAscend
           ;; Ascend toward ceiling
-                    let temp6 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp6
-                    let temp6 = CharacterMovementSpeed[temp6]
+          ;; let temp6 = playerCharacter[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp6
+          ;; let temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -136,8 +140,8 @@ PUA_RoboTitoAscend
           lda CharacterMovementSpeed,x
           sta temp6
           ;; Compute playfield column
-                    let playerY[temp1] = playerY[temp1] - temp6
-                    let temp2 = playerX[temp1]         
+          ;; let playerY[temp1] = playerY[temp1] - temp6
+          ;; let temp2 = playerX[temp1]         
           lda temp1
           asl
           tax
@@ -163,12 +167,12 @@ PUA_RoboTitoAscend
           sta temp2
 skip_9153:
 
-                    if temp2 & $80 then let temp2 = 0
+          ;; if temp2 & $80 then let temp2 = 0
           ;; Save playfield column (temp2 will be overwritten)
           lda temp2
           sta temp4
           ;; Compute head row and check ceiling contact
-                    let temp2 = playerY[temp1]         
+          ;; let temp2 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -205,9 +209,9 @@ skip_4246:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+return_point_pua8:
 
-                    if temp1 then goto PUA_RoboTitoLatch
+          ;; if temp1 then goto PUA_RoboTitoLatch
           lda temp1
           beq skip_6148
           jmp PUA_RoboTitoLatch
@@ -215,9 +219,9 @@ skip_6148:
           ;; Clear latch if DOWN pressed (check appropriate port)
           lda currentPlayer
           sta temp1
-                    if temp1 & 2 = 0 then goto PUA_CheckJoy0Down
-                    if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
-          lda joy1down
+          ;; if temp1 & 2 = 0 then goto PUA_CheckJoy0Down
+          ;; if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
+          ;; lda joy1down (undefined - commented out)
           beq skip_7336
           lda temp1
           asl
@@ -232,7 +236,7 @@ skip_7336:
 .pend
 
 PUA_CheckJoy0Down .proc
-                    if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq skip_9849
+          ;; if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq skip_9849
 skip_9849:
           jmp skip_9849
           lda # 0
@@ -241,7 +245,7 @@ skip_9849:
 .pend
 
 PUA_RoboTitoLatch .proc
-                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
+          ;; let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
           lda # 0
           sta temp3
           rts
@@ -252,12 +256,12 @@ PUA_ZoeJumpCheck .proc
           ;; Zoe Ryen: Allow single mid-air double-jump
           lda # 0
           sta temp6
-                    if (playerState[temp1] & 4) then let temp6 = 1
+          ;; if (playerState[temp1] & 4) then let temp6 = 1
           ;; Block double-jump if already used (characterStateFlags bit 3)
           rts
           ;; Block jump during attack animations (states 13-15)
           rts
-                    let temp4 = playerCharacter[temp1]         
+          ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -268,7 +272,7 @@ PUA_ZoeJumpCheck .proc
           lda temp6
           cmp # 1
           bne skip_6415
-                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
+          ;; let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
 skip_6415:
 
           lda # 1

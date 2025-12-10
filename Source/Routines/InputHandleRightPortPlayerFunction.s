@@ -1,27 +1,25 @@
 ;;; ChaosFight - Source/Routines/InputHandleRightPortPlayerFunction.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-InputHandleRightPortPlayerFunction
-InputHandleRightPortPlayerFunction
+InputHandleRightPortPlayerFunction:
 
           ;;
           ;; RIGHT PORT PLAYER INPUT HANDLER (joy1 - Players 2 & 4)
           ;;
           ;; INPUT: temp1 = player index (1 or 3)
           ;; USES: joy1left, joy1right, joy1up, joy1down, joy1fire
-          ;; Cache animation state at start (used for movement, jump,
+          ;; Cache animation state at start (used for movement, jump, and attack checks)
           lda temp1
           sta currentPlayer
-          and attack checks)
           ;; block movement during attack animations (states 13-15)
-                    let temp2 = playerState[temp1] / 16         
+          ;; let temp2 = playerState[temp1] / 16         
           lda temp1
           asl
           tax
           lda playerState,x
           sta temp2
           ;; Block movement during attack windup/execute/recovery
-          if temp2 >= 13 then goto DoneRightPortMovement
+          ;; if temp2 >= 13 then goto DoneRightPortMovement
           lda temp2
           cmp 13
 
@@ -34,14 +32,14 @@ InputHandleRightPortPlayerFunction
           ;; Process left/right movement (with playfield collision for
           ;; flying characters)
           ;; Check if player is guarding - guard blocks movement
-                    let temp6 = playerState[temp1] & 2         
+          ;; let temp6 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
           lda playerState,x
           sta temp6
           ;; Guarding - block movement
-                    if temp6 then goto DoneRightPortMovement
+          ;; if temp6 then goto DoneRightPortMovement
           lda temp6
           beq skip_7029
           jmp DoneRightPortMovement
@@ -49,7 +47,7 @@ skip_7029:
 
           ;; Frooty (8) and Dragon of Storms (2) need collision checks
           ;; for horizontal movement
-                    let temp5 = playerCharacter[temp1]         
+          ;; let temp5 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -115,7 +113,8 @@ InputDoneRightPortJump
           ;; Process down/guard input (fully inlined to save 2 bytes on sta
 
           ;; Check joy1down (right port uses joy1)
-          lda joy1down
+          ;; lda joy1down (undefined - use INPT4 or similar)
+          lda INPT4
           bne skip_8210
           jmp IHRP_CheckGuardRelease
 skip_8210:
@@ -125,13 +124,13 @@ skip_8210:
 
 IHRP_HandleDownPressed .proc
           ;; DOWN pressed - dispatch to character-specific down handler
-                    let temp4 = playerCharacter[temp1]         
+          ;; let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta temp4
-          if temp4 >= 32 then goto IHRP_ProcessAttack
+          ;; if temp4 >= 32 then goto IHRP_ProcessAttack
           lda temp4
           cmp 32
 
@@ -195,7 +194,7 @@ skip_9606:
 
 IHRP_CheckGuardRelease .proc
           ;; DOWN released - check for early guard release (inlined to save 2 bytes)
-                    let temp6 = playerState[temp1] & PlayerStateBitGuarding         
+          ;; let temp6 = playerState[temp1] & PlayerStateBitGuarding         
           lda temp1
           asl
           tax
@@ -208,7 +207,7 @@ IHRP_CheckGuardRelease .proc
 skip_8955:
 
           ;; Stop guard early and start cooldown
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          ;; let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           ;; Start cooldown timer
           lda temp1
           asl

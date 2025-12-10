@@ -17,11 +17,9 @@ WeightDividedBy20:
 WeightDividedBy20_end:
 
           ;; Square lookup table (v² ÷ 4 for velocities 0-24)
-SquareTable
 asm_1:
 
-SquareTable
-asm_end_1:
 SquareTable:
+asm_end_1:
           .byte 0, 1, 2, 4, 6, 9, 12, 16, 20, 25, 30, 36, 42, 49, 56, 64, 72, 81, 90, 100, 110, 121, 132, 144
 SquareTable_end:

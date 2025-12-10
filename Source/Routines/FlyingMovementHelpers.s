@@ -5,7 +5,7 @@
 HFCM_AttemptMoveLeft .proc
           lda currentPlayer
           sta temp1
-                    let temp2 = playerX[temp1]         
+          ;; let temp2 = playerX[temp1]         
           lda temp1
           asl
           tax
@@ -31,13 +31,13 @@ HFCM_AttemptMoveLeft .proc
           sta temp2
 skip_520:
 
-                    if temp2 & $80 then let temp2 = 0
+          ;; if temp2 & $80 then let temp2 = 0
           jsr BS_return
           lda temp2
           sec
           sbc # 1
           sta temp3
-                    let temp4 = playerY[temp1]         
+          ;; let temp4 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -79,7 +79,7 @@ return_point:
             lsr temp2
           lda temp2
           sta temp7
-          if temp7 >= pfrows then goto HFCM_ApplyLeft
+          ;; if temp7 >= pfrows then goto HFCM_ApplyLeft
           lda temp7
           cmp pfrows
 
@@ -103,7 +103,7 @@ skip_1152:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+return_point_fmh2:
 
           jsr BS_return
 .pend
@@ -111,7 +111,7 @@ return_point:
 HFCM_ApplyLeft .proc
           lda currentPlayer
           sta temp1
-                    let temp5 = playerCharacter[temp1]         
+          ;; let temp5 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -139,7 +139,7 @@ skip_4970:
 .pend
 
 HFCM_LeftMomentum .proc
-                    let characterMovementSpeed = CharacterMovementSpeed[temp5]         
+          ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]         
           lda temp5
           asl
           tax
@@ -156,7 +156,7 @@ HFCM_LeftMomentum .proc
 
 HFCM_LeftDirect .proc
           ;; Dragon of Storms: direct velocity with subpixel accuracy
-                    let characterMovementSpeed = CharacterMovementSpeed[temp5]         
+          ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]         
           lda temp5
           asl
           tax
@@ -201,7 +201,7 @@ HFCM_LeftFacing .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+return_point_fmh3:
 
           ;; if temp2 < 5 then HFCM_SetFacingLeft
           lda temp2
@@ -233,7 +233,7 @@ HFCM_SetFacingLeft .proc
 HFCM_AttemptMoveRight .proc
           lda currentPlayer
           sta temp1
-                    let temp2 = playerX[temp1]         
+          ;; let temp2 = playerX[temp1]         
           lda temp1
           asl
           tax
@@ -259,13 +259,13 @@ HFCM_AttemptMoveRight .proc
           sta temp2
 skip_520:
 
-                    if temp2 & $80 then let temp2 = 0
+          ;; if temp2 & $80 then let temp2 = 0
           jsr BS_return
           lda temp2
           clc
           adc # 1
           sta temp3
-                    let temp4 = playerY[temp1]         
+          ;; let temp4 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -294,7 +294,7 @@ skip_520:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+return_point_fmh4:
 
           jsr BS_return
           lda temp4
@@ -307,7 +307,7 @@ return_point:
             lsr temp2
           lda temp2
           sta temp7
-          if temp7 >= pfrows then goto HFCM_ApplyRight
+          ;; if temp7 >= pfrows then goto HFCM_ApplyRight
           lda temp7
           cmp pfrows
 
@@ -331,7 +331,7 @@ return_point:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+return_point_fmh5:
 
           jsr BS_return
 .pend
@@ -339,7 +339,7 @@ return_point:
 HFCM_ApplyRight .proc
           lda currentPlayer
           sta temp1
-                    let temp5 = playerCharacter[temp1]         
+          ;; let temp5 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
@@ -371,7 +371,7 @@ skip_5774:
 .pend
 
 HFCM_RightMomentum .proc
-                    let characterMovementSpeed = CharacterMovementSpeed[temp5]         
+          ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]         
           lda temp5
           asl
           tax
@@ -388,7 +388,7 @@ HFCM_RightMomentum .proc
 
 HFCM_RightDirect .proc
           ;; Dragon of Storms: direct velocity with subpixel accuracy
-                    let characterMovementSpeed = CharacterMovementSpeed[temp5]         
+          ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]         
           lda temp5
           asl
           tax
@@ -420,7 +420,7 @@ HFCM_RightFacing .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+return_point_fmh6:
 
           ;; if temp2 < 5 then HFCM_SetFacingRight
           lda temp2

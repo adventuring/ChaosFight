@@ -15,7 +15,7 @@ ReloadArenaColors .proc
           ;; Handle random arena (use stored random selection)
           lda temp1
           cmp RandomArena
-          bne skip_4783
+          bne SkipRandomSelection
           ;; let temp1 = rand & 31
           lda rand
           and # 31
@@ -24,7 +24,7 @@ ReloadArenaColors .proc
           lda rand
           and # 31
           sta temp1
-skip_4783:
+SkipRandomSelection:
 
 
           ;; Get B&W mode state (same logic as GetBWMode)
@@ -34,10 +34,10 @@ skip_4783:
                     if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
           lda systemFlags
           and SystemFlagColorBWOverride
-          beq skip_512
+          beq SkipBWOverride
           lda # 1
           sta temp2
-skip_512:
+SkipBWOverride:
 
 .pend
 
@@ -75,11 +75,11 @@ return_point:
 return_point:
 
           ;; Load color color table
-                    if temp6 then goto RAU_LoadBWColors
+          ;; if temp6 then goto RAU_LoadBWColors
           lda temp6
-          beq skip_4158
+          beq LoadColorColors
           jmp RAU_LoadBWColors
-skip_4158:
+LoadColorColors:
           ;; Cross-bank call to LoadArenaColorsColor in bank 16
           lda # >(return_point-1)
           pha

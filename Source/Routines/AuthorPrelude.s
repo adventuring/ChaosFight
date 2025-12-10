@@ -74,7 +74,7 @@ skip_1114:
           ;; Check MegaDrive/Joy2b+ controllers if detected
           ;; Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0) or Joy2b+ Button III (INPT1)
           ;; OR flags together and check for nonzero match
-                    let temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
+          ;; let temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
                     if temp1 then if !INPT0{7} then AuthorPreludeComplete
           lda temp1
           beq skip_4228
@@ -89,7 +89,7 @@ skip_4228:
 skip_933:
 
           ;; Player 2: Genesis Button C (INPT2) or Joy2b+ Button C/II (INPT2) or Joy2b+ Button III (INPT3)
-                    let temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
+          ;; let temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
           lda controllerStatus
           and # 96
           sta temp1

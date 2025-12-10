@@ -52,14 +52,14 @@ return_point:
 
           ;; Set window values for Author screen (Interworldly only)
           ;; OPTIMIZATION: Inlined to save call overhead (only used once)
-                    let titlescreenWindow1 = 0   ; AtariAge logo hidden
-                    let titlescreenWindow2 = 0  ; AtariAgeText hidden
+          ;; let titlescreenWindow1 = 0   ; AtariAge logo hidden
+          ;; let titlescreenWindow2 = 0  ; AtariAgeText hidden
           lda # 0
           sta titlescreenWindow2
-                    let titlescreenWindow3 = 0  ; ChaosFight hidden
+          ;; let titlescreenWindow3 = 0  ; ChaosFight hidden
           lda # 0
           sta titlescreenWindow3
-                    let titlescreenWindow4 = 42  ; BRP visible
+          ;; let titlescreenWindow4 = 42  ; BRP visible
           lda # 42
           sta titlescreenWindow4
 

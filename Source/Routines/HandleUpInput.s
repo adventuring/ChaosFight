@@ -7,7 +7,7 @@ HandleUpInput .proc
           ;;
           ;; Shared UP Input Handler
           ;; Handles UP input from joystick direction
-          UP = Button C = Button II (no exceptions)
+          ;; UP = Button C = Button II (no exceptions)
           ;;
           ;; INPUT: temp1 = player index (0-3)
           ;; temp2 = cached animation state (for attack blocking)
@@ -25,7 +25,7 @@ HandleUpInput .proc
 
           ;; Determine which joy port to use based on player index
           ;; Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
-                    if temp1 & 2 = 0 then goto HUI_UseJoy0
+          ;; if temp1 & 2 = 0 then goto HUI_UseJoy0
           rts
           jmp HUI_ProcessUp
 

@@ -72,11 +72,11 @@ WaitForOverscanEnd:
           ;; MultiSpriteSuperChip.s sets it to $0000 if not defined, so we can always call it
           lda vblank_bB_code
           ora vblank_bB_code + 1
-          beq skip_vblank_call
+          beq SkipVblankCall
 
           jsr vblank_bB_code
 
-skip_vblank_call:
+SkipVblankCall:
 
           jsr setscorepointers
 

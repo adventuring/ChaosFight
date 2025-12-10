@@ -2,15 +2,14 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-ApplyGuardColor:
-.proc
+ApplyGuardColor .proc
           ;; Apply guard color effect (light cyan for NTSC/PAL, cyan for SECAM)
           ;; while a player is actively guarding.
           ;;
           ;; Input: temp1 = player index (0-3)
           ;; playerState[] (global) = player state flags (bit 1 = guarding)
           ;;
-          ;; Output: Player color forced to ColCyan(12) while guarding
+          ;; Output: Player color forced to 12 while guarding
           ;; Mutates: temp1-temp2, COLUP0, _COLUP1, COLUP2, COLUP3
           ;;
           ;; Called Routines: None
@@ -36,30 +35,22 @@ PlayerIsGuarding:
 .pend
 
 GuardColor0:
-.proc
-          COLUP0 = ColCyan(12)
+          lda # 12
+          sta player0color
           rts
-
-.pend
 
 GuardColor1:
-.proc
-          _COLUP1 = ColCyan(12)
+          lda # 12
+          sta _COLUP1
           rts
-
-.pend
 
 GuardColor2:
-.proc
-          COLUP2 = ColCyan(12)
+          lda # 12
+          sta COLUP2
           rts
-
-.pend
 
 GuardColor3:
-.proc
-          COLUP3 = ColCyan(12)
+          lda # 12
+          sta COLUP3
           rts
-
-.pend
 

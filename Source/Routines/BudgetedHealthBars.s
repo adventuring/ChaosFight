@@ -52,7 +52,7 @@ skip_6642:
 BudgetedHealthBarPlayer0 .proc
           ;; Local trampoline so branch stays in range; tail-calls target
           ;; Update Player 0 health bar (inline from UpdatePlayer1HealthBar pattern)
-                    let temp6 = playerHealth[0]         
+          ;; let temp6 = playerHealth[0]         
           lda 0
           asl
           tax
@@ -85,7 +85,7 @@ BudgetedHealthBarPlayer0 .proc
 BudgetedHealthBarPlayer1 .proc
           ;; Local trampoline so branch stays in range; tail-calls target
           ;; Update Player 1 health bar (inline from UpdatePlayer1HealthBar pattern)
-                    let temp6 = playerHealth[1]         
+          ;; let temp6 = playerHealth[1]         
           lda 1
           asl
           tax

@@ -48,20 +48,20 @@ ConsoleDetHW:
           lda $d0
           sta temp1
           lda temp1
-          bne skip_3125
+          bne CheckD0For7800
 
           jmp CheckFlashed
 
-skip_3125:
+CheckD0For7800:
           ;; Check if $D0 = $2C (7800 indicator)
 
           lda temp1
           cmp # ConsoleDetectD0
-          bne skip_4702
+          bne Not7800D0
 
           jmp CheckD1
 
-skip_4702:
+Not7800D0:
 
           jmp Is2600
 
@@ -72,11 +72,11 @@ CheckD1:
           sta temp1
           lda temp1
           cmp # ConsoleDetectD1
-          bne skip_3707
+          bne Not7800D1
 
           jmp Is7800
 
-skip_3707:
+Not7800D1:
 
           ;; 7800 detected: $D0=$2C and #$D1=$A9
           jmp Is2600
@@ -104,11 +104,11 @@ CheckFlashed:
           sta temp1
           ;; if temp1 then goto Is2600
           lda temp1
-          beq skip_4218
+          beq CheckCDFJDriver
 
           jmp Is2600
 
-skip_4218:
+CheckCDFJDriver:
 
           ;; Both $D0 and #$D1 are $00 - check $80 for CDFJ driver
           ;; result
@@ -116,11 +116,11 @@ skip_4218:
           sta temp1
           lda temp1
           cmp # 0
-          bne skip_585
+          bne CDFJDriverDetected7800
 
           jmp Is2600
 
-skip_585:
+CDFJDriverDetected7800:
 
           ;; fall through to Is7800
           ;; CDFJ driver detected 7800

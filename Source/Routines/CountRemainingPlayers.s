@@ -19,40 +19,40 @@ CountRemainingPlayers:
           asl
           tax
           lda playerHealth,x
-          beq skip_7125
+          beq SkipIncrementPlayer1
 
           lda temp1
           clc
           adc # 1
           sta temp1
 
-skip_7125:
+SkipIncrementPlayer1:
           if playerHealth[2] > 0 then let temp1 = 1 + temp1
           lda # 2
           asl
           tax
           lda playerHealth,x
-          beq skip_774
+          beq SkipIncrementPlayer2
 
           lda temp1
           clc
           adc # 1
           sta temp1
 
-skip_774:
+SkipIncrementPlayer2:
           if playerHealth[3] > 0 then let temp1 = 1 + temp1
           lda # 3
           asl
           tax
           lda playerHealth,x
-          beq skip_3562
+          beq SkipIncrementPlayer3
 
           lda temp1
           clc
           adc # 1
           sta temp1
 
-skip_3562:
+SkipIncrementPlayer3:
           lda temp1
           sta playersRemaining_W
           jsr BS_return

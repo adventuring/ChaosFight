@@ -32,13 +32,10 @@ SLEEP .macro duration
 .endm
 .endweak
 
-          ;;; usage: .SLEEP n (n>1)
-.if \duration < 2
           .error "MACRO ERROR: \"SLEEP\": Duration must be > 1"
 .fi
 
           ;; Handle odd duration - check NO_ILLEGAL_OPCODES first
-.if \duration & 1
           nop 0
           ;; Add remaining nop pairs if duration >= 3
           ;; Calculate: (\duration - 3) / 2
@@ -53,4 +50,3 @@ SLEEP .macro duration
           nop
           .next
 .fi
-.endm

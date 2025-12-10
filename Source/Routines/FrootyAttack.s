@@ -1,8 +1,5 @@
 ;;; ChaosFight - Source/Routines/FrootyAttack.bas
 
-          ;; Forward declarations
-FrootyButtonHeld:
-FrootyButtonReleased:
 
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
@@ -12,6 +9,8 @@ FrootyButtonReleased:
 
 
           ;; Forward declarations for labels defined later
+
+          ;; Forward declarations
 FrootyButtonHeld:
 FrootyButtonReleased:
 

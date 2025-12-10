@@ -2,8 +2,9 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-ApplyGuardColor .proc
-;;; Apply guard color effect (light cyan for NTSC/PAL, cyan for SECAM)
+ApplyGuardColor:
+.proc
+          ;; Apply guard color effect (light cyan for NTSC/PAL, cyan for SECAM)
           ;; while a player is actively guarding.
           ;;
           ;; Input: temp1 = player index (0-3)
@@ -16,7 +17,7 @@ ApplyGuardColor .proc
           ;;
           ;; Constraints: Must remain colocated with GuardColor0-GuardColor3 jump table
           ;; Check if player is guarding
-                    let temp2 = playerState[temp1] & 2         
+          ;; let temp2 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
@@ -24,31 +25,39 @@ ApplyGuardColor .proc
           sta temp2
           ;; Not guarding
           lda temp2
-          bne skip_5941
-skip_5941:
+          bne PlayerIsGuarding
 
+PlayerIsGuarding:
 
           ;; set light cyan color
           ;; Optimized: Apply guard color with computed assignment
           jmp GuardColor0
+
 .pend
 
-GuardColor0 .proc
+GuardColor0:
+.proc
           COLUP0 = ColCyan(12)
           rts
+
 .pend
 
-GuardColor1 .proc
+GuardColor1:
+.proc
           _COLUP1 = ColCyan(12)
           rts
+
 .pend
 
-GuardColor2 .proc
+GuardColor2:
+.proc
           COLUP2 = ColCyan(12)
           rts
+
 .pend
 
-GuardColor3 .proc
+GuardColor3:
+.proc
           COLUP3 = ColCyan(12)
           rts
 

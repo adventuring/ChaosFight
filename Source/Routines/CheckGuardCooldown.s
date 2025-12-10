@@ -2,7 +2,8 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-CheckGuardCooldown .proc
+CheckGuardCooldown:
+.proc
 
           ;;
           ;; Returns: Far (return otherbank)
@@ -20,7 +21,7 @@ CheckGuardCooldown .proc
           ;; Called Routines: None
           ;; Constraints: Must be colocated with GuardCooldownBlocked (called via goto)
           ;; Check if player is currently guarding
-                    let temp3 = playerState[temp1] & 2         
+          ;; let temp3 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
@@ -28,14 +29,15 @@ CheckGuardCooldown .proc
           sta temp3
           if temp3 then GuardCooldownBlocked
           lda temp3
-          beq skip_9915
+          beq CheckCooldownTimer
+
           jmp GuardCooldownBlocked
-skip_9915:
-          
+
+CheckCooldownTimer:
 
           ;; Check cooldown timer (stored in playerTimers array)
           ;; playerTimers stores frames remaining in cooldown
-                    let temp3 = playerTimers_R[temp1]         
+          ;; let temp3 = playerTimers_R[temp1]         
           lda temp1
           asl
           tax
@@ -44,9 +46,9 @@ skip_9915:
 
           lda temp3
           cmp # 1
-          bcc skip_892
-skip_892:
+          bcc CooldownExpired
 
+CooldownExpired:
 
           ;; Cooldown expired, guard allowed
           lda # 1
@@ -55,7 +57,8 @@ skip_892:
 
 .pend
 
-GuardCooldownBlocked .proc
+GuardCooldownBlocked:
+.proc
           ;; Currently guarding or in cooldown - not allowed to sta
 
           ;; Returns: Far (return otherbank)

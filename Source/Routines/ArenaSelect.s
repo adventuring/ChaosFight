@@ -410,48 +410,49 @@ DisplayRandomArena .proc
           sta player4x
           lda # 20
           sta player4y
-          lda $0E(14)
+          lda # $0E
           sta COLUP4
           ;; White
           lda # 4
           sta temp3
           ;; Use player4
           ;; Cross-bank call to SetGlyph in bank 16
-          lda # >(return_point-1)
+          lda # >(return_point5-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point5-1)
           pha
           lda # >(SetGlyph-1)
           pha
           lda # <(SetGlyph-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
-return_point:
 
+return_point5:
 
           ;; Second question mark: set P5 fixed position/color
           lda # 88
           sta player5x
           lda # 20
           sta player5y
-          lda $0E(14)
+          lda # $0E
           sta COLUP5
           ;; Use player5
           lda # 5
           sta temp3
           ;; Cross-bank call to SetGlyph in bank 16
-          lda # >(return_point-1)
+          lda # >(return_point6-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point6-1)
           pha
           lda # >(SetGlyph-1)
           pha
           lda # <(SetGlyph-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
-return_point:
+
+return_point6:
 
 
 DisplayDone

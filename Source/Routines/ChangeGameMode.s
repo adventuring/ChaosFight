@@ -1,8 +1,5 @@
 
 ChangeGameMode .proc
-
-
-
           ;;
           ;; Returns: Far (return otherbank)
           ;; ChaosFight - Source/Routines/ChangeGameMode.bas
@@ -31,6 +28,7 @@ ChangeGameMode .proc
           ;; Thunks are placed at end of file to prevent fall-through
           ;; Note: on...goto pushes 2 bytes then immediately pops them (net zero stack change)
           jmp CGM_ThunkPublisherPrelude
+
           ;; Safety exit if gameMode is invalid
           jsr BS_return
 

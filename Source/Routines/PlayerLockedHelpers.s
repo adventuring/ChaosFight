@@ -6,8 +6,6 @@
 
 
 GetPlayerLocked .proc
-
-
           ;; Player Locked Helper Functions
           ;; Returns: Far (return otherbank)
 
@@ -40,15 +38,11 @@ GetPlayerLocked .proc
 
           ;; Constraints: None
 
-
-
           ;; Invalid index check (temp1 should be 0-3)
 
           ;; if temp1 < 0 then let temp2 = 0 : return
 
           jsr BS_return
-
-
 
           ;; Extract 2 bits for this player
 
@@ -61,16 +55,10 @@ GetPlayerLocked .proc
 .pend
 
 GetPlayerLockedP0 .proc
-
           ;; let temp2 = playerLocked & 3
           lda playerLocked
           and # 3
           sta temp2
-
-          lda playerLocked
-          and # 3
-          sta temp2
-
 
           ;; TODO: #1291 GPL_lockedState = temp2
 

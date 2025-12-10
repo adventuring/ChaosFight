@@ -34,7 +34,7 @@ AttractMode .proc
           ;; MainLoop)
           ;; Only reachable via gosub from MainLoop
           ;; let gameMode = ModePublisherPrelude : gosub ChangeGameMode bank14
-          lda ModePublisherPrelude
+          lda # ModePublisherPrelude
           sta gameMode
           lda # >(return_point-1)
           pha
@@ -46,6 +46,7 @@ AttractMode .proc
           pha
           ldx # 13
           jmp BS_jsr
+
 return_point:
 
           rts

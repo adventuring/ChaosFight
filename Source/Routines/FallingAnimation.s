@@ -3,13 +3,11 @@
 ;;; Falling In Animation - Per-frame Loop
 ;;; Moves players from quadrant staging positions to arena row 2.
 
-FallingAnimation1
+FallingAnimation1:
           ;; Returns: Far (return otherbank)
-FallingAnimation1
           ;; Moves active players from quadrant spawn points to row 2 starting positions
-          ;; Returns: Far (return otherbank)
           ;; Called each frame while gameMode = ModeFallingAnimation1
-          Flow:
+          ;; Flow:
           ;; 1. Move each active player toward their target position
           ;; 2. Track completion count
           ;; 3. Transition to game mode when all players arrive
@@ -50,8 +48,10 @@ FallingAnimation1
           lda fallFrame
           cmp # 4
           bcc MovePlayer1
+
           lda # 0
           sta fallFrame
+
 MovePlayer1:
 
 

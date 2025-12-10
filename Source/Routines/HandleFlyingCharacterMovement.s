@@ -6,8 +6,6 @@
 
 
 HandleFlyingCharacterMovement .proc
-
-
           ;;
           ;; Shared Flying Character Movement
 
@@ -47,35 +45,33 @@ HandleFlyingCharacterMovement .proc
           and # 2
           sta temp6
 
-          lda temp1
-          and # 2
-          sta temp6
-
-
           ;; Check left movement
 
           lda temp6
           cmp # 0
           bne HFCM_CheckLeftJoy1
-          ;; TODO: HFCM_CheckLeftJoy0
-HFCM_CheckLeftJoy1:
 
+          jmp HFCM_CheckLeftJoy0
+
+HFCM_CheckLeftJoy1:
 
           lda joy1left
           bne HFCM_DoLeft
-          jmp HFCM_CheckRight
-HFCM_DoLeft:
 
+          jmp HFCM_CheckRight
+
+HFCM_DoLeft:
 
           jmp HFCM_DoLeft
 
 .pend
 
 HFCM_CheckLeftJoy0 .proc
-
           lda joy0left
           bne HFCM_DoLeft
+
           jmp HFCM_CheckRight
+
 HFCM_DoLeft:
 
 

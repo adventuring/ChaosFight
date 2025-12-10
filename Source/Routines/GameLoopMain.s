@@ -5,13 +5,9 @@
 ;;; Called every frame during active gameplay.
           ;; SEQUENCE PER FRAME:
 
-ReadEnhancedButtons
+ReadEnhancedButtons:
           ;; Returns: Near (return thisbank)
-
-ReadEnhancedButtons
-
           ;; Read enhanced controller buttons (Genesis Button C, Joy2B+ Button II)
-          ;; Returns: Near (return thisbank)
           ;; Only players 1-2 can have enhanced controllers (players 3-4 require Quadtari)
           ;; Stores button states in enhancedButtonStates for use throughout the frame
           ;;
@@ -32,32 +28,33 @@ ReadEnhancedButtons
           sta temp1
 
           ;; Player 1 (INPT0) - Genesis/Joy2b+ Button C/II
-                    if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = temp1 | 1
-                    if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 1
+          if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = temp1 | 1
+          if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 1
           lda controllerStatus
-          and SetLeftPortJoy2bPlus
-          beq skip_978
+          and # SetLeftPortJoy2bPlus
+          beq CheckPlayer2Enhanced
+
           bit INPT0
-          bmi skip_978
+          bmi CheckPlayer2Enhanced
+
           lda temp1
           ora # 1
           sta temp1
-skip_978:
+
+CheckPlayer2Enhanced:
 
           ;; Player 2 (INPT2) - Genesis/Joy2b+ Button C/II
           lda INPT2
           and # 128
           cmp # 0
-          bne skip_3413
-          ;; let temp1 = temp1 | 2
-skip_3413:
+          bne ReadEnhancedButtonsDone
 
-          lda INPT2
-          and # 128
-          cmp # 0
-          bne skip_1297
           ;; let temp1 = temp1 | 2
-skip_1297:
+          lda temp1
+          ora # 2
+          sta temp1
+
+ReadEnhancedButtonsDone:
 
 
           ;; Players 3-4 cannot have enhanced controllers (require Quadtari)
@@ -65,7 +62,6 @@ skip_1297:
           lda temp1
           sta enhancedButtonStates_W
           rts
-
 
 GameMainLoop .proc
 

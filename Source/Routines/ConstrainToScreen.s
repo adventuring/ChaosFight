@@ -1,8 +1,8 @@
 ;;; ChaosFight - Source/Routines/ConstrainToScreen.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-ConstrainToScreen
-;;; Clamp player position to on-screen bounds and clear subpixels at edges.
+ConstrainToScreen:
+          ;; Clamp player position to on-screen bounds and clear subpixels at edges.
           ;; Input: temp1 = player index (0-3)
           ;; Output: playerX/Y constrained to PlayerLeftEdge..PlayerRightEdge (X) and 20-80 (Y); subpixels zeroed at clamps
           ;; Mutates: playerX[], playerY[], playerSubpixelX_W/WL[], playerSubpixelY_W/WL[]
@@ -10,69 +10,80 @@ ConstrainToScreen
           ;; Constrain X position using screen boundary consta
 
           ;; SCRAM write to playerSubpixelX_W
-                    if playerX[temp1] < PlayerLeftEdge then let playerX[temp1] = PlayerLeftEdge
+          if playerX[temp1] < PlayerLeftEdge then let playerX[temp1] = PlayerLeftEdge
           lda temp1
           asl
           tax
           lda playerX,x
-          cmp PlayerLeftEdge
+          cmp # PlayerLeftEdge
           bcs CheckRightEdge
-          lda PlayerLeftEdge
+
+          lda # PlayerLeftEdge
           sta playerX,x
+
 CheckRightEdge:
-                    if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_W[temp1] = PlayerLeftEdge
+          if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_W[temp1] = PlayerLeftEdge
           lda temp1
           asl
           tax
           lda playerX,x
-          cmp PlayerLeftEdge
+          cmp # PlayerLeftEdge
           bcs CheckRightEdgeSubpixel
-          lda PlayerLeftEdge
+
+          lda # PlayerLeftEdge
           sta playerSubpixelX_W,x
+
 CheckRightEdgeSubpixel:
-                    if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_WL[temp1] = 0
+          if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_WL[temp1] = 0
           lda temp1
           asl
           tax
           lda playerX,x
-          cmp PlayerLeftEdge
+          cmp # PlayerLeftEdge
           bcs CheckRightEdgeClamp
-          lda 0
+
+          lda # 0
           sta playerSubpixelX_WL,x
+
 CheckRightEdgeClamp:
-                    if playerX[temp1] > PlayerRightEdge then let playerX[temp1] = PlayerRightEdge
+          if playerX[temp1] > PlayerRightEdge then let playerX[temp1] = PlayerRightEdge
           lda temp1
           asl
           tax
           lda playerX,x
           sec
-          sbc PlayerRightEdge
+          sbc # PlayerRightEdge
           bcc CheckTopEdge
           beq CheckTopEdge
-          lda PlayerRightEdge
+
+          lda # PlayerRightEdge
           sta playerX,x
+
 CheckTopEdge:
-                    if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_W[temp1] = PlayerRightEdge
+          if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_W[temp1] = PlayerRightEdge
           lda temp1
           asl
           tax
           lda playerX,x
           sec
-          sbc PlayerRightEdge
+          sbc # PlayerRightEdge
           bcc CheckTopEdgeSubpixel
           beq CheckTopEdgeSubpixel
-          lda PlayerRightEdge
+
+          lda # PlayerRightEdge
           sta playerSubpixelX_W,x
+
 CheckTopEdgeSubpixel:
-                    if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_WL[temp1] = 0
+          if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_WL[temp1] = 0
           lda temp1
           asl
           tax
           lda playerX,x
           sec
-          sbc PlayerRightEdge
+          sbc # PlayerRightEdge
           bcc CheckTopEdgeClamp
           beq CheckTopEdgeClamp
+
           lda temp1
           asl
           tax

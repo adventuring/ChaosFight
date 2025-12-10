@@ -3,7 +3,6 @@
 
 
 DispatchCharacterJump .proc
-
           ;; Dispatch to character-specific jump function
           ;; Returns: Near (return thisbank)
           ;;
@@ -20,28 +19,28 @@ DispatchCharacterJump .proc
           ;; Characters 16-30 (unused) and Meth Hound mirror Shamone
           ;; if temp4 >= 32 then goto DCJ_StandardJump
           lda temp4
-          cmp 32
+          cmp # 32
           bcs DCJ_StandardJump
 
           ;; Check for specific characters
           lda temp4
-          cmp CharacterBernie
+          cmp # CharacterBernie
           beq DCJ_BernieJump
 
           lda temp4
-          cmp CharacterDragonOfStorms
+          cmp # CharacterDragonOfStorms
           beq DCJ_DragonJump
 
           lda temp4
-          cmp CharacterHarpy
+          cmp # CharacterHarpy
           beq DCJ_HarpyJump
 
           lda temp4
-          cmp CharacterFrooty
+          cmp # CharacterFrooty
           beq DCJ_FrootyJump
 
           lda temp4
-          cmp CharacterRoboTito
+          cmp # CharacterRoboTito
           beq DCJ_RoboTitoJump
 
           ;; Default: StandardJump for all other characters
@@ -58,6 +57,7 @@ DCJ_StandardJump .proc
           pha
           ldx # 10
           jmp BS_jsr
+
 .pend
 
 DCJ_BernieJump .proc
@@ -69,6 +69,7 @@ DCJ_BernieJump .proc
           pha
           ldx # 10
           jmp BS_jsr
+
 .pend
 
 DCJ_DragonJump .proc

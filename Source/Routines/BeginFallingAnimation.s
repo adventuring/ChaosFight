@@ -2,12 +2,9 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 ;;; Begin Falling Animation
 
-BeginFallingAnimation
+BeginFallingAnimation:
           ;; Returns: Far (return otherbank)
-BeginFallingAnimation
-
           ;; Setup routine for Falling In animation.
-          ;; Returns: Far (return otherbank)
           ;; Sets players in quadrant starting positions and
           ;; initializes sta
 
@@ -19,7 +16,7 @@ BeginFallingAnimation
           ;; - Bottom-right: Player 4 (playerCharacter[3], if active)
           ;; After animation completes, players will be at row 2
           ;; positions
-          and transition to Game Mode.
+          ;; and transition to Game Mode.
           ;; Setup routine for Falling In animation - sets players in
           ;; quadrant starting positions
           ;;
@@ -61,23 +58,23 @@ BeginFallingAnimation
           sta activePlayers
 
           ;; Set game screen layout (32×8 for playfield scanning) - inlined
-          lda ScreenPfRowHeight
+          lda # ScreenPfRowHeight
           sta pfrowheight
-          lda ScreenPfRows
+          lda # ScreenPfRows
           sta pfrows
 
           ;; Background: black (COLUBK starts black, no need to set)
 
           ;; Initialize player positions in quadrants
           ;; Player 1: Top-left quadrant (unless NO)
-                    if playerCharacter[0] = NoCharacter then DonePlayer1Init
-          lda 0
+          if playerCharacter[0] = NoCharacter then DonePlayer1Init
+          lda # 0
           asl
           tax
-          lda 16
+          lda # 16
           sta playerX,x
           ;; Top-left X position
-          lda 0
+          lda # 0
           asl
           tax
           lda 8
@@ -133,8 +130,9 @@ DonePlayer2Init
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_1841
-skip_1841:
+          bne CheckPlayer3Character
+          jmp DonePlayer3Init
+CheckPlayer3Character:
 
 
                     if playerCharacter[2] = NoCharacter then DonePlayer3Init
@@ -171,8 +169,9 @@ DonePlayer3Init
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_1337
-skip_1337:
+          bne CheckPlayer4Character
+          jmp DonePlayer4Init
+CheckPlayer4Character:
 
 
                     if playerCharacter[3] = NoCharacter then DonePlayer4Init

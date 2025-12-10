@@ -1,6 +1,5 @@
 
 BeginAuthorPrelude .proc
-
           ;; ChaosFight - Source/Routines/BeginAuthorPrelude.bas
           ;; Setup routine for Author Prelude. Sets initial sta
 
@@ -34,7 +33,7 @@ BeginAuthorPrelude .proc
           ;; Background: black (COLUBK starts black, no need to set)
 
           ;; Start Interworldly music
-          lda MusicInterworldly
+          lda # MusicInterworldly
           sta temp1
           ;; Cross-bank call to StartMusic in bank 15
           lda # >(return_point-1)
@@ -45,8 +44,9 @@ BeginAuthorPrelude .proc
           pha
           lda # <(StartMusic-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
+
 return_point:
 
 

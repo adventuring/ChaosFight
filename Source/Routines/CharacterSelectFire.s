@@ -74,9 +74,15 @@ CheckJoy1:
           lda # 1
           sta temp2
 
-                    if joy1down then let temp4 = 1 : goto HCSF_HandleFire          lda joy1down          beq SetNormalLock
+          if joy1down then let temp4 = 1 : goto HCSF_HandleFire
+          lda joy1down
+          beq SetNormalLock
+
+          lda # 1
+          sta temp4
+          jmp HCSF_HandleFire
+
 SetNormalLock:
-          jmp SetNormalLock
           lda # 0
           sta temp4
 
@@ -85,7 +91,6 @@ SetNormalLock:
 .pend
 
 HCSF_CheckJoy0 .proc
-
           ;; Check joy0 for players 0,2
           ;; Returns: Far (return otherbank)
 
@@ -116,9 +121,19 @@ HCSF_CheckJoy0 .proc
           lda # 1
           sta temp2
 
-                    if joy0down then let temp4 = 1 : goto HCSF_HandleFire          lda joy0down          beq skip_7286
-skip_7286:
-          jmp skip_7286
+          if joy0down then let temp4 = 1 : goto HCSF_HandleFire
+          lda joy0down
+          beq SetNormalLockJoy0
+
+          lda # 1
+          sta temp4
+          jmp HCSF_HandleFire
+
+SetNormalLockJoy0:
+          lda # 0
+          sta temp4
+
+          jmp HCSF_HandleFire
           lda # 0
           sta temp4
 

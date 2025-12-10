@@ -1,8 +1,17 @@
 ;;; ChaosFight - Source/Common/BankSwitching.s
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 ;;; EFSC 64k bankswitch code and vectors
-;;; CRITICAL: This file is included in EVERY bank to provide BS_return and BS_jsr
 
+          ;; Use bscode_length from MultiSpriteSuperChip.s (25 bytes = $19)
+          ;; BS_return (18 bytes) + BS_jsr (3 bytes) + rts (1 byte) + size check (0 bytes) = 22 bytes
+          ;; But actual end is at $FFE0, so total is $FFE0 - ($FFE0 - bscode_length) = bscode_length
+          ;; bscode_length = $19 = 25 bytes (includes rts after size check)
+
+          .if * > $ffe0 - bscode_length
+          .error format("Bank %d overflow: $%04x > $%04x", *, $ffe0 - bscode_length)
+          .fi
+
+          * = $ffe0 - bscode_length
 BS_return:
           ;; Use temp7 (zero-page) instead of stack to avoid overflow
           tsx

@@ -19,9 +19,10 @@ HGI_CheckJoy0 .proc
           ;; Returns: Far (return otherbank)
           lda joy0down
           bne HandleDownPressed
-          jmp HGI_CheckGuardRelease
-HandleDownPressed:
 
+          jmp HGI_CheckGuardRelease
+
+HandleDownPressed:
 
 .pend
 
@@ -35,28 +36,37 @@ HGI_HandleDownPressed .proc
           lda playerCharacter,x
           sta temp4
           jsr BS_return
+
           lda temp4
           cmp # 2
           bne CheckHarpy
+
           jmp DragonOfStormsDown
+
 CheckHarpy:
 
           lda temp4
           cmp # 6
           bne CheckFrooty
+
           jmp HarpyDown
+
 CheckFrooty:
 
           lda temp4
           cmp # 8
           bne CheckRoboTito
+
           jmp FrootyDown
+
 CheckRoboTito:
 
           lda temp4
           cmp # 13
           bne UseStandardGuard
+
           jmp DCD_HandleRoboTitoDown_HGI
+
 UseStandardGuard:
 
           ;; Tail call: goto instead of gosub to save 2 bytes on sta
@@ -79,11 +89,13 @@ DCD_HandleRoboTitoDown_HGI .proc
           pha
           lda # <(RoboTitoDown-1)
           pha
-                    ldx # 12
+          ldx # 12
           jmp BS_jsr
+
 return_point:
 
           jsr BS_return
+
           ;; Same-bank call (both in Bank 12) - saves 2 bytes vs cross-bank
           jmp StandardGuard
 
@@ -100,13 +112,14 @@ HGI_CheckGuardRelease .proc
           sta temp2
           ;; Not guarding, nothing to do
           jsr BS_return
+
           ;; Stop guard early and start cooldown
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           ;; Start cooldown timer
           lda temp1
           asl
           tax
-          lda GuardTimerMaxFrames
+          lda # GuardTimerMaxFrames
           sta playerTimers_W,x
           jsr BS_return
 

@@ -23,13 +23,15 @@ UpdateGuardTimers .proc
           pha
           lda # <(UpdateSingleGuardTimer-1)
           pha
-                    ldx # 5
+          ldx # 5
           jmp BS_jsr
+
 return_point:
 
 .pend
 
-next_label_1:.proc
+next_label_1:
+.proc
           jsr BS_return
 
 .pend

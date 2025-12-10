@@ -23,13 +23,13 @@
 
           ;; temp4 = sprite type (0=QuestionMark, 1=CPU, 2=No)
 
-          If temp4 is provided, temp1 is looked up from GlyphLookupTable
+          ;; If temp4 is provided, temp1 is looked up from GlyphLookupTable
 
           ;;
           ;; OUTPUT: playerN pointer and height set (16)
 
           ;;
-          NOTES:
+          ;; NOTES:
 
           ;; - Glyphs are packed consecutively in SetFontNumbers (16 bytes per glyph)
 
@@ -38,10 +38,11 @@
           ;; - Must be included in bank 16 to preserve kernel locality
 
           ;; Glyph lookup table: sprite type (0-2) -> glyph index
+
 GlyphLookupTable:
 
-
-SetPlayerGlyph .proc
+SetPlayerGlyph:
+.proc
 
 
           ;; Unified function supports two input modes:
@@ -58,12 +59,13 @@ SetPlayerGlyph .proc
           ;; temp4 is 0-2, so this is sprite type lookup mode
           lda temp4
           cmp # 3
-          bcc skip_1166
-skip_1166:
+          bcc UseLookupMode
+
+UseLookupMode:
 
 
           ;; Look up glyph index from table (overwrites temp1)
-                    let temp1 = GlyphLookupTable[temp4]         
+          ;; let temp1 = GlyphLookupTable[temp4]         
           lda temp4
           asl
           tax
@@ -72,11 +74,12 @@ skip_1166:
 
 .pend
 
-SetPlayerGlyphDirectMode .proc
+SetPlayerGlyphDirectMode:
+.proc
 
           ;; Calculate offset into SetFontNumbers (16 bytes per glyph)
           ;; Returns: Far (return otherbank)
-                    let temp2 = temp1 * 16
+          ;; let temp2 = temp1 * 16
 
           ;; Set player pointer and height based on player index
 
@@ -94,7 +97,6 @@ SetPlayerGlyphDirectMode .proc
             adc # 0
 
             sta temp5
-
 
           ;; Store to appropriate player pointer based on temp3 (using on...goto for efficiency)
 

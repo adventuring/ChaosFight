@@ -5,7 +5,8 @@
 
 
 
-DisplayHealth .proc
+DisplayHealth:
+.proc
 
 
 
@@ -62,7 +63,7 @@ DisplayHealth .proc
 
           ;; Use skip-over pattern to avoid complex || operator
 
-                    if playerHealth[0] >= 25 then goto DoneParticipant1Flash
+          ;; if playerHealth[0] >= 25 then goto DoneParticipant1Flash
 
                     if playerRecoveryFrames[0] = 0 then FlashParticipant1
           lda # 0
@@ -99,7 +100,7 @@ DoneParticipant1Flash
 
           ;; Use skip-over pattern to avoid complex || operator
 
-                    if playerHealth[1] >= 25 then goto DoneParticipant2Flash
+          ;; if playerHealth[1] >= 25 then goto DoneParticipant2Flash
 
                     if playerRecoveryFrames[1] = 0 then FlashParticipant2
           lda # 1
@@ -132,59 +133,68 @@ DoneParticipant2Flash
 
 
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne skip_8664
+
           jmp DonePlayer3Flash
+
 skip_8664:
 
-
-                    if playerCharacter[2] = NoCharacter then goto DonePlayer3Flash
+          ;; if playerCharacter[2] = NoCharacter then goto DonePlayer3Flash
 
           ;; if ! playerHealth[2] then goto DonePlayer3Flash
-          lda 2
+          lda # 2
           asl
           tax
           lda playerHealth,x
           bne skip_6091
+
           jmp DonePlayer3Flash
+
 skip_6091:
 
-          lda 2
+          lda # 2
           asl
           tax
           lda playerHealth,x
           bne skip_190
+
           jmp DonePlayer3Flash
+
 skip_190:
 
+          ;; if playerHealth[2] >= 25 then goto DonePlayer3Flash
 
-
-                    if playerHealth[2] >= 25 then goto DonePlayer3Flash
-
-                    if playerRecoveryFrames[2] = 0 then FlashPlayer3
+          if playerRecoveryFrames[2] = 0 then FlashPlayer3
           lda # 2
           asl
           tax
           lda playerRecoveryFrames,x
           bne skip_5628
+
           jmp FlashPlayer3
+
 skip_5628:
+
           jmp DonePlayer3Flash
 
 .pend
 
-FlashPlayer3 .proc
+FlashPlayer3:
+.proc
 
-                    if frame & 8 then let player2x = 200
+          if frame & 8 then let player2x = 200
           lda frame
-          and 8
+          and # 8
           beq skip_46
+
           lda # 200
           sta player2x
+
 skip_46:
 
-DonePlayer3Flash
+DonePlayer3Flash:
 
           ;; Player 3 uses player2 sprite
           ;; Returns: Far (return otherbank)
@@ -203,7 +213,7 @@ DonePlayer3Flash
 skip_1843:
 
 
-                    if playerCharacter[3] = NoCharacter then goto DonePlayer4Flash
+          ;; if playerCharacter[3] = NoCharacter then goto DonePlayer4Flash
 
           ;; if ! playerHealth[3] then goto DonePlayer4Flash
           lda 3
@@ -224,7 +234,7 @@ skip_2604:
 
 
 
-                    if playerHealth[3] >= 25 then goto DonePlayer4Flash
+          ;; if playerHealth[3] >= 25 then goto DonePlayer4Flash
 
                     if playerRecoveryFrames[3] = 0 then FlashPlayer4
           lda # 3

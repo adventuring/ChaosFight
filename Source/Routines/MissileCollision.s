@@ -437,6 +437,8 @@ CheckBernieAOE .proc
 
           ;; Constraints: None
 
+Right:
+
           jsr CacheAOERightHitbox
 
           jsr CheckPlayersAgainstCachedHitbox

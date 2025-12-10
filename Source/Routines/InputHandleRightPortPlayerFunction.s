@@ -21,13 +21,13 @@ InputHandleRightPortPlayerFunction:
           ;; Block movement during attack windup/execute/recovery
           ;; if temp2 >= 13 then goto DoneRightPortMovement
           lda temp2
-          cmp 13
+          cmp # 13
 
           bcc skip_9612
 
-          jmp skip_9612
+          jmp DoneRightPortMovement
 
-          skip_9612:
+skip_9612:
 
           ;; Process left/right movement (with playfield collision for
           ;; flying characters)
@@ -42,7 +42,9 @@ InputHandleRightPortPlayerFunction:
           ;; if temp6 then goto DoneRightPortMovement
           lda temp6
           beq skip_7029
+
           jmp DoneRightPortMovement
+
 skip_7029:
 
           ;; Frooty (8) and Dragon of Storms (2) need collision checks
@@ -56,15 +58,18 @@ skip_7029:
           lda temp5
           cmp # 8
           bne skip_3821
+
           jmp IHRP_FlyingMovement
+
 skip_3821:
 
           lda temp5
           cmp # 2
           bne skip_2215
-          jmp IHRP_FlyingMovement
-skip_2215:
 
+          jmp IHRP_FlyingMovement
+
+skip_2215:
 
           ;; Standard horizontal movement (uses shared routine)
           ;; Cross-bank call to ProcessStandardMovement in bank 13
@@ -76,7 +81,7 @@ skip_2215:
           pha
           lda # <(ProcessStandardMovement-1)
           pha
-                    ldx # 12
+          ldx # 12
           jmp BS_jsr
 return_point_1_L83:
 

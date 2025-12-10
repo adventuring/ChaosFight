@@ -30,9 +30,12 @@ HarpyCheckDiveVelocity .proc
           lda characterStateFlags_R,x
           and # 4
           beq VelocityDone
+
           jsr HarpyBoostDiveVelocity
+
 VelocityDone:
           rts
+
 .pend
 
 VelocityDone:
@@ -56,9 +59,9 @@ HarpyBoostDiveVelocity .proc
           ;; only called when dive mode active
           ;; Increase downward velocity by 50% for dive attacks
           ;; Divide by 2 using bit shift
-            lda temp6
-            lsr
-            sta velocityCalculation
+          lda temp6
+          lsr
+          sta velocityCalculation
           ;; let temp6 = temp6 + velocityCalculation
 
 VelocityDone:

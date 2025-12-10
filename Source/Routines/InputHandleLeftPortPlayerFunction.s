@@ -21,13 +21,13 @@ InputHandleLeftPortPlayerFunction:
           ;; Block movement during attack windup/execute/recovery
           ;; if temp2 >= 13 then goto DoneLeftPortMovement
           lda temp2
-          cmp 13
+          cmp # 13
 
           bcc skip_243
 
-          jmp skip_243
+          jmp DoneLeftPortMovement
 
-          skip_243:
+skip_243:
 
           ;; Process left/right movement (with playfield collision for
           ;; flying characters)
@@ -42,15 +42,18 @@ InputHandleLeftPortPlayerFunction:
           lda temp5
           cmp # 8
           bne skip_33
+
           jmp IHLP_FlyingMovement
+
 skip_33:
 
           lda temp5
           cmp # 2
           bne skip_4346
-          jmp IHLP_FlyingMovement
-skip_4346:
 
+          jmp IHLP_FlyingMovement
+
+skip_4346:
 
           ;; Standard horizontal movement (uses shared routine)
           ;; Cross-bank call to ProcessStandardMovement in bank 13
@@ -62,18 +65,19 @@ skip_4346:
           pha
           lda # <(ProcessStandardMovement-1)
           pha
-                    ldx # 12
+          ldx # 12
           jmp BS_jsr
+
 return_point_1:
 
-
-DoneLeftPortMovement
+DoneLeftPortMovement:
 
 IHLP_FlyingMovement .proc
           ;; Tail call: goto instead of gosub to save 2 bytes on sta
 
           jmp HandleFlyingCharacterMovement
-IHLP_DoneFlyingLeftRight
+
+IHLP_DoneFlyingLeftRight:
 
           ;; Process UP input for character-specific behaviors
           ;; Returns with temp3 = 1 if UP used for jump, 0 if special ability

@@ -2,9 +2,6 @@
 
 
 WarmStart .proc
-
-
-
           ;; Warm Start / Reset Handler
           ;; Returns: Far (return otherbank)
           ;;
@@ -28,7 +25,7 @@ WarmStart .proc
           ;; MainLoop)
           ;; Step 1: Clear critical game state variables
           lda systemFlags
-          and ClearSystemFlagGameStatePaused
+          and # ClearSystemFlagGameStatePaused
           sta systemFlags
           ;; Clear paused flag (0 = normal, not paused, not ending)
           ;; Initialize frame counter to 0 on warm sta
@@ -58,7 +55,7 @@ WarmStart .proc
           ENABL = 0
 
           ;; Step 5: Reset game mode to startup sequence
-          lda ModePublisherPrelude
+          lda # ModePublisherPrelude
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
           lda # >(return_point-1)
@@ -69,12 +66,13 @@ WarmStart .proc
           pha
           lda # <(ChangeGameMode-1)
           pha
-                    ldx # 13
+          ldx # 13
           jmp BS_jsr
+
 return_point:
 
-
           jsr BS_return
+
           ;; Reset complete - return to MainLoop which will dispatch to
           ;; new mode
 

@@ -3,7 +3,6 @@
 
 
 ProcessStandardMovement .proc
-
           ;; Returns: Far (return otherbank)
           ;; Shared Standard Movement Handler
           ;; Handles left/right movement for standard (non-flying) characters
@@ -26,12 +25,18 @@ ProcessStandardMovement .proc
           ;; Left movement: set negative velocity
           lda joy1left
           bne PSM_ApplyLeftJoy1
+
           jmp PSM_CheckRightJoy1
+
 PSM_ApplyLeftJoy1:
 
-                    if playerCharacter[temp1] = CharacterFrooty then PSM_LeftMomentum1
-                    ;; let temp6 = playerCharacter[temp1]
-                    lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+          if playerCharacter[temp1] = CharacterFrooty then PSM_LeftMomentum1
+          ;; let temp6 = playerCharacter[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp6
           ;; let temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
@@ -40,12 +45,7 @@ PSM_ApplyLeftJoy1:
           sta temp6
           lda # 0
           sta temp2
-          ;; let temp2 = temp2 - temp6          lda temp2          sec          sbc temp6          sta temp2
-          lda temp2
-          sec
-          sbc temp6
-          sta temp2
-
+          ;; let temp2 = temp2 - temp6
           lda temp2
           sec
           sbc temp6
@@ -59,7 +59,7 @@ PSM_ApplyLeftJoy1:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
           jmp PSM_AfterLeftSet1
 
@@ -83,11 +83,11 @@ PSM_LeftMomentum1 .proc
           tax
           lda CharacterMovementSpeed,x
           sta temp6
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
 .pend
@@ -211,21 +211,21 @@ PSM_AfterRightSet1 .proc
           ;; if temp2 < 5 then PSM_InlineNoRight1
           lda temp2
           cmp # 5
-          bcs skip_7591
+          bcs CheckAnimationState10Right1
           jmp PSM_InlineNoRight1
-skip_7591:
+CheckAnimationState10Right1:
 
           lda temp2
           cmp # 5
-          bcs skip_8982
+          bcs CheckAnimationState10Right1Label
           jmp PSM_InlineNoRight1
-skip_8982:
+CheckAnimationState10Right1Label:
 
 
           lda temp2
           cmp # 10
-          bcc skip_6455
-skip_6455:
+          bcc PSM_InlineDoneRight1
+PSM_InlineDoneRight1:
 
 
 .pend
@@ -243,9 +243,9 @@ PSM_InlineNoRight1 .proc
 
 PSM_InlineDoneRight1
           lda temp3
-          bne skip_7724
+          bne PSM_InlineDoneRight1
                     let playerState[temp1] = playerState[temp1] | 1
-skip_7724:
+PSM_InlineDoneRight1:
 
           jsr BS_return
 
@@ -256,9 +256,9 @@ PSM_UseJoy0 .proc
           ;; Returns: Far (return otherbank)
           ;; Left movement: set negative velocity
           lda joy0left
-          bne skip_4909
+          bne PSM_ApplyLeftJoy0
           jmp PSM_CheckRightJoy0
-skip_4909:
+PSM_ApplyLeftJoy0:
 
                     if playerCharacter[temp1] = CharacterFrooty then PSM_LeftMomentum0
                     ;; let temp6 = playerCharacter[temp1]
@@ -336,21 +336,21 @@ PSM_AfterLeftSet0 .proc
           ;; if temp2 < 5 then PSM_InlineNoLeft0
           lda temp2
           cmp # 5
-          bcs skip_6394
+          bcs CheckAnimationState10Left0
           jmp PSM_InlineNoLeft0
-skip_6394:
+CheckAnimationState10Left0:
 
           lda temp2
           cmp # 5
-          bcs skip_7814
+          bcs CheckAnimationState10Left0Label
           jmp PSM_InlineNoLeft0
-skip_7814:
+CheckAnimationState10Left0Label:
 
 
           lda temp2
           cmp # 10
-          bcc skip_7761
-skip_7761:
+          bcc PSM_InlineDoneLeft0
+PSM_InlineDoneLeft0:
 
 
 .pend
@@ -442,21 +442,21 @@ PSM_AfterRightSet0 .proc
           ;; if temp2 < 5 then PSM_InlineNoRight0
           lda temp2
           cmp # 5
-          bcs skip_9727
+          bcs CheckAnimationState10Right0
           jmp PSM_InlineNoRight0
-skip_9727:
+CheckAnimationState10Right0:
 
           lda temp2
           cmp # 5
-          bcs skip_3799
+          bcs CheckAnimationState10Right0Label
           jmp PSM_InlineNoRight0
-skip_3799:
+CheckAnimationState10Right0Label:
 
 
           lda temp2
           cmp # 10
-          bcc skip_9364
-skip_9364:
+          bcc PSM_InlineDoneRight0
+PSM_InlineDoneRight0:
 
 
 .pend
@@ -474,9 +474,9 @@ PSM_InlineNoRight0 .proc
 
 PSM_InlineDoneRight0
           lda temp3
-          bne skip_7724
+          bne PSM_InlineDoneRight1
                     let playerState[temp1] = playerState[temp1] | 1
-skip_7724:
+PSM_InlineDoneRight1:
 
           jsr BS_return
 

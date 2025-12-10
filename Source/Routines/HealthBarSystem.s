@@ -43,8 +43,6 @@
 
 
 UpdatePlayer1HealthBar .proc
-
-
           ;;
           ;; Returns: Far (return otherbank)
 
@@ -77,9 +75,7 @@ UpdatePlayer1HealthBar .proc
 
           ;; Clamp health to valid range (unsigned bytes cannot be negative)
 
-                    if temp1 > PlayerHealthMax then let temp1 = PlayerHealthMax
-
-
+          if temp1 > PlayerHealthMax then let temp1 = PlayerHealthMax
 
           ;; Compare health against thresholds starting from 83
 
@@ -103,57 +99,57 @@ UpdatePlayer1HealthBar .proc
 
           lda temp1
           cmp # 84
-          bcc skip_3169
+          bcc CheckHealth72
           ;; let temp2 = 8 : goto P1SetPattern
-skip_3169:
+CheckHealth72:
 
 
           ;; 60-71 = 6 pixels
           lda temp1
           cmp # 72
-          bcc skip_183
+          bcc CheckHealth60
           ;; let temp2 = 7 : goto P1SetPattern
-skip_183:
+CheckHealth60:
 
 
           ;; 48-59 = 5 pixels
           lda temp1
           cmp # 60
-          bcc skip_5281
+          bcc CheckHealth48
           ;; let temp2 = 6 : goto P1SetPattern
-skip_5281:
+CheckHealth48:
 
 
           ;; 36-47 = 4 pixels
           lda temp1
           cmp # 48
-          bcc skip_1969
+          bcc CheckHealth36
           ;; let temp2 = 5 : goto P1SetPattern
-skip_1969:
+CheckHealth36:
 
 
           ;; 24-35 = 3 pixels
           lda temp1
           cmp # 36
-          bcc skip_9302
+          bcc CheckHealth24
           ;; let temp2 = 4 : goto P1SetPattern
-skip_9302:
+CheckHealth24:
 
 
           ;; 12-23 = 2 pixels
           lda temp1
           cmp # 24
-          bcc skip_9226
+          bcc CheckHealth12
           ;; let temp2 = 3 : goto P1SetPattern
-skip_9226:
+CheckHealth12:
 
 
           ;; 0-11 = 0 pixels (patternIndex already 0)
           lda temp1
           cmp # 12
-          bcc skip_4428
+          bcc P1SetPattern
           ;; let temp2 = 2 : goto P1SetPattern
-skip_4428:
+P1SetPattern:
 
 
 
@@ -266,57 +262,57 @@ UpdatePlayer2HealthBar .proc
 
           lda temp1
           cmp # 84
-          bcc skip_4534
+          bcc CheckHealth72P2
           ;; let temp2 = 8 : goto P2SetPattern
-skip_4534:
+CheckHealth72P2:
 
 
           ;; 60-71 = 6 pixels
           lda temp1
           cmp # 72
-          bcc skip_9565
+          bcc CheckHealth60P2
           ;; let temp2 = 7 : goto P2SetPattern
-skip_9565:
+CheckHealth60P2:
 
 
           ;; 48-59 = 5 pixels
           lda temp1
           cmp # 60
-          bcc skip_8978
+          bcc CheckHealth48P2
           ;; let temp2 = 6 : goto P2SetPattern
-skip_8978:
+CheckHealth48P2:
 
 
           ;; 36-47 = 4 pixels
           lda temp1
           cmp # 48
-          bcc skip_7424
+          bcc CheckHealth36P2
           ;; let temp2 = 5 : goto P2SetPattern
-skip_7424:
+CheckHealth36P2:
 
 
           ;; 24-35 = 3 pixels
           lda temp1
           cmp # 36
-          bcc skip_8762
+          bcc CheckHealth24P2
           ;; let temp2 = 4 : goto P2SetPattern
-skip_8762:
+CheckHealth24P2:
 
 
           ;; 12-23 = 2 pixels
           lda temp1
           cmp # 24
-          bcc skip_1470
+          bcc CheckHealth12P2
           ;; let temp2 = 3 : goto P2SetPattern
-skip_1470:
+CheckHealth12P2:
 
 
           ;; 0-11 = 0 pixels (patternIndex already 0)
           lda temp1
           cmp # 12
-          bcc skip_6939
+          bcc P2SetPattern
           ;; let temp2 = 2 : goto P2SetPattern
-skip_6939:
+P2SetPattern:
 
 
 
@@ -611,9 +607,9 @@ UpdatePlayer34HealthBars .proc
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_9352
+          bne UpdatePlayer34Health
           jmp DisplayCF2026
-skip_9352:
+UpdatePlayer34Health:
 
 
 
@@ -642,9 +638,9 @@ skip_9352:
           ;; if playerCharacter[2] = NoCharacter then goto P3UseAA
           lda temp1
           cmp # 0
-          bne skip_8659
+          bne P3ConvertHealth
           jmp P3UseAA
-skip_8659:
+P3ConvertHealth:
 
 
           ;; Clamp health to valid range
@@ -705,19 +701,19 @@ P4GetHealth .proc
           ;; if playerCharacter[3] = NoCharacter then goto P4UseAA
           lda temp2
           cmp # 0
-          bne skip_9418
+          bne ClampPlayer4Health
           jmp P4UseAA
-skip_9418:
+ClampPlayer4Health:
 
 
           ;; Clamp health to valid range
 
           lda temp2
           cmp # 100
-          bcc skip_6777
+          bcc P4ConvertHealth
           lda # 99
           sta temp2
-skip_6777:
+P4ConvertHealth:
 
 
           jmp P4ConvertHealth

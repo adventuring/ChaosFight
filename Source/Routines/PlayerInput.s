@@ -1,8 +1,5 @@
-GetPlayerAnimationStateFunction
-;;; Returns: Far (return otherbank)
-
-
-GetPlayerAnimationStateFunction
+GetPlayerAnimationStateFunction:
+          ;; Returns: Far (return otherbank)
 
 
 
@@ -169,9 +166,9 @@ InputHandleAllPlayers .proc
 
           ;; if qtcontroller then goto InputHandleQuadtariPlayers
           lda qtcontroller
-          beq skip_514
+          beq HandlePlayers12
           jmp InputHandleQuadtariPlayers
-skip_514:
+HandlePlayers12:
 
 
 
@@ -180,9 +177,9 @@ skip_514:
           ;; let currentPlayer = 0 : gosub IsPlayerAlive bank13
           lda temp2
           cmp # 0
-          bne skip_299
+          bne CheckPlayer0State
           jmp InputDonePlayer0Input
-skip_299:
+CheckPlayer0State:
 
 
                     if (playerState[0] & 8) then goto InputDonePlayer0Input
@@ -231,9 +228,9 @@ InputDonePlayer0Input
 return_point:
           lda temp2
           cmp # 0
-          bne skip_6107
+          bne CheckPlayer1State
           jmp InputDonePlayer1Input
-skip_6107:
+CheckPlayer1State:
 
 
                     if (playerState[1] & 8) then goto InputDonePlayer1Input
@@ -350,9 +347,9 @@ InputHandleQuadtariPlayers .proc
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_9975
+          bne CheckPlayer3Character
           jmp InputDonePlayer3Input
-skip_9975:
+CheckPlayer3Character:
 
 
           ;; if playerCharacter[2] = NoCharacter then goto InputDonePlayer3Input
@@ -373,9 +370,9 @@ skip_9975:
 return_point:
           lda temp2
           cmp # 0
-          bne skip_2411
+          bne CheckPlayer3State
           jmp InputDonePlayer3Input
-skip_2411:
+CheckPlayer3State:
 
 
                     if (playerState[2] & 8) then goto InputDonePlayer3Input
@@ -407,9 +404,9 @@ InputDonePlayer3Input
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_3451
+          bne CheckPlayer4Character
           jmp InputDonePlayer4Input
-skip_3451:
+CheckPlayer4Character:
 
 
           ;; if playerCharacter[3] = NoCharacter then goto InputDonePlayer4Input
@@ -430,9 +427,9 @@ skip_3451:
 return_point:
           lda temp2
           cmp # 0
-          bne skip_4413
+          bne CheckPlayer4State
           jmp InputDonePlayer4Input
-skip_4413:
+CheckPlayer4State:
 
 
                     if (playerState[3] & 8) then goto InputDonePlayer4Input
@@ -503,24 +500,24 @@ HandleGuardInput .proc
 
           lda temp1
           cmp # 0
-          bne skip_423
+          bne CheckPlayer2Joy
           jmp HGI_CheckJoy0
-skip_423:
+CheckPlayer2Joy:
 
 
           ;; Players 1,3 use joy1
 
           lda temp1
           cmp # 2
-          bne skip_6625
+          bne CheckJoy1
           jmp HGI_CheckJoy0
-skip_6625:
+CheckJoy1:
 
 
           lda joy1down
-          bne skip_1073
+          bne HGI_HandleDownPressed
           jmp HGI_CheckGuardRelease
-skip_1073:
+HGI_HandleDownPressed:
 
 
           jmp HGI_HandleDownPressed
@@ -533,9 +530,9 @@ HGI_CheckJoy0 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0down
-          bne skip_6941
+          bne HGI_HandleDownPressed
           jmp HGI_CheckGuardRelease
-skip_6941:
+HGI_HandleDownPressed:
 
 
 .pend
@@ -556,30 +553,30 @@ HGI_HandleDownPressed .proc
 
           lda temp4
           cmp CharacterDragonOfStorms
-          bne skip_4030
+          bne CheckHarpy
           jmp DragonOfStormsDown
-skip_4030:
+CheckHarpy:
 
 
           lda temp4
           cmp CharacterHarpy
-          bne skip_6818
+          bne CheckFrooty
           jmp HarpyDown
-skip_6818:
+CheckFrooty:
 
 
           lda temp4
           cmp CharacterFrooty
-          bne skip_7443
+          bne CheckRoboTito
           jmp FrootyDown
-skip_7443:
+CheckRoboTito:
 
 
           lda temp4
           cmp CharacterRoboTito
-          bne skip_2206
+          bne UseStandardGuard
           jmp DCD_HandleRoboTitoDown
-skip_2206:
+UseStandardGuard:
 
 
           jmp StandardGuard
@@ -667,24 +664,24 @@ HandleUpInputAndEnhancedButton
 
           lda temp1
           cmp # 0
-          bne skip_5863
+          bne CheckPlayer2JoyPort
           jmp HUIEB_UseJoy0
-skip_5863:
+CheckPlayer2JoyPort:
 
 
           ;; Players 1,3 use joy1
 
           lda temp1
           cmp # 2
-          bne skip_2993
+          bne CheckJoy1Up
           jmp HUIEB_UseJoy0
-skip_2993:
+CheckJoy1Up:
 
 
           lda joy1up
-          bne skip_1791
+          bne HUIEB_HandleUp
           jmp HUIEB_CheckEnhanced
-skip_1791:
+HUIEB_HandleUp:
 
 
           jmp HUIEB_HandleUp
@@ -697,9 +694,9 @@ HUIEB_UseJoy0 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0up
-          bne skip_9467
+          bne HUIEB_HandleUp
           jmp HUIEB_CheckEnhanced
-skip_9467:
+HUIEB_HandleUp:
 
 
 .pend
@@ -731,9 +728,9 @@ HUIEB_HandleUp .proc
           tax
           lda playerCharacter,x
           cmp CharacterBernie
-          bne skip_2293
+          bne CheckHarpyFlap
           jmp HUIEB_BernieFallThrough
-skip_2293:
+CheckHarpyFlap:
 
           ;; For all other characters, UP is jump
 
@@ -743,9 +740,9 @@ skip_2293:
           tax
           lda playerCharacter,x
           cmp CharacterHarpy
-          bne skip_4862
+          bne StandardJump
           jmp HUIEB_HarpyFlap
-skip_4862:
+StandardJump:
           lda # 1
           sta temp3
 
@@ -807,10 +804,10 @@ HUIEB_RoboTitoAscend
 
           lda temp4
           cmp # 32
-          bcc skip_6225
+          bcc ColumnInRange
           lda # 31
           sta temp4
-skip_6225:
+ColumnInRange:
 
 
           ;; Compute head row and check ceiling contact
@@ -836,9 +833,9 @@ skip_6225:
 
           lda temp3
           cmp # 0
-          bne skip_7303
+          bne CheckCeilingPixel
           jmp HUIEB_RoboTitoLatch
-skip_7303:
+CheckCeilingPixel:
 
 
           dec temp3
@@ -879,36 +876,36 @@ return_point:
 
           ;; if temp1 then goto HUIEB_RoboTitoLatch
           lda temp1
-          beq skip_8947
+          beq HUIEB_RoboTitoLatch
           jmp HUIEB_RoboTitoLatch
-skip_8947:
+HUIEB_RoboTitoLatch:
 
           lda temp1
           cmp # 0
-          bne skip_1042
+          bne CheckPlayer2JoyPort
           jmp HUIEB_RoboTitoCheckJoy0
-skip_1042:
+CheckPlayer2JoyPort:
 
 
           lda temp1
           cmp # 2
-          bne skip_6975
+          bne CheckJoy1Down
           jmp HUIEB_RoboTitoCheckJoy0
-skip_6975:
+CheckJoy1Down:
 
 
-                    if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy1down          beq skip_7336
-skip_7336:
-          jmp skip_7336
+                    if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy1down          beq HUIEB_RoboTitoDone
+HUIEB_RoboTitoDone:
+          jmp HUIEB_RoboTitoDone
           jmp HUIEB_RoboTitoDone
 
 .pend
 
 HUIEB_RoboTitoCheckJoy0 .proc
 
-                    if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq skip_9849
-skip_9849:
-          jmp skip_9849
+                    if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq HUIEB_RoboTitoDone
+HUIEB_RoboTitoDone:
+          jmp HUIEB_RoboTitoDone
 
 HUIEB_RoboTitoDone
           lda # 0
@@ -1006,9 +1003,9 @@ HUIEB_CheckEnhanced .proc
           tax
           lda playerCharacter,x
           cmp CharacterMethHound
-          bne skip_2790
+          bne CheckBernie
           jmp HUIEB_EnhancedCheck
-skip_2790:
+CheckBernie:
 
           ;; if playerCharacter[temp1] = CharacterBernie then goto HUIEB_EnhancedCheck
           lda temp1
@@ -1016,9 +1013,9 @@ skip_2790:
           tax
           lda playerCharacter,x
           cmp CharacterBernie
-          bne skip_6652
+          bne CheckHarpyEnhanced
           jmp HUIEB_EnhancedCheck
-skip_6652:
+CheckHarpyEnhanced:
 
           ;; Bernie and Harpy also use enhanced buttons for jump
 
@@ -1028,9 +1025,9 @@ skip_6652:
           tax
           lda playerCharacter,x
           cmp CharacterHarpy
-          bne skip_5466
+          bne HUIEB_StandardEnhancedCheck
           jmp HUIEB_EnhancedCheck
-skip_5466:
+HUIEB_StandardEnhancedCheck:
           jmp HUIEB_StandardEnhancedCheck
 
 .pend
@@ -1144,9 +1141,9 @@ HUIEB_JumpDone
 
           lda temp6
           cmp # 1
-          bne skip_5085
+          bne HUIEB_JumpDone
                     let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
-skip_5085:
+HUIEB_JumpDone:
 
           jsr BS_return
 
@@ -1174,24 +1171,24 @@ HandleStandardHorizontalMovement
 
           lda temp1
           cmp # 0
-          bne skip_6072
+          bne CheckPlayer2JoyPort
           jmp HSHM_UseJoy0
-skip_6072:
+CheckPlayer2JoyPort:
 
 
           ;; Players 1,3 use joy1
 
           lda temp1
           cmp # 2
-          bne skip_4859
+          bne CheckJoy1Left
           jmp HSHM_UseJoy0
-skip_4859:
+CheckJoy1Left:
 
 
           lda joy1left
-          bne skip_1838
+          bne HSHM_HandleLeft
           jmp HSHM_CheckRight
-skip_1838:
+HSHM_HandleLeft:
 
 
           jmp HSHM_HandleLeft
@@ -1204,9 +1201,9 @@ HSHM_UseJoy0 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0left
-          bne skip_3856
+          bne HSHM_HandleLeft
           jmp HSHM_CheckRight
-skip_3856:
+HSHM_HandleLeft:
 
 
 .pend
@@ -1224,9 +1221,9 @@ HSHM_HandleLeft .proc
           tax
           lda playerCharacter,x
           cmp CharacterDragonOfStorms
-          bne skip_7951
+          bne HSHM_LeftStandard
           jmp HSHM_LeftDirectSubpixel
-skip_7951:
+HSHM_LeftStandard:
 
                     ;; let temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
@@ -1377,24 +1374,25 @@ return_point:
           ;; if temp2 < 5 then goto HSHM_SPF_No1          lda temp2          cmp 5          bcs .skip_1803          jmp
           lda temp2
           cmp # 5
-          bcs skip_13
+          bcs CheckAnimationState10
           goto_label:
 
-          jmp goto_label
-skip_13:
+          jmp HSHM_SPF_No1
+CheckAnimationState10:
 
           lda temp2
           cmp # 5
-          bcs skip_1041
-          jmp goto_label
-skip_1041:
+          bcs CheckAnimationState10Label
+          jmp HSHM_SPF_No1
+CheckAnimationState10Label:
 
           
 
           lda temp2
           cmp # 10
-          bcc skip_6084
-skip_6084:
+          bcc HSHM_SPF_No1
+          jmp HSHM_SPF_Yes1
+HSHM_SPF_No1:
 
 
 .pend
@@ -1416,9 +1414,9 @@ HSHM_SPF_No1 .proc
 HSHM_SPF_Done1
 
           lda temp3
-          bne skip_6641
+          bne HSHM_AfterLeftSetDone
                     let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
-skip_6641:
+HSHM_AfterLeftSetDone:
 
 
 .pend
@@ -1429,18 +1427,18 @@ HSHM_CheckRight .proc
           ;; Returns: Far (return otherbank)
           lda temp1
           cmp # 0
-          bne skip_3331
+          bne CheckPlayer2JoyPortRight
           jmp HSHM_CheckRightJoy0
-skip_3331:
+CheckPlayer2JoyPortRight:
 
 
           ;; Players 1,3 use joy1
 
           lda temp1
           cmp # 2
-          bne skip_9158
+          bne HSHM_HandleRight
           jmp HSHM_CheckRightJoy0
-skip_9158:
+HSHM_HandleRight:
 
 
           jsr BS_return
@@ -1471,9 +1469,9 @@ HSHM_HandleRight .proc
           tax
           lda playerCharacter,x
           cmp CharacterDragonOfStorms
-          bne skip_9323
+          bne HSHM_RightStandard
           jmp HSHM_RightDirectSubpixel
-skip_9323:
+HSHM_RightStandard:
 
                     ;; let temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
@@ -1594,22 +1592,23 @@ return_point:
           ;; if temp2 < 5 then goto HSHM_SPF_No2          lda temp2          cmp 5          bcs .skip_6914          jmp
           lda temp2
           cmp # 5
-          bcs skip_8503
-          jmp goto_label
-skip_8503:
+          bcs CheckAnimationState10Right
+          jmp HSHM_SPF_No2
+CheckAnimationState10Right:
 
           lda temp2
           cmp # 5
-          bcs skip_655
-          jmp goto_label
-skip_655:
+          bcs CheckAnimationState10RightLabel
+          jmp HSHM_SPF_No2
+CheckAnimationState10RightLabel:
 
           
 
           lda temp2
           cmp # 10
-          bcc skip_4997
-skip_4997:
+          bcc HSHM_SPF_No2
+          jmp HSHM_SPF_Yes2
+HSHM_SPF_No2:
 
 
 .pend
@@ -1631,9 +1630,9 @@ HSHM_SPF_No2 .proc
 HSHM_SPF_Done2
 
           lda temp3
-          bne skip_1841
+          bne HSHM_AfterRightSetDone
                     let playerState[temp1] = playerState[temp1] | 1
-skip_1841:
+HSHM_AfterRightSetDone:
 
 
           rts
@@ -1680,9 +1679,9 @@ HandleFlyingCharacterMovement .proc
 
           ;; if joy1left then goto HFCM_CheckLeftCollision
           lda joy1left
-          beq skip_7089
+          beq HFCM_CheckRightMovement
           jmp HFCM_CheckLeftCollision
-skip_7089:
+HFCM_CheckRightMovement:
 
           jmp HFCM_CheckRightMovement
 
@@ -1695,9 +1694,9 @@ HFCM_UseJoy0 .proc
 
           ;; if joy0left then goto HFCM_CheckLeftCollision
           lda joy0left
-          beq skip_9079
+          beq HFCM_CheckRightMovement
           jmp HFCM_CheckLeftCollision
-skip_9079:
+HFCM_CheckRightMovement:
 
           jmp HFCM_CheckRightMovement
 
@@ -1733,10 +1732,10 @@ HFCM_CheckLeftCollision
 
           lda temp2
           cmp # 32
-          bcc skip_9735
+          bcc ColumnInRangeLeft
           lda # 31
           sta temp2
-skip_9735:
+ColumnInRangeLeft:
 
 
                     if temp2 & $80 then let temp2 = 0
@@ -1751,9 +1750,9 @@ skip_9735:
           lda temp2
           beq HFCM_CheckRightMovement
           bmi HFCM_CheckRightMovement
-          jmp skip_8359
+          jmp CheckColumnLeft
 HFCM_CheckRightMovement:
-skip_8359:
+CheckColumnLeft:
 
           ;; Already at left edge
           lda temp2
@@ -1822,9 +1821,9 @@ skip_8359:
 return_point:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
-skip_955:
-          jmp skip_955
+                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow
+CheckBottomRow:
+          jmp CheckBottomRow
           lda currentPlayer
           sta temp1
 
@@ -1832,9 +1831,9 @@ skip_955:
 
           lda temp5
           cmp # 1
-          bne skip_2454
+          bne HFCM_MoveLeftOK
           jmp HFCM_CheckRightMovement
-skip_2454:
+HFCM_MoveLeftOK:
 
 
           ;; Also check bottom row (feet)
@@ -1863,11 +1862,11 @@ skip_2454:
           lda temp6
           cmp pfrows
 
-          bcc skip_5809
+          bcc CheckBottomRowLeft
 
-          jmp skip_5809
+          jmp HFCM_MoveLeftOK
 
-          skip_5809:
+          CheckBottomRowLeft:
 
           lda temp3
           sta temp1
@@ -1889,17 +1888,17 @@ skip_2454:
 return_point:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
-skip_955:
-          jmp skip_955
+                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow
+CheckBottomRow:
+          jmp CheckBottomRow
           lda currentPlayer
           sta temp1
 
           lda temp5
           cmp # 1
-          bne skip_2454
+          bne HFCM_MoveLeftOK
           jmp HFCM_CheckRightMovement
-skip_2454:
+HFCM_MoveLeftOK:
 
 
 .pend
@@ -1911,18 +1910,18 @@ HFCM_MoveLeftOK .proc
 
           lda temp5
           cmp # 8
-          bne skip_2584
+          bne CheckDragonOfStormsLeft
           jmp HFCM_LeftMomentumApply
-skip_2584:
+CheckDragonOfStormsLeft:
 
 
           ;; Default (should not hit): apply -1
 
           lda temp5
           cmp # 2
-          bne skip_1139
+          bne HFCM_LeftStandard
           jmp HFCM_LeftDirectApply
-skip_1139:
+HFCM_LeftStandard:
 
 
                     let playerVelocityX[temp1] = $ff
@@ -1966,9 +1965,9 @@ HFCM_LeftApplyDone
           tax
           lda playerState,x
           and # 8
-          beq skip_5121
+          beq GetAnimationState
           jmp SPF_InlineYes1
-skip_5121:
+GetAnimationState:
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(return_point-1)
@@ -1987,22 +1986,23 @@ return_point:
           ;; if temp2 < 5 then goto SPF_InlineNo1          lda temp2          cmp 5          bcs .skip_6997          jmp
           lda temp2
           cmp # 5
-          bcs skip_5111
-          jmp goto_label
-skip_5111:
+          bcs CheckAnimationState10Left
+          jmp SPF_InlineNo1
+CheckAnimationState10Left:
 
           lda temp2
           cmp # 5
-          bcs skip_3707
-          jmp goto_label
-skip_3707:
+          bcs CheckAnimationState10LeftLabel
+          jmp SPF_InlineNo1
+CheckAnimationState10LeftLabel:
 
           
 
           lda temp2
           cmp # 10
-          bcc skip_4099
-skip_4099:
+          bcc SPF_InlineNo1
+          jmp SPF_InlineYes1
+SPF_InlineNo1:
 
 
 .pend
@@ -2024,9 +2024,9 @@ SPF_InlineNo1 .proc
 SPF_InlineDone1
 
           lda temp3
-          bne skip_6641
+          bne HSHM_AfterLeftSetDone
                     let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
-skip_6641:
+HSHM_AfterLeftSetDone:
 
 
 .pend
@@ -2037,18 +2037,18 @@ HFCM_CheckRightMovement .proc
           ;; Returns: Far (return otherbank)
           lda temp1
           cmp # 0
-          bne skip_9636
+          bne CheckPlayer2JoyPortRight
           jmp HFCM_CheckRightJoy0
-skip_9636:
+CheckPlayer2JoyPortRight:
 
 
           ;; Players 1,3 use joy1
 
           lda temp1
           cmp # 2
-          bne skip_2368
+          bne HFCM_DoRightMovement
           jmp HFCM_CheckRightJoy0
-skip_2368:
+HFCM_DoRightMovement:
 
 
           jsr BS_return
@@ -2098,10 +2098,10 @@ HFCM_DoRightMovement .proc
 
           lda temp2
           cmp # 32
-          bcc skip_9735
+          bcc ColumnInRangeLeft
           lda # 31
           sta temp2
-skip_9735:
+ColumnInRangeLeft:
 
 
                     if temp2 & $80 then let temp2 = 0
@@ -2179,9 +2179,9 @@ skip_9735:
 return_point:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
-skip_955:
-          jmp skip_955
+                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow
+CheckBottomRow:
+          jmp CheckBottomRow
           lda currentPlayer
           sta temp1
 
@@ -2218,11 +2218,11 @@ skip_955:
           lda temp6
           cmp pfrows
 
-          bcc skip_8465
+          bcc CheckBottomRowRight
 
-          jmp skip_8465
+          jmp HFCM_MoveRightOK
 
-          skip_8465:
+          CheckBottomRowRight:
 
           lda temp3
           sta temp1
@@ -2244,9 +2244,9 @@ skip_955:
 return_point:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
-skip_955:
-          jmp skip_955
+                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow
+CheckBottomRow:
+          jmp CheckBottomRow
           lda currentPlayer
           sta temp1
 
@@ -2261,18 +2261,18 @@ HFCM_MoveRightOK .proc
 
           lda temp5
           cmp # 8
-          bne skip_7212
+          bne CheckDragonOfStormsRight
           jmp HFCM_RightMomentumApply
-skip_7212:
+CheckDragonOfStormsRight:
 
 
           ;; Default (should not hit): apply +1
 
           lda temp5
           cmp # 2
-          bne skip_8983
+          bne HFCM_RightStandard
           jmp HFCM_RightDirectApply
-skip_8983:
+HFCM_RightStandard:
 
 
           lda temp1
@@ -2321,9 +2321,9 @@ HFCM_RightApplyDone
           tax
           lda playerState,x
           and # 8
-          beq skip_422
+          beq GetAnimationStateRight
           jmp SPF_InlineYes2
-skip_422:
+GetAnimationStateRight:
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(return_point-1)
@@ -2342,22 +2342,23 @@ return_point:
           ;; if temp2 < 5 then goto SPF_InlineNo2          lda temp2          cmp 5          bcs .skip_5155          jmp
           lda temp2
           cmp # 5
-          bcs skip_9488
-          jmp goto_label
-skip_9488:
+          bcs CheckAnimationState10Right
+          jmp SPF_InlineNo2
+CheckAnimationState10Right:
 
           lda temp2
           cmp # 5
-          bcs skip_3353
-          jmp goto_label
-skip_3353:
+          bcs CheckAnimationState10RightLabel
+          jmp SPF_InlineNo2
+CheckAnimationState10RightLabel:
 
           
 
           lda temp2
           cmp # 10
-          bcc skip_2500
-skip_2500:
+          bcc SPF_InlineNo2
+          jmp SPF_InlineYes2
+SPF_InlineNo2:
 
 
 .pend
@@ -2382,29 +2383,29 @@ SPF_InlineDone2
           ;; Returns: Far (return otherbank)
 
           lda temp3
-          bne skip_1841
+          bne HSHM_AfterRightSetDone
                     let playerState[temp1] = playerState[temp1] | 1
-skip_1841:
+HSHM_AfterRightSetDone:
 
 
           ;; if temp1 & 2 = 0 then goto HFCM_VertJoy0
           lda temp1
           and # 2
-          bne skip_244
+          bne CheckJoy1Up
           jmp HFCM_VertJoy0
-skip_244:
+CheckJoy1Up:
 
           ;; if joy1up then goto HFCM_VertUp
           lda joy1up
-          beq skip_3244
+          beq CheckJoy1Down
           jmp HFCM_VertUp
-skip_3244:
+CheckJoy1Down:
 
           ;; if joy1down then goto HFCM_VertDown
           lda joy1down
-          beq skip_9526
+          beq HandleFlyingCharacterMovementDone
           jmp HFCM_VertDown
-skip_9526:
+HandleFlyingCharacterMovementDone:
 
           jsr BS_return
 
@@ -2414,15 +2415,15 @@ HFCM_VertJoy0 .proc
 
           ;; if joy0up then goto HFCM_VertUp
           lda joy0up
-          beq skip_6096
+          beq CheckJoy0Down
           jmp HFCM_VertUp
-skip_6096:
+CheckJoy0Down:
 
           ;; if joy0down then goto HFCM_VertDown
           lda joy0down
-          beq skip_3350
+          beq HandleFlyingCharacterMovementDone
           jmp HFCM_VertDown
-skip_3350:
+HandleFlyingCharacterMovementDone:
 
           rts
 
@@ -2495,11 +2496,11 @@ return_point:
           lda temp2
           cmp 13
 
-          bcc skip_243
+          bcc CheckFlyingCharacter
 
-          jmp skip_243
+          jmp DoneLeftPortMovement
 
-          skip_243:
+          CheckFlyingCharacter:
 
 
 
@@ -2522,25 +2523,25 @@ return_point:
 
           lda temp5
           cmp # 8
-          bne skip_8078
+          bne CheckDragonOfStorms
           jmp IHLP_FlyingMovement
-skip_8078:
+CheckDragonOfStorms:
 
 
           ;; Radish Goblin (12) uses bounce movement system
 
           lda temp5
           cmp # 2
-          bne skip_243
+          bne CheckRadishGoblin
           jmp IHLP_FlyingMovement
-skip_243:
+CheckRadishGoblin:
 
 
           lda temp5
           cmp CharacterRadishGoblin
-          bne skip_957
+          bne HandleStandardHorizontalMovement
           jmp IHLP_RadishGoblinMovement
-skip_957:
+HandleStandardHorizontalMovement:
 
 
 
@@ -2610,24 +2611,24 @@ IHLP_DoneFlyingLeftRight
           ;; if playerCharacter[temp1] = CharacterFrooty then goto HGI_Done1
           lda temp1
           cmp # 0
-          bne skip_6012
+          bne CheckPlayer2JoyPort1
           jmp HGI_CheckJoy0_1
-skip_6012:
+CheckPlayer2JoyPort1:
 
 
           ;; Players 1,3 use joy1
 
           lda temp1
           cmp # 2
-          bne skip_1669
+          bne CheckJoy1Down1
           jmp HGI_CheckJoy0_1
-skip_1669:
+CheckJoy1Down1:
 
 
           lda joy1down
-          bne skip_9580
+          bne HGI_HandleDownPressed1
           jmp HGI_CheckGuardRelease1
-skip_9580:
+HGI_HandleDownPressed1:
 
 
           jmp HGI_HandleDownPressed1
@@ -2640,9 +2641,9 @@ HGI_CheckJoy0_1 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0down
-          bne skip_7206
+          bne HGI_HandleDownPressed1
           jmp HGI_CheckGuardRelease1
-skip_7206:
+HGI_HandleDownPressed1:
 
 
 .pend
@@ -2663,45 +2664,45 @@ HGI_HandleDownPressed1 .proc
           lda temp4
           cmp 32
 
-          bcc skip_8692
+          bcc CheckDragonOfStormsDown1
 
-          jmp skip_8692
+          jmp HGI_Done1
 
-          skip_8692:
+          CheckDragonOfStormsDown1:
 
           lda temp4
           cmp CharacterDragonOfStorms
-          bne skip_4030
+          bne CheckHarpy
           jmp DragonOfStormsDown
-skip_4030:
+CheckHarpy:
 
 
           lda temp4
           cmp CharacterHarpy
-          bne skip_6818
+          bne CheckFrooty
           jmp HarpyDown
-skip_6818:
+CheckFrooty:
 
 
           lda temp4
           cmp CharacterFrooty
-          bne skip_7443
+          bne CheckRoboTito
           jmp FrootyDown
-skip_7443:
+CheckRoboTito:
 
 
           lda temp4
           cmp CharacterRoboTito
-          bne skip_7846
+          bne CheckRadishGoblinDown1
           jmp DCD_HandleRoboTitoDown1
-skip_7846:
+CheckRadishGoblinDown1:
 
 
           lda temp4
           cmp CharacterRadishGoblin
-          bne skip_1660
+          bne UseStandardGuard1
           jmp HGI_HandleRadishGoblinDown1
-skip_1660:
+UseStandardGuard1:
 
 
           jmp StandardGuard
@@ -2749,9 +2750,9 @@ return_point:
 
           lda temp2
           cmp # 1
-          bne skip_4364
+          bne UseStandardGuard1
           jmp HGI_Done1
-skip_4364:
+UseStandardGuard1:
 
 
           jmp StandardGuard
@@ -2773,9 +2774,9 @@ HGI_CheckGuardRelease1 .proc
           ;; Not guarding, check for Radish Goblin short bounce
 
           lda temp2
-          bne skip_1931
+          bne StopGuardEarly1
           jmp HGI_CheckRadishGoblinRelease1
-skip_1931:
+StopGuardEarly1:
 
 
           ;; Stop guard early and start cooldown
@@ -2830,11 +2831,11 @@ HGI_Done1
           lda temp2
           cmp 13
 
-          bcc skip_7711
+          bcc CheckGuardStatus1
 
-          jmp skip_7711
+          jmp InputDoneLeftPortAttack
 
-          skip_7711:
+          CheckGuardStatus1:
 
           ;; Check if player is guarding - guard blocks attacks
 
@@ -2849,14 +2850,14 @@ HGI_Done1
 
           ;; if temp2 then goto InputDoneLeftPortAttack
           lda temp2
-          beq skip_5855
+          beq CheckJoy0Fire
           jmp InputDoneLeftPortAttack
-skip_5855:
+CheckJoy0Fire:
 
           lda joy0fire
-          bne skip_8700
+          bne DispatchAttack
           jmp InputDoneLeftPortAttack
-skip_8700:
+DispatchAttack:
 
 
                     if (playerState[temp1] & PlayerStateBitFacing) then goto InputDoneLeftPortAttack
@@ -2939,11 +2940,11 @@ return_point:
           lda temp2
           cmp 13
 
-          bcc skip_9612
+          bcc CheckGuardStatus2
 
-          jmp skip_9612
+          jmp DoneRightPortMovement
 
-          skip_9612:
+          CheckGuardStatus2:
 
 
 
@@ -2966,9 +2967,9 @@ return_point:
 
           ;; if temp6 then goto DoneRightPortMovement
           lda temp6
-          beq skip_7029
+          beq CheckFlyingCharacter2
           jmp DoneRightPortMovement
-skip_7029:
+CheckFlyingCharacter2:
 
 
 
@@ -2987,25 +2988,25 @@ skip_7029:
 
           lda temp5
           cmp CharacterFrooty
-          bne skip_7457
+          bne CheckDragonOfStorms2
           jmp IHRP_FlyingMovement
-skip_7457:
+CheckDragonOfStorms2:
 
 
           ;; Radish Goblin (12) uses bounce movement system
 
           lda temp5
           cmp CharacterDragonOfStorms
-          bne skip_6901
+          bne CheckRadishGoblin2
           jmp IHRP_FlyingMovement
-skip_6901:
+CheckRadishGoblin2:
 
 
           lda temp5
           cmp CharacterRadishGoblin
-          bne skip_8331
+          bne HandleStandardHorizontalMovement2
           jmp IHRP_RadishGoblinMovement
-skip_8331:
+HandleStandardHorizontalMovement2:
 
 
 
@@ -3075,24 +3076,24 @@ IHRP_DoneFlyingLeftRight
           ;; if playerCharacter[temp1] = CharacterFrooty then goto HGI_Done2
           lda temp1
           cmp # 0
-          bne skip_4636
+          bne CheckPlayer2JoyPort2
           jmp HGI_CheckJoy0_2
-skip_4636:
+CheckPlayer2JoyPort2:
 
 
           ;; Players 1,3 use joy1
 
           lda temp1
           cmp # 2
-          bne skip_8597
+          bne CheckJoy1Down2
           jmp HGI_CheckJoy0_2
-skip_8597:
+CheckJoy1Down2:
 
 
           lda joy1down
-          bne skip_9573
+          bne HGI_HandleDownPressed2
           jmp HGI_CheckGuardRelease2
-skip_9573:
+HGI_HandleDownPressed2:
 
 
           jmp HGI_HandleDownPressed2
@@ -3105,9 +3106,9 @@ HGI_CheckJoy0_2 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0down
-          bne skip_8408
+          bne HGI_HandleDownPressed2
           jmp HGI_CheckGuardRelease2
-skip_8408:
+HGI_HandleDownPressed2:
 
 
 .pend
@@ -3128,45 +3129,45 @@ HGI_HandleDownPressed2 .proc
           lda temp4
           cmp 32
 
-          bcc skip_7177
+          bcc CheckDragonOfStormsDown2
 
-          jmp skip_7177
+          jmp HGI_Done2
 
-          skip_7177:
+          CheckDragonOfStormsDown2:
 
           lda temp4
           cmp CharacterDragonOfStorms
-          bne skip_4030
+          bne CheckHarpy
           jmp DragonOfStormsDown
-skip_4030:
+CheckHarpy:
 
 
           lda temp4
           cmp CharacterHarpy
-          bne skip_6818
+          bne CheckFrooty
           jmp HarpyDown
-skip_6818:
+CheckFrooty:
 
 
           lda temp4
           cmp CharacterFrooty
-          bne skip_7443
+          bne CheckRoboTito
           jmp FrootyDown
-skip_7443:
+CheckRoboTito:
 
 
           lda temp4
           cmp CharacterRoboTito
-          bne skip_399
+          bne CheckRadishGoblinDown2
           jmp DCD_HandleRoboTitoDown2
-skip_399:
+CheckRadishGoblinDown2:
 
 
           lda temp4
           cmp CharacterRadishGoblin
-          bne skip_2539
+          bne UseStandardGuard2
           jmp HGI_HandleRadishGoblinDown2
-skip_2539:
+UseStandardGuard2:
 
 
           jmp StandardGuard
@@ -3214,9 +3215,9 @@ return_point:
 
           lda temp2
           cmp # 1
-          bne skip_8967
+          bne UseStandardGuard2
           jmp HGI_Done2
-skip_8967:
+UseStandardGuard2:
 
 
           jmp StandardGuard
@@ -3238,9 +3239,9 @@ HGI_CheckGuardRelease2 .proc
           ;; Not guarding, check for Radish Goblin short bounce
 
           lda temp2
-          bne skip_1080
+          bne StopGuardEarly2
           jmp HGI_CheckRadishGoblinRelease2
-skip_1080:
+StopGuardEarly2:
 
 
           ;; Stop guard early and start cooldown
@@ -3293,11 +3294,11 @@ HGI_Done2
           lda temp2
           cmp 13
 
-          bcc skip_7237
+          bcc CheckGuardStatus3
 
-          jmp skip_7237
+          jmp InputDoneRightPortAttack
 
-          skip_7237:
+          CheckGuardStatus3:
 
           ;; let temp2 = playerState[temp1] & 2 PlayerStateBitGuarding         
           lda temp1
@@ -3310,14 +3311,14 @@ HGI_Done2
 
           ;; if temp2 then goto InputDoneRightPortAttack
           lda temp2
-          beq skip_4608
+          beq CheckJoy1Fire
           jmp InputDoneRightPortAttack
-skip_4608:
+CheckJoy1Fire:
 
           lda joy1fire
-          bne skip_3584
+          bne DispatchAttack2
           jmp InputDoneRightPortAttack
-skip_3584:
+DispatchAttack2:
 
 
                     if (playerState[temp1] & PlayerStateBitFacing) then goto InputDoneRightPortAttack
@@ -3367,9 +3368,9 @@ HandlePauseInput .proc
           lda # 0
           sta temp1
 
-                    if switchselect then let temp1 = 1          lda switchselect          beq skip_7014
-skip_7014:
-          jmp skip_7014
+                    if switchselect then let temp1 = 1          lda switchselect          beq CheckJoy2bPlus
+CheckJoy2bPlus:
+          jmp CheckJoy2bPlus
 
 
 
@@ -3379,21 +3380,21 @@ skip_7014:
 
                     if LeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
           lda LeftPortJoy2bPlus
-          beq skip_2135
+          beq CheckRightPortJoy2bPlus
           bit INPT1
-          bmi skip_2135
+          bmi CheckRightPortJoy2bPlus
           lda # 1
           sta temp1
-skip_2135:
+CheckRightPortJoy2bPlus:
 
                     if RightPortJoy2bPlus then if !INPT3{7} then let temp1 = 1
           lda RightPortJoy2bPlus
-          beq skip_2706
+          beq Joy2bPauseDone
           bit INPT3
-          bmi skip_2706
+          bmi Joy2bPauseDone
           lda # 1
           sta temp1
-skip_2706:
+Joy2bPauseDone:
 
 Joy2bPauseDone
 
@@ -3406,9 +3407,9 @@ Joy2bPauseDone
           ;; 1)
           lda temp1
           cmp # 0
-          bne skip_7483
+          bne CheckPauseButtonPrev
           jmp DonePauseToggle
-skip_7483:
+CheckPauseButtonPrev:
 
 
           ;; Toggle pause flag in systemFlags
@@ -3416,19 +3417,19 @@ skip_7483:
           ;; if systemFlags & SystemFlagPauseButtonPrev then goto DonePauseToggle
           lda systemFlags
           and SystemFlagPauseButtonPrev
-          beq skip_3278
+          beq TogglePauseFlag
           jmp DonePauseToggle
-skip_3278:
+TogglePauseFlag:
 
                     if systemFlags & SystemFlagGameStatePaused then let systemFlags = systemFlags & ClearSystemFlagGameStatePaused else systemFlags = systemFlags | SystemFlagGameStatePaused
           lda systemFlags
           and SystemFlagGameStatePaused
-          beq skip_179
+          beq SetPausedFlag
           lda systemFlags
           and ClearSystemFlagGameStatePaused
           sta systemFlags
           jmp end_179
-skip_179:
+SetPausedFlag:
           lda systemFlags
           ora SystemFlagGameStatePaused
           sta systemFlags
@@ -3448,12 +3449,12 @@ DonePauseToggle
 
                     if temp1 then let systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
           lda temp1
-          beq skip_6637
+          beq ClearPauseButtonPrev
           lda systemFlags
           ora SystemFlagPauseButtonPrev
           sta systemFlags
           jmp end_9698
-skip_6637:
+ClearPauseButtonPrev:
           lda systemFlags
           and ClearSystemFlagPauseButtonPrev
           sta systemFlags

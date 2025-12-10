@@ -67,9 +67,9 @@ InputHandleAllPlayers .proc
 
           ;; if qtcontroller then goto InputHandleQuadtariPlayers
           lda qtcontroller
-          beq skip_514
+          beq HandlePlayers12
           jmp InputHandleQuadtariPlayers
-skip_514:
+HandlePlayers12:
 
 
 
@@ -78,9 +78,9 @@ skip_514:
           ;; let currentPlayer = 0 : gosub IsPlayerAlive bank13
           lda temp2
           cmp # 0
-          bne skip_4896
-          ;; TODO: InputDonePlayer0Input
-skip_4896:
+          bne CheckPlayer0State
+          jmp InputDonePlayer0Input
+CheckPlayer0State:
 
 
                     if (playerState[0] & 8) then InputDonePlayer0Input
@@ -129,9 +129,9 @@ InputDonePlayer0Input
 return_point:
           lda temp2
           cmp # 0
-          bne skip_1481
+          bne CheckPlayer1State
           ;; TODO: InputDonePlayer1Input
-skip_1481:
+CheckPlayer1State:
 
 
                     if (playerState[1] & 8) then InputDonePlayer1Input
@@ -248,8 +248,9 @@ InputHandleQuadtariPlayers .proc
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_2681
-skip_2681:
+          bne CheckPlayer3Character
+          jmp InputDonePlayer3InputDone
+CheckPlayer3Character:
 
 
                     if playerCharacter[2] = NoCharacter then InputDonePlayer3Input
@@ -270,9 +271,9 @@ skip_2681:
 return_point:
           lda temp2
           cmp # 0
-          bne skip_8643
-          ;; TODO: InputDonePlayer3Input
-skip_8643:
+          bne CheckPlayer3State
+          jmp InputDonePlayer3Input
+CheckPlayer3State:
 
 
                     if (playerState[2] & 8) then InputDonePlayer3Input
@@ -304,8 +305,9 @@ InputDonePlayer3Input
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_8739
-skip_8739:
+          bne CheckPlayer4Character
+          jmp InputDonePlayer4Input
+CheckPlayer4Character:
 
 
                     if playerCharacter[3] = NoCharacter then InputDonePlayer4Input
@@ -326,9 +328,9 @@ skip_8739:
 return_point:
           lda temp2
           cmp # 0
-          bne skip_21
-          ;; TODO: InputDonePlayer4Input
-skip_21:
+          bne CheckPlayer4State
+          jmp InputDonePlayer4Input
+CheckPlayer4State:
 
 
                     if (playerState[3] & 8) then InputDonePlayer4Input

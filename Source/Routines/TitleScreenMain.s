@@ -3,7 +3,6 @@
 
 
 TitleScreenMain .proc
-
           ;; Title Screen - Per-frame Loop
           ;; Returns: Far (return otherbank)
           ;; Per-frame title screen display and input handling.
@@ -55,28 +54,26 @@ TitleScreenMain .proc
 
           ;; CRITICAL: Inlined randomize routine (only called once, saves 2 bytes vs gosub)
           ;;
-          ; Inlined randomize routine to save stack space
+          ;; Inlined randomize routine to save stack space
           lda rand
           lsr
           .if  rand16_W
-CRITICAL:
-
-
-rand16:
-
+          ;; CRITICAL:
 
           ;; TODO: ; Must read from read port, perform operation in register, write to write port
           lda rand16_R
           rol
           sta rand16_W
-fi:
+          .fi
 
           bcc TitleScreenRandomizeNoEor
+
           eor #$B4
-TitleScreenRandomizeNoEor
+
+TitleScreenRandomizeNoEor:
           sta rand
           .if  rand16_W
-CRITICAL:
+          ;; CRITICAL:
 
 
 rand16:
@@ -90,16 +87,16 @@ fi:
           ;; Use skip-over pattern to avoid complex || operator issues
           if joy0fire then TitleScreenComplete
           lda joy0fire
-          beq skip_5925
+          beq CheckJoy1Fire
           jmp TitleScreenComplete
-skip_5925:
+CheckJoy1Fire:
           
 
           if joy1fire then TitleScreenComplete
           lda joy1fire
-          beq skip_7911
+          beq CheckQuadtariControllers
           jmp TitleScreenComplete
-skip_7911:
+CheckQuadtariControllers:
           
 
           ;; Check Quadtari controllers (Players 3 & 4 if active)
@@ -107,15 +104,15 @@ skip_7911:
 
                     if !INPT0{7} then TitleScreenComplete
           bit INPT0
-          bmi skip_8828
+          bmi CheckINPT2
           jmp TitleScreenComplete
-skip_8828:
+CheckINPT2:
 
                     if !INPT2{7} then TitleScreenComplete
           bit INPT2
-          bmi skip_5351
+          bmi TitleDoneQuad
           jmp TitleScreenComplete
-skip_5351:
+TitleDoneQuad:
 
 TitleDoneQuad
           ;; Skip Quadtari controller check (not in 4-player mode)

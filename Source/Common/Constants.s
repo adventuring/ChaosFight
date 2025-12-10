@@ -14,6 +14,8 @@
           ;; NTSC.s: TVStandard = 0
           ;; PAL.s: TVStandard = 1
           ;; SECAM.s: TVStandard = 2
+          ;; Note: These are batariBASIC constants. For assembly .if directives,
+          ;; use TVStandard == NTSC, TVStandard == PAL, TVStandard == SECAM
           NTSC = 0
           PAL = 1
           SECAM = 2
@@ -463,7 +465,7 @@ _suppress_pf_pointer_code = 1
 
           ;; Movement updates run at 60fps NTSC / 50fps PAL
 
-.if TVStandard == 0
+.if TVStandard == NTSC
           AnimationFrameDelay = 6
           MovementFrameRate = 60
           ;; 60fps / 10fps = 6 frames
@@ -479,7 +481,7 @@ _suppress_pf_pointer_code = 1
           ;; ~0.66 seconds between Harpy flaps (1.5 flaps/sec)
 .fi
 
-.if TVStandard == 1
+.if TVStandard == PAL
           AnimationFrameDelay = 5
           MovementFrameRate = 50
           ;; 50fps / 10fps = 5 frames
@@ -495,7 +497,7 @@ _suppress_pf_pointer_code = 1
           ;; ~0.66 seconds between Harpy flaps (1.5 flaps/sec)
 .fi
 
-.if TVStandard == 2
+.if TVStandard == SECAM
           AnimationFrameDelay = 5
           ;; Same as PAL (50fps / 10fps = 5 frames)
           MovementFrameRate = 50

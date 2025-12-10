@@ -583,9 +583,9 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
           interlaced = 0
           shakescreen = 0
           ;;; vblank_time is conditionally defined based on TVStandard
-          .if TVStandard == 1
+          .if TVStandard == PAL
                     vblank_time = 58
-          .elsif TVStandard == 2
+          .elsif TVStandard == SECAM
                     vblank_time = 58
           .else
                     vblank_time = 43

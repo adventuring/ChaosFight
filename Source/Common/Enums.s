@@ -1,10 +1,7 @@
 ;;; Chaos Fight Source/Common/Enums.bas
 ;;; Copyright 2025 Bruce-Robert Pocock
 
-          ;; TV Standards
-          NTSC = 1
-          PAL = 2
-          SECAM = 3
+          ;; TV Standards (defined in Constants.s, not here)
 
           ;; Game Modes
           ModePublisherPrelude = 0

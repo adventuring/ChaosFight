@@ -64,46 +64,49 @@ BeginWinnerAnnouncement .proc
           cmp # 0
           bne CheckPlayer1Character
           ;; let temp2 = playerCharacter[0]         
-          lda 0
+          lda # 0
           asl
           tax
           lda playerCharacter,x
           sta temp2
           jmp LookupThemeSong
-CheckPlayer1Character:
 
+CheckPlayer1Character:
 
           lda temp1
           cmp # 1
           bne CheckPlayer2Character
+
           ;; let temp2 = playerCharacter[1]         
-          lda 1
+          lda # 1
           asl
           tax
           lda playerCharacter,x
           sta temp2
           jmp LookupThemeSong
-CheckPlayer2Character:
 
+CheckPlayer2Character:
 
           lda temp1
           cmp # 2
           bne CheckPlayer3Character
+
           ;; let temp2 = playerCharacter[2]         
-          lda 2
+          lda # 2
           asl
           tax
           lda playerCharacter,x
           sta temp2
           jmp LookupThemeSong
-CheckPlayer3Character:
 
+CheckPlayer3Character:
 
           lda temp1
           cmp # 3
           bne LookupThemeSong
+
           ;; let temp2 = playerCharacter[3]         
-          lda 3
+          lda # 3
           asl
           tax
           lda playerCharacter,x

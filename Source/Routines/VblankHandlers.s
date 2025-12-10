@@ -39,9 +39,9 @@ VblankModePublisherPrelude .proc
           ;; Check if music is initialized before calling PlayMusic to prevent crash
           lda musicVoice0Pointer
           cmp # 0
-          bne skip_6612
+          bne PlayPublisherPreludeMusic
           jmp VblankPublisherPreludeSkipMusic
-skip_6612:
+PlayPublisherPreludeMusic:
 
 
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
@@ -75,9 +75,9 @@ VblankModeAuthorPrelude .proc
           ;; musicVoice0Pointer = 0 means music not started yet
           lda musicVoice0Pointer
           cmp # 0
-          bne skip_5556
+          bne PlayAuthorPreludeMusic
           jmp VblankAuthorPreludeSkipMusic
-skip_5556:
+PlayAuthorPreludeMusic:
 
 
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
@@ -111,9 +111,9 @@ VblankModeTitleScreen .proc
           ;; musicVoice0Pointer = 0 means music not started yet
           lda musicVoice0Pointer
           cmp # 0
-          bne skip_4663
+          bne PlayTitleScreenMusic
           jmp VblankTitleScreenSkipMusic
-skip_4663:
+PlayTitleScreenMusic:
 
 
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
@@ -172,9 +172,9 @@ VblankModeGameMain .proc
           ;; CRITICAL: Guard against being called when not in game mode
           lda gameMode
           cmp ModeGame
-          bne skip_646
+          bne VblankModeGameMainDone
           jmp VblankModeGameMainContinue
-skip_646:
+VblankModeGameMainDone:
 
 
           rts
@@ -219,19 +219,19 @@ VblankSharedUpdateCharacterAnimations
           ;; if currentPlayer >= 2 && !VblankUCA_quadtariActive then goto VblankAnimationNextPlayer
           lda currentPlayer
           cmp # 3
-          bcc skip_9120
+          bcc CheckPlayerHealth
           lda VblankUCA_quadtariActive
-          bne skip_9120
+          bne CheckPlayerHealth
           jmp VblankAnimationNextPlayer
-skip_9120:
+CheckPlayerHealth:
 
           lda currentPlayer
           cmp # 3
-          bcc skip_7116
+          bcc UpdateAnimationCounter
           lda VblankUCA_quadtariActive
-          bne skip_7116
+          bne UpdateAnimationCounter
           jmp VblankAnimationNextPlayer
-skip_7116:
+UpdateAnimationCounter:
 
 
 
@@ -241,9 +241,9 @@ skip_7116:
           asl
           tax
           lda playerHealth,x
-          bne skip_8150
+          bne AdvanceAnimationFrame
           jmp VblankAnimationNextPlayer
-skip_8150:
+AdvanceAnimationFrame:
 
           ;; Increment this sprite 10fps animation counter (NOT global frame counter)
           ;; SCRAM read-modify-write: animationCounter_R → animationCounter_W
@@ -263,9 +263,9 @@ skip_8150:
           ;; if temp4 < AnimationFrameDelay then goto VblankDoneAdvanceInlined
           lda temp4
           cmp AnimationFrameDelay
-          bcs skip_2980
+          bcs VblankAdvanceFrame
           jmp VblankDoneAdvanceInlined
-skip_2980:
+VblankAdvanceFrame:
           
 
 .pend
@@ -300,11 +300,11 @@ VblankAdvanceFrame .proc
           lda temp4
           cmp FramesPerSequence
 
-          bcc skip_7518
+          bcc VblankUpdateSprite
 
-          jmp skip_7518
+          jmp VblankUpdateSprite
 
-          skip_7518:
+          VblankUpdateSprite:
 
           jmp VblankUpdateSprite
 
@@ -325,9 +325,9 @@ VblankHandleFrame7Transition
           ;; if ActionAttackRecovery < temp1 then goto VblankTransitionLoopAnimation
           lda ActionAttackRecovery
           cmp temp1
-          bcs skip_6813
+          bcs TransitionToLoopAnimation
           jmp VblankTransitionLoopAnimation
-skip_6813:
+TransitionToLoopAnimation:
           
 
           jmp VblankTransitionLoopAnimation
@@ -365,11 +365,11 @@ VblankTransitionHandleJump
           lda playerVelocityY,x
           cmp # 1
 
-          bcc skip_98
+          bcc TransitionToJumping
 
-          jmp skip_98
+          jmp TransitionToJumping
 
-          skip_98:
+          TransitionToJumping:
 
           lda ActionJumping
           sta temp2
@@ -461,9 +461,9 @@ return_point:
           sta temp2
           if temp1 then VblankTransitionHandleFallBack_HitWall
           lda temp1
-          beq skip_3271
+          beq TransitionToFallen
           jmp VblankTransitionHandleFallBack_HitWall
-skip_3271:
+TransitionToFallen:
           
 
           ;; No wall collision, transition to fallen
@@ -489,11 +489,11 @@ VblankSetPlayerAnimationInlined
           lda temp2
           cmp AnimationSequenceCount
 
-          bcc skip_205
+          bcc SetAnimationSequence
 
-          jmp skip_205
+          jmp SetAnimationSequence
 
-          skip_205:
+          SetAnimationSequence:
 
           ;; SCRAM write to currentAnimationSeq_W
           lda currentPlayer
@@ -539,9 +539,9 @@ VblankHandleAttackTransition
           ;; if temp1 < ActionAttackWindup then goto VblankUpdateSprite
           lda temp1
           cmp ActionAttackWindup
-          bcs skip_2966
+          bcs HandleWindupEnd
           jmp VblankUpdateSprite
-skip_2966:
+HandleWindupEnd:
           
 
                     let temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
@@ -565,21 +565,21 @@ VblankHandleWindupEnd
           lda temp1
           cmp 32
 
-          bcc skip_1472
+          bcc CheckWindupNextAction
 
-          jmp skip_1472
+          jmp CheckWindupNextAction
 
-          skip_1472:
+          CheckWindupNextAction:
 
           if temp1 >= 16 then let temp1 = 0
           lda temp1
           cmp # 17
 
-          bcc skip_6145
+          bcc GetWindupNextAction
 
           lda # 0
 
-          sta .skip_6145
+          sta .GetWindupNextAction
 
           label_unknown:
           ;; let temp2 = CharacterWindupNextAction[temp1]         
@@ -590,9 +590,9 @@ VblankHandleWindupEnd
           sta temp2
           lda temp2
           cmp # 255
-          bne skip_360
+          bne SetWindupAnimation
           jmp VblankUpdateSprite
-skip_360:
+SetWindupAnimation:
 
 
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
@@ -610,17 +610,17 @@ VblankHandleExecuteEnd
           lda temp1
           cmp 32
 
-          bcc skip_1472
+          bcc CheckExecuteNextAction
 
-          jmp skip_1472
+          jmp CheckExecuteNextAction
 
-          skip_1472:
+          CheckExecuteNextAction:
 
           lda temp1
           cmp # 6
-          bne skip_7575
+          bne GetExecuteNextAction
           jmp VblankHarpyExecute
-skip_7575:
+GetExecuteNextAction:
 
 
           if temp1 >= 16 then let temp1 = 0
@@ -642,9 +642,9 @@ skip_7575:
           sta temp2
           lda temp2
           cmp # 255
-          bne skip_360
+          bne SetExecuteAnimation
           jmp VblankUpdateSprite
-skip_360:
+SetExecuteAnimation:
 
 
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
@@ -721,21 +721,21 @@ VblankUpdateSprite .proc
           sta currentCharacter
           lda currentCharacter
           cmp NoCharacter
-          bne skip_7144
+          bne CheckCPUCharacter
           jmp VblankAnimationNextPlayer
-skip_7144:
+CheckCPUCharacter:
 
           lda currentCharacter
           cmp CPUCharacter
-          bne skip_480
+          bne CheckRandomCharacter
           jmp VblankAnimationNextPlayer
-skip_480:
+CheckRandomCharacter:
 
           lda currentCharacter
           cmp RandomCharacter
-          bne skip_8085
+          bne ValidateCharacterRange
           jmp VblankAnimationNextPlayer
-skip_8085:
+ValidateCharacterRange:
 
           ;; CRITICAL: Validate character index is within valid range (0-MaxCharacter)
           ;; Uninitialized playerCharacter (0) is valid (Bernie), but values > MaxCharacter are invalid
@@ -743,18 +743,18 @@ skip_8085:
           lda currentCharacter
           sec
           sbc MaxCharacter
-          bcc skip_9310
-          beq skip_9310
+          bcc LoadSpriteFrame
+          beq LoadSpriteFrame
           jmp VblankAnimationNextPlayer
-skip_9310:
+LoadSpriteFrame:
 
           lda currentCharacter
           sec
           sbc MaxCharacter
-          bcc skip_5976
-          beq skip_5976
+          bcc DetermineSpriteBank
+          beq DetermineSpriteBank
           jmp VblankAnimationNextPlayer
-skip_5976:
+DetermineSpriteBank:
 
 
                     ;; let temp2 = currentAnimationFrame_R[currentPlayer]
@@ -782,47 +782,47 @@ skip_5976:
           ;; if temp1 < 8 then goto VblankUpdateSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_680          jmp
           lda temp1
           cmp # 8
-          bcs skip_9194
+          bcs CheckBank3
           goto_label:
 
           jmp goto_label
-skip_9194:
+CheckBank3:
 
           lda temp1
           cmp # 8
-          bcs skip_9618
+          bcs CheckBank3Dispatch
           jmp goto_label
-skip_9618:
+CheckBank3Dispatch:
 
           
 
           ;; if temp1 < 16 then goto VblankUpdateSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_6822          jmp
           lda temp1
           cmp # 16
-          bcs skip_7725
+          bcs CheckBank4
           jmp goto_label
-skip_7725:
+CheckBank4:
 
           lda temp1
           cmp # 16
-          bcs skip_9622
+          bcs CheckBank4Dispatch
           jmp goto_label
-skip_9622:
+CheckBank4Dispatch:
 
           
 
           ;; if temp1 < 24 then goto VblankUpdateSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_5055          jmp
           lda temp1
           cmp # 24
-          bcs skip_6786
+          bcs UseBank5
           jmp goto_label
-skip_6786:
+UseBank5:
 
           lda temp1
           cmp # 24
-          bcs skip_9987
+          bcs UseBank5Dispatch
           jmp goto_label
-skip_9987:
+UseBank5Dispatch:
 
           
 
@@ -948,9 +948,9 @@ next_label_1_L950:.proc
           ;; For other modes, return immediately
           lda gameMode
           cmp ModeGame
-          bne skip_3052
+          bne VblankHandlerDone
           jmp VblankModeGameMainAfterAnimations
-skip_3052:
+VblankHandlerDone:
 
 
           rts
@@ -1022,11 +1022,11 @@ return_point:
           lda currentPlayer
           cmp 2
 
-          bcc skip_7662
+          bcc ProcessCollision
 
-          jmp skip_7662
+          jmp ProcessCollision
 
-          skip_7662:
+          ProcessCollision:
 
           jmp VblankProcessCollision
 
@@ -1157,9 +1157,9 @@ VblankCheckGameEndTransition
           ;; When timer reaches 0, transition to winner announcement
           lda gameEndTimer_R
           cmp # 0
-          bne skip_3791
+          bne DecrementGameEndTimer
           ;; TODO: VblankTransitionToWinner
-skip_3791:
+DecrementGameEndTimer:
 
 
           ;; Decrement game end timer
@@ -1292,9 +1292,9 @@ VblankModeWinnerAnnouncement .proc
           ;; musicVoice0Pointer = 0 means music not started yet
           lda musicVoice0Pointer
           cmp # 0
-          bne skip_2479
+          bne PlayWinnerAnnouncementMusic
           jmp VblankWinnerAnnouncementSkipMusic
-skip_2479:
+PlayWinnerAnnouncementMusic:
 
 
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth

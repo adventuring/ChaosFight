@@ -99,31 +99,37 @@ CheckJoy1Fire:
           if joy1fire then let temp1 = 1
           lda joy1fire
           beq CheckQuadtariFire
-          lda 1
+
+          lda # 1
           sta temp1
+
 CheckQuadtariFire:
 
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
-                    if (controllerStatus & SetQuadtariDetected) <> 0 then goto CheckQuadtariFireHold
+          if (controllerStatus & SetQuadtariDetected) <> 0 then goto CheckQuadtariFireHold
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           beq CheckFireHoldTimer
+
           jmp CheckQuadtariFireHold
+
 CheckFireHoldTimer:
 
-          If fire button held, increment timer
+          ;; If fire button held, increment timer
           ;; if temp1 then goto IncrementFireHold
           lda temp1
           beq FireHoldCheckDone
+
           jmp IncrementFireHold
+
 FireHoldCheckDone:
 
           ;; Fire released, reset timer
           lda # 0
           sta fireHoldTimer_W
-          jmp FireHoldCheckDone
+          jmp ArenaSelectNavigation
 
-IncrementFireHold
+IncrementFireHold:
           lda fireHoldTimer_R
           sta temp2
           inc temp2
@@ -133,23 +139,22 @@ IncrementFireHold
           sta fireHoldTimer_W
           ;; if temp2 >= FramesPerSecond then goto ReturnToCharacterSelect
           lda temp2
-          cmp FramesPerSecond
+          cmp # FramesPerSecond
 
-          bcc FireHoldCheckDone
+          bcc ArenaSelectNavigation
 
-          jmp FireHoldCheckDone
+          jmp ReturnToCharacterSelect
 
-          FireHoldCheckDone:
+ArenaSelectNavigation:
 
-FireHoldCheckDone
           ;; Handle LEFT/RIGHT navigation for arena selection
           ;; if joy0left then goto ArenaSelectLeft
           lda joy0left
           beq ArenaSelectDoneLeft
-          jmp ArenaSelectLeft
-ArenaSelectDoneLeft:
 
-          jmp ArenaSelectDoneLeft
+          jmp ArenaSelectLeft
+
+ArenaSelectDoneLeft:
 
 .pend
 
@@ -162,9 +167,14 @@ ArenaSelectLeft .proc
 CheckRandomArenaLeft:
 
           lda selectedArena_R
-          cmp RandomArena
+          cmp # RandomArena
           bne DecrementArena
+
           ;; let selectedArena_W = MaxArenaID : goto ArenaSelectLeftSound
+          lda # MaxArenaID
+          sta selectedArena_W
+          jmp ArenaSelectLeftSound
+
 DecrementArena:
 
           lda selectedArena_R

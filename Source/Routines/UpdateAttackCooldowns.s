@@ -23,7 +23,7 @@ UpdateAttackCooldowns .proc
           cmp # 0
           bne DecrementCooldown
 
-          ;; TODO: UpdateAttackCooldownSkip
+          jmp UpdateAttackCooldownSkip
 
 DecrementCooldown:
 
@@ -34,14 +34,11 @@ DecrementCooldown:
           lda temp2
           sta playerAttackCooldown_W,x
 
-.pend
-
-UpdateAttackCooldownSkip .proc
+UpdateAttackCooldownSkip:
 
 .pend
 
-next_label_1_L39:
-.proc
+next_label_1_L39 .proc
           jsr BS_return
 
 .pend

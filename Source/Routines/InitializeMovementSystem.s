@@ -34,69 +34,69 @@ InitializeMovementSystem .proc
           lda # 100
           sta temp3
           ;; Player 0
-          lda 0
+          lda # 0
           asl
           tax
           lda temp2
           sta playerX,x
-          lda 0
+          lda # 0
           asl
           tax
           lda temp2
           sta playerSubpixelX_W,x
-          lda 0
+          lda # 0
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelX_WL,x
-          lda 0
+          lda # 0
           asl
           tax
           lda temp3
           sta playerY,x
-          lda 0
+          lda # 0
           asl
           tax
           lda temp3
           sta playerSubpixelY_W,x
-          lda 0
+          lda # 0
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelY_WL,x
           ;; Player 1
-          lda 1
+          lda # 1
           asl
           tax
           lda temp2
           sta playerX,x
-          lda 1
+          lda # 1
           asl
           tax
           lda temp2
           sta playerSubpixelX_W,x
-          lda 1
+          lda # 1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelX_WL,x
-          lda 1
+          lda # 1
           asl
           tax
           lda temp3
           sta playerY,x
-          lda 1
+          lda # 1
           asl
           tax
           lda temp3
           sta playerSubpixelY_W,x
-          lda 1
+          lda # 1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelY_WL,x
           ;; Player 2
-          lda 2
+          lda # 2
           asl
           tax
           lda temp2

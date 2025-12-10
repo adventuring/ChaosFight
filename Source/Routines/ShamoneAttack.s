@@ -4,16 +4,9 @@
 
 
 
-ShamoneAttack
+ShamoneAttack:
           ;; Returns: Far (return otherbank)
-
-
-ShamoneAttack
-
-
           ;; Shamone (Character 15) - Special attack: jumps while
-          ;; Returns: Far (return otherbank)
-
           ;; attacking simultaneously
 
           ;;
@@ -58,21 +51,18 @@ ShamoneAttack
           lda temp1
           asl
           tax
-          dec playerY,x
-
-          lda temp1
-          asl
-          tax
-          dec playerY,x
-
+          lda playerY,x
+          sec
+          sbc # 11
+          sta playerY,x
 
           ;; Light character, good jump
 
-                    let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
+          let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
 
           ;; Set jumping flag
 
-          Then execute the attack (inline former PerformMeleeAttack)
+          ;; Then execute the attack (inline former PerformMeleeAttack)
 
           ;; Cross-bank call to SpawnMissile in bank 7
           lda # >(return_point_1_L88-1)
@@ -83,12 +73,12 @@ ShamoneAttack
           pha
           lda # <(SpawnMissile-1)
           pha
-                    ldx # 6
+          ldx # 6
           jmp BS_jsr
+
 return_point_1_L88:
 
-
-                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           jsr BS_return
 
 

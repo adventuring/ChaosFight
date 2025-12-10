@@ -4,8 +4,6 @@
 
 
 BernieAttack .proc
-
-
           ;; Executes Bernies ground-thump area attack
           ;; Returns: Far (return otherbank)
 
@@ -78,18 +76,19 @@ BernieAttack .proc
 
           ;; Set animation state (PerformMeleeAttack also sets it, but
 
+          ;; we need it set first)
+
           ;; let temp3 = playerState[temp1] & PlayerStateBitFacing         
           lda temp1
           asl
           tax
           lda playerState,x
+          and # PlayerStateBitFacing
           sta temp3
-
-          ;; we need it set first)
 
           ;; Attack in facing direction (inline former PerformMeleeAttack)
 
-                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
 
           ;; Attack facing direction
           ;; Cross-bank call to PerformGenericAttack in bank 7

@@ -665,15 +665,16 @@ LoadCharacterSprite:
 **Example:**
 
 ```assembly
-LoadCharacterSprite:
-.proc
+LoadCharacterSprite .proc
           ;; Load sprite data for a character
           lda temp1
           sta LCS_characterIndex
           cmp # 255
           beq LoadSpecialSprite
+
           ;; Normal character loading
           rts
+
 .pend
 ```
 
@@ -686,21 +687,21 @@ LoadCharacterSprite:
 **Example:**
 
 ```assembly
-MultiSpriteKernel:
-.block
+MultiSpriteKernel .block
           ;; Main kernel code
           
-          SetupP1Subroutine:
-          .proc
+          SetupP1Subroutine .proc
                     ;; Setup code
                     rts
+
           .pend
           
-          KernelRoutine:
-          .proc
+          KernelRoutine .proc
                     ;; Kernel code
                     jsr SetupP1Subroutine
+
                     rts
+
           .pend
 .bend
 ```
@@ -729,7 +730,7 @@ MultiSpriteKernel:
 
 ## Blank Lines
 
-**CRITICAL RULE**: After any branch or jump instruction (`jmp`, `jsr`, `brk`, `beq`, `bne`, `bcc`, `bcs`, `bpl`, `bmi`, `bvc`, `bvs`, `jmp`, `jsr`, `brk`, etc.), there **MUST** be exactly one blank line. In any other case, there should be **no blank lines**.
+**CRITICAL RULE**: After any branch or jump instruction (`jmp`, `jsr`, `brk`, `beq`, `bne`, `bcc`, `bcs`, `bpl`, `bmi`, `bvc`, `bvs`, `rts`, etc.), there **MUST** be exactly one blank line. In any other case, there should be **no blank lines**.
 
 **Never**:
 - Between a label and remarks describing a routine entered via that label
@@ -740,8 +741,7 @@ MultiSpriteKernel:
 **Correct:**
 
 ```assembly
-LoadCharacterSprite:
-.proc
+LoadCharacterSprite .proc
           ;; Load sprite data for a character
           ;; Input: temp1 = character index, temp2 = animation frame
           lda temp1
@@ -751,8 +751,7 @@ LoadCharacterSprite:
           ;; Normal character loading
           rts
 
-LoadSpecialSprite:
-.proc
+LoadSpecialSprite .proc
           ;; Load special sprite variant
           lda temp2
           rts
@@ -761,8 +760,7 @@ LoadSpecialSprite:
 **Incorrect:**
 
 ```assembly
-LoadCharacterSprite:
-.proc
+LoadCharacterSprite .proc
 
           ;; Load sprite data for a character
           ;; Input: temp1 = character index, temp2 = animation frame
@@ -772,8 +770,7 @@ LoadCharacterSprite:
           beq LoadSpecialSprite
           ;; Normal character loading
           rts
-LoadSpecialSprite:
-.proc
+LoadSpecialSprite .proc
           ;; Load special sprite variant
 ```
 
@@ -819,15 +816,15 @@ quit pretending the assembler will read your mind.
 Every routine **MUST** be wrapped in a `.proc` / `.pend` block:
 
 ```assembly
-LoadCharacterSprite
-.proc
+LoadCharacterSprite .proc
           ;; Procedure body with 10-space indentation
           ;; ... assembly code ...
           rts
+
 .pend
 ```
 
-**CRITICAL**: The label **MUST** precede `.proc` on a separate line. Do not use `.proc LabelName` syntax.
+**CRITICAL**: The label **MUST** be on the same line as `.proc` or `.block`, with a space between them: `LabelName .proc` or `LabelName .block`. Do not use a colon before `.proc` or `.block`, and do not use `.proc LabelName` syntax.
 
 ### Lexical Order Requirements
 
@@ -1146,7 +1143,7 @@ covered here:
 - **1.0** (2025): Initial style guide creation based on code review and
   Requirements.md
 - **2.0** (2025): Updated with comprehensive naming conventions and documentation standards
-- **3.0** (2025): Updated label format (colon suffix, `.proc`/`.block`), constants indentation (10 spaces), variable naming (initialLowerCamelCase), blank line rules (exactly one after branch/jump), immediate value formatting (space after `#`, no space before `$` in hex), block scoping preferences
+- **3.0** (2025): Updated label format (colon suffix for regular labels, `LabelName .proc`/`.block` format without colon before directive), constants indentation (10 spaces), variable naming (initialLowerCamelCase), blank line rules (exactly one after branch/jump/`rts`), immediate value formatting (space after `#`, no space before `$` in hex), block scoping preferences
 
 ---
 

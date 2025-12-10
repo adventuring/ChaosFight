@@ -5,7 +5,7 @@
 ;;; Displays the Interworldly author logo/artwork with music.
           ;; This is the second screen shown at cold sta
 
-          FLOW:
+          ;; FLOW:
           ;; 1. Display 48×42 bitmap from Source/Art/Interworldly.xcf
           ;; (via titlescreen kernel)
           ;; 2. Play Interworldly music
@@ -51,42 +51,42 @@
           ;; No explicit loading needed - titlescreen kernel handles
           ;; bitmap display
 
-
 AuthorPrelude .proc
-
           ;; Check for button press on any controller to skip
           ;; Returns: Far (return otherbank)
           ;; Use skip-over pattern to avoid complex || operator issues
           if joy0fire then AuthorPreludeComplete
           lda joy0fire
-          beq skip_5569
+          beq CheckJoy1Fire
+
           jmp AuthorPreludeComplete
-skip_5569:
-          
+
+CheckJoy1Fire:
 
           if joy1fire then AuthorPreludeComplete
           lda joy1fire
-          beq skip_1114
+          beq CheckEnhancedControllers
+
           jmp AuthorPreludeComplete
-skip_1114:
-          
+
+CheckEnhancedControllers:
 
           ;; Check MegaDrive/Joy2b+ controllers if detected
           ;; Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0) or Joy2b+ Button III (INPT1)
           ;; OR flags together and check for nonzero match
           ;; let temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
-                    if temp1 then if !INPT0{7} then AuthorPreludeComplete
+          if temp1 then if !INPT0{7} then AuthorPreludeComplete
           lda temp1
-          beq skip_4228
+          beq CheckRightPortControllers
           bit INPT0
-          bmi skip_4228
+          bmi CheckRightPortControllers
           jmp AuthorPreludeComplete
-skip_4228:
+CheckRightPortControllers:
           lda controllerStatus
           and SetLeftPortJoy2bPlus
           sta temp1
-                    if temp1 then if !INPT1{7} then AuthorPreludeComplete          lda temp1          beq skip_933
-skip_933:
+                    if temp1 then if !INPT1{7} then AuthorPreludeComplete          lda temp1          beq CheckRightPortControllersLabel
+CheckRightPortControllersLabel:
 
           ;; Player 2: Genesis Button C (INPT2) or Joy2b+ Button C/II (INPT2) or Joy2b+ Button III (INPT3)
           ;; let temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
@@ -95,28 +95,28 @@ skip_933:
           sta temp1
                     if temp1 then if !INPT2{7} then AuthorPreludeComplete
           lda temp1
-          beq skip_5977
+          beq CheckAutoAdvance
           bit INPT2
-          bmi skip_5977
+          bmi CheckAutoAdvance
           jmp AuthorPreludeComplete
-skip_5977:
+CheckAutoAdvance:
           lda controllerStatus
           and SetRightPortJoy2bPlus
           sta temp1
-                    if temp1 then if !INPT3{7} then AuthorPreludeComplete          lda temp1          beq skip_5554
-skip_5554:
-          jmp skip_5554
+                    if temp1 then if !INPT3{7} then AuthorPreludeComplete          lda temp1          beq CheckAutoAdvanceLabel
+CheckAutoAdvanceLabel:
+          jmp CheckAutoAdvanceLabel
 
 
           ;; Auto-advance after music completes + 0.5s
                     if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete
           lda preambleTimer
           cmp # 31
-          bcc skip_6974
+          bcc IncrementTimer
           lda musicPlaying
-          bne skip_6974
+          bne IncrementTimer
           jmp AuthorPreludeComplete
-skip_6974:
+IncrementTimer:
 
           inc preambleTimer
           jsr BS_return

@@ -1,17 +1,8 @@
 ;;; DOWN BUTTON HANDLERS (Called via on goto from PlayerInput)
 
-DragonOfStormsDown
-;;; Returns: Far (return otherbank)
-
-          jsr BS_return
-
-
-          ;; TODO: DragonOfStormsDown = .DragonOfStormsDown
-
-
-          ;; DRAGON OF STORMS (2) - FLY DOWN (no guard action)
+DragonOfStormsDown:
           ;; Returns: Far (return otherbank)
-
+          ;; DRAGON OF STORMS (2) - FLY DOWN (no guard action)
           ;; Dragon of Storms flies down instead of guarding
 
           ;;
@@ -63,40 +54,30 @@ DragonOfStormsDown
           lda playerX,x
           sta temp2
 
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; let temp2 = temp2 - ScreenInsetX
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
-
-          lda temp2
-          sec
-          sbc ScreenInsetX
-          sta temp2
-
 
           ;; pfColumn = playfield column (0-31)
 
-          ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          ;; let temp2 = temp2 / 4
           lda temp2
           lsr
           lsr
           sta temp2
-
-          lda temp2
-          lsr
-          lsr
-          sta temp2
-
 
           ;; Check for wraparound: if subtraction wrapped negative, result ≥ 128
 
-                    if temp2 & $80 then let temp2 = 0
+          if temp2 & $80 then let temp2 = 0
           lda temp2
           cmp # 32
           bcc CheckRowBelow
+
           lda # 31
           sta temp2
+
 CheckRowBelow:
 
 
@@ -197,16 +178,7 @@ BlockedCannotMoveDown:
 
 HarpyDown .proc
           ;; Returns: Far (return otherbank)
-
-          jsr BS_return
-
-
-          ;; TODO: HarpyDown = .HarpyDown
-
-
           ;; HARPY (6) - FLY DOWN (no guard action)
-          ;; Returns: Far (return otherbank)
-
           ;; Harpy flies down instead of guarding
 
           ;;
@@ -261,7 +233,7 @@ HarpyDown .proc
 
           ;; Check if Harpy is airborne and set dive mode
 
-                    if (playerState[temp1] & 4) then HarpySetDive
+          if (playerState[temp1] & 4) then HarpySetDive
 
           ;; Jumping bit set, airborne
 
@@ -276,16 +248,10 @@ HarpyDown .proc
           lda temp2
           cmp # 60
           bcs HarpyNormalDown
+
           jmp HarpySetDive
+
 HarpyNormalDown:
-
-          lda temp2
-          cmp # 60
-          bcs HarpyNormalDownLabel
-          jmp HarpySetDive
-HarpyNormalDownLabel:
-
-
 
           ;; Above ground level, airborne
 
@@ -294,7 +260,6 @@ HarpyNormalDownLabel:
 .pend
 
 HarpySetDive .proc
-
           ;; Helper: Sets dive mode flag for Harpy when airborne
           ;; Returns: Far (return otherbank)
 
@@ -321,7 +286,7 @@ HarpySetDive .proc
 
           ;; Fix RMW: Read from _R, modify, write to _W
 
-                    let HSD_stateFlags = characterStateFlags_R[temp1] | 4         
+          let HSD_stateFlags = characterStateFlags_R[temp1] | 4
           lda temp1
           asl
           tax
@@ -337,11 +302,8 @@ HarpySetDive .proc
 .pend
 
 HarpyNormalDown .proc
-
-          ;; Set bit 2 (dive mode)
-          ;; Returns: Far (return otherbank)
-
           ;; Helper: Handles Harpy flying down with collision check
+          ;; Returns: Far (return otherbank)
 
           ;;
           ;; Input: temp1 = player index, playerX[], playerY[] (global
@@ -381,41 +343,31 @@ HarpyNormalDown .proc
           lda playerX,x
           sta temp2
 
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; let temp2 = temp2 - ScreenInsetX
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
-
-          lda temp2
-          sec
-          sbc ScreenInsetX
-          sta temp2
-
 
           ;; pfColumn = playfield column (0-31)
 
-          ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          ;; let temp2 = temp2 / 4
           lda temp2
           lsr
           lsr
           sta temp2
-
-          lda temp2
-          lsr
-          lsr
-          sta temp2
-
 
           ;; Check for wraparound: if subtraction wrapped negative, result ≥ 128
 
-                    if temp2 & $80 then let temp2 = 0
+          if temp2 & $80 then let temp2 = 0
           lda temp2
           cmp # 32
-          bcc CheckRowBelow
+          bcc CheckRowBelowHarpy
+
           lda # 31
           sta temp2
-CheckRowBelow:
+
+CheckRowBelowHarpy:
 
 
 
@@ -477,9 +429,12 @@ CheckRowBelow:
 return_point:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown
-BlockedCannotMoveDown:
-          jmp BlockedCannotMoveDown
+          if temp1 then let temp5 = 1
+          lda temp1
+          beq BlockedCannotMoveDownHarpy
+
+          lda # 1
+          sta temp5
           lda temp6
           sta temp1
 
@@ -487,14 +442,12 @@ BlockedCannotMoveDown:
 
           jsr BS_return
 
-
-
           ;; Clear below - apply downward velocity impulse
 
           lda temp1
           asl
           tax
-          lda 2
+          lda # 2
           sta playerVelocityY,x
 
           ;; +2 pixels/frame downward
@@ -502,26 +455,26 @@ BlockedCannotMoveDown:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
 
           ;; Ensure guard bit clear
 
-                    let playerState[temp1] = playerState[temp1] & !2
+          let playerState[temp1] = playerState[temp1] & !2
+          jsr BS_return
+
+BlockedCannotMoveDownHarpy:
+          lda temp6
+          sta temp1
+
+          ;; Blocked, cannot move down
+
           jsr BS_return
 
 .pend
 
 FrootyDown .proc
-
-          jsr BS_return
-
-
-          ;; TODO: FrootyDown = .FrootyDown
-
-
           ;; FROOTY (8) - FLY DOWN (no guard action)
-
           ;; Frooty flies down instead of guarding
 
           ;;
@@ -575,43 +528,32 @@ FrootyDown .proc
           lda playerX,x
           sta temp2
 
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; let temp2 = temp2 - ScreenInsetX
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
-
-          lda temp2
-          sec
-          sbc ScreenInsetX
-          sta temp2
-
 
           ;; pfColumn = playfield column (0-31)
 
-          ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          ;; let temp2 = temp2 / 4
           lda temp2
           lsr
           lsr
           sta temp2
-
-          lda temp2
-          lsr
-          lsr
-          sta temp2
-
-
-          ;; result ≥ 128
 
           ;; Check for wraparound: if subtraction wrapped negative,
+          ;; result ≥ 128
 
-                    if temp2 & $80 then let temp2 = 0
+          if temp2 & $80 then let temp2 = 0
           lda temp2
           cmp # 32
-          bcc CheckRowBelow
+          bcc CheckRowBelowFrooty
+
           lda # 31
           sta temp2
-CheckRowBelow:
+
+CheckRowBelowFrooty:
 
 
 

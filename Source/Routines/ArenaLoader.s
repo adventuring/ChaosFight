@@ -4,7 +4,6 @@
 
 
 LoadArena .proc
-
           ;; Arena Loader
           ;; Returns: Far (return otherbank)
           ;; Loads arena playfield data and colors based on
@@ -39,11 +38,12 @@ LoadArena .proc
           ;; Handle random arena selection
 
           lda selectedArena_R
-          cmp RandomArena
-          bne skip_5483
-          ;; TODO: LoadArenaRandom
-skip_5483:
+          cmp # RandomArena
+          bne LoadArenaDispatch
 
+          jmp LoadArenaRandom
+
+LoadArenaDispatch:
 
           lda selectedArena_R
           sta temp1
@@ -62,30 +62,31 @@ LoadArenaDispatch .proc
           pha
           lda # <(DWS_GetBWMode-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
+
 return_point:
 
           lda temp2
           sta temp6
           ;; Cross-bank call to LoadArenaByIndex in bank 16
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(LoadArenaByIndex-1)
           pha
           lda # <(LoadArenaByIndex-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
 return_point:
 
           ;; if temp6 then goto LA_LoadBWColors
           lda temp6
-          beq skip_9916
+          beq LA_LoadColorColors
           jmp LA_LoadBWColors
-skip_9916:
+LA_LoadColorColors:
           ;; Load color color table - fall through to LoadArenaColorsColor
           ;; Returns: Far (return otherbank)
           jmp LA_LoadColorColors
@@ -214,9 +215,9 @@ return_point:
 
           ;; if temp6 then goto LAR_LoadBWColors
           lda temp6
-          beq skip_4691
+          beq LoadArenaColorsColor
           jmp LAR_LoadBWColors
-skip_4691:
+LoadArenaColorsColor:
           ;; Load color color table (use gosub to avoid goto)
           ;; Cross-bank call to LoadArenaColorsColor in bank 16
           lda # >(return_point-1)

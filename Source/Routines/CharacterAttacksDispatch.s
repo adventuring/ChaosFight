@@ -20,63 +20,71 @@ DispatchCharacterAttack .proc
           ;; Bernie: dual-direction ground thump
 
           lda temp4
-          cmp CharacterBernie
+          cmp # CharacterBernie
           bne skip_8965
-          jmp BernieAttack
-skip_8965:
 
+          jmp BernieAttack
+
+skip_8965:
 
           ;; Curler: ranged curling stone along ground
 
           lda temp4
-          cmp CharacterCurler
+          cmp # CharacterCurler
           bne skip_3787
-          jmp PerformGenericAttack
-skip_3787:
 
+          jmp PerformGenericAttack
+
+skip_3787:
 
           ;; Dragon of Storms: ranged ballistic fireball
 
           lda temp4
-          cmp CharacterDragonOfStorms
+          cmp # CharacterDragonOfStorms
           bne skip_7828
-          jmp PerformGenericAttack
-skip_7828:
 
+          jmp PerformGenericAttack
+
+skip_7828:
 
           ;; Zoe Ryen: rapid laser blast
 
           lda temp4
-          cmp CharacterZoeRyen
+          cmp # CharacterZoeRyen
           bne skip_3333
-          jmp PerformGenericAttack
-skip_3333:
 
+          jmp PerformGenericAttack
+
+skip_3333:
 
           ;; Fat Tony: stationary magic ring laser
 
           lda temp4
-          cmp CharacterFatTony
+          cmp # CharacterFatTony
           bne skip_1009
-          jmp PerformGenericAttack
-skip_1009:
 
+          jmp PerformGenericAttack
+
+skip_1009:
 
           ;; Megax: heavy mêlée breath strike (generic mêlée tables)
 
           lda temp4
-          cmp CharacterMegax
+          cmp # CharacterMegax
           bne skip_3534
-          jmp PerformGenericAttack
-skip_3534:
 
+          jmp PerformGenericAttack
+
+skip_3534:
 
           ;; Harpy: diagonal swoop attack
 
           lda temp4
-          cmp CharacterHarpy
+          cmp # CharacterHarpy
           bne skip_9677
+
           jmp HarpyAttack
+
 skip_9677:
 
 

@@ -80,22 +80,23 @@ return_point:
 
 SkipReturnToCharacterSelect:
 
-
-          jmp ReturnToCharacterSelect
-
-SkipReturnToCharacterSelect
           ;; Check fire button hold detection (1 second to return to
           ;; Character Select)
           lda # 0
           sta temp1
           ;; Check Player 1 fire button
           ;; Check Player 2 fire button
-                    if joy0fire then let temp1 = 1          lda joy0fire          beq CheckJoy1Fire
+          if joy0fire then let temp1 = 1
+          lda joy0fire
+          beq CheckJoy1Fire
+
+          lda # 1
+          sta temp1
+
 CheckJoy1Fire:
-          jmp CheckJoy1Fire
 
           ;; Check Quadtari players (3 & 4) if active
-                    if joy1fire then let temp1 = 1
+          if joy1fire then let temp1 = 1
           lda joy1fire
           beq CheckQuadtariFire
           lda 1

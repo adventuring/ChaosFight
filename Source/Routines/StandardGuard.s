@@ -2,9 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-StandardGuard:
-.proc
-
+StandardGuard .proc
           ;; Standard guard behavior
           ;;
           ;; INPUT: temp1 = player index
@@ -62,8 +60,13 @@ StandardGuard:
 return_point:
 
           ;; Guard blocked by cooldown
+          lda temp2
+          cmp # 0
+          bne ActivateGuard
 
           jsr BS_return
+
+ActivateGuard:
 
           ;; Activate guard state - inlined (StartGuard)
 

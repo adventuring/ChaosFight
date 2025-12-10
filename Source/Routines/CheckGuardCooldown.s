@@ -46,8 +46,8 @@ CheckCooldownTimer:
           cmp # 1
           bcc CooldownExpired
 
-          ;; Cooldown expired, guard allowed
-          lda # 1
+          ;; Cooldown still active, guard blocked
+          lda # 0
           sta temp2
           jsr BS_return
 

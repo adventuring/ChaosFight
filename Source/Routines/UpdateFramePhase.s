@@ -3,7 +3,7 @@
 
 
 UpdateFramePhase .proc
-;;; Frame Budgeting System
+          ;; Frame Budgeting System
           ;; Manages expensive operations across multiple frames to
           ;; ensure game logic never exceeds the overscan period.
           ;; Updates framePhase (0-3) once per frame to schedule multi-frame operations.
@@ -22,13 +22,7 @@ UpdateFramePhase .proc
           and # 3
           sta framePhase
 
-          lda frame
-          and # 3
-          sta framePhase
-
           rts
-
-
 
 .pend
 

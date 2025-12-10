@@ -31,22 +31,3 @@ SLEEP .macro duration
 .fi
 .endm
 .endweak
-
-          .error "MACRO ERROR: \"SLEEP\": Duration must be > 1"
-.fi
-
-          ;; Handle odd duration - check NO_ILLEGAL_OPCODES first
-          nop 0
-          ;; Add remaining nop pairs if duration >= 3
-          ;; Calculate: (\duration - 3) / 2
-          ;; But we can only use .rept with a constant, so we check duration >= 3 separately
-          ;; For now, generate code for common cases
-          ;; TODO: This may need restructuring if duration calculation is complex
-.fi
-
-          ;; Handle even duration - just nop pairs
-.if !(\duration & 1)
-          .rept \duration / 2
-          nop
-          .next
-.fi

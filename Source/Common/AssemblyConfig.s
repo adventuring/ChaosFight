@@ -6,7 +6,7 @@
 ;; Note: CPU directive is set via command-line (-i flag for 6502 with illegal opcodes)
 
 ;;; multisprite is defined in MultiSpriteSuperChip.s
-          ;; batariBASIC set commands removed - not needed for 64tass assembly
+          ;; batariBASIC set commands not needed for 64tass assembly
 
           ;; Assembly configuration symbols for batariBASIC-generated code
           ;; These are included at the top of the generated assembly file

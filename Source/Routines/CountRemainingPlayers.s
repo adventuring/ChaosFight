@@ -27,6 +27,7 @@ CountRemainingPlayers:
           sta temp1
 
 SkipIncrementPlayer1:
+
           if playerHealth[2] > 0 then let temp1 = 1 + temp1
           lda # 2
           asl
@@ -40,6 +41,7 @@ SkipIncrementPlayer1:
           sta temp1
 
 SkipIncrementPlayer2:
+
           if playerHealth[3] > 0 then let temp1 = 1 + temp1
           lda # 3
           asl
@@ -53,6 +55,7 @@ SkipIncrementPlayer2:
           sta temp1
 
 SkipIncrementPlayer3:
+
           lda temp1
           sta playersRemaining_W
           jsr BS_return

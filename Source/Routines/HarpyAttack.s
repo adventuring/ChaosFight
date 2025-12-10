@@ -58,9 +58,14 @@ HarpyAttack .proc
           ;; When temp2=0 (left): want 252 (-4), when temp2≠ 0 (right): want 4
           lda # 252
           sta temp4
-                    if temp2 then let temp4 = 4          lda temp2          beq skip_9324
-skip_9324:
-          jmp skip_9324
+          if temp2 then let temp4 = 4
+          lda temp2
+          beq HarpySetVerticalVelocity
+
+          lda # 4
+          sta temp4
+
+HarpySetVerticalVelocity:
 
 .pend
 

@@ -2,8 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-IsPlayerEliminated:
-.proc
+IsPlayerEliminated .proc
           ;;
           ;; Returns: Far (return otherbank)
           ;; Is Player Eliminated
@@ -21,6 +20,9 @@ IsPlayerEliminated:
           bne PlayerNotEliminated
 
           ;; let temp2 = 1 : goto IsEliminatedDone
+          lda # 1
+          sta temp2
+          jmp IsEliminatedDone
 
 PlayerNotEliminated:
 

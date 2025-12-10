@@ -64,8 +64,7 @@ CheckAllPlayerEliminations:
 
 CAPE_return_point_1:
 
-CAPE_next_label_1:
-.proc
+CAPE_next_label_1 .proc
 
           ;; Count remaining players and check game end (inline
           ;; CheckGameEndCondition)

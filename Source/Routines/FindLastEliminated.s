@@ -2,8 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-FindLastEliminated:
-.proc
+FindLastEliminated .proc
           ;;
           ;; Returns: Far (return otherbank)
           ;; Find player eliminated most recently (highest elimination order).
@@ -38,10 +37,10 @@ FindLastEliminated:
           sta winnerPlayerIndex_W
 
 SkipUpdateWinner:
+
 .pend
 
-FLE_next_label_1:
-.proc
+FLE_next_label_1 .proc
 
 .pend
 

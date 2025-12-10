@@ -65,8 +65,7 @@ Not7800D0:
 
           jmp Is2600
 
-CheckD1:
-.proc
+CheckD1 .proc
           ;; Check $D1 value for 7800 confirmation
           lda $D1
           sta temp1

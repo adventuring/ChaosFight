@@ -65,8 +65,21 @@ ColdStart:
           ;; uses cross-bank mechanism, so the return otherbank matches.
           ;; Cross-bank call to InitializeSpritePointers in bank 14
           ;; For 64k banks: encode bank number (13, 0-based) in high byte of return address
-          ;; Step 2: Initialize TIA color registers to safe defaults
-          ;; Prevents undefined colors on cold sta
+          lda # >(sprite_init_return-1)
+          pha
+          lda # <(sprite_init_return-1)
+          pha
+          lda # >(InitializeSpritePointers-1)
+          pha
+          lda # <(InitializeSpritePointers-1)
+          pha
+          ldx # 13
+          jmp BS_jsr
+
+sprite_init_return:
+
+          ;; Step 3: Initialize TIA color registers to safe defaults
+          ;; Prevents undefined colors on cold start
 
           ;; Background: black (COLUBK starts black, no need to set)
           ;; Playfield: white
@@ -80,7 +93,7 @@ ColdStart:
           COLUP2 = ColYellow(12)
           COLUP3 = ColGreen(12)
 
-          ;; Step 5: Initialize game state and transition to first mode
+          ;; Step 4: Initialize game state and transition to first mode
           ;; Set initial game mode (Publisher Prelude)
           lda # ModePublisherPrelude
           sta gameMode
@@ -100,7 +113,7 @@ ColdStart:
 
 return_point:
 
-          ;; Step 6: Tail call to MainLoop
+          ;; Step 5: Tail call to MainLoop
           jmp MainLoop
 
 .pend

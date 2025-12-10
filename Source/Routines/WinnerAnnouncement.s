@@ -3,7 +3,6 @@
 
 
 WinnerAnnouncementLoop .proc
-
           ;; Winner announcement mode per-frame loop
           ;; Returns: Far (return otherbank)
           ;;
@@ -21,21 +20,27 @@ WinnerAnnouncementLoop .proc
           ;; Check for button press to advance immediately
           if joy0fire then WinnerAdvanceToCharacterSelect
           lda joy0fire
-          beq skip_8169
+          beq CheckJoy1Fire
+
           jmp WinnerAdvanceToCharacterSelect
-skip_8169:
+
+CheckJoy1Fire:
 
           if joy1fire then WinnerAdvanceToCharacterSelect
           lda joy1fire
-          beq skip_810
+          beq CheckSelectSwitch
+
           jmp WinnerAdvanceToCharacterSelect
-skip_810:
+
+CheckSelectSwitch:
 
           if switchselect then WinnerAdvanceToCharacterSelect
           lda switchselect
-          beq skip_9664
+          beq DisplayWinScreen
+
           jmp WinnerAdvanceToCharacterSelect
-skip_9664:
+
+DisplayWinScreen:
 
           ;; Display win screen and continue loop
           ;; drawscreen called by MainLoop
@@ -50,8 +55,8 @@ skip_9664:
           pha
           ldx # 13
           jmp BS_jsr
-return_point:
 
+return_point:
 
           jsr BS_return
 
@@ -71,12 +76,12 @@ WinnerAdvanceToCharacterSelect .proc
           ;; mode sta
 
           ;; Constraints: Must be colocated with WinnerAnnouncementLoop
-          lda ModeTitle
+          lda # ModeTitle
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(ChangeGameMode-1)
           pha

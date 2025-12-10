@@ -3,7 +3,7 @@
 
 
 BudgetedHealthBarUpdate .proc
-;;; Budget Health Bar Rendering
+          ;; Budget Health Bar Rendering
           ;; Draw only one player health bar per frame (down from four) to cut pfpixel work by 75%.
           ;; Uses framePhase (0-3) to determine which player health bar to refresh each frame.
           ;;
@@ -26,24 +26,27 @@ BudgetedHealthBarUpdate .proc
           ;; Determine which player to update based on frame phase
           lda framePhase
           cmp # 0
-          bne skip_6563
-          jmp BudgetedHealthBarPlayer0
-skip_6563:
+          bne CheckPhase1
 
+          jmp BudgetedHealthBarPlayer0
+
+CheckPhase1:
 
           lda framePhase
           cmp # 1
-          bne skip_1623
-          jmp BudgetedHealthBarPlayer1
-skip_1623:
+          bne CheckPhase2
 
+          jmp BudgetedHealthBarPlayer1
+
+CheckPhase2:
 
           lda framePhase
           cmp # 2
-          bne skip_6642
-          ;; TODO: CheckPlayer2HealthUpdate
-skip_6642:
+          bne CheckPlayer3HealthUpdate
 
+          jmp CheckPlayer2HealthUpdate
+
+CheckPlayer3HealthUpdate:
 
           jmp CheckPlayer3HealthUpdate
 
@@ -53,31 +56,31 @@ BudgetedHealthBarPlayer0 .proc
           ;; Local trampoline so branch stays in range; tail-calls target
           ;; Update Player 0 health bar (inline from UpdatePlayer1HealthBar pattern)
           ;; let temp6 = playerHealth[0]         
-          lda 0
+          lda # 0
           asl
           tax
           lda playerHealth,x
           sta temp6
-            lda temp6
-            sta temp6
-            asl
-            asl
-            clc
-            adc temp6
-            asl
-            asl
-            clc
-            adc temp6
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            sta temp6
-                    if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
+          lda temp6
+          sta temp6
+          asl
+          asl
+          clc
+          adc temp6
+          asl
+          asl
+          clc
+          adc temp6
+          lsr
+          lsr
+          lsr
+          lsr
+          lsr
+          lsr
+          lsr
+          lsr
+          sta temp6
+          if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
           rts
 
 .pend
@@ -129,8 +132,9 @@ CheckPlayer2HealthUpdate .proc
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_5407
-skip_5407:
+          bne CheckPlayer2Character
+          jmp DonePlayer2HealthUpdate
+CheckPlayer2Character:
 
 
           ;; Update Player 3 health bar (inlined from UpdateHealthBarPlayer2)
@@ -193,8 +197,9 @@ CheckPlayer3HealthUpdate .proc
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_9191
-skip_9191:
+          bne CheckPlayer3Character
+          jmp DonePlayer3HealthUpdate
+CheckPlayer3Character:
 
 
           ;; Update Player 4 health bar (inlined from UpdateHealthBarPlayer3)
@@ -229,11 +234,11 @@ skip_9191:
           lda temp6
           sec
           sbc HealthBarMaxLength
-          bcc skip_1486
-          beq skip_1486
+          bcc BudgetedHealthBarUpdateDone
+          beq BudgetedHealthBarUpdateDone
           lda HealthBarMaxLength
           sta temp6
-skip_1486:
+BudgetedHealthBarUpdateDone:
           rts
 
 DonePlayer3HealthUpdate

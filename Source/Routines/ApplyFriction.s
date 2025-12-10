@@ -16,17 +16,17 @@ ApplyFriction
           asl
           tax
           lda playerVelocityX,x
-          beq skip_6043
+          beq CheckNegativeVelocity
           dec playerVelocityX,x
-skip_6043:
+CheckNegativeVelocity:
 
           lda temp1
           asl
           tax
           lda playerVelocityX,x
-          beq skip_5005
+          beq CheckNegativeVelocityLabel
           dec playerVelocityX,x
-skip_5005:
+CheckNegativeVelocityLabel:
 
 
           ;; ≥ 128 are negative)
@@ -37,18 +37,18 @@ skip_5005:
           tax
           lda playerVelocityX,x
           and $80
-          beq skip_849
+          beq ClearSubpixel
           inc playerVelocityX,x
-skip_849:
+ClearSubpixel:
 
           lda temp1
           asl
           tax
           lda playerVelocityX,x
           and $80
-          beq skip_2598
+          beq ClearSubpixelLabel
           inc playerVelocityX,x
-skip_2598:
+ClearSubpixelLabel:
 
 
                     if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
@@ -56,10 +56,10 @@ skip_2598:
           asl
           tax
           lda playerVelocityX,x
-          bne skip_5069
+          bne ApplyFrictionDone
           lda # 0
           sta playerVelocityXL,x
-skip_5069:
+ApplyFrictionDone:
           rts
 
 

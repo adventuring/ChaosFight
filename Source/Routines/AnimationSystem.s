@@ -7,12 +7,9 @@ CharacterWindupNextAction:
 CharacterExecuteNextAction:
           .byte 1, 255, 1, 1, 15, 1, 1, 1, 1, 1, 1, 15, 1, 1, 1, 1
 
-UpdateCharacterAnimations
+UpdateCharacterAnimations:
           ;; Returns: Far (return otherbank)
-UpdateCharacterAnimations
-
           ;; Drives the 10fps animation system for every active player
-          ;; Returns: Far (return otherbank)
           ;; Inputs: controllerStatus (global), currentPlayer (global scratch)
           ;; animationCounter_R[] (SCRAM), currentAnimationFrame_R[],
           ;; currentAnimationSeq[], playerHealth[] (global array)
@@ -23,29 +20,22 @@ UpdateCharacterAnimations
           ;; Constraints: None
           ;; CRITICAL: Skip sprite loading in Publisher Prelude and Author Prelude modes (no characters)
           jsr BS_return
-          jsr BS_return
           ;; TODO: dim UCA_quadtariActive = temp5
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           sta UCA_quadtariActive
           ;; TODO: for currentPlayer = 0 to 3
           ;; if currentPlayer >= 2 && !UCA_quadtariActive then goto AnimationNextPlayer
           lda currentPlayer
           cmp # 3
-          bcc UCA_CheckPlayerLimit
-          lda UCA_quadtariActive
-          bne UCA_CheckPlayerLimit
-          jmp UpdateSprite.AnimationNextPlayer
-UCA_CheckPlayerLimit:
-
-          lda currentPlayer
-          cmp # 3
           bcc UCA_CheckQuadtari
+
           lda UCA_quadtariActive
           bne UCA_CheckQuadtari
-          jmp AnimationNextPlayer
-UCA_CheckQuadtari:
 
+          jmp AnimationNextPlayer
+
+UCA_CheckQuadtari:
 
           ;; CRITICAL: Inlined UpdatePlayerAnimation to reduce stack depth from 19 to 17 bytes
           ;; Skip if player is eliminated (health = 0)
@@ -54,15 +44,10 @@ UCA_CheckQuadtari:
           asl
           tax
           lda playerHealth,x
-          bne UCA_CheckPlayerHealth
-          jmp AnimationNextPlayer
-UCA_CheckPlayerHealth:
-          lda currentPlayer
-          asl
-          tax
-          lda playerHealth,x
           bne UCA_CheckCharacter
+
           jmp AnimationNextPlayer
+
 UCA_CheckCharacter:
 
 

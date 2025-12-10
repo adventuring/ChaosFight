@@ -3,7 +3,7 @@
 
 
 CharacterSelectEntry .proc
-;;; Initializes character select screen sta
+          ;; Initializes character select screen sta
 
           ;; Notes: PlayerLockedHelpers.bas resides in Bank 6
           ;;
@@ -29,28 +29,28 @@ CharacterSelectEntry .proc
           ;; (in CharacterSelectMain.bas, called from MainLoop)
           ;; Player 1: RandomCharacter (not locked)
           ;; Player 2: CPUCharacter (locked)
-          lda 0
+          lda # 0
           asl
           tax
-          lda RandomCharacter
+          lda # RandomCharacter
           sta playerCharacter,x
           ;; Player 3: NoCharacter (locked)
-          lda 1
+          lda # 1
           asl
           tax
-          lda CPUCharacter
+          lda # CPUCharacter
           sta playerCharacter,x
           ;; Player 4: NoCharacter (locked)
-          lda 2
+          lda # 2
           asl
           tax
-          lda NoCharacter
+          lda # NoCharacter
           sta playerCharacter,x
           ;; Initialize playerLocked (bit-packed)
-          lda 3
+          lda # 3
           asl
           tax
-          lda NoCharacter
+          lda # NoCharacter
           sta playerCharacter,x
           ;; Lock Player 2 (CPUCharacter)
           lda # 0

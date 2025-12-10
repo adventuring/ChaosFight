@@ -3,7 +3,7 @@
 
 
 CharacterSelectEntry .proc
-;;; Initializes character select screen sta
+          ;; Initializes character select screen sta
 
           ;; Notes: PlayerLockedHelpers.bas resides in Bank 6
           ;;
@@ -27,25 +27,25 @@ CharacterSelectEntry .proc
           ;; Must be colocated with CharacterSelectLoop (called
           ;; via goto)
           ;; Initialize character selections
-          lda 0
+          lda # 0
           asl
           tax
-          lda CharacterBernie
+          lda # CharacterBernie
           sta playerCharacter,x
-          lda 1
+          lda # 1
           asl
           tax
-          lda CharacterBernie
+          lda # CharacterBernie
           sta playerCharacter,x
-          lda 2
+          lda # 2
           asl
           tax
-          lda CharacterBernie
+          lda # CharacterBernie
           sta playerCharacter,x
-          lda 3
+          lda # 3
           asl
           tax
-          lda CharacterBernie
+          lda # CharacterBernie
           sta playerCharacter,x
           ;; Initialize playerLocked (bit-packed, all unlocked)
           lda # 0
@@ -72,10 +72,12 @@ CharacterSelectEntry .proc
           ;; Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) and Right (INPT2 LOW, INPT3 HIGH)
           ;; if INPT0{7} then goto CharacterSelectQuadtariAbsent
 
-                    if !INPT1{7} then goto CharacterSelectQuadtariAbsent
+          if !INPT1{7} then goto CharacterSelectQuadtariAbsent
           bit INPT1
           bmi CheckINPT2
+
           jmp CharacterSelectQuadtariAbsent
+
 CheckINPT2:
 
           ;; if INPT2{7} then goto CharacterSelectQuadtariAbsent

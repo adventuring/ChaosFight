@@ -40,9 +40,10 @@ VblankModePublisherPrelude .proc
           lda musicVoice0Pointer
           cmp # 0
           bne PlayPublisherPreludeMusic
-          jmp VblankPublisherPreludeSkipMusic
-PlayPublisherPreludeMusic:
 
+          jmp VblankPublisherPreludeSkipMusic
+
+PlayPublisherPreludeMusic:
 
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           ;; When called from Vblank, stack is shallower than when called from MainLoop
@@ -55,8 +56,9 @@ PlayPublisherPreludeMusic:
           pha
           lda # <(PlayMusic-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
+
 return_point:
 
 

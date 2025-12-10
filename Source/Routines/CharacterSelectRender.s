@@ -26,15 +26,18 @@ SelectDrawScreen .proc
           ;; Playfield layout is static; no runtime register writes
           lda # 2
           sta temp6
-                    if controllerStatus & SetQuadtariDetected then let temp6 = 4
+          if controllerStatus & SetQuadtariDetected then let temp6 = 4
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           beq SetPlayerCount
+
           lda # 4
           sta temp6
+
 SetPlayerCount:
           lda # 0
           sta temp1
+
 .pend
 
 SelectDrawScreenLoop .proc
@@ -44,10 +47,13 @@ SelectDrawScreenLoop .proc
           lda temp1
           cmp temp6
           bcs SelectDrawScreenDone
+
           jmp SelectDrawScreenLoop
+
 SelectDrawScreenDone:
-          
+
           jsr BS_return
+
           ;; Cross-bank call to SelectHideLowerPlayerPreviews in bank 6
           lda # >(return_point-1)
           pha
@@ -57,27 +63,28 @@ SelectDrawScreenDone:
           pha
           lda # <(SelectHideLowerPlayerPreviews-1)
           pha
-                    ldx # 5
+          ldx # 5
           jmp BS_jsr
+
 return_point:
 
+.pend
 
-SelectRenderPlayerPreview
+SelectRenderPlayerPreview:
           ;; Returns: Near (return thisbank)
           ;; Draw character preview for the specified player and apply lock tinting
-          ;; Returns: Near (return thisbank)
           ;; Called same-bank from SelectDrawScreenLoop, so use return thisbank
           ;; Optimized: Combined duplicate conditionals, early return thisbank for common case
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(PlayerPreviewSetPosition-1)
           pha
           lda # <(PlayerPreviewSetPosition-1)
           pha
-                    ldx # 5
+          ldx # 5
           jmp BS_jsr
 return_point_2:
 

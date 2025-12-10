@@ -21,10 +21,11 @@ GetCharacterWeightValue .proc
           lda CharacterWeights,x
           sta temp2
           rts
+
 .pend
 
 GetCharacterMissileHeight .proc
-          Return missile height slot (0 = none, 1-2 = height).
+          ;; Return missile height slot (0 = none, 1-2 = height).
           ;; Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileHeights lookup)
           ;; Output: temp2 = missile height slot
           ;; Mutates: temp2 (result register - missile height slot)
@@ -37,10 +38,11 @@ GetCharacterMissileHeight .proc
           lda CharacterMissileHeights,x
           sta temp2
           rts
+
 .pend
 
 GetCharacterMissileMaxX .proc
-          Return missile maximum × range.
+          ;; Return missile maximum × range.
           ;; Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMaxX lookup)
           ;; Output: temp2 = missile max × range
           ;; Mutates: temp2 (result register - missile max X)
@@ -69,10 +71,11 @@ GetCharacterMissileMaxY .proc
           lda CharacterMissileMaxY,x
           sta temp2
           rts
+
 .pend
 
 GetMissileWidth .proc
-          Return missile width (stub - use CharacterMissileWidths[] directly)
+          ;; Return missile width (stub - use CharacterMissileWidths[] directly)
           ;; Input: temp1 = character index (0-MaxCharacter)
           ;; Output: temp2 = missile width
           ;; Mutates: temp2 (return value)

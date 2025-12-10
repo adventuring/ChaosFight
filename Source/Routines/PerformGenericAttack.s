@@ -37,10 +37,10 @@ PerformGenericAttack .proc
           pha
           lda # <(SpawnMissile-1)
           pha
-                    ldx # 6
+          ldx # 6
           jmp BS_jsr
-return_point:
 
+return_point:
 
           ;; Set animation state to attacking
           ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
@@ -50,8 +50,6 @@ return_point:
           ;; This is handled by the main collision detection system
           ;; For now, collision will be handled in UpdateAllMissiles
           jsr BS_return
-
-
 
 .pend
 

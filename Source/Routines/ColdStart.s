@@ -2,7 +2,8 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-ColdStart .proc
+ColdStart:
+.proc
           ;; Cold Start Initialization
           ;; Returns: Far (return otherbank)
           ;;
@@ -81,7 +82,7 @@ ColdStart .proc
 
           ;; Step 5: Initialize game state and transition to first mode
           ;; Set initial game mode (Publisher Prelude)
-          lda ModePublisherPrelude
+          lda # ModePublisherPrelude
           sta gameMode
           ;; OPTIMIZATION: Call BeginPublisherPrelude directly to save 4 bytes
           ;; (skip ChangeGameMode dispatcher overhead)
@@ -94,8 +95,9 @@ ColdStart .proc
           pha
           lda # <(BeginPublisherPrelude-1)
           pha
-                    ldx # 13
+          ldx # 13
           jmp BS_jsr
+
 return_point:
 
           ;; Step 6: Tail call to MainLoop

@@ -25,9 +25,9 @@ CheckFallDamage .proc
           ;; Bernie is immune to fall damage but still gets stunned from high falls
           lda currentCharacter
           cmp CharacterBernie
-          bne skip_9340
+          bne CheckFallDamageImmunity
           jmp CheckBernieStun
-skip_9340:
+CheckFallDamageImmunity:
 
 
           ;; Check for fall damage immunity (Frooty, DragonOfStorms)
@@ -94,17 +94,17 @@ skip_9340:
           sta temp2
           lda temp2
           cmp # 0
-          bne skip_7704
+          bne CheckWeightMultiplier
           ;; let temp4 = 0 : goto WeightMultDone
-skip_7704:
+CheckWeightMultiplier:
 
 
           ;; temp2 is 2-5: multiply temp4 by temp2 using compact ASM
           lda temp2
           cmp # 1
-          bne skip_6573
+          bne ApplyWeightMultiplier
           jmp WeightMultDone
-skip_6573:
+ApplyWeightMultiplier:
 
 
             lda temp4
@@ -160,7 +160,7 @@ WeightMultDone
           ;; Apply damage reduction (NinjishGuy, RoboTito: half damage)
           lda currentCharacter
           cmp CharacterNinjishGuy
-          bne skip_7713
+          bne CheckRoboTitoReduction
           ;; let temp4 = temp4 / 2          lda temp4          lsr          sta temp4
           lda temp4
           lsr
@@ -170,12 +170,12 @@ WeightMultDone
           lsr
           sta temp4
 
-skip_7713:
+CheckRoboTitoReduction:
 
 
           lda currentCharacter
           cmp CharacterRoboTito
-          bne skip_2723
+          bne CapMaximumDamage
           ;; let temp4 = temp4 / 2          lda temp4          lsr          sta temp4
           lda temp4
           lsr
@@ -185,16 +185,16 @@ skip_7713:
           lsr
           sta temp4
 
-skip_2723:
+CapMaximumDamage:
 
 
           ;; Cap maximum fall damage at 50
           lda temp4
           cmp # 51
-          bcc skip_6992
+          bcc ApplyFallDamage
           lda # 50
           sta temp4
-skip_6992:
+ApplyFallDamage:
 
 
           ;; Apply fall damage (byte-safe clamp)
@@ -213,14 +213,14 @@ skip_6992:
           lda playerHealth,x
           sec
           sbc oldHealthValue
-          bcc skip_819
-          beq skip_819
+          bcc SetRecoveryFrames
+          beq SetRecoveryFrames
           lda currentPlayer
           asl
           tax
           lda # 0
           sta playerHealth,x
-skip_819:
+SetRecoveryFrames:
 
           ;; Set recovery frames (damage/2, clamped 10-30)
           ;; let temp2 = temp4 / 2          lda temp4          lsr          sta temp2
@@ -235,24 +235,24 @@ skip_819:
           ;; if temp2 < 10 then let temp2 = 10
           lda temp2
           cmp # 10
-          bcs skip_1297
+          bcs CheckMaximumRecovery
           jmp let_label
-skip_1297:
+CheckMaximumRecovery:
 
           lda temp2
           cmp # 10
-          bcs skip_425
+          bcs ClampRecoveryFrames
           jmp let_label
-skip_425:
+ClampRecoveryFrames:
 
 
 
           lda temp2
           cmp # 31
-          bcc skip_1266
+          bcc StoreRecoveryFrames
           lda # 30
           sta temp2
-skip_1266:
+StoreRecoveryFrames:
 
 
           lda currentPlayer
@@ -390,10 +390,10 @@ FallDamageApplyGravity .proc
           sta temp6
           lda currentCharacter
           cmp CharacterHarpy
-          bne skip_8668
+          bne ApplyGravityAcceleration
           lda # 1
           sta temp6
-skip_8668:
+ApplyGravityAcceleration:
 
 
           ;; Apply gravity acceleration
@@ -403,11 +403,11 @@ skip_8668:
           lda temp2
           sec
           sbc TerminalVelocity
-          bcc skip_2372
-          beq skip_2372
+          bcc FallDamageApplyGravityDone
+          beq FallDamageApplyGravityDone
           lda TerminalVelocity
           sta temp2
-skip_2372:
+FallDamageApplyGravityDone:
           jsr BS_return
 
 CheckGroundCollision
@@ -498,9 +498,9 @@ HandleFrootyVertical .proc
           sta currentCharacter
           lda currentCharacter
           cmp CharacterFrooty
-          bne skip_155
+          bne HandleFrootyVerticalDone
           jmp FrootyFallDamage
-skip_155:
+HandleFrootyVerticalDone:
 
 
           jsr BS_return
@@ -542,11 +542,11 @@ FrootyFallDamage .proc
           lda playerY,x
           sec
           sbc 176
-          bcc skip_1739
-          beq skip_1739
+          bcc FrootyFallDamageDone
+          beq FrootyFallDamageDone
           lda 176
           sta playerY,x
-skip_1739:
+FrootyFallDamageDone:
           jsr BS_return
 
 .pend
@@ -575,9 +575,9 @@ HandleHarpySwoopAttack .proc
           sta currentCharacter
           lda currentCharacter
           cmp CharacterHarpy
-          bne skip_6023
+          bne HandleHarpySwoopAttackDone
           jmp HarpyDive
-skip_6023:
+HandleHarpySwoopAttackDone:
 
 
           jsr BS_return
@@ -602,9 +602,9 @@ HarpyDive .proc
           ;; Facing left: set negative momentum (252 = -4 in signed
           lda temp6
           cmp # 0
-          bne skip_9112
+          bne SetHorizontalMomentumRight
           jmp SetHorizontalMomentumRight
-skip_9112:
+SetHorizontalMomentumRight:
 
 
           ;; 8-bit)
@@ -757,34 +757,34 @@ CalculateSafeFallDistance .proc
           ;; Check for fall damage immunity
           lda currentCharacter
           cmp CharacterBernie
-          bne skip_5834
+          bne CheckRoboTitoImmunity
           jmp SetInfiniteFallDista
 
-skip_5834:
+CheckRoboTitoImmunity:
 
 
           lda currentCharacter
           cmp CharacterRoboTito
-          bne skip_8991
+          bne CheckFrootyImmunity
           jmp SetInfiniteFallDista
 
-skip_8991:
+CheckFrootyImmunity:
 
 
           lda currentCharacter
           cmp CharacterFrooty
-          bne skip_9478
+          bne CheckDragonOfStormsImmunity
           jmp SetInfiniteFallDista
 
-skip_9478:
+CheckDragonOfStormsImmunity:
 
 
           lda currentCharacter
           cmp CharacterDragonOfStorms
-          bne skip_6876
+          bne CalculateFallDistanceNormal
           jmp SetInfiniteFallDista
 
-skip_6876:
+CalculateFallDistanceNormal:
 
 
           jmp CalculateFallDistanceNormal
@@ -821,9 +821,9 @@ CalculateFallDistanceNormal .proc
             lsr temp2
           lda currentCharacter
           cmp CharacterNinjishGuy
-          bne skip_4750
+          bne CalculateFallDistanceNormalDone
           ;; let temp2 = temp2 * 2
-skip_4750:
+CalculateFallDistanceNormalDone:
 
           jsr BS_return
 

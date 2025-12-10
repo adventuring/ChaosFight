@@ -1,5 +1,5 @@
-.include "Source/Common/Colors.h"
-  ;;; Commented out - Colors.h already included via Preamble.s
+.include "Source/Common/Colors.s"
+  ;;; Commented out - Colors.s already included via Preamble.s
 Arenas_rem_label_1:
 
 ;;; ChaosFight - Source/Data/Arenas%0bas

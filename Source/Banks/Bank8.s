@@ -11,7 +11,7 @@
           .rept 256
           .byte $ff
           .endrept
-          data must precede code
+          ;; data must precede code
           ;; all Title Screen modes must be in this bank
           ;; Bitmap data is packed at page-aligned addresses:
           ;; Art.AtariAge.s at $f100 (bmp_48x2_1)

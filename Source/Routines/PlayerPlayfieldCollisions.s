@@ -92,12 +92,12 @@ CheckPlayfieldCollisionAllDirections:
 
           lda temp6
           cmp # 32
-          bcc skip_9653
+          bcc ColumnInRange
 
           lda # 31
           sta temp6
 
-skip_9653:
+ColumnInRange:
 
           let ;; TODO: Convert assignment: playfieldRow = temp3 / 16
 
@@ -111,21 +111,21 @@ skip_9653:
           sbc # 1
           sta playfieldRow
 
-skip_7030:
+RowInRange:
 
           if playfieldRow & $80 then let ;; TODO: Convert assignment: playfieldRow = 0
 
           lda playfieldRow
           and #$80
-          beq skip_6159
+          beq CheckLeftCollision
           lda # 0
           sta playfieldRow
-skip_6159:
+CheckLeftCollision:
           lda temp6
           cmp # 0
-          bne skip_4423
+          bne ProcessLeftCollision
           jmp PFCheckRight
-skip_4423:
+ProcessLeftCollision:
 
 
 
@@ -159,11 +159,11 @@ PFCheckRight .proc
           lda temp6
           cmp # 31
 
-          bcc skip_4136
+          bcc ProcessRightCollision
 
           jmp PFCheckUp
 
-skip_4136:
+ProcessRightCollision:
 
           lda temp6
           clc
@@ -194,11 +194,11 @@ PFCheckUp .proc
 
           lda playfieldRow
           cmp # 0
-          bne skip_6982
+          bne CheckUpCollision
 
           jmp PFCheckDown_Body
 
-skip_6982:
+CheckUpCollision:
 
           lda playfieldRow
           sec
@@ -224,11 +224,11 @@ return_point3:
 
           ;; if temp4 then goto PFBlockUp
           lda temp4
-          beq skip_8518
+          beq PFCheckDown_Body
 
           jmp PFBlockUp
 
-skip_8518:
+PFCheckDown_Body:
 
           jmp PFCheckDown_Body
 
@@ -247,7 +247,7 @@ PFBlockUp .proc
           tax
           lda playerVelocityY,x
           and #$80
-          beq skip_6900
+          beq PFBlockUpDone
           lda # 0
           sta playerVelocityY,x
           lda currentPlayer
@@ -255,7 +255,7 @@ PFBlockUp .proc
           tax
           lda # 0
           sta playerVelocityYL,x
-skip_6900:
+PFBlockUpDone:
 
 .pend
 
@@ -274,10 +274,10 @@ PFBlockUpClamp .proc
           tax
           lda playerY,x
           cmp rowYPosition
-          bcs skip_254
+          bcs ClampSubpixelY
           lda rowYPosition
           sta playerY,x
-skip_254:
+ClampSubpixelY:
 
                     if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_W[currentPlayer] = rowYPosition
           lda currentPlayer
@@ -285,10 +285,10 @@ skip_254:
           tax
           lda playerY,x
           cmp rowYPosition
-          bcs skip_1234
+          bcs ClampSubpixelYL
           lda rowYPosition
           sta playerSubpixelY_W,x
-skip_1234:
+ClampSubpixelYL:
 
                     if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_WL[currentPlayer] = 0
           lda currentPlayer
@@ -296,10 +296,10 @@ skip_1234:
           tax
           lda playerY,x
           cmp rowYPosition
-          bcs skip_4354
+          bcs PFBlockUpClampDone
           lda 0
           sta playerSubpixelY_WL,x
-skip_4354:
+PFBlockUpClampDone:
 
 .pend
 
@@ -350,9 +350,9 @@ PFCS_SampleLoop .proc
           ;; if rowCounter >= pfrows then goto PFCS_Advance
           lda rowCounter
           cmp pfrows
-          bcc skip_5083
+          bcc SamplePlayfieldPixel
           jmp
-skip_5083:
+SamplePlayfieldPixel:
 
 
           label_unknown:
@@ -377,10 +377,10 @@ skip_5083:
 return_point:
 
 
-                    if temp1 then let ;; TODO: Convert assignment: PCC_result = 1 : goto PFCS_Done          lda temp1          beq skip_351
+                    if temp1 then let ;; TODO: Convert assignment: PCC_result = 1 : goto PFCS_Done          lda temp1          beq PFCS_AdvanceLabel
 
-skip_351:
-          jmp skip_351
+PFCS_AdvanceLabel:
+          jmp PFCS_AdvanceLabel
 
 .pend
 
@@ -392,17 +392,17 @@ PFCS_Advance .proc
           lda temp3
           cmp 3
 
-          bcc skip_4503
+          bcc AdvanceRowCounter
 
-          jmp skip_4503
+          jmp AdvanceRowCounter
 
-          skip_4503:
+          AdvanceRowCounter:
 
           lda PCC_rowSpan
           cmp # 0
-          bne skip_8939
+          bne IncrementRowCounter
           jmp PFCS_Done
-skip_8939:
+IncrementRowCounter:
 
 
                     let ;; TODO: Convert assignment: rowCounter = rowCounter + PCC_rowSpan
@@ -468,14 +468,14 @@ PF_CheckRowColumns .proc
 return_point:
 
 
-                    if temp1 then let ;; TODO: Convert assignment: PRC_result = 1 : goto PRC_Done          lda temp1          beq skip_6294
+                    if temp1 then let ;; TODO: Convert assignment: PRC_result = 1 : goto PRC_Done          lda temp1          beq CheckRightColumnCenter
 
-skip_6294:
-          jmp skip_6294
+CheckRightColumnCenter:
+          jmp CheckRightColumnCenter
           lda temp6
           cmp # 1
-          bcc skip_549
-skip_549:
+          bcc PRC_CheckRight
+PRC_CheckRight:
 
 
           jmp PRC_CheckRight
@@ -506,10 +506,10 @@ PRC_CheckLeft .proc
 return_point:
 
 
-                    if temp1 then let ;; TODO: Convert assignment: PRC_result = 1 : goto PRC_Done          lda temp1          beq skip_6294
+                    if temp1 then let ;; TODO: Convert assignment: PRC_result = 1 : goto PRC_Done          lda temp1          beq PRC_DoneLabel
 
-skip_6294:
-          jmp skip_6294
+PRC_DoneLabel:
+          jmp PRC_DoneLabel
 
 .pend
 
@@ -519,11 +519,11 @@ PRC_CheckRight .proc
           lda temp6
           cmp 31
 
-          bcc skip_2626
+          bcc CheckRightColumnCollision
 
-          jmp skip_2626
+          jmp CheckRightColumnCollision
 
-          skip_2626:
+          CheckRightColumnCollision:
 
           lda temp6
           clc
@@ -547,10 +547,10 @@ PRC_CheckRight .proc
 return_point:
 
 
-                    if temp1 then let ;; TODO: Convert assignment: PRC_result = 1          lda temp1          beq skip_3174
+                    if temp1 then let ;; TODO: Convert assignment: PRC_result = 1          lda temp1          beq PRC_DoneLabel2
 
-skip_3174:
-          jmp skip_3174
+PRC_DoneLabel2:
+          jmp PRC_DoneLabel2
 
 PRC_Done
           lda PRC_result
@@ -614,9 +614,9 @@ return_point:
 
           ;; if PHC_direction then goto PHC_CheckRightVelocity
           lda PHC_direction
-          beq skip_3527
+          beq CheckLeftVelocity
           jmp PHC_CheckRightVelocity
-skip_3527:
+CheckLeftVelocity:
 
                     if playerVelocityX[temp1] & $80 then let playerVelocityX[temp1] = 0 : let playerVelocityXL[temp1] = 0
           jmp PHC_ClampOnly
@@ -633,9 +633,9 @@ PHC_ClampOnly
 
           ;; if PHC_direction then goto PHC_ClampRight
           lda PHC_direction
-          beq skip_5775
+          beq ClampLeftPosition
           jmp PHC_ClampRight
-skip_5775:
+ClampLeftPosition:
 
           inc rowYPosition
 
@@ -655,10 +655,10 @@ skip_5775:
           tax
           lda playerX,x
           cmp rowYPosition
-          bcs skip_7094
+          bcs ClampSubpixelXLeft
           lda rowYPosition
           sta playerX,x
-skip_7094:
+ClampSubpixelXLeft:
 
                     if playerX[temp1] < rowYPosition then let playerSubpixelX_W[temp1] = rowYPosition
           lda temp1
@@ -666,10 +666,10 @@ skip_7094:
           tax
           lda playerX,x
           cmp rowYPosition
-          bcs skip_7776
+          bcs ClampSubpixelXLLeft
           lda rowYPosition
           sta playerSubpixelX_W,x
-skip_7776:
+ClampSubpixelXLLeft:
 
                     if playerX[temp1] < rowYPosition then let playerSubpixelX_WL[temp1] = 0
           lda temp1
@@ -677,10 +677,10 @@ skip_7776:
           tax
           lda playerX,x
           cmp rowYPosition
-          bcs skip_945
+          bcs PHC_ClampOnlyDone
           lda 0
           sta playerSubpixelX_WL,x
-skip_945:
+PHC_ClampOnlyDone:
           jsr BS_return
 
 .pend
@@ -706,11 +706,11 @@ PHC_ClampRight .proc
           lda playerX,x
           sec
           sbc rowYPosition
-          bcc skip_9821
-          beq skip_9821
+          bcc ClampSubpixelXRight
+          beq ClampSubpixelXRight
           lda rowYPosition
           sta playerX,x
-skip_9821:
+ClampSubpixelXRight:
 
                     if playerX[temp1] > rowYPosition then let playerSubpixelX_W[temp1] = rowYPosition
           lda temp1
@@ -719,11 +719,11 @@ skip_9821:
           lda playerX,x
           sec
           sbc rowYPosition
-          bcc skip_6112
-          beq skip_6112
+          bcc ClampSubpixelXLRight
+          beq ClampSubpixelXLRight
           lda rowYPosition
           sta playerSubpixelX_W,x
-skip_6112:
+ClampSubpixelXLRight:
 
                     if playerX[temp1] > rowYPosition then let playerSubpixelX_WL[temp1] = 0
           lda temp1
@@ -732,14 +732,14 @@ skip_6112:
           lda playerX,x
           sec
           sbc rowYPosition
-          bcc skip_61
-          beq skip_61
+          bcc PHC_ClampRightDone
+          beq PHC_ClampRightDone
           lda temp1
           asl
           tax
           lda # 0
           sta playerSubpixelX_WL,x
-skip_61:
+PHC_ClampRightDone:
           jsr BS_return
 
 .pend
@@ -780,9 +780,9 @@ return_point:
 
           ;; if temp4 then goto PFBlockDown
           lda temp4
-          beq skip_5737
+          beq PFCheckDownDone
           jmp PFBlockDown
-skip_5737:
+PFCheckDownDone:
 
           jsr BS_return
 

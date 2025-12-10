@@ -82,11 +82,11 @@ GravityLoop .proc
           lda temp1
           cmp 2
 
-          bcc skip_545
+          bcc GravityCheckCharacter
 
-          jmp skip_545
+          jmp GravityCheckCharacter
 
-          skip_545:
+          GravityCheckCharacter:
           jmp GravityCheckCharacter
 
 .pend
@@ -96,60 +96,60 @@ GravityPlayerCheck .proc
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_6440
+          bne CheckPlayer2Character
           jmp GravityNextPlayer
-skip_6440:
+CheckPlayer2Character:
 
           ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto GravityNextPlayer
           lda temp1
           cmp # 2
-          bne skip_935
+          bne CheckPlayer3Character
           lda 2
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_935
+          bne CheckPlayer3Character
           jmp GravityNextPlayer
-skip_935:
+CheckPlayer3Character:
 
           lda temp1
           cmp # 2
-          bne skip_7553
+          bne CheckPlayer3Active
           lda 2
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_7553
+          bne CheckPlayer3Active
           jmp GravityNextPlayer
-skip_7553:
+CheckPlayer3Active:
 
 
           ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto GravityNextPlayer
           lda temp1
           cmp # 3
-          bne skip_6267
+          bne GravityCheckCharacter
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_6267
+          bne GravityCheckCharacter
           jmp GravityNextPlayer
-skip_6267:
+GravityCheckCharacter:
 
           lda temp1
           cmp # 3
-          bne skip_5972
+          bne CheckCharacterType
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_5972
+          bne CheckCharacterType
           jmp GravityNextPlayer
-skip_5972:
+CheckCharacterType:
 
 
 
@@ -167,16 +167,16 @@ GravityCheckCharacter .proc
           ;; Dragon of Storms (2): Permanent flight, no gravity
           lda temp6
           cmp CharacterFrooty
-          bne skip_269
+          bne CheckDragonOfStorms
           jmp GravityNextPlayer
-skip_269:
+CheckDragonOfStorms:
 
           ;; (hovering/flying like Frooty)
           lda temp6
           cmp CharacterDragonOfStorms
-          bne skip_1278
+          bne CheckJumpingState
           jmp GravityNextPlayer
-skip_1278:
+CheckJumpingState:
 
           ;; RoboTito (13): Skip gravity when latched to ceiling
           ;; if temp6 = CharacterRoboTito && (characterStateFlags_R[temp1] & 1) then goto GravityNextPlayer
@@ -184,9 +184,9 @@ skip_1278:
           lda playerState[temp1]
           and PlayerStateBitJumping
           cmp # 0
-          bne skip_6848
+          bne ApplyGravityAcceleration
           jmp GravityNextPlayer
-skip_6848:
+ApplyGravityAcceleration:
 
           ;; Vertical velocity is persistently tracked using playerVelocityY[]
           and playerVelocityYL[] arrays (8.8 fixed-point format).
@@ -201,10 +201,10 @@ skip_6848:
           ;; Harpy: reduced gravity rate
           lda temp6
           cmp CharacterHarpy
-          bne skip_8052
+          bne ApplyGravityToVelocity
           lda GravityReduced
           sta gravityRate
-skip_8052:
+ApplyGravityToVelocity:
 
           ;; Apply gravity acceleration to velocity subpixel part
           ;; Use optimized inline addition instead of subroutine call
@@ -221,7 +221,7 @@ skip_8052:
           sta playerVelocityYL,x
           lda temp3
           cmp # 1
-          bcc skip_6766
+          bcc CheckTerminalVelocity
           ;; let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
           lda temp1
           asl
@@ -232,7 +232,7 @@ skip_8052:
           asl
           tax
           inc playerVelocityY,x
-skip_6766:
+CheckTerminalVelocity:
 
           ;; Apply terminal velocity cap (prevents infinite
           ;; acceleration)
@@ -302,11 +302,11 @@ skip_6766:
           lda temp4
           cmp pfrows
 
-          bcc skip_6144
+          bcc CalculateRowBelow
 
-          jmp skip_6144
+          jmp CalculateRowBelow
 
-          skip_6144:
+          CalculateRowBelow:
           ;; rowBelow = row below feet
           lda temp4
           clc
@@ -317,11 +317,11 @@ skip_6766:
           lda temp5
           cmp pfrows
 
-          bcc skip_9021
+          bcc CheckGroundPixel
 
-          jmp skip_9021
+          jmp CheckGroundPixel
 
-          skip_9021:
+          CheckGroundPixel:
           ;; Check if playfield pixel exists in row below feet
           ;; Track pfread result (1 = ground pixel set)
           lda # 0
@@ -345,24 +345,24 @@ skip_6766:
           jmp BS_jsr
 return_point:
 
-                    if temp1 then let temp3 = 1          lda temp1          beq skip_9151
-skip_9151:
-          jmp skip_9151
+                    if temp1 then let temp3 = 1          lda temp1          beq CheckGroundDetected
+CheckGroundDetected:
+          jmp CheckGroundDetected
           lda temp4
           sta temp1
           ;; Ground detected! Skip standard landing logic for Radish Goblin (bounce system handles it)
           lda temp3
           cmp # 0
-          bne skip_2593
+          bne CheckRadishGoblin
           jmp GravityNextPlayer
-skip_2593:
+CheckRadishGoblin:
 
           ;; Radish Goblin uses bounce movement system, skip standard landing
           lda temp6
           cmp CharacterRadishGoblin
-          bne skip_4433
+          bne StandardLandingLogic
           jmp GravityNextPlayer
-skip_4433:
+StandardLandingLogic:
 
           ;; Standard landing logic for all other characters
           ;; Zero Y velocity (stop falling)
@@ -385,9 +385,9 @@ skip_4433:
           sta rowCounter
           lda rowCounter
           cmp # 0
-          bne skip_8902
+          bne GravityRowCalcLoop
           jmp GravityRowCalcDone
-skip_8902:
+GravityRowCalcLoop:
 
 
 .pend
@@ -397,8 +397,8 @@ GravityRowCalcLoop .proc
           dec rowCounter
           lda rowCounter
           cmp # 1
-          bcc skip_4709
-skip_4709:
+          bcc GravityRowCalcDoneLabel
+GravityRowCalcDoneLabel:
 
 
 GravityRowCalcDone
@@ -427,16 +427,16 @@ GravityRowCalcDone
           ;; Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
           lda temp6
           cmp # 3
-          bne skip_9278
+          bne CheckRoboTitoLanding
                     let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
-skip_9278:
+CheckRoboTitoLanding:
 
           If RoboTito, set stretch permission on landing
           lda temp6
           cmp CharacterRoboTito
-          bne skip_6986
+          bne GravityNextPlayer
           jmp PAG_SetRoboTitoStretchPermission
-skip_6986:
+GravityNextPlayer:
 
           jmp GravityNextPlayer
 
@@ -483,9 +483,9 @@ GravityCheckBottom .proc
           ;; Radish Goblin uses bounce movement system, skip standard landing
           lda temp6
           cmp CharacterRadishGoblin
-          bne skip_4433
+          bne ClampToBottom
           jmp GravityNextPlayer
-skip_4433:
+ClampToBottom:
 
           ;; Bottom row is always ground - clamp to bottom
           ;; Calculate (pfrows - 1) × pfrowheight using repeated
@@ -498,9 +498,9 @@ skip_4433:
           sta rowCounter
           lda rowCounter
           cmp # 0
-          bne skip_2049
+          bne GravityBottomCalcLoopLabel
           jmp GravityBottomCalcDone
-skip_2049:
+GravityBottomCalcLoopLabel:
 
 
 .pend
@@ -510,8 +510,8 @@ GravityBottomCalcLoop .proc
           dec rowCounter
           lda rowCounter
           cmp # 1
-          bcc skip_7553
-skip_7553:
+          bcc GravityBottomCalcDone
+GravityBottomCalcDone:
 
 
 GravityBottomCalcDone
@@ -528,16 +528,16 @@ GravityBottomCalcDone
           sta playerState,x & ($FF ^ 4)
           lda temp6
           cmp # 3
-          bne skip_9278
+          bne CheckRoboTitoBottomLanding
                     let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
-skip_9278:
+CheckRoboTitoBottomLanding:
 
           If RoboTito, set stretch permission on landing at bottom
           lda temp6
           cmp CharacterRoboTito
-          bne skip_6986
+          bne GravityNextPlayerLabel
           jmp PAG_SetRoboTitoStretchPermission
-skip_6986:
+GravityNextPlayerLabel:
 
 
 .pend
@@ -548,17 +548,17 @@ GravityNextPlayer .proc
           ;; if temp1 < 4 then goto GravityLoop          lda temp1          cmp 4          bcs .skip_5570          jmp
           lda temp1
           cmp # 4
-          bcs skip_8875
+          bcs GravityLoopDone
           goto_label:
 
           jmp goto_label
-skip_8875:
+GravityLoopDone:
 
           lda temp1
           cmp # 4
-          bcs skip_6080
+          bcs PhysicsApplyGravityDone
           jmp goto_label
-skip_6080:
+PhysicsApplyGravityDone:
 
           
           jsr BS_return

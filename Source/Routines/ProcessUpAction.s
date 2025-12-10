@@ -126,6 +126,7 @@ PUA_HarpyFlap .proc
 return_point_pua5:
 
           rts
+.pend
 
 PUA_RoboTitoAscend:
           ;; Ascend toward ceiling

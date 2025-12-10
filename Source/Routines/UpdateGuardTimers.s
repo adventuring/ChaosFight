@@ -30,8 +30,7 @@ return_point:
 
 .pend
 
-next_label_1:
-.proc
+next_label_1 .proc
           jsr BS_return
 
 .pend

@@ -789,7 +789,7 @@ Start in column 0
 ```basic
 #include "Source/Common/Constants.bas"
 #include "Source/Common/Variables.bas"
-#include "Source/Common/Colors.h"
+#include "Source/Common/Colors.s"
 ```
 
 ### Assembly Files (.s)

@@ -201,9 +201,9 @@ HandleFrame7Transition
           ;; if ActionAttackRecovery < temp1 then goto AnimationTransitionLoopAnimation
           lda ActionAttackRecovery
           cmp temp1
-          bcs skip_613
+          bcs AnimationTransitionLoopAnimation
           jmp AnimationTransitionLoopAnimation
-skip_613:
+AnimationTransitionLoopAnimation:
 
           
 
@@ -242,11 +242,11 @@ AnimationTransitionHandleJump
           lda playerVelocityY,x
           cmp # 1
 
-          bcc skip_432
+          bcc TransitionToJumping
 
-          jmp skip_432
+          jmp TransitionToJumping
 
-          skip_432:
+          TransitionToJumping:
           lda ActionJumping
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
@@ -341,9 +341,9 @@ return_point:
           sta temp2
           if temp1 then AnimationTransitionHandleFallBack_HitWall
           lda temp1
-          beq skip_6180
+          beq TransitionToFallen
           jmp AnimationTransitionHandleFallBack_HitWall
-skip_6180:
+TransitionToFallen:
           ;; No wall collision, transition to fallen
           lda ActionFallen
           sta temp2
@@ -370,9 +370,9 @@ AnimationHandleAttackTransition
           ;; if temp1 < ActionAttackWindup then goto UpdateSprite
           lda temp1
           cmp ActionAttackWindup
-          bcs skip_3489
+          bcs HandleWindupEnd
           jmp UpdateSprite
-skip_3489:
+HandleWindupEnd:
           
                     let temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
           jmp AnimationHandleWindupEnd
@@ -395,20 +395,20 @@ AnimationHandleWindupEnd
           lda temp1
           cmp 32
 
-          bcc skip_6005
+          bcc ClampCharacterIndex
 
-          jmp skip_6005
+          jmp ClampCharacterIndex
 
-          skip_6005:
+          ClampCharacterIndex:
           if temp1 >= 16 then let temp1 = 0
           lda temp1
           cmp # 17
 
-          bcc skip_4121
+          bcc GetWindupNextAction
 
           lda # 0
 
-          sta .skip_4121
+          sta .GetWindupNextAction
 
           label_unknown:
           ;; let temp2 = CharacterWindupNextAction[temp1]         
@@ -419,9 +419,9 @@ AnimationHandleWindupEnd
           sta temp2
           lda temp2
           cmp # 255
-          bne skip_4504
+          bne SetWindupAnimation
           jmp UpdateSprite
-skip_4504:
+SetWindupAnimation:
 
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -439,26 +439,26 @@ AnimationHandleExecuteEnd
           lda temp1
           cmp 32
 
-          bcc skip_6005
+          bcc ClampCharacterIndexExecute
 
-          jmp skip_6005
+          jmp ClampCharacterIndexExecute
 
-          skip_6005:
+          ClampCharacterIndexExecute:
           lda temp1
           cmp # 6
-          bne skip_6753
+          bne GetExecuteNextAction
           jmp AnimationHarpyExecute
-skip_6753:
+GetExecuteNextAction:
 
           if temp1 >= 16 then let temp1 = 0
           lda temp1
           cmp # 17
 
-          bcc skip_4121
+          bcc GetExecuteNextActionLabel
 
           lda # 0
 
-          sta .skip_4121
+          sta .GetExecuteNextActionLabel
 
           label_unknown:
           ;; let temp2 = CharacterExecuteNextAction[temp1]
@@ -469,9 +469,9 @@ skip_6753:
           sta temp2
           lda temp2
           cmp # 255
-          bne skip_4504
+          bne SetExecuteAnimation
           jmp UpdateSprite
-skip_4504:
+SetExecuteAnimation:
 
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -540,11 +540,11 @@ AnimationSetPlayerAnimationInlined
           lda temp2
           cmp AnimationSequenceCount
 
-          bcc skip_3988
+          bcc SetAnimationSequence
 
-          jmp skip_3988
+          jmp SetAnimationSequence
 
-          skip_3988:
+          SetAnimationSequence:
           ;; SCRAM write to currentAnimationSeq_W
           lda currentPlayer
           asl
@@ -654,21 +654,21 @@ UpdateSprite .proc
           sta currentCharacter
           lda currentCharacter
           cmp NoCharacter
-          bne skip_4610
+          bne CheckCPUCharacterSprite
           jmp AnimationNextPlayer
-skip_4610:
+CheckCPUCharacterSprite:
 
           lda currentCharacter
           cmp CPUCharacter
-          bne skip_6470
+          bne CheckRandomCharacterSprite
           jmp AnimationNextPlayer
-skip_6470:
+CheckRandomCharacterSprite:
 
           lda currentCharacter
           cmp RandomCharacter
-          bne skip_9690
+          bne ValidateCharacterRangeSprite
           jmp AnimationNextPlayer
-skip_9690:
+ValidateCharacterRangeSprite:
 
           ;; CRITICAL: Validate character index is within valid range (0-MaxCharacter)
           ;; Uninitialized playerCharacter (0) is valid (Bernie), but values > MaxCharacter are invalid
@@ -676,18 +676,18 @@ skip_9690:
           lda currentCharacter
           sec
           sbc MaxCharacter
-          bcc skip_758
-          beq skip_758
+          bcc DetermineSpriteBank
+          beq DetermineSpriteBank
           jmp AnimationNextPlayer
-skip_758:
+DetermineSpriteBank:
 
           lda currentCharacter
           sec
           sbc MaxCharacter
-          bcc skip_2038
-          beq skip_2038
+          bcc CheckBank2
+          beq CheckBank2
           jmp AnimationNextPlayer
-skip_2038:
+CheckBank2:
 
 
           lda currentCharacter
@@ -698,45 +698,45 @@ skip_2038:
           ;; if temp1 < 8 then goto UpdateSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_5345          jmp
           lda temp1
           cmp # 8
-          bcs skip_8879
+          bcs CheckBank3
           Anim_goto_label:
 
           jmp goto_label
-skip_8879:
+CheckBank3:
 
           lda temp1
           cmp # 8
-          bcs skip_2468
+          bcs CheckBank3Dispatch
           jmp goto_label
-skip_2468:
+CheckBank3Dispatch:
 
           
           ;; if temp1 < 16 then goto UpdateSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_8905          jmp
           lda temp1
           cmp # 16
-          bcs skip_5626
+          bcs CheckBank4
           jmp goto_label
-skip_5626:
+CheckBank4:
 
           lda temp1
           cmp # 16
-          bcs skip_6358
+          bcs CheckBank4Dispatch
           jmp goto_label
-skip_6358:
+CheckBank4Dispatch:
 
           
           ;; if temp1 < 24 then goto UpdateSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_205          jmp
           lda temp1
           cmp # 24
-          bcs skip_8945
+          bcs UseBank5
           jmp goto_label
-skip_8945:
+UseBank5:
 
           lda temp1
           cmp # 24
-          bcs skip_458
+          bcs UseBank5Dispatch
           jmp goto_label
-skip_458:
+UseBank5Dispatch:
 
           
           jmp UpdateSprite_Bank5Dispatch
@@ -1005,9 +1005,9 @@ HandleAnimationTransition
           ;; if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation
           lda ActionAttackRecovery
           cmp temp1
-          bcs skip_6040
+          bcs TransitionLoopAnimation
           jmp TransitionLoopAnimation
-skip_6040:
+TransitionLoopAnimation:
 
           
 
@@ -1051,11 +1051,11 @@ TransitionHandleJump
           lda playerVelocityY,x
           cmp # 1
 
-          bcc skip_4371
+          bcc TransitionToJumpingHandle
 
-          jmp skip_4371
+          jmp TransitionToJumpingHandle
 
-          skip_4371:
+          TransitionToJumpingHandle:
           lda ActionJumping
           sta temp2
           ;; tail call
@@ -1151,9 +1151,9 @@ return_point:
           sta temp2
           if temp1 then TransitionHandleFallBack_HitWall
           lda temp1
-          beq skip_4030
+          beq TransitionToFallenHandle
           jmp TransitionHandleFallBack_HitWall
-skip_4030:
+TransitionToFallenHandle:
           
           ;; No wall collision, transition to fallen
           lda ActionFallen
@@ -1212,11 +1212,11 @@ HandleWindupEnd
           lda temp1
           cmp # 17
 
-          bcc skip_4121
+          bcc GetWindupNextActionHandle
 
           lda # 0
 
-          sta .skip_4121
+          sta .GetWindupNextActionHandle
 
           label_unknown:
           ;; let temp2 = CharacterWindupNextAction[temp1]         
@@ -1240,19 +1240,19 @@ HandleExecuteEnd
           jsr BS_return
           lda temp1
           cmp # 6
-          bne skip_2609
+          bne GetExecuteNextActionHandle
           jmp HarpyExecute
-skip_2609:
+GetExecuteNextActionHandle:
 
           if temp1 >= 16 then let temp1 = 0
           lda temp1
           cmp # 17
 
-          bcc skip_4121
+          bcc GetExecuteNextActionHandleLabel
 
           lda # 0
 
-          sta .skip_4121
+          sta .GetExecuteNextActionHandleLabel
 
           label_unknown:
           ;; let temp2 = CharacterExecuteNextAction[temp1]

@@ -28,7 +28,7 @@ MovePlayerToTarget .proc
           sbc temp2
           bcc skip_6165
           beq skip_6165
-          jmp let_label
+          ;; jmp let_label
 skip_6165:
           lda temp4
           sec
@@ -48,7 +48,7 @@ skip_6165:
           sbc temp3
           bcc skip_2624
           beq skip_2624
-          jmp let_label
+          ;; jmp let_label
 skip_2624:
           lda temp4
           sec

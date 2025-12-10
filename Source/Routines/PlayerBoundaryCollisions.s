@@ -105,37 +105,44 @@ CheckPlayerBoundary .proc
           ;; Called Routines: CheckPlayerElimination (bank14)
           ;;
           ;; Constraints: Uses temp1 as player index, temp2 as scratch.
-                    if playerX[temp1] < PlayerLeftWrapThreshold then let playerX[temp1] = PlayerRightEdge : let playerSubpixelX_W[temp1] = PlayerRightEdge : let playerSubpixelX_WL[temp1] = 0
+          if playerX[temp1] < PlayerLeftWrapThreshold then let playerX[temp1] = PlayerRightEdge : let playerSubpixelX_W[temp1] = PlayerRightEdge : let playerSubpixelX_WL[temp1] = 0
 
-                    if playerX[temp1] > PlayerRightWrapThreshold then let playerX[temp1] = PlayerLeftEdge : let playerSubpixelX_W[temp1] = PlayerLeftEdge
+          if playerX[temp1] > PlayerRightWrapThreshold then let playerX[temp1] = PlayerLeftEdge : let playerSubpixelX_W[temp1] = PlayerLeftEdge
           lda temp1
           asl
           tax
           lda playerX,x
           sec
-          sbc PlayerRightWrapThreshold
+          sbc # PlayerRightWrapThreshold
           bcc SkipRightWrap
-          beq SkipRightWrap
-          lda PlayerLeftEdge
-          sta playerX,x
-          lda PlayerLeftEdge
-          sta playerSubpixelX_W,x
-SkipRightWrap: : let playerSubpixelX_WL[temp1] = 0
 
-                    if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY_W[temp1] = 20 : let playerSubpixelY_WL[temp1] = 0
+          beq SkipRightWrap
+
+          lda # PlayerLeftEdge
+          sta playerX,x
+          lda # PlayerLeftEdge
+          sta playerSubpixelX_W,x
+
+SkipRightWrap:
+          let playerSubpixelX_WL[temp1] = 0
+
+          if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY_W[temp1] = 20 : let playerSubpixelY_WL[temp1] = 0
           lda temp1
           asl
           tax
           lda playerY,x
-          cmp 20
+          cmp # 20
           bcs SkipTopClamp
-          lda 20
+
+          lda # 20
           sta playerY,x
-          lda 20
+          lda # 20
           sta playerSubpixelY_W,x
           lda # 0
           sta playerSubpixelY_WL,x
-SkipTopClamp: : let playerVelocityY[temp1] = 0 : let playerVelocityYL[temp1] = 0
+
+SkipTopClamp:
+          let playerVelocityY[temp1] = 0 : let playerVelocityYL[temp1] = 0
 
           rts
 
@@ -144,12 +151,14 @@ SkipTopClamp: : let playerVelocityY[temp1] = 0 : let playerVelocityYL[temp1] = 0
           asl
           tax
           lda playerCharacter,x
-          cmp CharacterBernie
+          cmp # CharacterBernie
           bne SkipBernieWrap
+
           jmp CheckPlayerBoundary_BernieWrap
+
 SkipBernieWrap:
 
-                    let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank14
+          let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank14
           lda temp1
           asl
           tax
@@ -167,6 +176,7 @@ SkipBernieWrap:
           pha
           ldx # 13
           jmp BS_jsr
+
 return_point:
 
           rts
@@ -177,10 +187,9 @@ CheckPlayerBoundary_BernieWrap .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelY_WL,x
           rts
-
 
 .pend
 

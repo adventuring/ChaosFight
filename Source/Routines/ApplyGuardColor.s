@@ -41,7 +41,7 @@ GuardColor0:
 
 GuardColor1:
           lda # 12
-          sta _COLUP1
+          sta NewCOLUP1
           rts
 
 GuardColor2:

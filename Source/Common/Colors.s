@@ -1,4 +1,4 @@
-;; Colors.h - Color definitions for different TV standards
+;; Colors.s - Color definitions for different TV standards
 ;; Uses TVStandard (NTSC=0, PAL=1, SECAM=2) with enumerated constants
 
 ;; Always include NTSC colors (base set)

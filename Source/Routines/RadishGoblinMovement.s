@@ -27,9 +27,9 @@ RadishGoblinHandleInput .proc
 
           ;; if temp1 & 2 = 0 then goto RGHI_Joy0
           lda joy1left
-          bne skip_2716
+          bne RGHI_Left
           jmp RGHI_CheckRight
-skip_2716:
+RGHI_Left:
 
 
           jmp RGHI_Left
@@ -39,9 +39,9 @@ skip_2716:
 RGHI_Joy0 .proc
 
           lda joy0left
-          bne skip_5517
+          bne RGHI_Left
           jmp RGHI_CheckRight
-skip_5517:
+RGHI_Left:
 
 
 .pend
@@ -97,24 +97,24 @@ return_point:
           jmp
           lda temp2
           cmp # 5
-          bcs skip_25
+          bcs CheckAnimationFrame10
           goto_label:
 
           jmp goto_label
-skip_25:
+CheckAnimationFrame10:
 
           lda temp2
           cmp # 5
-          bcs skip_3287
+          bcs CheckAnimationFrame10Label
           jmp goto_label
-skip_3287:
+CheckAnimationFrame10Label:
 
           
 
           lda temp2
           cmp # 10
-          bcc skip_6219
-skip_6219:
+          bcc RGHI_AfterLeft
+RGHI_AfterLeft:
 
 
           jmp RGHI_AfterLeft
@@ -136,9 +136,9 @@ RGHI_CheckRight .proc
           ;; if temp1 & 2 = 0 then goto RGHI_CheckRightJoy0
           lda temp1
           and # 2
-          bne skip_116
+          bne RGHI_Right
           jmp RGHI_CheckRightJoy0
-skip_116:
+RGHI_Right:
 
           rts
           jmp RGHI_Right
@@ -198,26 +198,26 @@ return_point:
           ;; if temp2 < 5 then goto RGHI_SPF_No2
           lda temp2
           cmp 5
-          bcs .skip_4322
+          bcs .CheckAnimationFrame10Right
           jmp
           lda temp2
           cmp # 5
-          bcs skip_1505
+          bcs CheckAnimationFrame10Right
           jmp goto_label
-skip_1505:
+CheckAnimationFrame10Right:
 
           lda temp2
           cmp # 5
-          bcs skip_2671
+          bcs CheckAnimationFrame10RightLabel
           jmp goto_label
-skip_2671:
+CheckAnimationFrame10RightLabel:
 
           
 
           lda temp2
           cmp # 10
-          bcc skip_7248
-skip_7248:
+          bcc RGHI_RightDone
+RGHI_RightDone:
 
 
           rts
@@ -291,19 +291,19 @@ RadishGoblinCheckGroundBounce .proc
           asl
           tax
           lda playerVelocityY,x
-          beq skip_5806
-          bmi skip_5806
+          beq RGBGB_ClearCheck
+          bmi RGBGB_ClearCheck
           jmp goto_label
-skip_5806:
+RGBGB_ClearCheck:
 
           lda temp1
           asl
           tax
           lda playerVelocityY,x
-          beq skip_1692
-          bmi skip_1692
+          beq ConvertXToColumn
+          bmi ConvertXToColumn
           jmp goto_label
-skip_1692:
+ConvertXToColumn:
 
 
 
@@ -322,10 +322,10 @@ skip_1692:
             lsr temp2
           lda temp2
           cmp # 32
-          bcc skip_4090
+          bcc CalculateFeetRow
           lda # 31
           sta temp2
-skip_4090:
+CalculateFeetRow:
 
 
           ;; Calculate feet row
@@ -354,11 +354,11 @@ skip_4090:
           lda temp2
           cmp pfrows
 
-          bcc skip_4391
+          bcc CheckRowBelow
 
-          jmp skip_4391
+          jmp CheckRowBelow
 
-          skip_4391:
+          CheckRowBelow:
 
           lda temp2
           clc
@@ -371,11 +371,11 @@ skip_4090:
           lda temp5
           cmp pfrows
 
-          bcc skip_2032
+          bcc CheckGroundPixel
 
-          jmp skip_2032
+          jmp CheckGroundPixel
 
-          skip_2032:
+          CheckGroundPixel:
 
           lda temp1
           sta temp4
@@ -404,9 +404,9 @@ return_point:
 
 
           lda temp1
-          bne skip_1733
+          bne CheckBounceState
           jmp RGBGB_ClearCheck
-skip_1733:
+CheckBounceState:
 
 
           ;; Check if moved away from contact
@@ -435,9 +435,9 @@ skip_1733:
           ;; if temp2 < temp3 then goto RGBGB_ClearState
           lda temp2
           cmp temp3
-          bcs skip_7054
+          bcs CalculateDistanceFromContact
           jmp RGBGB_ClearState
-skip_7054:
+CalculateDistanceFromContact:
           
 
           ;; let temp4 = temp2 - temp3
@@ -458,8 +458,8 @@ skip_7054:
 
           lda temp4
           cmp # 9
-          bcc skip_7304
-skip_7304:
+          bcc RGBGB_CalcBounce
+RGBGB_CalcBounce:
 
 
           jmp RGBGB_CalcBounce
@@ -494,17 +494,17 @@ RGBGB_CalcBounce .proc
           lda temp1
           cmp 2
 
-          bcc skip_696
+          bcc CheckPlayerIndex
 
-          jmp skip_696
+          jmp CheckPlayerIndex
 
-          skip_696:
+          CheckPlayerIndex:
 
           lda temp1
           cmp # 0
-          bne skip_5562
+          bne RGBGB_CheckStick
           jmp RGBGB_CheckEnhanced0
-skip_5562:
+RGBGB_CheckStick:
 
 
                     if (enhancedButtonStates_R & 2) then let temp3 = 1
@@ -523,16 +523,16 @@ RGBGB_CheckStick .proc
                     if temp1 & 2 = 0 then RGBGB_StickJoy0
           lda temp1
           and # 2
-          bne skip_5425
+          bne CheckJoy1Up
           jmp RGBGB_StickJoy0
-skip_5425:
+CheckJoy1Up:
 
                     if joy1up then let temp3 = 1
           lda joy1up
-          beq skip_7169
+          beq RGBGB_Apply
           lda 1
           sta temp3
-skip_7169:
+RGBGB_Apply:
           jmp RGBGB_Apply
 
 .pend
@@ -541,16 +541,16 @@ RGBGB_StickJoy0 .proc
 
           if joy0up then let temp3 = 1
           lda joy0up
-          beq skip_1443
-skip_1443:
-          jmp skip_1443
+          beq RGBGB_Apply
+RGBGB_Apply:
+          jmp RGBGB_Apply
 
 .pend
 
 RGBGB_Apply .proc
           lda temp3
-          bne skip_4524
-skip_4524:
+          bne DoubleBounceHeight
+DoubleBounceHeight:
 
 
 
@@ -605,9 +605,9 @@ RGBGB_ClearCheck .proc
           ;; if temp2 < temp3 then goto RGBGB_ClearState2
           lda temp2
           cmp temp3
-          bcs skip_7229
+          bcs CalculateDistanceFromContact2
           jmp RGBGB_ClearState2
-skip_7229:
+CalculateDistanceFromContact2:
           
 
           ;; let temp4 = temp2 - temp3
@@ -628,8 +628,8 @@ skip_7229:
 
           lda temp4
           cmp # 9
-          bcc skip_6603
-skip_6603:
+          bcc RGBGB_ClearCheckDone
+RGBGB_ClearCheckDone:
 
 
           rts

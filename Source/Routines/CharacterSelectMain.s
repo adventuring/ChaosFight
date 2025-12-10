@@ -148,9 +148,9 @@ HCSC_CheckJoy0 .proc
 
           lda temp2
           cmp # 0
-          bne skip_6419
+          bne HandleCharacterSelectCycle
           jmp HCSC_CheckJoy0Left
-skip_6419:
+HandleCharacterSelectCycle:
 
 
           jsr BS_return
@@ -268,9 +268,9 @@ HandleCharacterSelectCycle .proc
 
           lda temp2
           cmp # 0
-          bne skip_796
+          bne HCSC_CycleRight
           jmp HCSC_CycleLeft
-skip_796:
+HCSC_CycleRight:
 
 
           jmp HCSC_CycleRight
@@ -284,30 +284,30 @@ HCSC_CycleLeft .proc
 
           lda temp1
           cmp RandomCharacter
-          bne skip_7839
+          bne CheckNoCharacterLeft
           jmp HCSC_LeftFromRandom
-skip_7839:
+CheckNoCharacterLeft:
 
 
           lda temp1
           cmp NoCharacter
-          bne skip_1366
+          bne CheckCPUCharacterLeft
           jmp HCSC_LeftFromNoOrCPU
-skip_1366:
+CheckCPUCharacterLeft:
 
 
           lda temp1
           cmp CPUCharacter
-          bne skip_4773
+          bne CheckZeroLeft
           jmp HCSC_LeftFromNoOrCPU
-skip_4773:
+CheckZeroLeft:
 
 
           lda temp1
           cmp # 0
-          bne skip_7522
+          bne DecrementCharacter
           jmp HCSC_LeftFromZero
-skip_7522:
+DecrementCharacter:
 
 
           dec temp1
@@ -320,9 +320,9 @@ HCSC_LeftFromRandom .proc
 
           lda temp3
           cmp # 0
-          bne skip_6262
+          bne SetNoCharacterLeft
           ;; let temp1 = MaxCharacter : goto HCSC_CycleDone
-skip_6262:
+SetNoCharacterLeft:
 
           jsr HCSC_GetPlayer2Tail
 
@@ -358,30 +358,30 @@ HCSC_CycleRight .proc
 
           lda temp1
           cmp RandomCharacter
-          bne skip_9498
+          bne CheckNoCharacterRight
           jmp HCSC_RightFromRandom
-skip_9498:
+CheckNoCharacterRight:
 
 
           lda temp1
           cmp NoCharacter
-          bne skip_8767
+          bne CheckCPUCharacterRight
           jmp HCSC_RightFromNoOrCPU
-skip_8767:
+CheckCPUCharacterRight:
 
 
           lda temp1
           cmp CPUCharacter
-          bne skip_8806
+          bne CheckMaxCharacterRight
           jmp HCSC_RightFromNoOrCPU
-skip_8806:
+CheckMaxCharacterRight:
 
 
           lda temp1
           cmp MaxCharacter
-          bne skip_1541
+          bne IncrementCharacter
           jmp HCSC_RightFromMax
-skip_1541:
+IncrementCharacter:
 
 
           inc temp1
@@ -412,9 +412,9 @@ HCSC_RightFromMax .proc
 
           lda temp3
           cmp # 0
-          bne skip_3297
+          bne SetNoCharacterRight
           ;; let temp1 = RandomCharacter : goto HCSC_CycleDone
-skip_3297:
+SetNoCharacterRight:
 
           jsr HCSC_GetPlayer2Tail
 
@@ -591,36 +591,36 @@ CharacterSelectHandleTwoPlayers
 
           lda temp3
           cmp # 0
-          bne skip_3522
+          bne CheckQuadtariActive
           lda # 255
           sta temp4
-skip_3522:
+CheckQuadtariActive:
 
 
                     if controllerStatus & SetQuadtariDetected then let temp4 = 255
           lda controllerStatus
           and SetQuadtariDetected
-          beq skip_4497
+          beq ProcessPlayerInput
           lda # 255
           sta temp4
-skip_4497:
+ProcessPlayerInput:
 
 
 
           ;; if temp3 < 2 then goto ProcessPlayerInput          lda temp3          cmp 2          bcs .skip_8959          jmp
           lda temp3
           cmp # 2
-          bcs skip_928
+          bcs ProcessPlayerInputDone
           goto_label:
 
           jmp goto_label
-skip_928:
+ProcessPlayerInputDone:
 
           lda temp3
           cmp # 2
-          bcs skip_5440
+          bcs CharacterSelectHandleTwoPlayersDone
           jmp goto_label
-skip_5440:
+CharacterSelectHandleTwoPlayersDone:
 
           
 
@@ -779,10 +779,10 @@ CharacterSelectHandleRandomRolls .proc
                     if controllerStatus & SetQuadtariDetected then let temp1 = 3
           lda controllerStatus
           and SetQuadtariDetected
-          beq skip_9782
+          beq CharacterSelectRollRandomPlayer
           lda # 3
           sta temp1
-skip_9782:
+CharacterSelectRollRandomPlayer:
 
           ;; TODO: for currentPlayer = 0 to temp1
 
@@ -901,22 +901,22 @@ return_point: : if temp2 then goto CharacterSelectFinish
 
 lda temp2
 
-beq skip_3576
+beq CheckPlayer2Locked
 
-skip_3576:
-          jmp skip_3576
-
-          lda temp2
-
-          beq skip_8138
-
-          jmp skip_8138:
+CheckPlayer2Locked:
+          jmp CheckPlayer2Locked
 
           lda temp2
 
-          beq skip_9851
+          beq CheckPlayer2CPU
 
-          jmp skip_9851:
+          jmp CheckPlayer2CPU:
+
+          lda temp2
+
+          beq CharacterSelectReadyDone
+
+          jmp CharacterSelectReadyDone:
 
           ;; if playerCharacter[1] = CPUCharacter then goto CharacterSelectFinish
           jmp CharacterSelectReadyDone
@@ -956,9 +956,9 @@ return_point:
 
           ;; if temp2 then goto CharacterSelectQuadtariReadyIncrement
           lda temp2
-          beq skip_6413
+          beq CheckCPUCharacterQuadtari
           jmp CharacterSelectQuadtariReadyIncrement
-skip_6413:
+CheckCPUCharacterQuadtari:
 
           ;; let temp4 = playerCharacter[currentPlayer]
          
@@ -970,16 +970,16 @@ skip_6413:
 
           lda temp4
           cmp CPUCharacter
-          bne skip_46
+          bne CheckNoCharacterQuadtari
           jmp CharacterSelectQuadtariReadyIncrement
-skip_46:
+CheckNoCharacterQuadtari:
 
 
           lda temp4
           cmp NoCharacter
-          bne skip_5848
+          bne CharacterSelectQuadtariReadyNext
           jmp CharacterSelectQuadtariReadyIncrement
-skip_5848:
+CharacterSelectQuadtariReadyNext:
 
 
           jmp CharacterSelectQuadtariReadyNext
@@ -1000,11 +1000,11 @@ next_label_2_1_L997:.proc
           lda readyCount
           cmp 2
 
-          bcc skip_5488
+          bcc CharacterSelectReadyDone
 
-          jmp skip_5488
+          jmp CharacterSelectReadyDone
 
-          skip_5488:
+          CharacterSelectReadyDone:
 
 
 

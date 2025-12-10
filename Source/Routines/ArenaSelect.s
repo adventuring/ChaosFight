@@ -74,9 +74,9 @@ return_point:
           ;; Check Game Select switch - return to Character Select
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
           lda switchselect
-          bne skip_5627
+          bne SkipReturnToCharacterSelect
           jmp SkipReturnToCharacterSelect
-skip_5627:
+SkipReturnToCharacterSelect:
 
 
           jmp ReturnToCharacterSelect
@@ -88,32 +88,32 @@ SkipReturnToCharacterSelect
           sta temp1
           ;; Check Player 1 fire button
           ;; Check Player 2 fire button
-                    if joy0fire then let temp1 = 1          lda joy0fire          beq skip_3554
-skip_3554:
-          jmp skip_3554
+                    if joy0fire then let temp1 = 1          lda joy0fire          beq CheckJoy1Fire
+CheckJoy1Fire:
+          jmp CheckJoy1Fire
 
           ;; Check Quadtari players (3 & 4) if active
                     if joy1fire then let temp1 = 1
           lda joy1fire
-          beq skip_4728
+          beq CheckQuadtariFire
           lda 1
           sta temp1
-skip_4728:
+CheckQuadtariFire:
 
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
                     if (controllerStatus & SetQuadtariDetected) <> 0 then goto CheckQuadtariFireHold
           lda controllerStatus
           and SetQuadtariDetected
-          beq skip_4971
+          beq CheckFireHoldTimer
           jmp CheckQuadtariFireHold
-skip_4971:
+CheckFireHoldTimer:
 
           If fire button held, increment timer
           ;; if temp1 then goto IncrementFireHold
           lda temp1
-          beq skip_68
+          beq FireHoldCheckDone
           jmp IncrementFireHold
-skip_68:
+FireHoldCheckDone:
 
           ;; Fire released, reset timer
           lda # 0
@@ -132,19 +132,19 @@ IncrementFireHold
           lda temp2
           cmp FramesPerSecond
 
-          bcc skip_2376
+          bcc FireHoldCheckDone
 
-          jmp skip_2376
+          jmp FireHoldCheckDone
 
-          skip_2376:
+          FireHoldCheckDone:
 
 FireHoldCheckDone
           ;; Handle LEFT/RIGHT navigation for arena selection
           ;; if joy0left then goto ArenaSelectLeft
           lda joy0left
-          beq skip_3919
+          beq ArenaSelectDoneLeft
           jmp ArenaSelectLeft
-skip_3919:
+ArenaSelectDoneLeft:
 
           jmp ArenaSelectDoneLeft
 
@@ -154,15 +154,15 @@ ArenaSelectLeft .proc
           ;; Decrement arena, wrap from 0 to RandomArena (255)
           lda selectedArena_R
           cmp # 0
-          bne skip_3849
+          bne CheckRandomArenaLeft
           ;; let selectedArena_W = RandomArena : goto ArenaSelectLeftSound
-skip_3849:
+CheckRandomArenaLeft:
 
           lda selectedArena_R
           cmp RandomArena
-          bne skip_9093
+          bne DecrementArena
           ;; let selectedArena_W = MaxArenaID : goto ArenaSelectLeftSound
-skip_9093:
+DecrementArena:
 
           lda selectedArena_R
           sta temp2
@@ -193,9 +193,9 @@ return_point:
 ArenaSelectDoneLeft
           ;; if joy0right then goto ArenaSelectRight
           lda joy0right
-          beq skip_1901
+          beq ArenaSelectDoneRight
           jmp ArenaSelectRight
-skip_1901:
+ArenaSelectDoneRight:
 
           jmp ArenaSelectDoneRight
 
@@ -206,15 +206,15 @@ ArenaSelectRight .proc
           ;; RandomArena
           lda selectedArena_R
           cmp MaxArenaID
-          bne skip_4092
+          bne CheckRandomArenaRight
           ;; let selectedArena_W = RandomArena : goto ArenaSelectRightSound
-skip_4092:
+CheckRandomArenaRight:
 
           lda selectedArena_R
           cmp RandomArena
-          bne skip_2709
+          bne IncrementArena
           ;; let selectedArena_W = 0 : goto ArenaSelectRightSound
-skip_2709:
+IncrementArena:
 
           lda selectedArena_R
           sta temp2
@@ -255,9 +255,9 @@ ArenaSelectDoneRight
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
           lda selectedArena_R
           cmp RandomArena
-          bne skip_5275
+          bne DisplayArenaNumber
           jmp DisplayRandomArena
-skip_5275:
+DisplayArenaNumber:
 
 
           ;; Display arena number (selectedArena + 1 = 1-32)
@@ -299,8 +299,8 @@ FastBCDDone
           ;; arenas 10-32)
           lda temp2
           cmp # 1
-          bcc skip_4336
-skip_4336:
+          bcc SkipTens
+SkipTens:
 
 
           jmp SkipTens
@@ -427,9 +427,9 @@ DisplayDone
           ;; Handle fire button press (confirm selection, start game)
           ;; if joy0fire then goto ArenaSelectConfirm
           lda joy0fire
-          beq skip_1340
+          beq ArenaSelectDoneConfirm
           jmp ArenaSelectConfirm
-skip_1340:
+ArenaSelectDoneConfirm:
 
           jmp ArenaSelectDoneConfirm
 
@@ -495,10 +495,10 @@ CheckQuadtariFireHold
           ;; Player 4 fire button (right port, odd frame)
                     if !INPT2{7} then let temp1 = 1
           bit INPT2
-          bmi skip_78
+          bmi CheckQuadtariFireHoldDone
           lda 1
           sta temp1
-skip_78:
+CheckQuadtariFireHoldDone:
           jsr BS_return
 
 ReturnToCharacterSelect
@@ -615,9 +615,9 @@ ArenaSelectDrawCharacters .proc
           tax
           lda playerCharacter,x
           cmp CPUCharacter
-          bne skip_2941
+          bne CheckRandomCharacterP0
           jmp ArenaSelectDoneDrawP0
-skip_2941:
+CheckRandomCharacterP0:
 
           ;; if playerCharacter[0] = RandomCharacter then goto ArenaSelectDoneDrawP0
           lda # 0
@@ -625,9 +625,9 @@ skip_2941:
           tax
           lda playerCharacter,x
           cmp RandomCharacter
-          bne skip_5028
+          bne DrawPlayer0Character
           jmp ArenaSelectDoneDrawP0
-skip_5028:
+DrawPlayer0Character:
           lda # 0
           sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
@@ -680,9 +680,9 @@ ArenaSelectDoneDrawP0
           tax
           lda playerCharacter,x
           cmp CPUCharacter
-          bne skip_7826
+          bne CheckRandomCharacterP1
           jmp ArenaSelectDoneDrawP1
-skip_7826:
+CheckRandomCharacterP1:
 
           ;; if playerCharacter[1] = RandomCharacter then goto ArenaSelectDoneDrawP1
           lda # 1
@@ -690,9 +690,9 @@ skip_7826:
           tax
           lda playerCharacter,x
           cmp RandomCharacter
-          bne skip_5463
+          bne DrawPlayer1Character
           jmp ArenaSelectDoneDrawP1
-skip_5463:
+DrawPlayer1Character:
           lda # 1
           sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
@@ -761,9 +761,9 @@ return_point:
           tax
           lda playerCharacter,x
           cmp CPUCharacter
-          bne skip_5567
+          bne CheckRandomCharacterP2
           jmp ArenaSelectDoneDrawP2
-skip_5567:
+CheckRandomCharacterP2:
 
           ;; if playerCharacter[2] = RandomCharacter then goto ArenaSelectDoneDrawP2
           lda # 2
@@ -771,9 +771,9 @@ skip_5567:
           tax
           lda playerCharacter,x
           cmp RandomCharacter
-          bne skip_5444
+          bne DrawPlayer2Character
           jmp ArenaSelectDoneDrawP2
-skip_5444:
+DrawPlayer2Character:
           lda # 2
           sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
@@ -823,9 +823,9 @@ ArenaSelectDoneDrawP2
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_4430
+          bne CheckPlayer3Character
           jmp ArenaSelectDoneDrawP23
-skip_4430:
+CheckPlayer3Character:
 
 
           ;; if playerCharacter[3] = NoCharacter then goto ArenaSelectDoneDrawP23
@@ -836,9 +836,9 @@ skip_4430:
           tax
           lda playerCharacter,x
           cmp CPUCharacter
-          bne skip_1993
+          bne CheckRandomCharacterP3
           jmp ArenaSelectDoneDrawP23
-skip_1993:
+CheckRandomCharacterP3:
 
           ;; if playerCharacter[3] = RandomCharacter then goto ArenaSelectDoneDrawP23
           lda # 3
@@ -846,9 +846,9 @@ skip_1993:
           tax
           lda playerCharacter,x
           cmp RandomCharacter
-          bne skip_4106
+          bne DrawPlayer3Character
           jmp ArenaSelectDoneDrawP23
-skip_4106:
+DrawPlayer3Character:
           lda # 3
           sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6

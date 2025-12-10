@@ -97,25 +97,15 @@ ApplyDamage .proc
           sbc temp2
           sta temp1
 
-          lda temp4
-          sec
-          sbc temp2
-          sta temp1
-
           ;; if temp1 < 1 then let temp1 = 1
           lda temp1
           cmp # 1
-          bcs skip_1882
-          jmp let_label
-skip_1882:
+          bcs CheckPlayerWillDie
 
-          lda temp1
-          cmp # 1
-          bcs skip_1295
-          jmp let_label
-skip_1295:
+          lda # 1
+          sta temp1
 
-
+CheckPlayerWillDie:
 
           ;; Check if player will die from this damage
           ;; let temp2 = playerHealth[defenderID]         
@@ -127,22 +117,24 @@ skip_1295:
           ;; Will die
           lda # 0
           sta temp3
-                    if temp2 < temp1 then let temp3 = 1
-          If player will die, instantly vanish (eliminate)
+          if temp2 < temp1 then let temp3 = 1
+          ;; If player will die, instantly vanish (eliminate)
           ;; if temp3 then goto PlayerDies
           lda temp3
-          beq skip_5407
+          beq ApplyDamageToPlayer
+
           jmp PlayerDies
-skip_5407:
+
+ApplyDamageToPlayer:
 
           ;; Player survives - apply damage and enter hurt sta
 
-                    let playerHealth[defenderID] = temp2 - temp1
+          let playerHealth[defenderID] = temp2 - temp1
 
           ;; Set hurt animation (ActionHit = 5)
           lda defenderID
           sta currentPlayer
-          lda ActionHit
+          lda # ActionHit
           sta temp2
           ;; Cross-bank call to SetPlayerAnimation in bank 12
           lda # >(return_point-1)
@@ -153,17 +145,13 @@ skip_5407:
           pha
           lda # <(SetPlayerAnimation-1)
           pha
-                    ldx # 11
+          ldx # 11
           jmp BS_jsr
+
 return_point:
 
-
           ;; Calculate recovery frames (damage / 2, clamped 10-30)
-          ;; let temp4 = temp1 / 2          lda temp1          lsr          sta temp4
-          lda temp1
-          lsr
-          sta temp4
-
+          ;; let temp4 = temp1 / 2
           lda temp1
           lsr
           sta temp4
@@ -171,23 +159,21 @@ return_point:
           ;; if temp4 < 10 then let temp4 = 10
           lda temp4
           cmp # 10
-          bcs skip_5883
-          jmp let_label
-skip_5883:
+          bcs CheckMaximumRecovery
 
-          lda temp4
-          cmp # 10
-          bcs skip_497
-          jmp let_label
-skip_497:
+          lda # 10
+          sta temp4
 
+CheckMaximumRecovery:
 
           lda temp4
           cmp # 31
-          bcc skip_1533
+          bcc StoreRecoveryFrames
+
           lda # 30
           sta temp4
-skip_1533:
+
+StoreRecoveryFrames:
 
           lda defenderID
           asl
@@ -209,9 +195,9 @@ skip_1533:
           sta temp1
           lda temp1
           cmp CharacterUrsulo
-          bne skip_9055
+          bne PlayDamageSound
           jmp ApplyUrsuloKnockUp
-skip_9055:
+PlayDamageSound:
 
 
           ;; Sound effect (tail call)
@@ -264,10 +250,10 @@ ApplyUrsuloKnockUp .proc
           ;; Apply upward velocity to defender (negative value = upward)
           lda temp4
           cmp # 253
-          bcc skip_9918
+          bcc ApplyUpwardVelocity
           lda # 252
           sta temp4
-skip_9918:
+ApplyUpwardVelocity:
 
           lda defenderID
           asl
@@ -392,9 +378,9 @@ CheckAttackHit .proc
           lda playerX,x
           sec
           sbc cachedHitboxRight_R
-          bcc skip_2543
+          bcc CheckVerticalOverlap
           jmp NoHit
-skip_2543:
+CheckVerticalOverlap:
 
           ;; Defender bottom edge <= hitbox top edge (no overlap)
                     if playerY[defenderID] + PlayerSpriteHeight <= cachedHitboxTop_R then NoHit
@@ -410,9 +396,9 @@ skip_2543:
           sbc cachedHitboxTop_R
           bcc NoHit
           beq NoHit
-          jmp skip_8068
+          jmp CheckBottomOverlap
 NoHit:
-skip_8068:
+CheckBottomOverlap:
 
           ;; Defender top edge >= hitbox bottom edge (no overlap)
                     if playerY[defenderID] >= cachedHitboxBottom_R then NoHit
@@ -422,9 +408,9 @@ skip_8068:
           lda playerY,x
           sec
           sbc cachedHitboxBottom_R
-          bcc skip_5423
+          bcc HitDetected
           jmp NoHit
-skip_5423:
+HitDetected:
 
           ;; All bounds checked - defender is inside hitbox
           lda # 1
@@ -479,23 +465,23 @@ CalculateAttackHitbox .proc
           sta temp1
           lda temp1
           cmp # 0
-          bne skip_803
+          bne CheckProjectileHitbox
           jmp MeleeHitbox
-skip_803:
+CheckProjectileHitbox:
 
 
           lda temp1
           cmp # 1
-          bne skip_4291
+          bne CheckAreaHitbox
           jmp ProjectileHitbox
-skip_4291:
+CheckAreaHitbox:
 
 
           lda temp1
           cmp # 2
-          bne skip_8159
+          bne CalculateAttackHitboxDone
           jmp AreaHitbox
-skip_8159:
+CalculateAttackHitboxDone:
 
 
 .pend
@@ -527,9 +513,9 @@ MeleeHitbox .proc
           sta temp2
           ;; if temp2 then goto FacingRight
           lda temp2
-          beq skip_4137
+          beq FacingLeft
           jmp FacingRight
-skip_4137:
+FacingLeft:
 
           jmp FacingLeft
 
@@ -781,9 +767,9 @@ ProcessAttackerAttacks .proc
           ;; Skip if defender is attacker
           lda defenderID
           cmp attackerID
-          bne skip_6671
+          bne CheckDefenderHealth
           ;; TODO: NextDefender
-skip_6671:
+CheckDefenderHealth:
 
 
           ;; Skip if defender is dead
@@ -793,19 +779,19 @@ skip_6671:
           asl
           tax
           lda playerHealth,x
-          beq skip_4738
-          bmi skip_4738
+          beq CheckAttackHit
+          bmi CheckAttackHit
           jmp NextDefender
-skip_4738:
+CheckAttackHit:
 
           lda defenderID
           asl
           tax
           lda playerHealth,x
-          beq skip_7141
-          bmi skip_7141
+          beq ProcessAttackHit
+          bmi ProcessAttackHit
           jmp NextDefender
-skip_7141:
+ProcessAttackHit:
 
 
 
@@ -850,19 +836,19 @@ ProcessAllAttacks .proc
           asl
           tax
           lda playerHealth,x
-          beq skip_8694
-          bmi skip_8694
+          beq CheckAttackState
+          bmi CheckAttackState
           jmp NextAttacker
-skip_8694:
+CheckAttackState:
 
           lda attackerID
           asl
           tax
           lda playerHealth,x
-          beq skip_4688
-          bmi skip_4688
+          beq CheckAttackWindow
+          bmi CheckAttackWindow
           jmp NextAttacker
-skip_4688:
+CheckAttackWindow:
 
 
 
@@ -879,10 +865,10 @@ skip_4688:
           lda temp1
           sec
           sbc ActionAttackRecoveryShifted
-          bcc skip_2425
-          beq skip_2425
+          bcc ProcessAttackerAttacks
+          beq ProcessAttackerAttacks
           jmp NextAttacker
-skip_2425:
+ProcessAttackerAttacks:
           jsr ProcessAttackerAttacks
 
 .pend

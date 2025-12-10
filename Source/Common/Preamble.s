@@ -9,12 +9,12 @@
 ;; Define TV standard constants for .if  checks in MultiSpriteSuperChip.s
 ;; These are set by the platform files (NTSC.s, PAL.s, SECAM.s) before
 ;; Preamble.s is included. The platform files define TVStandard constants.
-;; but assembly code needs (TVStandard == 1), (TVStandard == 2) symbols defined with SET.
+;; but assembly code needs (TVStandard == PAL), (TVStandard == SECAM) symbols defined with SET.
 ;; Note: batariBASIC preprocessor doesn’t support #ifdef, so we define all three
 ;; and let the build system ensure only the correct one is used.
-;; For NTSC builds, (TVStandard == 1) and (TVStandard == 2) will be undefined (.if  will fail).
-;; For PAL builds, (TVStandard == 1) will be defined.
-;; For SECAM builds, (TVStandard == 2) will be defined.
+;; For NTSC builds, (TVStandard == PAL) and (TVStandard == SECAM) will be undefined (.if  will fail).
+;; For PAL builds, (TVStandard == PAL) will be defined.
+;; For SECAM builds, (TVStandard == SECAM) will be defined.
 ;; The platform files will override these with the correct values.
 
 ;; Include .SLEEP macro (macro.h documents it but doesn’t define it)
@@ -42,7 +42,7 @@
 ;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
 ;; Z/z removed - use SCRAM for any variables that were using z
 
-.include "Source/Common/Colors.h"
+.include "Source/Common/Colors.s"
 .include "Source/Common/Constants.s"
 .include "Source/Common/Enums.s"
 .include "Source/Common/Macros.s"

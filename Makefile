@@ -447,7 +447,7 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Banks/Banks.bas \
 	Source/Common/AssemblyConfig.bas \
 	Source/Common/CharacterDefinitions.bas \
-	Source/Common/Colors.h \
+	Source/Common/Colors.s \
 	Source/Common/Constants.bas \
 	Source/Common/Enums.bas \
 	Source/Common/Macros.bas \

@@ -9,7 +9,7 @@ PlayerColors12:
 
 PlayerColors12_end:
 
-.if TVStandard == 2
+.if TVStandard == SECAM
 PlayerColors6:
 
           .byte $58, $58, $58, $58

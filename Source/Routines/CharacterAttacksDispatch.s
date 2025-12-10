@@ -21,152 +21,152 @@ DispatchCharacterAttack .proc
 
           lda temp4
           cmp # CharacterBernie
-          bne skip_8965
+          bne CheckCurler
 
           jmp BernieAttack
 
-skip_8965:
+CheckCurler:
 
           ;; Curler: ranged curling stone along ground
 
           lda temp4
           cmp # CharacterCurler
-          bne skip_3787
+          bne CheckDragonOfStorms
 
           jmp PerformGenericAttack
 
-skip_3787:
+CheckDragonOfStorms:
 
           ;; Dragon of Storms: ranged ballistic fireball
 
           lda temp4
           cmp # CharacterDragonOfStorms
-          bne skip_7828
+          bne CheckZoeRyen
 
           jmp PerformGenericAttack
 
-skip_7828:
+CheckZoeRyen:
 
           ;; Zoe Ryen: rapid laser blast
 
           lda temp4
           cmp # CharacterZoeRyen
-          bne skip_3333
+          bne CheckFatTony
 
           jmp PerformGenericAttack
 
-skip_3333:
+CheckFatTony:
 
           ;; Fat Tony: stationary magic ring laser
 
           lda temp4
           cmp # CharacterFatTony
-          bne skip_1009
+          bne CheckMegax
 
           jmp PerformGenericAttack
 
-skip_1009:
+CheckMegax:
 
           ;; Megax: heavy mêlée breath strike (generic mêlée tables)
 
           lda temp4
           cmp # CharacterMegax
-          bne skip_3534
+          bne CheckHarpy
 
           jmp PerformGenericAttack
 
-skip_3534:
+CheckHarpy:
 
           ;; Harpy: diagonal swoop attack
 
           lda temp4
           cmp # CharacterHarpy
-          bne skip_9677
+          bne CheckKnightGuy
 
           jmp HarpyAttack
 
-skip_9677:
+CheckKnightGuy:
 
 
           ;; Knight Guy: sword mêlée swing
 
           lda temp4
           cmp CharacterKnightGuy
-          bne skip_2923
+          bne CheckFrooty
           jmp PerformGenericAttack
-skip_2923:
+CheckFrooty:
 
 
           ;; Frooty: charge-and-bounce lollipop projectile (Issue #1177)
 
           lda temp4
           cmp CharacterFrooty
-          bne skip_3446
+          bne CheckNefertem
           jmp FrootyAttack
-skip_3446:
+CheckNefertem:
 
 
           ;; Nefertem: mêlée paw strike
 
           lda temp4
           cmp CharacterNefertem
-          bne skip_2059
+          bne CheckNinjishGuy
           jmp PerformGenericAttack
-skip_2059:
+CheckNinjishGuy:
 
 
           ;; Ninjish Guy: ranged shuriken
 
           lda temp4
           cmp CharacterNinjishGuy
-          bne skip_1855
+          bne CheckPorkChop
           jmp PerformGenericAttack
-skip_1855:
+CheckPorkChop:
 
 
           ;; Pork Chop: mêlée
 
           lda temp4
           cmp CharacterPorkChop
-          bne skip_1132
+          bne CheckRadishGoblin
           jmp PerformGenericAttack
-skip_1132:
+CheckRadishGoblin:
 
 
           ;; Radish Goblin: mêlée bite lunge
 
           lda temp4
           cmp CharacterRadishGoblin
-          bne skip_9972
+          bne CheckRoboTito
           jmp PerformGenericAttack
-skip_9972:
+CheckRoboTito:
 
 
           ;; Robo Tito: mêlée trunk slam
 
           lda temp4
           cmp CharacterRoboTito
-          bne skip_9265
+          bne CheckUrsulo
           jmp PerformGenericAttack
-skip_9265:
+CheckUrsulo:
 
 
           ;; Ursulo: claw swipe with mêlée tables
 
           lda temp4
           cmp CharacterUrsulo
-          bne skip_8405
+          bne CheckShamone
           jmp UrsuloAttack
-skip_8405:
+CheckShamone:
 
 
           ;; Shamone: jump + mêlée special
 
           lda temp4
           cmp CharacterShamone
-          bne skip_3871
+          bne CheckMethHound
           jmp ShamoneAttack
-skip_3871:
+CheckMethHound:
 
 
 
@@ -180,9 +180,9 @@ skip_3871:
           ;; MethHound uses ShamoneAttack handler
           lda temp4
           cmp CharacterMethHound
-          bne skip_9432
+          bne DispatchCharacterAttackDone
           jmp ShamoneAttack
-skip_9432:
+DispatchCharacterAttackDone:
 
 
 
@@ -229,18 +229,18 @@ CheckEnhancedJumpButton:
 
           lda currentPlayer
           cmp # 0
-          bne skip_7988
+          bne CheckPlayer1Enhanced
           ;; TODO: CEJB_CheckPlayer0
-skip_7988:
+CheckPlayer1Enhanced:
 
 
           ;; Players 2-3 skip enhanced controller checks
 
           lda currentPlayer
           cmp # 1
-          bne skip_316
+          bne CEJB_Done
           ;; TODO: CEJB_CheckPlayer2
-skip_316:
+CEJB_Done:
 
 
           jmp CEJB_Done
@@ -261,9 +261,9 @@ CEJB_ReadButton0
 
                     if !INPT0{7} then let
           bit INPT0
-          bmi skip_1048
+          bmi CEJB_Done
           jmp let_label
-skip_1048: temp3 = 1
+CEJB_Done: temp3 = 1
           jmp CEJB_Done
 
 .pend
@@ -286,8 +286,8 @@ CEJB_CheckPlayer2 .proc
           lda controllerStatus
           and # 4
           cmp # 0
-          bne skip_785
-skip_785:
+          bne CEJB_ReadButton2
+CEJB_ReadButton2:
 
 
 CEJB_ReadButton2
@@ -298,10 +298,10 @@ CEJB_ReadButton2
           lda INPT2
           and # 128
           cmp # 0
-          bne skip_879
+          bne CEJB_Done
           lda # 1
           sta temp3
-skip_879:
+CEJB_Done:
 
 
           jmp CEJB_Done
@@ -316,8 +316,8 @@ CEJB_CheckPlayer2Joy2bPlus .proc
           lda controllerStatus
           and # 8
           cmp # 0
-          bne skip_6737
-skip_6737:
+          bne CEJB_ReadButton2
+CEJB_ReadButton2:
 
 
           jmp CEJB_ReadButton2

@@ -46,74 +46,74 @@ MomentumRecoveryLoop .proc
           ;; if temp1 < 2 then MomentumRecoveryProcess
           lda temp1
           cmp # 2
-          bcs skip_1629
+          bcs CheckQuadtariActive
           jmp MomentumRecoveryProcess
-skip_1629:
+CheckQuadtariActive:
 
           lda temp1
           cmp # 2
-          bcs skip_7629
+          bcs CheckPlayer2Character
           jmp MomentumRecoveryProcess
-skip_7629:
+CheckPlayer2Character:
 
 
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_8430
+          bne CheckPlayer2NoCharacter
           jmp MomentumRecoveryNext
-skip_8430:
+CheckPlayer2NoCharacter:
 
           ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto MomentumRecoveryNext
           lda temp1
           cmp # 2
-          bne skip_853
+          bne CheckPlayer3Character
           lda 2
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_853
+          bne CheckPlayer3Character
           jmp MomentumRecoveryNext
-skip_853:
+CheckPlayer3Character:
 
           lda temp1
           cmp # 2
-          bne skip_1820
+          bne CheckPlayer3NoCharacter
           lda 2
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_1820
+          bne CheckPlayer3NoCharacter
           jmp MomentumRecoveryNext
-skip_1820:
+CheckPlayer3NoCharacter:
 
 
           ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto MomentumRecoveryNext
           lda temp1
           cmp # 3
-          bne skip_8242
+          bne MomentumRecoveryProcess
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_8242
+          bne MomentumRecoveryProcess
           jmp MomentumRecoveryNext
-skip_8242:
+MomentumRecoveryProcess:
 
           lda temp1
           cmp # 3
-          bne skip_5063
+          bne ProcessRecoveryFrames
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_5063
+          bne ProcessRecoveryFrames
           jmp MomentumRecoveryNext
-skip_5063:
+ProcessRecoveryFrames:
 
 
 
@@ -127,17 +127,17 @@ MomentumRecoveryProcess .proc
           asl
           tax
           lda playerRecoveryFrames,x
-          beq skip_2355
+          beq SyncRecoveryFlag
           dec playerRecoveryFrames,x
-skip_2355:
+SyncRecoveryFlag:
 
           lda temp1
           asl
           tax
           lda playerRecoveryFrames,x
-          beq skip_9119
+          beq SetRecoveryFlag
           dec playerRecoveryFrames,x
-skip_9119:
+SetRecoveryFlag:
 
 
           ;; Synchronize playerState bit 3 with recovery frames
@@ -147,36 +147,36 @@ skip_9119:
           asl
           tax
           lda playerRecoveryFrames,x
-          beq skip_6729
+          beq ClearRecoveryFlag
           lda playerState,x
           ora PlayerStateBitRecovery
           sta playerState,x
-skip_6729:
+ClearRecoveryFlag:
           ;; Clear bit 3 (recovery flag) when recovery frames = 0
           ;; if ! playerRecoveryFrames[temp1] then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitRecovery)
           lda temp1
           asl
           tax
           lda playerRecoveryFrames,x
-          bne skip_7596
+          bne CheckVelocityDecay
           lda temp1
           asl
           tax
           lda playerState
           sta playerState,x
-skip_7596:
+CheckVelocityDecay:
 
           lda temp1
           asl
           tax
           lda playerRecoveryFrames,x
-          bne skip_3094
+          bne DecayVelocity
           lda temp1
           asl
           tax
           lda playerState
           sta playerState,x
-skip_3094:
+DecayVelocity:
 
 
           ;; Decay velocity if recovery frames active
@@ -186,17 +186,17 @@ skip_3094:
           asl
           tax
           lda playerRecoveryFrames,x
-          bne skip_6205
+          bne CheckVelocitySign
           jmp MomentumRecoveryNext
-skip_6205:
+CheckVelocitySign:
 
           lda temp1
           asl
           tax
           lda playerRecoveryFrames,x
-          bne skip_4277
+          bne DecayPositiveVelocity
           jmp MomentumRecoveryNext
-skip_4277:
+DecayPositiveVelocity:
 
 
           ;; time)
@@ -205,19 +205,19 @@ skip_4277:
           asl
           tax
           lda playerVelocityX,x
-          beq skip_7633
-          bmi skip_7633
+          beq DecayPositiveVelocity
+          bmi DecayPositiveVelocity
           jmp MomentumRecoveryDecayNegative
-skip_7633:
+DecayPositiveVelocity:
 
           lda temp1
           asl
           tax
           lda playerVelocityX,x
-          beq skip_2625
-          bmi skip_2625
+          beq DecayPositiveVelocityLabel
+          bmi DecayPositiveVelocityLabel
           jmp MomentumRecoveryDecayNegative
-skip_2625:
+DecayPositiveVelocityLabel:
 
 
           ;; Positive velocity: decay by 1
@@ -238,10 +238,10 @@ skip_2625:
           asl
           tax
           lda playerVelocityX,x
-          bne skip_5069
+          bne MomentumRecoveryNext
           lda # 0
           sta playerVelocityXL,x
-skip_5069:
+MomentumRecoveryNext:
           jmp MomentumRecoveryNext
 
 .pend
@@ -253,17 +253,17 @@ MomentumRecoveryDecayNegative .proc
           asl
           tax
           lda playerVelocityX,x
-          bmi skip_8611
+          bmi DecayNegativeVelocity
           jmp MomentumRecoveryNext
-skip_8611:
+DecayNegativeVelocity:
 
           lda temp1
           asl
           tax
           lda playerVelocityX,x
-          bmi skip_7514
+          bmi DecayNegativeVelocityLabel
           jmp MomentumRecoveryNext
-skip_7514:
+DecayNegativeVelocityLabel:
 
 
           ;; negative)
@@ -284,10 +284,10 @@ skip_7514:
           asl
           tax
           lda playerVelocityX,x
-          bne skip_5069
+          bne MomentumRecoveryNext
           lda # 0
           sta playerVelocityXL,x
-skip_5069:
+MomentumRecoveryNext:
 
 .pend
 
@@ -297,17 +297,17 @@ MomentumRecoveryNext .proc
           ;; if temp1 < 4 then goto MomentumRecoveryLoop          lda temp1          cmp 4          bcs .skip_9998          jmp
           lda temp1
           cmp # 4
-          bcs skip_6719
+          bcs ApplyMomentumAndRecoveryDone
           goto_label:
 
           jmp goto_label
-skip_6719:
+ApplyMomentumAndRecoveryDone:
 
           lda temp1
           cmp # 4
-          bcs skip_8865
+          bcs ApplyMomentumAndRecoveryComplete
           jmp goto_label
-skip_8865:
+ApplyMomentumAndRecoveryComplete:
 
           
           ;; Re-enable smart branching optimization

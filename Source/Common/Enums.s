@@ -1,21 +1,21 @@
 ;;; Chaos Fight Source/Common/Enums.bas
 ;;; Copyright 2025 Bruce-Robert Pocock
 
-;;; TV Standards
-NTSC = 1
-PAL = 2
-SECAM = 3
+          ;; TV Standards
+          NTSC = 1
+          PAL = 2
+          SECAM = 3
 
           ;; Game Modes
-ModePublisherPrelude = 0
-ModeAuthorPrelude = 1
-ModeTitle = 2
-ModeCharacterSelect = 3
-ModeFallingAnimation = 4
-ModeArenaSelect = 5
-ModeGame = 6
-ModeWinner = 7
-ModeAttract = 8
+          ModePublisherPrelude = 0
+          ModeAuthorPrelude = 1
+          ModeTitle = 2
+          ModeCharacterSelect = 3
+          ModeFallingAnimation = 4
+          ModeArenaSelect = 5
+          ModeGame = 6
+          ModeWinner = 7
+          ModeAttract = 8
 
           ;;
           ;; Animation Action Enums
@@ -24,53 +24,53 @@ ModeAttract = 8
           ;; Each action has up to 8 frames (0-7)
 
           ;; Standing still (facing right)
-ActionStanding = 0
+          ActionStanding = 0
 
           ;; Idle (resting)
-ActionIdle = 1
+          ActionIdle = 1
 
           ;; Standing still guarding
-ActionGuarding = 2
+          ActionGuarding = 2
 
           ;; Walking/running
-ActionWalking = 3
+          ActionWalking = 3
 
           ;; Coming to stop
-ActionStopping = 4
+          ActionStopping = 4
 
           ;; Taking a hit
-ActionHit = 5
+          ActionHit = 5
 
           ;; Falling backwards
-ActionFallBack = 6
+          ActionFallBack = 6
 
           ;; Falling down
-ActionFallDown = 7
+          ActionFallDown = 7
 
           ;; Fallen down
-ActionFallen = 8
+          ActionFallen = 8
 
           ;; Recovering to sta
 
-ActionRecovering = 9
+          ActionRecovering = 9
 
           ;; Jumping
-ActionJumping = 10
+          ActionJumping = 10
 
           ;; Falling after jump
-ActionFalling = 11
+          ActionFalling = 11
 
           ;; Landing
-ActionLanding = 12
+          ActionLanding = 12
 
           ;; Attack windup
-ActionAttackWindup = 13
+          ActionAttackWindup = 13
 
           ;; Attack execution
-ActionAttackExecute = 14
+          ActionAttackExecute = 14
 
           ;; Attack recovery
-ActionAttackRecovery = 15
+          ActionAttackRecovery = 15
 
           ;; NOTE: RoboTito repurposes existing animation states:
           ;;
@@ -83,31 +83,31 @@ ActionAttackRecovery = 15
           ;; Used for checking missile interaction properties
 
           ;; bit 0: Hit background (1=hit and disappear, 0=pass through)
-MissileFlagHitBackground = 1
+          MissileFlagHitBackground = 1
 
           ;; bit 1: Hit player (2=hit and disappear, 0=pass through)
-MissileFlagHitPlayer = 2
+          MissileFlagHitPlayer = 2
 
           ;; bit 2: Apply gravity (4=affected by gravity, 0=no gravity)
-MissileFlagGravity = 4
+          MissileFlagGravity = 4
 
           ;; bit 3: Bounce off walls (8=bounce, 0=stop/hit)
-MissileFlagBounce = 8
+          MissileFlagBounce = 8
 
           ;; bit 4: Apply friction physics (curling stone deceleration)
-MissileFlagFriction = 16
+          MissileFlagFriction = 16
 
           ;; Combined flags for common combinations (bits 0-1)
-MissileFlagHitBoth = 3
+          MissileFlagHitBoth = 3
 
           ;; Bits 0 and 2 set: HitBackground|Gravity = 1+4 = 5 (%00000101)
-MissileFlagHitBackgroundAndGravity = 5
+          MissileFlagHitBackgroundAndGravity = 5
 
           ;; Bits 0-4 set: HitBackground|HitPlayer|Gravity|Bounce|Friction
-MissileFlagCurlerFull = 31
+          MissileFlagCurlerFull = 31
 
           ;; Attack Type Constants (for CharacterAttackTypes data table and PlayerAttackType array)
-MeleeAttack = 0
-RangedAttack = 1
-AreaAttack = 2
+          MeleeAttack = 0
+          RangedAttack = 1
+          AreaAttack = 2
 

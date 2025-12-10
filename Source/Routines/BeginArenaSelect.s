@@ -42,16 +42,16 @@ BeginArenaSelect .proc
           lda # 0
           sta selectedArena_W
           ;; Start at arena 1 (0-indexed, displays as 1)
-          ;; lda # 0 (duplicate)
-          ;; sta fireHoldTimer_W (duplicate)
+          lda # 0
+          sta fireHoldTimer_W
           ;; Initialize fire hold timer (for returning to Character
           ;; Select)
 
           ;; Set screen layout (32×8 for character display) - inlined
-          ;; lda ScreenPfRowHeight (duplicate)
-          ;; sta pfrowheight (duplicate)
-          ;; lda ScreenPfRows (duplicate)
-          ;; sta pfrows (duplicate)
+          lda ScreenPfRowHeight
+          sta pfrowheight
+          lda ScreenPfRows
+          sta pfrows
 
           ;; Background: black (COLUBK starts black, no need to set)
 

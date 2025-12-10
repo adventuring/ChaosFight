@@ -65,7 +65,7 @@ InputHandleAllPlayers .proc
 
           ;; InputSkipPlayer4Input (all called via goto or gosub)
 
-                    ;; if qtcontroller then goto InputHandleQuadtariPlayers
+                    if qtcontroller then goto InputHandleQuadtariPlayers
           lda qtcontroller
           beq skip_514
           jmp InputHandleQuadtariPlayers
@@ -75,18 +75,18 @@ skip_514:
 
           ;; Even frame: Handle Players 1 & 2 - only if alive
 
-                    ;; let currentPlayer = 0 : gosub IsPlayerAlive bank13
-          ;; lda temp2 (duplicate)
+                    let currentPlayer = 0 : gosub IsPlayerAlive bank13
+          lda temp2
           cmp # 0
           bne skip_4896
           ;; TODO: InputDonePlayer0Input
 skip_4896:
 
 
-                    ;; if (playerState[0] & 8) then InputDonePlayer0Input
+                    if (playerState[0] & 8) then InputDonePlayer0Input
 
-                    ;; let temp1 = 0
-          ;; lda # 0 (duplicate)
+                    let temp1 = 0
+          lda # 0
           sta temp1 : gosub InputHandleLeftPortPlayerFunction
 
 
@@ -113,33 +113,33 @@ InputDonePlayer0Input
 
 
 
-                    ;; let currentPlayer = 1 : gosub IsPlayerAlive bank13
-          ;; lda 1 (duplicate)
-          ;; sta currentPlayer (duplicate)
-          ;; lda # >(return_point-1) (duplicate)
+                    let currentPlayer = 1 : gosub IsPlayerAlive bank13
+          lda 1
+          sta currentPlayer
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(IsPlayerAlive-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(IsPlayerAlive-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(IsPlayerAlive-1)
+          pha
+          lda # <(IsPlayerAlive-1)
+          pha
           ldx # 12
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
-          ;; lda temp2 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_1481 (duplicate)
+          lda temp2
+          cmp # 0
+          bne skip_1481
           ;; TODO: InputDonePlayer1Input
 skip_1481:
 
 
-                    ;; if (playerState[1] & 8) then InputDonePlayer1Input
-          ;; jmp InputHandlePlayer1 (duplicate)
+                    if (playerState[1] & 8) then InputDonePlayer1Input
+          jmp InputHandlePlayer1
 
 
 
-          ;; jmp InputDonePlayer1Input (duplicate)
+          jmp InputDonePlayer1Input
 
 
 
@@ -168,8 +168,8 @@ InputHandlePlayer1 .proc
 
           ;; Constraints: Must be colocated with InputHandleAllPlayers, InputSkipPlayer1Input
 
-          ;; lda # 1 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 1
+          sta temp1
 
           jsr InputHandleRightPortPlayerFunction
 
@@ -178,7 +178,7 @@ InputDonePlayer1Input
           ;; Player 1 uses Joy1
           ;; Returns: Far (return otherbank)
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -245,41 +245,41 @@ InputHandleQuadtariPlayers .proc
 
           ;; alive)
 
-          ;; lda controllerStatus (duplicate)
+          lda controllerStatus
           and SetQuadtariDetected
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_2681 (duplicate)
+          cmp # 0
+          bne skip_2681
 skip_2681:
 
 
-                    ;; if playerCharacter[2] = NoCharacter then InputDonePlayer3Input
+                    if playerCharacter[2] = NoCharacter then InputDonePlayer3Input
 
-                    ;; let currentPlayer = 2 : gosub IsPlayerAlive bank13
-          ;; lda 2 (duplicate)
-          ;; sta currentPlayer (duplicate)
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(IsPlayerAlive-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(IsPlayerAlive-1) (duplicate)
-          ;; pha (duplicate)
-          ;; ldx # 12 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_8643 (duplicate)
+                    let currentPlayer = 2 : gosub IsPlayerAlive bank13
+          lda 2
+          sta currentPlayer
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(IsPlayerAlive-1)
+          pha
+          lda # <(IsPlayerAlive-1)
+          pha
+          ldx # 12
+          jmp BS_jsr
+return_point:
+          lda temp2
+          cmp # 0
+          bne skip_8643
           ;; TODO: InputDonePlayer3Input
 skip_8643:
 
 
-                    ;; if (playerState[2] & 8) then InputDonePlayer3Input
+                    if (playerState[2] & 8) then InputDonePlayer3Input
 
-                    ;; let temp1 = 2
-          ;; lda # 2 (duplicate)
-          ;; sta temp1 : gosub InputHandleLeftPortPlayerFunction (duplicate)
+                    let temp1 = 2
+          lda # 2
+          sta temp1 : gosub InputHandleLeftPortPlayerFunction
 
 
 
@@ -301,41 +301,41 @@ InputDonePlayer3Input
           ;; Called Routines: None
 
           ;; Constraints: Must be colocated with InputHandleQuadtariPlayers
-          ;; lda controllerStatus (duplicate)
-          ;; and SetQuadtariDetected (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_8739 (duplicate)
+          lda controllerStatus
+          and SetQuadtariDetected
+          cmp # 0
+          bne skip_8739
 skip_8739:
 
 
-                    ;; if playerCharacter[3] = NoCharacter then InputDonePlayer4Input
+                    if playerCharacter[3] = NoCharacter then InputDonePlayer4Input
 
-                    ;; let currentPlayer = 3 : gosub IsPlayerAlive bank13
-          ;; lda 3 (duplicate)
-          ;; sta currentPlayer (duplicate)
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(IsPlayerAlive-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(IsPlayerAlive-1) (duplicate)
-          ;; pha (duplicate)
-          ;; ldx # 12 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_21 (duplicate)
+                    let currentPlayer = 3 : gosub IsPlayerAlive bank13
+          lda 3
+          sta currentPlayer
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(IsPlayerAlive-1)
+          pha
+          lda # <(IsPlayerAlive-1)
+          pha
+          ldx # 12
+          jmp BS_jsr
+return_point:
+          lda temp2
+          cmp # 0
+          bne skip_21
           ;; TODO: InputDonePlayer4Input
 skip_21:
 
 
-                    ;; if (playerState[3] & 8) then InputDonePlayer4Input
+                    if (playerState[3] & 8) then InputDonePlayer4Input
 
-                    ;; let temp1 = 3
-          ;; lda # 3 (duplicate)
-          ;; sta temp1 : gosub InputHandleRightPortPlayerFunction (duplicate)
+                    let temp1 = 3
+          lda # 3
+          sta temp1 : gosub InputHandleRightPortPlayerFunction
 
 
 
@@ -368,7 +368,7 @@ InputDonePlayer4Input
           ;; Switch back to even frame
 
           qtcontroller = 0
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

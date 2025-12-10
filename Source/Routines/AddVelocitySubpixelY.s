@@ -13,25 +13,25 @@ AddVelocitySubpixelY .proc
           lda temp2
           sta temp4
           ;; Use saved amount in accumulator
-          ;; let subpixelAccumulator = playerVelocityYL[temp1] + temp4
-          ;; lda temp1 (duplicate)
+          let subpixelAccumulator = playerVelocityYL[temp1] + temp4
+          lda temp1
           asl
           tax
-          ;; lda playerVelocityYL,x (duplicate)
+          lda playerVelocityYL,x
           clc
           adc temp4
-          ;; sta subpixelAccumulator (duplicate)
+          sta subpixelAccumulator
           ;; No carry: temp3 = 0, use low byte directly
-          ;; lda temp3 (duplicate)
+          lda temp3
           cmp # 1
           bcc skip_2086
 skip_2086:
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda temp2
+          sta playerVelocityYL,x
           rts
 .pend
 
@@ -52,17 +52,17 @@ VelocityYCarry .proc
           ;; Constraints: Internal helper for AddVelocitySubpixelY,
           ;; only called when carry detected
           ;; Carry detected: temp3 > 0, extract wrapped low byte
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
-          ;; let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
+          lda temp1
+          asl
+          tax
+          lda temp2
+          sta playerVelocityYL,x
+          let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
+          lda temp1
+          asl
+          tax
           inc playerVelocityY,x
-          ;; rts (duplicate)
+          rts
 
 .pend
 

@@ -58,7 +58,7 @@ ActionRecovering = 9
 ActionJumping = 10
 
           ;; Falling after jump
-;; ActionFalling (duplicate) = 11
+ActionFalling = 11
 
           ;; Landing
 ActionLanding = 12

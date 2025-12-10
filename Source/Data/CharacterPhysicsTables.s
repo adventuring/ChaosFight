@@ -20,8 +20,8 @@ WeightDividedBy20_end:
 SquareTable
 asm_1:
 
-;; SquareTable (duplicate)
+SquareTable
 asm_end_1:
-;; SquareTable: (duplicate)
+SquareTable:
           .byte 0, 1, 2, 4, 6, 9, 12, 16, 20, 25, 30, 36, 42, 49, 56, 64, 72, 81, 90, 100, 110, 121, 132, 144
-;; SquareTable_end: (duplicate)
+SquareTable_end:

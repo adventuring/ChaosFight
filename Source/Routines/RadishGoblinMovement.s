@@ -25,22 +25,22 @@ RadishGoblinHandleInput .proc
 
           jsr BS_return
 
-                    ;; if temp1 & 2 = 0 then goto RGHI_Joy0
+                    if temp1 & 2 = 0 then goto RGHI_Joy0
           lda joy1left
           bne skip_2716
           jmp RGHI_CheckRight
 skip_2716:
 
 
-          ;; jmp RGHI_Left (duplicate)
+          jmp RGHI_Left
 
 .pend
 
 RGHI_Joy0 .proc
 
-          ;; lda joy0left (duplicate)
-          ;; bne skip_5517 (duplicate)
-          ;; jmp RGHI_CheckRight (duplicate)
+          lda joy0left
+          bne skip_5517
+          jmp RGHI_CheckRight
 skip_5517:
 
 
@@ -48,82 +48,82 @@ skip_5517:
 
 RGHI_Left .proc
 
-          ;; let temp4 = playerCharacter[temp1]
-          ;; lda temp1 (duplicate)
+          let temp4 = playerCharacter[temp1]
+          lda temp1
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
+          lda playerCharacter,x
           sta temp4
 
-                    ;; let temp6 = CharacterMovementSpeed[temp4]
-          ;; lda temp4 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMovementSpeed,x (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMovementSpeed,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = CharacterMovementSpeed[temp4]
+          lda temp4
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta temp6
+          lda temp4
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta temp6
 
-                    ;; let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
+                    let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityXL,x
 
-                    ;; if (playerState[temp1] & 8) then goto RGHI_AfterLeft
+                    if (playerState[temp1] & 8) then goto RGHI_AfterLeft
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(GetPlayerAnimationStateFunction-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(GetPlayerAnimationStateFunction-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(GetPlayerAnimationStateFunction-1)
+          pha
+          lda # <(GetPlayerAnimationStateFunction-1)
+          pha
                     ldx # 12
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
-          ;; ;; if temp2 < 5 then goto RGHI_SPF_No1
-          ;; lda temp2 (duplicate)
+          ;; if temp2 < 5 then goto RGHI_SPF_No1
+          lda temp2
           cmp 5
           bcs .skip_7968
-          ;; jmp (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; cmp # 5 (duplicate)
-          ;; bcs skip_25 (duplicate)
+          jmp
+          lda temp2
+          cmp # 5
+          bcs skip_25
           goto_label:
 
-          ;; jmp goto_label (duplicate)
+          jmp goto_label
 skip_25:
 
-          ;; lda temp2 (duplicate)
-          ;; cmp # 5 (duplicate)
-          ;; bcs skip_3287 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp2
+          cmp # 5
+          bcs skip_3287
+          jmp goto_label
 skip_3287:
 
           
 
-          ;; lda temp2 (duplicate)
-          ;; cmp # 10 (duplicate)
+          lda temp2
+          cmp # 10
           bcc skip_6219
 skip_6219:
 
 
-          ;; jmp RGHI_AfterLeft (duplicate)
+          jmp RGHI_AfterLeft
 
 .pend
 
 RGHI_SPF_No1 .proc
 
-                    ;; let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
 
 .pend
 
@@ -133,102 +133,102 @@ RGHI_AfterLeft .proc
 
 RGHI_CheckRight .proc
 
-                    ;; if temp1 & 2 = 0 then goto RGHI_CheckRightJoy0
-          ;; lda temp1 (duplicate)
+                    if temp1 & 2 = 0 then goto RGHI_CheckRightJoy0
+          lda temp1
           and # 2
-          ;; bne skip_116 (duplicate)
-          ;; jmp RGHI_CheckRightJoy0 (duplicate)
+          bne skip_116
+          jmp RGHI_CheckRightJoy0
 skip_116:
 
           rts
-          ;; jmp RGHI_Right (duplicate)
+          jmp RGHI_Right
 
 .pend
 
 RGHI_CheckRightJoy0 .proc
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
 RGHI_Right .proc
 
-          ;; let temp4 = playerCharacter[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp4 (duplicate)
+          let temp4 = playerCharacter[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp4
 
-                    ;; let temp6 = CharacterMovementSpeed[temp4]
-          ;; lda temp4 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMovementSpeed,x (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMovementSpeed,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = CharacterMovementSpeed[temp4]
+          lda temp4
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta temp6
+          lda temp4
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta temp6
 
-                    ;; let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
+                    let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityXL,x
 
-          ;; rts (duplicate)
+          rts
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(GetPlayerAnimationStateFunction-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(GetPlayerAnimationStateFunction-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 12 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(GetPlayerAnimationStateFunction-1)
+          pha
+          lda # <(GetPlayerAnimationStateFunction-1)
+          pha
+                    ldx # 12
+          jmp BS_jsr
+return_point:
 
 
-          ;; ;; if temp2 < 5 then goto RGHI_SPF_No2
-          ;; lda temp2 (duplicate)
-          ;; cmp 5 (duplicate)
-          ;; bcs .skip_4322 (duplicate)
-          ;; jmp (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; cmp # 5 (duplicate)
-          ;; bcs skip_1505 (duplicate)
-          ;; jmp goto_label (duplicate)
+          ;; if temp2 < 5 then goto RGHI_SPF_No2
+          lda temp2
+          cmp 5
+          bcs .skip_4322
+          jmp
+          lda temp2
+          cmp # 5
+          bcs skip_1505
+          jmp goto_label
 skip_1505:
 
-          ;; lda temp2 (duplicate)
-          ;; cmp # 5 (duplicate)
-          ;; bcs skip_2671 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp2
+          cmp # 5
+          bcs skip_2671
+          jmp goto_label
 skip_2671:
 
           
 
-          ;; lda temp2 (duplicate)
-          ;; cmp # 10 (duplicate)
-          ;; bcc skip_7248 (duplicate)
+          lda temp2
+          cmp # 10
+          bcc skip_7248
 skip_7248:
 
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
 RGHI_SPF_No2 .proc
 
-                    ;; let playerState[temp1] = playerState[temp1] | 1
+                    let playerState[temp1] = playerState[temp1] | 1
 
-          ;; rts (duplicate)
+          rts
 
 
 
@@ -241,31 +241,31 @@ RadishGoblinHandleStickDown .proc
           ;; Returns: Far (return otherbank)
 
           ;; Input: temp1 = player index (0-3)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityX,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityX,x
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityXL,x
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityY,x
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -279,200 +279,200 @@ RadishGoblinCheckGroundBounce .proc
 
           ;; Input: currentPlayer = player index (0-3) (global)
 
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp1 (duplicate)
+          lda currentPlayer
+          sta temp1
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Convert × to playfield column
 
-          ;; ;; if playerVelocityY[temp1] <= 0 then goto RGBGB_ClearCheck
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityY,x (duplicate)
+          ;; if playerVelocityY[temp1] <= 0 then goto RGBGB_ClearCheck
+          lda temp1
+          asl
+          tax
+          lda playerVelocityY,x
           beq skip_5806
           bmi skip_5806
-          ;; jmp goto_label (duplicate)
+          jmp goto_label
 skip_5806:
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityY,x (duplicate)
-          ;; beq skip_1692 (duplicate)
-          ;; bmi skip_1692 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp1
+          asl
+          tax
+          lda playerVelocityY,x
+          beq skip_1692
+          bmi skip_1692
+          jmp goto_label
 skip_1692:
 
 
 
-                    ;; let temp2 = playerX[temp1] - ScreenInsetX         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta temp2 (duplicate)
+                    let temp2 = playerX[temp1] - ScreenInsetX         
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
 
-                    ;; if temp2 & $80 then let temp2 = 0
+                    if temp2 & $80 then let temp2 = 0
 
 
             lsr temp2
 
-            ;; lsr temp2 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; cmp # 32 (duplicate)
-          ;; bcc skip_4090 (duplicate)
-          ;; lda # 31 (duplicate)
-          ;; sta temp2 (duplicate)
+            lsr temp2
+          lda temp2
+          cmp # 32
+          bcc skip_4090
+          lda # 31
+          sta temp2
 skip_4090:
 
 
           ;; Calculate feet row
 
-          ;; lda temp2 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp2
+          sta temp6
 
-                    ;; let temp2 = playerY[temp1] + PlayerSpriteHeight         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp2 (duplicate)
-
-
-            ;; lsr temp2 (duplicate)
-
-            ;; lsr temp2 (duplicate)
-
-            ;; lsr temp2 (duplicate)
-
-            ;; lsr temp2 (duplicate)
+                    let temp2 = playerY[temp1] + PlayerSpriteHeight         
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp2
 
 
-          ;; if temp2 >= pfrows then goto RGBGB_ClearCheck
-          ;; lda temp2 (duplicate)
-          ;; cmp pfrows (duplicate)
+            lsr temp2
 
-          ;; bcc skip_4391 (duplicate)
+            lsr temp2
 
-          ;; jmp skip_4391 (duplicate)
+            lsr temp2
+
+            lsr temp2
+
+
+          if temp2 >= pfrows then goto RGBGB_ClearCheck
+          lda temp2
+          cmp pfrows
+
+          bcc skip_4391
+
+          jmp skip_4391
 
           skip_4391:
 
-          ;; lda temp2 (duplicate)
+          lda temp2
           clc
           adc # 1
-          ;; sta temp5 (duplicate)
+          sta temp5
 
           ;; Check ground pixel
 
-          ;; if temp5 >= pfrows then goto RGBGB_ClearCheck
-          ;; lda temp5 (duplicate)
-          ;; cmp pfrows (duplicate)
+          if temp5 >= pfrows then goto RGBGB_ClearCheck
+          lda temp5
+          cmp pfrows
 
-          ;; bcc skip_2032 (duplicate)
+          bcc skip_2032
 
-          ;; jmp skip_2032 (duplicate)
+          jmp skip_2032
 
           skip_2032:
 
-          ;; lda temp1 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp1
+          sta temp4
 
-          ;; lda temp6 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp6
+          sta temp1
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayfieldRead-1)
+          pha
+          lda # <(PlayfieldRead-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
-          ;; lda temp4 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp4
+          sta temp1
 
           ;; Ground detected - check bounce sta
 
 
-          ;; lda temp1 (duplicate)
-          ;; bne skip_1733 (duplicate)
-          ;; jmp RGBGB_ClearCheck (duplicate)
+          lda temp1
+          bne skip_1733
+          jmp RGBGB_ClearCheck
 skip_1733:
 
 
           ;; Check if moved away from contact
 
-                    ;; if radishGoblinBounceState_R[temp1] = 1 then goto RGBGB_ClearCheck
+                    if radishGoblinBounceState_R[temp1] = 1 then goto RGBGB_ClearCheck
 
-          ;; let temp2 = playerY[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp2 (duplicate)
+          let temp2 = playerY[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp2
 
-                    ;; let temp3 = radishGoblinLastContactY_R[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda radishGoblinLastContactY_R,x (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda radishGoblinLastContactY_R,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = radishGoblinLastContactY_R[temp1]
+          lda temp1
+          asl
+          tax
+          lda radishGoblinLastContactY_R,x
+          sta temp3
+          lda temp1
+          asl
+          tax
+          lda radishGoblinLastContactY_R,x
+          sta temp3
 
-                    ;; if temp2 < temp3 then goto RGBGB_ClearState
-          ;; lda temp2 (duplicate)
-          ;; cmp temp3 (duplicate)
-          ;; bcs skip_7054 (duplicate)
-          ;; jmp RGBGB_ClearState (duplicate)
+                    if temp2 < temp3 then goto RGBGB_ClearState
+          lda temp2
+          cmp temp3
+          bcs skip_7054
+          jmp RGBGB_ClearState
 skip_7054:
           
 
-          ;; ;; let temp4 = temp2 - temp3
-          ;; lda temp2 (duplicate)
+          ;; let temp4 = temp2 - temp3
+          lda temp2
           sec
           sbc temp3
-          ;; sta temp4 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp3 (duplicate)
-          ;; sta temp4 (duplicate)
+          sta temp4
+          lda temp2
+          sec
+          sbc temp3
+          sta temp4
 
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp3 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp2
+          sec
+          sbc temp3
+          sta temp4
 
 
-          ;; lda temp4 (duplicate)
-          ;; cmp # 9 (duplicate)
-          ;; bcc skip_7304 (duplicate)
+          lda temp4
+          cmp # 9
+          bcc skip_7304
 skip_7304:
 
 
-          ;; jmp RGBGB_CalcBounce (duplicate)
+          jmp RGBGB_CalcBounce
 
 .pend
 
 RGBGB_ClearState .proc
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta radishGoblinBounceState_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta radishGoblinBounceState_W,x
 
 .pend
 
@@ -481,170 +481,170 @@ RGBGB_CalcBounce .proc
           ;; Calculate bounce height
           ;; Returns: Far (return otherbank)
 
-          ;; lda RadishGoblinBounceNormal (duplicate)
-          ;; sta temp2 (duplicate)
+          lda RadishGoblinBounceNormal
+          sta temp2
 
           ;; Check jump button (enhanced button or stick up)
 
-                    ;; if playerVelocityY[temp1] >= TerminalVelocity then let temp2 = RadishGoblinBounceHighSpeed
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
+                    if playerVelocityY[temp1] >= TerminalVelocity then let temp2 = RadishGoblinBounceHighSpeed
+          lda # 0
+          sta temp3
 
-          ;; if temp1 >= 2 then goto RGBGB_CheckStick
-          ;; lda temp1 (duplicate)
-          ;; cmp 2 (duplicate)
+          if temp1 >= 2 then goto RGBGB_CheckStick
+          lda temp1
+          cmp 2
 
-          ;; bcc skip_696 (duplicate)
+          bcc skip_696
 
-          ;; jmp skip_696 (duplicate)
+          jmp skip_696
 
           skip_696:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_5562 (duplicate)
-          ;; jmp RGBGB_CheckEnhanced0 (duplicate)
+          lda temp1
+          cmp # 0
+          bne skip_5562
+          jmp RGBGB_CheckEnhanced0
 skip_5562:
 
 
-                    ;; if (enhancedButtonStates_R & 2) then let temp3 = 1
-          ;; jmp RGBGB_CheckStick (duplicate)
+                    if (enhancedButtonStates_R & 2) then let temp3 = 1
+          jmp RGBGB_CheckStick
 
 .pend
 
 RGBGB_CheckEnhanced0 .proc
 
-                    ;; if (enhancedButtonStates_R & 1) then let temp3 = 1
+                    if (enhancedButtonStates_R & 1) then let temp3 = 1
 
 .pend
 
 RGBGB_CheckStick .proc
 
-                    ;; if temp1 & 2 = 0 then RGBGB_StickJoy0
-          ;; lda temp1 (duplicate)
-          ;; and # 2 (duplicate)
-          ;; bne skip_5425 (duplicate)
-          ;; jmp RGBGB_StickJoy0 (duplicate)
+                    if temp1 & 2 = 0 then RGBGB_StickJoy0
+          lda temp1
+          and # 2
+          bne skip_5425
+          jmp RGBGB_StickJoy0
 skip_5425:
 
-                    ;; if joy1up then let temp3 = 1
-          ;; lda joy1up (duplicate)
-          ;; beq skip_7169 (duplicate)
-          ;; lda 1 (duplicate)
-          ;; sta temp3 (duplicate)
+                    if joy1up then let temp3 = 1
+          lda joy1up
+          beq skip_7169
+          lda 1
+          sta temp3
 skip_7169:
-          ;; jmp RGBGB_Apply (duplicate)
+          jmp RGBGB_Apply
 
 .pend
 
 RGBGB_StickJoy0 .proc
 
-          ;; if joy0up then let temp3 = 1
-          ;; lda joy0up (duplicate)
-          ;; beq skip_1443 (duplicate)
+          if joy0up then let temp3 = 1
+          lda joy0up
+          beq skip_1443
 skip_1443:
-          ;; jmp skip_1443 (duplicate)
+          jmp skip_1443
 
 .pend
 
 RGBGB_Apply .proc
-          ;; lda temp3 (duplicate)
-          ;; bne skip_4524 (duplicate)
+          lda temp3
+          bne skip_4524
 skip_4524:
 
 
 
-            ;; asl temp2 (duplicate)
+            asl temp2
 
 
 RGBGB_DoneApply
 
-                    ;; let playerVelocityY[temp1] = 0 - temp2
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+                    let playerVelocityY[temp1] = 0 - temp2
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
 
-                    ;; let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 1 (duplicate)
-          ;; sta radishGoblinBounceState_W,x (duplicate)
+                    let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
+          lda temp1
+          asl
+          tax
+          lda 1
+          sta radishGoblinBounceState_W,x
 
-                    ;; let radishGoblinLastContactY_W[temp1] = playerY[temp1]
+                    let radishGoblinLastContactY_W[temp1] = playerY[temp1]
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
 RGBGB_ClearCheck .proc
 
-          ;; rts (duplicate)
+          rts
 
-          ;; let temp2 = playerY[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp2 (duplicate)
+          let temp2 = playerY[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp2
 
-                    ;; let temp3 = radishGoblinLastContactY_R[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda radishGoblinLastContactY_R,x (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda radishGoblinLastContactY_R,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = radishGoblinLastContactY_R[temp1]
+          lda temp1
+          asl
+          tax
+          lda radishGoblinLastContactY_R,x
+          sta temp3
+          lda temp1
+          asl
+          tax
+          lda radishGoblinLastContactY_R,x
+          sta temp3
 
-                    ;; if temp2 < temp3 then goto RGBGB_ClearState2
-          ;; lda temp2 (duplicate)
-          ;; cmp temp3 (duplicate)
-          ;; bcs skip_7229 (duplicate)
-          ;; jmp RGBGB_ClearState2 (duplicate)
+                    if temp2 < temp3 then goto RGBGB_ClearState2
+          lda temp2
+          cmp temp3
+          bcs skip_7229
+          jmp RGBGB_ClearState2
 skip_7229:
           
 
-          ;; ;; let temp4 = temp2 - temp3
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp3 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp3 (duplicate)
-          ;; sta temp4 (duplicate)
+          ;; let temp4 = temp2 - temp3
+          lda temp2
+          sec
+          sbc temp3
+          sta temp4
+          lda temp2
+          sec
+          sbc temp3
+          sta temp4
 
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp3 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp2
+          sec
+          sbc temp3
+          sta temp4
 
 
-          ;; lda temp4 (duplicate)
-          ;; cmp # 9 (duplicate)
-          ;; bcc skip_6603 (duplicate)
+          lda temp4
+          cmp # 9
+          bcc skip_6603
 skip_6603:
 
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
 RGBGB_ClearState2 .proc
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta radishGoblinBounceState_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta radishGoblinBounceState_W,x
 
-          ;; rts (duplicate)
+          rts
 
 
 
@@ -658,9 +658,9 @@ RadishGoblinCheckWallBounce .proc
 
           ;; Input: currentPlayer = player index (0-3) (global)
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -674,23 +674,23 @@ RadishGoblinHandleStickDownRelease .proc
 
           ;; Input: temp1 = player index (0-3)
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-                    ;; let playerVelocityY[temp1] = 0 - RadishGoblinBounceShort
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+                    let playerVelocityY[temp1] = 0 - RadishGoblinBounceShort
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
 
-                    ;; let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta radishGoblinBounceState_W,x (duplicate)
+                    let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta radishGoblinBounceState_W,x
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

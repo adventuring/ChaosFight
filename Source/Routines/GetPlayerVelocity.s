@@ -9,18 +9,18 @@ GetPlayerVelocity .proc
           ;; Output: temp2 = X velocity, temp3 = Y velocity
           ;; Mutates: temp2, temp3
           ;; Constraints: Callers should use the values immediately; temps are volatile.
-                    ;; let temp2 = playerVelocityX[currentPlayer]          lda currentPlayer          asl          tax          lda playerVelocityX,x          sta temp2
-                    ;; let temp3 = playerVelocityY[currentPlayer]
+                    let temp2 = playerVelocityX[currentPlayer]          lda currentPlayer          asl          tax          lda playerVelocityX,x          sta temp2
+                    let temp3 = playerVelocityY[currentPlayer]
           lda currentPlayer
           asl
           tax
-          ;; lda playerVelocityY,x (duplicate)
+          lda playerVelocityY,x
           sta temp3         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityY,x (duplicate)
-          ;; sta temp3 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerVelocityY,x
+          sta temp3
           rts
 
 .pend

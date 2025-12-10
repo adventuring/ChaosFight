@@ -155,7 +155,7 @@ skip_6419:
 
           jsr BS_return
 
-          ;; jmp HandleCharacterSelectCycle (duplicate)
+          jmp HandleCharacterSelectCycle
 
 .pend
 
@@ -171,7 +171,7 @@ HCSC_CheckJoy0Left .proc
           ;;
           ;; Output: Returns if not pressed, continues to HandleCharacterSelectCycle
 
-          ;; if pressed
+          if pressed
 
           ;;
           ;; Mutates: None
@@ -181,7 +181,7 @@ HCSC_CheckJoy0Left .proc
 
           ;; Constraints: Must be colocated with HandleCharacterSelectCycle
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -197,7 +197,7 @@ HCSC_CheckJoy1Left .proc
           ;;
           ;; Output: Returns if not pressed, continues to HandleCharacterSelectCycle
 
-          ;; if pressed
+          if pressed
 
           ;;
           ;; Mutates: None
@@ -207,7 +207,7 @@ HCSC_CheckJoy1Left .proc
 
           ;; Constraints: Must be colocated with HandleCharacterSelectCycle
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -249,31 +249,31 @@ HandleCharacterSelectCycle .proc
 
           ;; Preserve player index for updates and lock handling
 
-          ;; lda temp1 (duplicate)
+          lda temp1
           sta temp4
 
           ;; Load current character selection
 
-                    ;; let temp1 = playerCharacter[temp4]         
-          ;; lda temp4 (duplicate)
+                    let temp1 = playerCharacter[temp4]         
+          lda temp4
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
+          lda playerCharacter,x
+          sta temp1
 
           ;; temp3 stores the player index for inline cycling logic
 
-          ;; lda temp4 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda temp4
+          sta temp3
 
-          ;; lda temp2 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_796 (duplicate)
-          ;; jmp HCSC_CycleLeft (duplicate)
+          lda temp2
+          cmp # 0
+          bne skip_796
+          jmp HCSC_CycleLeft
 skip_796:
 
 
-          ;; jmp HCSC_CycleRight (duplicate)
+          jmp HCSC_CycleRight
 
 .pend
 
@@ -282,72 +282,72 @@ HCSC_CycleLeft .proc
           ;; Handle stick-left navigation with ordered wrap logic
           ;; Returns: Far (return otherbank)
 
-          ;; lda temp1 (duplicate)
-          ;; cmp RandomCharacter (duplicate)
-          ;; bne skip_7839 (duplicate)
-          ;; jmp HCSC_LeftFromRandom (duplicate)
+          lda temp1
+          cmp RandomCharacter
+          bne skip_7839
+          jmp HCSC_LeftFromRandom
 skip_7839:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_1366 (duplicate)
-          ;; jmp HCSC_LeftFromNoOrCPU (duplicate)
+          lda temp1
+          cmp NoCharacter
+          bne skip_1366
+          jmp HCSC_LeftFromNoOrCPU
 skip_1366:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp CPUCharacter (duplicate)
-          ;; bne skip_4773 (duplicate)
-          ;; jmp HCSC_LeftFromNoOrCPU (duplicate)
+          lda temp1
+          cmp CPUCharacter
+          bne skip_4773
+          jmp HCSC_LeftFromNoOrCPU
 skip_4773:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_7522 (duplicate)
-          ;; jmp HCSC_LeftFromZero (duplicate)
+          lda temp1
+          cmp # 0
+          bne skip_7522
+          jmp HCSC_LeftFromZero
 skip_7522:
 
 
           dec temp1
 
-          ;; jmp HCSC_CycleDone (duplicate)
+          jmp HCSC_CycleDone
 
 .pend
 
 HCSC_LeftFromRandom .proc
 
-          ;; lda temp3 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_6262 (duplicate)
-                    ;; let temp1 = MaxCharacter : goto HCSC_CycleDone
+          lda temp3
+          cmp # 0
+          bne skip_6262
+                    let temp1 = MaxCharacter : goto HCSC_CycleDone
 skip_6262:
 
-          ;; jsr HCSC_GetPlayer2Tail (duplicate)
+          jsr HCSC_GetPlayer2Tail
 
-          ;; lda NoCharacter (duplicate)
-          ;; sta temp1 (duplicate)
+          lda NoCharacter
+          sta temp1
 
-          ;; jmp HCSC_CycleDone (duplicate)
+          jmp HCSC_CycleDone
 
 .pend
 
 HCSC_LeftFromNoOrCPU .proc
 
-          ;; lda MaxCharacter (duplicate)
-          ;; sta temp1 (duplicate)
+          lda MaxCharacter
+          sta temp1
 
-          ;; jmp HCSC_CycleDone (duplicate)
+          jmp HCSC_CycleDone
 
 .pend
 
 HCSC_LeftFromZero .proc
 
-          ;; lda RandomCharacter (duplicate)
-          ;; sta temp1 (duplicate)
+          lda RandomCharacter
+          sta temp1
 
-          ;; jmp HCSC_CycleDone (duplicate)
+          jmp HCSC_CycleDone
 
 .pend
 
@@ -356,72 +356,72 @@ HCSC_CycleRight .proc
           ;; Handle stick-right navigation with ordered wrap logic
           ;; Returns: Far (return otherbank)
 
-          ;; lda temp1 (duplicate)
-          ;; cmp RandomCharacter (duplicate)
-          ;; bne skip_9498 (duplicate)
-          ;; jmp HCSC_RightFromRandom (duplicate)
+          lda temp1
+          cmp RandomCharacter
+          bne skip_9498
+          jmp HCSC_RightFromRandom
 skip_9498:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_8767 (duplicate)
-          ;; jmp HCSC_RightFromNoOrCPU (duplicate)
+          lda temp1
+          cmp NoCharacter
+          bne skip_8767
+          jmp HCSC_RightFromNoOrCPU
 skip_8767:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp CPUCharacter (duplicate)
-          ;; bne skip_8806 (duplicate)
-          ;; jmp HCSC_RightFromNoOrCPU (duplicate)
+          lda temp1
+          cmp CPUCharacter
+          bne skip_8806
+          jmp HCSC_RightFromNoOrCPU
 skip_8806:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp MaxCharacter (duplicate)
-          ;; bne skip_1541 (duplicate)
-          ;; jmp HCSC_RightFromMax (duplicate)
+          lda temp1
+          cmp MaxCharacter
+          bne skip_1541
+          jmp HCSC_RightFromMax
 skip_1541:
 
 
           inc temp1
 
-          ;; jmp HCSC_CycleDone (duplicate)
+          jmp HCSC_CycleDone
 
 .pend
 
 HCSC_RightFromRandom .proc
 
-          ;; lda # 0 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 0
+          sta temp1
 
-          ;; jmp HCSC_CycleDone (duplicate)
+          jmp HCSC_CycleDone
 
 .pend
 
 HCSC_RightFromNoOrCPU .proc
 
-          ;; lda RandomCharacter (duplicate)
-          ;; sta temp1 (duplicate)
+          lda RandomCharacter
+          sta temp1
 
-          ;; jmp HCSC_CycleDone (duplicate)
+          jmp HCSC_CycleDone
 
 .pend
 
 HCSC_RightFromMax .proc
 
-          ;; lda temp3 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_3297 (duplicate)
-                    ;; let temp1 = RandomCharacter : goto HCSC_CycleDone
+          lda temp3
+          cmp # 0
+          bne skip_3297
+                    let temp1 = RandomCharacter : goto HCSC_CycleDone
 skip_3297:
 
-          ;; jsr HCSC_GetPlayer2Tail (duplicate)
+          jsr HCSC_GetPlayer2Tail
 
-          ;; lda NoCharacter (duplicate)
-          ;; sta temp1 (duplicate)
+          lda NoCharacter
+          sta temp1
 
-          ;; jmp HCSC_CycleDone (duplicate)
+          jmp HCSC_CycleDone
 
 .pend
 
@@ -431,22 +431,22 @@ HCSC_GetPlayer2Tail .proc
           ;; Determine whether Player 2 wraps to CPU or NO
           ;; Returns: Far (return otherbank)
 
-          ;; lda CPUCharacter (duplicate)
-          ;; sta temp6 (duplicate)
+          lda CPUCharacter
+          sta temp6
 
-                    ;; if playerCharacter[2] = NoCharacter then goto HCSC_P2TailCheckP4
-          ;; lda NoCharacter (duplicate)
-          ;; sta temp6 (duplicate)
+                    if playerCharacter[2] = NoCharacter then goto HCSC_P2TailCheckP4
+          lda NoCharacter
+          sta temp6
 
-          ;; jmp HCSC_P2TailDone (duplicate)
+          jmp HCSC_P2TailDone
 
 .pend
 
 HCSC_P2TailCheckP4 .proc
 
-                    ;; if playerCharacter[3] = NoCharacter then goto HCSC_P2TailDone
-          ;; lda NoCharacter (duplicate)
-          ;; sta temp6 (duplicate)
+                    if playerCharacter[3] = NoCharacter then goto HCSC_P2TailDone
+          lda NoCharacter
+          sta temp6
 
 HCSC_P2TailDone
 
@@ -480,52 +480,52 @@ HCSC_CycleDone
 
           ;; PlaySoundEffect (bank15)
 
-          ;; lda temp3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; sta playerCharacter,x (duplicate)
+          lda temp3
+          asl
+          tax
+          lda temp1
+          sta playerCharacter,x
 
-          ;; lda PlayerLockedUnlocked (duplicate)
-          ;; sta temp2 (duplicate)
+          lda PlayerLockedUnlocked
+          sta temp2
 
-          ;; lda temp3 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp3
+          sta temp1
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerLocked-1)
+          pha
+          lda # <(SetPlayerLocked-1)
+          pha
                     ldx # 5
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
           ;; Play navigation sound
 
-          ;; lda SoundMenuNavigate (duplicate)
-          ;; sta temp1 (duplicate)
+          lda SoundMenuNavigate
+          sta temp1
 
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlaySoundEffect-1)
+          pha
+          lda # <(PlaySoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -535,17 +535,17 @@ CharacterSelectInputEntry .proc
 
 
           ;; Cross-bank call to CharacterSelectCheckControllerRescan in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(CharacterSelectCheckControllerRescan-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(CharacterSelectCheckControllerRescan-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(CharacterSelectCheckControllerRescan-1)
+          pha
+          lda # <(CharacterSelectCheckControllerRescan-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
 
@@ -553,18 +553,18 @@ CharacterSelectInputEntry .proc
           ;; Consolidated input handling with Quadtari multiplexing
           ;; Returns: Far (return otherbank)
 
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 0
+          sta temp3
 
           ;; Player offset: 0=P1/P2, 2=P3/P4
 
-                    ;; if controllerStatus & SetQuadtariDetected then let temp3 = qtcontroller * 2
-          ;; jsr CharacterSelectHandleTwoPlayers (duplicate)
+                    if controllerStatus & SetQuadtariDetected then let temp3 = qtcontroller * 2
+          jsr CharacterSelectHandleTwoPlayers
 
 
 
-                    ;; if controllerStatus & SetQuadtariDetected then let qtcontroller = qtcontroller ^ 1 else qtcontroller = 0
-          ;; jmp CharacterSelectInputComplete (duplicate)
+                    if controllerStatus & SetQuadtariDetected then let qtcontroller = qtcontroller ^ 1 else qtcontroller = 0
+          jmp CharacterSelectInputComplete
 
 
 
@@ -572,7 +572,7 @@ CharacterSelectHandleTwoPlayers
           ;; Returns: Far (return thisbank)
 
 
-;; CharacterSelectHandleTwoPlayers (duplicate)
+CharacterSelectHandleTwoPlayers
 
 
 
@@ -586,47 +586,47 @@ CharacterSelectHandleTwoPlayers
 
           ;; Check if second player should be active (Quadtari)
 
-          ;; lda # 0 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda # 0
+          sta temp4
 
-          ;; lda temp3 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_3522 (duplicate)
-          ;; lda # 255 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp3
+          cmp # 0
+          bne skip_3522
+          lda # 255
+          sta temp4
 skip_3522:
 
 
-                    ;; if controllerStatus & SetQuadtariDetected then let temp4 = 255
-          ;; lda controllerStatus (duplicate)
+                    if controllerStatus & SetQuadtariDetected then let temp4 = 255
+          lda controllerStatus
           and SetQuadtariDetected
           beq skip_4497
-          ;; lda # 255 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda # 255
+          sta temp4
 skip_4497:
 
 
 
-          ;; ;; if temp3 < 2 then goto ProcessPlayerInput          lda temp3          cmp 2          bcs .skip_8959          jmp
-          ;; lda temp3 (duplicate)
-          ;; cmp # 2 (duplicate)
+          ;; if temp3 < 2 then goto ProcessPlayerInput          lda temp3          cmp 2          bcs .skip_8959          jmp
+          lda temp3
+          cmp # 2
           bcs skip_928
           goto_label:
 
-          ;; jmp goto_label (duplicate)
+          jmp goto_label
 skip_928:
 
-          ;; lda temp3 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bcs skip_5440 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp3
+          cmp # 2
+          bcs skip_5440
+          jmp goto_label
 skip_5440:
 
           
 
-                    ;; if controllerStatus & SetQuadtariDetected then goto ProcessPlayerInput
+                    if controllerStatus & SetQuadtariDetected then goto ProcessPlayerInput
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
@@ -635,79 +635,79 @@ ProcessPlayerInput .proc
 
 
           ;; Handle Player 1/3 input (joy0)
-          ;; jsr HandleCharacterSelectCycle (duplicate)
+          jsr HandleCharacterSelectCycle
 
-          ;; jsr HandleCharacterSelectCycle (duplicate)
+          jsr HandleCharacterSelectCycle
 
           ;; NOTE: DASM raises ’Label mismatch’ if multiple banks re-include HandleCharacterSelectFire
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerLocked-1)
+          pha
+          lda # <(SetPlayerLocked-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; Cross-bank call to HandleCharacterSelectFire in bank 7
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(HandleCharacterSelectFire-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(HandleCharacterSelectFire-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 6 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(HandleCharacterSelectFire-1)
+          pha
+          lda # <(HandleCharacterSelectFire-1)
+          pha
+                    ldx # 6
+          jmp BS_jsr
+return_point:
 
 
 
 
           ;; Handle Player 2/4 input (joy1) - only if active
 
-          ;; rts (duplicate)
+          rts
 
-          ;; jsr HandleCharacterSelectCycle (duplicate)
+          jsr HandleCharacterSelectCycle
 
-          ;; jsr HandleCharacterSelectCycle (duplicate)
+          jsr HandleCharacterSelectCycle
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerLocked-1)
+          pha
+          lda # <(SetPlayerLocked-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; Cross-bank call to HandleCharacterSelectFire in bank 7
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(HandleCharacterSelectFire-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(HandleCharacterSelectFire-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 6 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(HandleCharacterSelectFire-1)
+          pha
+          lda # <(HandleCharacterSelectFire-1)
+          pha
+                    ldx # 6
+          jmp BS_jsr
+return_point:
 
 
-          ;; rts (duplicate)
+          rts
 
 
 
@@ -718,24 +718,24 @@ CharacterSelectInputComplete
           ;; Handle random character re-rolls if any players need it
           ;; Returns: Far (return otherbank)
 
-          ;; jsr CharacterSelectHandleRandomRolls (duplicate)
+          jsr CharacterSelectHandleRandomRolls
 
 
 
           ;; Update character select animations
 
           ;; Cross-bank call to SelectUpdateAnimations in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SelectUpdateAnimations-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SelectUpdateAnimations-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SelectUpdateAnimations-1)
+          pha
+          lda # <(SelectUpdateAnimations-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; Draw selection screen
@@ -743,20 +743,20 @@ CharacterSelectInputComplete
           ;; Draw character selection screen
 
           ;; Cross-bank call to SelectDrawScreen in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SelectDrawScreen-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SelectDrawScreen-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SelectDrawScreen-1)
+          pha
+          lda # <(SelectDrawScreen-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;;
           ;; Random Character Roll Handler
@@ -773,26 +773,26 @@ CharacterSelectHandleRandomRolls .proc
           ;; Check each player for pending random roll
           ;; Returns: Far (return otherbank)
 
-          ;; lda # 1 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 1
+          sta temp1
 
-                    ;; if controllerStatus & SetQuadtariDetected then let temp1 = 3
-          ;; lda controllerStatus (duplicate)
-          ;; and SetQuadtariDetected (duplicate)
-          ;; beq skip_9782 (duplicate)
-          ;; lda # 3 (duplicate)
-          ;; sta temp1 (duplicate)
+                    if controllerStatus & SetQuadtariDetected then let temp1 = 3
+          lda controllerStatus
+          and SetQuadtariDetected
+          beq skip_9782
+          lda # 3
+          sta temp1
 skip_9782:
 
           ;; TODO: for currentPlayer = 0 to temp1
 
-          ;; jsr CharacterSelectRollRandomPlayer (duplicate)
+          jsr CharacterSelectRollRandomPlayer
 
 .pend
 
 next_label_1_L793:.proc
 
-          ;; jmp CharacterSelectRollsDone (duplicate)
+          jmp CharacterSelectRollsDone
 
 
 
@@ -827,28 +827,28 @@ CharacterSelectRollRandomPlayer .proc
 
 CharacterSelectRollRandomPlayerReroll .proc
 
-          ;; if not valid, try next frame.
+          if not valid, try next frame.
           ;; Returns: Far (return otherbank)
 
-          ;; lda rand (duplicate)
-          ;; and #$1f (duplicate)
-          ;; sta temp2 (duplicate)
+          lda rand
+          and #$1f
+          sta temp2
 
           ;; Valid roll - character ID updated, but not locked
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerCharacter,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda temp2
+          sta playerCharacter,x
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 CharacterSelectRollsDone
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
@@ -863,63 +863,63 @@ CharacterSelectCheckReady .proc
 
           ;; CPU)
 
-                    ;; if controllerStatus & SetQuadtariDetected then goto CharacterSelectQuadtariReady
+                    if controllerStatus & SetQuadtariDetected then goto CharacterSelectQuadtariReady
 
           ;; P1 is locked, check P2
 
-                    ;; let temp1 = 0 : gosub GetPlayerLocked bank6
-          ;; lda 0 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: : if !temp2 then goto CharacterSelectReadyDone (duplicate)
+                    let temp1 = 0 : gosub GetPlayerLocked bank6
+          lda 0
+          sta temp1
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(GetPlayerLocked-1)
+          pha
+          lda # <(GetPlayerLocked-1)
+          pha
+          ldx # 5
+          jmp BS_jsr
+return_point: : if !temp2 then goto CharacterSelectReadyDone
 
           ;; P2 not locked, check if on CPU
 
-          ;; ;; ;;           ;; let temp1 = 1 : gosub GetPlayerLocked bank6
-          ;; lda 1 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: : if temp2 then goto CharacterSelectFinish (duplicate)
+          ;; ;;           ;; let temp1 = 1 : gosub GetPlayerLocked bank6
+          lda 1
+          sta temp1
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(GetPlayerLocked-1)
+          pha
+          lda # <(GetPlayerLocked-1)
+          pha
+          ldx # 5
+          jmp BS_jsr
+return_point: : if temp2 then goto CharacterSelectFinish
 
-;; lda temp2 (duplicate)
+lda temp2
 
-;; beq skip_3576 (duplicate)
+beq skip_3576
 
 skip_3576:
-          ;; jmp skip_3576 (duplicate)
+          jmp skip_3576
 
-          ;; lda temp2 (duplicate)
+          lda temp2
 
-          ;; beq skip_8138 (duplicate)
+          beq skip_8138
 
-          ;; jmp skip_8138: (duplicate)
+          jmp skip_8138:
 
-          ;; lda temp2 (duplicate)
+          lda temp2
 
-          ;; beq skip_9851 (duplicate)
+          beq skip_9851
 
-          ;; jmp skip_9851: (duplicate)
+          jmp skip_9851:
 
-                    ;; if playerCharacter[1] = CPUCharacter then goto CharacterSelectFinish
-          ;; jmp CharacterSelectReadyDone (duplicate)
+                    if playerCharacter[1] = CPUCharacter then goto CharacterSelectFinish
+          jmp CharacterSelectReadyDone
 
 
 
@@ -932,61 +932,61 @@ CharacterSelectQuadtariReady .proc
 
           ;; CPU/NO)
 
-          ;; lda # 0 (duplicate)
-          ;; sta readyCount (duplicate)
+          lda # 0
+          sta readyCount
 
           ;; TODO: for currentPlayer = 0 to 3
 
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp1 (duplicate)
+          lda currentPlayer
+          sta temp1
 
           ;; Cross-bank call to GetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(GetPlayerLocked-1)
+          pha
+          lda # <(GetPlayerLocked-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
-                    ;; if temp2 then goto CharacterSelectQuadtariReadyIncrement
-          ;; lda temp2 (duplicate)
-          ;; beq skip_6413 (duplicate)
-          ;; jmp CharacterSelectQuadtariReadyIncrement (duplicate)
+                    if temp2 then goto CharacterSelectQuadtariReadyIncrement
+          lda temp2
+          beq skip_6413
+          jmp CharacterSelectQuadtariReadyIncrement
 skip_6413:
 
-                    ;; let temp4 = playerCharacter[currentPlayer]
+                    let temp4 = playerCharacter[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp4 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp4
 
-          ;; lda temp4 (duplicate)
-          ;; cmp CPUCharacter (duplicate)
-          ;; bne skip_46 (duplicate)
-          ;; jmp CharacterSelectQuadtariReadyIncrement (duplicate)
+          lda temp4
+          cmp CPUCharacter
+          bne skip_46
+          jmp CharacterSelectQuadtariReadyIncrement
 skip_46:
 
 
-          ;; lda temp4 (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_5848 (duplicate)
-          ;; jmp CharacterSelectQuadtariReadyIncrement (duplicate)
+          lda temp4
+          cmp NoCharacter
+          bne skip_5848
+          jmp CharacterSelectQuadtariReadyIncrement
 skip_5848:
 
 
-          ;; jmp CharacterSelectQuadtariReadyNext (duplicate)
+          jmp CharacterSelectQuadtariReadyNext
 
 CharacterSelectQuadtariReadyIncrement
 
-          ;; inc readyCount (duplicate)
+          inc readyCount
 
 .pend
 
@@ -996,13 +996,13 @@ CharacterSelectQuadtariReadyNext .proc
 
 next_label_2_1_L997:.proc
 
-          ;; if readyCount >= 2 then goto CharacterSelectFinish
-          ;; lda readyCount (duplicate)
-          ;; cmp 2 (duplicate)
+          if readyCount >= 2 then goto CharacterSelectFinish
+          lda readyCount
+          cmp 2
 
           bcc skip_5488
 
-          ;; jmp skip_5488 (duplicate)
+          jmp skip_5488
 
           skip_5488:
 
@@ -1013,20 +1013,20 @@ CharacterSelectReadyDone
 
           ;; Update sound effects (active sound effects need per-frame updates)
           ;; Cross-bank call to UpdateSoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdateSoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdateSoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(UpdateSoundEffect-1)
+          pha
+          lda # <(UpdateSoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -1054,17 +1054,17 @@ CharacterSelectFinish .proc
 
           ;; TODO: for currentPlayer = 0 to 3
 
-                    ;; if playerCharacter[currentPlayer] = NoCharacter then goto CharacterSelectSkipFacing
+                    if playerCharacter[currentPlayer] = NoCharacter then goto CharacterSelectSkipFacing
 
-                    ;; let playerState[currentPlayer] = playerState[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; sta playerState,x | PlayerStateBitFacing (duplicate)
+                    let playerState[currentPlayer] = playerState[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerState,x
+          lda currentPlayer
+          asl
+          tax
+          sta playerState,x | PlayerStateBitFacing
 
 .pend
 
@@ -1078,39 +1078,39 @@ next_label_3 .proc
 
           ;; Update sound effects (active sound effects need per-frame updates)
           ;; Cross-bank call to UpdateSoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdateSoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdateSoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(UpdateSoundEffect-1)
+          pha
+          lda # <(UpdateSoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
           ;; Transition to falling animation
 
-          ;; lda ModeFallingAnimation (duplicate)
-          ;; sta gameMode (duplicate)
+          lda ModeFallingAnimation
+          sta gameMode
 
           ;; Cross-bank call to ChangeGameMode in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(ChangeGameMode-1)
+          pha
+          lda # <(ChangeGameMode-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 

@@ -62,25 +62,25 @@ skip_5663:
 
           ;; Players 1,3 use joy1
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_3179 (duplicate)
+          lda temp1
+          cmp # 2
+          bne skip_3179
           ;; TODO: HCSF_CheckJoy0
 skip_3179:
 
 
           jsr BS_return
 
-          ;; lda # 1 (duplicate)
+          lda # 1
           sta temp2
 
-                    ;; if joy1down then let temp4 = 1 : goto HCSF_HandleFire          lda joy1down          beq skip_7055
+                    if joy1down then let temp4 = 1 : goto HCSF_HandleFire          lda joy1down          beq skip_7055
 skip_7055:
           jmp skip_7055
-          ;; lda # 0 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda # 0
+          sta temp4
 
-          ;; jmp HCSF_HandleFire (duplicate)
+          jmp HCSF_HandleFire
 
 .pend
 
@@ -111,16 +111,16 @@ HCSF_CheckJoy0 .proc
 
           ;; Players 0,2 use joy0
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; lda # 1 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 1
+          sta temp2
 
-                    ;; if joy0down then let temp4 = 1 : goto HCSF_HandleFire          lda joy0down          beq skip_7286
+                    if joy0down then let temp4 = 1 : goto HCSF_HandleFire          lda joy0down          beq skip_7286
 skip_7286:
-          ;; jmp skip_7286 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp4 (duplicate)
+          jmp skip_7286
+          lda # 0
+          sta temp4
 
 .pend
 
@@ -162,58 +162,58 @@ HCSF_HandleFire .proc
 
           ;; Check for handicap mode (down+fire = 75% health)
 
-                    ;; if playerCharacter[temp1] = RandomCharacter then goto HCSF_HandleRandom
+                    if playerCharacter[temp1] = RandomCharacter then goto HCSF_HandleRandom
 
-          ;; if temp4 then HCSF_HandleHandicap
-          ;; lda temp4 (duplicate)
+          if temp4 then HCSF_HandleHandicap
+          lda temp4
           beq skip_1914
-          ;; jmp HCSF_HandleHandicap (duplicate)
+          jmp HCSF_HandleHandicap
 skip_1914:
           
 
-          ;; lda temp1 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda temp1
+          sta temp3
 
-          ;; lda temp3 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp3
+          sta temp1
 
-          ;; lda PlayerLockedNormal (duplicate)
-          ;; sta temp2 (duplicate)
+          lda PlayerLockedNormal
+          sta temp2
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerLocked-1)
+          pha
+          lda # <(SetPlayerLocked-1)
+          pha
                     ldx # 5
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
           ;; Play selection sound
 
-          ;; lda SoundMenuSelect (duplicate)
-          ;; sta temp1 (duplicate)
+          lda SoundMenuSelect
+          sta temp1
 
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlaySoundEffect-1)
+          pha
+          lda # <(PlaySoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -238,49 +238,49 @@ HCSF_HandleHandicap .proc
 
           ;; Constraints: Must be colocated with HandleCharacterSelectFire
 
-          ;; lda temp1 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda temp1
+          sta temp3
 
-          ;; lda temp3 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp3
+          sta temp1
 
-          ;; lda PlayerHandicapped (duplicate)
-          ;; sta temp2 (duplicate)
+          lda PlayerHandicapped
+          sta temp2
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerLocked-1)
+          pha
+          lda # <(SetPlayerLocked-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; Play selection sound
 
-          ;; lda SoundMenuSelect (duplicate)
-          ;; sta temp1 (duplicate)
+          lda SoundMenuSelect
+          sta temp1
 
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlaySoundEffect-1)
+          pha
+          lda # <(PlaySoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -306,7 +306,7 @@ HCSF_HandleRandom .proc
           ;;
           ;; Mutates: randomSelectFlags[temp1] (set to $80
 
-          ;; if handicap, 0 otherwise)
+          if handicap, 0 otherwise)
 
           ;;
           ;; Called Routines: PlaySoundEffect (bank15)
@@ -322,14 +322,14 @@ HCSF_HandleRandom .proc
 
           ;; Store handicap flag if down was held
 
-                    ;; if temp4 then let randomSelectFlags_W[temp1] = TRUE : goto HCSF_HandleRandomSound          lda temp4          beq skip_9263
+                    if temp4 then let randomSelectFlags_W[temp1] = TRUE : goto HCSF_HandleRandomSound          lda temp4          beq skip_9263
 skip_9263:
-          ;; jmp skip_9263 (duplicate)
-          ;; lda temp1 (duplicate)
+          jmp skip_9263
+          lda temp1
           asl
           tax
-          ;; lda 0 (duplicate)
-          ;; sta randomSelectFlags_W,x (duplicate)
+          lda 0
+          sta randomSelectFlags_W,x
 
 .pend
 
@@ -338,28 +338,28 @@ HCSF_HandleRandomSound .proc
           ;; Play selection sound
           ;; Returns: Far (return otherbank)
 
-          ;; lda SoundMenuSelect (duplicate)
-          ;; sta temp1 (duplicate)
+          lda SoundMenuSelect
+          sta temp1
 
           ;; Fall through - character will stay as RandomCharacter
 
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlaySoundEffect-1)
+          pha
+          lda # <(PlaySoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
           ;; until roll succeeds
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

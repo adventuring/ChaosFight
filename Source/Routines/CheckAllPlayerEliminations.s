@@ -3,12 +3,12 @@
 
 CheckAllPlayerEliminations
 ;;; Returns: Far (return otherbank)
-;; CheckAllPlayerEliminations (duplicate)
+CheckAllPlayerEliminations
           ;; Player Elimination System
           ;; Returns: Far (return otherbank)
           ;; Handles player elimination when health reaches 0, game end
           ;; conditions,
-          ;; and removal of eliminated players from active gameplay
+          and removal of eliminated players from active gameplay
           ;; systems.
           ;; ELIMINATION PROCESS:
           ;; 1. Detect when player health reaches 0
@@ -17,7 +17,7 @@ CheckAllPlayerEliminations
           ;; systems
           ;; 4. Hide player sprite and health bar
           ;; 5. Check for game end conditions (1 player remaining)
-          ;; VARIABLES:
+          VARIABLES:
           ;;
           ;; playersRemaining - Count of active players
           ;; gameEndTimer - Countdown to game end screen
@@ -55,12 +55,12 @@ CheckAllPlayerEliminations
           ;; Cross-bank call to CheckPlayerElimination in bank 14
           lda # >(CAPE_return_point_1-1)
           pha
-          ;; lda # <(CAPE_return_point_1-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(CheckPlayerElimination-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(CheckPlayerElimination-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(CAPE_return_point_1-1)
+          pha
+          lda # >(CheckPlayerElimination-1)
+          pha
+          lda # <(CheckPlayerElimination-1)
+          pha
                     ldx # 13
           jmp BS_jsr
 CAPE_return_point_1:
@@ -72,40 +72,40 @@ CAPE_next_label_1:.proc
           ;; CheckGameEndCondition)
           ;; Game ends when 1 or fewer players remain
           ;; Cross-bank call to CountRemainingPlayers in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(CountRemainingPlayers-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(CountRemainingPlayers-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(CountRemainingPlayers-1)
+          pha
+          lda # <(CountRemainingPlayers-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
-          ;; If players still remain, no game end yet
+          If players still remain, no game end yet
           jsr BS_return
 
           ;; Cross-bank call to FindWinner in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(FindWinner-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(FindWinner-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(FindWinner-1)
+          pha
+          lda # <(FindWinner-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
-          ;; lda # 180 (duplicate)
+          lda # 180
           sta gameEndTimer_W
-          ;; lda systemFlags (duplicate)
+          lda systemFlags
           ora SystemFlagGameStateEnding
-          ;; sta systemFlags (duplicate)
-          ;; jsr BS_return (duplicate)
+          sta systemFlags
+          jsr BS_return
 
 
 .pend

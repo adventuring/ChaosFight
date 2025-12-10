@@ -13,24 +13,24 @@ UpdateAttackCooldowns .proc
           ;; Constraints: Must be in same bank as GameLoopMain (Bank 11)
           ;; Optimized: Loop through all players instead of individual calls
           ;; TODO: for temp1 = 0 to 3
-                    ;; let temp2 = playerAttackCooldown_R[temp1]         
+                    let temp2 = playerAttackCooldown_R[temp1]         
           lda temp1
           asl
           tax
-          ;; lda playerAttackCooldown_R,x (duplicate)
+          lda playerAttackCooldown_R,x
           sta temp2
-          ;; lda temp2 (duplicate)
+          lda temp2
           cmp # 0
           bne skip_2323
           ;; TODO: UpdateAttackCooldownSkip
 skip_2323:
 
           dec temp2
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerAttackCooldown_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda temp2
+          sta playerAttackCooldown_W,x
 .pend
 
 UpdateAttackCooldownSkip .proc

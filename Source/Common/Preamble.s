@@ -26,22 +26,9 @@
 ;; etc. are available when batariBASIC includes reference them.
 .include "Source/Common/MultiSpriteSuperChip.s"
 
-;; CRITICAL: Define constants used in assembly code as = statements for 64tass
-;; These must be defined early so 64tass can resolve them when used in assembly code
-;; (e.g., lda #PlayerRightEdge). Values match const definitions in Constants.s.
-ScreenWidth = 160
-ScreenLeftMargin = 16
-ScreenRightMargin = 16
-PlayerSpriteWidth = 16
-PlayerSpriteHalfWidth = 8
-PlayerLeftEdge = 16    ;; ScreenLeftMargin
-PlayerRightEdge = 128  ;; ScreenWidth - ScreenRightMargin - PlayerSpriteWidth = 160 - 16 - 16
-PlayerWrapOvershoot = 8     ;; PlayerSpriteHalfWidth
-PlayerLeftWrapThreshold = 8  ;; PlayerLeftEdge - PlayerWrapOvershoot = 16 - 8
-PlayerRightWrapThreshold = 136 ;; PlayerRightEdge + PlayerWrapOvershoot = 128 + 8
-;; Music bank constants for assembly code
-Bank14MaxSongID = 6
-Bank0MinSongID = 7     ;; Bank14MaxSongID + 1
+;; CRITICAL: Constants are defined in Constants.s
+;; These constants are available here because Constants.s is included below
+;; (e.g., lda #PlayerRightEdge)
 ;; NOTE: Variables like missile0height, missile1height, playfieldRow, rand16
 ;; are memory addresses (defined with = in MultiSpriteSuperChip.s), not constants
 

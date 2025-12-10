@@ -31,7 +31,6 @@ GetPlayerLocked .proc
           ;; Input: temp1 = player index (0-3), playerLocked (bit-packed)
 
           ;; Output: temp2 = locked state (0=unlocked, 1=normal, 2=handicap)
-
           ;; GPL_lockedState = same as temp2
 
           ;; Mutates: temp2, GPL_lockedState
@@ -63,14 +62,14 @@ GetPlayerLocked .proc
 
 GetPlayerLockedP0 .proc
 
-          ;; ;; let temp2 = playerLocked & 3
+          ;; let temp2 = playerLocked & 3
           lda playerLocked
           and # 3
           sta temp2
 
-          ;; lda playerLocked (duplicate)
-          ;; and # 3 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda playerLocked
+          and # 3
+          sta temp2
 
 
           ;; TODO: GPL_lockedState = temp2
@@ -81,47 +80,47 @@ GetPlayerLockedP0 .proc
 
 GetPlayerLockedP1 .proc
 
-                    ;; let temp2 = (playerLocked / 4) & 3
+                    let temp2 = (playerLocked / 4) & 3
 
           ;; TODO: GPL_lockedState = temp2
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
 GetPlayerLockedP2 .proc
 
-                    ;; let temp2 = (temp2 / 16) & 3
-          ;; lda temp2 (duplicate)
+                    let temp2 = (temp2 / 16) & 3
+          lda temp2
           lsr
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; and # 3 (duplicate)
-          ;; sta temp2 (duplicate)
+          lsr
+          lsr
+          lsr
+          and # 3
+          sta temp2
 
           ;; TODO: GPL_lockedState = temp2
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
 GetPlayerLockedP3 .proc
 
-                    ;; let temp2 = (temp2 / 64) & 3
-          ;; lda temp2 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; and # 3 (duplicate)
-          ;; sta temp2 (duplicate)
+                    let temp2 = (temp2 / 64) & 3
+          lda temp2
+          lsr
+          lsr
+          lsr
+          lsr
+          lsr
+          lsr
+          and # 3
+          sta temp2
 
           ;; TODO: GPL_lockedState = temp2
 
-          ;; rts (duplicate)
+          rts
 
 
 
@@ -164,11 +163,11 @@ SetPlayerLocked .proc
 
           ;; Determine player index from currentPlayer when valid
 
-          ;; if temp3 > 3 then goto SetPlayerLockedUseTemp
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp3 (duplicate)
+          if temp3 > 3 then goto SetPlayerLockedUseTemp
+          lda currentPlayer
+          sta temp3
 
-          ;; jmp SetPlayerLockedApply (duplicate)
+          jmp SetPlayerLockedApply
 
 
 
@@ -176,11 +175,11 @@ SetPlayerLocked .proc
 
 SetPlayerLockedUseTemp .proc
 
-          ;; if temp3 > 3 then return otherbank
+          if temp3 > 3 then return otherbank
           ;; Returns: Far (return otherbank)
 
-          ;; lda temp1 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda temp1
+          sta temp3
 
 
 
@@ -189,25 +188,25 @@ SetPlayerLockedUseTemp .proc
 SetPlayerLockedApply .proc
           ;; Returns: Far (return otherbank)
 
-          ;; lda temp3 (duplicate)
-          ;; sta currentPlayer (duplicate)
+          lda temp3
+          sta currentPlayer
 
 
 
           ;; Clear the 2 bits for this player and set the new value
           ;; Returns: Far (return otherbank)
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 

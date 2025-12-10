@@ -11,11 +11,11 @@ RestoreNormalPlayerColor .proc
           ;; Output: None
           ;;
           ;; Mutates: temp4 (loads character index for downstream routines)
-                    ;; let temp4 = playerCharacter[temp1]         
+                    let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
+          lda playerCharacter,x
           sta temp4
           rts
 

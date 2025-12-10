@@ -19,9 +19,6 @@ LoadSongPointer
           ;; Returns: Far (return otherbank)
 
 
-;; LoadSongPointer (duplicate)
-
-
           ;; Lookup 16-bit song pointer for Bank 1 songs.
           ;; Returns: Far (return otherbank)
 
@@ -41,9 +38,9 @@ skip_6352:
 
           ;; Check if songs handled by other banks (0-Bank14MaxSongID)
 
-                    ;; if temp1 < Bank0MinSongID then goto LSP_InvalidSong
-          ;; lda temp1 (duplicate)
-          ;; cmp Bank0MinSongID (duplicate)
+          ;; if temp1 < Bank0MinSongID then goto LSP_InvalidSong
+          lda temp1
+          cmp Bank0MinSongID
           bcs skip_4480
           jmp LSP_InvalidSong
 skip_4480:
@@ -51,35 +48,40 @@ skip_4480:
 
           ;; Calculate compact index: songID - Bank0MinSongID (song Bank0MinSongID → 0)
 
-          ;; ;; let temp2 = temp1 - Bank0MinSongID          lda temp1          sec          sbc Bank0MinSongID          sta temp2
-          ;; lda temp1 (duplicate)
+          ;; let temp2 = temp1 - Bank0MinSongID          lda temp1          sec          sbc Bank0MinSongID          sta temp2
+          lda temp1
           sec
           sbc Bank0MinSongID
           sta temp2
 
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc Bank0MinSongID (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp1
+          sec
+          sbc Bank0MinSongID
+          sta temp2
 
 
           ;; Lookup pointer from tables and combine into 16-bit value
 
           ;; Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
 
-                    ;; let var40 = SongPointers1H[temp2]          lda temp2          asl          tax          lda SongPointers1H,x          sta var40
-
-                    ;; let songPointer = SongPointers1L[temp2]
-          ;; lda temp2 (duplicate)
+          ;; let var40 = SongPointers1H[temp2]
+          lda temp2
           asl
           tax
-          ;; lda SongPointers1L,x (duplicate)
-          ;; sta songPointer (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda SongPointers1L,x (duplicate)
-          ;; sta songPointer (duplicate)
+          lda SongPointers1H,x
+          sta songPointer+1
+
+          ;; let songPointer = SongPointers1L[temp2]
+          lda temp2
+          asl
+          tax
+          lda SongPointers1L,x
+          sta songPointer
+          lda temp2
+          asl
+          tax
+          lda SongPointers1L,x
+          sta songPointer
 
           jsr BS_return
 
@@ -88,18 +90,15 @@ skip_4480:
 LSP_InvalidSong
           ;; Returns: Far (return otherbank)
 
-          ;; lda # 0 (duplicate)
-          ;; sta songPointer (duplicate)
+          lda # 0
+          sta songPointer
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
 LoadSongVoice1PointerBank1
           ;; Returns: Far (return otherbank)
-
-
-;; LoadSongVoice1PointerBank1 (duplicate)
 
 
 
@@ -134,65 +133,70 @@ LoadSongVoice1PointerBank1
 
           ;; Bounds check: Only songs Bank0MinSongID-28 are in Bank 1
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 29 (duplicate)
-          ;; bcc skip_6043 (duplicate)
+          lda temp1
+          cmp # 29
+          bcc skip_6043
 skip_6043:
 
 
           ;; Check if songs handled by other banks (0-Bank14MaxSongID)
 
-                    ;; if temp1 < Bank0MinSongID then goto LSV1P_InvalidSong
-          ;; lda temp1 (duplicate)
-          ;; cmp Bank0MinSongID (duplicate)
-          ;; bcs skip_9878 (duplicate)
-          ;; jmp LSV1P_InvalidSong (duplicate)
+          ;; if temp1 < Bank0MinSongID then goto LSV1P_InvalidSong
+          lda temp1
+          cmp Bank0MinSongID
+          bcs skip_9878
+          jmp LSV1P_InvalidSong
 skip_9878:
           
 
           ;; Calculate compact index: songID - Bank0MinSongID (song Bank0MinSongID → 0)
 
-          ;; ;; let temp2 = temp1 - Bank0MinSongID          lda temp1          sec          sbc Bank0MinSongID          sta temp2
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc Bank0MinSongID (duplicate)
-          ;; sta temp2 (duplicate)
+          ;; let temp2 = temp1 - Bank0MinSongID          lda temp1          sec          sbc Bank0MinSongID          sta temp2
+          lda temp1
+          sec
+          sbc Bank0MinSongID
+          sta temp2
 
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc Bank0MinSongID (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp1
+          sec
+          sbc Bank0MinSongID
+          sta temp2
 
 
           ;; Lookup Voice 1 pointer from tables
 
           ;; Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
 
-                    ;; let var40 = SongPointers1SecondH[temp2]          lda temp2          asl          tax          lda SongPointers1SecondH,x          sta var40
+          ;; let var40 = SongPointers1SecondH[temp2]
+          lda temp2
+          asl
+          tax
+          lda SongPointers1SecondH,x
+          sta songPointer+1
 
-                    ;; let songPointer = SongPointers1SecondL[temp2]
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda SongPointers1SecondL,x (duplicate)
-          ;; sta songPointer (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda SongPointers1SecondL,x (duplicate)
-          ;; sta songPointer (duplicate)
+          ;; let songPointer = SongPointers1SecondL[temp2]
+          lda temp2
+          asl
+          tax
+          lda SongPointers1SecondL,x
+          sta songPointer
+          lda temp2
+          asl
+          tax
+          lda SongPointers1SecondL,x
+          sta songPointer
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
 LSV1P_InvalidSong
           ;; Returns: Far (return otherbank)
 
-          ;; lda # 0 (duplicate)
-          ;; sta songPointer (duplicate)
+          lda # 0
+          sta songPointer
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -241,63 +245,63 @@ LoadMusicNote0 .proc
 
           ;; TODO: ldy #0
 
-            ;; lda (musicVoice0Pointer),y  ; Load AUDCV (duplicate)
+            lda (musicVoice0Pointer),y  ; Load AUDCV
 
-            ;; sta temp2 (duplicate)
+            sta temp2
 
             iny
 
-            ;; lda (musicVoice0Pointer),y  ; Load AUDF (duplicate)
+            lda (musicVoice0Pointer),y  ; Load AUDF
 
-            ;; sta temp3 (duplicate)
+            sta temp3
 
-            ;; iny (duplicate)
+            iny
 
-            ;; lda (musicVoice0Pointer),y  ; Load Duration (duplicate)
+            lda (musicVoice0Pointer),y  ; Load Duration
 
-            ;; sta temp4 (duplicate)
+            sta temp4
 
-            ;; iny (duplicate)
+            iny
 
-            ;; lda (musicVoice0Pointer),y  ; Load Delay (duplicate)
+            lda (musicVoice0Pointer),y  ; Load Delay
 
-            ;; sta temp5 (duplicate)
+            sta temp5
 
 
 
 
           ;; Check for end of track (Duration = 0)
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
           ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
 
-                    ;; let temp6 = temp2 & %11110000
+          ;; let temp6 = temp2 & %11110000
 
-                    ;; let temp6 = temp6 / 16
-          ;; lda temp6 (duplicate)
+          ;; let temp6 = temp6 / 16
+          lda temp6
           lsr
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp6 (duplicate)
+          lsr
+          lsr
+          lsr
+          sta temp6
 
-                    ;; let musicVoice0TargetAUDV_W = temp2 & %00001111
-          ;; lda temp2 (duplicate)
+          ;; let musicVoice0TargetAUDV_W = temp2 & %00001111
+          lda temp2
           and # 15
-          ;; sta musicVoice0TargetAUDV_W (duplicate)
+          sta musicVoice0TargetAUDV_W
 
 
 
           ;; Store target AUDV and total frames for envelope
 
-                    ;; let musicVoice0TotalFrames_W = temp4 + temp5
-          ;; lda temp4 (duplicate)
+          ;; let musicVoice0TotalFrames_W = temp4 + temp5
+          lda temp4
           clc
           adc temp5
-          ;; sta musicVoice0TotalFrames_W (duplicate)
+          sta musicVoice0TotalFrames_W
 
 
 
@@ -313,25 +317,25 @@ LoadMusicNote0 .proc
 
 
 
-                    ;; let musicVoice0Frame_W = temp4 + temp5
-          ;; lda temp4 (duplicate)
-          ;; clc (duplicate)
-          ;; adc temp5 (duplicate)
-          ;; sta musicVoice0Frame_W (duplicate)
+          ;; let musicVoice0Frame_W = temp4 + temp5
+          lda temp4
+          clc
+          adc temp5
+          sta musicVoice0Frame_W
 
           ;; Set frame counter = Duration + Delay
 
 
 
           ;; Advance pointer by 4 bytes (16-bit addition)
-          ;; lda musicVoice0Pointer (duplicate)
-          ;; clc (duplicate)
-          ;; adc # 4 (duplicate)
-          ;; sta musicVoice0Pointer (duplicate)
+          lda musicVoice0Pointer
+          clc
+          adc # 4
+          sta musicVoice0Pointer
 
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -389,63 +393,63 @@ LoadMusicNote1 .proc
 
           ;; TODO: ldy #0
 
-            ;; lda (musicVoice1Pointer),y  ; Load AUDCV (duplicate)
+            lda (musicVoice1Pointer),y  ; Load AUDCV
 
-            ;; sta temp2 (duplicate)
+            sta temp2
 
-            ;; iny (duplicate)
+            iny
 
-            ;; lda (musicVoice1Pointer),y  ; Load AUDF (duplicate)
+            lda (musicVoice1Pointer),y  ; Load AUDF
 
-            ;; sta temp3 (duplicate)
+            sta temp3
 
-            ;; iny (duplicate)
+            iny
 
-            ;; lda (musicVoice1Pointer),y  ; Load Duration (duplicate)
+            lda (musicVoice1Pointer),y  ; Load Duration
 
-            ;; sta temp4 (duplicate)
+            sta temp4
 
-            ;; iny (duplicate)
+            iny
 
-            ;; lda (musicVoice1Pointer),y  ; Load Delay (duplicate)
+            lda (musicVoice1Pointer),y  ; Load Delay
 
-            ;; sta temp5 (duplicate)
+            sta temp5
 
 
 
 
           ;; Check for end of track (Duration = 0)
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
           ;; Extract AUDC and AUDV
 
-                    ;; let temp6 = temp2 & %11110000
+          ;; let temp6 = temp2 & %11110000
 
-                    ;; let temp6 = temp6 / 16
-          ;; lda temp6 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp6 / 16
+          lda temp6
+          lsr
+          lsr
+          lsr
+          lsr
+          sta temp6
 
-                    ;; let musicVoice1TargetAUDV_W = temp2 & %00001111
-          ;; lda temp2 (duplicate)
-          ;; and # 15 (duplicate)
-          ;; sta musicVoice1TargetAUDV_W (duplicate)
+          ;; let musicVoice1TargetAUDV_W = temp2 & %00001111
+          lda temp2
+          and # 15
+          sta musicVoice1TargetAUDV_W
 
 
 
           ;; Store target AUDV and total frames for envelope
 
-                    ;; let musicVoice1TotalFrames_W = temp4 + temp5
-          ;; lda temp4 (duplicate)
-          ;; clc (duplicate)
-          ;; adc temp5 (duplicate)
-          ;; sta musicVoice1TotalFrames_W (duplicate)
+          ;; let musicVoice1TotalFrames_W = temp4 + temp5
+          lda temp4
+          clc
+          adc temp5
+          sta musicVoice1TotalFrames_W
 
 
 
@@ -461,25 +465,25 @@ LoadMusicNote1 .proc
 
 
 
-                    ;; let musicVoice1Frame_W = temp4 + temp5
-          ;; lda temp4 (duplicate)
-          ;; clc (duplicate)
-          ;; adc temp5 (duplicate)
-          ;; sta musicVoice1Frame_W (duplicate)
+          ;; let musicVoice1Frame_W = temp4 + temp5
+          lda temp4
+          clc
+          adc temp5
+          sta musicVoice1Frame_W
 
           ;; Set frame counter = Duration + Delay
 
 
 
           ;; Advance pointer by 4 bytes
-          ;; lda musicVoice1Pointer (duplicate)
-          ;; clc (duplicate)
-          ;; adc # 4 (duplicate)
-          ;; sta musicVoice1Pointer (duplicate)
+          lda musicVoice1Pointer
+          clc
+          adc # 4
+          sta musicVoice1Pointer
 
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

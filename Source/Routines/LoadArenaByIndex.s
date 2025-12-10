@@ -23,8 +23,8 @@ arena_index:
 
             lda temp1
             sta temp2
-            ;; lda # 0 (duplicate)
-            ;; sta temp3 (duplicate)
+            lda # 0
+            sta temp3
 
           ;; TODO: ; Multiply by 8 (3 shifts)
                     ldx # 3
@@ -37,39 +37,39 @@ MultiplyBy8:
 
           ;; TODO: ; Now multiply by 3: temp2/temp3 * 3 = temp2/temp3 + (temp2/temp3 * 2)
           ;; TODO: ; Store original value for addition
-            ;; lda temp2 (duplicate)
-            ;; sta temp4 (duplicate)
-            ;; lda temp3 (duplicate)
-            ;; sta temp5 (duplicate)
+            lda temp2
+            sta temp4
+            lda temp3
+            sta temp5
 
           ;; TODO: ; Multiply by 2 (1 shift)
-            ;; asl temp2 (duplicate)
-            ;; rol temp3 (duplicate)
+            asl temp2
+            rol temp3
 
           ;; TODO: ; Add original to get * 3
             clc
-            ;; lda temp2 (duplicate)
+            lda temp2
             adc temp4
-            ;; sta temp2 (duplicate)
-            ;; lda temp3 (duplicate)
-            ;; adc temp5 (duplicate)
-            ;; sta temp3 (duplicate)
+            sta temp2
+            lda temp3
+            adc temp5
+            sta temp3
 
           ;; TODO: ; Add base address
-            ;; lda # <.Arena0Playfield (duplicate)
-            ;; clc (duplicate)
-            ;; adc temp2 (duplicate)
-            ;; sta temp4 (duplicate)
-            ;; lda # >.Arena0Playfield (duplicate)
-            ;; adc temp3 (duplicate)
-            ;; sta temp5 (duplicate)
+            lda # <.Arena0Playfield
+            clc
+            adc temp2
+            sta temp4
+            lda # >.Arena0Playfield
+            adc temp3
+            sta temp5
 
-            ;; lda temp4 (duplicate)
-            ;; sta PF1pointer (duplicate)
-            ;; sta PF2pointer (duplicate)
-            ;; lda temp5 (duplicate)
-            ;; sta PF1pointer+1 (duplicate)
-            ;; sta PF2pointer+1 (duplicate)
+            lda temp4
+            sta PF1pointer
+            sta PF2pointer
+            lda temp5
+            sta PF1pointer+1
+            sta PF2pointer+1
           jsr BS_return
 
 .pend

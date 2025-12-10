@@ -24,38 +24,38 @@ LoadSoundNote1 .proc
           ;; AUDC/AUDV), AUDF, Duration, Delay. Extracts AUDC (upper 4
           ;; bits) and AUDV (lower 4 bits) from AUDCV. End of sound
           ;; marked by Duration = 0 (sets soundEffectPointer1 = 0 and
-          ;; AUDV1 = 0). Uses Voice 1 for sound effects
+          AUDV1 = 0). Uses Voice 1 for sound effects
           ;; TODO: ; Load 4 bytes from stream[pointer]
           ;; TODO: ldy #0
             lda (soundEffectPointer1),y  ; Load AUDCV
             sta temp2
             iny
-            ;; lda (soundEffectPointer1),y  ; Load AUDF (duplicate)
-            ;; sta temp3 (duplicate)
-            ;; iny (duplicate)
-            ;; lda (soundEffectPointer1),y  ; Load Duration (duplicate)
-            ;; sta temp4 (duplicate)
-            ;; iny (duplicate)
-            ;; lda (soundEffectPointer1),y  ; Load Delay (duplicate)
-            ;; sta temp5 (duplicate)
+            lda (soundEffectPointer1),y  ; Load AUDF
+            sta temp3
+            iny
+            lda (soundEffectPointer1),y  ; Load Duration
+            sta temp4
+            iny
+            lda (soundEffectPointer1),y  ; Load Delay
+            sta temp5
 
           ;; Check for end of sound (Duration = 0)
           jsr BS_return
 
           ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           ;; AUDCV
-                    ;; let temp6 = temp2 & %11110000
-                    ;; let temp6 = temp6 / 16
-          ;; lda temp6 (duplicate)
+                    let temp6 = temp2 & %11110000
+                    let temp6 = temp6 / 16
+          lda temp6
           lsr
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp6 (duplicate)
-                    ;; let soundEffectID_W = temp2 & %00001111
-          ;; lda temp2 (duplicate)
+          lsr
+          lsr
+          lsr
+          sta temp6
+                    let soundEffectID_W = temp2 & %00001111
+          lda temp2
           and # 15
-          ;; sta soundEffectID_W (duplicate)
+          sta soundEffectID_W
 
           ;; Write to TIA registers (use Voice 1 for sound effects)
           AUDC1 = temp6
@@ -63,19 +63,19 @@ LoadSoundNote1 .proc
           AUDV1 = soundEffectID_R
 
           ;; Set frame counter = Duration + Delay
-                    ;; let soundEffectFrame1_W = temp4 + temp5
-          ;; lda temp4 (duplicate)
+                    let soundEffectFrame1_W = temp4 + temp5
+          lda temp4
           clc
           adc temp5
-          ;; sta soundEffectFrame1_W (duplicate)
+          sta soundEffectFrame1_W
 
           ;; Advance pointer by 4 bytes (16-bit addition)
-          ;; lda soundEffectPointer1 (duplicate)
-          ;; clc (duplicate)
-          ;; adc # 4 (duplicate)
-          ;; sta soundEffectPointer1 (duplicate)
+          lda soundEffectPointer1
+          clc
+          adc # 4
+          sta soundEffectPointer1
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 .pend

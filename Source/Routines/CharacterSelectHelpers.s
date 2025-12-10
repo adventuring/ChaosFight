@@ -13,28 +13,28 @@ SelectStickLeft .proc
           ;; SetPlayerLocked)
           ;; Called Routines: SetPlayerLocked (bank6)
           ;; Constraints: currentPlayer must be set by caller
-          ;; ;; let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
+          ;; let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
           lda currentPlayer
           asl
           tax
           dec playerCharacter,x
 
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; dec playerCharacter,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          dec playerCharacter,x
 
-                    ;; if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
+                    if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerLocked-1)
+          pha
+          lda # <(SetPlayerLocked-1)
+          pha
                     ldx # 5
           jmp BS_jsr
 return_point:
@@ -55,34 +55,34 @@ SelectStickRight .proc
           ;; SetPlayerLocked)
           ;; Called Routines: SetPlayerLocked (bank6)
           ;; Constraints: currentPlayer must be set by caller
-          ;; ;; let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
+          ;; let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
+          lda currentPlayer
+          asl
+          tax
           inc playerCharacter,x
 
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; inc playerCharacter,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          inc playerCharacter,x
 
-                    ;; if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
+                    if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerLocked-1)
+          pha
+          lda # <(SetPlayerLocked-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 

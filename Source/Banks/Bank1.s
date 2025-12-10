@@ -13,7 +13,6 @@
           .rept 256
           .byte $ff
           .endrept  ;; Scram shadow (256 bytes of $FF)
-          * = $F100
           .if * != $F100
               .error "Bank 1: not starting at $f100"
           .fi
@@ -59,17 +58,8 @@ CharacterArtBank2End:
             .warn format("// Bank 1: %d bytes = Character Art lookup routines", [CharacterArtBank2End - CharacterArtBank2Start])
 Bank1CodeEnds:
 
-          ;; CRITICAL: Jump to bank switching code location to avoid placing code in gap
-          ;; Set CPU address before block to ensure no code is placed in the gap between
-          ;; Bank1CodeEnds and the bank switching code
-          * = $FFE0 - bscode_length
-          .if * < Bank1CodeEnds
-              .error format("Bank 1 overflow: Code ends at $%04x but bank switching starts at $%04x", Bank1CodeEnds, *)
-          .fi
-
           ;; Include BankSwitching.s in Bank 1
           ;; Wrap in .block to create namespace Bank1BS (avoids duplicate definitions)
-          ;; Note: * = is set above, so BankSwitching.s will be placed at the correct address
 Bank1BS: .block
           current_bank = 1
           .include "Source/Common/BankSwitching.s"

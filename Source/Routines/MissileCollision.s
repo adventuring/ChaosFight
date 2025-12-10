@@ -8,7 +8,7 @@ CheckAllMissileCollisions
           ;; Returns: Far (return otherbank)
 
 
-;; CheckAllMissileCollisions (duplicate)
+CheckAllMissileCollisions
 
 
           ;; Missile Collision System
@@ -68,16 +68,16 @@ CheckAllMissileCollisions
 
           ;; Optimized: Calculate missile active bit flag with formula
 
-          ;; bit flag: BitMask[playerIndex] (1, 2, 4, 8 for players 0-3)
+          bit flag: BitMask[playerIndex] (1, 2, 4, 8 for players 0-3)
 
           lda MissileHitNotFound
           sta temp4
 
-                    ;; let temp6 = BitMask[temp1]          lda temp1          asl          tax          lda BitMask,x          sta temp6
+                    let temp6 = BitMask[temp1]          lda temp1          asl          tax          lda BitMask,x          sta temp6
 
-          ;; lda missileActive (duplicate)
+          lda missileActive
           and temp6
-          ;; sta temp5 (duplicate)
+          sta temp5
 
           ;; No active missile
 
@@ -87,30 +87,30 @@ CheckAllMissileCollisions
 
           ;; Cache character index for downstream routines
 
-          ;; let characterIndex = playerCharacter[temp1]
-          ;; lda temp1 (duplicate)
+          let characterIndex = playerCharacter[temp1]
+          lda temp1
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta characterIndex (duplicate)
+          lda playerCharacter,x
+          sta characterIndex
 
 
 
           ;; Visible missile when width > 0, otherwise treat as AOE
 
-                    ;; let temp6 = CharacterMissileWidths[characterIndex]
-          ;; lda characterIndex (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMissileWidths,x (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda characterIndex (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMissileWidths,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = CharacterMissileWidths[characterIndex]
+          lda characterIndex
+          asl
+          tax
+          lda CharacterMissileWidths,x
+          sta temp6
+          lda characterIndex
+          asl
+          tax
+          lda CharacterMissileWidths,x
+          sta temp6
 
-          ;; lda temp6 (duplicate)
+          lda temp6
           cmp # 0
           bne skip_4483
           jmp CheckAOECollision
@@ -119,7 +119,7 @@ skip_4483:
 
           ;; tail call
 
-          ;; jmp CheckVisibleMissileCollision (duplicate)
+          jmp CheckVisibleMissileCollision
 
 
 
@@ -129,7 +129,7 @@ CheckVisibleMissileCollision
           ;; Returns: Near (return thisbank) - called same-bank
 
 
-;; CheckVisibleMissileCollision (duplicate)
+CheckVisibleMissileCollision
 
 
           ;;
@@ -144,12 +144,12 @@ CheckVisibleMissileCollision
           ;; Uses axis-aligned bounding box (AABB) collision detection.
 
           ;;
-          ;; INPUT:
+          INPUT:
 
           ;; temp1 = attacker player index (0-3, missile owner)
 
           ;;
-          ;; OUTPUT:
+          OUTPUT:
 
           ;; temp4 = hit player index (0-3), or 255 if no hit
 
@@ -187,53 +187,53 @@ CheckVisibleMissileCollision
 
           ;; Ensure character index matches current attacker
 
-                    ;; let characterIndex = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta characterIndex
+                    let characterIndex = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta characterIndex
 
 
 
-          ;; let cachedHitboxLeft_W = missileX[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda missileX,x (duplicate)
-          ;; sta cachedHitboxLeft_W (duplicate)
+          let cachedHitboxLeft_W = missileX[temp1]
+          lda temp1
+          asl
+          tax
+          lda missileX,x
+          sta cachedHitboxLeft_W
 
-          ;; let cachedHitboxTop_W = missileY_R[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda missileY_R,x (duplicate)
-          ;; sta cachedHitboxTop_W (duplicate)
+          let cachedHitboxTop_W = missileY_R[temp1]
+          lda temp1
+          asl
+          tax
+          lda missileY_R,x
+          sta cachedHitboxTop_W
 
 
 
           ;; Derive hitbox bounds from missile dimensions
 
-                    ;; let temp6 = CharacterMissileWidths[characterIndex]
-          ;; lda characterIndex (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMissileWidths,x (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda characterIndex (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMissileWidths,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = CharacterMissileWidths[characterIndex]
+          lda characterIndex
+          asl
+          tax
+          lda CharacterMissileWidths,x
+          sta temp6
+          lda characterIndex
+          asl
+          tax
+          lda CharacterMissileWidths,x
+          sta temp6
 
-                    ;; let cachedHitboxRight_W = cachedHitboxLeft_R + temp6
+                    let cachedHitboxRight_W = cachedHitboxLeft_R + temp6
 
-                    ;; let temp6 = CharacterMissileHeights[characterIndex]         
-          ;; lda characterIndex (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMissileHeights,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = CharacterMissileHeights[characterIndex]         
+          lda characterIndex
+          asl
+          tax
+          lda CharacterMissileHeights,x
+          sta temp6
 
-                    ;; let cachedHitboxBottom_W = cachedHitboxTop_R + temp6
-          ;; jsr CheckPlayersAgainstCachedHitbox (duplicate)
+                    let cachedHitboxBottom_W = cachedHitboxTop_R + temp6
+          jsr CheckPlayersAgainstCachedHitbox
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -241,7 +241,7 @@ CheckAOECollision
           ;; Returns: Near (return thisbank) - called same-bank
 
 
-;; CheckAOECollision (duplicate)
+CheckAOECollision
 
 
           ;;
@@ -262,12 +262,12 @@ CheckAOECollision
           ;; away rapidly.
 
           ;;
-          ;; INPUT:
+          INPUT:
 
           ;; temp1 = attacker player index (0-3)
 
           ;;
-          ;; OUTPUT:
+          OUTPUT:
 
           ;; temp4 = hit player index (0-3), or 255 if no hit
 
@@ -309,17 +309,17 @@ CheckAOECollision
 
           ;; Constraints: Bernie (character 0) hits both left and right simultaneously
 
-                    ;; let characterIndex = playerCharacter[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta characterIndex (duplicate)
+                    let characterIndex = playerCharacter[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta characterIndex
 
           ;; Get attacker character type
 
-          ;; lda characterIndex (duplicate)
-          ;; sta temp5 (duplicate)
+          lda characterIndex
+          sta temp5
 
 
 
@@ -329,9 +329,9 @@ CheckAOECollision
 
           ;; directions
 
-          ;; lda temp5 (duplicate)
-          ;; cmp CharacterBernie (duplicate)
-          ;; bne skip_1021 (duplicate)
+          lda temp5
+          cmp CharacterBernie
+          bne skip_1021
           ;; TODO: CheckBernieAOE
 skip_1021:
 
@@ -340,21 +340,21 @@ skip_1021:
 
           ;; Normal character: Check only facing direction
 
-                    ;; let temp6 = playerState[temp1] & PlayerStateBitFacing         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = playerState[temp1] & PlayerStateBitFacing         
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          sta temp6
 
-          ;; lda temp6 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_3727 (duplicate)
-          ;; jmp CheckAOEDirection_Left (duplicate)
+          lda temp6
+          cmp # 0
+          bne skip_3727
+          jmp CheckAOEDirection_Left
 skip_3727:
 
 
-          ;; jmp CheckAOEDirection_Right (duplicate)
+          jmp CheckAOEDirection_Right
 
 
 
@@ -365,19 +365,19 @@ CheckBernieAOE .proc
           ;; Bernie swings both directions every frame
           ;; Returns: Far (return otherbank)
 
-          ;; jsr CacheAOERightHitbox (duplicate)
+          jsr CacheAOERightHitbox
 
-          ;; jsr CheckPlayersAgainstCachedHitbox (duplicate)
+          jsr CheckPlayersAgainstCachedHitbox
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
-          ;; jsr CacheAOELeftHitbox (duplicate)
+          jsr CacheAOELeftHitbox
 
-          ;; jsr CheckPlayersAgainstCachedHitbox (duplicate)
+          jsr CheckPlayersAgainstCachedHitbox
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -385,7 +385,7 @@ CheckAOEDirection_Right
           ;; Returns: Near (return thisbank) - called same-bank
 
 
-;; CheckAOEDirection_Right (duplicate)
+CheckAOEDirection_Right
 
 
           ;;
@@ -398,12 +398,12 @@ CheckAOEDirection_Right
           ;; Formula: AOE_X = playerX + offset
 
           ;;
-          ;; INPUT:
+          INPUT:
 
           ;; temp1 = attacker player index (0-3)
 
           ;;
-          ;; OUTPUT:
+          OUTPUT:
 
           ;; temp4 = hit player index (0-3), or 255 if no hit
 
@@ -437,11 +437,11 @@ CheckAOEDirection_Right
 
           ;; Constraints: None
 
-          ;; jsr CacheAOERightHitbox (duplicate)
+          jsr CacheAOERightHitbox
 
-          ;; jsr CheckPlayersAgainstCachedHitbox (duplicate)
+          jsr CheckPlayersAgainstCachedHitbox
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -449,7 +449,7 @@ CheckAOEDirection_Left
           ;; Returns: Near (return thisbank) - called same-bank
 
 
-;; CheckAOEDirection_Left (duplicate)
+CheckAOEDirection_Left
 
 
           ;;
@@ -462,12 +462,12 @@ CheckAOEDirection_Left
           ;; Formula: AOE_X = playerX + 7 - offset
 
           ;;
-          ;; INPUT:
+          INPUT:
 
           ;; temp1 = attacker player index (0-3)
 
           ;;
-          ;; OUTPUT:
+          OUTPUT:
 
           ;; temp4 = hit player index (0-3), or 255 if no hit
 
@@ -501,11 +501,11 @@ CheckAOEDirection_Left
 
           ;; Constraints: None
 
-          ;; jsr CacheAOELeftHitbox (duplicate)
+          jsr CacheAOELeftHitbox
 
-          ;; jsr CheckPlayersAgainstCachedHitbox (duplicate)
+          jsr CheckPlayersAgainstCachedHitbox
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -520,30 +520,30 @@ CacheAOERightHitbox .proc
 
           ;; Output: cachedHitboxLeft/Right/Top/Bottom populated
 
-                    ;; let aoeOffset = CharacterAOEOffsets[characterIndex]          lda characterIndex          asl          tax          lda CharacterAOEOffsets,x          sta aoeOffset
+                    let aoeOffset = CharacterAOEOffsets[characterIndex]          lda characterIndex          asl          tax          lda CharacterAOEOffsets,x          sta aoeOffset
 
-                    ;; let cachedHitboxLeft_W = playerX[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta cachedHitboxLeft_W + aoeOffset (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta cachedHitboxLeft_W (duplicate)
+                    let cachedHitboxLeft_W = playerX[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta cachedHitboxLeft_W + aoeOffset
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta cachedHitboxLeft_W
 
-                    ;; let cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
+                    let cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
 
-                    ;; let cachedHitboxTop_W = playerY[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta cachedHitboxTop_W (duplicate)
+                    let cachedHitboxTop_W = playerY[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta cachedHitboxTop_W
 
-                    ;; let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
+                    let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
 
           rts
 
@@ -560,42 +560,42 @@ CacheAOELeftHitbox .proc
 
           ;; Output: cachedHitboxLeft/Right/Top/Bottom populated
 
-                    ;; let aoeOffset = CharacterAOEOffsets[characterIndex]          lda characterIndex          asl          tax          lda CharacterAOEOffsets,x          sta aoeOffset
+                    let aoeOffset = CharacterAOEOffsets[characterIndex]          lda characterIndex          asl          tax          lda CharacterAOEOffsets,x          sta aoeOffset
 
-          ;; let cachedHitboxRight_W = playerX[temp1] + PlayerSpriteWidth - 1 - aoeOffset
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta cachedHitboxRight_W (duplicate)
+          let cachedHitboxRight_W = playerX[temp1] + PlayerSpriteWidth - 1 - aoeOffset
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta cachedHitboxRight_W
 
-          ;; ;; let cachedHitboxLeft_W = cachedHitboxRight_R - PlayerSpriteHalfWidth          lda cachedHitboxRight_R          sec          sbc PlayerSpriteHalfWidth          sta cachedHitboxLeft_W
-          ;; lda cachedHitboxRight_R (duplicate)
+          ;; let cachedHitboxLeft_W = cachedHitboxRight_R - PlayerSpriteHalfWidth          lda cachedHitboxRight_R          sec          sbc PlayerSpriteHalfWidth          sta cachedHitboxLeft_W
+          lda cachedHitboxRight_R
           sec
           sbc PlayerSpriteHalfWidth
-          ;; sta cachedHitboxLeft_W (duplicate)
+          sta cachedHitboxLeft_W
 
-          ;; lda cachedHitboxRight_R (duplicate)
-          ;; sec (duplicate)
-          ;; sbc PlayerSpriteHalfWidth (duplicate)
-          ;; sta cachedHitboxLeft_W (duplicate)
+          lda cachedHitboxRight_R
+          sec
+          sbc PlayerSpriteHalfWidth
+          sta cachedHitboxLeft_W
 
 
-                    ;; let cachedHitboxTop_W = playerY[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta cachedHitboxTop_W (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta cachedHitboxTop_W (duplicate)
+                    let cachedHitboxTop_W = playerY[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta cachedHitboxTop_W
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta cachedHitboxTop_W
 
-                    ;; let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
+                    let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
 
-          ;; rts (duplicate)
+          rts
 
 
 
@@ -610,89 +610,89 @@ CheckPlayersAgainstCachedHitbox .proc
           ;; Input: temp1 = attacker index, cachedHitbox* = attacker bounds
 
           ;; Output: temp4 = hit player index or MissileHitNotFound
-          ;; lda MissileHitNotFound (duplicate)
-          ;; sta temp4 (duplicate)
+          lda MissileHitNotFound
+          sta temp4
 
           ;; TODO: for temp2 = 0 to 3
 
-          ;; lda temp2 (duplicate)
-          ;; cmp temp1 (duplicate)
-          ;; bne skip_5252 (duplicate)
+          lda temp2
+          cmp temp1
+          bne skip_5252
           ;; TODO: CPB_NextPlayer
 skip_5252:
 
 
-                    ;; if playerHealth[temp2] = 0 then CPB_NextPlayer
+                    if playerHealth[temp2] = 0 then CPB_NextPlayer
 
-                    ;; if playerX[temp2] + PlayerSpriteWidth <= cachedHitboxLeft_R then CPB_NextPlayer
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
+                    if playerX[temp2] + PlayerSpriteWidth <= cachedHitboxLeft_R then CPB_NextPlayer
+          lda temp2
+          asl
+          tax
+          lda playerX,x
           clc
           adc PlayerSpriteWidth
-          ;; sta temp6 (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc cachedHitboxLeft_R (duplicate)
+          sta temp6
+          lda temp6
+          sec
+          sbc cachedHitboxLeft_R
           bcc CPB_NextPlayer
           beq CPB_NextPlayer
-          ;; jmp skip_9492 (duplicate)
+          jmp skip_9492
 CPB_NextPlayer:
 skip_9492:
 
-                    ;; if playerX[temp2] >= cachedHitboxRight_R then CPB_NextPlayer
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sec (duplicate)
-          ;; sbc cachedHitboxRight_R (duplicate)
-          ;; bcc skip_3163 (duplicate)
-          ;; jmp CPB_NextPlayer (duplicate)
+                    if playerX[temp2] >= cachedHitboxRight_R then CPB_NextPlayer
+          lda temp2
+          asl
+          tax
+          lda playerX,x
+          sec
+          sbc cachedHitboxRight_R
+          bcc skip_3163
+          jmp CPB_NextPlayer
 skip_3163:
 
-                    ;; if playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R then CPB_NextPlayer
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; clc (duplicate)
-          ;; adc PlayerSpriteHeight (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc cachedHitboxTop_R (duplicate)
-          ;; bcc CPB_NextPlayer (duplicate)
-          ;; beq CPB_NextPlayer (duplicate)
-          ;; jmp skip_8040 (duplicate)
-;; CPB_NextPlayer: (duplicate)
+                    if playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R then CPB_NextPlayer
+          lda temp2
+          asl
+          tax
+          lda playerY,x
+          clc
+          adc PlayerSpriteHeight
+          sta temp6
+          lda temp6
+          sec
+          sbc cachedHitboxTop_R
+          bcc CPB_NextPlayer
+          beq CPB_NextPlayer
+          jmp skip_8040
+CPB_NextPlayer:
 skip_8040:
 
-                    ;; if playerY[temp2] >= cachedHitboxBottom_R then CPB_NextPlayer
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sec (duplicate)
-          ;; sbc cachedHitboxBottom_R (duplicate)
-          ;; bcc skip_9459 (duplicate)
-          ;; jmp CPB_NextPlayer (duplicate)
+                    if playerY[temp2] >= cachedHitboxBottom_R then CPB_NextPlayer
+          lda temp2
+          asl
+          tax
+          lda playerY,x
+          sec
+          sbc cachedHitboxBottom_R
+          bcc skip_9459
+          jmp CPB_NextPlayer
 skip_9459:
-          ;; lda temp2 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp2
+          sta temp4
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
-;; CPB_NextPlayer .proc (duplicate)
+CPB_NextPlayer .proc
 
-;; .pend (no matching .proc)
+.pend (no matching .proc)
 
 next_label_1_L693:.proc
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -709,12 +709,12 @@ next_label_1_L693:.proc
           ;; Uses pfread to check playfield pixel at missile position.
 
           ;;
-          ;; INPUT:
+          INPUT:
 
           ;; temp1 = player index (0-3)
 
           ;;
-          ;; OUTPUT:
+          OUTPUT:
 
           ;; temp4 = 1 if hit playfield, 0 if clear
 
@@ -748,19 +748,19 @@ next_label_1_L693:.proc
 
           ;; Get missile X/Y position
 
-                    ;; let temp2 = missileX[temp1]          lda temp1          asl          tax          lda missileX,x          sta temp2
+                    let temp2 = missileX[temp1]          lda temp1          asl          tax          lda missileX,x          sta temp2
 
-                    ;; let temp3 = missileY_R[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda missileY_R,x (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda missileY_R,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = missileY_R[temp1]
+          lda temp1
+          asl
+          tax
+          lda missileY_R,x
+          sta temp3
+          lda temp1
+          asl
+          tax
+          lda missileY_R,x
+          sta temp3
 
 
 
@@ -772,28 +772,28 @@ next_label_1_L693:.proc
 
           ;; Convert × pixel to playfield column
 
-          ;; ;; let temp6 = temp2 - 16          lda temp2          sec          sbc 16          sta temp6
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 16 (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp2 - 16          lda temp2          sec          sbc 16          sta temp6
+          lda temp2
+          sec
+          sbc 16
+          sta temp6
 
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 16 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp2
+          sec
+          sbc 16
+          sta temp6
 
 
-          ;; ;; let temp6 = temp6 / 4          lda temp6          lsr          lsr          sta temp6
-          ;; lda temp6 (duplicate)
+          ;; let temp6 = temp6 / 4          lda temp6          lsr          lsr          sta temp6
+          lda temp6
           lsr
-          ;; lsr (duplicate)
-          ;; sta temp6 (duplicate)
+          lsr
+          sta temp6
 
-          ;; lda temp6 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp6
+          lsr
+          lsr
+          sta temp6
 
 
 
@@ -802,38 +802,38 @@ next_label_1_L693:.proc
 
           ;; Assume clear until pfread says otherwise
 
-          ;; lda # 0 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda # 0
+          sta temp4
 
-          ;; lda temp6 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp6
+          sta temp1
 
-          ;; lda temp3 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp3
+          sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          ;; lda # >(return_point_1_L825-1) (duplicate)
+          lda # >(return_point_1_L825-1)
           pha
-          ;; lda # <(return_point_1_L825-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point_1_L825-1)
+          pha
+          lda # >(PlayfieldRead-1)
+          pha
+          lda # <(PlayfieldRead-1)
+          pha
                     ldx # 15
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point_1_L825:
 
 
           ;; pfread(column, row) returns 0 if clear, non-zero if set
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Clear
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
-;; .pend (extra - no matching .proc)
+.pend (extra - no matching .proc)
 

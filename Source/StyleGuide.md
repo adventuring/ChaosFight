@@ -1,7 +1,7 @@
 <!-- markdownlint-disable-file MD013 -->
 # ChaosFight Coding Style Guide
 
-**Version**: 2.0
+**Version**: 3.0
 **Last Updated**: 2025
 **Copyright © 2025 Bruce-Robert Pocock.**
 
@@ -42,10 +42,17 @@ Use **PascalCase** for:
 - **Enums**: `ActionStanding`, `ActionWalking`, `ModeGame`,
   `ModeCharacterSelect`
 
+**Label Format:**
+
+Labels **MUST**:
+- Start at the **left margin** (column 0)
+- Use **PascalCase**
+- Suffix with a colon `:` followed by (where appropriate) `.proc` or `.block`
+
 **Examples:**
 
 ```assembly
-LoadCharacterSprite
+LoadCharacterSprite:
 .proc
           ;; Load sprite data for a character
           ;; Input: temp1 = character index, temp2 = animation frame
@@ -54,8 +61,26 @@ LoadCharacterSprite
           rts
 .pend
 
-MaxCharacter = 15
-RandomArena = 255
+MultiSpriteKernel:
+.block
+          ;; Main kernel block
+          ;; ... code ...
+.bend
+```
+
+**Constants Format:**
+
+Constants **MUST**:
+- Use **PascalCase**
+- Be **indented 10 spaces**
+- Use `=` followed by the value
+
+**Examples:**
+
+```assembly
+          MaxCharacter = 15
+          RandomArena = 255
+          FineAdjustTableEnd = FineAdjustTableBegin - 241
 ```
 
 ### Abbreviations
@@ -125,14 +150,17 @@ songPointer+1 = var40        ;; High byte (or use separate label)
 Do **not** create separate variables for the low and high bytes of the same
 16-bit value unless using distinct labels (e.g., `CharacterSpriteBank2L`/`CharacterSpriteBank2H`).
 
-### camelCase
+### camelCase (initialLowerCamelCase)
 
-Use **camelCase** for:
+Use **initialLowerCamelCase** (camelCase starting with lowercase) for:
 
 - **Zero-page variables** (standard RAM): `gameState`, `playerX`,
   `playerCharacter[0]`, `playerHealth`
 - **Built-in variables**: `temp1`, `temp2`, `qtcontroller`, `frame`
   (already lowercase)
+- **All user-defined variables**: Must start with lowercase letter
+
+**CRITICAL**: Variables that are currently PascalCase (e.g., `NewSpriteX`, `NewSpriteY`) must be converted to initialLowerCamelCase (e.g., `newSpriteX`, `newSpriteY`).
 
 **Examples:**
 
@@ -140,6 +168,8 @@ Use **camelCase** for:
 gameState = g               ;; Zero-page variable
 playerX = var0              ;; Zero-page variable
 playerCharacter = j         ;; Zero-page variable
+newSpriteX = $85            ;; Converted from NewSpriteX
+newSpriteY = $8E            ;; Converted from NewSpriteY
 ```
 
 ### camelCase_R and camelCase_W
@@ -586,26 +616,38 @@ dim temp2 = var10  ; ERROR: Redim in same context
 
 ### Code Blocks
 
-Use **exactly 10 spaces** for indentation of code blocks within procedures.
+Use **at least 10 spaces** for indentation of code blocks. When nested in a block other than `.block` or `.proc`, such as `.rept` or `.if`, add an additional 2 spaces for each level of nesting.
 
 **Correct:**
 
 ```assembly
-LoadCharacterSprite
+LoadCharacterSprite:
 .proc
           lda temp1
           sta LCS_characterIndex
-          cmp #255
+          cmp # 255
           beq LoadSpecialSprite
           ;; ... more code ...
           rts
 .pend
 ```
 
+**Nested Blocks:**
+
+```assembly
+          .if screenheight
+                    lda # screenheight
+                    sta temp1
+          .else
+                    lda # 88
+                    sta temp1
+          .fi
+```
+
 **Incorrect:**
 
 ```assembly
-LoadCharacterSprite
+LoadCharacterSprite:
 .proc
          lda temp1          ;; ERROR: Only 9 spaces
           sta LCS_characterIndex
@@ -614,26 +656,53 @@ LoadCharacterSprite
 
 ### Labels and First Lines
 
-- **Labels** (procedure names) start at column 0, followed by `.proc` on the **same line**: `LabelName .proc`
-- **Local labels** start at column 0, **do NOT use dot prefix** (unlike DASM)
-- **Cross-procedure labels** use `ProcLabel.SubLabel` syntax
-- **Code inside procedures** uses exactly 10 spaces
+- **Labels** start at column 0, use PascalCase, suffix with `:` and optionally `.proc` or `.block`
+- **Local labels** within blocks use dot notation: `Block.Label` or `Proc.Label`
+- **Code inside procedures/blocks** uses at least 10 spaces
 - **Comments** use 10 spaces (or inline after code)
-- **Directives** (`.proc`, `.pend`, `.if`, `.fi`, etc.) use same indentation as surrounding code
+- **Directives** (`.proc`, `.pend`, `.block`, `.bend`, `.if`, `.fi`, etc.) use same indentation as surrounding code
 
 **Example:**
 
 ```assembly
-LoadCharacterSprite
+LoadCharacterSprite:
 .proc
           ;; Load sprite data for a character
           lda temp1
           sta LCS_characterIndex
-          cmp #255
+          cmp # 255
           beq LoadSpecialSprite
           ;; Normal character loading
           rts
 .pend
+```
+
+### Block and Procedure Scoping
+
+**Prefer `.block`/`.bend`** to scope labels locally. Do not embed namespacing information into labels; use nested labels with `.` dot notation in the form `Block.Label`.
+
+**Not all labels need to establish block scope** - typically one per file. The block or proc scope label encompassing the majority or all of a file should be the same as the file name.
+
+**Example:**
+
+```assembly
+MultiSpriteKernel:
+.block
+          ;; Main kernel code
+          
+          SetupP1Subroutine:
+          .proc
+                    ;; Setup code
+                    rts
+          .pend
+          
+          KernelRoutine:
+          .proc
+                    ;; Kernel code
+                    jsr SetupP1Subroutine
+                    rts
+          .pend
+.bend
 ```
 
 ### Additional indentation
@@ -660,54 +729,55 @@ LoadCharacterSprite
 
 ## Blank Lines
 
-Blank lines in source files should occur:
+**CRITICAL RULE**: After any branch or jump instruction (`jmp`, `jsr`, `brk`, `beq`, `bne`, `bcc`, `bcs`, `bpl`, `bmi`, `bvc`, `bvs`, `jmp`, `jsr`, `brk`, etc.), there **MUST** be exactly one blank line. In any other case, there should be **no blank lines**.
 
-- **Never** between a label and remarks describing a routine entered via
-  that label
-- **Never** between a remark and the subsequent line which it describes
-- **Never** between lines in one series of remarks
-- **Always** after a `goto`, `gosub`, `if/then (goto) (label)`, or `return`
-- **Allowed**, but sparsely used, to divide unrelated sections of code
-  (prefer to use a label to clarify)
+**Never**:
+- Between a label and remarks describing a routine entered via that label
+- Between a remark and the subsequent line which it describes
+- Between lines in one series of remarks
+- Anywhere except after branch/jump instructions
 
 **Correct:**
 
-```basic
-LoadCharacterSprite
-          rem Load sprite data for a character
-          rem Input: temp1 = character index, temp2 = animation frame
-          dim LCS_characterIndex = temp1
-          if LCS_characterIndex = 255 then goto LoadSpecialSprite
-          rem Normal character loading
-          return
+```assembly
+LoadCharacterSprite:
+.proc
+          ;; Load sprite data for a character
+          ;; Input: temp1 = character index, temp2 = animation frame
+          lda temp1
+          cmp # 255
+          beq LoadSpecialSprite
 
-LoadSpecialSprite
-          rem Load special sprite variant
-          dim LSS_spriteType = temp2
-          return
+          ;; Normal character loading
+          rts
+
+LoadSpecialSprite:
+.proc
+          ;; Load special sprite variant
+          lda temp2
+          rts
 ```
 
 **Incorrect:**
 
-```basic
-LoadCharacterSprite
+```assembly
+LoadCharacterSprite:
+.proc
 
-          rem Load sprite data for a character
-          rem Input: temp1 = character index, temp2 = animation frame
+          ;; Load sprite data for a character
+          ;; Input: temp1 = character index, temp2 = animation frame
 
-          dim LCS_characterIndex = temp1
-          if LCS_characterIndex = 255 then goto LoadSpecialSprite
-          rem Normal character loading
-          return
-LoadSpecialSprite
-          rem Load special sprite variant
+          lda temp1
+          cmp # 255
+          beq LoadSpecialSprite
+          ;; Normal character loading
+          rts
+LoadSpecialSprite:
+.proc
+          ;; Load special sprite variant
 ```
 
-**Rationale**: Blank lines should only appear where they serve a clear
-structural purpose (after control flow statements) or to separate
-unrelated sections. They should never break the visual connection between
-a label and its documentation, or between documentation and the code it
-describes.
+**Rationale**: Blank lines serve a clear structural purpose: marking the end of control flow paths. They should never break the visual connection between a label and its documentation, or between documentation and the code it describes.
 
 ---
 
@@ -905,6 +975,31 @@ If the label performs more than a one-liner, factor it into a proper
 subroutine or early `return`; do not leave a dummy detour just to hide a
 single assignment.
 
+### Immediate Values
+
+**CRITICAL**: Immediate values follow the octothorpe (`#`) with a space, e.g., `lda # 0` or `cmp # SomeConstant`. However, hexadecimal immediate values do **not** have a space before the peso sign (`$`), e.g., `lda #$80`.
+
+**Correct:**
+
+```assembly
+          lda # 0
+          lda # 15
+          lda # MaxCharacter
+          lda #$80
+          lda #$FF
+          cmp # screenheight
+          cmp #$59
+```
+
+**Incorrect:**
+
+```assembly
+          lda #0          ;; ERROR: Missing space after #
+          lda # $80       ;; ERROR: Space before $ in hex
+          lda #$ 80       ;; ERROR: Space after $ in hex
+          cmp #screenheight  ;; ERROR: Missing space after #
+```
+
 ### Tail Call Optimization
 
 When a subroutine ends with `gosub` immediately followed by `return`,
@@ -1050,6 +1145,8 @@ covered here:
 
 - **1.0** (2025): Initial style guide creation based on code review and
   Requirements.md
+- **2.0** (2025): Updated with comprehensive naming conventions and documentation standards
+- **3.0** (2025): Updated label format (colon suffix, `.proc`/`.block`), constants indentation (10 spaces), variable naming (initialLowerCamelCase), blank line rules (exactly one after branch/jump), immediate value formatting (space after `#`, no space before `$` in hex), block scoping preferences
 
 ---
 

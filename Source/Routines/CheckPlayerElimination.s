@@ -3,7 +3,7 @@
 
 CheckPlayerElimination
 ;;; Returns: Far (return otherbank)
-;; CheckPlayerElimination (duplicate)
+CheckPlayerElimination
           ;;
           ;; Returns: Far (return otherbank)
           ;; Check Single Player Elimination
@@ -13,14 +13,14 @@ CheckPlayerElimination
           ;; INPUT: currentPlayer = player index (0-3) (global
           ;; variable)
           ;;
-          ;; MUTATES:
+          MUTATES:
           ;; temp2 = temp2 ÷ temp2 (reused, internal)
           ;; temp6 = temp6 (internal)
           ;; WARNING: temp2 and temp6 are mutated during execution. Do
           ;; not
           ;; use these temp variables after calling this subroutine.
           ;;
-          ;; EFFECTS:
+          EFFECTS:
           ;; Triggers elimination effects
           ;; Check if specified player should be eliminated (health =
           ;; 0) and trigger elimination effects
@@ -50,11 +50,11 @@ CheckPlayerElimination
           ;; execution. Do not use these temp variables after calling
           ;; this subroutine.
           ;; Check if health has reached 0
-                    ;; let temp2 = playerHealth[currentPlayer]         
+                    let temp2 = playerHealth[currentPlayer]         
           lda currentPlayer
           asl
           tax
-          ;; lda playerHealth,x (duplicate)
+          lda playerHealth,x
           sta temp2
 
           ;; Still alive
@@ -68,53 +68,53 @@ CheckPlayerElimination
           ;; not selected
           ;; Use skip-over pattern to avoid complex || operator
           ;; Cross-bank call to UpdatePlayers34ActiveFlag in bank 14
-          ;; lda # >(CPE_return_point_1-1) (duplicate)
+          lda # >(CPE_return_point_1-1)
           pha
-          ;; lda # <(CPE_return_point_1-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdatePlayers34ActiveFlag-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdatePlayers34ActiveFlag-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(CPE_return_point_1-1)
+          pha
+          lda # >(UpdatePlayers34ActiveFlag-1)
+          pha
+          lda # <(UpdatePlayers34ActiveFlag-1)
+          pha
                     ldx # 13
           jmp BS_jsr
 CPE_return_point_1:
 
 
           ;; Cross-bank call to UpdatePlayers34ActiveFlag in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdatePlayers34ActiveFlag-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdatePlayers34ActiveFlag-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(UpdatePlayers34ActiveFlag-1)
+          pha
+          lda # <(UpdatePlayers34ActiveFlag-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
 
 UpdatePlayers34Done
           ;; Returns: Far (return otherbank)
-;; UpdatePlayers34Done (duplicate)
+UpdatePlayers34Done
 
           ;; Record elimination order
           ;; Returns: Far (return otherbank)
-          ;; lda eliminationCounter_R (duplicate)
+          lda eliminationCounter_R
           clc
           adc # 1
-          ;; sta temp2 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta eliminationCounter_W (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta eliminationOrder_W,x (duplicate)
+          sta temp2
+          lda temp2
+          sta eliminationCounter_W
+          lda currentPlayer
+          asl
+          tax
+          lda temp2
+          sta eliminationOrder_W,x
 
           ;; Trigger elimination effects
           ;; tail call
-          ;; jmp TriggerEliminationEffects (duplicate)
+          jmp TriggerEliminationEffects
 
 

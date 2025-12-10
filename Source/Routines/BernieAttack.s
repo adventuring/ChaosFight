@@ -78,53 +78,53 @@ BernieAttack .proc
 
           ;; Set animation state (PerformMeleeAttack also sets it, but
 
-                    ;; let temp3 = playerState[temp1] & PlayerStateBitFacing         
+                    let temp3 = playerState[temp1] & PlayerStateBitFacing         
           lda temp1
           asl
           tax
-          ;; lda playerState,x (duplicate)
+          lda playerState,x
           sta temp3
 
           ;; we need it set first)
 
           ;; Attack in facing direction (inline former PerformMeleeAttack)
 
-                    ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
 
           ;; Attack facing direction
           ;; Cross-bank call to PerformGenericAttack in bank 7
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PerformGenericAttack-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PerformGenericAttack-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(PerformGenericAttack-1)
+          pha
+          lda # <(PerformGenericAttack-1)
+          pha
                     ldx # 6
           jmp BS_jsr
 return_point:
 
 
           ;; Attack opposite direction (toggle facing)
-                    ;; let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
+                    let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
 
           ;; Cross-bank call to PerformGenericAttack in bank 7
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PerformGenericAttack-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PerformGenericAttack-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 6 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PerformGenericAttack-1)
+          pha
+          lda # <(PerformGenericAttack-1)
+          pha
+                    ldx # 6
+          jmp BS_jsr
+return_point:
 
 
           ;; Restore original facing direction
-                    ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | temp3
+                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | temp3
           jsr BS_return
 
 .pend

@@ -78,8 +78,8 @@ PhysicsApplyGravity .proc
 GravityLoop .proc
           ;; Check if player is active (P1/P2 always active, P3/P4 need
           ;; Quadtari)
-          ;; if temp1 >= 2 then goto GravityPlayerCheck
-          ;; lda temp1 (duplicate)
+          if temp1 >= 2 then goto GravityPlayerCheck
+          lda temp1
           cmp 2
 
           bcc skip_545
@@ -87,68 +87,68 @@ GravityLoop .proc
           jmp skip_545
 
           skip_545:
-          ;; jmp GravityCheckCharacter (duplicate)
+          jmp GravityCheckCharacter
 
 .pend
 
 GravityPlayerCheck .proc
           ;; Players 0-1 always active
-          ;; lda controllerStatus (duplicate)
+          lda controllerStatus
           and SetQuadtariDetected
-          ;; cmp # 0 (duplicate)
+          cmp # 0
           bne skip_6440
-          ;; jmp GravityNextPlayer (duplicate)
+          jmp GravityNextPlayer
 skip_6440:
 
-          ;; ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto GravityNextPlayer
-          ;; lda temp1 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_935 (duplicate)
-          ;; lda 2 (duplicate)
+          ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto GravityNextPlayer
+          lda temp1
+          cmp # 2
+          bne skip_935
+          lda 2
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_935 (duplicate)
-          ;; jmp GravityNextPlayer (duplicate)
+          lda playerCharacter,x
+          cmp NoCharacter
+          bne skip_935
+          jmp GravityNextPlayer
 skip_935:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_7553 (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_7553 (duplicate)
-          ;; jmp GravityNextPlayer (duplicate)
+          lda temp1
+          cmp # 2
+          bne skip_7553
+          lda 2
+          asl
+          tax
+          lda playerCharacter,x
+          cmp NoCharacter
+          bne skip_7553
+          jmp GravityNextPlayer
 skip_7553:
 
 
-          ;; ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto GravityNextPlayer
-          ;; lda temp1 (duplicate)
-          ;; cmp # 3 (duplicate)
-          ;; bne skip_6267 (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_6267 (duplicate)
-          ;; jmp GravityNextPlayer (duplicate)
+          ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto GravityNextPlayer
+          lda temp1
+          cmp # 3
+          bne skip_6267
+          lda 3
+          asl
+          tax
+          lda playerCharacter,x
+          cmp NoCharacter
+          bne skip_6267
+          jmp GravityNextPlayer
 skip_6267:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 3 (duplicate)
-          ;; bne skip_5972 (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_5972 (duplicate)
-          ;; jmp GravityNextPlayer (duplicate)
+          lda temp1
+          cmp # 3
+          bne skip_5972
+          lda 3
+          asl
+          tax
+          lda playerCharacter,x
+          cmp NoCharacter
+          bne skip_5972
+          jmp GravityNextPlayer
 skip_5972:
 
 
@@ -156,247 +156,247 @@ skip_5972:
 .pend
 
 GravityCheckCharacter .proc
-                    ;; let temp6 = playerCharacter[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = playerCharacter[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp6
           ;; Skip gravity for characters that do not have it
           ;; Frooty (8): Permanent flight, no gravity
           ;; Dragon of Storms (2): Permanent flight, no gravity
-          ;; lda temp6 (duplicate)
-          ;; cmp CharacterFrooty (duplicate)
-          ;; bne skip_269 (duplicate)
-          ;; jmp GravityNextPlayer (duplicate)
+          lda temp6
+          cmp CharacterFrooty
+          bne skip_269
+          jmp GravityNextPlayer
 skip_269:
 
           ;; (hovering/flying like Frooty)
-          ;; lda temp6 (duplicate)
-          ;; cmp CharacterDragonOfStorms (duplicate)
-          ;; bne skip_1278 (duplicate)
-          ;; jmp GravityNextPlayer (duplicate)
+          lda temp6
+          cmp CharacterDragonOfStorms
+          bne skip_1278
+          jmp GravityNextPlayer
 skip_1278:
 
           ;; RoboTito (13): Skip gravity when latched to ceiling
-                    ;; if temp6 = CharacterRoboTito && (characterStateFlags_R[temp1] & 1) then goto GravityNextPlayer
-          ;; If NOT jumping, skip gravity (player is on ground)
-          ;; lda playerState[temp1] (duplicate)
-          ;; and PlayerStateBitJumping (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_6848 (duplicate)
-          ;; jmp GravityNextPlayer (duplicate)
+                    if temp6 = CharacterRoboTito && (characterStateFlags_R[temp1] & 1) then goto GravityNextPlayer
+          If NOT jumping, skip gravity (player is on ground)
+          lda playerState[temp1]
+          and PlayerStateBitJumping
+          cmp # 0
+          bne skip_6848
+          jmp GravityNextPlayer
 skip_6848:
 
           ;; Vertical velocity is persistently tracked using playerVelocityY[]
-          ;; and playerVelocityYL[] arrays (8.8 fixed-point format).
+          and playerVelocityYL[] arrays (8.8 fixed-point format).
           ;; Gravity acceleration is applied to the stored velocity each frame.
           ;; Determine gravity acceleration rate based on character
           ;; (8.8 fixed-point subpixel)
           ;; Uses tunable constants from Constants.bas for easy
           ;; adjustment
-          ;; lda GravityNormal (duplicate)
-          ;; sta gravityRate (duplicate)
+          lda GravityNormal
+          sta gravityRate
           ;; Default gravity acceleration (normal rate)
           ;; Harpy: reduced gravity rate
-          ;; lda temp6 (duplicate)
-          ;; cmp CharacterHarpy (duplicate)
-          ;; bne skip_8052 (duplicate)
-          ;; lda GravityReduced (duplicate)
-          ;; sta gravityRate (duplicate)
+          lda temp6
+          cmp CharacterHarpy
+          bne skip_8052
+          lda GravityReduced
+          sta gravityRate
 skip_8052:
 
           ;; Apply gravity acceleration to velocity subpixel part
           ;; Use optimized inline addition instead of subroutine call
-                    ;; let subpixelAccumulator = playerVelocityYL[temp1] + gravityRate         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityYL,x (duplicate)
-          ;; sta subpixelAccumulator (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bcc skip_6766 (duplicate)
-          ;; ;; let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
+                    let subpixelAccumulator = playerVelocityYL[temp1] + gravityRate         
+          lda temp1
+          asl
+          tax
+          lda playerVelocityYL,x
+          sta subpixelAccumulator
+          lda temp1
+          asl
+          tax
+          lda temp2
+          sta playerVelocityYL,x
+          lda temp3
+          cmp # 1
+          bcc skip_6766
+          ;; let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
+          lda temp1
+          asl
+          tax
           inc playerVelocityY,x
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; inc playerVelocityY,x (duplicate)
+          lda temp1
+          asl
+          tax
+          inc playerVelocityY,x
 skip_6766:
 
           ;; Apply terminal velocity cap (prevents infinite
           ;; acceleration)
           ;; Check if velocity exceeds terminal velocity (positive =
           ;; downward)
-                    ;; if playerVelocityY[temp1] > TerminalVelocity then let playerVelocityY[temp1] = TerminalVelocity : let playerVelocityYL[temp1] = 0
+                    if playerVelocityY[temp1] > TerminalVelocity then let playerVelocityY[temp1] = TerminalVelocity : let playerVelocityYL[temp1] = 0
           ;; Check playfield collision for ground detection (downward)
           ;; Convert player X position to playfield column (0-31)
           ;; CRITICAL: Inlined CCJ_ConvertPlayerXToPlayfieldColumn to avoid cross-bank call and stack imbalance
           ;; Input: temp1 = player index
           ;; Output: temp2 = playfield column (saved to temp6)
-                    ;; let temp2 = playerX[temp1]          lda temp1          asl          tax          lda playerX,x          sta temp2
-          ;; ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
-          ;; lda temp2 (duplicate)
+                    let temp2 = playerX[temp1]          lda temp1          asl          tax          lda playerX,x          sta temp2
+          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          lda temp2
           sec
           sbc ScreenInsetX
-          ;; sta temp2 (duplicate)
+          sta temp2
 
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc ScreenInsetX (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp2
+          sec
+          sbc ScreenInsetX
+          sta temp2
 
-          ;; ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
-          ;; lda temp2 (duplicate)
+          ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          lda temp2
           lsr
-          ;; lsr (duplicate)
-          ;; sta temp2 (duplicate)
+          lsr
+          sta temp2
 
-          ;; lda temp2 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp2
+          lsr
+          lsr
+          sta temp2
 
           ;; Save playfield column (temp2 will be overwritten)
-          ;; lda temp2 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp2
+          sta temp6
           ;; Calculate row where player feet are (bottom of sprite)
           ;; Feet are at playerY + PlayerSpriteHeight (16 pixels)
-                    ;; let temp3 = playerY[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp3 + PlayerSpriteHeight (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = playerY[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp3 + PlayerSpriteHeight
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp3
           ;; Divide by pfrowheight (16) using 4 right shifts
-          ;; lda temp3 (duplicate)
-          ;; sta temp2 (duplicate)
-            ;; lsr temp2 (duplicate)
-            ;; lsr temp2 (duplicate)
-            ;; lsr temp2 (duplicate)
-            ;; lsr temp2 (duplicate)
+          lda temp3
+          sta temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
           ;; feetRow = row where feet are
-          ;; lda temp2 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp2
+          sta temp4
           ;; Check if there is a playfield pixel in the row below the
           ;; feet
-          ;; If feet are in row N, check row N+1 for ground
+          If feet are in row N, check row N+1 for ground
           ;; Feet are at or below bottom of playfield, continue falling
-          ;; if temp4 >= pfrows then goto GravityNextPlayer
-          ;; lda temp4 (duplicate)
-          ;; cmp pfrows (duplicate)
+          if temp4 >= pfrows then goto GravityNextPlayer
+          lda temp4
+          cmp pfrows
 
-          ;; bcc skip_6144 (duplicate)
+          bcc skip_6144
 
-          ;; jmp skip_6144 (duplicate)
+          jmp skip_6144
 
           skip_6144:
           ;; rowBelow = row below feet
-          ;; lda temp4 (duplicate)
+          lda temp4
           clc
           adc # 1
-          ;; sta temp5 (duplicate)
+          sta temp5
           ;; Beyond playfield bounds, check if at bottom
-          ;; if temp5 >= pfrows then goto GravityCheckBottom
-          ;; lda temp5 (duplicate)
-          ;; cmp pfrows (duplicate)
+          if temp5 >= pfrows then goto GravityCheckBottom
+          lda temp5
+          cmp pfrows
 
-          ;; bcc skip_9021 (duplicate)
+          bcc skip_9021
 
-          ;; jmp skip_9021 (duplicate)
+          jmp skip_9021
 
           skip_9021:
           ;; Check if playfield pixel exists in row below feet
           ;; Track pfread result (1 = ground pixel set)
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp5 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 0
+          sta temp3
+          lda temp1
+          sta temp4
+          lda temp6
+          sta temp1
+          lda temp5
+          sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayfieldRead-1)
+          pha
+          lda # <(PlayfieldRead-1)
+          pha
                     ldx # 15
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
-                    ;; if temp1 then let temp3 = 1          lda temp1          beq skip_9151
+                    if temp1 then let temp3 = 1          lda temp1          beq skip_9151
 skip_9151:
-          ;; jmp skip_9151 (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; sta temp1 (duplicate)
+          jmp skip_9151
+          lda temp4
+          sta temp1
           ;; Ground detected! Skip standard landing logic for Radish Goblin (bounce system handles it)
-          ;; lda temp3 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_2593 (duplicate)
-          ;; jmp GravityNextPlayer (duplicate)
+          lda temp3
+          cmp # 0
+          bne skip_2593
+          jmp GravityNextPlayer
 skip_2593:
 
           ;; Radish Goblin uses bounce movement system, skip standard landing
-          ;; lda temp6 (duplicate)
-          ;; cmp CharacterRadishGoblin (duplicate)
-          ;; bne skip_4433 (duplicate)
-          ;; jmp GravityNextPlayer (duplicate)
+          lda temp6
+          cmp CharacterRadishGoblin
+          bne skip_4433
+          jmp GravityNextPlayer
 skip_4433:
 
           ;; Standard landing logic for all other characters
           ;; Zero Y velocity (stop falling)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityY,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
           ;; Calculate Y position for top of ground row using repeated
           ;; addition
           ;; Loop to add pfrowheight to rowYPosition, rowBelow times
-          ;; lda # 0 (duplicate)
-          ;; sta rowYPosition (duplicate)
-          ;; lda temp5 (duplicate)
-          ;; sta rowCounter (duplicate)
-          ;; lda rowCounter (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_8902 (duplicate)
-          ;; jmp GravityRowCalcDone (duplicate)
+          lda # 0
+          sta rowYPosition
+          lda temp5
+          sta rowCounter
+          lda rowCounter
+          cmp # 0
+          bne skip_8902
+          jmp GravityRowCalcDone
 skip_8902:
 
 
 .pend
 
 GravityRowCalcLoop .proc
-                    ;; let rowYPosition = rowYPosition + pfrowheight
+                    let rowYPosition = rowYPosition + pfrowheight
           dec rowCounter
-          ;; lda rowCounter (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bcc skip_4709 (duplicate)
+          lda rowCounter
+          cmp # 1
+          bcc skip_4709
 skip_4709:
 
 
@@ -404,40 +404,40 @@ GravityRowCalcDone
           ;; rowYPosition now contains rowBelow × pfrowheight (Y
           ;; position of top of ground row)
           ;; Clamp playerY so feet are at top of ground row
-                    ;; let playerY[temp1] = rowYPosition - PlayerSpriteHeight
+                    let playerY[temp1] = rowYPosition - PlayerSpriteHeight
           ;; Also sync subpixel position
-                    ;; let playerSubpixelY_W[temp1] = playerY[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; sta playerSubpixelY_W,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelY_WL,x (duplicate)
+                    let playerSubpixelY_W[temp1] = playerY[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          lda temp1
+          asl
+          tax
+          sta playerSubpixelY_W,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerSubpixelY_WL,x
           ;; Clear jumping flag (bit 2, not bit 4 - fix bit number)
-                    ;; let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitJumping)
+                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitJumping)
           ;; Clear bit 2 (jumping flag)
           ;; Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
-          ;; lda temp6 (duplicate)
-          ;; cmp # 3 (duplicate)
-          ;; bne skip_9278 (duplicate)
-                    ;; let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
+          lda temp6
+          cmp # 3
+          bne skip_9278
+                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
 skip_9278:
 
-          ;; If RoboTito, set stretch permission on landing
-          ;; lda temp6 (duplicate)
-          ;; cmp CharacterRoboTito (duplicate)
-          ;; bne skip_6986 (duplicate)
-          ;; jmp PAG_SetRoboTitoStretchPermission (duplicate)
+          If RoboTito, set stretch permission on landing
+          lda temp6
+          cmp CharacterRoboTito
+          bne skip_6986
+          jmp PAG_SetRoboTitoStretchPermission
 skip_6986:
 
-          ;; jmp GravityNextPlayer (duplicate)
+          jmp GravityNextPlayer
 
 PAG_SetRoboTitoStretchPermission
           ;; Set RoboTito stretch permission on landing (allows
@@ -456,20 +456,20 @@ PAG_SetRoboTitoStretchPermission
           ;; Constraints: Only called for RoboTito character on landing
           ;; Set stretch permission for this player (simple array assignment)
           ;; Grant stretch permission on landing
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 1 (duplicate)
-          ;; sta characterSpecialAbility_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 1
+          sta characterSpecialAbility_W,x
           ;; Clear stretch missile height on landing (not stretching)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta missileStretchHeight_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta missileStretchHeight_W,x
           ;; CRITICAL: Called via goto from PhysicsApplyGravity, must continue to GravityNextPlayer
           ;; Do not return - use goto to continue the loop
-          ;; jmp GravityNextPlayer (duplicate)
+          jmp GravityNextPlayer
 
 .pend
 
@@ -477,86 +477,86 @@ GravityCheckBottom .proc
           ;; At bottom of playfield - treat as ground if feet are at
           ;; bottom row
           ;; Not at bottom row yet
-                    ;; if temp4 < pfrows - 1 then goto GravityNextPlayer
+                    if temp4 < pfrows - 1 then goto GravityNextPlayer
           ;; Skip standard landing logic for Radish Goblin (bounce system handles it)
           ;; Radish Goblin uses bounce movement system, skip standard landing
-          ;; lda temp6 (duplicate)
-          ;; cmp CharacterRadishGoblin (duplicate)
-          ;; bne skip_4433 (duplicate)
-          ;; jmp GravityNextPlayer (duplicate)
-;; skip_4433: (duplicate)
+          lda temp6
+          cmp CharacterRadishGoblin
+          bne skip_4433
+          jmp GravityNextPlayer
+skip_4433:
 
           ;; Bottom row is always ground - clamp to bottom
           ;; Calculate (pfrows - 1) × pfrowheight using repeated
           ;; addition
-          ;; lda # 0 (duplicate)
-          ;; sta rowYPosition (duplicate)
-          ;; lda pfrows (duplicate)
-          ;; sec (duplicate)
-          ;; sbc # 1 (duplicate)
-          ;; sta rowCounter (duplicate)
-          ;; lda rowCounter (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_2049 (duplicate)
-          ;; jmp GravityBottomCalcDone (duplicate)
+          lda # 0
+          sta rowYPosition
+          lda pfrows
+          sec
+          sbc # 1
+          sta rowCounter
+          lda rowCounter
+          cmp # 0
+          bne skip_2049
+          jmp GravityBottomCalcDone
 skip_2049:
 
 
 .pend
 
 GravityBottomCalcLoop .proc
-                    ;; let rowYPosition = rowYPosition + pfrowheight
-          ;; dec rowCounter (duplicate)
-          ;; lda rowCounter (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bcc skip_7553 (duplicate)
-;; skip_7553: (duplicate)
+                    let rowYPosition = rowYPosition + pfrowheight
+          dec rowCounter
+          lda rowCounter
+          cmp # 1
+          bcc skip_7553
+skip_7553:
 
 
 GravityBottomCalcDone
-                    ;; let playerY[temp1] = rowYPosition - PlayerSpriteHeight
+                    let playerY[temp1] = rowYPosition - PlayerSpriteHeight
           ;; Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
-                    ;; let playerState[temp1] = playerState[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; sta playerState,x & ($FF ^ 4) (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; cmp # 3 (duplicate)
-          ;; bne skip_9278 (duplicate)
-                    ;; let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
-;; skip_9278: (duplicate)
+                    let playerState[temp1] = playerState[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          lda temp1
+          asl
+          tax
+          sta playerState,x & ($FF ^ 4)
+          lda temp6
+          cmp # 3
+          bne skip_9278
+                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
+skip_9278:
 
-          ;; If RoboTito, set stretch permission on landing at bottom
-          ;; lda temp6 (duplicate)
-          ;; cmp CharacterRoboTito (duplicate)
-          ;; bne skip_6986 (duplicate)
-          ;; jmp PAG_SetRoboTitoStretchPermission (duplicate)
-;; skip_6986: (duplicate)
+          If RoboTito, set stretch permission on landing at bottom
+          lda temp6
+          cmp CharacterRoboTito
+          bne skip_6986
+          jmp PAG_SetRoboTitoStretchPermission
+skip_6986:
 
 
 .pend
 
 GravityNextPlayer .proc
           ;; Move to next player
-          ;; inc temp1 (duplicate)
-          ;; ;; if temp1 < 4 then goto GravityLoop          lda temp1          cmp 4          bcs .skip_5570          jmp
-          ;; lda temp1 (duplicate)
-          ;; cmp # 4 (duplicate)
+          inc temp1
+          ;; if temp1 < 4 then goto GravityLoop          lda temp1          cmp 4          bcs .skip_5570          jmp
+          lda temp1
+          cmp # 4
           bcs skip_8875
           goto_label:
 
-          ;; jmp goto_label (duplicate)
+          jmp goto_label
 skip_8875:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 4 (duplicate)
-          ;; bcs skip_6080 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp1
+          cmp # 4
+          bcs skip_6080
+          jmp goto_label
 skip_6080:
 
           

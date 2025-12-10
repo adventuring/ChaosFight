@@ -38,7 +38,7 @@ GetCharacterWeightSub
           ;;
           ;; Animation Sequence Definitions
           ;; Animation sequences (16 total) - all use 8-frame padded
-          ;; format:
+          format:
           ;; 0 = Standing still (facing right)
           ;; 1 = Idle (resting)
           ;; 2 = Standing still guarding
@@ -85,7 +85,7 @@ GetCharacterWeightSub
           ;; - Duplicate frames are compacted, gaps removed, empty
           ;; frames padded
           ;; Character Definition Lookup Subroutines
-          ;; Return character weight based on CharacterWeights table
+          Return character weight based on CharacterWeights table
           ;;
           ;; Input: temp1 = character index (0-15)
           ;;
@@ -110,10 +110,10 @@ GetCharacterAttackTypeSub
           ;; Called Routines: None
           ;;
           ;; Constraints: CharacterAttackTypes table must share bank
-          ;; let temp3 = temp1 / 8 (duplicate)
-          ;; let temp2 = temp1 & 7 (duplicate)
-          ;; let temp4 = CharacterAttackTypes[temp3] (duplicate)
-          ;; let temp5 = temp2 (duplicate)
+          let temp3 = temp1 / 8
+          let temp2 = temp1 & 7
+          let temp4 = CharacterAttackTypes[temp3]
+          let temp5 = temp2
 GetCharacterAttackTypeSubShiftLoop
           .if temp5 = 0 then goto GetCharacterAttackTypeSubShiftDone
           ;; Use bit shift instead of division (optimized for Atari 2600)
@@ -121,11 +121,11 @@ asm:
 
             lsr temp4
 end:
-          ;; let temp5 = temp5 - 1 (duplicate)
+          let temp5 = temp5 - 1
           goto GetCharacterAttackTypeSubShiftLoop
 GetCharacterAttackTypeSubShiftDone
-          ;; let temp4 = temp4 & 1 (duplicate)
-          ;; return thisbank (duplicate)
+          let temp4 = temp4 & 1
+          return thisbank
 GetMissileDimsSub
           ;; Retrieve missile width and height for the character
           ;;
@@ -138,9 +138,9 @@ GetMissileDimsSub
           ;; Called Routines: None
           ;;
           ;; Constraints: Must share bank with missile dimension tables
-          ;; let temp3 = CharacterMissileWidths[temp1] (duplicate)
-          ;; let temp4 = CharacterMissileHeights[temp1] (duplicate)
-          ;; return thisbank (duplicate)
+          let temp3 = CharacterMissileWidths[temp1]
+          let temp4 = CharacterMissileHeights[temp1]
+          return thisbank
 GetMissileEmissionHeightSub
           ;; Get missile emission height from character data
           ;;
@@ -153,8 +153,8 @@ GetMissileEmissionHeightSub
           ;; Called Routines: None
           ;;
           ;; Constraints: Table access requires same bank residency
-          ;; let temp4 = CharacterMissileEmissionHeights[temp1] (duplicate)
-          ;; return thisbank (duplicate)
+          let temp4 = CharacterMissileEmissionHeights[temp1]
+          return thisbank
 GetMissileMomentumXSub
           ;; Fetch missile horizontal momentum for the character
           ;;
@@ -167,8 +167,8 @@ GetMissileMomentumXSub
           ;; Called Routines: None
           ;;
           ;; Constraints: Shares bank with CharacterMissileMomentumX
-          ;; let temp4 = CharacterMissileMomentumX[temp1] (duplicate)
-          ;; return thisbank (duplicate)
+          let temp4 = CharacterMissileMomentumX[temp1]
+          return thisbank
 GetMissileMomentumYSub
           ;; Fetch missile vertical momentum for the character
           ;;
@@ -181,8 +181,8 @@ GetMissileMomentumYSub
           ;; Called Routines: None
           ;;
           ;; Constraints: Shares bank with CharacterMissileMomentumY
-          ;; let temp4 = CharacterMissileMomentumY[temp1] (duplicate)
-          ;; return thisbank (duplicate)
+          let temp4 = CharacterMissileMomentumY[temp1]
+          return thisbank
 GetMissileFlagsSub
           ;; Retrieve missile flag bitfield for the character
           ;;
@@ -195,26 +195,26 @@ GetMissileFlagsSub
           ;; Called Routines: None
           ;;
           ;; Constraints: Shares bank with CharacterMissileFlags table
-          ;; let temp4 = CharacterMissileFlags[temp1] (duplicate)
-          ;; return thisbank (duplicate)
+          let temp4 = CharacterMissileFlags[temp1]
+          return thisbank
           ;;
-          ;; Data Format Notes For Skylinetool Output
+          Data Format Notes For Skylinetool Output
 
           ;; SkylineTool should emit batariBasic-compatible data in
           ;; this format:
 
           ;; 1. Animation frame references (8 bytes per sequence):
-          ;; data Character0Animations
+          data Character0Animations
           ;; 1, 1, 1, 1, 1, 1, 1, 1     ; 1 frame
           ;; 1, 2, 1, 2, 1, 2, 1, 2     ; 2 frames
           ;; 4, 5, 6, 7, 4, 5, 6, 7     ; 4 frames
           ;; 1, 2, 3, 4, 5, 6, 7, 8     ; 8 frames
-          ;; end             ; terminate animation table
+          end             ; terminate animation table
 
           ;; 2. Graphics data (16 bytes bitmap):
-          ;; data Character0Graphics
+          data Character0Graphics
           ;; %01110010, %11010011, ...  ; 16 bytes bitmap data
-          ;; end             ; terminate bitmap table
+          end             ; terminate bitmap table
 
           ;; 3. Frame compaction:
           ;; - Duplicate frames: compact into single frame reference

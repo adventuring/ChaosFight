@@ -33,17 +33,17 @@ AttractMode .proc
           ;; Constraints: Entry point for attract mode (called from
           ;; MainLoop)
           ;; Only reachable via gosub from MainLoop
-                    ;; let gameMode = ModePublisherPrelude : gosub ChangeGameMode bank14
+                    let gameMode = ModePublisherPrelude : gosub ChangeGameMode bank14
           lda ModePublisherPrelude
           sta gameMode
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(ChangeGameMode-1)
+          pha
+          lda # <(ChangeGameMode-1)
+          pha
           ldx # 13
           jmp BS_jsr
 return_point:

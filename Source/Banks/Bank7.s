@@ -10,9 +10,7 @@
           * = $F000
           .rept 256
           .byte $ff
-          .endrept  ;; Scram shadow (256 bytes of $FF)
-          * = $F100
-
+          .endrept
           ;; Code segment
 CharacterPhysicsTablesStart:
 .include "Source/Data/CharacterPhysicsTables.s"
@@ -76,14 +74,5 @@ Bank7CodeEnds:
           ;; Wrap in .block to create namespace Bank7BS (avoids duplicate definitions)
 Bank7BS: .block
           current_bank = 7
-                    ;; Set file offset and CPU address for bankswitch code
-          ;; File offset: (7 * $1000) + ($FFE0 - bscode_length - $F000) = $7FC8
-          ;; CPU address: $FFE0 - bscode_length = $FFC8
-          ;; Use .org to set file offset, then * = to set CPU address
-          ;; Code appears at $ECA but should be at $FC8, difference is $FE
-          ;; So adjust .org by $FE
-          * = $FFE0 - bscode_length
-          
-          
           .include "Source/Common/BankSwitching.s"
           .bend

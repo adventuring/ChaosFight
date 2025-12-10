@@ -2,21 +2,17 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 ;;; EFSC 64k bankswitch code and vectors
 
-          ;; Use bscode_length from MultiSpriteSuperChip.s (25 bytes = $19)
-          ;; BS_return (18 bytes) + BS_jsr (3 bytes) + rts (1 byte) + size check (0 bytes) = 22 bytes
-          ;; But actual end is at $FFE0, so total is $FFE0 - ($FFE0 - bscode_length) = bscode_length
-          ;; bscode_length = $19 = 25 bytes (includes rts after size check)
-
-          .if * > $ffe0 - bscode_length
-          .error format("Bank %d overflow: $%04x > $%04x", *, $ffe0 - bscode_length)
+          BS_length = $18    ; = 24 bytes
+          .if * > $ffe0 - BS_length
+          .error format("Bank %d overflow: $%04x > $%04x", current_bank, *, $ffe0 - BS_length)
           .fi
 
-          * = $ffe0 - bscode_length
+          * = $ffe0 - BS_length
 BS_return:
           ;; Use temp7 (zero-page) instead of stack to avoid overflow
           tsx
           ;; Encoded return address (offset 2 = no A/X save)
-          lda 2,x
+          lda 2, x
           tay
           lsr a
           lsr a
@@ -27,11 +23,11 @@ BS_return:
           tya
           ;; Restore to $Fx format
           ora #$f0
-          sta 2,x
+          sta 2, x
           ldx temp7
 BS_jsr:
-          ;; Bankswitch: $FFE0 + X where X is 0-based bank number
-          nop $ffe0,x
+          ;; Bankswitch: $ffe0 + X where X is 0-based bank number
+          nop $ffe0, x
           rts
 
           ;; Size check: verify bankswitch code ends before $FFE0
@@ -40,7 +36,7 @@ BS_jsr:
 .error format("Change to %d and try again.", (($fff & *) - ($fff & bankswitch_hotspot)))
 .fi
 
-          ;; EFSC identification header at $FFE0-$FFEF: "EFSC", 0, "BRPocock", 0, year, bank
+          ;; EFSC identification header at $ffe0-$ffef: "EFSC", 0, "BRPocock", 0, year, bank
           ;; File offset set by bank file’s .offs before including this file
           .enc "ascii"
           .cdef "A", "Z", $41
@@ -55,13 +51,13 @@ EFSC_Header:
           * = $fff0
 Reset:
           ;; Switch to Bank 13 where ColdStart is located
-          ;; Bank 13 = $FFE0 + 13
+          ;; Bank 13 = $ffe0 + 13
           nop $ffed
           jmp ColdStart
 
 Break:
           ;; Switch to Bank 12 where WarmStart is located
-          ;; Bank 12 = $FFE0 + 12
+          ;; Bank 12 = $ffe0 + 12
           nop $ffec
           jmp WarmStart
 

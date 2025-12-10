@@ -19,37 +19,37 @@ WinnerAnnouncementLoop .proc
           ;;
           ;; Constraints: Must be colocated with WinnerAdvanceToCharacterSelect
           ;; Check for button press to advance immediately
-          ;; if joy0fire then WinnerAdvanceToCharacterSelect
+          if joy0fire then WinnerAdvanceToCharacterSelect
           lda joy0fire
           beq skip_8169
           jmp WinnerAdvanceToCharacterSelect
 skip_8169:
 
-          ;; if joy1fire then WinnerAdvanceToCharacterSelect
-          ;; lda joy1fire (duplicate)
-          ;; beq skip_810 (duplicate)
-          ;; jmp WinnerAdvanceToCharacterSelect (duplicate)
+          if joy1fire then WinnerAdvanceToCharacterSelect
+          lda joy1fire
+          beq skip_810
+          jmp WinnerAdvanceToCharacterSelect
 skip_810:
 
-          ;; if switchselect then WinnerAdvanceToCharacterSelect
-          ;; lda switchselect (duplicate)
-          ;; beq skip_9664 (duplicate)
-          ;; jmp WinnerAdvanceToCharacterSelect (duplicate)
+          if switchselect then WinnerAdvanceToCharacterSelect
+          lda switchselect
+          beq skip_9664
+          jmp WinnerAdvanceToCharacterSelect
 skip_9664:
 
           ;; Display win screen and continue loop
           ;; drawscreen called by MainLoop
           ;; Cross-bank call to DisplayWinScreen in bank 16
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(DisplayWinScreen-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(DisplayWinScreen-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(DisplayWinScreen-1)
+          pha
+          lda # <(DisplayWinScreen-1)
+          pha
           ldx # 13
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
@@ -71,23 +71,23 @@ WinnerAdvanceToCharacterSelect .proc
           ;; mode sta
 
           ;; Constraints: Must be colocated with WinnerAnnouncementLoop
-          ;; lda ModeTitle (duplicate)
+          lda ModeTitle
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(ChangeGameMode-1)
+          pha
+          lda # <(ChangeGameMode-1)
+          pha
+          ldx # 13
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

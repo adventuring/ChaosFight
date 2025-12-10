@@ -16,6 +16,7 @@ SelectPlayerColorNormal:
 SelectPlayerColorHandicap_data:
           ;; TODO: ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
 SelectPlayerColorHandicap_end:
+SelectPlayerColorHandicap = SelectPlayerColorHandicap_data
 
 
 SelectDrawScreen .proc
@@ -25,246 +26,240 @@ SelectDrawScreen .proc
           ;; Playfield layout is static; no runtime register writes
           lda # 2
           sta temp6
-                    ;; if controllerStatus & SetQuadtariDetected then let temp6 = 4
-          ;; lda controllerStatus (duplicate)
+                    if controllerStatus & SetQuadtariDetected then let temp6 = 4
+          lda controllerStatus
           and SetQuadtariDetected
           beq skip_9550
-          ;; lda # 4 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda # 4
+          sta temp6
 skip_9550:
-          ;; lda # 0 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 0
+          sta temp1
 .pend
 
 SelectDrawScreenLoop .proc
           jsr SelectRenderPlayerPreview
           inc temp1
-                    ;; if temp1 < temp6 then goto SelectDrawScreenLoop
-          ;; lda temp1 (duplicate)
+          ;; if temp1 < temp6 then goto SelectDrawScreenLoop
+          lda temp1
           cmp temp6
           bcs skip_4617
           jmp SelectDrawScreenLoop
 skip_4617:
           
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
           ;; Cross-bank call to SelectHideLowerPlayerPreviews in bank 6
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SelectHideLowerPlayerPreviews-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SelectHideLowerPlayerPreviews-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(SelectHideLowerPlayerPreviews-1)
+          pha
+          lda # <(SelectHideLowerPlayerPreviews-1)
+          pha
                     ldx # 5
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
-          ;; jsr BS_return (duplicate)
 
 SelectRenderPlayerPreview
           ;; Returns: Near (return thisbank)
-;; SelectRenderPlayerPreview (duplicate)
           ;; Draw character preview for the specified player and apply lock tinting
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from SelectDrawScreenLoop, so use return thisbank
           ;; Optimized: Combined duplicate conditionals, early return thisbank for common case
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayerPreviewSetPosition-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayerPreviewSetPosition-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayerPreviewSetPosition-1)
+          pha
+          lda # <(PlayerPreviewSetPosition-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
 return_point_2:
 
 
-          ;; Cross-bank call to RenderPlayerPreview in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(RenderPlayerPreview-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(RenderPlayerPreview-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-return_point_3:
+          ;; Same-bank call to RenderPlayerPreview (defined in this file)
+          ;; Cross-bank call to RenderPlayerPreview (defined later in this file, same bank)
+          lda # >(return_point_render-1)
+          pha
+          lda # <(return_point_render-1)
+          pha
+          lda # >(RenderPlayerPreview-1)
+          pha
+          lda # <(RenderPlayerPreview-1)
+          pha
+          ldx # 5
+          jmp BS_jsr
+return_point_render:
 
 
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp1 (duplicate)
+          lda currentPlayer
           ;; Cross-bank call to GetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(GetPlayerLocked-1)
+          pha
+          lda # <(GetPlayerLocked-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
 return_point_4:
 
 
-          ;; lda temp2 (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp2
+          sta temp5
           ;; Unlocked state (most common) - set color and return thisbank early
-          ;; jsr SelectSetPlayerColorUnlocked (duplicate)
+          jsr SelectSetPlayerColorUnlocked
 
           ;; Handicap state - set dimmed color and return thisbank
-          ;; jsr SelectSetPlayerColorHandicap (duplicate)
+          jsr SelectSetPlayerColorHandicap
 
           ;; Normal locked state - color already set by RenderPlayerPreview
           rts
 PlayerPreviewSetPosition
           ;; Returns: Far (return otherbank)
-;; PlayerPreviewSetPosition (duplicate)
           ;; Position player preview sprites in the four select quadrants
-          ;; Returns: Far (return otherbank)
-                    ;; let temp2 = SelectPreviewX[temp1]          lda temp1          asl          tax          lda SelectPreviewX,x          sta temp2
-                    ;; let temp3 = SelectPreviewY[temp1]
-          ;; lda temp1 (duplicate)
+          ;; let temp2 = SelectPreviewX[temp1]
+          lda temp1
           asl
           tax
-          ;; lda SelectPreviewY,x (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda SelectPreviewY,x (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; jsr SelectApplyPreviewPosition (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda SelectPreviewX,x
+          sta temp2
+          ;; let temp3 = SelectPreviewY[temp1]
+          lda temp1
+          asl
+          tax
+          lda SelectPreviewY,x
+          sta temp3
+          lda temp1
+          asl
+          tax
+          lda SelectPreviewY,x
+          sta temp3
+          jsr SelectApplyPreviewPosition
 
 SelectApplyPreviewPosition
           ;; Returns: Far (return thisbank)
-;; SelectApplyPreviewPosition (duplicate)
           ;; Input: temp1 = player index, temp2 = X position, temp3 = y position
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from SelectRenderPlayerPreview, so use return thisbank
           ;; Optimized: Use on...goto jump table for O(1) dispatch
-          ;; jmp SelectApplyPreviewPositionP0 (duplicate)
+          jmp SelectApplyPreviewPositionP0
 SelectApplyPreviewPositionP0
           player0x = temp2
           player0y = temp3
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 SelectApplyPreviewPositionP1
           player1x = temp2
           player1y = temp3
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 SelectApplyPreviewPositionP2
           player2x = temp2
           player2y = temp3
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 SelectApplyPreviewPositionP3
           player3x = temp2
           player3y = temp3
-          ;; jsr BS_return (duplicate)
 
 .pend
 
 SelectHideLowerPlayerPreviews .proc
           ;; Move lower-player previews off-screen when Quadtari is absent
           ;; Returns: Far (return otherbank)
-          ;; player2y = 200 (duplicate)
-          ;; player3y = 200 (duplicate)
-          ;; jsr BS_return (duplicate)
+          player2y = 200
+          player3y = 200
+.pend
 
-RenderPlayerPreview
-          ;; Returns: Far (return otherbank)
-;; RenderPlayerPreview (duplicate)
+RenderPlayerPreview .proc
           ;; Load preview sprite and base color for admin screens
           ;; Returns: Far (return otherbank)
-          ;; lda temp1 (duplicate)
-          ;; sta currentPlayer (duplicate)
-                    ;; let currentCharacter = playerCharacter[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
+          lda temp1
+          sta currentPlayer
+          ;; let currentCharacter = playerCharacter[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
           ;; if currentCharacter >= RandomCharacter then goto RenderPlayerPreviewDefault
-          ;; lda currentCharacter (duplicate)
-          ;; cmp RandomCharacter (duplicate)
+          lda currentCharacter
+          cmp RandomCharacter
 
           bcc skip_163
 
-          ;; jmp skip_163 (duplicate)
+          jmp skip_163
 
 skip_163:
-                    ;; let temp4 = characterSelectPlayerAnimationFrame_R[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda characterSelectPlayerAnimationFrame_R,x (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp1 (duplicate)
+          ;; let temp4 = characterSelectPlayerAnimationFrame_R[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda characterSelectPlayerAnimationFrame_R,x
+          sta temp4
+          lda currentPlayer
           ;; Cross-bank call to GetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(GetPlayerLocked-1)
+          pha
+          lda # <(GetPlayerLocked-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
 return_point_5:
 
-          ;; lda temp2 (duplicate)
-          ;; sta temp5 (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda ActionIdle (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp5 (duplicate)
-          ;; cmp PlayerHandicapped (duplicate)
+          lda temp2
+          sta temp5
+          lda temp4
+          sta temp2
+          lda ActionIdle
+          sta temp3
+          lda temp5
+          cmp PlayerHandicapped
           bne skip_6659
-          ;; lda ActionFallen (duplicate)
-          ;; sta temp3 (duplicate)
+          lda ActionFallen
+          sta temp3
 skip_6659:
 
-          ;; jmp RenderPlayerPreviewInvoke (duplicate)
+          jmp RenderPlayerPreviewInvoke
 RenderPlayerPreviewDefault
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda ActionIdle (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 0
+          sta temp2
+          lda ActionIdle
+          sta temp3
 RenderPlayerPreviewInvoke
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadCharacterSprite-1)
+          pha
+          lda # <(LoadCharacterSprite-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
 return_point_6:
 
-                    ;; let temp2 = SelectPlayerColorNormal[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda SelectPlayerColorNormal,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; jsr SelectApplyPlayerColor (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; jsr BS_return (duplicate)
+          ;; let temp2 = SelectPlayerColorNormal[currentPlayer]         
+          lda currentPlayer
+          asl
+          tax
+          lda SelectPlayerColorNormal,x
+          sta temp2
+          jsr SelectApplyPlayerColor
+          lda # 0
+          sta temp2
+          lda # 0
+          sta temp3
 
 .pend
 
@@ -273,27 +268,24 @@ SelectApplyPlayerColor .proc
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from SelectSetPlayerColorUnlocked/Handicap, so use return thisbank
           ;; Optimized: Use on...goto jump table for O(1) dispatch
-          ;; jmp SelectApplyPlayerColorP0 (duplicate)
+          jmp SelectApplyPlayerColorP0
 .pend
 
 SelectApplyPlayerColorP0 .proc
           COLUP0 = temp2
-          ;; rts (duplicate)
+          rts
 .pend
 
 SelectApplyPlayerColorP1 .proc
           _COLUP1 = temp2
-          ;; rts (duplicate)
 .pend
 
 SelectApplyPlayerColorP2 .proc
           COLUP2 = temp2
-          ;; rts (duplicate)
 .pend
 
 SelectApplyPlayerColorP3 .proc
           COLUP3 = temp2
-          ;; rts (duplicate)
 
 .pend
 
@@ -301,11 +293,10 @@ SelectSetPlayerColorUnlocked .proc
           ;; Override sprite color to indicate unlocked state (white)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from SelectRenderPlayerPreview, so use return thisbank
-          ;; lda $0E(14) (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; jsr SelectApplyPlayerColor (duplicate)
+          lda # 14
+          sta temp2
+          jsr SelectApplyPlayerColor
 
-          ;; rts (duplicate)
 
 .pend
 
@@ -314,69 +305,61 @@ SelectSetPlayerColorHandicap .proc
           ;; Override sprite color to indicate handicap lock (dim player color)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from SelectRenderPlayerPreview, so use return thisbank
-                    ;; let temp2 = SelectPlayerColorHandicap[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda SelectPlayerColorHandicap,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; jsr SelectApplyPlayerColor (duplicate)
+          ;; let temp2 = SelectPlayerColorHandicap[currentPlayer]         
+          lda currentPlayer
+          asl
+          tax
+          lda SelectPlayerColorHandicap,x
+          sta temp2
 
-          ;; rts (duplicate)
 
-SelectUpdateAnimations
           ;; Returns: Far (return otherbank)
-;; SelectUpdateAnimations (duplicate)
           ;; Update character select animations for all players
           ;; Returns: Far (return otherbank)
           ;; Optimized: Compact inline version to reduce code size
-          ;; lda # 2 (duplicate)
-          ;; sta temp6 (duplicate)
-                    ;; if controllerStatus & SetQuadtariDetected then let temp6 = 4
-          ;; lda controllerStatus (duplicate)
-          ;; and SetQuadtariDetected (duplicate)
-          ;; beq skip_9550 (duplicate)
-          ;; lda # 4 (duplicate)
-          ;; sta temp6 (duplicate)
-;; skip_9550: (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 2
+          sta temp6
+          ;; if controllerStatus & SetQuadtariDetected then let temp6 = 4
+          lda controllerStatus
+          and SetQuadtariDetected
+          beq skip_9550
+          lda # 4
+          sta temp6
+skip_9550:
+          lda # 0
+          sta temp1
 SelectUpdateAnimationLoop
           ;; Cross-bank call to GetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(GetPlayerLocked-1)
+          pha
+          lda # <(GetPlayerLocked-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
 return_point_7:
 
-                    ;; if temp2 then goto SelectUpdateAnimationNext
-          ;; lda temp2 (duplicate)
-          ;; beq skip_6708 (duplicate)
-          ;; jmp SelectUpdateAnimationNext (duplicate)
+          ;; if temp2 then goto SelectUpdateAnimationNext
+          lda temp2
+          beq skip_6708
+          jmp SelectUpdateAnimationNext
 skip_6708:
-                    ;; if playerCharacter[temp1] >= RandomCharacter then goto SelectUpdateAnimationNext
-          ;; jsr SelectUpdatePlayerAnimation (duplicate)
+          ;; if playerCharacter[temp1] >= RandomCharacter then goto SelectUpdateAnimationNext
+          jsr SelectUpdatePlayerAnimation
 SelectUpdateAnimationNext
-          ;; inc temp1 (duplicate)
-                    ;; if temp1 < temp6 then goto SelectUpdateAnimationLoop
-          ;; lda temp1 (duplicate)
-          ;; cmp temp6 (duplicate)
-          ;; bcs skip_343 (duplicate)
-          ;; jmp SelectUpdateAnimationLoop (duplicate)
+          ;; if temp1 < temp6 then goto SelectUpdateAnimationLoop
+          lda temp1
+          cmp temp6
+          bcs skip_343
+          jmp SelectUpdateAnimationLoop
 skip_343:
           
-          ;; jsr BS_return (duplicate)
 
 SelectUpdatePlayerAnimation
           ;; Returns: Near (return thisbank)
-;; SelectUpdatePlayerAnimation (duplicate)
-
           ;; Update character select animation counters for one player
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from SelectUpdateAnimations, so use return thisbank
@@ -395,83 +378,79 @@ SelectUpdatePlayerAnimation
           ;;
           ;; Called Routines: None
           ;; Constraints: Admin-only usage sharing SCRAM with game mode
-                    ;; let temp2 = characterSelectPlayerAnimationTimer_R[temp1] + 1         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda characterSelectPlayerAnimationTimer_R,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta characterSelectPlayerAnimationTimer_W,x (duplicate)
-          ;; rts (duplicate)
+          ;; let temp2 = characterSelectPlayerAnimationTimer_R[temp1] + 1
+          lda temp1
+          asl
+          tax
+          lda characterSelectPlayerAnimationTimer_R,x
+          sta temp2
+          lda temp1
+          asl
+          tax
+          lda temp2
+          sta characterSelectPlayerAnimationTimer_W,x
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta characterSelectPlayerAnimationTimer_W,x (duplicate)
-                    ;; let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta characterSelectPlayerAnimationFrame_W,x (duplicate)
-          ;; rts (duplicate)
-CharacterSelectCheckControllerRescan
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta characterSelectPlayerAnimationTimer_W,x
+          ;; let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
+          lda temp1
+          asl
+          tax
+          lda temp3
+          sta characterSelectPlayerAnimationFrame_W,x
+          rts
           ;; Returns: Far (return otherbank)
-;; CharacterSelectCheckControllerRescan (duplicate)
           ;; Re-detect controllers on Select/Pause/ColorB&W toggle
           ;; Returns: Far (return otherbank)
-                    ;; if switchselect then goto CharacterSelectDoRescan
-          ;; lda switchselect (duplicate)
-          ;; beq skip_2466 (duplicate)
-          ;; jmp CharacterSelectDoRescan (duplicate)
+          ;; if switchselect then goto CharacterSelectDoRescan
+          lda INPT4
+          beq skip_2466
+          jmp CharacterSelectDoRescan
 skip_2466:
-          ;; lda switchbw (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; cmp colorBWPrevious_R (duplicate)
-          ;; bne skip_8969 (duplicate)
-          ;; jmp CharacterSelectRescanDone (duplicate)
+          lda switchbw
+          sta temp6
+          lda temp6
+          cmp colorBWPrevious_R
+          bne skip_8969
+          jmp CharacterSelectRescanDone
 skip_8969:
 
           ;; Cross-bank call to DetectPads in bank 13
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(DetectPads-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(DetectPads-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 12 (duplicate)
-          ;; jmp BS_jsr (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(DetectPads-1)
+          pha
+          lda # <(DetectPads-1)
+          pha
+                    ldx # 12
+          jmp BS_jsr
 return_point_8:
 
-          ;; lda switchbw (duplicate)
-          ;; sta colorBWPrevious_W (duplicate)
-          ;; jmp CharacterSelectRescanDone (duplicate)
+          lda switchbw
+          sta colorBWPrevious_W
+          jmp CharacterSelectRescanDone
 .pend
 
 CharacterSelectDoRescan .proc
           ;; Cross-bank call to DetectPads in bank 13
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(DetectPads-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(DetectPads-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 12 (duplicate)
-          ;; jmp BS_jsr (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(DetectPads-1)
+          pha
+          lda # <(DetectPads-1)
+          pha
+                    ldx # 12
+          jmp BS_jsr
 return_point_9:
 
-CharacterSelectRescanDone
-          ;; jsr BS_return (duplicate)
+CharacterSelectRescanDone::
 
 
 

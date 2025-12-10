@@ -29,19 +29,19 @@ UpdateSoundEffectVoice0 .proc
           sec
           sbc # 1
           sta temp4
-          ;; lda temp4 (duplicate)
-          ;; sta soundEffectFrame_W (duplicate)
+          lda temp4
+          sta soundEffectFrame_W
           jsr BS_return
           ;; Frame counter reached 0 - load next note from Sounds bank
           ;; Cross-bank call to LoadSoundNote in bank 15
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadSoundNote-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadSoundNote-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadSoundNote-1)
+          pha
+          lda # <(LoadSoundNote-1)
+          pha
                     ldx # 14
           jmp BS_jsr
 return_point:
@@ -55,7 +55,7 @@ return_point:
           ;; - Advance SoundEffectPointer by 4 bytes
           ;; - Handle end-of-sound: set soundEffectPointer = 0, AUDV0
           ;; = 0, free voice
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

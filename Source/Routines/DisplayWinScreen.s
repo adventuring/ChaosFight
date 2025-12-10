@@ -5,7 +5,7 @@ DisplayWinScreen .proc
 
           ;; Displays the winner podium with character sprites
           ;; Returns: Far (return otherbank)
-          ;; Layout:
+          Layout:
           ;; - Fixed playfield pattern (podium/platform design)
           ;; - 1 player: Winner centered on podium
           ;; - 2 players: Winner centered, runner-up on left platform
@@ -57,48 +57,48 @@ DisplayWinScreen .proc
           ;; Set screen layout (32×8 for character display) - inlined
           lda ScreenPfRowHeight
           sta pfrowheight
-          ;; lda ScreenPfRows (duplicate)
-          ;; sta pfrows (duplicate)
+          lda ScreenPfRows
+          sta pfrows
 
           ;; Load winner screen playfield pattern
           ;; Set playfield pointers to WinnerScreenPlayfield data (optimized: load once, store twice)
-          ;; lda # <WinnerScreenPlayfield (duplicate)
-          ;; sta PF1pointer (duplicate)
-          ;; sta PF2pointer (duplicate)
-          ;; lda # >WinnerScreenPlayfield (duplicate)
-          ;; sta PF1pointer+1 (duplicate)
-          ;; sta PF2pointer+1 (duplicate)
+          lda # <WinnerScreenPlayfield
+          sta PF1pointer
+          sta PF2pointer
+          lda # >WinnerScreenPlayfield
+          sta PF1pointer+1
+          sta PF2pointer+1
 
           ;; Winner screen always uses color mode
           jsr DWS_LoadColorColors
 
           ;; Get players remaining count (SCRAM read)
-          ;; lda playersRemaining_R (duplicate)
-          ;; sta temp1 (duplicate)
+          lda playersRemaining_R
+          sta temp1
 
           ;; Get winner index (already set by FindWinner, SCRAM read)
           ;; Read after DWS_GetBWMode to avoid temp2 conflict
-          ;; lda winnerPlayerIndex_R (duplicate)
-          ;; sta temp2 (duplicate)
+          lda winnerPlayerIndex_R
+          sta temp2
 
           ;; Calculate rankings from eliminationOrder
-          ;; Winner = not eliminated (already have winnerPlayerIndex)
+          Winner = not eliminated (already have winnerPlayerIndex)
           ;; 2nd place = highest eliminationOrder (last eliminated)
           ;; 3rd place = second highest eliminationOrder
 
           ;; Find 2nd and 3rd place rankings
-          ;; lda # 255 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda # 255 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp5 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta winScreenThirdPlaceOrder (duplicate)
+          lda # 255
+          sta temp3
+          lda # 255
+          sta temp4
+          lda # 0
+          sta temp5
+          lda # 0
+          sta winScreenThirdPlaceOrder
 
           ;; Check all players for ranking
-          ;; lda # 0 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 0
+          sta temp1
 
 .pend
 
@@ -125,7 +125,7 @@ DWS_RankLoop .proc
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; DWS_UpdateSecond, DWS_CheckThird, DWS_RankNext
           ;; Skip if this is the winner
-          ;; lda temp1 (duplicate)
+          lda temp1
           cmp temp2
           bne skip_2447
           ;; TODO: DWS_RankNext
@@ -133,15 +133,15 @@ skip_2447:
 
 
           ;; Get this player’s elimination order (SCRAM read)
-                    ;; let winScreenCandidateOrder = eliminationOrder_R[temp1]         
-          ;; lda temp1 (duplicate)
+                    let winScreenCandidateOrder = eliminationOrder_R[temp1]         
+          lda temp1
           asl
           tax
-          ;; lda eliminationOrder_R,x (duplicate)
-          ;; sta winScreenCandidateOrder (duplicate)
+          lda eliminationOrder_R,x
+          sta winScreenCandidateOrder
 
           ;; Check if this is 2nd place (higher order than current 2nd)
-                    ;; if winScreenCandidateOrder > temp5 then DWS_UpdateSecond
+                    if winScreenCandidateOrder > temp5 then DWS_UpdateSecond
           jmp DWS_CheckThird
 
 DWS_UpdateSecond
@@ -159,15 +159,15 @@ DWS_UpdateSecond
           ;;
           ;; Called Routines: None
           ;; Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
-          ;; lda temp5 (duplicate)
-          ;; sta winScreenThirdPlaceOrder (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; lda winScreenCandidateOrder (duplicate)
-          ;; sta temp5 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; jmp DWS_RankNext (duplicate)
+          lda temp5
+          sta winScreenThirdPlaceOrder
+          lda temp3
+          sta temp4
+          lda winScreenCandidateOrder
+          sta temp5
+          lda temp1
+          sta temp3
+          jmp DWS_RankNext
 
 .pend
 
@@ -188,7 +188,7 @@ DWS_CheckThird .proc
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; DWS_RankLoop, DWS_RankNext
-                    ;; if winScreenCandidateOrder > winScreenThirdPlaceOrder then let winScreenThirdPlaceOrder = winScreenCandidateOrder : let temp4 = temp1
+                    if winScreenCandidateOrder > winScreenThirdPlaceOrder then let winScreenThirdPlaceOrder = winScreenCandidateOrder : let temp4 = temp1
 
 .pend
 
@@ -206,23 +206,23 @@ DWS_RankNext .proc
           ;; Called Routines: None
           ;; Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
           inc temp1
-          ;; ;; if temp1 < 4 then goto DWS_RankLoop
-          ;; lda temp1 (duplicate)
-          ;; cmp 4 (duplicate)
+          ;; if temp1 < 4 then goto DWS_RankLoop
+          lda temp1
+          cmp 4
           bcs .skip_6175
-          ;; jmp (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; cmp # 4 (duplicate)
-          ;; bcs skip_8911 (duplicate)
+          jmp
+          lda temp1
+          cmp # 4
+          bcs skip_8911
           goto_label:
 
-          ;; jmp goto_label (duplicate)
+          jmp goto_label
 skip_8911:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 4 (duplicate)
-          ;; bcs skip_8620 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp1
+          cmp # 4
+          bcs skip_8620
+          jmp goto_label
 skip_8620:
 
           
@@ -234,21 +234,21 @@ skip_8620:
           ;; left (X=40), 3rd right (X=120)
 
           ;; Position winner (always centered)
-          ;; lda temp1 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_3654 (duplicate)
+          lda temp1
+          cmp # 1
+          bne skip_3654
           ;; TODO: DWS_Position1Player
 skip_3654:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_9466 (duplicate)
+          lda temp1
+          cmp # 2
+          bne skip_9466
           ;; TODO: DWS_Position2Players
 skip_9466:
 
 
-          ;; jmp DWS_Position3Players (duplicate)
+          jmp DWS_Position3Players
 
 .pend
 
@@ -257,21 +257,21 @@ DWS_LoadIdleSprite .proc
           ;; Helper: Set temp2=0, temp3=0 and load sprite (saves bytes by eliminating repeated assignments)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from DisplayWinScreen, so use return thisbank
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 0
+          sta temp2
+          lda # 0
+          sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadCharacterSprite-1)
+          pha
+          lda # <(LoadCharacterSprite-1)
+          pha
                     ldx # 15
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
@@ -295,31 +295,31 @@ DWS_Position1Player
           ;; Called Routines: LoadCharacterSprite (bank16) - loads
           ;; character sprite
           ;; Constraints: Must be colocated with DisplayWinScreen
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 80 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 192 (duplicate)
-          ;; sta playerY,x (duplicate)
+          lda 0
+          asl
+          tax
+          lda 80
+          sta playerX,x
+          lda 0
+          asl
+          tax
+          lda 192
+          sta playerY,x
           ;; Load winner sprite
-                    ;; let currentCharacter = playerCharacter[temp2]         
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta currentPlayer (duplicate)
+                    let currentCharacter = playerCharacter[temp2]         
+          lda temp2
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
+          lda # 0
+          sta currentPlayer
           ;; Player 0
-          ;; jsr DWS_LoadIdleSprite (duplicate)
+          jsr DWS_LoadIdleSprite
 
-          ;; jsr DWS_HidePlayers123 (duplicate)
+          jsr DWS_HidePlayers123
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 DWS_Position2Players
           ;; 2 players: Winner centered, runner-up left
@@ -342,55 +342,55 @@ DWS_Position2Players
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; DWS_Hide2Player, DWS_Hide2PlayerDone
           ;; Winner (P0)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 80 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 192 (duplicate)
-          ;; sta playerY,x (duplicate)
-                    ;; let currentCharacter = playerCharacter[temp2]         
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta currentPlayer (duplicate)
-          ;; jsr DWS_LoadIdleSprite (duplicate)
+          lda 0
+          asl
+          tax
+          lda 80
+          sta playerX,x
+          lda 0
+          asl
+          tax
+          lda 192
+          sta playerY,x
+                    let currentCharacter = playerCharacter[temp2]         
+          lda temp2
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
+          lda # 0
+          sta currentPlayer
+          jsr DWS_LoadIdleSprite
 
           ;; Runner-up (P1) - only if valid
-          ;; lda temp3 (duplicate)
-          ;; cmp # 255 (duplicate)
-          ;; bne skip_6581 (duplicate)
+          lda temp3
+          cmp # 255
+          bne skip_6581
           ;; TODO: DWS_Hide2Player
 skip_6581:
 
 
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 40 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 192 (duplicate)
-          ;; sta playerY,x (duplicate)
-                    ;; let currentCharacter = playerCharacter[temp3]         
-          ;; lda temp3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
-          ;; lda # 1 (duplicate)
-          ;; sta currentPlayer (duplicate)
-          ;; jsr DWS_LoadIdleSprite (duplicate)
+          lda 1
+          asl
+          tax
+          lda 40
+          sta playerX,x
+          lda 1
+          asl
+          tax
+          lda 192
+          sta playerY,x
+                    let currentCharacter = playerCharacter[temp3]         
+          lda temp3
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
+          lda # 1
+          sta currentPlayer
+          jsr DWS_LoadIdleSprite
 
-          ;; jmp DWS_Hide2PlayerDone (duplicate)
+          jmp DWS_Hide2PlayerDone
 
 .pend
 
@@ -408,11 +408,11 @@ DWS_Hide2Player .proc
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; DWS_Position2Players, DWS_Hide2PlayerDone
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerX,x (duplicate)
+          lda 1
+          asl
+          tax
+          lda 0
+          sta playerX,x
 
 DWS_Hide2PlayerDone
           ;; Hide Player 2 complete (label only)
@@ -427,9 +427,9 @@ DWS_Hide2PlayerDone
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen
-          ;; jsr DWS_HidePlayers123 (duplicate)
+          jsr DWS_HidePlayers123
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 DWS_Position3Players
           ;; 3+ players: Winner centered high, 2nd left, 3rd right
@@ -453,56 +453,56 @@ DWS_Position3Players
           ;; DWS_Hide3Player2, DWS_Hide3Player2Done,
           ;; DWS_Hide3Player3, DWS_Hide3Player3Done
           ;; Winner (P0) - higher platform
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 80 (duplicate)
-          ;; sta playerX,x (duplicate)
+          lda 0
+          asl
+          tax
+          lda 80
+          sta playerX,x
           ;; Row 16 = 128 pixels (16 × 8)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 128 (duplicate)
-          ;; sta playerY,x (duplicate)
-                    ;; let currentCharacter = playerCharacter[temp2]         
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta currentPlayer (duplicate)
-          ;; jsr DWS_LoadIdleSprite (duplicate)
+          lda 0
+          asl
+          tax
+          lda 128
+          sta playerY,x
+                    let currentCharacter = playerCharacter[temp2]         
+          lda temp2
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
+          lda # 0
+          sta currentPlayer
+          jsr DWS_LoadIdleSprite
 
           ;; 2nd place (P1) - left platform
-          ;; lda temp3 (duplicate)
-          ;; cmp # 255 (duplicate)
-          ;; bne skip_5564 (duplicate)
+          lda temp3
+          cmp # 255
+          bne skip_5564
           ;; TODO: DWS_Hide3Player2
 skip_5564:
 
 
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 40 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 192 (duplicate)
-          ;; sta playerY,x (duplicate)
-                    ;; let currentCharacter = playerCharacter[temp3]         
-          ;; lda temp3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
-          ;; lda # 1 (duplicate)
-          ;; sta currentPlayer (duplicate)
-          ;; jsr DWS_LoadIdleSprite (duplicate)
+          lda 1
+          asl
+          tax
+          lda 40
+          sta playerX,x
+          lda 1
+          asl
+          tax
+          lda 192
+          sta playerY,x
+                    let currentCharacter = playerCharacter[temp3]         
+          lda temp3
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
+          lda # 1
+          sta currentPlayer
+          jsr DWS_LoadIdleSprite
 
-          ;; jmp DWS_Hide3Player2Done (duplicate)
+          jmp DWS_Hide3Player2Done
 
 .pend
 
@@ -520,11 +520,11 @@ DWS_Hide3Player2 .proc
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; DWS_Position3Players, DWS_Hide3Player2Done
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerX,x (duplicate)
+          lda 1
+          asl
+          tax
+          lda 0
+          sta playerX,x
 
 DWS_Hide3Player2Done
           ;; Hide Player 2 complete (label only)
@@ -541,34 +541,34 @@ DWS_Hide3Player2Done
           ;; Constraints: Must be colocated with DisplayWinScreen
 
           ;; 3rd place (P2) - right platform
-          ;; lda temp4 (duplicate)
-          ;; cmp # 255 (duplicate)
-          ;; bne skip_8912 (duplicate)
+          lda temp4
+          cmp # 255
+          bne skip_8912
           ;; TODO: DWS_Hide3Player3
 skip_8912:
 
 
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 120 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 192 (duplicate)
-          ;; sta playerY,x (duplicate)
-                    ;; let currentCharacter = playerCharacter[temp4]         
-          ;; lda temp4 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
-          ;; lda # 2 (duplicate)
-          ;; sta currentPlayer (duplicate)
-          ;; jsr DWS_LoadIdleSprite (duplicate)
+          lda 2
+          asl
+          tax
+          lda 120
+          sta playerX,x
+          lda 2
+          asl
+          tax
+          lda 192
+          sta playerY,x
+                    let currentCharacter = playerCharacter[temp4]         
+          lda temp4
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
+          lda # 2
+          sta currentPlayer
+          jsr DWS_LoadIdleSprite
 
-          ;; jmp DWS_Hide3Player3Done (duplicate)
+          jmp DWS_Hide3Player3Done
 
 .pend
 
@@ -586,11 +586,11 @@ DWS_Hide3Player3 .proc
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; DWS_Position3Players, DWS_Hide3Player3Done
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerX,x (duplicate)
+          lda 2
+          asl
+          tax
+          lda 0
+          sta playerX,x
 
 DWS_Hide3Player3Done
           ;; Hide Player 3 complete (label only)
@@ -606,12 +606,12 @@ DWS_Hide3Player3Done
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen
           ;; Hide unused player
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda 3
+          asl
+          tax
+          lda 0
+          sta playerX,x
+          jsr BS_return
 
 .pend
 
@@ -619,22 +619,22 @@ DWS_HidePlayers123 .proc
           ;; Helper: Hide players 1, 2, 3 (saves bytes by consolidating repeated code)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from DisplayWinScreen, so use return thisbank
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; rts (duplicate)
+          lda 1
+          asl
+          tax
+          lda 0
+          sta playerX,x
+          lda 2
+          asl
+          tax
+          lda 0
+          sta playerX,x
+          lda 3
+          asl
+          tax
+          lda 0
+          sta playerX,x
+          rts
 
 .pend
 
@@ -652,15 +652,15 @@ DWS_GetBWMode .proc
           ;; Called Routines: None
           ;;
           ;; Constraints: Must reside in bank 15 (DisplayWinScreen.bas)
-          ;; lda systemFlags (duplicate)
+          lda systemFlags
           and SystemFlagColorBWOverride
-          ;; sta temp2 (duplicate)
-          ;; if temp2 then let temp2 = 1
-          ;; lda temp2 (duplicate)
+          sta temp2
+          if temp2 then let temp2 = 1
+          lda temp2
           beq skip_6171
-          ;; jmp skip_6171 (duplicate)
+          jmp skip_6171
 skip_6171:
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -675,11 +675,11 @@ DWS_LoadColorColors .proc
 
 
           ;; TODO: ; rem Set pfcolortable pointer to WinnerScreenColorsColor
-            ;; lda # <WinnerScreenColorsColor (duplicate)
-            ;; sta pfcolortable (duplicate)
-            ;; lda # >WinnerScreenColorsColor (duplicate)
-            ;; sta pfcolortable+1 (duplicate)
-          ;; rts (duplicate)
+            lda # <WinnerScreenColorsColor
+            sta pfcolortable
+            lda # >WinnerScreenColorsColor
+            sta pfcolortable+1
+          rts
 
 .pend
 

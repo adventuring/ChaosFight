@@ -11,23 +11,23 @@ SetPlayerVelocity .proc
           lda temp1
           asl
           tax
-          ;; lda temp2 (duplicate)
+          lda temp2
           sta playerVelocityX,x
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityXL,x
+          lda temp1
+          asl
+          tax
+          lda temp3
+          sta playerVelocityY,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
           rts
 
 .pend

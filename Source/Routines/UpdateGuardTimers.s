@@ -17,12 +17,12 @@ UpdateGuardTimers .proc
           ;; Cross-bank call to UpdateSingleGuardTimer in bank 6
           lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdateSingleGuardTimer-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdateSingleGuardTimer-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(UpdateSingleGuardTimer-1)
+          pha
+          lda # <(UpdateSingleGuardTimer-1)
+          pha
                     ldx # 5
           jmp BS_jsr
 return_point:

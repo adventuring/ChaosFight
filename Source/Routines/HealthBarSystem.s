@@ -27,13 +27,13 @@
 
           ;; count
 
-          ;; bit patterns: 0-8 pixels filled from right to left
+          bit patterns: 0-8 pixels filled from right to left
 
           ;; Uses hardcoded thresholds
 
 
 
-          ;; bit pattern table for 0-8 pixels (right-aligned fill)
+          bit pattern table for 0-8 pixels (right-aligned fill)
 
           ;; 0 pixels = %00000000, 1 pixel = %00000001, ..., 8 pixels =
 
@@ -77,7 +77,7 @@ UpdatePlayer1HealthBar .proc
 
           ;; Clamp health to valid range (unsigned bytes cannot be negative)
 
-                    ;; if temp1 > PlayerHealthMax then let temp1 = PlayerHealthMax
+                    if temp1 > PlayerHealthMax then let temp1 = PlayerHealthMax
 
 
 
@@ -101,58 +101,58 @@ UpdatePlayer1HealthBar .proc
 
           ;; 72-83 = 7 pixels
 
-          ;; lda temp1 (duplicate)
+          lda temp1
           cmp # 84
           bcc skip_3169
-                    ;; let temp2 = 8 : goto P1SetPattern
+                    let temp2 = 8 : goto P1SetPattern
 skip_3169:
 
 
           ;; 60-71 = 6 pixels
-          ;; lda temp1 (duplicate)
-          ;; cmp # 72 (duplicate)
-          ;; bcc skip_183 (duplicate)
-                    ;; let temp2 = 7 : goto P1SetPattern
+          lda temp1
+          cmp # 72
+          bcc skip_183
+                    let temp2 = 7 : goto P1SetPattern
 skip_183:
 
 
           ;; 48-59 = 5 pixels
-          ;; lda temp1 (duplicate)
-          ;; cmp # 60 (duplicate)
-          ;; bcc skip_5281 (duplicate)
-                    ;; let temp2 = 6 : goto P1SetPattern
+          lda temp1
+          cmp # 60
+          bcc skip_5281
+                    let temp2 = 6 : goto P1SetPattern
 skip_5281:
 
 
           ;; 36-47 = 4 pixels
-          ;; lda temp1 (duplicate)
-          ;; cmp # 48 (duplicate)
-          ;; bcc skip_1969 (duplicate)
-                    ;; let temp2 = 5 : goto P1SetPattern
+          lda temp1
+          cmp # 48
+          bcc skip_1969
+                    let temp2 = 5 : goto P1SetPattern
 skip_1969:
 
 
           ;; 24-35 = 3 pixels
-          ;; lda temp1 (duplicate)
-          ;; cmp # 36 (duplicate)
-          ;; bcc skip_9302 (duplicate)
-                    ;; let temp2 = 4 : goto P1SetPattern
+          lda temp1
+          cmp # 36
+          bcc skip_9302
+                    let temp2 = 4 : goto P1SetPattern
 skip_9302:
 
 
           ;; 12-23 = 2 pixels
-          ;; lda temp1 (duplicate)
-          ;; cmp # 24 (duplicate)
-          ;; bcc skip_9226 (duplicate)
-                    ;; let temp2 = 3 : goto P1SetPattern
+          lda temp1
+          cmp # 24
+          bcc skip_9226
+                    let temp2 = 3 : goto P1SetPattern
 skip_9226:
 
 
           ;; 0-11 = 0 pixels (patternIndex already 0)
-          ;; lda temp1 (duplicate)
-          ;; cmp # 12 (duplicate)
-          ;; bcc skip_4428 (duplicate)
-                    ;; let temp2 = 2 : goto P1SetPattern
+          lda temp1
+          cmp # 12
+          bcc skip_4428
+                    let temp2 = 2 : goto P1SetPattern
 skip_4428:
 
 
@@ -188,19 +188,19 @@ P1SetPattern .proc
 
           ;; function, so no bank prefix needed
 
-                    ;; let temp3 = HealthBarPatterns[temp2]         
-          ;; lda temp2 (duplicate)
+                    let temp3 = HealthBarPatterns[temp2]         
+          lda temp2
           asl
           tax
-          ;; lda HealthBarPatterns,x (duplicate)
-          ;; sta temp3 (duplicate)
+          lda HealthBarPatterns,x
+          sta temp3
 
 
 
           ;; Set pfscore1 to health bar pattern
 
-          ;; lda temp3 (duplicate)
-          ;; sta pfscore1 (duplicate)
+          lda temp3
+          sta pfscore1
 
 
 
@@ -240,7 +240,7 @@ UpdatePlayer2HealthBar .proc
 
           ;; Clamp health to valid range (unsigned bytes cannot be negative)
 
-                    ;; if temp1 > PlayerHealthMax then let temp1 = PlayerHealthMax
+                    if temp1 > PlayerHealthMax then let temp1 = PlayerHealthMax
 
 
 
@@ -253,8 +253,8 @@ UpdatePlayer2HealthBar .proc
           ;; pixels, 0-11 = 0 pixels
 
           ;; patternIndex will hold the pattern index (0-8)
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 0
+          sta temp2
 
 
 
@@ -264,58 +264,58 @@ UpdatePlayer2HealthBar .proc
 
           ;; 72-83 = 7 pixels
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 84 (duplicate)
-          ;; bcc skip_4534 (duplicate)
-                    ;; let temp2 = 8 : goto P2SetPattern
+          lda temp1
+          cmp # 84
+          bcc skip_4534
+                    let temp2 = 8 : goto P2SetPattern
 skip_4534:
 
 
           ;; 60-71 = 6 pixels
-          ;; lda temp1 (duplicate)
-          ;; cmp # 72 (duplicate)
-          ;; bcc skip_9565 (duplicate)
-                    ;; let temp2 = 7 : goto P2SetPattern
+          lda temp1
+          cmp # 72
+          bcc skip_9565
+                    let temp2 = 7 : goto P2SetPattern
 skip_9565:
 
 
           ;; 48-59 = 5 pixels
-          ;; lda temp1 (duplicate)
-          ;; cmp # 60 (duplicate)
-          ;; bcc skip_8978 (duplicate)
-                    ;; let temp2 = 6 : goto P2SetPattern
+          lda temp1
+          cmp # 60
+          bcc skip_8978
+                    let temp2 = 6 : goto P2SetPattern
 skip_8978:
 
 
           ;; 36-47 = 4 pixels
-          ;; lda temp1 (duplicate)
-          ;; cmp # 48 (duplicate)
-          ;; bcc skip_7424 (duplicate)
-                    ;; let temp2 = 5 : goto P2SetPattern
+          lda temp1
+          cmp # 48
+          bcc skip_7424
+                    let temp2 = 5 : goto P2SetPattern
 skip_7424:
 
 
           ;; 24-35 = 3 pixels
-          ;; lda temp1 (duplicate)
-          ;; cmp # 36 (duplicate)
-          ;; bcc skip_8762 (duplicate)
-                    ;; let temp2 = 4 : goto P2SetPattern
+          lda temp1
+          cmp # 36
+          bcc skip_8762
+                    let temp2 = 4 : goto P2SetPattern
 skip_8762:
 
 
           ;; 12-23 = 2 pixels
-          ;; lda temp1 (duplicate)
-          ;; cmp # 24 (duplicate)
-          ;; bcc skip_1470 (duplicate)
-                    ;; let temp2 = 3 : goto P2SetPattern
+          lda temp1
+          cmp # 24
+          bcc skip_1470
+                    let temp2 = 3 : goto P2SetPattern
 skip_1470:
 
 
           ;; 0-11 = 0 pixels (patternIndex already 0)
-          ;; lda temp1 (duplicate)
-          ;; cmp # 12 (duplicate)
-          ;; bcc skip_6939 (duplicate)
-                    ;; let temp2 = 2 : goto P2SetPattern
+          lda temp1
+          cmp # 12
+          bcc skip_6939
+                    let temp2 = 2 : goto P2SetPattern
 skip_6939:
 
 
@@ -351,23 +351,23 @@ P2SetPattern .proc
 
           ;; function, so no bank prefix needed
 
-                    ;; let temp3 = HealthBarPatterns[temp2]         
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda HealthBarPatterns,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = HealthBarPatterns[temp2]         
+          lda temp2
+          asl
+          tax
+          lda HealthBarPatterns,x
+          sta temp3
 
 
 
           ;; Set pfscore2 to health bar pattern
 
-          ;; lda temp3 (duplicate)
-          ;; sta pfscore2 (duplicate)
+          lda temp3
+          sta pfscore2
 
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -414,25 +414,25 @@ UpdatePlayer12HealthBars .proc
 
           ;; Update P1 health bar
 
-                    ;; let temp1 = playerHealth[0]          lda 0          asl          tax          lda playerHealth,x          sta temp1
+                    let temp1 = playerHealth[0]          lda 0          asl          tax          lda playerHealth,x          sta temp1
 
-          ;; jsr UpdatePlayer1HealthBar (duplicate)
+          jsr UpdatePlayer1HealthBar
 
 
 
           ;; Update P2 health bar
 
-                    ;; let temp1 = playerHealth[1]
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; sta temp1 (duplicate)
+                    let temp1 = playerHealth[1]
+          lda 1
+          asl
+          tax
+          lda playerHealth,x
+          sta temp1
+          lda 1
+          asl
+          tax
+          lda playerHealth,x
+          sta temp1
 
           ;; tail call
 
@@ -481,14 +481,14 @@ InitializeHealthBars .proc
 
           ;; Set initial health bars to full (100%)
 
-          ;; lda PlayerHealthMax (duplicate)
-          ;; sta temp1 (duplicate)
+          lda PlayerHealthMax
+          sta temp1
 
-          ;; jsr UpdatePlayer1HealthBar (duplicate)
+          jsr UpdatePlayer1HealthBar
 
           ;; tail call
 
-          ;; jmp UpdatePlayer2HealthBar (duplicate)
+          jmp UpdatePlayer2HealthBar
 
 
 
@@ -521,7 +521,7 @@ ConvertToBCD
           ;; Returns: Far (return thisbank)
 
 
-;; ConvertToBCD (duplicate)
+ConvertToBCD
 
 
           ;; Convert binary value (0-99) to packed BCD format
@@ -547,19 +547,19 @@ ConvertToBCD
           ;; Input must be <= $63 (99 decimal)
 
 
-            ;; lda temp1    ; A = value (0..$63) (duplicate)
+            lda temp1    ; A = value (0..$63)
 
-            ;; tax (duplicate)
+            tax
             ; save original value
 
             lsr
             ; divide by 16 (high nibble)
 
-            ;; lsr (duplicate)
+            lsr
 
-            ;; lsr (duplicate)
+            lsr
 
-            ;; lsr (duplicate)
+            lsr
 
             tay
             ; Y = high nibble (tens digit)
@@ -578,7 +578,7 @@ byte: $2c    ; bit abs (skip next instruction)
 
 ConvertToBCDLoop
 
-            ;; adc # 6       ; add 6 to adjust for decimal (BCD correction) (duplicate)
+            adc # 6       ; add 6 to adjust for decimal (BCD correction)
 
             dey
             ; decrement tens counter
@@ -588,7 +588,7 @@ ConvertToBCDLoop
             cld
             ; clear decimal mode
 
-            ;; sta temp1    ; store result (packed BCD, e.g., $75 for 75) (duplicate)
+            sta temp1    ; store result (packed BCD, e.g., $75 for 75)
 
 
           rts
@@ -605,13 +605,13 @@ UpdatePlayer34HealthBars .proc
           ;; Check if Quadtari is present
           ;; Returns: Far (return otherbank)
 
-          ;; If no Quadtari, display CF2026 instead of player health
+          If no Quadtari, display CF2026 instead of player health
 
-          ;; lda controllerStatus (duplicate)
+          lda controllerStatus
           and SetQuadtariDetected
-          ;; cmp # 0 (duplicate)
+          cmp # 0
           bne skip_9352
-          ;; jmp DisplayCF2026 (duplicate)
+          jmp DisplayCF2026
 skip_9352:
 
 
@@ -619,7 +619,7 @@ skip_9352:
 
           ;; Only update player health if players 3 or 4 are active
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -629,27 +629,27 @@ skip_9352:
 
           ;; (playerCharacter = NoCharacter) or eliminated
 
-                    ;; let temp1 = playerHealth[2]         
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; sta temp1 (duplicate)
+                    let temp1 = playerHealth[2]         
+          lda 2
+          asl
+          tax
+          lda playerHealth,x
+          sta temp1
 
           ;; Check if Player 3 is eliminated (health = 0)
 
-                    ;; if playerCharacter[2] = NoCharacter then goto P3UseAA
-          ;; lda temp1 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_8659 (duplicate)
-          ;; jmp P3UseAA (duplicate)
+                    if playerCharacter[2] = NoCharacter then goto P3UseAA
+          lda temp1
+          cmp # 0
+          bne skip_8659
+          jmp P3UseAA
 skip_8659:
 
 
           ;; Clamp health to valid range
 
-          ;;           ;; if PlayerHealthMax - 1 < temp1 then let temp1 = PlayerHealthMax - 1          lda PlayerHealthMax          sec          sbc 1          sta temp1
-          ;; jmp P3ConvertHealth (duplicate)
+          ;; if PlayerHealthMax - 1 < temp1 then let temp1 = PlayerHealthMax - 1          lda PlayerHealthMax          sec          sbc 1          sta temp1
+          jmp P3ConvertHealth
 
 
 
@@ -660,10 +660,10 @@ P3UseAA .proc
           ;; Player 3 inactive/eliminated - use $ee (displays as ’  ’)
           ;; Returns: Far (return otherbank)
 
-          ;; lda $ee (duplicate)
-          ;; sta temp4 (duplicate)
+          lda $ee
+          sta temp4
 
-          ;; jmp P4GetHealth (duplicate)
+          jmp P4GetHealth
 
 
 
@@ -672,12 +672,12 @@ P3ConvertHealth
           ;; Convert Player 3 health to packed BCD (00-99)
           ;; Returns: Far (return otherbank)
 
-          ;; jsr ConvertToBCD (duplicate)
+          jsr ConvertToBCD
 
           ;; temp4 now contains P3 health as BCD (e.g., $75 for 75)
 
-          ;; lda temp1 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp1
+          sta temp4
 
 
 
@@ -692,34 +692,34 @@ P4GetHealth .proc
 
           ;; (playerCharacter = NoCharacter) or eliminated
 
-                    ;; let temp2 = playerHealth[3]         
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; sta temp2 (duplicate)
+                    let temp2 = playerHealth[3]         
+          lda 3
+          asl
+          tax
+          lda playerHealth,x
+          sta temp2
 
           ;; Check if Player 4 is eliminated (health = 0)
 
-                    ;; if playerCharacter[3] = NoCharacter then goto P4UseAA
-          ;; lda temp2 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_9418 (duplicate)
-          ;; jmp P4UseAA (duplicate)
+                    if playerCharacter[3] = NoCharacter then goto P4UseAA
+          lda temp2
+          cmp # 0
+          bne skip_9418
+          jmp P4UseAA
 skip_9418:
 
 
           ;; Clamp health to valid range
 
-          ;; lda temp2 (duplicate)
-          ;; cmp # 100 (duplicate)
-          ;; bcc skip_6777 (duplicate)
-          ;; lda # 99 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp2
+          cmp # 100
+          bcc skip_6777
+          lda # 99
+          sta temp2
 skip_6777:
 
 
-          ;; jmp P4ConvertHealth (duplicate)
+          jmp P4ConvertHealth
 
 
 
@@ -730,10 +730,10 @@ P4UseAA .proc
           ;; Player 4 inactive/eliminated - use $ee (displays as ’  ’)
           ;; Returns: Far (return otherbank)
 
-          ;; lda $ee (duplicate)
-          ;; sta temp5 (duplicate)
+          lda $ee
+          sta temp5
 
-          ;; jmp SetScoreBytes (duplicate)
+          jmp SetScoreBytes
 
 
 
@@ -742,15 +742,15 @@ P4ConvertHealth
           ;; Convert Player 4 health to packed BCD (00-99)
           ;; Returns: Far (return otherbank)
 
-          ;; lda temp2 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp2
+          sta temp1
 
-          ;; jsr ConvertToBCD (duplicate)
+          jsr ConvertToBCD
 
           ;; temp5 now contains P4 health as BCD (e.g., $50 for 50)
 
-          ;; lda temp1 (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp1
+          sta temp5
 
 
 
@@ -775,7 +775,7 @@ SetScoreBytes .proc
 
           ;; score+2 (low byte, digits 4-5) = P4 BCD ($00-$99) OR $ee
 
-          ;; if inactive/eliminated
+          if inactive/eliminated
 
           ;; Note: $ee and #$CF are invalid BCD but display as hex
 
@@ -809,15 +809,15 @@ SetScoreBytes .proc
 
           ;; Score colors are now set directly in MultiSpriteKernel.s
 
-          ;; COLUP0 = ColIndigo(12), COLUP1 = ColRed(12)
+          COLUP0 = ColIndigo(12), COLUP1 = ColRed(12)
 
-          ;; COLUPF = ColIndigo(12) (for pfscore mode)
+          COLUPF = ColIndigo(12) (for pfscore mode)
 
           ;; (Issue #600 - completed)
 
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -862,7 +862,7 @@ DisplayCF2026 .proc
 
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

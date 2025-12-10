@@ -18,19 +18,19 @@ GetWeightBasedDamage .proc
           ;;
           ;; Constraints: Must be colocated with ApplyDamage
           ;; Weight tiers: <=15 = 12 damage, <=25 = 18 damage, >25 = 22 damage
-                    ;; let temp3 = CharacterWeights[temp1]         
+                    let temp3 = CharacterWeights[temp1]         
           lda temp1
           asl
           tax
-          ;; lda CharacterWeights,x (duplicate)
+          lda CharacterWeights,x
           sta temp3
           jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; lda # 22 (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda # 22
+          sta temp2
+          jsr BS_return
 
 .pend
 
@@ -39,7 +39,7 @@ ApplyDamage .proc
           ;; Apply damage from attacker to defender
           ;; Returns: Near (return thisbank) - called same-bank
           ;;
-          ;; Process:
+          Process:
           ;; 1. Player begins hurt animation (ActionHit = 5)
           ;; 2. Player enters recovery frames count and color dims (or
           ;; magenta on SECAM)
@@ -73,152 +73,152 @@ ApplyDamage .proc
           ;; PlayDamageSound, GetWeightBasedDamage (called via goto/gosub)
 
           ;; Issue #1149: Use shared helper instead of duplicated logic
-                    ;; let temp1 = playerCharacter[attackerID]          lda attackerID          asl          tax          lda playerCharacter,x          sta temp1
-          ;; jsr GetWeightBasedDamage (duplicate)
+                    let temp1 = playerCharacter[attackerID]          lda attackerID          asl          tax          lda playerCharacter,x          sta temp1
+          jsr GetWeightBasedDamage
 
-          ;; lda temp2 (duplicate)
-          ;; sta temp4 (duplicate)
-                    ;; let temp1 = playerCharacter[defenderID]
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp2
+          sta temp4
+                    let temp1 = playerCharacter[defenderID]
+          lda defenderID
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
+          lda defenderID
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
           ;; Calculate damage (considering defender sta
 
-          ;; jsr GetWeightBasedDamage (duplicate)
+          jsr GetWeightBasedDamage
 
           ;; Minimum damage
-          ;; ;; let temp1 = temp4 - temp2          lda temp4          sec          sbc temp2          sta temp1
-          ;; lda temp4 (duplicate)
+          ;; let temp1 = temp4 - temp2          lda temp4          sec          sbc temp2          sta temp1
+          lda temp4
           sec
           sbc temp2
-          ;; sta temp1 (duplicate)
+          sta temp1
 
-          ;; lda temp4 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp2 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp4
+          sec
+          sbc temp2
+          sta temp1
 
-          ;; ;; if temp1 < 1 then let temp1 = 1
-          ;; lda temp1 (duplicate)
+          ;; if temp1 < 1 then let temp1 = 1
+          lda temp1
           cmp # 1
           bcs skip_1882
           jmp let_label
 skip_1882:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bcs skip_1295 (duplicate)
-          ;; jmp let_label (duplicate)
+          lda temp1
+          cmp # 1
+          bcs skip_1295
+          jmp let_label
 skip_1295:
 
 
 
           ;; Check if player will die from this damage
-                    ;; let temp2 = playerHealth[defenderID]         
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; sta temp2 (duplicate)
+                    let temp2 = playerHealth[defenderID]         
+          lda defenderID
+          asl
+          tax
+          lda playerHealth,x
+          sta temp2
           ;; Will die
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
-                    ;; if temp2 < temp1 then let temp3 = 1
-          ;; If player will die, instantly vanish (eliminate)
-                    ;; if temp3 then goto PlayerDies
-          ;; lda temp3 (duplicate)
+          lda # 0
+          sta temp3
+                    if temp2 < temp1 then let temp3 = 1
+          If player will die, instantly vanish (eliminate)
+                    if temp3 then goto PlayerDies
+          lda temp3
           beq skip_5407
-          ;; jmp PlayerDies (duplicate)
+          jmp PlayerDies
 skip_5407:
 
           ;; Player survives - apply damage and enter hurt sta
 
-                    ;; let playerHealth[defenderID] = temp2 - temp1
+                    let playerHealth[defenderID] = temp2 - temp1
 
           ;; Set hurt animation (ActionHit = 5)
-          ;; lda defenderID (duplicate)
-          ;; sta currentPlayer (duplicate)
-          ;; lda ActionHit (duplicate)
-          ;; sta temp2 (duplicate)
+          lda defenderID
+          sta currentPlayer
+          lda ActionHit
+          sta temp2
           ;; Cross-bank call to SetPlayerAnimation in bank 12
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerAnimation-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerAnimation-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerAnimation-1)
+          pha
+          lda # <(SetPlayerAnimation-1)
+          pha
                     ldx # 11
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
           ;; Calculate recovery frames (damage / 2, clamped 10-30)
-          ;; ;; let temp4 = temp1 / 2          lda temp1          lsr          sta temp4
-          ;; lda temp1 (duplicate)
+          ;; let temp4 = temp1 / 2          lda temp1          lsr          sta temp4
+          lda temp1
           lsr
-          ;; sta temp4 (duplicate)
+          sta temp4
 
-          ;; lda temp1 (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp1
+          lsr
+          sta temp4
 
-          ;; ;; if temp4 < 10 then let temp4 = 10
-          ;; lda temp4 (duplicate)
-          ;; cmp # 10 (duplicate)
-          ;; bcs skip_5883 (duplicate)
-          ;; jmp let_label (duplicate)
+          ;; if temp4 < 10 then let temp4 = 10
+          lda temp4
+          cmp # 10
+          bcs skip_5883
+          jmp let_label
 skip_5883:
 
-          ;; lda temp4 (duplicate)
-          ;; cmp # 10 (duplicate)
-          ;; bcs skip_497 (duplicate)
-          ;; jmp let_label (duplicate)
+          lda temp4
+          cmp # 10
+          bcs skip_497
+          jmp let_label
 skip_497:
 
 
-          ;; lda temp4 (duplicate)
-          ;; cmp # 31 (duplicate)
+          lda temp4
+          cmp # 31
           bcc skip_1533
-          ;; lda # 30 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda # 30
+          sta temp4
 skip_1533:
 
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; sta playerRecoveryFrames,x (duplicate)
+          lda defenderID
+          asl
+          tax
+          lda temp4
+          sta playerRecoveryFrames,x
 
           ;; Set playerState bit 3 (recovery flag) when recovery frames are set
-                    ;; let playerState[defenderID] = playerState[defenderID] | 8
+                    let playerState[defenderID] = playerState[defenderID] | 8
 
           ;; Issue #1180: Ursulo uppercut knock-up scaling with target weight
           ;; Ursulo’s punches toss opponents upward with launch height proportional to target weight
           ;; Lighter characters travel higher than heavyweights
-                    ;; let temp1 = playerCharacter[attackerID]         
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; cmp CharacterUrsulo (duplicate)
+                    let temp1 = playerCharacter[attackerID]         
+          lda attackerID
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
+          lda temp1
+          cmp CharacterUrsulo
           bne skip_9055
-          ;; jmp ApplyUrsuloKnockUp (duplicate)
+          jmp ApplyUrsuloKnockUp
 skip_9055:
 
 
           ;; Sound effect (tail call)
-          ;; jmp PlayDamageSound (duplicate)
+          jmp PlayDamageSound
 
 .pend
 
@@ -241,12 +241,12 @@ ApplyUrsuloKnockUp .proc
           ;; Constraints: Must be colocated with ApplyDamage
           ;; Get defender’s weight
           ;; Weight values range 5-100 (lightest to heaviest)
-                    ;; let temp1 = playerCharacter[defenderID]         
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
+                    let temp1 = playerCharacter[defenderID]         
+          lda defenderID
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
           ;; Calculate upward velocity: lighter = higher launch (inverse relationship)
           ;; Formula: launch_velocity = max_launch - (weight / weight_scale_factor)
           ;; Max launch: 12 pixels/frame upward (244 in signed 8-bit = -12) for lightest
@@ -254,40 +254,40 @@ ApplyUrsuloKnockUp .proc
           ;; Weight scale: divide weight by 12 to get velocity reduction (0-8 range)
           ;; Use precomputed lookup table (avoids expensive division on Atari 2600)
           ;; Values already clamped to 0-8 range in lookup table
-                    ;; let temp3 = CharacterWeightDiv12[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterWeightDiv12,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = CharacterWeightDiv12[temp1]         
+          lda temp1
+          asl
+          tax
+          lda CharacterWeightDiv12,x
+          sta temp3
           ;; Calculate upward velocity: max_launch - reduction
           ;; 244 = -12 (highest), 245 = -11, ..., 252 = -4 (lowest)
           ;; Clamp to valid range (244-252)
-                    ;; let temp4 = 244 + temp3
+                    let temp4 = 244 + temp3
           ;; Apply upward velocity to defender (negative value = upward)
-          ;; lda temp4 (duplicate)
-          ;; cmp # 253 (duplicate)
-          ;; bcc skip_9918 (duplicate)
-          ;; lda # 252 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp4
+          cmp # 253
+          bcc skip_9918
+          lda # 252
+          sta temp4
 skip_9918:
 
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
+          lda defenderID
+          asl
+          tax
+          lda temp4
+          sta playerVelocityY,x
           ;; Set jumping flag so gravity applies correctly and animation system handles airborne sta
 
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
-                    ;; let playerState[defenderID] = playerState[defenderID] | PlayerStateBitJumping
+          lda defenderID
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
+                    let playerState[defenderID] = playerState[defenderID] | PlayerStateBitJumping
 
           ;; Sound effect (tail call)
-          ;; jmp PlayDamageSound (duplicate)
+          jmp PlayDamageSound
 
 .pend
 
@@ -310,34 +310,34 @@ PlayerDies .proc
           ;; elimination,
           ;; PlayDamageSound - plays damage sound effect
           ;; Constraints: Must be colocated with ApplyDamage, PlayDamageSound
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerHealth,x (duplicate)
+          lda defenderID
+          asl
+          tax
+          lda 0
+          sta playerHealth,x
 
           ;; Trigger elimination immediately (instantly vanish)
           ;; CheckPlayerElimination will hide sprite and handle
           ;; elimination effects
-          ;; lda defenderID (duplicate)
-          ;; sta currentPlayer (duplicate)
+          lda defenderID
+          sta currentPlayer
           ;; Cross-bank call to CheckPlayerElimination in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(CheckPlayerElimination-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(CheckPlayerElimination-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(CheckPlayerElimination-1)
+          pha
+          lda # <(CheckPlayerElimination-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
 
           ;; Sound effect
           ;; tail call
-          ;; jmp PlayDamageSound (duplicate)
+          jmp PlayDamageSound
 
 .pend
 
@@ -382,61 +382,61 @@ CheckAttackHit .proc
           ;; cachedHitboxBottom]
           ;; Overlap occurs when: defender_right > cachedHitboxLeft_R and
           ;; defender_left < cachedHitboxRight_R
-          ;; and defender_bottom > hitboxTop and defender_top <
+          and defender_bottom > hitboxTop and defender_top <
           ;; hitboxBottom
           ;; Defender right edge <= hitbox left edge (no overlap)
-                    ;; if playerX[defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R then NoHit
+                    if playerX[defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R then NoHit
 
           ;; Defender left edge >= hitbox right edge (no overlap)
-                    ;; if playerX[defenderID] >= cachedHitboxRight_R then NoHit
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sec (duplicate)
-          ;; sbc cachedHitboxRight_R (duplicate)
-          ;; bcc skip_2543 (duplicate)
-          ;; jmp NoHit (duplicate)
+                    if playerX[defenderID] >= cachedHitboxRight_R then NoHit
+          lda defenderID
+          asl
+          tax
+          lda playerX,x
+          sec
+          sbc cachedHitboxRight_R
+          bcc skip_2543
+          jmp NoHit
 skip_2543:
 
           ;; Defender bottom edge <= hitbox top edge (no overlap)
-                    ;; if playerY[defenderID] + PlayerSpriteHeight <= cachedHitboxTop_R then NoHit
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
+                    if playerY[defenderID] + PlayerSpriteHeight <= cachedHitboxTop_R then NoHit
+          lda defenderID
+          asl
+          tax
+          lda playerY,x
           clc
           adc PlayerSpriteHeight
-          ;; sta temp6 (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc cachedHitboxTop_R (duplicate)
-          ;; bcc NoHit (duplicate)
-          ;; beq NoHit (duplicate)
-          ;; jmp skip_8068 (duplicate)
+          sta temp6
+          lda temp6
+          sec
+          sbc cachedHitboxTop_R
+          bcc NoHit
+          beq NoHit
+          jmp skip_8068
 NoHit:
 skip_8068:
 
           ;; Defender top edge >= hitbox bottom edge (no overlap)
-                    ;; if playerY[defenderID] >= cachedHitboxBottom_R then NoHit
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sec (duplicate)
-          ;; sbc cachedHitboxBottom_R (duplicate)
-          ;; bcc skip_5423 (duplicate)
-          ;; jmp NoHit (duplicate)
+                    if playerY[defenderID] >= cachedHitboxBottom_R then NoHit
+          lda defenderID
+          asl
+          tax
+          lda playerY,x
+          sec
+          sbc cachedHitboxBottom_R
+          bcc skip_5423
+          jmp NoHit
 skip_5423:
 
           ;; All bounds checked - defender is inside hitbox
-          ;; lda # 1 (duplicate)
-          ;; sta hit (duplicate)
+          lda # 1
+          sta hit
           rts
 
 .pend
 
-;; NoHit .proc (duplicate)
+NoHit .proc
           ;; Defender is outside hitbox bounds
           ;; Returns: Near (return thisbank) - called same-bank
           ;;
@@ -448,11 +448,11 @@ skip_5423:
           ;;
           ;; Called Routines: None
           ;; Constraints: Must be colocated with CheckAttackHit
-          ;; lda # 0 (duplicate)
-          ;; sta hit (duplicate)
-          ;; rts (duplicate)
+          lda # 0
+          sta hit
+          rts
 
-;; .pend (no matching .proc)
+.pend (no matching .proc)
 
 CalculateAttackHitbox .proc
 
@@ -475,30 +475,30 @@ CalculateAttackHitbox .proc
           ;; indexing
           ;; in on sta
 
-                    ;; let temp1 = playerAttackType_R[attackerID]         
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerAttackType_R,x (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_803 (duplicate)
-          ;; jmp MeleeHitbox (duplicate)
+                    let temp1 = playerAttackType_R[attackerID]         
+          lda attackerID
+          asl
+          tax
+          lda playerAttackType_R,x
+          sta temp1
+          lda temp1
+          cmp # 0
+          bne skip_803
+          jmp MeleeHitbox
 skip_803:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_4291 (duplicate)
-          ;; jmp ProjectileHitbox (duplicate)
+          lda temp1
+          cmp # 1
+          bne skip_4291
+          jmp ProjectileHitbox
 skip_4291:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_8159 (duplicate)
-          ;; jmp AreaHitbox (duplicate)
+          lda temp1
+          cmp # 2
+          bne skip_8159
+          jmp AreaHitbox
 skip_8159:
 
 
@@ -523,19 +523,19 @@ MeleeHitbox .proc
           ;; Constraints: Must be colocated with CalculateAttackHitbox,
           ;; FacingRight, FacingLeft
           ;; Extract facing from playerState bit 3: 1=right (goto FacingRight), 0=left (goto FacingLeft)
-                    ;; let temp2 = playerState[attackerID] & PlayerStateBitFacing         
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp2 (duplicate)
-                    ;; if temp2 then goto FacingRight
-          ;; lda temp2 (duplicate)
-          ;; beq skip_4137 (duplicate)
-          ;; jmp FacingRight (duplicate)
+                    let temp2 = playerState[attackerID] & PlayerStateBitFacing         
+          lda attackerID
+          asl
+          tax
+          lda playerState,x
+          sta temp2
+                    if temp2 then goto FacingRight
+          lda temp2
+          beq skip_4137
+          jmp FacingRight
 skip_4137:
 
-          ;; jmp FacingLeft (duplicate)
+          jmp FacingLeft
 
 .pend
 
@@ -558,31 +558,31 @@ FacingRight .proc
           ;; Attacker sprite: [playerX, playerX+16] × [playerY,
           ;; playerY+16]
           ;; Hitbox: [playerX+16, playerX+32] × [playerY, playerY+16]
-                    ;; let cachedHitboxLeft_W = playerX[attackerID] + PlayerSpriteWidth          lda attackerID          asl          tax          lda playerX,x          sta cachedHitboxLeft_W
-          ;; let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth + PlayerSpriteWidth
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta cachedHitboxRight_W (duplicate)
-          ;; let cachedHitboxTop_W = playerY[attackerID]
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta cachedHitboxTop_W (duplicate)
-                    ;; let cachedHitboxBottom_W = playerY[attackerID]
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta cachedHitboxBottom_W + PlayerSpriteHeight (duplicate)
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta cachedHitboxBottom_W (duplicate)
-          ;; rts (duplicate)
+                    let cachedHitboxLeft_W = playerX[attackerID] + PlayerSpriteWidth          lda attackerID          asl          tax          lda playerX,x          sta cachedHitboxLeft_W
+          let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth + PlayerSpriteWidth
+          lda attackerID
+          asl
+          tax
+          lda playerX,x
+          sta cachedHitboxRight_W
+          let cachedHitboxTop_W = playerY[attackerID]
+          lda attackerID
+          asl
+          tax
+          lda playerY,x
+          sta cachedHitboxTop_W
+                    let cachedHitboxBottom_W = playerY[attackerID]
+          lda attackerID
+          asl
+          tax
+          lda playerY,x
+          sta cachedHitboxBottom_W + PlayerSpriteHeight
+          lda attackerID
+          asl
+          tax
+          lda playerY,x
+          sta cachedHitboxBottom_W
+          rts
 
 .pend
 
@@ -605,31 +605,31 @@ FacingLeft .proc
           ;; Attacker sprite: [playerX, playerX+16] × [playerY,
           ;; playerY+16]
           ;; Hitbox: [playerX-16, playerX] × [playerY, playerY+16]
-                    ;; let cachedHitboxLeft_W = playerX[attackerID] - PlayerSpriteWidth          lda attackerID          asl          tax          lda playerX,x          sta cachedHitboxLeft_W
-          ;; let cachedHitboxRight_W = playerX[attackerID]
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta cachedHitboxRight_W (duplicate)
-          ;; let cachedHitboxTop_W = playerY[attackerID]
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta cachedHitboxTop_W (duplicate)
-                    ;; let cachedHitboxBottom_W = playerY[attackerID]
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta cachedHitboxBottom_W + PlayerSpriteHeight (duplicate)
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta cachedHitboxBottom_W (duplicate)
-          ;; jsr BS_return (duplicate)
+                    let cachedHitboxLeft_W = playerX[attackerID] - PlayerSpriteWidth          lda attackerID          asl          tax          lda playerX,x          sta cachedHitboxLeft_W
+          let cachedHitboxRight_W = playerX[attackerID]
+          lda attackerID
+          asl
+          tax
+          lda playerX,x
+          sta cachedHitboxRight_W
+          let cachedHitboxTop_W = playerY[attackerID]
+          lda attackerID
+          asl
+          tax
+          lda playerY,x
+          sta cachedHitboxTop_W
+                    let cachedHitboxBottom_W = playerY[attackerID]
+          lda attackerID
+          asl
+          tax
+          lda playerY,x
+          sta cachedHitboxBottom_W + PlayerSpriteHeight
+          lda attackerID
+          asl
+          tax
+          lda playerY,x
+          sta cachedHitboxBottom_W
+          jsr BS_return
 
 .pend
 
@@ -652,15 +652,15 @@ ProjectileHitbox .proc
           ;; Constraints: Must be colocated with CalculateAttackHitbox
           ;; Set invalid bounds that will never match any defender
           ;; (ensures CheckAttackHit always returns miss for projectiles)
-          ;; lda # 255 (duplicate)
-          ;; sta cachedHitboxLeft_W (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta cachedHitboxRight_W (duplicate)
-          ;; lda # 255 (duplicate)
-          ;; sta cachedHitboxTop_W (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta cachedHitboxBottom_W (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda # 255
+          sta cachedHitboxLeft_W
+          lda # 0
+          sta cachedHitboxRight_W
+          lda # 255
+          sta cachedHitboxTop_W
+          lda # 0
+          sta cachedHitboxBottom_W
+          jsr BS_return
 
 .pend
 
@@ -684,54 +684,54 @@ AreaHitbox .proc
           ;; Area radius: 24 pixels (1.5× sprite width) centered on attacker
           ;; Calculate attacker center (sprite midpoint)
           ;; Center × = playerX + half sprite width
-                    ;; let temp2 = playerX[attackerID] + 8         
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta temp2 (duplicate)
+                    let temp2 = playerX[attackerID] + 8         
+          lda attackerID
+          asl
+          tax
+          lda playerX,x
+          sta temp2
           ;; Left edge: center - radius
-          ;; ;; let cachedHitboxLeft_W = temp2 - 24          lda temp2          sec          sbc 24          sta cachedHitboxLeft_W
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 24 (duplicate)
-          ;; sta cachedHitboxLeft_W (duplicate)
+          ;; let cachedHitboxLeft_W = temp2 - 24          lda temp2          sec          sbc 24          sta cachedHitboxLeft_W
+          lda temp2
+          sec
+          sbc 24
+          sta cachedHitboxLeft_W
 
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 24 (duplicate)
-          ;; sta cachedHitboxLeft_W (duplicate)
+          lda temp2
+          sec
+          sbc 24
+          sta cachedHitboxLeft_W
 
           ;; Right edge: center + radius
-          ;; lda temp2 (duplicate)
-          ;; clc (duplicate)
-          ;; adc # 24 (duplicate)
-          ;; sta cachedHitboxRight_W (duplicate)
+          lda temp2
+          clc
+          adc # 24
+          sta cachedHitboxRight_W
           ;; Center Y = playerY + half sprite height
-                    ;; let temp2 = playerY[attackerID] + 8         
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp2 (duplicate)
+                    let temp2 = playerY[attackerID] + 8         
+          lda attackerID
+          asl
+          tax
+          lda playerY,x
+          sta temp2
           ;; Top edge: center - radius
-          ;; ;; let cachedHitboxTop_W = temp2 - 24          lda temp2          sec          sbc 24          sta cachedHitboxTop_W
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 24 (duplicate)
-          ;; sta cachedHitboxTop_W (duplicate)
+          ;; let cachedHitboxTop_W = temp2 - 24          lda temp2          sec          sbc 24          sta cachedHitboxTop_W
+          lda temp2
+          sec
+          sbc 24
+          sta cachedHitboxTop_W
 
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 24 (duplicate)
-          ;; sta cachedHitboxTop_W (duplicate)
+          lda temp2
+          sec
+          sbc 24
+          sta cachedHitboxTop_W
 
           ;; Bottom edge: center + radius
-          ;; lda temp2 (duplicate)
-          ;; clc (duplicate)
-          ;; adc # 24 (duplicate)
-          ;; sta cachedHitboxBottom_W (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda temp2
+          clc
+          adc # 24
+          sta cachedHitboxBottom_W
+          jsr BS_return
 
 .pend
 
@@ -765,65 +765,65 @@ ProcessAttackerAttacks .proc
           ;; recalculating for each defender. Skips attacker as
           ;; defender and dead players
           ;; Issue #1148: Skip ranged attackers (handled by missile system)
-                    ;; let temp1 = playerAttackType_R[attackerID]         
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerAttackType_R,x (duplicate)
-          ;; sta temp1 (duplicate)
+                    let temp1 = playerAttackType_R[attackerID]         
+          lda attackerID
+          asl
+          tax
+          lda playerAttackType_R,x
+          sta temp1
           ;; Cache hitbox for this attacker (calculated once, used for
-          ;; rts (duplicate)
+          rts
 
           ;; all
           ;; defenders)
-          ;; jsr CalculateAttackHitbox (duplicate)
+          jsr CalculateAttackHitbox
 
           ;; Hitbox values are already written into cachedHitbox*_W via aliasing
 
           ;; Attack each defender
           ;; TODO: for defenderID = 0 to 3
           ;; Skip if defender is attacker
-          ;; lda defenderID (duplicate)
-          ;; cmp attackerID (duplicate)
-          ;; bne skip_6671 (duplicate)
+          lda defenderID
+          cmp attackerID
+          bne skip_6671
           ;; TODO: NextDefender
 skip_6671:
 
 
           ;; Skip if defender is dead
 
-          ;; ;; if playerHealth[defenderID] <= 0 then NextDefender
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; beq skip_4738 (duplicate)
+          ;; if playerHealth[defenderID] <= 0 then NextDefender
+          lda defenderID
+          asl
+          tax
+          lda playerHealth,x
+          beq skip_4738
           bmi skip_4738
-          ;; jmp NextDefender (duplicate)
+          jmp NextDefender
 skip_4738:
 
-          ;; lda defenderID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; beq skip_7141 (duplicate)
-          ;; bmi skip_7141 (duplicate)
-          ;; jmp NextDefender (duplicate)
+          lda defenderID
+          asl
+          tax
+          lda playerHealth,x
+          beq skip_7141
+          bmi skip_7141
+          jmp NextDefender
 skip_7141:
 
 
 
           ;; Check if attack hits (uses cached hitbox)
-          ;; jsr CheckAttackHit (duplicate)
+          jsr CheckAttackHit
 
-          ;; jsr ApplyDamage (duplicate)
+          jsr ApplyDamage
 
 NextDefender
           ;; Returns: Near (return thisbank) - called same-bank
 .pend
 
 next_label_1_L825:.proc
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -849,45 +849,45 @@ ProcessAllAttacks .proc
           ;; via next). Skips dead attackers
           ;; TODO: for attackerID = 0 to 3
           ;; Skip if attacker is dead
-          ;; ;; if playerHealth[attackerID] <= 0 then NextAttacker
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; beq skip_8694 (duplicate)
-          ;; bmi skip_8694 (duplicate)
-          ;; jmp NextAttacker (duplicate)
+          ;; if playerHealth[attackerID] <= 0 then NextAttacker
+          lda attackerID
+          asl
+          tax
+          lda playerHealth,x
+          beq skip_8694
+          bmi skip_8694
+          jmp NextAttacker
 skip_8694:
 
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; beq skip_4688 (duplicate)
-          ;; bmi skip_4688 (duplicate)
-          ;; jmp NextAttacker (duplicate)
+          lda attackerID
+          asl
+          tax
+          lda playerHealth,x
+          beq skip_4688
+          bmi skip_4688
+          jmp NextAttacker
 skip_4688:
 
 
 
           ;; Issue #1147: Only evaluate live attacks (windup-through-recovery window)
-                    ;; let temp1 = playerState[attackerID] & MaskPlayerStateAnimation         
-          ;; lda attackerID (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp1 (duplicate)
-                    ;; if temp1 < ActionAttackWindupShifted then NextAttacker
+                    let temp1 = playerState[attackerID] & MaskPlayerStateAnimation         
+          lda attackerID
+          asl
+          tax
+          lda playerState,x
+          sta temp1
+                    if temp1 < ActionAttackWindupShifted then NextAttacker
 
-                    ;; if temp1 > ActionAttackRecoveryShifted then NextAttacker
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc ActionAttackRecoveryShifted (duplicate)
-          ;; bcc skip_2425 (duplicate)
-          ;; beq skip_2425 (duplicate)
-          ;; jmp NextAttacker (duplicate)
+                    if temp1 > ActionAttackRecoveryShifted then NextAttacker
+          lda temp1
+          sec
+          sbc ActionAttackRecoveryShifted
+          bcc skip_2425
+          beq skip_2425
+          jmp NextAttacker
 skip_2425:
-          ;; jsr ProcessAttackerAttacks (duplicate)
+          jsr ProcessAttackerAttacks
 
 .pend
 
@@ -896,8 +896,8 @@ NextAttacker .proc
           ;; Returns: Near (return thisbank) - called same-bank
 .pend
 
-;; next_label_2 .proc (duplicate)
-          ;; jsr BS_return (duplicate)
+next_label_2 .proc
+          jsr BS_return
           ;; Input: None (label only)
           ;;
           ;; Output: None (label only)
@@ -908,14 +908,14 @@ NextAttacker .proc
           ;;
           ;; Constraints: Internal label for ProcessAllAttacks FOR loop
 
-;; .pend (no matching .proc)
+.pend (no matching .proc)
 
 ;; CombatShowDamageIndicator .proc (no matching .pend)
           ;; Damage indicator system (handled inline)
           ;; Returns: Far (return otherbank)
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-;; .pend (extra - no matching .proc)
+.pend (extra - no matching .proc)
 
 ;; PlayDamageSound .proc (no matching .pend)
           ;; Damage sound effect handler
@@ -941,23 +941,23 @@ NextAttacker .proc
           ;; Called Routines: PlaySoundEffect (bank15) - plays sound
           ;; effect
           ;; Constraints: None
-          ;; lda SoundAttackHit (duplicate)
-          ;; sta temp1 (duplicate)
+          lda SoundAttackHit
+          sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlaySoundEffect-1)
+          pha
+          lda # <(PlaySoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-;; .pend (extra - no matching .proc)
+.pend (extra - no matching .proc)
 

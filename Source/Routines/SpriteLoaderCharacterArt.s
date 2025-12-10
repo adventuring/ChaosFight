@@ -73,7 +73,7 @@ LocateCharacterArt .proc
 
           ;; - These routines access character frame maps and sprite
 
-          ;; data in their banks
+          data in their banks
 
           ;;
           ;; Constraints: Must be colocated with Bank2Dispatch,
@@ -95,8 +95,8 @@ LocateCharacterArt .proc
           ;; CRITICAL: Guard against calling bank 2 when no characters on screen
           ;; Handle special sprite cases first (these are safe and don’t need bank dispatch)
           jsr BS_return
-          ;; jsr BS_return (duplicate)
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
+          jsr BS_return
           ;; Save original character index in temp6
 
           lda temp1
@@ -112,8 +112,8 @@ LocateCharacterArt .proc
 
           ;; 24-31=Bank5
 
-          ;; ;; if temp1 < 8 then goto Bank2Dispatch          lda temp1          cmp 8          bcs .skip_8740          jmp
-          ;; lda temp1 (duplicate)
+          ;; if temp1 < 8 then goto Bank2Dispatch          lda temp1          cmp 8          bcs .skip_8740          jmp
+          lda temp1
           cmp # 8
           bcs skip_8406
           goto_label:
@@ -121,45 +121,45 @@ LocateCharacterArt .proc
           jmp goto_label
 skip_8406:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 8 (duplicate)
-          ;; bcs skip_2471 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp1
+          cmp # 8
+          bcs skip_2471
+          jmp goto_label
 skip_2471:
 
           
 
-          ;; ;; if temp1 < 16 then goto Bank3Dispatch          lda temp1          cmp 16          bcs .skip_4567          jmp
-          ;; lda temp1 (duplicate)
-          ;; cmp # 16 (duplicate)
-          ;; bcs skip_702 (duplicate)
-          ;; jmp goto_label (duplicate)
+          ;; if temp1 < 16 then goto Bank3Dispatch          lda temp1          cmp 16          bcs .skip_4567          jmp
+          lda temp1
+          cmp # 16
+          bcs skip_702
+          jmp goto_label
 skip_702:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 16 (duplicate)
-          ;; bcs skip_3109 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp1
+          cmp # 16
+          bcs skip_3109
+          jmp goto_label
 skip_3109:
 
           
 
-          ;; ;; if temp1 < 24 then goto Bank4Dispatch          lda temp1          cmp 24          bcs .skip_5602          jmp
-          ;; lda temp1 (duplicate)
-          ;; cmp # 24 (duplicate)
-          ;; bcs skip_921 (duplicate)
-          ;; jmp goto_label (duplicate)
+          ;; if temp1 < 24 then goto Bank4Dispatch          lda temp1          cmp 24          bcs .skip_5602          jmp
+          lda temp1
+          cmp # 24
+          bcs skip_921
+          jmp goto_label
 skip_921:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 24 (duplicate)
-          ;; bcs skip_9612 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp1
+          cmp # 24
+          bcs skip_9612
+          jmp goto_label
 skip_9612:
 
           
 
-          ;; jmp Bank5Dispatch (duplicate)
+          jmp Bank5Dispatch
 
 
 
@@ -197,8 +197,8 @@ Bank2Dispatch
 
           ;; Bank-relative index is same as character index (0-7)
 
-          ;; lda temp1 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp1
+          sta temp6
 
           ;; temp6 = bank-relative index (0-7)
 
@@ -206,28 +206,28 @@ Bank2Dispatch
 
           ;; Copy player number to temp5 for bank routine
 
-          ;; lda temp4 (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp4
+          sta temp5
 
           ;; Bank routine expects: temp6=char, temp2=frame,
 
           ;; temp3=action, temp5=player
 
           ;; Cross-bank call to SetPlayerCharacterArtBank2 in bank 2
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerCharacterArtBank2-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerCharacterArtBank2-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerCharacterArtBank2-1)
+          pha
+          lda # <(SetPlayerCharacterArtBank2-1)
+          pha
                     ldx # 1
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -265,16 +265,16 @@ Bank3Dispatch
 
           ;; Calculate bank-relative index: character index - 8
 
-          ;; ;; let temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
-          ;; lda temp1 (duplicate)
+          ;; let temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
+          lda temp1
           sec
           sbc 8
-          ;; sta temp6 (duplicate)
+          sta temp6
 
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 8 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp1
+          sec
+          sbc 8
+          sta temp6
 
 
           ;; temp6 = bank-relative index (0-7)
@@ -283,28 +283,28 @@ Bank3Dispatch
 
           ;; Copy player number to temp5 for bank routine
 
-          ;; lda temp4 (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp4
+          sta temp5
 
           ;; Bank routine expects: temp6=char, temp2=frame,
 
           ;; temp3=action, temp5=player
 
           ;; Cross-bank call to SetPlayerCharacterArtBank3 in bank 3
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerCharacterArtBank3-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerCharacterArtBank3-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 2 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerCharacterArtBank3-1)
+          pha
+          lda # <(SetPlayerCharacterArtBank3-1)
+          pha
+                    ldx # 2
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -342,16 +342,16 @@ Bank4Dispatch
 
           ;; Calculate bank-relative index: character index - 16
 
-          ;; ;; let temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 16 (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
+          lda temp1
+          sec
+          sbc 16
+          sta temp6
 
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 16 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp1
+          sec
+          sbc 16
+          sta temp6
 
 
           ;; temp6 = bank-relative index (0-7)
@@ -360,28 +360,28 @@ Bank4Dispatch
 
           ;; Copy player number to temp5 for bank routine
 
-          ;; lda temp4 (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp4
+          sta temp5
 
           ;; Bank routine expects: temp6=char, temp2=frame,
 
           ;; temp3=action, temp5=player
 
           ;; Cross-bank call to SetPlayerCharacterArtBank4 in bank 4
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerCharacterArtBank4-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerCharacterArtBank4-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 3 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerCharacterArtBank4-1)
+          pha
+          lda # <(SetPlayerCharacterArtBank4-1)
+          pha
+                    ldx # 3
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -419,16 +419,16 @@ Bank5Dispatch
 
           ;; Calculate bank-relative index: character index - 24
 
-          ;; ;; let temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 24 (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
+          lda temp1
+          sec
+          sbc 24
+          sta temp6
 
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 24 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp1
+          sec
+          sbc 24
+          sta temp6
 
 
           ;; temp6 = bank-relative index (0-7)
@@ -437,28 +437,28 @@ Bank5Dispatch
 
           ;; Copy player number to temp5 for bank routine
 
-          ;; lda temp4 (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp4
+          sta temp5
 
           ;; Bank routine expects: temp6=char, temp2=frame,
 
           ;; temp3=action, temp5=player
 
           ;; Cross-bank call to SetPlayerCharacterArtBank5 in bank 5
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerCharacterArtBank5-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerCharacterArtBank5-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 4 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerCharacterArtBank5-1)
+          pha
+          lda # <(SetPlayerCharacterArtBank5-1)
+          pha
+                    ldx # 4
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 

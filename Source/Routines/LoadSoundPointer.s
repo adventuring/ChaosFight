@@ -44,19 +44,19 @@ LoadSoundPointer .proc
 skip_3853:
 
 
-                    ;; let var41 = SoundPointersH[temp1]          lda temp1          asl          tax          lda SoundPointersH,x          sta var41
+                    let var41 = SoundPointersH[temp1]          lda temp1          asl          tax          lda SoundPointersH,x          sta var41
 
-                    ;; let var42 = SoundPointersL[temp1]
-          ;; lda temp1 (duplicate)
+                    let var42 = SoundPointersL[temp1]
+          lda temp1
           asl
           tax
-          ;; lda SoundPointersL,x (duplicate)
+          lda SoundPointersL,x
           sta soundEffectPointerH         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda SoundPointersL,x (duplicate)
-          ;; sta var42 (duplicate)
+          lda temp1
+          asl
+          tax
+          lda SoundPointersL,x
+          sta var42
 
           jmp LoadSoundPointerReturn
 
@@ -67,13 +67,13 @@ LoadSoundPointerOutOfRange .proc
           ;; Set pointer to 0 (var41.var42 = 0.0)
           ;; Returns: Far (return otherbank)
 
-          ;; lda # 0 (duplicate)
-          ;; sta var41 (duplicate)
+          lda # 0
+          sta var41
 
           ;; Out of range - mark sound pointer inactive
 
-          ;; lda # 0 (duplicate)
-          ;; sta var42 (duplicate)
+          lda # 0
+          sta var42
 
 LoadSoundPointerReturn
 

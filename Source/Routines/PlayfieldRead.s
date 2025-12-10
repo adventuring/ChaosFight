@@ -20,7 +20,7 @@ PlayfieldRead .proc
           ;;
           ;; Optimized: Inlined setuppointers calculation - column/8 + row*2
           ;; No need to save/restore temp2 since we do not use it
-;; PlayfieldRead (duplicate)
+PlayfieldRead
 setuppointers:
 
 
@@ -43,9 +43,9 @@ Y
           ; A = column
           lsr
           ; /2
-          ;; lsr (duplicate)
+          lsr
           ; /4
-          ;; lsr (duplicate)
+          lsr
           ; /8 (column byte offset)
           sta temp1
           ; Save column byte offset
@@ -62,7 +62,7 @@ Y
           ; Y = final byte offset in playfield
 
           ; X = bit position within byte (column mod 8)
-          ;; txa (duplicate)
+          txa
           ; A = original column
           and # 7
           ; Mask to get bit position (0-7)
@@ -71,17 +71,17 @@ Y
 
           ; Read playfield pixel
           lda BitMask,x     ; Get bit mask for this bit position
-          ;; and playfield,y  ; and with playfield byte (duplicate)
+          and playfield,y  ; and with playfield byte
           eor BitMask,x     ; XOR to check if bit was set
           beq ReadZero       ; If zero, bit was clear
-          ;; lda #$80 (duplicate)
+          lda #$80
           ; bit was set
 ReadZero
-          ;; sta temp1 (duplicate)
+          sta temp1
           ; Store result
           jsr BS_return
 
-          ;; bit mask lookup table for playfield column bits
+          bit mask lookup table for playfield column bits
           ;; TODO: ifndef BitMask
           ;; TODO: BitMask       BYTE 1,2,4,8,$10,$20,$40,$80
 

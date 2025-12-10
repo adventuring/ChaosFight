@@ -8,7 +8,7 @@ ProcessJumpInput .proc
           ;; Returns: Far (return otherbank)
           ;; Shared Jump Input Handler
           ;; Handles jump input from enhanced buttons (Genesis Button C, Joy2B+ Button II)
-          ;; UP = Button C = Button II (no exceptions)
+          UP = Button C = Button II (no exceptions)
           ;;
           ;; INPUT: temp1 = player index (0-3), temp2 = cached animation sta
 
@@ -28,24 +28,24 @@ ProcessJumpInput .proc
           ;; Cross-bank call to CheckEnhancedJumpButton in bank 10
           lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(CheckEnhancedJumpButton-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(CheckEnhancedJumpButton-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(CheckEnhancedJumpButton-1)
+          pha
+          lda # <(CheckEnhancedJumpButton-1)
+          pha
                     ldx # 9
           jmp BS_jsr
 return_point:
 
 
-          ;; If enhanced button not pressed, return (no action)
+          If enhanced button not pressed, return (no action)
           jsr BS_return
 
           ;; Execute character-specific UP action (UP = Button C = Button II)
-          ;; jsr ProcessUpAction (duplicate)
+          jsr ProcessUpAction
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

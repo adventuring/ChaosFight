@@ -31,53 +31,53 @@ BudgetedHealthBarUpdate .proc
 skip_6563:
 
 
-          ;; lda framePhase (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_1623 (duplicate)
-          ;; jmp BudgetedHealthBarPlayer1 (duplicate)
+          lda framePhase
+          cmp # 1
+          bne skip_1623
+          jmp BudgetedHealthBarPlayer1
 skip_1623:
 
 
-          ;; lda framePhase (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_6642 (duplicate)
+          lda framePhase
+          cmp # 2
+          bne skip_6642
           ;; TODO: CheckPlayer2HealthUpdate
 skip_6642:
 
 
-          ;; jmp CheckPlayer3HealthUpdate (duplicate)
+          jmp CheckPlayer3HealthUpdate
 
 .pend
 
 BudgetedHealthBarPlayer0 .proc
           ;; Local trampoline so branch stays in range; tail-calls target
           ;; Update Player 0 health bar (inline from UpdatePlayer1HealthBar pattern)
-                    ;; let temp6 = playerHealth[0]         
-          ;; lda 0 (duplicate)
+                    let temp6 = playerHealth[0]         
+          lda 0
           asl
           tax
-          ;; lda playerHealth,x (duplicate)
+          lda playerHealth,x
           sta temp6
-            ;; lda temp6 (duplicate)
-            ;; sta temp6 (duplicate)
-            ;; asl (duplicate)
-            ;; asl (duplicate)
+            lda temp6
+            sta temp6
+            asl
+            asl
             clc
             adc temp6
-            ;; asl (duplicate)
-            ;; asl (duplicate)
-            ;; clc (duplicate)
-            ;; adc temp6 (duplicate)
+            asl
+            asl
+            clc
+            adc temp6
             lsr
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; sta temp6 (duplicate)
-                    ;; if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta temp6
+                    if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
           rts
 
 .pend
@@ -85,33 +85,33 @@ BudgetedHealthBarPlayer0 .proc
 BudgetedHealthBarPlayer1 .proc
           ;; Local trampoline so branch stays in range; tail-calls target
           ;; Update Player 1 health bar (inline from UpdatePlayer1HealthBar pattern)
-                    ;; let temp6 = playerHealth[1]         
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; sta temp6 (duplicate)
-            ;; lda temp6 (duplicate)
-            ;; sta temp6 (duplicate)
-            ;; asl (duplicate)
-            ;; asl (duplicate)
-            ;; clc (duplicate)
-            ;; adc temp6 (duplicate)
-            ;; asl (duplicate)
-            ;; asl (duplicate)
-            ;; clc (duplicate)
-            ;; adc temp6 (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; sta temp6 (duplicate)
-                    ;; if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
-          ;; rts (duplicate)
+                    let temp6 = playerHealth[1]         
+          lda 1
+          asl
+          tax
+          lda playerHealth,x
+          sta temp6
+            lda temp6
+            sta temp6
+            asl
+            asl
+            clc
+            adc temp6
+            asl
+            asl
+            clc
+            adc temp6
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta temp6
+                    if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
+          rts
 
 .pend
 
@@ -126,15 +126,15 @@ CheckPlayer2HealthUpdate .proc
           ;;
           ;; Called Routines: (inlined UpdateHealthBarPlayer2)
           ;; Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
-          ;; lda controllerStatus (duplicate)
+          lda controllerStatus
           and SetQuadtariDetected
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_5407 (duplicate)
+          cmp # 0
+          bne skip_5407
 skip_5407:
 
 
           ;; Update Player 3 health bar (inlined from UpdateHealthBarPlayer2)
-                    ;; if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
+                    if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
 
           ;; Input: playerHealth[] (global array) = player health values
           ;; HealthBarMaxLength (constant) = maximum health bar length
@@ -142,27 +142,27 @@ skip_5407:
           ;; Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           ;; Use inline assembly for division by 12 (multiply by 21 ÷ 256 ≈ 1 ÷ 12)
           ;; Algorithm: temp6 = (playerHealth[2] × 21) >> 8
-          ;; lda playerHealth+2 (duplicate)
-            ;; sta temp6 (duplicate)
-            ;; asl (duplicate)
-            ;; asl (duplicate)
-            ;; clc (duplicate)
-            ;; adc temp6 (duplicate)
-            ;; asl (duplicate)
-            ;; asl (duplicate)
-            ;; clc (duplicate)
-            ;; adc temp6 (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; sta temp6 (duplicate)
-                    ;; if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
-          ;; rts (duplicate)
+          lda playerHealth+2
+            sta temp6
+            asl
+            asl
+            clc
+            adc temp6
+            asl
+            asl
+            clc
+            adc temp6
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta temp6
+                    if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
+          rts
 
 DonePlayer2HealthUpdate
           ;; Player 2 health update check complete (label only)
@@ -175,7 +175,7 @@ DonePlayer2HealthUpdate
           ;;
           ;; Called Routines: None
           ;; Constraints: Must be colocated with BudgetedHealthBarUpdate
-          ;; jmp DonePlayer3HealthUpdate (duplicate)
+          jmp DonePlayer3HealthUpdate
 
 .pend
 
@@ -190,15 +190,15 @@ CheckPlayer3HealthUpdate .proc
           ;;
           ;; Called Routines: (inlined UpdateHealthBarPlayer3)
           ;; Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
-          ;; lda controllerStatus (duplicate)
-          ;; and SetQuadtariDetected (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_9191 (duplicate)
+          lda controllerStatus
+          and SetQuadtariDetected
+          cmp # 0
+          bne skip_9191
 skip_9191:
 
 
           ;; Update Player 4 health bar (inlined from UpdateHealthBarPlayer3)
-                    ;; if playerCharacter[3] = NoCharacter then DonePlayer3HealthUpdate
+                    if playerCharacter[3] = NoCharacter then DonePlayer3HealthUpdate
 
           ;; Input: playerHealth[] (global array) = player health values
           ;; HealthBarMaxLength (constant) = maximum health bar length
@@ -206,35 +206,35 @@ skip_9191:
           ;; Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           ;; Use inline assembly for division by 12 (multiply by 21 ÷ 256 ≈ 1 ÷ 12)
           ;; Algorithm: temp6 = (playerHealth[3] × 21) >> 8
-          ;; lda playerHealth+3 (duplicate)
-            ;; sta temp6 (duplicate)
-            ;; asl (duplicate)
-            ;; asl (duplicate)
-            ;; clc (duplicate)
-            ;; adc temp6 (duplicate)
-            ;; asl (duplicate)
-            ;; asl (duplicate)
-            ;; clc (duplicate)
-            ;; adc temp6 (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; sta temp6 (duplicate)
-                    ;; if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
-          ;; lda temp6 (duplicate)
+          lda playerHealth+3
+            sta temp6
+            asl
+            asl
+            clc
+            adc temp6
+            asl
+            asl
+            clc
+            adc temp6
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta temp6
+                    if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
+          lda temp6
           sec
           sbc HealthBarMaxLength
           bcc skip_1486
           beq skip_1486
-          ;; lda HealthBarMaxLength (duplicate)
-          ;; sta temp6 (duplicate)
+          lda HealthBarMaxLength
+          sta temp6
 skip_1486:
-          ;; rts (duplicate)
+          rts
 
 DonePlayer3HealthUpdate
           ;; Player 3 health update check complete (label only)

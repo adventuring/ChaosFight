@@ -4,11 +4,11 @@
 CheckCollisionP1vsP2:
           ;; Check collision between player 1 and player 2
           ;; Returns: Near (return thisbank)
-          ;; lda # 0 (duplicate)
+          lda # 0
           sta temp3
-          ;; lda # 1 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; jsr CheckCollisionPair (duplicate)
+          lda # 1
+          sta temp4
+          jsr CheckCollisionPair
 
           rts
 
@@ -25,7 +25,7 @@ BudgetedCollisionCheck
           ;; Pair 4: P2 vs P4
           ;; Pair 5: P3 vs P4
           ;;
-          ;; SCHEDULE:
+          SCHEDULE:
           ;; Frame 0: Pairs 0, 1 (P1 vs P2, P1 vs P3)
           ;; Frame 1: Pairs 2, 3 (P1 vs P4, P2 vs P3)
           ;; Frame 2: Pairs 4, 5 (P2 vs P4, P3 vs P4)
@@ -34,7 +34,7 @@ BudgetedCollisionCheck
           jsr CheckCollisionP1vsP2
 
           ;; Skip other checks if not Quadtari
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Check additional pairs based on frame phase
           lda framePhase
@@ -44,183 +44,183 @@ BudgetedCollisionCheck
 BPC_CheckPhase0:
 
 
-          ;; lda framePhase (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne BPC_CheckPhase1 (duplicate)
+          lda framePhase
+          cmp # 1
+          bne BPC_CheckPhase1
           ;; TODO: BPC_Phase1
 BPC_CheckPhase1:
 
 
-          ;; lda framePhase (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne BPC_CheckPhase2 (duplicate)
+          lda framePhase
+          cmp # 2
+          bne BPC_CheckPhase2
           ;; TODO: BPC_Phase2
 BPC_CheckPhase2:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 BPC_Phase0 .proc
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr CheckCollisionP1vsP3 (duplicate)
+          jsr CheckCollisionP1vsP3
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
 BPC_Phase1 .proc
-          ;; jsr CheckCollisionP1vsP4 (duplicate)
+          jsr CheckCollisionP1vsP4
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr CheckCollisionP2vsP3 (duplicate)
+          jsr CheckCollisionP2vsP3
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
 BPC_Phase2 .proc
-          ;; jsr CheckCollisionP2vsP4 (duplicate)
+          jsr CheckCollisionP2vsP4
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr CheckCollisionP3vsP4 (duplicate)
+          jsr CheckCollisionP3vsP4
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 CheckCollisionPair
-;; CheckCollisionPair (duplicate)
+CheckCollisionPair
           ;; Input: temp3 = player 1 index, temp4 = player 2 index
           ;; Output: separates players if collision detected
-                    ;; if playerX[temp3] >= playerX[temp4] then BPC_CalcDiff
+                    if playerX[temp3] >= playerX[temp4] then BPC_CalcDiff
 
-                    ;; let temp2 = playerX[temp4] - playerX[temp3]          lda temp4          asl          tax          lda playerX,x          sta temp2
+                    let temp2 = playerX[temp4] - playerX[temp3]          lda temp4          asl          tax          lda playerX,x          sta temp2
           jmp BPC_CheckSep
 
 BPC_CalcDiff
-                    ;; let temp2 = playerX[temp3]
-          ;; lda temp3 (duplicate)
+                    let temp2 = playerX[temp3]
+          lda temp3
           asl
           tax
-          ;; lda playerX,x (duplicate)
-          ;; sta temp2 - playerX[temp4] (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta temp2 (duplicate)
+          lda playerX,x
+          sta temp2 - playerX[temp4]
+          lda temp3
+          asl
+          tax
+          lda playerX,x
+          sta temp2
 
 .pend
 
 BPC_CheckSep .proc
-          ;; rts (duplicate)
+          rts
 
-                    ;; if playerX[temp3] < playerX[temp4] then BPC_SepLeft
+                    if playerX[temp3] < playerX[temp4] then BPC_SepLeft
 
-          ;; ;; let playerX[temp3] = playerX[temp3] + 1
-          ;; lda temp3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
+          ;; let playerX[temp3] = playerX[temp3] + 1
+          lda temp3
+          asl
+          tax
           inc playerX,x
 
-          ;; lda temp3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; inc playerX,x (duplicate)
+          lda temp3
+          asl
+          tax
+          inc playerX,x
 
-          ;; ;; let playerX[temp4] = playerX[temp4] - 1
-          ;; lda temp4 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
+          ;; let playerX[temp4] = playerX[temp4] - 1
+          lda temp4
+          asl
+          tax
           dec playerX,x
 
-          ;; lda temp4 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; dec playerX,x (duplicate)
+          lda temp4
+          asl
+          tax
+          dec playerX,x
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
 BPC_SepLeft .proc
-          ;; ;; let playerX[temp3] = playerX[temp3] - 1
-          ;; lda temp3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; dec playerX,x (duplicate)
+          ;; let playerX[temp3] = playerX[temp3] - 1
+          lda temp3
+          asl
+          tax
+          dec playerX,x
 
-          ;; lda temp3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; dec playerX,x (duplicate)
+          lda temp3
+          asl
+          tax
+          dec playerX,x
 
-          ;; ;; let playerX[temp4] = playerX[temp4] + 1
-          ;; lda temp4 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; inc playerX,x (duplicate)
+          ;; let playerX[temp4] = playerX[temp4] + 1
+          lda temp4
+          asl
+          tax
+          inc playerX,x
 
-          ;; lda temp4 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; inc playerX,x (duplicate)
+          lda temp4
+          asl
+          tax
+          inc playerX,x
 
-          ;; rts (duplicate)
+          rts
 
 CheckCollisionP1vsP3
-;; CheckCollisionP1vsP3 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda # 2 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; jsr CheckCollisionPair (duplicate)
+CheckCollisionP1vsP3
+          lda # 0
+          sta temp3
+          lda # 2
+          sta temp4
+          jsr CheckCollisionPair
 
-          ;; rts (duplicate)
+          rts
 
 CheckCollisionP1vsP4
-;; CheckCollisionP1vsP4 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda # 3 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; jsr CheckCollisionPair (duplicate)
+CheckCollisionP1vsP4
+          lda # 0
+          sta temp3
+          lda # 3
+          sta temp4
+          jsr CheckCollisionPair
 
-          ;; rts (duplicate)
+          rts
 
 CheckCollisionP2vsP3
-;; CheckCollisionP2vsP3 (duplicate)
-          ;; lda # 1 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda # 2 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; jsr CheckCollisionPair (duplicate)
+CheckCollisionP2vsP3
+          lda # 1
+          sta temp3
+          lda # 2
+          sta temp4
+          jsr CheckCollisionPair
 
-          ;; rts (duplicate)
+          rts
 
 CheckCollisionP2vsP4
-;; CheckCollisionP2vsP4 (duplicate)
-          ;; lda # 1 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda # 3 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; jsr CheckCollisionPair (duplicate)
+CheckCollisionP2vsP4
+          lda # 1
+          sta temp3
+          lda # 3
+          sta temp4
+          jsr CheckCollisionPair
 
-          ;; rts (duplicate)
+          rts
 
 CheckCollisionP3vsP4
-;; CheckCollisionP3vsP4 (duplicate)
-          ;; lda # 2 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda # 3 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; jsr CheckCollisionPair (duplicate)
+CheckCollisionP3vsP4
+          lda # 2
+          sta temp3
+          lda # 3
+          sta temp4
+          jsr CheckCollisionPair
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 

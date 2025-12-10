@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 ProcessUpAction
-;; ProcessUpAction (duplicate)
+ProcessUpAction
           ;; Shared UP Action Handler
           ;; Executes character-specific UP behavior (UP = Button C = Button II, no exceptions)
           ;;
@@ -32,49 +32,49 @@ ProcessUpAction
           ;; TODO: Implement Shamone <-> MethHound form switching
 
           ;; Robo Tito: Stretch (ascend toward ceiling; auto-latch on contact)
-                    ;; if playerCharacter[temp1] = CharacterRoboTito then goto PUA_RoboTitoAscend
+                    if playerCharacter[temp1] = CharacterRoboTito then goto PUA_RoboTitoAscend
 
           ;; Bernie: Drop (fall through thin floors)
-                    ;; if playerCharacter[temp1] = CharacterBernie then goto PUA_BernieFallThrough
+                    if playerCharacter[temp1] = CharacterBernie then goto PUA_BernieFallThrough
           lda temp1
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
+          lda playerCharacter,x
           cmp CharacterBernie
           bne skip_7306
           jmp PUA_BernieFallThrough
 skip_7306:
 
           ;; Harpy: Flap (fly)
-                    ;; if playerCharacter[temp1] = CharacterHarpy then goto PUA_HarpyFlap
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp CharacterHarpy (duplicate)
-          ;; bne skip_2587 (duplicate)
-          ;; jmp PUA_HarpyFlap (duplicate)
+                    if playerCharacter[temp1] = CharacterHarpy then goto PUA_HarpyFlap
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp CharacterHarpy
+          bne skip_2587
+          jmp PUA_HarpyFlap
 skip_2587:
 
           ;; For all other characters, UP is jump
           ;; Check Zoe Ryen for double-jump capability
-                    ;; if playerCharacter[temp1] = CharacterZoeRyen then goto PUA_ZoeJumpCheck
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp CharacterZoeRyen (duplicate)
-          ;; bne skip_8150 (duplicate)
-          ;; jmp PUA_ZoeJumpCheck (duplicate)
+                    if playerCharacter[temp1] = CharacterZoeRyen then goto PUA_ZoeJumpCheck
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp CharacterZoeRyen
+          bne skip_8150
+          jmp PUA_ZoeJumpCheck
 skip_8150:
 
           ;; Standard jump - block during attack animations (states 13-15)
           ;; Tail call to DispatchCharacterJump - it returns directly to our caller
-                    ;; let temp4 = playerCharacter[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
+                    let temp4 = playerCharacter[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
           sta temp4
           jmp DispatchCharacterJump
 
@@ -82,198 +82,198 @@ skip_8150:
 PUA_BernieFallThrough .proc
           ;; Bernie UP handled in BernieJump routine (fall through 1-row floors)
           ;; CRITICAL: Must use gosub/return, not goto, because BernieJump returns otherbank
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 0
+          sta temp3
           ;; Cross-bank call to BernieJump in bank 12
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(BernieJump-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(BernieJump-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(BernieJump-1)
+          pha
+          lda # <(BernieJump-1)
+          pha
                     ldx # 11
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
 PUA_HarpyFlap .proc
           ;; Harpy UP handled in HarpyJump routine (flap to fly)
           ;; CRITICAL: Must use gosub/return, not goto, because HarpyJump returns otherbank
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 0
+          sta temp3
           ;; Cross-bank call to HarpyJump in bank 12
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(HarpyJump-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(HarpyJump-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 11 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(HarpyJump-1)
+          pha
+          lda # <(HarpyJump-1)
+          pha
+                    ldx # 11
+          jmp BS_jsr
+return_point:
 
-          ;; rts (duplicate)
+          rts
 
 PUA_RoboTitoAscend
           ;; Ascend toward ceiling
-                    ;; let temp6 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp6
-                    ;; let temp6 = CharacterMovementSpeed[temp6]
-          ;; lda temp6 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMovementSpeed,x (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMovementSpeed,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+                    let temp6 = CharacterMovementSpeed[temp6]
+          lda temp6
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta temp6
+          lda temp6
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta temp6
           ;; Compute playfield column
-                    ;; let playerY[temp1] = playerY[temp1] - temp6
-                    ;; let temp2 = playerX[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
-          ;; lda temp2 (duplicate)
+                    let playerY[temp1] = playerY[temp1] - temp6
+                    let temp2 = playerX[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          lda temp2
           sec
           sbc ScreenInsetX
-          ;; sta temp2 (duplicate)
+          sta temp2
 
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc ScreenInsetX (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp2
+          sec
+          sbc ScreenInsetX
+          sta temp2
 
             lsr temp2
-            ;; lsr temp2 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; cmp # 32 (duplicate)
+            lsr temp2
+          lda temp2
+          cmp # 32
           bcc skip_9153
-          ;; lda # 31 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 31
+          sta temp2
 skip_9153:
 
-                    ;; if temp2 & $80 then let temp2 = 0
+                    if temp2 & $80 then let temp2 = 0
           ;; Save playfield column (temp2 will be overwritten)
-          ;; lda temp2 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp2
+          sta temp4
           ;; Compute head row and check ceiling contact
-                    ;; let temp2 = playerY[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp2 (duplicate)
-            ;; lsr temp2 (duplicate)
-            ;; lsr temp2 (duplicate)
-            ;; lsr temp2 (duplicate)
-            ;; lsr temp2 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_4246 (duplicate)
-          ;; jmp PUA_RoboTitoLatch (duplicate)
+                    let temp2 = playerY[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+          lda temp2
+          cmp # 0
+          bne skip_4246
+          jmp PUA_RoboTitoLatch
 skip_4246:
 
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc # 1 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; sta currentPlayer (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp2
+          sec
+          sbc # 1
+          sta temp3
+          lda temp1
+          sta currentPlayer
+          lda temp4
+          sta temp1
+          lda temp3
+          sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayfieldRead-1)
+          pha
+          lda # <(PlayfieldRead-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
-                    ;; if temp1 then goto PUA_RoboTitoLatch
-          ;; lda temp1 (duplicate)
+                    if temp1 then goto PUA_RoboTitoLatch
+          lda temp1
           beq skip_6148
-          ;; jmp PUA_RoboTitoLatch (duplicate)
+          jmp PUA_RoboTitoLatch
 skip_6148:
           ;; Clear latch if DOWN pressed (check appropriate port)
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp1 (duplicate)
-                    ;; if temp1 & 2 = 0 then goto PUA_CheckJoy0Down
-                    ;; if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
-          ;; lda joy1down (duplicate)
-          ;; beq skip_7336 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda characterStateFlags_R,x (duplicate)
+          lda currentPlayer
+          sta temp1
+                    if temp1 & 2 = 0 then goto PUA_CheckJoy0Down
+                    if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
+          lda joy1down
+          beq skip_7336
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
           and # 254
-          ;; sta characterStateFlags_W,x (duplicate)
+          sta characterStateFlags_W,x
 skip_7336:
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; rts (duplicate)
+          lda # 0
+          sta temp3
+          rts
 .pend
 
 PUA_CheckJoy0Down .proc
-                    ;; if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq skip_9849
+                    if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq skip_9849
 skip_9849:
-          ;; jmp skip_9849 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; rts (duplicate)
+          jmp skip_9849
+          lda # 0
+          sta temp3
+          rts
 .pend
 
 PUA_RoboTitoLatch .proc
-                    ;; let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; rts (duplicate)
+                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
+          lda # 0
+          sta temp3
+          rts
 
 .pend
 
 PUA_ZoeJumpCheck .proc
           ;; Zoe Ryen: Allow single mid-air double-jump
-          ;; lda # 0 (duplicate)
-          ;; sta temp6 (duplicate)
-                    ;; if (playerState[temp1] & 4) then let temp6 = 1
+          lda # 0
+          sta temp6
+                    if (playerState[temp1] & 4) then let temp6 = 1
           ;; Block double-jump if already used (characterStateFlags bit 3)
-          ;; rts (duplicate)
+          rts
           ;; Block jump during attack animations (states 13-15)
-          ;; rts (duplicate)
-                    ;; let temp4 = playerCharacter[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; jsr DispatchCharacterJump (duplicate)
+          rts
+                    let temp4 = playerCharacter[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp4
+          jsr DispatchCharacterJump
           ;; Set double-jump flag if jumping in air
-          ;; lda temp6 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_6415 (duplicate)
-                    ;; let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
+          lda temp6
+          cmp # 1
+          bne skip_6415
+                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
 skip_6415:
 
-          ;; lda # 1 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; rts (duplicate)
+          lda # 1
+          sta temp3
+          rts
 
 
 .pend

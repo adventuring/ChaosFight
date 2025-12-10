@@ -24,7 +24,7 @@ SLEEP .macro duration
           ;; Handle even duration - just nop pairs
 .if !(\duration & 1)
           .rept \duration / 2
-          ;; nop (duplicate)
+          nop
           .next
 .fi
 .endm

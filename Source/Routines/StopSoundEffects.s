@@ -28,14 +28,14 @@ StopSoundEffects .proc
           ;; Clear sound pointers (high byte = 0 means inactive)
           lda # 0
           sta soundEffectPointer
-          ;; lda # 0 (duplicate)
-          ;; sta soundEffectPointer1 (duplicate)
+          lda # 0
+          sta soundEffectPointer1
 
           ;; Reset frame counters
-          ;; lda # 0 (duplicate)
-          ;; sta soundEffectFrame_W (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta soundEffectFrame1_W (duplicate)
+          lda # 0
+          sta soundEffectFrame_W
+          lda # 0
+          sta soundEffectFrame1_W
           rts
 
 .pend

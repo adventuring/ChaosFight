@@ -43,23 +43,23 @@ BeginPublisherPrelude .proc
           sta preambleTimer
 
           ;; Disable character parade (only active on title screen, not preludes)
-          ;; lda # 0 (duplicate)
-          ;; sta titleParadeActive (duplicate)
+          lda # 0
+          sta titleParadeActive
 
           ;; Background: black (COLUBK starts black, no need to set)
 
           ;; Start AtariToday music
-          ;; lda MusicAtariToday (duplicate)
-          ;; sta temp1 (duplicate)
+          lda MusicAtariToday
+          sta temp1
           ;; Cross-bank call to StartMusic in bank 15
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(StartMusic-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(StartMusic-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(StartMusic-1)
+          pha
+          lda # <(StartMusic-1)
+          pha
                     ldx # 14
           jmp BS_jsr
 return_point:
@@ -68,16 +68,16 @@ return_point:
           ;; Set window values for Publisher screen (AtariAge logo + AtariAge text)
           ;; Window values are set once during setup, not every frame
           ;; OPTIMIZATION: Inlined to save call overhead (only used once)
-                    ;; let titlescreenWindow1 = 42  ; AtariAge logo visible
-                    ;; let titlescreenWindow2 = 42  ; AtariAgeText visible
-          ;; lda # 42 (duplicate)
-          ;; sta titlescreenWindow2 (duplicate)
-                    ;; let titlescreenWindow3 = 0  ; ChaosFight hidden
-          ;; lda # 0 (duplicate)
-          ;; sta titlescreenWindow3 (duplicate)
-                    ;; let titlescreenWindow4 = 0  ; BRP hidden
-          ;; lda # 0 (duplicate)
-          ;; sta titlescreenWindow4 (duplicate)
+                    let titlescreenWindow1 = 42  ; AtariAge logo visible
+                    let titlescreenWindow2 = 42  ; AtariAgeText visible
+          lda # 42
+          sta titlescreenWindow2
+                    let titlescreenWindow3 = 0  ; ChaosFight hidden
+          lda # 0
+          sta titlescreenWindow3
+                    let titlescreenWindow4 = 0  ; BRP hidden
+          lda # 0
+          sta titlescreenWindow4
           jsr BS_return
 
 .pend

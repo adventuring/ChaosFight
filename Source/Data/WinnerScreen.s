@@ -16,7 +16,7 @@ Winner_asm_1:
 
 WinnerScreenPlayfield:
 data_end_1:
-;; WinnerScreenPlayfield (duplicate)
+WinnerScreenPlayfield
 Winner_playfield_1:
 
             .byte 0, 0
@@ -31,7 +31,7 @@ Winner_playfield_1:
 data_end_2:
 
 WinnerScreenColorsColor:
-;; WinnerScreenColorsColor: (duplicate)
+WinnerScreenColorsColor:
 
           .byte $FE, $FC, $FA, $F8, $F6, $F4, $F2, $F2
 

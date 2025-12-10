@@ -59,23 +59,23 @@ InitializeSpritePointers .proc
             lda #$90
             ; Low byte for r016 ($F090)
             sta player1pointerlo  ; Player 1 pointer low byte
-            ;; lda #$F0 (duplicate)
+            lda #$F0
             ; High byte (SCRAM read port)
-            ;; sta player1pointerhi  ; Player 1 pointer high byte (duplicate)
+            sta player1pointerhi  ; Player 1 pointer high byte
 
-            ;; lda #$A0 (duplicate)
+            lda #$A0
             ; Low byte for r032 ($F0A0)
-            ;; sta player2pointerlo  ; Player 2 pointer low byte (duplicate)
-            ;; lda #$F0 (duplicate)
+            sta player2pointerlo  ; Player 2 pointer low byte
+            lda #$F0
             ; High byte (SCRAM read port)
-            ;; sta player2pointerhi  ; Player 2 pointer high byte (duplicate)
+            sta player2pointerhi  ; Player 2 pointer high byte
 
-            ;; lda #$B0 (duplicate)
+            lda #$B0
             ; Low byte for r048 ($F0B0)
-            ;; sta player3pointerlo  ; Player 3 pointer low byte (duplicate)
-            ;; lda #$F0 (duplicate)
+            sta player3pointerlo  ; Player 3 pointer low byte
+            lda #$F0
             ; High byte (SCRAM read port)
-            ;; sta player3pointerhi  ; Player 3 pointer high byte (duplicate)
+            sta player3pointerhi  ; Player 3 pointer high byte
 
           ;; Note: Kernel will adjust these pointers for Y offsets
           ;; automatically
@@ -83,7 +83,7 @@ InitializeSpritePointers .proc
           ;; perfectly with RAM
           ;; addresses. No kernel modifications needed!
           ;; InitializeSpritePointers is called both same-bank (from ColdStart bank14)
-          ;; and cross-bank (from BeginGameLoop bank11). Since it’s called cross-bank,
+          and cross-bank (from BeginGameLoop bank11). Since it’s called cross-bank,
           ;; it must always use return otherbank per the fundamental rule.
           jsr BS_return
 

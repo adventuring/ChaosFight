@@ -29,7 +29,7 @@
           ;; Current setting: multisprite kernel (required for 4-player
           ;; gameplay)
           ;; This means ADMIN screens must work with multisprite kernel
-          ;; limitations:
+          limitations:
           ;; - Playfield is symmetrical (repeated/reflected), not
           ;; asymmetrical
           ;; - Can still use 4-player sprite capability even on ADMIN
@@ -113,7 +113,7 @@
           
           ;; Frame counter (increments every frame in MainLoop)
           ;; Used for frame budgeting, animation timing, and other per-frame logic
-          frame  = u
+          frame  = $eb
 
           ;; Current player index (0-3) for iteration loops
           ;; Set before calling per-player routines such as AnimationSystem or PlayerElimination
@@ -122,16 +122,16 @@
           ;; Current character index (0-31) for character logic
           ;; Loaded from playerCharacter[currentPlayer] prior to use to reduce temp reassignments
           ;; Used across SpriteLoader and other character-specific routines
-          currentPlayer  = c
-          currentCharacter  = n
+          currentPlayer  = $de
+          currentCharacter  = $e9
 
           ;; Combat system attacker/defender indices (reused every frame)
-          attackerID  = o
-          defenderID  = q
+          attackerID  = $ea
+          defenderID  = $ec
 
           ;; GetPlayerLocked helper variables (set by GetPlayerLocked function)
-          GPL_playerIndex  = r
-          GPL_lockedState  = s
+          GPL_playerIndex  = $ed
+          GPL_lockedState  = $ee
 
           ;; Game state and system flags (consolidated to save RAM)
           ;; Game mode index (0-8): ModePublisherPrelude, ModeAuthorPrelude, etc.
@@ -143,8 +143,8 @@
           ;; bit 4: Game state paused (SystemFlagGameStatePaused = $10, 0=normal, 1=paused)
           ;; bit 3: Game state ending (SystemFlagGameStateEnding = $08, 0=normal, 1=ending)
           ;; Bits 0-2: Reserved for future use
-          gameMode  = p
-          systemFlags  = f
+          gameMode  = $eb
+          systemFlags  = $e1
           ;; Packed controller status bits (controller hardware detection):
           ;; bit 7: Quadtari adapter detected ($80)
           ;; bit 0: Genesis/MegaDrive controller on left port ($01)
@@ -153,10 +153,10 @@
           ;; bit 3: Joy2b+ controller on right port ($08)
           ;; Bits 4-6: Reserved for future use
           ;; NOTE: 7800 console detection is in systemFlags (bit 7), not controllerStatus
-          controllerStatus  = h
+          controllerStatus  = $e3
 
           ;; Frame phase counter (cycles 0-3 each frame for multi-frame operations)
-          framePhase  = i
+          framePhase  = $e4
           ;; Animation system temporary variable
           UCA_quadtariActive  = temp5
 
@@ -175,32 +175,32 @@
           ;; Bits 6-7: Player 3 locked sta
 
           ;; Use helper routines GetPlayerLocked/SetPlayerLocked (Source/Routines/PlayerLockedHelpers.bas)
-          playerLocked  = e
+          playerLocked  = $e0
 
           ;; Console switch handling (used in both Admin Mode and Game Mode)
           ;; Stored at w092 to keep w000-w091 dedicated to PlayerFrameBuffer sta
 
           ;; and game-only scratch space
-          colorBWPrevious_W  = w092
-          colorBWPrevious_R  = r092
+          colorBWPrevious_W  = $F05C
+          colorBWPrevious_R  = $F0DC
 
           ;; Arena selection (COMMON - used in both Admin and Game Mode)
           ;; NOTE: Must be in SCRAM since w is REDIMMED between
           ;; Admin/Game modes
           ;; Relocated to w117 to vacate low SCRAM for the player frame buffer
-          selectedArena_W  = w117
-          selectedArena_R  = r117
+          selectedArena_W  = $F075
+          selectedArena_R  = $F0F5
 
           ;; Arena Select fire button hold timer (COMMON - used in Admin Mode)
           ;; Admin Mode timer
-          fireHoldTimer_W  = w095
-          fireHoldTimer_R  = r095
+          fireHoldTimer_W  = $F05F
+          fireHoldTimer_R  = $F0DF
 
           ;; Random number generator 16-bit state (COMMON - optional, used by randomize routine)
           ;; CRITICAL: Must be in SCRAM, not zero-page stack area ($f0-$ff)
           ;; Located at w120/r120 (single byte, optional enhancement to rand)
-          rand16_W  = w120
-          rand16_R  = r120
+          rand16_W  = $F078
+          rand16_R  = $F0F8
 
           ;;
           ;; Music/sound POINTERS - Zero Page Memory (standard Ram)
@@ -214,26 +214,26 @@
           ;; NOTE: Music only runs in Admin Mode, so safe to use
           ;; Song data pointer (16-bit zero page word)
           ;; Music system uses songPointer for Bank 1 voice streams (shared with soundPointer scratch)
-          songPointer = var39
-          songPointerH = var40
+          songPointer = $CB
+          songPointerH = $CC
           ;; Voice 0 stream pointer (shared with soundEffectPointer)
-          musicVoice0Pointer = var41
-          musicVoice0PointerH = var42
+          musicVoice0Pointer = $CD
+          musicVoice0PointerH = $CE
           ;; Voice 1 stream pointer (shared with soundEffectPointer1)
           ;; Both music voice pointers live in zero page to allow `(pointer),y` addressing
-          musicVoice1Pointer = var43
-          musicVoice1PointerH = var44
+          musicVoice1Pointer = $CF
+          musicVoice1PointerH = $D0
 
           ;; Sound Effect System Pointers (Game Mode: gameMode 6)
           ;; Sound system reuses music voice zero-page words; music takes priority
           ;; LoadSoundPointer assigns directly to soundEffectPointer to avoid using zero-page variables in stack space ($f0-$ff)
           ;; Voice 0 active sound effect pointer (shares ZP with musicVoice0Pointer)
-          soundEffectPointer = var41
-          soundEffectPointerH = var42
+          soundEffectPointer = $CD
+          soundEffectPointerH = $CE
           ;; Voice 1 active sound effect pointer
           ;; soundEffectPointer* words are zero page to support `(pointer),y` addressing during playback
-          soundEffectPointer1 = var45
-          soundEffectPointer1H = var46
+          soundEffectPointer1 = $D1
+          soundEffectPointer1H = $D2
 
           ;; MUSIC/SOUND FRAME COUNTERS - SCRAM (not pointers, can be
           ;; in SCRAM)
@@ -245,37 +245,37 @@
           ;; for PlayerFrameBuffer (w000-w063)
           ;; NOTE: Overlaps with Game Mode playerSubpixelX - safe since
           ;; Admin and Game Mode never run simultaneously
-          musicVoice0Frame_W  = w064
-          musicVoice0Frame_R  = r064
-          musicVoice1Frame_W  = w065
+          musicVoice0Frame_W  = $F040
+          musicVoice0Frame_R  = $F0C0
+          musicVoice1Frame_W  = $F041
           ;; Frame counters for current notes on each voice (SCRAM
           ;; acceptable)
-          musicVoice1Frame_R  = r065
+          musicVoice1Frame_R  = $F0C1
           ;; Music system frame counter aliases (shared naming with sound system)
           ;; NOTE: voice0Frame and voice1Frame are defined as  = in 2600bas.c (before ORG)
           ;; to avoid duplicate definitions. Do not dim them here.
-          ;; dim voice0Frame = musicVoice0Frame_W
-          ;; dim voice1Frame = musicVoice1Frame_W
+          ;; dim voice0Frame = musicVoice0Frame_W (commented - defined in 2600bas.c)
+          ;; dim voice1Frame = musicVoice1Frame_W (commented - defined in 2600bas.c)
 
           ;; Music System Current Song ID and Loop Pointers (SCRAM -
           ;; used in Admin Mode)
           ;; Uses w066 to preserve w022 for game-mode specific data
           ;; PlayerFrameBuffer (w000-w063)
-          currentSongID_W  = w066
+          currentSongID_W  = $F042
           ;; Current playing song ID (used to check if Chaotica for
-          currentSongID_R = r066
+          currentSongID_R = $F0C2
           ;; Initial Voice 0 pointer for looping (Chaotica only)
-          musicVoice0StartPointer_W = w067
-          musicVoice0StartPointer_WL = w068
-          musicVoice0StartPointer_R = r067
-          musicVoice0StartPointer_RL = r068
-          musicVoice1StartPointer_W = w069
-          musicVoice1StartPointer_WL = w070
+          musicVoice0StartPointer_W = $F043
+          musicVoice0StartPointer_WL = $F044
+          musicVoice0StartPointer_R = $F0C3
+          musicVoice0StartPointer_RL = $F0C4
+          musicVoice1StartPointer_W = $F045
+          musicVoice1StartPointer_WL = $F046
           ;; Allocated at w067-w070 to keep w030/w033-w035 available for physics buffers
           ;; space for PlayerFrameBuffer
           ;; Initial Voice 1 pointer for looping (Chaotica only)
-          musicVoice1StartPointer_R = r069
-          musicVoice1StartPointer_RL = r070
+          musicVoice1StartPointer_R = $F0C5
+          musicVoice1StartPointer_RL = $F0C6
 
           ;; Music System Envelope State (SCRAM - used in Admin Mode)
           ;; Uses w071-w074 so w036-w039 can be reused for playerSubpixelX
@@ -283,34 +283,34 @@
           ;; NOTE: Overlaps with Game Mode playerSubpixelY - safe since
           ;; Admin and Game Mode never run simultaneously
           ;; Admin and Game Mode never run simultaneously
-          musicVoice0TargetAUDV_W  = w071
+          musicVoice0TargetAUDV_W  = $F047
           ;; Target AUDV value from note data (envelope calculation)
-          musicVoice0TargetAUDV_R  = r071
-          musicVoice1TargetAUDV_R  = r072
+          musicVoice0TargetAUDV_R  = $F0C7
+          musicVoice1TargetAUDV_R  = $F0C8
           ;; envelope calculation target
           ;; Total frames (Duration + Delay) captured when the note loaded (voice 0)
-          musicVoice1TargetAUDV_W  = w072
+          musicVoice1TargetAUDV_W  = $F048
           ;; envelope duration tracking
-          musicVoice0TotalFrames_W  = w073
+          musicVoice0TotalFrames_W  = $F049
           ;; Total frames (Duration + Delay) captured when the note loaded (voice 1)
-          musicVoice0TotalFrames_R  = r073
+          musicVoice0TotalFrames_R  = $F0C9
           ;; envelope duration tracking
-          musicVoice1TotalFrames_W  = w074
+          musicVoice1TotalFrames_W  = $F04A
           ;; Note: Duration + Delay precomputes total sustain time for envelope math
-          musicVoice1TotalFrames_R  = r074
+          musicVoice1TotalFrames_R  = $F0CA
 
           ;; Sound Effect System Frame Counters (SCRAM - used in Game
           ;; Mode)
           ;; Moved from w111-w112 to avoid conflict with missileLifetime (w110-w113)
-          soundEffectFrame_W  = w100
-          soundEffectFrame_R  = r100
-          soundEffectFrame1_W  = w102
+          soundEffectFrame_W  = $F064
+          soundEffectFrame_R  = $F0E4
+          soundEffectFrame1_W  = $F066
           ;; Located at w100 and w102 to avoid conflicts with missileLifetime and harpyLastFlapFrame
           ;; Frame counters for current sound effect notes on each
           ;; voice (SCRAM acceptable)
           ;; NOTE: w101-w104 used by harpyLastFlapFrame, so soundEffectFrame1 uses w102
           ;; (skipping w101 which is first byte of harpyLastFlapFrame array)
-          soundEffectFrame1_R  = r102
+          soundEffectFrame1_R  = $F0E6
           ;; Sound effect frame counter aliases (shared naming with music system)
           ;; Note: voice0Frame/voice1Frame are aliases for music; sound effects use soundEffectFrame_W/R directly
           ;; No aliases needed for sound effects - they use different variable names
@@ -325,27 +325,27 @@
 
           ;; ADMIN: Falling animation variables (standard RAM a,b,c,d)
           ;; NOTE: These are REDIMMED in Game Mode for missileX[0-3]
-          fallFrame  = a
-          fallSpeed  = b
-          fallComplete  = c
+          fallFrame  = $dc
+          fallSpeed  = $dd
+          fallComplete  = $de
           ;; ADMIN: Falling animation screen (Mode 4) variables
-          activePlayers  = d
+          activePlayers  = $df
 
           ;; ADMIN: Character select and title screen animation
           ;; (Standard RAM w,x,t,u,v)
           ;; NOTE: w,x are REDIMMED in Game Mode for missile velocities
           ;; NOTE: t,u,v are ADMIN-only (not used in Game Mode)
-          readyCount  = x
+          readyCount  = $ee
           ;; ADMIN: Count of locked players
           ;; ADMIN: Animation frame counter (REDIM - conflicts with
-          characterSelectAnimationTimer  = w
+          characterSelectAnimationTimer  = $ed
           ;; missileVelocityX in Game Mode)
-          characterSelectAnimationState  = t
+          characterSelectAnimationState  = $ef
           ;; ADMIN: Current animation state (ADMIN-only, no conflict)
-          characterSelectAnimationIndex  = u
+          characterSelectAnimationIndex  = $eb
           ;; ADMIN: Which character animating (ADMIN-only, no conflict)
           ;; ADMIN: Current frame in sequence (ADMIN-only, no conflict)
-          characterSelectAnimationFrame  = v
+          characterSelectAnimationFrame  = $ec
 
           ;; ADMIN MODE - Standard RAM (var0-var47) - sorted
           ;; numerically
@@ -357,60 +357,60 @@
           ;; preview (REDIMMED - Game Mode uses var37 for
           ;; ADMIN: Character select variables moved to SCRAM to free var37-var40 for playerCharacter (COMMON)
           ;; NOTE: Overlaps with Game Mode characterSpecialAbility/enhancedButtonStates (w089-w090) - safe since Admin and Game never run simultaneously
-          characterSelectCharacterIndex_W  = w122
-          characterSelectCharacterIndex_R  = r122
+          characterSelectCharacterIndex_W  = $F07A
+          characterSelectCharacterIndex_R  = $F0FA
           ;; ADMIN: Which player is currently selecting (1-4)
-          characterSelectPlayer_W  = w123
-          characterSelectPlayer_R  = r123
+          characterSelectPlayer_W  = $F07B
+          characterSelectPlayer_R  = $F0FB
 
           ;; ADMIN: Arena select variables (var24-var27)
           ;; NOTE: These are REDIMMED in Game Mode for playerVelocityXL
           ;; (var24-var27)
           ;; ADMIN: Arena preview state (REDIMMED - Game Mode uses
           ;; var24 for playerVelocityXL[0])
-          arenaPreviewData  = var24
+          arenaPreviewData  = $BC
           ;; ADMIN: Cursor position (REDIMMED - Game Mode uses var25
           ;; for playerVelocityXL[1])
-          arenaCursorPos_W  = var25
+          arenaCursorPos_W  = $BD
           ;; ADMIN: Confirmation timer (REDIMMED - Game Mode uses var26
           ;; for playerVelocityXL[2])
-          arenaConfirmTimer  = var26
+          arenaConfirmTimer  = $BE
 
           ;; ADMIN: Prelude screen variables (var28-var32)
           ;; NOTE: These are REDIMMED in Game Mode for playerVelocityY
           ;; (8.8 fixed-point, uses var28-var35)
           ;; ADMIN: Screen timer (REDIMMED - Game Mode uses var28-var31
-          preambleTimer  = var28
+          preambleTimer  = $C0
           ;; for playerVelocityY high bytes)
           ;; ADMIN: Which prelude (REDIMMED - Game Mode uses var29 for
-          preambleState  = var29
+          preambleState  = $C1
           ;; playerVelocityY[1] high byte)
           ;; ADMIN: Music status (REDIMMED - Game Mode uses var30 for
-          musicPlaying  = var30
+          musicPlaying  = $C2
           ;; playerVelocityY[2] high byte)
           ;; ADMIN: Current note (REDIMMED - Game Mode uses var31 for
-          musicPosition  = var31
+          musicPosition  = $C3
           ;; playerVelocityY[3] high byte)
           ;; ADMIN: Music frame counter (REDIMMED - Game Mode uses
           ;; var32-var35 for playerVelocityY low bytes)
-          musicTimer  = var32
+          musicTimer  = $C4
 
           ;; ADMIN: Title screen parade (var33-var36)
           ;; NOTE: These are REDIMMED in Game Mode for
           ;; currentAnimationSeq (var33-var36, but var37-var40 for
           ;; playerAttackCooldown)
           ;; ADMIN: Parade timing (REDIMMED - Game Mode uses var33 for
-          titleParadeTimer  = var33
+          titleParadeTimer  = $C5
           ;; currentAnimationSeq[0])
           ;; ADMIN: Current parade character (REDIMMED - Game Mode uses
-          titleParadeCharacter  = var34
+          titleParadeCharacter  = $C6
           ;; var34 for currentAnimationSeq[1])
           ;; ADMIN: Parade X position (REDIMMED - Game Mode uses var35
-          titleParadeX  = var35
+          titleParadeX  = $C7
           ;; for currentAnimationSeq[2])
           ;; ADMIN: Parade active flag (REDIMMED - Game Mode uses var36
           ;; for currentAnimationSeq[3])
-          titleParadeActive  = var36
+          titleParadeActive  = $C8
 
           ;; ADMIN: Titlescreen kernel window values (runtime control)
           ;; Runtime window values for titlescreen kernel minikernels
@@ -420,18 +420,18 @@
           ;; var20-var23 unused in Admin Mode - used for titlescreen
           ;; window control
           ;; ADMIN: Runtime window value for bmp_48x2_1 (AtariAge) -
-          titlescreenWindow1  = var20
+          titlescreenWindow1  = $B8
           ;; 0=hidden, 42=visible
           ;; ADMIN: Runtime window value for bmp_48x2_2 (AtariAgeText)
-          titlescreenWindow2  = var21
+          titlescreenWindow2  = $B9
           ;; - 0=hidden, 42=visible
           ;; ADMIN: Runtime window value for bmp_48x2_3 (ChaosFight) -
-          titlescreenWindow3  = var22
+          titlescreenWindow3  = $BA
           ;; 0=hidden, 42=visible
           ;; ADMIN: Runtime window value for bmp_48x2_4 (BRP)
           ;; - 0=hidden, 42=visible
-          titlescreenWindow4  = var23
-          bmp_index  = var24
+          titlescreenWindow4  = $BB
+          bmp_index  = $BC
 
           ;; GAME MODE VARIABLES (may be re-used in Admin Mode for
           ;; other purposes)
@@ -440,10 +440,10 @@
 
           ;; Player data arrays using batariBasic array syntax
           ;; playerX[0-3] = player1X, player2X, player3X, player4X
-          playerX  = var0
+          playerX  = $A4
 
           ;; playerY[0-3] = player1Y, player2Y, player3Y, player4Y
-          playerY  = var4
+          playerY  = $A8
 
           ;; playerState[0-3] = player1State, player2State,
           ;; player3State, player4State
@@ -457,18 +457,18 @@
           ;; bit 2: Jumping
           ;; bit 3: Recovery (hitstun)
           ;; Bits 4-7: Animation state (0-15)
-          playerState  = var8
+          playerState  = $AC
 
 
           ;; playerHealth[0-3] = player1Health, player2Health,
           ;; player3Health, player4Health
-          playerHealth  = var12
+          playerHealth  = $B0
 
           ;; playerCharacter[0-3] - Character type indices (0-MaxCharacter)
           ;; COMMON VAR - used in both Admin and Game Mode
           ;; Uses var37-var40 (freed by playerAttackCooldown being in SCRAM)
           ;; Must use var37-var40 (not var48) since var48-var127 don’t exist
-          playerCharacter  = var37
+          playerCharacter  = $C9
 
           ;; playerAttackType[0-3] - Attack type for each player (0=MeleeAttack, 1=RangedAttack, 2=AreaAttack)
           ;; Initialized from CharacterAttackTypes[playerCharacter[playerIndex]]
@@ -476,8 +476,8 @@
           ;; NOTE: w075 is Admin Mode only (randomSelectFlags), so free in Game Mode
           ;; w076-w077 overlap with Game Mode (playerSubpixelY_WL, animationCounter_W)
           ;; but w076-w077 are REDIMMED between modes, so OK
-          playerAttackType_W  = w075
-          playerAttackType_R  = r075
+          playerAttackType_W  = $F04B
+          playerAttackType_R  = $F0CB
 
           ;; PlayerFacing is extracted from playerState bit 3 (PlayerStateBitFacing)
           ;; 0=right (bit 3=1), 1=left (bit 3=0)
@@ -493,18 +493,18 @@
 
           ;; playerRecoveryFrames[0-3] - Recovery/hitstun frame
           ;; counters
-          playerRecoveryFrames  = var16
+          playerRecoveryFrames  = $B4
 
           ;; playerVelocityX[0-3] = 8.8 fixed-point X velocity
           ;; High byte (integer part) in zero-page for fast access
           ;; every frame
-          playerVelocityX  = var20
+          playerVelocityX  = $B8
           ;; High bytes (integer part) in zero-page var20-var23
           ;; Low bytes (fractional part) in zero-page var24-var27
           ;; (freed by moving animation vars)
           ;; Access: playerVelocityX[i] = high byte,
           ;; playerVelocityXL[i] = low byte (both in ZPRAM!)
-          playerVelocityXL  = var24
+          playerVelocityXL  = $BC
 
           ;; playerVelocityY[0-3] = 8.8 fixed-point Y velocity
           ;; Both high and low bytes in zero-page for fast access every
@@ -513,13 +513,13 @@
           ;; var28-var35 in zero-page
           ;; var28-var31 = high bytes, var32-var35 = low bytes
           ;; Array accessible as playerVelocityY[0-3] and
-          playerVelocityY  = var28
+          playerVelocityY  = $C0
           ;; playerVelocityYL[0-3] (all in ZPRAM!)
           ;; Low bytes (fractional part) in zero-page var32-var35
           ;; Access: playerVelocityY[i] = high byte (var28-var31),
           ;; playerVelocityYL[i] = low byte (var32-var35) (both in
           ;; ZPRAM!)
-          playerVelocityYL  = var32
+          playerVelocityYL  = $C4
 
           ;; playerSubpixelX[0-3] = 8.8 fixed-point X position
           ;; Updated every frame but accessed less frequently than
@@ -529,16 +529,16 @@
           ;; NOTE: Overlaps with Admin Mode music variables (w064-w079)
           ;; -
           ;; safe since Admin and Game Mode never run simultaneously
-          playerSubpixelX_W  = w064
+          playerSubpixelX_W  = $F040
           ;; Game Mode: 8.8 fixed-point X position (8 bytes) - SCRAM
           ;; w064-w071 (write), r064-r071 (read)
           ;; Array accessible as playerSubpixelX_W[0-3] (high bytes) and
           ;; playerSubpixelX_WL[0-3] (low bytes) (write ports)
           ;; Array accessible as playerSubpixelX_R[0-3] (high bytes) and
           ;; playerSubpixelX_RL[0-3] (low bytes) (read ports)
-          playerSubpixelX_WL  = w068
-          playerSubpixelX_R  = r064
-          playerSubpixelX_RL  = r068
+          playerSubpixelX_WL  = $F044
+          playerSubpixelX_R  = $F0C0
+          playerSubpixelX_RL  = $F0C4
 
           ;; playerSubpixelY[0-3] = 8.8 fixed-point Y position
           ;; Uses w072-w079 to leave w057-w064 for shared Admin/Game allocations
@@ -546,16 +546,16 @@
           ;; NOTE: Overlaps with Admin Mode music variables (w064-w079)
           ;; -
           ;; safe since Admin and Game Mode never run simultaneously
-          playerSubpixelY_W  = w072
+          playerSubpixelY_W  = $F048
           ;; Game Mode: 8.8 fixed-point Y position (8 bytes) - SCRAM
           ;; w072-w079 (write), r072-r079 (read)
           ;; Array accessible as playerSubpixelY_W[0-3] (high bytes) and
           ;; playerSubpixelY_WL[0-3] (low bytes) (write ports)
           ;; Array accessible as playerSubpixelY_R[0-3] (high bytes) and
           ;; playerSubpixelY_RL[0-3] (low bytes) (read ports)
-          playerSubpixelY_WL  = w076
-          playerSubpixelY_R  = r072
-          playerSubpixelY_RL  = r076
+          playerSubpixelY_WL  = $F04C
+          playerSubpixelY_R  = $F0C8
+          playerSubpixelY_RL  = $F0CC
 
           ;; Shared 16-bit accumulator for subpixel math (temp2 = low byte, temp3 = high byte)
           subpixelAccumulator = temp2
@@ -570,26 +570,26 @@
           ;; SCRAM access cost is acceptable
           ;; Freed var24-var31 and var33-var36 (12 bytes) for physics
           ;; variables that update every frame
-          animationCounter_W  = w077
+          animationCounter_W  = $F04D
           ;; Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation frame
-          animationCounter_R  = r077
+          animationCounter_R  = $F0CD
           ;; counter (4 bytes) - SCRAM w077-w080
-          currentAnimationFrame_W  = w081
+          currentAnimationFrame_W  = $F051
           ;; Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current frame in
-          currentAnimationFrame_R  = r081
+          currentAnimationFrame_R  = $F0D1
           ;; sequence (4 bytes) - SCRAM w081-w084
-          currentAnimationSeq_W  = w085
+          currentAnimationSeq_W  = $F055
           ;; Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current
           ;; animation sequence (4 bytes) - SCRAM w085-w088
-          currentAnimationSeq_R  = r085
+          currentAnimationSeq_R  = $F0D5
 
           ;; Game Mode: Attack cooldown timers
           ;; In SCRAM to free var37-var40 for playerCharacter (COMMON var)
           ;; Array accessible as playerAttackCooldown_W[0] through
           ;; playerAttackCooldown_W[3] (use _W for writes, _R for reads)
           ;; NOTE: var37-var40 now used for playerCharacter (COMMON), var37-var38 still used for characterSelect (Admin Mode)
-          playerAttackCooldown_W  = w090
-          playerAttackCooldown_R  = r090
+          playerAttackCooldown_W  = $F05A
+          playerAttackCooldown_R  = $F0DA
 
           ;; Game Mode: Additional game state variables (in SCRAM
           ;; - less performance critical)
@@ -597,44 +597,44 @@
           ;; screen only), safe in SCRAM
           ;; Allocated in SCRAM to free ZPRAM var24-var31 for physics
           ;; animation vars
-          playersRemaining_W  = w096
+          playersRemaining_W  = $F060
           ;; Game Mode: Count of active players (SCRAM - low frequency
-          playersRemaining_R  = r096
+          playersRemaining_R  = $F0E0
           ;; access)
-          gameEndTimer_W  = w098
-          gameEndTimer_R  = r098
+          gameEndTimer_W  = $F062
+          gameEndTimer_R  = $F0E2
           ;; Game Mode: Countdown to game end screen (SCRAM)
-          eliminationEffectTimer_W  = w099
+          eliminationEffectTimer_W  = $F063
           ;; Game Mode: Visual effect timers (single byte, bits for
-          eliminationEffectTimer_R  = r099
+          eliminationEffectTimer_R  = $F0E3
           ;; each player) (SCRAM)
-          eliminationOrder_W  = w105
+          eliminationOrder_W  = $F069
           ;; Game Mode: Order players were eliminated [0-3] (packed
-          eliminationOrder_R  = r105
+          eliminationOrder_R  = $F0E9
           ;; into 4 bits) (SCRAM)
-          eliminationCounter_W  = w106
-          eliminationCounter_R  = r106
+          eliminationCounter_W  = $F06A
+          eliminationCounter_R  = $F0EA
           ;; Game Mode: Counter for elimination sequence (SCRAM)
-          winnerPlayerIndex_W  = w107
-          winnerPlayerIndex_R  = r107
+          winnerPlayerIndex_W  = $F06B
+          winnerPlayerIndex_R  = $F0EB
           ;; Game Mode: Index of winning player (0-3) (SCRAM)
-          displayRank_W  = w108
-          displayRank_R  = r108
+          displayRank_W  = $F06C
+          displayRank_R  = $F0EC
           ;; Game Mode: Current rank being displayed (1-4) (SCRAM)
-          winScreenTimer_W  = w109
-          winScreenTimer_R  = r109
+          winScreenTimer_W  = $F06D
+          winScreenTimer_R  = $F0ED
           ;; Game Mode: Winner screen countdown timer (SCRAM)
           ;;
           ;; Game Mode: Win screen display timer (SCRAM)
 
           ;; Issue #1177: Frooty lollipop charge system (SCRAM)
-          frootyChargeTimer_W  = w104
-          frootyChargeTimer_R  = r104
+          frootyChargeTimer_W  = $F068
+          frootyChargeTimer_R  = $F0E8
           ;; Frooty charge timer array [0-3] (0-30 ticks, 4 bytes: w104-w107)
           ;; NOTE: Partially overlaps with harpyLastFlapFrame[3] (w104), but Frooty and Harpy
           ;; are different characters, so no conflict
-          frootyChargeState_W  = w108
-          frootyChargeState_R  = r108
+          frootyChargeState_W  = $F06C
+          frootyChargeState_R  = $F0EC
           ;; Frooty charge state array [0-3] (packed: bit 7=charging, bits 0-2=frame counter 0-5, 4 bytes: w108-w111)
           ;; NOTE: Partially overlaps with displayRank (w108) and winScreenTimer (w109),
           ;; but these are only used on win screen, Frooty charge is gameplay-only
@@ -648,14 +648,14 @@
           ;; [unused:4]
           ;; bit 0 = Missile1 active, bit 1 = Missile2 active, etc.
           ;; Game Mode: Missile active flags (standard RAM)
-          missileActive  = i
+          missileActive  = $e4
 
           ;; Game Mode: Missile X positions [0-3] for players 1-4
           ;; (standard RAM a,b,c,d)
           ;; NOTE: These are REDIMMED in Admin Mode for fall animation
           ;; variables
           ;; Array accessible as missileX[0] through missileX[3]
-          missileX  = a
+          missileX  = $dc
 
           ;; Game Mode: Missile lifetime counters [0-3] - frames
           ;; remaining
@@ -667,12 +667,12 @@
           ;; NOTE: console7800Detected (COMMON) uses ’e’ in sta
 
           ;; RAM, missileLifetime in SCRAM to avoid conflict
-          missileLifetime_W  = w110
+          missileLifetime_W  = $F06E
           ;; Game Mode: Missile lifetime array (4 bytes) - SCRAM
           ;; w110-w113 for performance
           ;; Array accessible as missileLifetime[0] through
           ;; missileLifetime[3]
-          missileLifetime_R  = r110
+          missileLifetime_R  = $F0EE
 
           ;; Game Mode: Missile velocities [0-3] for × and Y axes
           ;; (standard RAM w,x)
@@ -681,11 +681,11 @@
           ;; Stored velocities for bounce calculations and physics
           ;; updates
           ;; Game Mode: Missile X velocity array (4 bytes) - REDIM from
-          missileVelocityX  = w
+          missileVelocityX  = $ed
           ;; characterSelectAnimationTimer
           ;; Game Mode: Missile Y velocity array (4 bytes) - REDIM from
           ;; characterSelectAnimationState
-          missileVelocityY  = x
+          missileVelocityY  = $ee
 
           ;; Missile momentum stored in temp variables during
           ;; UpdateMissiles subroutine
@@ -707,22 +707,22 @@
           ;; rendering operations
           ;; Physical addresses: $F000-$F03F (write ports), $F080-$F0BF
           ;; (read ports)
-          playerFrameBuffer_W  = w000
+          playerFrameBuffer_W  = $F000
           ;; 64-byte buffer for player frame data (w000-w063)
           ;; Array accessible as playerFrameBuffer[0] through
           ;; playerFrameBuffer[63]
-          playerFrameBuffer_R  = r000
+          playerFrameBuffer_R  = $F080
 
           ;; Game Mode: Missile Y positions [0-3] - using SCRAM
           ;; (SuperChip RAM)
           ;; Uses w097-w100 so w000-w063 remain dedicated to PlayerFrameBuffer
           ;; PlayerFrameBuffer
-          missileY_W  = w097
+          missileY_W  = $F061
           ;; NOTE: batariBASIC uses array syntax - missileY[0] =
           ;; w097/r097, missileY[1] = w098/r098, etc.
           ;; NOTE: Must use missileY_R for reads and missileY_W for
           ;; writes to avoid RMW issues
-          missileY_R  = r097
+          missileY_R  = $F0E1
 
           ;; Game Mode: Player timers array [0-3] - used for guard
           ;; cooldowns and other timers
@@ -730,11 +730,11 @@
           ;; playerAttackCooldown
           ;; Uses w093-w096 to keep w004-w007 available for runtime buffers
           ;; for PlayerFrameBuffer (w000-w063)
-          playerTimers_W  = w093
+          playerTimers_W  = $F05D
           ;; Game Mode: Player timers array (4 bytes) - SCRAM w093-w096
           ;; Array accessible as playerTimers[0] through
           ;; playerTimers[3]
-          playerTimers_R  = r093
+          playerTimers_R  = $F0DD
 
           ;; PlayerEliminated[0-3] - bit flags for eliminated players
           ;; bit 0 = Player 1, bit 1 = Player 2, bit 2 = Player 3, bit
@@ -744,7 +744,7 @@
           ;; Character-specific state flags for special mechanics
           ;; (SCRAM)
           ;; Moved from w093-w096 to avoid conflict with playerTimers
-          characterStateFlags_W  = w124
+          characterStateFlags_W  = $F07C
           ;; [0]=P1, [1]=P2, [2]=P3, [3]=P4 character state bits (4
           ;; bytes: w124-w127)
           ;; bit 0: RoboTito ceiling latched
@@ -753,51 +753,51 @@
           ;; bit 3-7: Reserved for future character mechanics
           ;; NOTE: Shares w124-w127 with cachedHitbox - both are temp/per-frame
           ;; and never used simultaneously (cachedHitbox only during attack processing)
-          characterStateFlags_R  = r124
+          characterStateFlags_R  = $F0FC
 
           ;; Radish Goblin bounce movement state tracking (SCRAM - Game Mode only)
           ;; Tracks bounce state and contact positions for Radish Goblin character
           ;; Uses w078-w081, w082-w085, w086-w089 (12 bytes total for 3 arrays of 4 players each)
           ;; NOTE: Overlaps with Admin Mode variables - safe since Admin and Game Mode never run simultaneously
           ;; NOTE: w085 overlaps with currentAnimationSeq - safe since Radish Goblin movement only active in Game Mode
-          radishGoblinBounceState_W  = w078
+          radishGoblinBounceState_W  = $F04E
           ;; Bounce state: 0=no bounce yet on current contact, 1=bounced
           ;; Array accessible as radishGoblinBounceState[0] through radishGoblinBounceState[3]
-          radishGoblinBounceState_R  = r078
-          radishGoblinLastContactY_W  = w082
+          radishGoblinBounceState_R  = $F0CE
+          radishGoblinLastContactY_W  = $F052
           ;; Last Y position where ground contact occurred (for detecting when player leaves ground)
           ;; Array accessible as radishGoblinLastContactY[0] through radishGoblinLastContactY[3]
           ;; NOTE: w082-w085 overlaps with currentAnimationFrame (w081-w084) - safe since only one active at a time
-          radishGoblinLastContactY_R  = r082
-          radishGoblinLastContactX_W  = w086
+          radishGoblinLastContactY_R  = $F0D2
+          radishGoblinLastContactX_W  = $F056
           ;; Last X position where wall contact occurred (for detecting when player leaves wall)
           ;; Array accessible as radishGoblinLastContactX[0] through radishGoblinLastContactX[3]
           ;; NOTE: w086-w089 overlaps with currentAnimationSeq (w085-w088) and characterSpecialAbility (w089) - safe since only one active at a time
-          radishGoblinLastContactX_R  = r086
+          radishGoblinLastContactX_R  = $F0D6
 
           ;; Missile angular velocity for curling stone rotation
           ;; (SCRAM)
           ;; Moved from w097 to avoid conflict with missileY (w097-w100)
           ;; RESERVED for future implementation - not currently used
-          missileAngularVel_W  = w105
+          missileAngularVel_W  = $F069
           ;; [0-3] angular velocity for rotation effects (4 bytes:
           ;; w105-w108, reserved for future)
           ;; NOTE: w105-w108 partially used by eliminationOrder, but
           ;; missileAngularVel is reserved for future and not currently used
-          missileAngularVel_R  = r105
+          missileAngularVel_R  = $F0E9
 
           ;; Missile NUSIZ tracking (SCRAM)
           ;; Tracks NUSIZ register values for each missile (0-3) to
           ;; ensure proper sizing
-          missileNUSIZ_W  = w114
+          missileNUSIZ_W  = $F072
           ;; [0-3] NUSIZ values for missiles M0-M3 (4 bytes: w114-w117)
           ;; Array accessible as missileNUSIZ[0] through
           ;; missileNUSIZ[3]
-          missileNUSIZ_R  = r114
+          missileNUSIZ_R  = $F0F2
 
           ;; RoboTito stretch missile height tracking (SCRAM)
           ;; Tracks missile height for RoboTito stretch visual effect
-          missileStretchHeight_W  = w118
+          missileStretchHeight_W  = $F076
           ;; [0-3] Missile height in scanlines for RoboTito stretch
           ;; visual
           ;; (4 bytes: w118-w121)
@@ -805,7 +805,7 @@
           ;; level
           ;; Array accessible as missileStretchHeight[0] through
           ;; missileStretchHeight[3]
-          missileStretchHeight_R  = r118
+          missileStretchHeight_R  = $F0F6
 
           ;; Character special ability state (SCRAM)
           ;; Shared array for character-specific abilities that are mutually
@@ -813,15 +813,15 @@
           ;; For RoboTito: stores stretch permission (0=no, 1=yes) per player
           ;; For Harpy: stores flight energy (0-255) per player
           ;; For other characters: unused (available for future abilities)
-          characterSpecialAbility_W  = w089
+          characterSpecialAbility_W  = $F059
           ;; [0-3] Special ability state for each player (4 bytes: w089-w092)
           ;; Array accessible as characterSpecialAbility[0] through
           ;; characterSpecialAbility[3]
           ;; RoboTito: characterSpecialAbility[player] = stretch permission (0 or 1)
           ;; Harpy: characterSpecialAbility[player] = flight energy (0-255)
-          characterSpecialAbility_R  = r089
+          characterSpecialAbility_R  = $F0D9
 
-          enhancedButtonStates_W  = w090
+          enhancedButtonStates_W  = $F05A
           ;; Enhanced controller button states (Genesis Button C, Joy2B+
           ;; Button II)
           ;; Only players 1-2 can have enhanced controllers (players 3-4 require Quadtari)
@@ -830,26 +830,26 @@
           ;; Bits 2-3: Always 0 (players 3-4 cannot have enhanced controllers)
           ;; Updated at start of each game loop frame
           ;; Moved from w123 to w090 to free w122-w125 for missileFlags
-          enhancedButtonStates_R  = r090
+          enhancedButtonStates_R  = $F0DA
 
           ;; Missile flags cache (SCRAM)
           ;; Cached missile flags per player to avoid per-frame lookups
           ;; in UpdateOneMissile. Flags are set at spawn time and reused
           ;; throughout missile lifetime.
-          missileFlags_W  = w122
+          missileFlags_W  = $F07A
           ;; [0-3] Missile flags for each player missile (4 bytes: w122-w125)
           ;; Array accessible as missileFlags[0] through missileFlags[3]
           ;; Cached from CharacterMissileFlags[] at spawn time
-          missileFlags_R  = r122
+          missileFlags_R  = $F0FA
 
           ;; Last flap frame tracker for rapid tap detection (SCRAM)
-          harpyLastFlapFrame_W  = w101
+          harpyLastFlapFrame_W  = $F065
           ;; [0]=P1, [1]=P2, [2]=P3, [3]=P4 last flap frame counter (4
           ;; bytes: w101-w104)
           ;; Used to detect rapid UP tapping
           ;; Array accessible as harpyLastFlapFrame[0] through
           ;; harpyLastFlapFrame[3]
-          harpyLastFlapFrame_R  = r101
+          harpyLastFlapFrame_R  = $F0E5
 
           ;; ADMIN MODE - SCRAM (r000-r127/w000-w127) - sorted
           ;; numerically
@@ -860,12 +860,12 @@
           ;; PlayerFrameBuffer (w000-w063)
           ;; NOTE: Overlaps with Game Mode variables - safe since Admin
           ;; and Game Mode never run simultaneously
-          randomSelectFlags_W  = w075
+          randomSelectFlags_W  = $F04B
           ;; bit 7 = handicap flag (1 if down+fire was held), bits 0-6
           ;; unused
           ;; Array accessible as randomSelectFlags[0] through
           ;; randomSelectFlags[3]
-          randomSelectFlags_R  = r075
+          randomSelectFlags_R  = $F0CB
 
           ;; ADMIN: Character select animation frame counters (SCRAM -
           ;; used in character select)
@@ -873,12 +873,12 @@
           ;; for PlayerFrameBuffer (w000-w063)
           ;; NOTE: Overlaps with Game Mode playerSubpixelY - safe since
           ;; Admin and Game Mode never run simultaneously
-          characterSelectPlayerAnimationFrame_W  = w076
+          characterSelectPlayerAnimationFrame_W  = $F04C
           ;; Frame counters for idle/walk animation cycles in character
           ;; select
           ;; Array accessible as characterSelectPlayerAnimationFrame[0] through
           ;; characterSelectPlayerAnimationFrame[3]
-          characterSelectPlayerAnimationFrame_R  = r076
+          characterSelectPlayerAnimationFrame_R  = $F0CC
 
           ;; ADMIN: Character select animation timers (SCRAM - used in
           ;; character select)
@@ -887,12 +887,12 @@
           ;; NOTE: Overlaps with Game Mode variables - safe since Admin
           ;; and Game Mode never run simultaneously
           ;; character select animation runs again, so safe overlap
-          characterSelectPlayerAnimationTimer_W  = w080
+          characterSelectPlayerAnimationTimer_W  = $F050
           ;; Animation frame delay accumulators (counts output frames
           ;; until AnimationFrameDelay)
           ;; Array accessible as characterSelectPlayerAnimationTimer[0] through
           ;; characterSelectPlayerAnimationTimer[3]
-          characterSelectPlayerAnimationTimer_R  = r080
+          characterSelectPlayerAnimationTimer_R  = $F0D0
 
           ;; TODO / FUTURE EXPANSION
 
@@ -922,117 +922,117 @@
           ;; Each variable has a semantically meaningful name based on
           ;; its usage context
 
-          oldHealthValue  = var1
+          oldHealthValue  = $A5
           ;; Old health value for byte-safe clamp checks (used in
           ;; damage calculations)
 
-          recoveryFramesCalc  = var2
+          recoveryFramesCalc  = $A6
           ;; Recovery frames calculation value (used in fall damage and
           ;; hit processing)
 
-          playerStateTemp  = var3
+          playerStateTemp  = $A7
           ;; Temporary player state value for bit manipulation
           ;; operations
 
-          playfieldRow  = var5
+          playfieldRow  = $A9
           ;; Playfield row index for collision calculations
 
-          playfieldColumn  = var6
+          playfieldColumn  = $AA
           ;; Playfield column index for collision calculations
 
-          rowYPosition  = var7
+          rowYPosition  = $AB
           ;; Game Mode: Y position of playfield row (used in gravity calculations)
-          winScreenCandidateOrder  = var7
+          winScreenCandidateOrder  = $AB
           ;; Admin Mode: Winner screen elimination order candidate
           ;; (shares rowYPosition RAM in Admin Mode)
 
-          rowCounter  = var9
+          rowCounter  = $AD
           ;; Game Mode: Loop counter for row calculations
-          winScreenThirdPlaceOrder  = var9
+          winScreenThirdPlaceOrder  = $AD
           ;; Admin Mode: Winner screen third-place elimination order
           ;; (shares rowCounter RAM in Admin Mode)
 
-          characterHeight  = var10
+          characterHeight  = $AE
           ;; Character height value from CharacterHeights table
 
-          characterWeight  = var11
+          characterWeight  = $AF
           ;; Character weight value from CharacterWeights table
 
-          yDistance  = var13
+          yDistance  = $B1
           ;; Y distance between players for collision calculations
 
-          halfHeight1  = var14
+          halfHeight1  = $B2
           ;; Half height of first player for collision overlap calculation
 
-          halfHeight2  = var15
+          halfHeight2  = $B3
           ;; Half height of second player for collision overlap calculation
 
-          totalHeight  = var17
+          totalHeight  = $B5
           ;; Total height for collision overlap check (halfHeight1 + halfHeight2)
 
-          totalWeight  = var18
+          totalWeight  = $B6
           ;; Total weight of both players for momentum calculations
 
-          weightDifference  = var19
+          weightDifference  = $B7
           ;; Weight difference between players for impulse calculation
 
-          impulseStrength  = var40
+          impulseStrength  = $CC
           ;; Impulse strength for knockback momentum calculation
 
           ;; Original player positions and distance for collision nudging (SCRAM)
           ;; Moved from w114-w116 to avoid conflict with missileNUSIZ (w114-w117)
-          originalPlayerX_W  = w103
+          originalPlayerX_W  = $F067
           ;; Original player X position for collision checking and nudging
-          originalPlayerX_R  = r103
+          originalPlayerX_R  = $F0E7
 
-          originalPlayerY_W  = w104
+          originalPlayerY_W  = $F068
           ;; Original player Y position for collision checking and nudging
           ;; NOTE: w104 partially overlaps with harpyLastFlapFrame (w101-w104),
           ;; but originalPlayerY only needs 1 byte (w104), and harpyLastFlapFrame
           ;; uses w101-w104 as an array. These should not conflict if we verify
           ;; originalPlayerY is only used when harpyLastFlapFrame is not in use.
-          originalPlayerY_R  = r104
+          originalPlayerY_R  = $F0E8
 
-          distanceUp_W  = w105
+          distanceUp_W  = $F069
           ;; Distance to move player upward toward target
           ;; NOTE: w105 partially overlaps with eliminationOrder (w105), but distanceUp
           ;; is only a single byte and eliminationOrder is an array. Verify no conflict.
-          distanceUp_R  = r105
+          distanceUp_R  = $F0E9
 
-          gravityRate  = var42
+          gravityRate  = $CE
           ;; Gravity acceleration rate (normal or reduced)
 
-          damageWeightProduct  = var44
+          damageWeightProduct  = $D0
           ;; Intermediate value: damage × weight (used in fall damage
           ;; calculations)
 
-          missileLifetimeValue  = g
+          missileLifetimeValue  = $e2
           ;; Missile lifetime value from CharacterMissileLifetime table
 
-          characterMovementSpeed  = k
+          characterMovementSpeed  = $e6
           ;; Character movement speed value from CharacterMovementSpeed table
           ;; (temporary calculation variable for movement routines)
 
-          missileVelocityXCalc  = l
+          missileVelocityXCalc  = $e7
           ;; Missile X velocity for friction calculations (temporary
           ;; calculation variable)
 
-          velocityCalculation  = j
+          velocityCalculation  = $e5
           ;; Velocity calculation temporary variable for friction and impulse calculations
 
-          soundEffectID_W  = w119
-          soundEffectID_R  = r119
+          soundEffectID_W  = $F077
+          soundEffectID_R  = $F0F7
           ;; Sound effect ID for playback (SCRAM - moved from z to avoid stack space $f0)
           ;; NOTE: w119 is part of missileStretchHeight array (w118-w121) but soundEffectID
           ;; is only used during sound playback, not during missile rendering, so safe to share
 
-          characterIndex  = m
+          characterIndex  = $e8
           ;; Character index for table lookups
 
-          aoeOffset  = r
+          aoeOffset  = $ed
           ;; AOE offset value from CharacterAOEOffsets table
 
-          healthBarRemainder  = s
+          healthBarRemainder  = $ee
           ;; Health bar remainder calculation (for displaying partial
           ;; bars)
 
@@ -1043,16 +1043,16 @@
           ;; so caching saves 2 redundant hitbox calculations per
           ;; attacker
           ;; Uses 4 bytes: left, right, top, bottom for current attacker
-          cachedHitboxLeft_W  = w124
-          cachedHitboxLeft_R  = r124
-          cachedHitboxRight_W  = w125
-          cachedHitboxRight_R  = r125
-          cachedHitboxTop_W  = w126
-          cachedHitboxTop_R  = r126
-          cachedHitboxBottom_W  = w127
+          cachedHitboxLeft_W  = $F07C
+          cachedHitboxLeft_R  = $F0FC
+          cachedHitboxRight_W  = $F07D
+          cachedHitboxRight_R  = $F0FD
+          cachedHitboxTop_W  = $F07E
+          cachedHitboxTop_R  = $F0FE
+          cachedHitboxBottom_W  = $F07F
           ;; Single hitbox cache (4 bytes total) - reused for each
           ;; attacker
-          cachedHitboxBottom_R  = r127
+          cachedHitboxBottom_R  = $F0FF
 
           ;; Hitbox calculation variables (global, used in Combat.bas)
           ;; These are set by CalculateAttackHitbox and immediately
@@ -1073,10 +1073,10 @@
           ;; this is safe.
 
           ;; Hit detection flag (used in Combat.bas)
-          hit  = var46
+          hit  = $D2
 
           ;; Animation system temporary (used in AnimationSystem.bas)
-          C6E_stateFlags  = var45
+          C6E_stateFlags  = $D1
 
           ;; Sound effect parameter (used in TriggerEliminationEffects.bas)
           ;; temp1 is used directly for sound ID

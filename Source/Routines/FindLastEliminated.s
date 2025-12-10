@@ -12,27 +12,27 @@ FindLastEliminated .proc
           lda # 0
           sta temp4
           ;; Highest elimination order found
-          ;; lda # 0 (duplicate)
-          ;; sta winnerPlayerIndex_W (duplicate)
+          lda # 0
+          sta winnerPlayerIndex_W
           ;; Default winner
 
           ;; Check each player elimination order using FOR loop
           ;; TODO: for currentPlayer = 0 to 3
-                    ;; let temp4 = eliminationOrder_R[currentPlayer]
+                    let temp4 = eliminationOrder_R[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
+          lda currentPlayer
           asl
           tax
-          ;; lda eliminationOrder_R,x (duplicate)
-          ;; sta temp4 (duplicate)
-                    ;; if temp4 > temp4 then let winnerPlayerIndex_W = currentPlayer
-          ;; lda temp4 (duplicate)
+          lda eliminationOrder_R,x
+          sta temp4
+                    if temp4 > temp4 then let winnerPlayerIndex_W = currentPlayer
+          lda temp4
           sec
           sbc temp4
           bcc skip_5738
           beq skip_5738
-          ;; lda currentPlayer (duplicate)
-          ;; sta winnerPlayerIndex_W (duplicate)
+          lda currentPlayer
+          sta winnerPlayerIndex_W
 skip_5738:
 .pend
 

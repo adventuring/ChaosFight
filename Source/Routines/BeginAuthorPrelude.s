@@ -28,23 +28,23 @@ BeginAuthorPrelude .proc
           sta preambleTimer
 
           ;; Disable character parade (only active on title screen, not preludes)
-          ;; lda # 0 (duplicate)
-          ;; sta titleParadeActive (duplicate)
+          lda # 0
+          sta titleParadeActive
 
           ;; Background: black (COLUBK starts black, no need to set)
 
           ;; Start Interworldly music
-          ;; lda MusicInterworldly (duplicate)
-          ;; sta temp1 (duplicate)
+          lda MusicInterworldly
+          sta temp1
           ;; Cross-bank call to StartMusic in bank 15
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(StartMusic-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(StartMusic-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(StartMusic-1)
+          pha
+          lda # <(StartMusic-1)
+          pha
                     ldx # 14
           jmp BS_jsr
 return_point:
@@ -52,16 +52,16 @@ return_point:
 
           ;; Set window values for Author screen (Interworldly only)
           ;; OPTIMIZATION: Inlined to save call overhead (only used once)
-                    ;; let titlescreenWindow1 = 0   ; AtariAge logo hidden
-                    ;; let titlescreenWindow2 = 0  ; AtariAgeText hidden
-          ;; lda # 0 (duplicate)
-          ;; sta titlescreenWindow2 (duplicate)
-                    ;; let titlescreenWindow3 = 0  ; ChaosFight hidden
-          ;; lda # 0 (duplicate)
-          ;; sta titlescreenWindow3 (duplicate)
-                    ;; let titlescreenWindow4 = 42  ; BRP visible
-          ;; lda # 42 (duplicate)
-          ;; sta titlescreenWindow4 (duplicate)
+                    let titlescreenWindow1 = 0   ; AtariAge logo hidden
+                    let titlescreenWindow2 = 0  ; AtariAgeText hidden
+          lda # 0
+          sta titlescreenWindow2
+                    let titlescreenWindow3 = 0  ; ChaosFight hidden
+          lda # 0
+          sta titlescreenWindow3
+                    let titlescreenWindow4 = 42  ; BRP visible
+          lda # 42
+          sta titlescreenWindow4
 
           ;; Note: Bitmap data is loaded automatically by titlescreen
           ;; kernel via includes

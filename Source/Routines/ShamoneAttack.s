@@ -8,7 +8,7 @@ ShamoneAttack
           ;; Returns: Far (return otherbank)
 
 
-;; ShamoneAttack (duplicate)
+ShamoneAttack
 
 
           ;; Shamone (Character 15) - Special attack: jumps while
@@ -54,41 +54,41 @@ ShamoneAttack
 
           ;; First, execute the jump
 
-          ;; ;; let playerY[temp1] = playerY[temp1] - 11
+          ;; let playerY[temp1] = playerY[temp1] - 11
           lda temp1
           asl
           tax
           dec playerY,x
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; dec playerY,x (duplicate)
+          lda temp1
+          asl
+          tax
+          dec playerY,x
 
 
           ;; Light character, good jump
 
-                    ;; let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
+                    let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
 
           ;; Set jumping flag
 
-          ;; Then execute the attack (inline former PerformMeleeAttack)
+          Then execute the attack (inline former PerformMeleeAttack)
 
           ;; Cross-bank call to SpawnMissile in bank 7
-          ;; lda # >(return_point_1_L88-1) (duplicate)
+          lda # >(return_point_1_L88-1)
           pha
-          ;; lda # <(return_point_1_L88-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SpawnMissile-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SpawnMissile-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point_1_L88-1)
+          pha
+          lda # >(SpawnMissile-1)
+          pha
+          lda # <(SpawnMissile-1)
+          pha
                     ldx # 6
           jmp BS_jsr
 return_point_1_L88:
 
 
-                    ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           jsr BS_return
 
 

@@ -13,25 +13,25 @@ draw_bmp_48x1_X_loop:
 
 	;; Load bitmap data for 6 characters
           lda (scorepointers+0),y
-          ;; sta GRP0 (duplicate)
-          ;; lda (scorepointers+2),y (duplicate)
-          ;; sta GRP1 (duplicate)
-          ;; lda (scorepointers+4),y (duplicate)
-          ;; sta GRP0 (duplicate)
+          sta GRP0
+          lda (scorepointers+2),y
+          sta GRP1
+          lda (scorepointers+4),y
+          sta GRP0
 
-          ;; lda (scorepointers+6),y (duplicate)
-          ;; sta GRP1 (duplicate)
-          ;; lda (scorepointers+8),y (duplicate)
-          ;; sta GRP0 (duplicate)
-          ;; lda (scorepointers+10),y (duplicate)
-          ;; sta GRP1 (duplicate)
+          lda (scorepointers+6),y
+          sta GRP1
+          lda (scorepointers+8),y
+          sta GRP0
+          lda (scorepointers+10),y
+          sta GRP1
 
           dey
           bne draw_bmp_48x1_X_loop
 
 draw_bmp_48x1_X_done:
 	;; Clear sprites
-          ;; lda # 0 (duplicate)
-          ;; sta GRP0 (duplicate)
-          ;; sta GRP1 (duplicate)
+          lda # 0
+          sta GRP0
+          sta GRP1
           rts

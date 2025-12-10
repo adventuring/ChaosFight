@@ -3,7 +3,7 @@
 
 TriggerEliminationEffects
 ;;; Returns: Far (return otherbank)
-;; TriggerEliminationEffects (duplicate)
+TriggerEliminationEffects
 
           ;; Returns: Far (return otherbank)
           ;; Trigger elimination audio/visual effects for currentPlayer.
@@ -22,97 +22,97 @@ TriggerEliminationEffects
           ;; Play elimination sound effect
           lda SoundPlayerEliminated
           sta temp5
-          ;; lda temp5 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp5
+          sta temp1
           ;; PlaySoundEffect expects temp1 = sound ID
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          ;; lda # >(TEE_return_point_1-1) (duplicate)
+          lda # >(TEE_return_point_1-1)
           pha
-          ;; lda # <(TEE_return_point_1-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(TEE_return_point_1-1)
+          pha
+          lda # >(PlaySoundEffect-1)
+          pha
+          lda # <(PlaySoundEffect-1)
+          pha
                     ldx # 14
           jmp BS_jsr
 TEE_return_point_1:
 
           ;; Set elimination visual effect timer
           ;; This could trigger screen flash, particle effects, etc.
-          ;; lda # 30 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 30
+          sta temp2
           ;; 30 frames of elimination effect
-          ;; lda currentPlayer (duplicate)
+          lda currentPlayer
           asl
           tax
-          ;; lda temp2 (duplicate)
-          ;; sta eliminationEffectTimer_W,x (duplicate)
+          lda temp2
+          sta eliminationEffectTimer_W,x
           ;; Hide player sprite immediately
           ;; Inline HideEliminatedPlayerSprite
           ;; Off-screen
-          ;; lda currentPlayer (duplicate)
+          lda currentPlayer
           cmp # 0
           bne skip_4443
-          ;; lda # 200 (duplicate)
-          ;; sta player0x (duplicate)
+          lda # 200
+          sta player0x
 skip_4443:
 
-          ;; lda currentPlayer (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_699 (duplicate)
-          ;; lda # 200 (duplicate)
-          ;; sta player1x (duplicate)
+          lda currentPlayer
+          cmp # 1
+          bne skip_699
+          lda # 200
+          sta player1x
 skip_699:
 
           ;; Player 3 uses player2 sprite (multisprite)
-          ;; lda currentPlayer (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_4508 (duplicate)
-          ;; lda # 200 (duplicate)
-          ;; sta player2x (duplicate)
+          lda currentPlayer
+          cmp # 2
+          bne skip_4508
+          lda # 200
+          sta player2x
 skip_4508:
 
           ;; Player 4 uses player3 sprite (multisprite)
-          ;; lda currentPlayer (duplicate)
-          ;; cmp # 3 (duplicate)
-          ;; bne skip_7810 (duplicate)
-          ;; lda # 200 (duplicate)
-          ;; sta player3x (duplicate)
+          lda currentPlayer
+          cmp # 3
+          bne skip_7810
+          lda # 200
+          sta player3x
 skip_7810:
 
           ;; Stop any active missiles for this player - inlined
           ;; Clear missile active bit for this player (DeactivatePlayerMissiles)
-          ;; lda currentPlayer (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_9458 (duplicate)
-          ;; lda missileActive (duplicate)
+          lda currentPlayer
+          cmp # 0
+          bne skip_9458
+          lda missileActive
           and #$FE
-          ;; sta missileActive (duplicate)
+          sta missileActive
 skip_9458:
 
-          ;; lda currentPlayer (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_498 (duplicate)
-          ;; lda missileActive (duplicate)
-          ;; and #$FD (duplicate)
-          ;; sta missileActive (duplicate)
+          lda currentPlayer
+          cmp # 1
+          bne skip_498
+          lda missileActive
+          and #$FD
+          sta missileActive
 skip_498:
 
-          ;; lda currentPlayer (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_6929 (duplicate)
-          ;; lda missileActive (duplicate)
-          ;; and #$FB (duplicate)
-          ;; sta missileActive (duplicate)
+          lda currentPlayer
+          cmp # 2
+          bne skip_6929
+          lda missileActive
+          and #$FB
+          sta missileActive
 skip_6929:
 
-          ;; lda currentPlayer (duplicate)
-          ;; cmp # 3 (duplicate)
-          ;; bne skip_5725 (duplicate)
-          ;; lda missileActive (duplicate)
-          ;; and #$F7 (duplicate)
-          ;; sta missileActive (duplicate)
+          lda currentPlayer
+          cmp # 3
+          bne skip_5725
+          lda missileActive
+          and #$F7
+          sta missileActive
 skip_5725:
 
           jsr BS_return

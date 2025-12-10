@@ -14,69 +14,69 @@ StandardJump .proc
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
           ;; Output: Upward velocity applied, jumping flag set
-                    ;; let temp2 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp2
-                    ;; let temp2 = CharacterJumpVelocities[temp2]
+                    let temp2 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp2
+                    let temp2 = CharacterJumpVelocities[temp2]
           lda temp2
           asl
           tax
-          ;; lda CharacterJumpVelocities,x (duplicate)
+          lda CharacterJumpVelocities,x
           sta temp2         
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterJumpVelocities,x (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp2
+          asl
+          tax
+          lda CharacterJumpVelocities,x
+          sta temp2
           jsr BS_return
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
-                    ;; let playerState[temp1] = playerState[temp1] | 4
-          ;; jsr BS_return (duplicate)
+          lda temp1
+          asl
+          tax
+          lda temp2
+          sta playerVelocityY,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
+                    let playerState[temp1] = playerState[temp1] | 4
+          jsr BS_return
 
 CCJ_ConvertPlayerXToPlayfieldColumn
-;; CCJ_ConvertPlayerXToPlayfieldColumn (duplicate)
+CCJ_ConvertPlayerXToPlayfieldColumn
           ;; Convert player × to playfield column (0-31)
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
           ;; Output: temp2 = playfield column
           ;; FIXME: This should be inlined.
-                    ;; let temp2 = playerX[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
-          ;; lda temp2 (duplicate)
+                    let temp2 = playerX[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          lda temp2
           sec
           sbc ScreenInsetX
-          ;; sta temp2 (duplicate)
+          sta temp2
 
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc ScreenInsetX (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp2
+          sec
+          sbc ScreenInsetX
+          sta temp2
 
-          ;; ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
-          ;; lda temp2 (duplicate)
+          ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          lda temp2
           lsr
-          ;; lsr (duplicate)
-          ;; sta temp2 (duplicate)
+          lsr
+          sta temp2
 
-          ;; lda temp2 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp2
+          lsr
+          lsr
+          sta temp2
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -87,105 +87,105 @@ BernieJump .proc
           ;; Output: playerY[] updated when falling through
           ;; CRITICAL: CCJ_ConvertPlayerXToPlayfieldColumn is in Bank 12, use bank12 to match return otherbank
           ;; Cross-bank call to CCJ_ConvertPlayerXToPlayfieldColumn in bank 12
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(CCJ_ConvertPlayerXToPlayfieldColumn-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(CCJ_ConvertPlayerXToPlayfieldColumn-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(CCJ_ConvertPlayerXToPlayfieldColumn-1)
+          pha
+          lda # <(CCJ_ConvertPlayerXToPlayfieldColumn-1)
+          pha
                     ldx # 11
           jmp BS_jsr
 return_point:
 
 
-                    ;; let temp3 = playerY[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp3 (duplicate)
+                    let temp3 = playerY[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp3
+          lda temp3
           clc
           adc # 16
-          ;; sta temp5 (duplicate)
-                    ;; let temp6 = temp5 / 16
-          ;; lda # 0 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; sta temp2 (duplicate)
+          sta temp5
+                    let temp6 = temp5 / 16
+          lda # 0
+          sta temp4
+          lda temp1
+          sta temp3
+          lda temp2
+          sta temp1
+          lda temp6
+          sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayfieldRead-1)
+          pha
+          lda # <(PlayfieldRead-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
-                    ;; if temp1 then let temp4 = 1          lda temp1          beq skip_5294
+                    if temp1 then let temp4 = 1          lda temp1          beq skip_5294
 skip_5294:
-          ;; jmp skip_5294 (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; jsr BS_return (duplicate)
+          jmp skip_5294
+          lda temp3
+          sta temp1
+          jsr BS_return
 
-                    ;; if temp6 >= pfrows - 1 then goto BernieCheckBottomWrap
-          ;; lda temp6 (duplicate)
-          ;; clc (duplicate)
-          ;; adc # 1 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp5 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; sta temp2 (duplicate)
+                    if temp6 >= pfrows - 1 then goto BernieCheckBottomWrap
+          lda temp6
+          clc
+          adc # 1
+          sta temp4
+          lda # 0
+          sta temp5
+          lda temp1
+          sta temp3
+          lda temp2
+          sta temp1
+          lda temp4
+          sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayfieldRead-1)
+          pha
+          lda # <(PlayfieldRead-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
-                    ;; if temp1 then let temp5 = 1          lda temp1          beq skip_955
+                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
 skip_955:
-          ;; jmp skip_955 (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; jsr BS_return (duplicate)
+          jmp skip_955
+          lda temp3
+          sta temp1
+          jsr BS_return
 
-          ;; ;; let playerY[temp1] = playerY[temp1] + 1
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
+          ;; let playerY[temp1] = playerY[temp1] + 1
+          lda temp1
+          asl
+          tax
           inc playerY,x
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; inc playerY,x (duplicate)
+          lda temp1
+          asl
+          tax
+          inc playerY,x
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -193,43 +193,43 @@ BernieCheckBottomWrap .proc
           ;; Helper: Wrap Bernie to top row if clear
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index, temp2 = playfield column
-          ;; lda # 0 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp5 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 0
+          sta temp4
+          lda # 0
+          sta temp5
+          lda temp1
+          sta temp3
+          lda temp2
+          sta temp1
+          lda temp4
+          sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayfieldRead-1)
+          pha
+          lda # <(PlayfieldRead-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
-                    ;; if temp1 then let temp5 = 1          lda temp1          beq skip_955
-;; skip_955: (duplicate)
-          ;; jmp skip_955 (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; jsr BS_return (duplicate)
+                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
+skip_955:
+          jmp skip_955
+          lda temp3
+          sta temp1
+          jsr BS_return
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerY,x (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerY,x
+          jsr BS_return
 
 .pend
 
@@ -239,62 +239,62 @@ CCJ_FreeFlightUp .proc
           ;; Input: temp1 = player index, temp2 = playfield column (from CCJ_ConvertPlayerXToPlayfieldColumn)
           ;; Output: Upward velocity applied if clear above, jumping flag set
           ;; Mutates: temp3-temp6, playerVelocityY[], playerVelocityYL[], playerState[]
-                    ;; let temp3 = playerY[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp3 (duplicate)
-                    ;; let temp4 = temp3 / 16
+                    let temp3 = playerY[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp3
+                    let temp4 = temp3 / 16
           rts
 
           dec temp4
-          ;; lda # 0 (duplicate)
-          ;; sta temp5 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 0
+          sta temp5
+          lda temp1
+          sta temp6
+          lda temp2
+          sta temp1
+          lda temp4
+          sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayfieldRead-1)
+          pha
+          lda # <(PlayfieldRead-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
-                    ;; if temp1 then let temp5 = 1          lda temp1          beq skip_955
-;; skip_955: (duplicate)
-          ;; jmp skip_955 (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; rts (duplicate)
+                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
+skip_955:
+          jmp skip_955
+          lda temp6
+          sta temp1
+          rts
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 254 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
-                    ;; let playerState[temp1] = playerState[temp1] | 4
-          ;; rts (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 254
+          sta playerVelocityY,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
+                    let playerState[temp1] = playerState[temp1] | 4
+          rts
 
 DragonOfStormsJump
           ;; Returns: Far (return otherbank)
-;; DragonOfStormsJump (duplicate)
-          ;; jmp CCJ_FreeFlightCharacterJump (duplicate)
+DragonOfStormsJump
+          jmp CCJ_FreeFlightCharacterJump
           ;; ZOE RYEN (3) - STANDARD JUMP (dispatched directly to StandardJump)
           ;; Returns: Far (return otherbank)
           ;; FAT TONY (4) - STANDARD JUMP (dispatched directly to StandardJump)
@@ -307,63 +307,63 @@ HarpyJump .proc
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
           ;; Output: Upward velocity if energy available and cooldown expired
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; ;; let temp2 = frame - harpyLastFlapFrame_R[temp1]
-          ;; lda frame (duplicate)
-          ;; sec (duplicate)
-          ;; sbc harpyLastFlapFrame_R (duplicate)
-          ;; sta temp2 (duplicate)
+          ;; let temp2 = frame - harpyLastFlapFrame_R[temp1]
+          lda frame
+          sec
+          sbc harpyLastFlapFrame_R
+          sta temp2
 
-          ;; lda frame (duplicate)
-          ;; sec (duplicate)
-          ;; sbc harpyLastFlapFrame_R (duplicate)
-          ;; sta temp2 (duplicate)
+          lda frame
+          sec
+          sbc harpyLastFlapFrame_R
+          sta temp2
 
-          ;; lda temp2 (duplicate)
+          lda temp2
           cmp # 128
           bcc skip_1730
-          ;; lda # 127 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 127
+          sta temp2
 skip_1730:
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-                    ;; if playerY[temp1] <= 5 then goto HarpyFlapRecord
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 254 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
-                    ;; let playerState[temp1] = playerState[temp1] | 4
-                    ;; let HJ_stateFlags = characterStateFlags_R[temp1] | 2         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda characterStateFlags_R,x (duplicate)
-          ;; sta HJ_stateFlags (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda HJ_stateFlags (duplicate)
-          ;; sta characterStateFlags_W,x (duplicate)
+                    if playerY[temp1] <= 5 then goto HarpyFlapRecord
+          lda temp1
+          asl
+          tax
+          lda 254
+          sta playerVelocityY,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
+                    let playerState[temp1] = playerState[temp1] | 4
+                    let HJ_stateFlags = characterStateFlags_R[temp1] | 2         
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          sta HJ_stateFlags
+          lda temp1
+          asl
+          tax
+          lda HJ_stateFlags
+          sta characterStateFlags_W,x
 
 .pend
 
 HarpyFlapRecord .proc
           ;; Returns: Far (return otherbank)
-                    ;; if characterSpecialAbility_R[temp1] > 0 then let characterSpecialAbility_W[temp1] = characterSpecialAbility_R[temp1] - 1
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda frame (duplicate)
-          ;; sta harpyLastFlapFrame_W,x (duplicate)
-          ;; jsr BS_return (duplicate)
+                    if characterSpecialAbility_R[temp1] > 0 then let characterSpecialAbility_W[temp1] = characterSpecialAbility_R[temp1] - 1
+          lda temp1
+          asl
+          tax
+          lda frame
+          sta harpyLastFlapFrame_W,x
+          jsr BS_return
 
 .pend
 
@@ -377,22 +377,22 @@ CCJ_FreeFlightCharacterJump .proc
           ;; Output: Upward velocity if clear above
           ;; CRITICAL: CCJ_ConvertPlayerXToPlayfieldColumn is in Bank 12, use bank12 to match return otherbank
           ;; Cross-bank call to CCJ_ConvertPlayerXToPlayfieldColumn in bank 12
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(CCJ_ConvertPlayerXToPlayfieldColumn-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(CCJ_ConvertPlayerXToPlayfieldColumn-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 11 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(CCJ_ConvertPlayerXToPlayfieldColumn-1)
+          pha
+          lda # <(CCJ_ConvertPlayerXToPlayfieldColumn-1)
+          pha
+                    ldx # 11
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr CCJ_FreeFlightUp (duplicate)
+          jsr CCJ_FreeFlightUp
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

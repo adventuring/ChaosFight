@@ -66,7 +66,7 @@ rand16:
 
 
           ;; TODO: ; Must read from read port, perform operation in register, write to write port
-          ;; lda rand16_R (duplicate)
+          lda rand16_R
           rol
           sta rand16_W
 fi:
@@ -74,47 +74,47 @@ fi:
           bcc TitleScreenRandomizeNoEor
           eor #$B4
 TitleScreenRandomizeNoEor
-          ;; sta rand (duplicate)
+          sta rand
           .if  rand16_W
-;; CRITICAL: (duplicate)
+CRITICAL:
 
 
-;; rand16: (duplicate)
+rand16:
 
 
-          ;; eor rand16_R (duplicate)
+          eor rand16_R
 fi:
 
           ;; Handle input - any button press goes to character select
           ;; Check standard controllers (Player 1 & 2)
           ;; Use skip-over pattern to avoid complex || operator issues
-          ;; if joy0fire then TitleScreenComplete
-          ;; lda joy0fire (duplicate)
+          if joy0fire then TitleScreenComplete
+          lda joy0fire
           beq skip_5925
           jmp TitleScreenComplete
 skip_5925:
           
 
-          ;; if joy1fire then TitleScreenComplete
-          ;; lda joy1fire (duplicate)
-          ;; beq skip_7911 (duplicate)
-          ;; jmp TitleScreenComplete (duplicate)
+          if joy1fire then TitleScreenComplete
+          lda joy1fire
+          beq skip_7911
+          jmp TitleScreenComplete
 skip_7911:
           
 
           ;; Check Quadtari controllers (Players 3 & 4 if active)
-                    ;; if 0 = (controllerStatus & SetQuadtariDetected) then TitleDoneQuad
+                    if 0 = (controllerStatus & SetQuadtariDetected) then TitleDoneQuad
 
-                    ;; if !INPT0{7} then TitleScreenComplete
+                    if !INPT0{7} then TitleScreenComplete
           bit INPT0
           bmi skip_8828
-          ;; jmp TitleScreenComplete (duplicate)
+          jmp TitleScreenComplete
 skip_8828:
 
-                    ;; if !INPT2{7} then TitleScreenComplete
-          ;; bit INPT2 (duplicate)
-          ;; bmi skip_5351 (duplicate)
-          ;; jmp TitleScreenComplete (duplicate)
+                    if !INPT2{7} then TitleScreenComplete
+          bit INPT2
+          bmi skip_5351
+          jmp TitleScreenComplete
 skip_5351:
 
 TitleDoneQuad
@@ -133,16 +133,16 @@ TitleDoneQuad
 
           ;; Update character parade animation
           ;; Cross-bank call to UpdateCharacterParade in bank 14
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdateCharacterParade-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdateCharacterParade-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(UpdateCharacterParade-1)
+          pha
+          lda # <(UpdateCharacterParade-1)
+          pha
                     ldx # 13
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
@@ -167,25 +167,25 @@ TitleScreenComplete
           ;; mode sta
 
           ;; Constraints: Must be colocated with TitleScreenMain
-          ;; lda ModeCharacterSelect (duplicate)
-          ;; sta gameMode (duplicate)
+          lda ModeCharacterSelect
+          sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(ChangeGameMode-1)
+          pha
+          lda # <(ChangeGameMode-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-;; .pend (no matching .proc)
+.pend (no matching .proc)
 
 .endif
 .endif

@@ -4,10 +4,10 @@
 ;;; Detects whether running on Atari 2600 or 7800 console
 ;;; Based on DetectConsole.s assembly implementation
           ;; DETECTION LOGIC:
-          ;; if $D0 contains $2C and #$D1 contains $A9 then
+          if $D0 contains $2C and #$D1 contains $A9 then
           ;; system = 7800 // game was loaded from Harmony menu on a
           ;; 7800
-          ;; else if both contain $00 then
+          else if both contain $00 then
           ;; system = ZP RAM $80 // game was flashed to Harmony/Melody
           ;; so CDFJ
           ;; // driver checked $D0 and #$D1 for us and saved
@@ -18,7 +18,7 @@
           ;; Main console detection routine
 
 ConsoleDetHW:
-;; ConsoleDetHW (duplicate)
+ConsoleDetHW
           ;; Detect whether running on Atari 2600 or 7800 console
           ;;
           ;; Input: $D0, $D1 (hardware registers) = console detection
@@ -47,38 +47,37 @@ ConsoleDetHW:
 
 
           ;; Check $D0 value
-          ;; lda $D0 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp1 (duplicate)
-          cmp # 0
+          lda $d0
+          sta temp1
+          lda temp1
           bne skip_3125
+
           jmp CheckFlashed
+
 skip_3125:
-
-
           ;; Check if $D0 = $2C (7800 indicator)
 
-          ;; lda temp1 (duplicate)
-          ;; cmp ConsoleDetectD0 (duplicate)
-          ;; bne skip_4702 (duplicate)
-          ;; jmp CheckD1 (duplicate)
+          lda temp1
+          cmp ConsoleDetectD0
+          bne skip_4702
+          jmp CheckD1
 skip_4702:
 
-          ;; jmp Is2600 (duplicate)
+          jmp Is2600
 
 
 CheckD1 .proc
           ;; Check $D1 value for 7800 confirmation
-          ;; lda $D1 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; cmp ConsoleDetectD1 (duplicate)
-          ;; bne skip_3707 (duplicate)
-          ;; jmp Is7800 (duplicate)
+          lda $D1
+          sta temp1
+          lda temp1
+          cmp ConsoleDetectD1
+          bne skip_3707
+          jmp Is7800
 skip_3707:
 
           ;; 7800 detected: $D0=$2C and #$D1=$A9
-          ;; jmp Is2600 (duplicate)
+          jmp Is2600
 
 .pend
 
@@ -98,22 +97,22 @@ CheckFlashed .proc
           ;; Constraints: Must be colocated with ConsoleDetHW, Is7800,
           ;; Is2600
           ;; Check if $D1 is also $00 (flashed game)
-          ;; lda $D1 (duplicate)
-          ;; sta temp1 (duplicate)
-                    ;; if temp1 then goto Is2600
-          ;; lda temp1 (duplicate)
+          lda $D1
+          sta temp1
+                    if temp1 then goto Is2600
+          lda temp1
           beq skip_4218
-          ;; jmp Is2600 (duplicate)
+          jmp Is2600
 skip_4218:
 
           ;; Both $D0 and #$D1 are $00 - check $80 for CDFJ driver
           ;; result
-          ;; lda $80 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_585 (duplicate)
-          ;; jmp Is2600 (duplicate)
+          lda $80
+          sta temp1
+          lda temp1
+          cmp # 0
+          bne skip_585
+          jmp Is2600
 skip_585:
 
 
@@ -133,9 +132,9 @@ Is7800 .proc
           ;;
           ;; Called Routines: None
           ;; Constraints: Must be colocated with ConsoleDetHW
-          ;; lda SystemFlag7800 (duplicate)
-          ;; sta systemFlags (duplicate)
-          ;; jmp ConsoleDetected (duplicate)
+          lda SystemFlag7800
+          sta systemFlags
+          jmp ConsoleDetected
 
 .pend
 

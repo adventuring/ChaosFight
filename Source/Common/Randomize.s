@@ -9,17 +9,17 @@ randomize .proc
 .if  rand16_W
           ;;; CRITICAL: rand16 is in SCRAM - no RMW operations allowed
           ;;; Must read from read port, perform operation in register, write to write port
-          ;; lda rand16_R (duplicate)
+          lda rand16_R
           rol
           sta rand16_W
 .fi
           bcc noeor
           eor #$B4
 noeor:
-          ;; sta rand (duplicate)
+          sta rand
 .if  rand16_W
           ;;; CRITICAL: rand16 is in SCRAM, must use read port for eor (read-only)
-          ;; eor rand16_R (duplicate)
+          eor rand16_R
 .fi
           ;;; CRITICAL: randomize is only called same-bank (via gosub randomize),
           ;;; so it must use rts, not jmp BS_return. RETURN macro expands to

@@ -10,11 +10,6 @@
           .rept 256
           .byte $ff
           .endrept  ;; Scram shadow (256 bytes of $FF)
-          * = $F100
-
-            ;; Align Bank 15:data section to $F100 to skip any batariBASIC auto-generated data
-            ;; This ensures user data starts at the expected location
-          * = $F100
 
           ;; First — data. Must come first. Cannot be moved.
 .include "Source/Data/Arenas.s"
@@ -79,14 +74,6 @@ Bank15CodeEnds:
           ;; Wrap in .block to create namespace Bank15BS (avoids duplicate definitions)
 Bank15BS: .block
           current_bank = 15
-                    ;; Set file offset and CPU address for bankswitch code
-          ;; File offset: (15 * $1000) + ($FFE0 - bscode_length - $F000) = $15FC8
-          ;; CPU address: $FFE0 - bscode_length = $FFC8
-          ;; Use .org to set file offset, then * = to set CPU address
-          ;; Code appears at $ECA but should be at $FC8, difference is $FE
-          ;; So adjust .org by $FE
-          * = $FFE0 - bscode_length
-          
           
           .include "Source/Common/BankSwitching.s"
           .bend

@@ -21,32 +21,32 @@ title_eat_overscan:
           ;; Fall through to title_do_vertical_sync (no alignment needed)
           
 title_do_vertical_sync:
-          ;; lda # 2 (duplicate)
+          lda # 2
           sta WSYNC ;;;one line with VSYNC
-          ;; sta VSYNC ;;;enable VSYNC (duplicate)
-          ;; sta WSYNC ;;;one line with VSYNC (duplicate)
-          ;; sta WSYNC ;;;one line with VSYNC (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta WSYNC ;;;one line with VSYNC (duplicate)
-          ;; sta VSYNC ;;;turn off VSYNC (duplicate)
+          sta VSYNC ;;;enable VSYNC
+          sta WSYNC ;;;one line with VSYNC
+          sta WSYNC ;;;one line with VSYNC
+          lda # 0
+          sta WSYNC ;;;one line with VSYNC
+          sta VSYNC ;;;turn off VSYNC
 
           ;; VBLANK: Use Reference cycle-exact timing
           .if ! vblank_time
           .if TVStandard == 1
-          ;; lda # 42+128 (duplicate)
-          ;; sta TIM64T (duplicate)
+          lda # 42+128
+          sta TIM64T
           .else
           .if TVStandard == 2
-          ;; lda # 42+128 (duplicate)
-          ;; sta TIM64T (duplicate)
+          lda # 42+128
+          sta TIM64T
           .else
-          ;; lda # 37+128 (duplicate)
-          ;; sta TIM64T (duplicate)
+          lda # 37+128
+          sta TIM64T
           .fi
           .fi
           .else
-          ;; lda # vblank_time+128 (duplicate)
-          ;; sta TIM64T (duplicate)
+          lda # vblank_time+128
+          sta TIM64T
           .fi
 
 titleframe = missile0x
@@ -55,34 +55,34 @@ titleframe = missile0x
 	;; Removed unused .title_vblank conditional
 
 title_vblank_loop:
-          ;; lda INTIM (duplicate)
-          ;; bmi title_vblank_loop (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta WSYNC (duplicate)
-          ;; sta VBLANK (duplicate)
-          ;; sta ENAM0 (duplicate)
-          ;; sta ENABL (duplicate)
+          lda INTIM
+          bmi title_vblank_loop
+          lda # 0
+          sta WSYNC
+          sta VBLANK
+          sta ENAM0
+          sta ENABL
 
 title_playfield:
 
 ;; ======== BEGIN of the custom kernel!!!!! All of the work is done in the playfield.
 
-          ;; lda # 230 (duplicate)
-          ;; sta TIM64T (duplicate)
+          lda # 230
+          sta TIM64T
 
-          ;; lda # 1 (duplicate)
-          ;; sta CTRLPF (duplicate)
-          ;; clc (duplicate)
+          lda # 1
+          sta CTRLPF
+          clc
 
-          ;; lda # 0 (duplicate)
-          ;; sta REFP0 (duplicate)
-          ;; sta REFP1 (duplicate)
-          ;; sta WSYNC (duplicate)
-          ;; sta COLUBK (duplicate)
+          lda # 0
+          sta REFP0
+          sta REFP1
+          sta WSYNC
+          sta COLUBK
           ;; Clear playfield to prevent garbage display
-          ;; sta PF0 (duplicate)
-          ;; sta PF1 (duplicate)
-          ;; sta PF2 (duplicate)
+          sta PF0
+          sta PF1
+          sta PF2
 
 ;; Manually expanded titlescreenlayout macro (labels must be column aligned)
 ;; For 48×42 bitmaps using ×2 drawing style (double-height mode)
@@ -148,65 +148,65 @@ gamenumber_titlescreen:
           .byte $00
 
 PFWAIT:
-          ;; lda INTIM (duplicate)
+          lda INTIM
           bne PFWAIT
-          ;; sta WSYNC (duplicate)
+          sta WSYNC
 
 OVERSCAN:
           ;; Overscan: Use Reference cycle-exact timing
           .if ! overscan_time
           .if TVStandard == 1
-          ;; lda # 34+128 (duplicate)
-          ;; sta TIM64T (duplicate)
+          lda # 34+128
+          sta TIM64T
           .else
           .if TVStandard == 2
-          ;; lda # 34+128 (duplicate)
-          ;; sta TIM64T (duplicate)
+          lda # 34+128
+          sta TIM64T
           .else
-          ;; lda # 30+128 (duplicate)
-          ;; sta TIM64T (duplicate)
+          lda # 30+128
+          sta TIM64T
           .fi
           .fi
           .else
-          ;; lda # overscan_time+128-5 (duplicate)
-          ;; sta TIM64T (duplicate)
+          lda # overscan_time+128-5
+          sta TIM64T
           .fi
 
 	;;fix height variables we borrowed
           .if  player9height
           ldy # 8
-          ;; lda # 0 (duplicate)
-          ;; sta player0height (duplicate)
+          lda # 0
+          sta player0height
 TitleScreenFixPlayerHeights:
 playerheightfixloop:
-          ;; sta player1height,y (duplicate)
+          sta player1height,y
           ;; .if _NUSIZ1 != 0  ;;; Commented out - code inside is duplicate
           dey
           bpl playerheightfixloop
           ;; .fi  ;;; Commented out
           .fi  ;;; Close .if player9height
 
-          ;; lda # %11000010 (duplicate)
-          ;; sta WSYNC (duplicate)
-          ;; sta VBLANK (duplicate)
+          lda # %11000010
+          sta WSYNC
+          sta VBLANK
           rts
 
 	;; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 	;; Bitmap image data is included from generated Art.*.s files in Bank8
 	;; The TitleScreen/48x2_N_image.s files are NOT included here to avoid duplicate definitions
 	;; .if  mk_48x2_1_on
-	;;	.include "TitleScreen/48x2_1_image.s"
+	.include "TitleScreen/48x2_1_image.s"
 	;; .fi
 	;; .if  mk_48x2_2_on
-	;;	.include "TitleScreen/48x2_2_image.s"
+	.include "TitleScreen/48x2_2_image.s"
 	;; .fi
 	;; .if  mk_48x2_3_on
-	;;	.include "TitleScreen/48x2_3_image.s"
+	.include "TitleScreen/48x2_3_image.s"
 	;; .fi
 	;; .if  mk_48x2_4_on
-	;;	.include "TitleScreen/48x2_4_image.s"
+	.include "TitleScreen/48x2_4_image.s"
 	;; .fi
 
 	;; Removed unused player, score, and gameselect minikernels
 
-          ;; rts (duplicate)
+          rts

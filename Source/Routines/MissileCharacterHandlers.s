@@ -23,7 +23,7 @@ HarpyCheckDiveVelocity .proc
           ;;
           ;; Constraints: Internal helper for SpawnMissile, only called
           ;; for Harpy (character 6)
-                    ;; if (characterStateFlags_R[temp1] & 4) then HarpyBoostDiveVelocity
+                    if (characterStateFlags_R[temp1] & 4) then HarpyBoostDiveVelocity
           jmp VelocityDone
 
 .pend
@@ -48,14 +48,14 @@ HarpyBoostDiveVelocity .proc
             lda temp6
             lsr
             sta velocityCalculation
-                    ;; let temp6 = temp6 + velocityCalculation
+                    let temp6 = temp6 + velocityCalculation
 
 VelocityDone
-          ;; lda temp1 (duplicate)
+          lda temp1
           asl
           tax
-          ;; lda temp6 (duplicate)
-          ;; sta missileVelocityY,x (duplicate)
+          lda temp6
+          sta missileVelocityY,x
           rts
 
 .pend
@@ -66,7 +66,7 @@ HandleMegaxMissile .proc
           ;; Megax missile stays adjacent to player, no movement.
           ;; Missile appears when attack starts, stays during attack
           ;; phase,
-          ;; and vanishes when attack animation completes.
+          and vanishes when attack animation completes.
           ;; Handles Megax stationary fire breath visual (locked to
           ;; player position)
           ;;
@@ -78,7 +78,7 @@ HandleMegaxMissile .proc
           ;; CharacterMissileSpawnOffsetLeft[],
           ;; CharacterMissileSpawnOffsetRight[] = spawn
           ;; offsets, PlayerStateBitFacing (global constant) = facing
-          ;; bit mask, ActionAttackExecute (global constant) = attack
+          bit mask, ActionAttackExecute (global constant) = attack
           ;; animation state (14)
           ;;
           ;; Output: Missile position locked to player, missile
@@ -98,113 +98,113 @@ HandleMegaxMissile .proc
           ;; ActionAttackExecute (14)
 
           ;; Get facing direction (bit 0: 0=left, 1=right)
-                    ;; let temp4 = playerState[temp1] & PlayerStateBitFacing          lda temp1          asl          tax          lda playerState,x          sta temp4
+                    let temp4 = playerState[temp1] & PlayerStateBitFacing          lda temp1          asl          tax          lda playerState,x          sta temp4
 
           ;; Get emission height from character data
-          ;; let temp5 = CharacterMissileEmissionHeights[temp5]
-          ;; lda temp5 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMissileEmissionHeights,x (duplicate)
-          ;; sta temp5 (duplicate)
+          let temp5 = CharacterMissileEmissionHeights[temp5]
+          lda temp5
+          asl
+          tax
+          lda CharacterMissileEmissionHeights,x
+          sta temp5
 
           ;; Lock missile position to player position (adjacent, no
           ;; movement)
           ;; Calculate X position based on player position and facing
-                    ;; let temp2 = playerX[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta temp2 (duplicate)
+                    let temp2 = playerX[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
           ;; Facing left, spawn left
-          ;; lda temp4 (duplicate)
+          lda temp4
           cmp # 0
           bne skip_4908
-                    ;; let temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
+                    let temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
 skip_4908:
 
 
           ;; Facing right, spawn right
-          ;; lda temp4 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_7180 (duplicate)
-                    ;; let temp2 = temp2 + CharacterMissileSpawnOffsetRight[temp5]
+          lda temp4
+          cmp # 1
+          bne skip_7180
+                    let temp2 = temp2 + CharacterMissileSpawnOffsetRight[temp5]
 skip_7180:
 
 
           ;; Calculate Y position (player Y + emission height)
-                    ;; let temp3 = playerY[temp1] + temp5          lda temp1          asl          tax          lda playerY,x          sta temp3
+                    let temp3 = playerY[temp1] + temp5          lda temp1          asl          tax          lda playerY,x          sta temp3
 
           ;; Update missile position (locked to player)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta missileX,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta missileY_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda temp2
+          sta missileX,x
+          lda temp1
+          asl
+          tax
+          lda temp3
+          sta missileY_W,x
 
           ;; Zero velocities to prevent any movement
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta missileVelocityX,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta missileVelocityY,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta missileVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta missileVelocityY,x
 
           ;; Check if attack animation is complete
           ;; Animation state is in bits 4-7 of playerState
-          ;; ActionAttackExecute = 14 (0xE)
+          ActionAttackExecute = 14 (0xE)
           ;; Extract animation state (bits 4-7)
-                    ;; let temp6 = playerState[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = playerState[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          sta temp6
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          sta temp6
           ;; Extract animation state (bits 4-7) using bit shift
-            ;; lsr temp6 (duplicate)
-            ;; lsr temp6 (duplicate)
-            ;; lsr temp6 (duplicate)
-            ;; lsr temp6 (duplicate)
-          ;; If animation state is not ActionAttackExecute (14), attack
+            lsr temp6
+            lsr temp6
+            lsr temp6
+            lsr temp6
+          If animation state is not ActionAttackExecute (14), attack
           ;; is complete
           ;; deactivate
-          ;; ActionAttackExecute = 14, so if animationState ≠ 14,
-          ;; lda temp6 (duplicate)
-          ;; cmp # 14 (duplicate)
-          ;; bne skip_3841 (duplicate)
+          ActionAttackExecute = 14, so if animationState ≠ 14,
+          lda temp6
+          cmp # 14
+          bne skip_3841
           ;; TODO: MegaxMissileActive
 skip_3841:
 
 
           ;; Attack complete - deactivate missile
-          ;; jmp DeactivateMissile (duplicate)
+          jmp DeactivateMissile
 
 .pend
 
 MegaxMissileActive .proc
           ;; Attack still active - missile stays visible
           ;; Skip normal movement and collision checks
-          ;; rts (duplicate)
+          rts
 
 .pend
 
@@ -246,56 +246,56 @@ HandleKnightGuyMissile .proc
           ;; animation state ≠ ActionAttackExecute (14)
 
           ;; Get facing direction (bit 0: 0=left, 1=right)
-                    ;; let temp4 = playerState[temp1] & PlayerStateBitFacing          lda temp1          asl          tax          lda playerState,x          sta temp4
+                    let temp4 = playerState[temp1] & PlayerStateBitFacing          lda temp1          asl          tax          lda playerState,x          sta temp4
 
           ;; Get emission height from character data
-          ;; let temp5 = CharacterMissileEmissionHeights[temp5]
-          ;; lda temp5 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMissileEmissionHeights,x (duplicate)
-          ;; sta temp5 (duplicate)
+          let temp5 = CharacterMissileEmissionHeights[temp5]
+          lda temp5
+          asl
+          tax
+          lda CharacterMissileEmissionHeights,x
+          sta temp5
 
           ;; Check if attack animation is complete
           ;; Extract animation state (bits 4-7)
-                    ;; let temp6 = playerState[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = playerState[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          sta temp6
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          sta temp6
           ;; Extract animation state (bits 4-7) using bit shift
-            ;; lsr temp6 (duplicate)
-            ;; lsr temp6 (duplicate)
-            ;; lsr temp6 (duplicate)
-            ;; lsr temp6 (duplicate)
-          ;; If animation state is not ActionAttackExecute (14), attack is complete
-          ;; lda temp6 (duplicate)
-          ;; cmp # 14 (duplicate)
-          ;; bne skip_6521 (duplicate)
+            lsr temp6
+            lsr temp6
+            lsr temp6
+            lsr temp6
+          If animation state is not ActionAttackExecute (14), attack is complete
+          lda temp6
+          cmp # 14
+          bne skip_6521
           ;; TODO: KnightGuyAttackActive
 skip_6521:
 
 
           ;; Attack complete - deactivate missile
-          ;; jmp DeactivateMissile (duplicate)
+          jmp DeactivateMissile
 
 .pend
 
 KnightGuyAttackActive .proc
           ;; Get current animation frame within Execute sequence (0-7)
           ;; Read from SCRAM and calculate offset immediately
-                    ;; let velocityCalculation = currentAnimationFrame_R[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda currentAnimationFrame_R,x (duplicate)
-          ;; sta velocityCalculation (duplicate)
+                    let velocityCalculation = currentAnimationFrame_R[temp1]         
+          lda temp1
+          asl
+          tax
+          lda currentAnimationFrame_R,x
+          sta velocityCalculation
 
           ;; Calculate sword swing offset based on animation frame
           ;; Frames 0-3: Move away from player (sword swing out)
@@ -303,17 +303,17 @@ KnightGuyAttackActive .proc
           ;; Maximum swing distance: 4 pixels
           ;; Frames 4-7: Returning to sta
 
-          ;; ;; if velocityCalculation < 4 then KnightGuySwingOut
-          ;; lda velocityCalculation (duplicate)
-          ;; cmp # 4 (duplicate)
+          ;; if velocityCalculation < 4 then KnightGuySwingOut
+          lda velocityCalculation
+          cmp # 4
           bcs skip_4206
-          ;; jmp KnightGuySwingOut (duplicate)
+          jmp KnightGuySwingOut
 skip_4206:
 
-          ;; lda velocityCalculation (duplicate)
-          ;; cmp # 4 (duplicate)
-          ;; bcs skip_3567 (duplicate)
-          ;; jmp KnightGuySwingOut (duplicate)
+          lda velocityCalculation
+          cmp # 4
+          bcs skip_3567
+          jmp KnightGuySwingOut
 skip_3567:
 
 
@@ -321,18 +321,18 @@ skip_3567:
           ;; Calculate return offset: (7 - frame) pixels
           ;; Frame 4: 3 pixels away, Frame 5: 2 pixels, Frame 6: 1
           ;; pixel, Frame 7: 0 pixels
-          ;; ;; let velocityCalculation = 7 - velocityCalculation          lda 7          sec          sbc velocityCalculation          sta velocityCalculation
-          ;; lda 7 (duplicate)
+          ;; let velocityCalculation = 7 - velocityCalculation          lda 7          sec          sbc velocityCalculation          sta velocityCalculation
+          lda 7
           sec
           sbc velocityCalculation
-          ;; sta velocityCalculation (duplicate)
+          sta velocityCalculation
 
-          ;; lda 7 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc velocityCalculation (duplicate)
-          ;; sta velocityCalculation (duplicate)
+          lda 7
+          sec
+          sbc velocityCalculation
+          sta velocityCalculation
 
-          ;; jmp KnightGuySetPosition (duplicate)
+          jmp KnightGuySetPosition
 
 .pend
 
@@ -346,77 +346,77 @@ KnightGuySetPosition
           ;; Calculate base X position (partially overlapping player)
           ;; Start position: player × + 8 pixels (halfway through
           ;; player sprite)
-          ;; Then apply swing offset in facing direction
-                    ;; let temp2 = playerX[temp1] + 8         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta temp2 (duplicate)
+          Then apply swing offset in facing direction
+                    let temp2 = playerX[temp1] + 8         
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
           ;; Base position: center of player sprite
 
           ;; Apply swing offset in facing direction
-          ;; lda temp4 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_6244 (duplicate)
+          lda temp4
+          cmp # 0
+          bne skip_6244
           ;; TODO: KnightGuySwingLeft
 skip_6244:
 
 
           ;; Facing right: move right (positive offset)
-                    ;; let temp2 = temp2 + velocityCalculation
-          ;; jmp KnightGuySetY (duplicate)
+                    let temp2 = temp2 + velocityCalculation
+          jmp KnightGuySetY
 
 .pend
 
 KnightGuySwingLeft .proc
           ;; Facing left: move left (negative offset)
-                    ;; let temp2 = temp2 - velocityCalculation          lda temp2          sec          sbc velocityCalculation          sta temp2
+                    let temp2 = temp2 - velocityCalculation          lda temp2          sec          sbc velocityCalculation          sta temp2
 
 .pend
 
 KnightGuySetY .proc
           ;; Calculate Y position (player Y + emission height)
-                    ;; let temp3 = playerY[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp3 + temp5 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = playerY[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp3 + temp5
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp3
 
           ;; Update missile position
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta missileX,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta missileY_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda temp2
+          sta missileX,x
+          lda temp1
+          asl
+          tax
+          lda temp3
+          sta missileY_W,x
 
           ;; Zero velocities to prevent projectile movement
           ;; frame
           ;; Position is updated directly each frame based on animation
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta missileVelocityX,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta missileVelocityY,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta missileVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta missileVelocityY,x
 
           ;; Skip normal movement and collision checks
-          ;; rts (duplicate)
+          rts
 
 .pend
 

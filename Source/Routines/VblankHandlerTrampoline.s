@@ -14,12 +14,12 @@ VblankHandlerTrampoline .proc
           ;; Cross-bank call to VblankHandlerDispatcher in bank 11
           lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(VblankHandlerDispatcher-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(VblankHandlerDispatcher-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(VblankHandlerDispatcher-1)
+          pha
+          lda # <(VblankHandlerDispatcher-1)
+          pha
                     ldx # 10
           jmp BS_jsr
 return_point:

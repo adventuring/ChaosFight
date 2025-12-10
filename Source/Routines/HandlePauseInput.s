@@ -11,58 +11,58 @@ HandlePauseInput .proc
           ;; Check SELECT switch (always available)
           lda # 0
           sta temp1
-                    ;; if switchselect then let temp1 = 1          lda switchselect          beq skip_7014
+                    if switchselect then let temp1 = 1          lda switchselect          beq skip_7014
 skip_7014:
           jmp skip_7014
 
           ;; Check Joy2b+ Button III (INPT1 for Player 1, INPT3 for
           ;; Player 2)
-                    ;; if LeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
-          ;; lda LeftPortJoy2bPlus (duplicate)
+                    if LeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
+          lda LeftPortJoy2bPlus
           beq skip_2135
           bit INPT1
           bmi skip_2135
-          ;; lda # 1 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 1
+          sta temp1
 skip_2135:
-                    ;; if RightPortJoy2bPlus then if !INPT3{7} then let temp1 = 1
-          ;; lda RightPortJoy2bPlus (duplicate)
-          ;; beq skip_2706 (duplicate)
-          ;; bit INPT3 (duplicate)
-          ;; bmi skip_2706 (duplicate)
-          ;; lda # 1 (duplicate)
-          ;; sta temp1 (duplicate)
+                    if RightPortJoy2bPlus then if !INPT3{7} then let temp1 = 1
+          lda RightPortJoy2bPlus
+          beq skip_2706
+          bit INPT3
+          bmi skip_2706
+          lda # 1
+          sta temp1
 skip_2706:
 Joy2bPauseDone
           ;; Player 2 Button III
 
           ;; Debounce: only toggle if button just pressed (was 0, now
           ;; 1)
-          ;; lda temp1 (duplicate)
+          lda temp1
           cmp # 0
           bne skip_3161
-          ;; jmp DonePauseToggle (duplicate)
+          jmp DonePauseToggle
 skip_3161:
 
           ;; Toggle pause flag in systemFlags
-                    ;; if systemFlags & SystemFlagPauseButtonPrev then goto DonePauseToggle
-          ;; lda systemFlags (duplicate)
+                    if systemFlags & SystemFlagPauseButtonPrev then goto DonePauseToggle
+          lda systemFlags
           and SystemFlagPauseButtonPrev
-          ;; beq skip_3278 (duplicate)
-          ;; jmp DonePauseToggle (duplicate)
+          beq skip_3278
+          jmp DonePauseToggle
 skip_3278:
-                    ;; if systemFlags & SystemFlagGameStatePaused then let systemFlags = systemFlags & ClearSystemFlagGameStatePaused else systemFlags = systemFlags | SystemFlagGameStatePaused
-          ;; lda systemFlags (duplicate)
-          ;; and SystemFlagGameStatePaused (duplicate)
-          ;; beq skip_179 (duplicate)
-          ;; lda systemFlags (duplicate)
-          ;; and ClearSystemFlagGameStatePaused (duplicate)
-          ;; sta systemFlags (duplicate)
-          ;; jmp end_179 (duplicate)
+                    if systemFlags & SystemFlagGameStatePaused then let systemFlags = systemFlags & ClearSystemFlagGameStatePaused else systemFlags = systemFlags | SystemFlagGameStatePaused
+          lda systemFlags
+          and SystemFlagGameStatePaused
+          beq skip_179
+          lda systemFlags
+          and ClearSystemFlagGameStatePaused
+          sta systemFlags
+          jmp end_179
 skip_179:
-          ;; lda systemFlags (duplicate)
+          lda systemFlags
           ora SystemFlagGameStatePaused
-          ;; sta systemFlags (duplicate)
+          sta systemFlags
 end_179:
 DonePauseToggle
           ;; Toggle pause (0<->1)
@@ -70,17 +70,17 @@ DonePauseToggle
 
           ;; Update pause button previous state in systemFlags
           ;; Update previous button state for next frame
-                    ;; if temp1 then let systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
-          ;; lda temp1 (duplicate)
-          ;; beq skip_6637 (duplicate)
-          ;; lda systemFlags (duplicate)
-          ;; ora SystemFlagPauseButtonPrev (duplicate)
-          ;; sta systemFlags (duplicate)
-          ;; jmp end_9698 (duplicate)
+                    if temp1 then let systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
+          lda temp1
+          beq skip_6637
+          lda systemFlags
+          ora SystemFlagPauseButtonPrev
+          sta systemFlags
+          jmp end_9698
 skip_6637:
-          ;; lda systemFlags (duplicate)
-          ;; and ClearSystemFlagPauseButtonPrev (duplicate)
-          ;; sta systemFlags (duplicate)
+          lda systemFlags
+          and ClearSystemFlagPauseButtonPrev
+          sta systemFlags
 end_9698:
 
           rts

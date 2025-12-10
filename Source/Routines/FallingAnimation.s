@@ -5,11 +5,11 @@
 
 FallingAnimation1
           ;; Returns: Far (return otherbank)
-;; FallingAnimation1 (duplicate)
+FallingAnimation1
           ;; Moves active players from quadrant spawn points to row 2 starting positions
           ;; Returns: Far (return otherbank)
           ;; Called each frame while gameMode = ModeFallingAnimation1
-          ;; Flow:
+          Flow:
           ;; 1. Move each active player toward their target position
           ;; 2. Track completion count
           ;; 3. Transition to game mode when all players arrive
@@ -50,24 +50,24 @@ FallingAnimation1
           lda fallFrame
           cmp # 4
           bcc skip_3293
-          ;; lda # 0 (duplicate)
+          lda # 0
           sta fallFrame
 skip_3293:
 
 
           ;; Move Player 1 from quadrant to target (if active)
           ;; playerIndex = 0 (player index), targetX = target X,
-                    ;; if playerCharacter[0] = NoCharacter then DonePlayer1Move
+                    if playerCharacter[0] = NoCharacter then DonePlayer1Move
 
           ;; targetY = target Y (24)
-          ;; lda # 0 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 0
+          sta temp1
           ;; Check if 4-player mode for target X
-                    ;; if controllerStatus & SetQuadtariDetected then Player1Target4P
+                    if controllerStatus & SetQuadtariDetected then Player1Target4P
 
           ;; 2-player mode: target × = 53
-          ;; lda # 53 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 53
+          sta temp2
           jmp Player1Target4P.Player1TargetDone
 
 
@@ -86,8 +86,8 @@ Player1Target4P .proc
           ;; Constraints: Must be colocated with FallingAnimation1,
           ;; Player1TargetDone
           ;; 4-player mode: target × = 32
-          ;; lda # 32 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 32
+          sta temp2
 
 Player1TargetDone:
           ;; Player 1 target calculation complete
@@ -101,25 +101,25 @@ Player1TargetDone:
           ;;
           ;; Called Routines: None
           ;; Constraints: Must be colocated with FallingAnimation1
-          ;; lda # 24 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 24
+          sta temp3
           ;; Cross-bank call to MovePlayerToTarget in bank 6
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(MovePlayerToTarget-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(MovePlayerToTarget-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(MovePlayerToTarget-1)
+          pha
+          lda # <(MovePlayerToTarget-1)
+          pha
                     ldx # 5
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
-                    ;; if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
+                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
 skip_6580:
-          ;; jmp skip_6580 (duplicate)
+          jmp skip_6580
 
 DonePlayer1Move
           ;; reached = 1 if reached target
@@ -137,25 +137,25 @@ DonePlayer1Move
           ;; Constraints: Must be colocated with FallingAnimation1
 
           ;; Move Player 2 from quadrant to target (if active)
-                    ;; if playerCharacter[1] = NoCharacter then DonePlayer2Move
-          ;; lda # 1 (duplicate)
+                    if playerCharacter[1] = NoCharacter then DonePlayer2Move
+          lda # 1
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp NoCharacter (duplicate)
+          lda playerCharacter,x
+          cmp NoCharacter
           bne skip_6968
-          ;; jmp DonePlayer2Move (duplicate)
+          jmp DonePlayer2Move
 skip_6968:
 
           ;; Check if 4-player mode for target X
-          ;; lda # 1 (duplicate)
-          ;; sta temp1 (duplicate)
-                    ;; if controllerStatus & SetQuadtariDetected then Player2Target4P
+          lda # 1
+          sta temp1
+                    if controllerStatus & SetQuadtariDetected then Player2Target4P
 
           ;; 2-player mode: target × = 107
-          ;; lda # 107 (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; jmp Player2TargetDone (duplicate)
+          lda # 107
+          sta temp2
+          jmp Player2TargetDone
 
 .pend
 
@@ -174,8 +174,8 @@ Player2Target4P .proc
           ;; Constraints: Must be colocated with FallingAnimation1,
           ;; Player2TargetDone
           ;; 4-player mode: target × = 128
-          ;; lda # 128 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 128
+          sta temp2
 
 Player2TargetDone
           ;; Player 2 target calculation complete
@@ -189,25 +189,25 @@ Player2TargetDone
           ;;
           ;; Called Routines: None
           ;; Constraints: Must be colocated with FallingAnimation1
-          ;; lda # 24 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 24
+          sta temp3
           ;; Cross-bank call to MovePlayerToTarget in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(MovePlayerToTarget-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(MovePlayerToTarget-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(MovePlayerToTarget-1)
+          pha
+          lda # <(MovePlayerToTarget-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
-                    ;; if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
-;; skip_6580: (duplicate)
-          ;; jmp skip_6580 (duplicate)
+                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
+skip_6580:
+          jmp skip_6580
 
 DonePlayer2Move
           ;; Player 2 movement complete (skipped if not active)
@@ -224,38 +224,38 @@ DonePlayer2Move
           ;; Constraints: Must be colocated with FallingAnimation1
 
           ;; Move Player 3 from quadrant to target (if active)
-          ;; lda controllerStatus (duplicate)
+          lda controllerStatus
           and SetQuadtariDetected
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_6194 (duplicate)
+          cmp # 0
+          bne skip_6194
 skip_6194:
 
 
-                    ;; if playerCharacter[2] = NoCharacter then DonePlayer3Move
-          ;; lda # 2 (duplicate)
-          ;; sta temp1 (duplicate)
+                    if playerCharacter[2] = NoCharacter then DonePlayer3Move
+          lda # 2
+          sta temp1
           ;; 4-player mode: target × = 64
-          ;; lda # 64 (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda # 24 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 64
+          sta temp2
+          lda # 24
+          sta temp3
           ;; Cross-bank call to MovePlayerToTarget in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(MovePlayerToTarget-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(MovePlayerToTarget-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(MovePlayerToTarget-1)
+          pha
+          lda # <(MovePlayerToTarget-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
-                    ;; if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
-;; skip_6580: (duplicate)
-          ;; jmp skip_6580 (duplicate)
+                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
+skip_6580:
+          jmp skip_6580
 
 DonePlayer3Move
           ;; Player 3 movement complete (skipped if not in 4-player
@@ -273,38 +273,38 @@ DonePlayer3Move
           ;; Constraints: Must be colocated with FallingAnimation1
 
           ;; Move Player 4 from quadrant to target (if active)
-          ;; lda controllerStatus (duplicate)
-          ;; and SetQuadtariDetected (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_4267 (duplicate)
+          lda controllerStatus
+          and SetQuadtariDetected
+          cmp # 0
+          bne skip_4267
 skip_4267:
 
 
-                    ;; if playerCharacter[3] = NoCharacter then DonePlayer4Move
-          ;; lda # 3 (duplicate)
-          ;; sta temp1 (duplicate)
+                    if playerCharacter[3] = NoCharacter then DonePlayer4Move
+          lda # 3
+          sta temp1
           ;; 4-player mode: target × = 96
-          ;; lda # 96 (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda # 24 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 96
+          sta temp2
+          lda # 24
+          sta temp3
           ;; Cross-bank call to MovePlayerToTarget in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(MovePlayerToTarget-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(MovePlayerToTarget-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(MovePlayerToTarget-1)
+          pha
+          lda # <(MovePlayerToTarget-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
-                    ;; if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
-;; skip_6580: (duplicate)
-          ;; jmp skip_6580 (duplicate)
+                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
+skip_6580:
+          jmp skip_6580
 
 DonePlayer4Move
           ;; Player 4 movement complete (skipped if not in 4-player
@@ -322,11 +322,11 @@ DonePlayer4Move
           ;; Constraints: Must be colocated with FallingAnimation1
 
           ;; Check if all players have reached their targets
-                    ;; if fallComplete >= activePlayers then FallingComplete1
-          ;; lda fallComplete (duplicate)
-          ;; cmp activePlayers (duplicate)
-          ;; bcc skip_1796 (duplicate)
-          ;; jmp FallingComplete1 (duplicate)
+                    if fallComplete >= activePlayers then FallingComplete1
+          lda fallComplete
+          cmp activePlayers
+          bcc skip_1796
+          jmp FallingComplete1
 skip_1796:
 
           ;; Set sprite positions and load character sprites
@@ -334,31 +334,31 @@ skip_1796:
           ;; Use dynamic sprite setting instead of relying on player
           ;; declarations
           ;; Cross-bank call to SetSpritePositions in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetSpritePositions-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetSpritePositions-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetSpritePositions-1)
+          pha
+          lda # <(SetSpritePositions-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; Cross-bank call to SetPlayerSprites in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerSprites-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerSprites-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerSprites-1)
+          pha
+          lda # <(SetPlayerSprites-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; drawscreen called by MainLoop
@@ -388,37 +388,37 @@ FallingComplete1
           ;; Note: BeginGameLoop will use final positions from falling
           ;; animation
           ;; Cross-bank call to BeginGameLoop in bank 11
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(BeginGameLoop-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(BeginGameLoop-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 10 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(BeginGameLoop-1)
+          pha
+          lda # <(BeginGameLoop-1)
+          pha
+                    ldx # 10
+          jmp BS_jsr
+return_point:
 
 
           ;; Transition to Game Mode
-          ;; lda ModeGame (duplicate)
-          ;; sta gameMode (duplicate)
+          lda ModeGame
+          sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(ChangeGameMode-1)
+          pha
+          lda # <(ChangeGameMode-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

@@ -31,218 +31,218 @@ InitializeMovementSystem .proc
           ;; performance
           lda # 80
           sta temp2
-          ;; lda # 100 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 100
+          sta temp3
           ;; Player 0
-          ;; lda 0 (duplicate)
+          lda 0
           asl
           tax
-          ;; lda temp2 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerSubpixelX_W,x (duplicate)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelX_WL,x (duplicate)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerY,x (duplicate)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerSubpixelY_W,x (duplicate)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelY_WL,x (duplicate)
+          lda temp2
+          sta playerX,x
+          lda 0
+          asl
+          tax
+          lda temp2
+          sta playerSubpixelX_W,x
+          lda 0
+          asl
+          tax
+          lda 0
+          sta playerSubpixelX_WL,x
+          lda 0
+          asl
+          tax
+          lda temp3
+          sta playerY,x
+          lda 0
+          asl
+          tax
+          lda temp3
+          sta playerSubpixelY_W,x
+          lda 0
+          asl
+          tax
+          lda 0
+          sta playerSubpixelY_WL,x
           ;; Player 1
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerSubpixelX_W,x (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelX_WL,x (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerY,x (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerSubpixelY_W,x (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelY_WL,x (duplicate)
+          lda 1
+          asl
+          tax
+          lda temp2
+          sta playerX,x
+          lda 1
+          asl
+          tax
+          lda temp2
+          sta playerSubpixelX_W,x
+          lda 1
+          asl
+          tax
+          lda 0
+          sta playerSubpixelX_WL,x
+          lda 1
+          asl
+          tax
+          lda temp3
+          sta playerY,x
+          lda 1
+          asl
+          tax
+          lda temp3
+          sta playerSubpixelY_W,x
+          lda 1
+          asl
+          tax
+          lda 0
+          sta playerSubpixelY_WL,x
           ;; Player 2
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerSubpixelX_W,x (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelX_WL,x (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerY,x (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerSubpixelY_W,x (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelY_WL,x (duplicate)
+          lda 2
+          asl
+          tax
+          lda temp2
+          sta playerX,x
+          lda 2
+          asl
+          tax
+          lda temp2
+          sta playerSubpixelX_W,x
+          lda 2
+          asl
+          tax
+          lda 0
+          sta playerSubpixelX_WL,x
+          lda 2
+          asl
+          tax
+          lda temp3
+          sta playerY,x
+          lda 2
+          asl
+          tax
+          lda temp3
+          sta playerSubpixelY_W,x
+          lda 2
+          asl
+          tax
+          lda 0
+          sta playerSubpixelY_WL,x
           ;; Player 3
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerSubpixelX_W,x (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelX_WL,x (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerY,x (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerSubpixelY_W,x (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelY_WL,x (duplicate)
+          lda 3
+          asl
+          tax
+          lda temp2
+          sta playerX,x
+          lda 3
+          asl
+          tax
+          lda temp2
+          sta playerSubpixelX_W,x
+          lda 3
+          asl
+          tax
+          lda 0
+          sta playerSubpixelX_WL,x
+          lda 3
+          asl
+          tax
+          lda temp3
+          sta playerY,x
+          lda 3
+          asl
+          tax
+          lda temp3
+          sta playerSubpixelY_W,x
+          lda 3
+          asl
+          tax
+          lda 0
+          sta playerSubpixelY_WL,x
 
           ;; Initialize velocities to zero - inlined for performance
           ;; Player 0
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityX,x (duplicate)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+          lda 0
+          asl
+          tax
+          lda 0
+          sta playerVelocityX,x
+          lda 0
+          asl
+          tax
+          lda 0
+          sta playerVelocityXL,x
+          lda 0
+          asl
+          tax
+          lda 0
+          sta playerVelocityY,x
+          lda 0
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
           ;; Player 1
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityX,x (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+          lda 1
+          asl
+          tax
+          lda 0
+          sta playerVelocityX,x
+          lda 1
+          asl
+          tax
+          lda 0
+          sta playerVelocityXL,x
+          lda 1
+          asl
+          tax
+          lda 0
+          sta playerVelocityY,x
+          lda 1
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
           ;; Player 2
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityX,x (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+          lda 2
+          asl
+          tax
+          lda 0
+          sta playerVelocityX,x
+          lda 2
+          asl
+          tax
+          lda 0
+          sta playerVelocityXL,x
+          lda 2
+          asl
+          tax
+          lda 0
+          sta playerVelocityY,x
+          lda 2
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
           ;; Player 3
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityX,x (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+          lda 3
+          asl
+          tax
+          lda 0
+          sta playerVelocityX,x
+          lda 3
+          asl
+          tax
+          lda 0
+          sta playerVelocityXL,x
+          lda 3
+          asl
+          tax
+          lda 0
+          sta playerVelocityY,x
+          lda 3
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
           rts
 
 .pend

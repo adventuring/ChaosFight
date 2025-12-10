@@ -51,16 +51,16 @@ ProcessAttackInput .proc
 
           ;; Check if player is guarding - guard blocks attacks
 
-                    ;; let temp2 = playerState[temp1] & 2         
+                    let temp2 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
-          ;; lda playerState,x (duplicate)
+          lda playerState,x
           sta temp2
 
           ;; Guarding - block attack input
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Determine which joy port to use based on player index
 
@@ -70,8 +70,8 @@ ProcessAttackInput .proc
 
           ;; Players 1,3 use joy1
 
-                    ;; if temp1 & 2 = 0 then PAI_UseJoy0
-          ;; jsr BS_return (duplicate)
+                    if temp1 & 2 = 0 then PAI_UseJoy0
+          jsr BS_return
 
           jmp PAI_ExecuteAttack
 
@@ -84,7 +84,7 @@ PAI_UseJoy0 .proc
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -93,30 +93,30 @@ PAI_UseJoy0 .proc
 PAI_ExecuteAttack .proc
           ;; Returns: Far (return otherbank)
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-                    ;; let temp4 = playerCharacter[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp4 (duplicate)
+                    let temp4 = playerCharacter[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp4
 
           ;; Cross-bank call to DispatchCharacterAttack in bank 10
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(DispatchCharacterAttack-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(DispatchCharacterAttack-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(DispatchCharacterAttack-1)
+          pha
+          lda # <(DispatchCharacterAttack-1)
+          pha
                     ldx # 9
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 

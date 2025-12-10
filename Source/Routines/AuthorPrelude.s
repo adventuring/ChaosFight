@@ -5,7 +5,7 @@
 ;;; Displays the Interworldly author logo/artwork with music.
           ;; This is the second screen shown at cold sta
 
-          ;; FLOW:
+          FLOW:
           ;; 1. Display 48×42 bitmap from Source/Art/Interworldly.xcf
           ;; (via titlescreen kernel)
           ;; 2. Play Interworldly music
@@ -57,65 +57,65 @@ AuthorPrelude .proc
           ;; Check for button press on any controller to skip
           ;; Returns: Far (return otherbank)
           ;; Use skip-over pattern to avoid complex || operator issues
-          ;; if joy0fire then AuthorPreludeComplete
+          if joy0fire then AuthorPreludeComplete
           lda joy0fire
           beq skip_5569
           jmp AuthorPreludeComplete
 skip_5569:
           
 
-          ;; if joy1fire then AuthorPreludeComplete
-          ;; lda joy1fire (duplicate)
-          ;; beq skip_1114 (duplicate)
-          ;; jmp AuthorPreludeComplete (duplicate)
+          if joy1fire then AuthorPreludeComplete
+          lda joy1fire
+          beq skip_1114
+          jmp AuthorPreludeComplete
 skip_1114:
           
 
           ;; Check MegaDrive/Joy2b+ controllers if detected
           ;; Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0) or Joy2b+ Button III (INPT1)
           ;; OR flags together and check for nonzero match
-                    ;; let temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
-                    ;; if temp1 then if !INPT0{7} then AuthorPreludeComplete
-          ;; lda temp1 (duplicate)
-          ;; beq skip_4228 (duplicate)
+                    let temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
+                    if temp1 then if !INPT0{7} then AuthorPreludeComplete
+          lda temp1
+          beq skip_4228
           bit INPT0
           bmi skip_4228
-          ;; jmp AuthorPreludeComplete (duplicate)
+          jmp AuthorPreludeComplete
 skip_4228:
-          ;; lda controllerStatus (duplicate)
+          lda controllerStatus
           and SetLeftPortJoy2bPlus
           sta temp1
-                    ;; if temp1 then if !INPT1{7} then AuthorPreludeComplete          lda temp1          beq skip_933
+                    if temp1 then if !INPT1{7} then AuthorPreludeComplete          lda temp1          beq skip_933
 skip_933:
 
           ;; Player 2: Genesis Button C (INPT2) or Joy2b+ Button C/II (INPT2) or Joy2b+ Button III (INPT3)
-                    ;; let temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
-          ;; lda controllerStatus (duplicate)
-          ;; and # 96 (duplicate)
-          ;; sta temp1 (duplicate)
-                    ;; if temp1 then if !INPT2{7} then AuthorPreludeComplete
-          ;; lda temp1 (duplicate)
-          ;; beq skip_5977 (duplicate)
-          ;; bit INPT2 (duplicate)
-          ;; bmi skip_5977 (duplicate)
-          ;; jmp AuthorPreludeComplete (duplicate)
+                    let temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
+          lda controllerStatus
+          and # 96
+          sta temp1
+                    if temp1 then if !INPT2{7} then AuthorPreludeComplete
+          lda temp1
+          beq skip_5977
+          bit INPT2
+          bmi skip_5977
+          jmp AuthorPreludeComplete
 skip_5977:
-          ;; lda controllerStatus (duplicate)
-          ;; and SetRightPortJoy2bPlus (duplicate)
-          ;; sta temp1 (duplicate)
-                    ;; if temp1 then if !INPT3{7} then AuthorPreludeComplete          lda temp1          beq skip_5554
+          lda controllerStatus
+          and SetRightPortJoy2bPlus
+          sta temp1
+                    if temp1 then if !INPT3{7} then AuthorPreludeComplete          lda temp1          beq skip_5554
 skip_5554:
-          ;; jmp skip_5554 (duplicate)
+          jmp skip_5554
 
 
           ;; Auto-advance after music completes + 0.5s
-                    ;; if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete
-          ;; lda preambleTimer (duplicate)
+                    if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete
+          lda preambleTimer
           cmp # 31
           bcc skip_6974
-          ;; lda musicPlaying (duplicate)
+          lda musicPlaying
           bne skip_6974
-          ;; jmp AuthorPreludeComplete (duplicate)
+          jmp AuthorPreludeComplete
 skip_6974:
 
           inc preambleTimer
@@ -135,23 +135,23 @@ AuthorPreludeComplete
           ;; mode sta
 
           ;; Constraints: Must be colocated with AuthorPrelude
-          ;; lda ModeTitle (duplicate)
-          ;; sta gameMode (duplicate)
+          lda ModeTitle
+          sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(ChangeGameMode-1)
+          pha
+          lda # <(ChangeGameMode-1)
+          pha
                     ldx # 13
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
           ;;
           ;; Bitmap Loading
           ;; Bitmap data is loaded automatically by titlescreen kernel

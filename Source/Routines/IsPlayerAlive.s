@@ -21,11 +21,11 @@ IsPlayerAlive .proc
           ;; Called Routines: None
           ;;
           ;; Constraints: None
-                    ;; let temp2 = playerHealth[currentPlayer]         
+                    let temp2 = playerHealth[currentPlayer]         
           lda currentPlayer
           asl
           tax
-          ;; lda playerHealth,x (duplicate)
+          lda playerHealth,x
           sta temp2
           jsr BS_return
 

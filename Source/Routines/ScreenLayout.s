@@ -14,8 +14,8 @@ SetGameScreenLayout .proc
           ;; Constraints: Called for all screen layouts
           lda ScreenPfRowHeight
           sta pfrowheight
-          ;; lda ScreenPfRows (duplicate)
-          ;; sta pfrows (duplicate)
+          lda ScreenPfRows
+          sta pfrows
           jsr BS_return
 
 .pend

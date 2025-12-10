@@ -15,7 +15,7 @@ XDistanceDone:
           ;;
           ;; Constraints: None
           ;;
-          ;; if temp6 >= PlayerSpriteWidth then NoCollision
+          if temp6 >= PlayerSpriteWidth then NoCollision
           cmp # PlayerSpriteWidth
           bcc XDistanceCheckCollision
           lda # 0
@@ -26,19 +26,19 @@ XDistanceCheckCollision:
           sta temp3
           ;;
           ;; Check Y collision
-          ;; if temp3 == 0 then CPC_Done
+          if temp3 == 0 then CPC_Done
           lda temp3
           cmp # 0
           beq CPC_Done
           ;;
           ;; Load player Y positions into temporaries
-          ;; let temp4 = playerY[temp1]
+          let temp4 = playerY[temp1]
           lda temp1
           asl
           tax
           lda playerY,x
           sta temp4
-          ;; let temp5 = playerY[temp2]
+          let temp5 = playerY[temp2]
           lda temp2
           asl
           tax
@@ -46,13 +46,13 @@ XDistanceCheckCollision:
           sta temp5
           ;;
           ;; Calculate Y distance
-          ;; if temp4 >= temp5 then CPC_CalcYDistance
+          if temp4 >= temp5 then CPC_CalcYDistance
           lda temp4
           cmp temp5
           bcc YDistanceCalcRight
           jmp CPC_CalcYDistance
 YDistanceCalcRight:
-          ;; let temp6 = temp5 - temp4
+          let temp6 = temp5 - temp4
           lda temp5
           sec
           sbc temp4
@@ -74,7 +74,7 @@ CPC_CalcYDistance
           ;;
           ;; Constraints: None
           ;;
-          ;; let temp6 = temp4 - temp5
+          let temp6 = temp4 - temp5
           lda temp4
           sec
           sbc temp5
@@ -96,7 +96,7 @@ YDistanceDone
           ;;
           ;; Constraints: None
           ;;
-          ;; if temp6 >= CharacterHeights[playerCharacter[temp1]] then NoCollision
+          if temp6 >= CharacterHeights[playerCharacter[temp1]] then NoCollision
           lda temp1
           asl
           tax
@@ -133,7 +133,7 @@ CheckPlayerCollision
           ;; NOTE: Uses integer positions only (subpixel ignored for
           ;; collision)
           ;;
-          ;; MUTATES:
+          MUTATES:
           ;; temp3 = temp3 (return value: 1 if collision, 0 if not)
           ;; temp4-temp13 = Used internally for calculations
           ;; WARNING: Callers should read temp3 immediately; helper mutates temps for calculations.
@@ -156,47 +156,47 @@ CheckPlayerCollision
           ;; Uses temp1-temp6 (temp4-5 reused after X/Y checks)
 
           ;; Load player X positions into temporaries
-                    ;; let temp4 = playerX[temp1]          lda temp1          asl          tax          lda playerX,x          sta temp4
-                    ;; let temp5 = playerX[temp2]
+                    let temp4 = playerX[temp1]          lda temp1          asl          tax          lda playerX,x          sta temp4
+                    let temp5 = playerX[temp2]
           lda temp2
           asl
           tax
-          ;; lda playerX,x (duplicate)
+          lda playerX,x
           sta temp5         
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp2
+          asl
+          tax
+          lda playerX,x
+          sta temp5
 
           ;; Calculate absolute × distance between players
-                    ;; if temp4 >= temp5 then CalcXDistanceRight
+                    if temp4 >= temp5 then CalcXDistanceRight
 
-          ;; ;; let temp6 = temp5 - temp4          lda temp5          sec          sbc temp4          sta temp6
-          ;; lda temp5 (duplicate)
+          ;; let temp6 = temp5 - temp4          lda temp5          sec          sbc temp4          sta temp6
+          lda temp5
           sec
           sbc temp4
-          ;; sta temp6 (duplicate)
+          sta temp6
 
-          ;; lda temp5 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp4 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp5
+          sec
+          sbc temp4
+          sta temp6
 
           jmp XDistanceDone
 
 
 CalcXDistanceRight .proc
-          ;; ;; let temp6 = temp4 - temp5          lda temp4          sec          sbc temp5          sta temp6
-          ;; lda temp4 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp5 (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp4 - temp5          lda temp4          sec          sbc temp5          sta temp6
+          lda temp4
+          sec
+          sbc temp5
+          sta temp6
 
-          ;; lda temp4 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp5 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp4
+          sec
+          sbc temp5
+          sta temp6
 
           ;; Calculate X distance (temp4 - temp5)
           lda temp4
@@ -208,60 +208,60 @@ CalcXDistanceRight .proc
 
 CalcYDistanceDown .proc
           ;; Fetch character half-height values using shared SCRAM scratch variables
-          ;; let characterIndex = playerCharacter[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta characterIndex (duplicate)
+          let characterIndex = playerCharacter[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta characterIndex
           ;; Use bit shift instead of division (optimized for Atari 2600)
-          ;; let characterHeight = CharacterHeights[characterIndex]
-          ;; lda characterIndex (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterHeights,x (duplicate)
-          ;; sta characterHeight (duplicate)
-            ;; lda characterHeight (duplicate)
+          let characterHeight = CharacterHeights[characterIndex]
+          lda characterIndex
+          asl
+          tax
+          lda CharacterHeights,x
+          sta characterHeight
+            lda characterHeight
             lsr
-            ;; sta halfHeight1 (duplicate)
+            sta halfHeight1
 
-          ;; let characterIndex = playerCharacter[temp2]
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta characterIndex (duplicate)
+          let characterIndex = playerCharacter[temp2]
+          lda temp2
+          asl
+          tax
+          lda playerCharacter,x
+          sta characterIndex
           ;; Use bit shift instead of division (optimized for Atari 2600)
-                    ;; let characterHeight = CharacterHeights[characterIndex]
-          ;; lda characterIndex (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterHeights,x (duplicate)
-          ;; sta characterHeight (duplicate)
-          ;; lda characterIndex (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterHeights,x (duplicate)
-          ;; sta characterHeight (duplicate)
-            ;; lda characterHeight (duplicate)
-            ;; lsr (duplicate)
-            ;; sta halfHeight2 (duplicate)
+                    let characterHeight = CharacterHeights[characterIndex]
+          lda characterIndex
+          asl
+          tax
+          lda CharacterHeights,x
+          sta characterHeight
+          lda characterIndex
+          asl
+          tax
+          lda CharacterHeights,x
+          sta characterHeight
+            lda characterHeight
+            lsr
+            sta halfHeight2
 
           ;; Compute absolute Y distance between player centers
-                    ;; if temp4 >= temp5 then CalcYDistanceDown
+                    if temp4 >= temp5 then CalcYDistanceDown
 
-          ;; ;; let temp6 = temp5 - temp4          lda temp5          sec          sbc temp4          sta temp6
-          ;; lda temp5 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp4 (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp5 - temp4          lda temp5          sec          sbc temp4          sta temp6
+          lda temp5
+          sec
+          sbc temp4
+          sta temp6
 
-          ;; lda temp5 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp4 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp5
+          sec
+          sbc temp4
+          sta temp6
 
-          ;; jmp YDistanceDone (duplicate)
+          jmp YDistanceDone
 
 .pend
 

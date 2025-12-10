@@ -24,92 +24,92 @@ DrawTitleScreen .proc
           ;; Constraints: Must be called every frame for modes 0-2
           lda # 0
           sta player0x
-          ;; lda # 0 (duplicate)
-          ;; sta player0y (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta player1x (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta player1y (duplicate)
+          lda # 0
+          sta player0y
+          lda # 0
+          sta player1x
+          lda # 0
+          sta player1y
 
           ;; Set window values based on gameMode to show correct bitmaps
           ;; CRITICAL: Window values must be set every frame (titlescreen kernel uses them)
           ;; gameMode 0 = Publisher Prelude, 1 = Author Prelude, 2 = Title Screen
-          ;; lda gameMode (duplicate)
+          lda gameMode
           cmp # 0
           bne skip_4934
           jmp DrawPublisherScreen
 skip_4934:
 
 
-          ;; lda gameMode (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_8757 (duplicate)
-          ;; jmp DrawAuthorScreen (duplicate)
+          lda gameMode
+          cmp # 1
+          bne skip_8757
+          jmp DrawAuthorScreen
 skip_8757:
 
 
           ;; Default: Title screen (gameMode = 2)
-          ;; jmp DrawTitleScreenOnly (duplicate)
+          jmp DrawTitleScreenOnly
 
 .pend
 
 DrawPublisherScreen .proc
           ;; Publisher Prelude: Show AtariAge logo + AtariAge text
-                    ;; let titlescreenWindow1 = 42  ; AtariAge logo visible
-                    ;; let titlescreenWindow2 = 42  ; AtariAgeText visible
-          ;; lda # 42 (duplicate)
-          ;; sta titlescreenWindow2 (duplicate)
-                    ;; let titlescreenWindow3 = 0  ; ChaosFight hidden
-          ;; lda # 0 (duplicate)
-          ;; sta titlescreenWindow3 (duplicate)
-                    ;; let titlescreenWindow4 = 0  ; BRP hidden
-          ;; lda # 0 (duplicate)
-          ;; sta titlescreenWindow4 (duplicate)
-          ;; jmp DrawTitleScreenCommon (duplicate)
+                    let titlescreenWindow1 = 42  ; AtariAge logo visible
+                    let titlescreenWindow2 = 42  ; AtariAgeText visible
+          lda # 42
+          sta titlescreenWindow2
+                    let titlescreenWindow3 = 0  ; ChaosFight hidden
+          lda # 0
+          sta titlescreenWindow3
+                    let titlescreenWindow4 = 0  ; BRP hidden
+          lda # 0
+          sta titlescreenWindow4
+          jmp DrawTitleScreenCommon
 
 .pend
 
 DrawAuthorScreen .proc
           ;; Author Prelude: Show BRP signature only
-                    ;; let titlescreenWindow1 = 0   ; AtariAge logo hidden
-                    ;; let titlescreenWindow2 = 0  ; AtariAgeText hidden
-          ;; lda # 0 (duplicate)
-          ;; sta titlescreenWindow2 (duplicate)
-                    ;; let titlescreenWindow3 = 0  ; ChaosFight hidden
-          ;; lda # 0 (duplicate)
-          ;; sta titlescreenWindow3 (duplicate)
-                    ;; let titlescreenWindow4 = 42  ; BRP visible
-          ;; lda # 42 (duplicate)
-          ;; sta titlescreenWindow4 (duplicate)
-          ;; jmp DrawTitleScreenCommon (duplicate)
+                    let titlescreenWindow1 = 0   ; AtariAge logo hidden
+                    let titlescreenWindow2 = 0  ; AtariAgeText hidden
+          lda # 0
+          sta titlescreenWindow2
+                    let titlescreenWindow3 = 0  ; ChaosFight hidden
+          lda # 0
+          sta titlescreenWindow3
+                    let titlescreenWindow4 = 42  ; BRP visible
+          lda # 42
+          sta titlescreenWindow4
+          jmp DrawTitleScreenCommon
 
 DrawTitleScreenOnly
           ;; Title Screen: Show ChaosFight title only
-                    ;; let titlescreenWindow1 = 0   ; AtariAge logo hidden
-                    ;; let titlescreenWindow2 = 0  ; AtariAgeText hidden
-          ;; lda # 0 (duplicate)
-          ;; sta titlescreenWindow2 (duplicate)
-                    ;; let titlescreenWindow3 = 42  ; ChaosFight visible
-          ;; lda # 42 (duplicate)
-          ;; sta titlescreenWindow3 (duplicate)
-                    ;; let titlescreenWindow4 = 0  ; BRP hidden
-          ;; lda # 0 (duplicate)
-          ;; sta titlescreenWindow4 (duplicate)
+                    let titlescreenWindow1 = 0   ; AtariAge logo hidden
+                    let titlescreenWindow2 = 0  ; AtariAgeText hidden
+          lda # 0
+          sta titlescreenWindow2
+                    let titlescreenWindow3 = 42  ; ChaosFight visible
+          lda # 42
+          sta titlescreenWindow3
+                    let titlescreenWindow4 = 0  ; BRP hidden
+          lda # 0
+          sta titlescreenWindow4
 
 DrawTitleScreenCommon
-;; DrawTitleScreenCommon (duplicate)
+DrawTitleScreenCommon
           ;; Draw character parade if active (Title screen only)
           ;; Cross-bank call to DrawParadeCharacter in bank 14
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(DrawParadeCharacter-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(DrawParadeCharacter-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(DrawParadeCharacter-1)
+          pha
+          lda # <(DrawParadeCharacter-1)
+          pha
                     ldx # 13
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
@@ -117,7 +117,7 @@ return_point:
           ;; titledrawscreen is defined in Source/TitleScreen/asm/titlescreen.s
           ;; Kernel uses titlescreenWindow1-4 runtime variables to select bitmaps
             jsr titledrawscreen
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
           ;;
           ;; Load Title Bitmap
           ;; Loads the ChaosFight title bitmap data for titlescreen
@@ -130,7 +130,7 @@ return_point:
 .pend
 
 LoadTitleBitmap .proc
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
           ;; Configure titlescreen kernel to show Title (ChaosFight)
           ;; Returns: Far (return otherbank)
           ;; bitmap

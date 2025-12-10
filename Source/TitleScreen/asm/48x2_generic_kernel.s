@@ -5,44 +5,44 @@ draw_bmp_48x2_3:
 	;; Hardcoded to ChaosFight bitmap (index 3)
           lda # <(bmp_48x2_3_colors-1+bmp_48x2_3_height-bmp_48x2_3_window)
           sta aux5+0
-          ;; lda # >(bmp_48x2_3_colors-1+bmp_48x2_3_height-bmp_48x2_3_window) (duplicate)
-          ;; sta aux5+1 (duplicate)
+          lda # >(bmp_48x2_3_colors-1+bmp_48x2_3_height-bmp_48x2_3_window)
+          sta aux5+1
 
           ldy # 11
 bmp_48x2_3_pointersetup:
-          ;; lda bmp_48x2_3_values,y (duplicate)
-          ;; sta scorepointers,y (duplicate)
+          lda bmp_48x2_3_values,y
+          sta scorepointers,y
           dey
-          ;; lda bmp_48x2_3_values,y (duplicate)
-          ;; sta scorepointers,y (duplicate)
-          ;; dey (duplicate)
+          lda bmp_48x2_3_values,y
+          sta scorepointers,y
+          dey
           bpl bmp_48x2_3_pointersetup
 
 	;; Use runtime window variable
           .if ! titlescreenWindow3
-          ;; ldy # (bmp_48x2_3_window-1) (duplicate)
+          ldy # (bmp_48x2_3_window-1)
           .else
-          ;; ldy titlescreenWindow3 (duplicate)
-          ;; dey (duplicate)
+          ldy titlescreenWindow3
+          dey
           .fi
           sty aux2
 
           iny
-          ;; lda (aux5),y (duplicate)
-          ;; dey (duplicate)
+          lda (aux5),y
+          dey
 
-          ;; sta COLUP0 (duplicate)
-          ;; sta COLUP1 (duplicate)
-          ;; sta HMCLR (duplicate)
+          sta COLUP0
+          sta COLUP1
+          sta HMCLR
 
-          ;; lda titlescreencolor (duplicate)
-          ;; sta COLUPF (duplicate)
+          lda titlescreencolor
+          sta COLUPF
 
-          ;; lda titlescreencolor (duplicate)
-          ;; sta aux4 (duplicate)
+          lda titlescreencolor
+          sta aux4
 
-          ;; lda # 0 (duplicate)
-          ;; sta PF1 (duplicate)
-          ;; sta PF2 (duplicate)
+          lda # 0
+          sta PF1
+          sta PF2
 
           jmp draw_bmp_48x2_X

@@ -4,7 +4,7 @@
 ;;; Game Loop Initialization
 ;;; Initializes all game state for the main gameplay loop.
           ;; Called once when entering gameplay from character select.
-          ;; INITIALIZES:
+          INITIALIZES:
           ;; - Player positions, states, health, momentum
           ;; - Character types from selections
           ;; - Missiles and projectiles
@@ -74,12 +74,12 @@ BeginGameLoop .proc
           ;; Cross-bank call to InitializeSpritePointers in bank 14
           lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(InitializeSpritePointers-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(InitializeSpritePointers-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(InitializeSpritePointers-1)
+          pha
+          lda # <(InitializeSpritePointers-1)
+          pha
                     ldx # 13
           jmp BS_jsr
 return_point:
@@ -97,55 +97,55 @@ return_point:
           ;; All players start at second row from top (Y=24, center of
           ;; row 1)
           ;; Check if 4-player mode (Quadtari detected)
-                    ;; if controllerStatus & SetQuadtariDetected then Init4PlayerPositions
+                    if controllerStatus & SetQuadtariDetected then Init4PlayerPositions
 
           ;; 2-player mode positions
-                    ;; let playerX[0] = 53 : playerY[0] = 24
-          ;; lda # 0 (duplicate)
+                    let playerX[0] = 53 : playerY[0] = 24
+          lda # 0
           asl
           tax
-          ;; lda # 53 (duplicate)
+          lda # 53
           sta playerX,x
-          ;; lda # 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 24 (duplicate)
-          ;; sta playerY,x (duplicate)
-                    ;; let playerX[1] = 107 : playerY[1] = 24
-          ;; lda # 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 107 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda # 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 24 (duplicate)
-          ;; sta playerY,x (duplicate)
+          lda # 0
+          asl
+          tax
+          lda # 24
+          sta playerY,x
+                    let playerX[1] = 107 : playerY[1] = 24
+          lda # 1
+          asl
+          tax
+          lda # 107
+          sta playerX,x
+          lda # 1
+          asl
+          tax
+          lda # 24
+          sta playerY,x
           ;; Players 3 & 4 use same as P1/P2 if not in 4-player mode
-                    ;; let playerX[2] = 53 : playerY[2] = 24
-          ;; lda # 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 53 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda # 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 24 (duplicate)
-          ;; sta playerY,x (duplicate)
-                    ;; let playerX[3] = 107 : playerY[3] = 24
-          ;; lda # 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 107 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda # 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 24 (duplicate)
-          ;; sta playerY,x (duplicate)
-          ;; jmp InitPositionsDone (duplicate)
+                    let playerX[2] = 53 : playerY[2] = 24
+          lda # 2
+          asl
+          tax
+          lda # 53
+          sta playerX,x
+          lda # 2
+          asl
+          tax
+          lda # 24
+          sta playerY,x
+                    let playerX[3] = 107 : playerY[3] = 24
+          lda # 3
+          asl
+          tax
+          lda # 107
+          sta playerX,x
+          lda # 3
+          asl
+          tax
+          lda # 24
+          sta playerY,x
+          jmp InitPositionsDone
 
 Init4PlayerPositions
           ;; Initialize player positions for 4-player mode
@@ -162,43 +162,43 @@ Init4PlayerPositions
           ;; Constraints: Must be colocated with BeginGameLoop,
           ;; InitPositionsDone
           ;; 4-player mode positions
-                    ;; let playerX[0] = 32 : playerY[0] = 24
+                    let playerX[0] = 32 : playerY[0] = 24
           ;; Player 1: 1/5 width
-                    ;; let playerX[2] = 64 : playerY[2] = 24
-          ;; lda # 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 64 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda # 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 24 (duplicate)
-          ;; sta playerY,x (duplicate)
+                    let playerX[2] = 64 : playerY[2] = 24
+          lda # 2
+          asl
+          tax
+          lda # 64
+          sta playerX,x
+          lda # 2
+          asl
+          tax
+          lda # 24
+          sta playerY,x
           ;; Player 3: 2/5 width
-                    ;; let playerX[3] = 96 : playerY[3] = 24
-          ;; lda # 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 96 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda # 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 24 (duplicate)
-          ;; sta playerY,x (duplicate)
+                    let playerX[3] = 96 : playerY[3] = 24
+          lda # 3
+          asl
+          tax
+          lda # 96
+          sta playerX,x
+          lda # 3
+          asl
+          tax
+          lda # 24
+          sta playerY,x
           ;; Player 4: 3/5 width
-                    ;; let playerX[1] = 128 : playerY[1] = 24
-          ;; lda # 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 128 (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda # 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 24 (duplicate)
-          ;; sta playerY,x (duplicate)
+                    let playerX[1] = 128 : playerY[1] = 24
+          lda # 1
+          asl
+          tax
+          lda # 128
+          sta playerX,x
+          lda # 1
+          asl
+          tax
+          lda # 24
+          sta playerY,x
           ;; Player 2: 4/5 width
 
 InitPositionsDone
@@ -216,61 +216,61 @@ InitPositionsDone
           ;; Constraints: Must be colocated with BeginGameLoop
           ;; Initialize player states (facing direction)
           ;; Player 1 facing right
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerState,x (duplicate)
+          lda 0
+          asl
+          tax
+          lda 0
+          sta playerState,x
           ;; Player 2 facing left
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 1 (duplicate)
-          ;; sta playerState,x (duplicate)
+          lda 1
+          asl
+          tax
+          lda 1
+          sta playerState,x
           ;; Player 3 facing right
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerState,x (duplicate)
+          lda 2
+          asl
+          tax
+          lda 0
+          sta playerState,x
           ;; Player 4 facing left
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 1 (duplicate)
-          ;; sta playerState,x (duplicate)
+          lda 3
+          asl
+          tax
+          lda 1
+          sta playerState,x
 
           ;; Initialize player health (apply handicap if selected)
           ;; PlayerLocked value: 0=unlocked, 1=normal (100% health),
           ;; Optimized: Simplified player health initialization
           ;; TODO: for currentPlayer = 0 to 3
-          ;; lda currentPlayer (duplicate)
-          ;; sta GPL_playerIndex (duplicate)
+          lda currentPlayer
+          sta GPL_playerIndex
           ;; Cross-bank call to GetPlayerLocked in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(GetPlayerLocked-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(GetPlayerLocked-1)
+          pha
+          lda # <(GetPlayerLocked-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
-          ;; lda GPL_lockedState (duplicate)
+          lda GPL_lockedState
           cmp PlayerHandicapped
           bne skip_9953
-                    ;; let playerHealth[currentPlayer] = PlayerHealthHandicap : goto PlayerHealthInitDone
+                    let playerHealth[currentPlayer] = PlayerHealthHandicap : goto PlayerHealthInitDone
 skip_9953:
 
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda PlayerHealthMax (duplicate)
-          ;; sta playerHealth,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda PlayerHealthMax
+          sta playerHealth,x
 
 PlayerHealthInitDone
 .pend
@@ -279,131 +279,131 @@ next_label_1_L278:.proc
 
           ;; Initialize player timers
           ;; TODO: for currentPlayer = 0 to 3
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerTimers_W,x (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityX,x (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelX_W,x (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelY_W,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta playerTimers_W,x
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta playerVelocityX,x
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta playerVelocityXL,x
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta playerSubpixelX_W,x
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta playerSubpixelY_W,x
 .pend
 
 next_label_2_1_L314:.proc
 
           ;; Optimized: Set Players34Active flag based on character selections
-          ;; lda controllerStatus (duplicate)
+          lda controllerStatus
           and ClearPlayers34Active
-          ;; sta controllerStatus (duplicate)
-                    ;; if playerCharacter[2] = NoCharacter then goto skip_activation2
-          ;; lda controllerStatus (duplicate)
+          sta controllerStatus
+                    if playerCharacter[2] = NoCharacter then goto skip_activation2
+          lda controllerStatus
           ora SetPlayers34Active
-          ;; sta controllerStatus (duplicate)
+          sta controllerStatus
 
 skip_activation2:
-                    ;; if playerCharacter[3] = NoCharacter then goto skip_activation3
-          ;; lda controllerStatus (duplicate)
-          ;; ora SetPlayers34Active (duplicate)
-          ;; sta controllerStatus (duplicate)
+                    if playerCharacter[3] = NoCharacter then goto skip_activation3
+          lda controllerStatus
+          ora SetPlayers34Active
+          sta controllerStatus
 
 skip_activation3:
           ;; Initialize missiles
           ;; missileActive uses bit flags: bit 0 = Player 0, bit 1 =
           ;; Player 1, bit 2 = Player 2, bit 3 = Player 3
-          ;; lda # 0 (duplicate)
-          ;; sta missileActive (duplicate)
+          lda # 0
+          sta missileActive
 
           ;; Initialize remaining players count
-          ;; lda # 1 (duplicate)
-          ;; sta playersRemaining_W (duplicate)
+          lda # 1
+          sta playersRemaining_W
           ;; CharacterSelectCheckReady guarantees Player 1 is active; seed count with P1
           ;; Will be calculated
-          ;; lda # 0 (duplicate)
-          ;; sta gameEndTimer_W (duplicate)
+          lda # 0
+          sta gameEndTimer_W
           ;; No game end countdown
-          ;; lda # 0 (duplicate)
-          ;; sta eliminationCounter_W (duplicate)
+          lda # 0
+          sta eliminationCounter_W
           ;; Reset elimination order counter
 
           ;; Initialize elimination order tracking
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta eliminationOrder_W,x (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta eliminationOrder_W,x (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta eliminationOrder_W,x (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta eliminationOrder_W,x (duplicate)
+          lda 0
+          asl
+          tax
+          lda 0
+          sta eliminationOrder_W,x
+          lda 1
+          asl
+          tax
+          lda 0
+          sta eliminationOrder_W,x
+          lda 2
+          asl
+          tax
+          lda 0
+          sta eliminationOrder_W,x
+          lda 3
+          asl
+          tax
+          lda 0
+          sta eliminationOrder_W,x
 
           ;; Initialize win screen variables
-          ;; lda # 255 (duplicate)
-          ;; sta winnerPlayerIndex_W (duplicate)
+          lda # 255
+          sta winnerPlayerIndex_W
           ;; No winner yet
-          ;; lda # 0 (duplicate)
-          ;; sta displayRank_W (duplicate)
+          lda # 0
+          sta displayRank_W
           ;; No rank being displayed
-          ;; lda # 0 (duplicate)
-          ;; sta winScreenTimer_W (duplicate)
+          lda # 0
+          sta winScreenTimer_W
           ;; Reset win screen timer
 
           ;; Count additional human/CPU players beyond Player 1
-                    ;; if playerCharacter[1] = NoCharacter then goto GLI_SkipPlayer2
-          ;; lda playersRemaining_R (duplicate)
+                    if playerCharacter[1] = NoCharacter then goto GLI_SkipPlayer2
+          lda playersRemaining_R
           clc
           adc # 1
-          ;; sta playersRemaining_W (duplicate)
+          sta playersRemaining_W
 
 .pend
 
 GLI_SkipPlayer2 .proc
-                    ;; if playerCharacter[2] = NoCharacter then goto GLI_SkipPlayer3
-          ;; lda playersRemaining_R (duplicate)
-          ;; clc (duplicate)
-          ;; adc # 1 (duplicate)
-          ;; sta playersRemaining_W (duplicate)
+                    if playerCharacter[2] = NoCharacter then goto GLI_SkipPlayer3
+          lda playersRemaining_R
+          clc
+          adc # 1
+          sta playersRemaining_W
 
 .pend
 
 GLI_SkipPlayer3 .proc
-                    ;; if playerCharacter[3] = NoCharacter then goto SkipPlayer4
-          ;; lda playersRemaining_R (duplicate)
-          ;; clc (duplicate)
-          ;; adc # 1 (duplicate)
-          ;; sta playersRemaining_W (duplicate)
+                    if playerCharacter[3] = NoCharacter then goto SkipPlayer4
+          lda playersRemaining_R
+          clc
+          adc # 1
+          sta playersRemaining_W
 
 .pend
 
@@ -412,12 +412,12 @@ SkipPlayer4 .proc
           ;; by batariBASIC kernel
 
           ;; Clear paused flag in systemFlags (initialize to normal play)
-          ;; lda systemFlags (duplicate)
-          ;; and ClearSystemFlagGameStatePaused (duplicate)
-          ;; sta systemFlags (duplicate)
+          lda systemFlags
+          and ClearSystemFlagGameStatePaused
+          sta systemFlags
 
           ;; Initialize player sprite NUSIZ registers (double width)
-          ;; NUSIZ = 5: double width, single copy
+          NUSIZ = 5: double width, single copy
           ;; Player 0 (Player 1)
           NUSIZ0 = 5
           ;; Player 1 (Player 2) - multisprite kernel uses _NUSIZ1
@@ -429,32 +429,32 @@ SkipPlayer4 .proc
 
           ;; Initialize health bars
           ;; Cross-bank call to InitializeHealthBars in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(InitializeHealthBars-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(InitializeHealthBars-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(InitializeHealthBars-1)
+          pha
+          lda # <(InitializeHealthBars-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; Load arena data
           ;; Cross-bank call to LoadArena in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadArena-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadArena-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadArena-1)
+          pha
+          lda # <(LoadArena-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
           jsr BS_return

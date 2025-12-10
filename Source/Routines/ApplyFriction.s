@@ -11,53 +11,53 @@ ApplyFriction
           ;; Positive velocities (>0 and not negative) decremented,
           ;; negative velocities (≥128 in two’s complement) incremented
           ;; Check for negative velocity using twos complement (values
-          ;; ;; if playerVelocityX[temp1] > 0 then let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
+          ;; if playerVelocityX[temp1] > 0 then let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
           lda temp1
           asl
           tax
-          ;; lda playerVelocityX,x (duplicate)
+          lda playerVelocityX,x
           beq skip_6043
           dec playerVelocityX,x
 skip_6043:
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityX,x (duplicate)
-          ;; beq skip_5005 (duplicate)
-          ;; dec playerVelocityX,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          beq skip_5005
+          dec playerVelocityX,x
 skip_5005:
 
 
           ;; ≥ 128 are negative)
           ;; Also zero subpixel if velocity reaches zero
-          ;; ;; if playerVelocityX[temp1] & $80 then let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityX,x (duplicate)
+          ;; if playerVelocityX[temp1] & $80 then let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
           and $80
-          ;; beq skip_849 (duplicate)
+          beq skip_849
           inc playerVelocityX,x
 skip_849:
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityX,x (duplicate)
-          ;; and $80 (duplicate)
-          ;; beq skip_2598 (duplicate)
-          ;; inc playerVelocityX,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          and $80
+          beq skip_2598
+          inc playerVelocityX,x
 skip_2598:
 
 
-                    ;; if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityX,x (duplicate)
+                    if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
           bne skip_5069
-          ;; lda # 0 (duplicate)
+          lda # 0
           sta playerVelocityXL,x
 skip_5069:
           rts

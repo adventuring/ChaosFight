@@ -24,7 +24,7 @@ StartMusic .proc
           ;;
           ;; Delay
 
-          ;; AUDCV = (AUDC << 4) | AUDV (packed into single byte)
+          AUDCV = (AUDC << 4) | AUDV (packed into single byte)
 
           ;; High byte of pointer = 0 indicates voice inactive
 
@@ -95,8 +95,8 @@ StartMusic .proc
           lda # 0
           sta musicVoice0Pointer
 
-          ;; lda # 0 (duplicate)
-          ;; sta musicVoice1Pointer (duplicate)
+          lda # 0
+          sta musicVoice1Pointer
 
 
 
@@ -110,8 +110,8 @@ StartMusic .proc
 
           ;; Route to correct bank based on song ID
 
-                    ;; if temp1 < Bank0MinSongID then goto LoadSongFromBank15
-          ;; lda temp1 (duplicate)
+                    if temp1 < Bank0MinSongID then goto LoadSongFromBank15
+          lda temp1
           cmp Bank0MinSongID
           bcs skip_3704
           jmp LoadSongFromBank15
@@ -122,34 +122,34 @@ skip_3704:
           ;; Song in Bank 1
 
           ;; Cross-bank call to LoadSongPointer in bank 1
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadSongPointer-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadSongPointer-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadSongPointer-1)
+          pha
+          lda # <(LoadSongPointer-1)
+          pha
                     ldx # 0
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
           ;; Cross-bank call to LoadSongVoice1PointerBank1 in bank 1
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadSongVoice1PointerBank1-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadSongVoice1PointerBank1-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 0 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadSongVoice1PointerBank1-1)
+          pha
+          lda # <(LoadSongVoice1PointerBank1-1)
+          pha
+                    ldx # 0
+          jmp BS_jsr
+return_point:
 
 
-          ;; jmp LoadSongPointersDone (duplicate)
+          jmp LoadSongPointersDone
 
 LoadSongFromBank15
 
@@ -158,7 +158,7 @@ LoadSongFromBank15
 
           jsr LoadSongPointerBank15
 
-          ;; jsr LoadSongVoice1PointerBank15 (duplicate)
+          jsr LoadSongVoice1PointerBank15
 
 LoadSongPointersDone
 
@@ -169,11 +169,11 @@ LoadSongPointersDone
 
           ;; Store initial pointers for looping (Chaotica only)
 
-          ;; lda songPointer (duplicate)
-          ;; sta musicVoice0Pointer (duplicate)
+          lda songPointer
+          sta musicVoice0Pointer
 
-          ;; lda songPointer (duplicate)
-          ;; sta musicVoice0StartPointer_W (duplicate)
+          lda songPointer
+          sta musicVoice0StartPointer_W
 
 
 
@@ -183,28 +183,28 @@ LoadSongPointersDone
 
           ;; Store initial Voice 1 pointer for looping (Chaotica only)
 
-          ;; lda songPointer (duplicate)
-          ;; sta musicVoice1Pointer (duplicate)
+          lda songPointer
+          sta musicVoice1Pointer
 
-          ;; lda songPointer (duplicate)
-          ;; sta musicVoice1StartPointer_W (duplicate)
+          lda songPointer
+          sta musicVoice1StartPointer_W
 
 
 
           ;; Store current song ID for looping check
 
-          ;; lda temp1 (duplicate)
-          ;; sta currentSongID_W (duplicate)
+          lda temp1
+          sta currentSongID_W
 
 
 
           ;; Initialize frame counters to trigger first note load
 
-          ;; lda # 1 (duplicate)
-          ;; sta musicVoice0Frame_W (duplicate)
+          lda # 1
+          sta musicVoice0Frame_W
 
-          ;; lda # 1 (duplicate)
-          ;; sta musicVoice1Frame_W (duplicate)
+          lda # 1
+          sta musicVoice1Frame_W
 
 
 
@@ -212,7 +212,7 @@ LoadSongPointersDone
 
           ;; PlayMusic will be called every frame from MainLoop
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -277,7 +277,7 @@ PlayMusic .proc
 
           ;; Update Voice 0 if active
 
-          ;; jsr UpdateMusicVoice0 (duplicate)
+          jsr UpdateMusicVoice0
 
 
 
@@ -285,7 +285,7 @@ PlayMusic .proc
 
 
 
-          ;; jsr UpdateMusicVoice1 (duplicate)
+          jsr UpdateMusicVoice1
 
 
 
@@ -297,22 +297,22 @@ PlayMusic .proc
 
           ;; Voice 0 still active, no reset needed
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Voice 1 still active, no reset needed
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Both voices inactive - check if Chaotica (song ID 26)
 
-          ;; lda currentSongID_R (duplicate)
-          ;; cmp # 26 (duplicate)
+          lda currentSongID_R
+          cmp # 26
           bne skip_1628
-          ;; jmp IsChaotica (duplicate)
+          jmp IsChaotica
 skip_1628:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -321,21 +321,21 @@ IsChaotica .proc
           ;; Both voices ended and song is Chaotica - reset to song head
           ;; Returns: Far (return otherbank)
 
-          ;; lda musicVoice0StartPointer_R (duplicate)
-          ;; sta musicVoice0Pointer (duplicate)
+          lda musicVoice0StartPointer_R
+          sta musicVoice0Pointer
 
-          ;; lda musicVoice1StartPointer_R (duplicate)
-          ;; sta musicVoice1Pointer (duplicate)
+          lda musicVoice1StartPointer_R
+          sta musicVoice1Pointer
 
-          ;; lda # 1 (duplicate)
-          ;; sta musicVoice0Frame_W (duplicate)
+          lda # 1
+          sta musicVoice0Frame_W
 
-          ;; lda # 1 (duplicate)
-          ;; sta musicVoice1Frame_W (duplicate)
+          lda # 1
+          sta musicVoice1Frame_W
 
           ;; tail call
 
-          ;; jmp PlayMusic (duplicate)
+          jmp PlayMusic
 
 .pend
 
@@ -385,25 +385,25 @@ CalculateMusicVoiceEnvelope .proc
 
           ;; Get voice-specific variables
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_1004 (duplicate)
+          lda temp1
+          cmp # 0
+          bne skip_1004
           ;; TODO: CMVE_GetVoice0Vars
 skip_1004:
 
 
           ;; Voice 1
 
-          ;; lda musicVoice1TotalFrames_R (duplicate)
-          ;; sta temp2 (duplicate)
+          lda musicVoice1TotalFrames_R
+          sta temp2
 
-          ;; lda musicVoice1Frame_R (duplicate)
-          ;; sta temp3 (duplicate)
+          lda musicVoice1Frame_R
+          sta temp3
 
-          ;; lda musicVoice1TargetAUDV_R (duplicate)
-          ;; sta temp5 (duplicate)
+          lda musicVoice1TargetAUDV_R
+          sta temp5
 
-          ;; jmp CMVE_CalcElapsed (duplicate)
+          jmp CMVE_CalcElapsed
 
 .pend
 
@@ -412,14 +412,14 @@ CMVE_GetVoice0Vars .proc
           ;; Voice 0
           ;; Returns: Far (return thisbank)
 
-          ;; lda musicVoice0TotalFrames_R (duplicate)
-          ;; sta temp2 (duplicate)
+          lda musicVoice0TotalFrames_R
+          sta temp2
 
-          ;; lda musicVoice0Frame_R (duplicate)
-          ;; sta temp3 (duplicate)
+          lda musicVoice0Frame_R
+          sta temp3
 
-          ;; lda musicVoice0TargetAUDV_R (duplicate)
-          ;; sta temp5 (duplicate)
+          lda musicVoice0TargetAUDV_R
+          sta temp5
 
 .pend
 
@@ -428,31 +428,31 @@ CMVE_CalcElapsed .proc
           ;; Calculate frames elapsed = TotalFrames - FrameCounter
           ;; Returns: Far (return thisbank)
 
-          ;; ;; let temp4 = temp2 - temp3          lda temp2          sec          sbc temp3          sta temp4
-          ;; lda temp2 (duplicate)
+          ;; let temp4 = temp2 - temp3          lda temp2          sec          sbc temp3          sta temp4
+          lda temp2
           sec
           sbc temp3
-          ;; sta temp4 (duplicate)
+          sta temp4
 
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp3 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp2
+          sec
+          sbc temp3
+          sta temp4
 
 
           ;; Check if in attack phase (first NoteAttackFrames frames)
 
-                    ;; if temp4 < NoteAttackFrames then CMVE_ApplyAttack
+                    if temp4 < NoteAttackFrames then CMVE_ApplyAttack
 
           ;; Check if in decay phase (last NoteDecayFrames frames)
 
-                    ;; if temp3 <= NoteDecayFrames then CMVE_ApplyDecay
-          ;; lda temp3 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc NoteDecayFrames (duplicate)
+                    if temp3 <= NoteDecayFrames then CMVE_ApplyDecay
+          lda temp3
+          sec
+          sbc NoteDecayFrames
           bcc CMVE_ApplyDecay
           beq CMVE_ApplyDecay
-          ;; jmp skip_7171 (duplicate)
+          jmp skip_7171
 CMVE_ApplyDecay:
 skip_7171:
 
@@ -494,52 +494,52 @@ CMVE_ApplyAttack .proc
           ;; Formula: AUDV = Target - NoteAttackFrames + frames_elapsed
 
           ;; Attack: AUDV = Target - NoteAttackFrames + frames_elapsed
-          ;; lda temp5 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp5
+          sta temp6
 
-          ;; ;; let temp6 = temp6 - NoteAttackFrames          lda temp6          sec          sbc NoteAttackFrames          sta temp6
-          ;; lda temp6 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc NoteAttackFrames (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp6 - NoteAttackFrames          lda temp6          sec          sbc NoteAttackFrames          sta temp6
+          lda temp6
+          sec
+          sbc NoteAttackFrames
+          sta temp6
 
-          ;; lda temp6 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc NoteAttackFrames (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp6
+          sec
+          sbc NoteAttackFrames
+          sta temp6
 
 
           ;; Check for wraparound: clamp to 0 if negative
 
-                    ;; let temp6 = temp6 + temp4
+                    let temp6 = temp6 + temp4
 
-                    ;; if temp6 & $80 then let temp6 = 0
-          ;; lda temp6 (duplicate)
+                    if temp6 & $80 then let temp6 = 0
+          lda temp6
           and #$80
-          ;; beq skip_3128 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp6 (duplicate)
+          beq skip_3128
+          lda # 0
+          sta temp6
 skip_3128:
 
           ;; Set voice-specific AUDV
-          ;; lda temp6 (duplicate)
-          ;; cmp # 16 (duplicate)
-          ;; bcc skip_8808 (duplicate)
-          ;; lda # 15 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp6
+          cmp # 16
+          bcc skip_8808
+          lda # 15
+          sta temp6
 skip_8808:
 
 
-          ;; rts (duplicate)
+          rts
 
-          ;; lda temp6 (duplicate)
-          ;; sta AUDV1 (duplicate)
+          lda temp6
+          sta AUDV1
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
-;; CMVE_ApplyDecay .proc (duplicate)
+CMVE_ApplyDecay .proc
 
           ;; Helper: Applies decay envelope (ramps down volume)
           ;; Returns: Near (return thisbank) - called same-bank
@@ -570,52 +570,52 @@ skip_8808:
 
           ;; Formula: AUDV = Target - (NoteDecayFrames - FrameCounter + 1)
 
-          ;; lda temp5 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp5
+          sta temp6
 
-          ;; ;; let temp6 = temp6 - NoteDecayFrames          lda temp6          sec          sbc NoteDecayFrames          sta temp6
-          ;; lda temp6 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc NoteDecayFrames (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp6 - NoteDecayFrames          lda temp6          sec          sbc NoteDecayFrames          sta temp6
+          lda temp6
+          sec
+          sbc NoteDecayFrames
+          sta temp6
 
-          ;; lda temp6 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc NoteDecayFrames (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp6
+          sec
+          sbc NoteDecayFrames
+          sta temp6
 
 
-                    ;; let temp6 = temp6 + temp3
+                    let temp6 = temp6 + temp3
 
           ;; Check for wraparound: clamp to 0 if negative
 
           dec temp6
 
-                    ;; if temp6 & $80 then let temp6 = 0
-          ;; lda temp6 (duplicate)
-          ;; and #$80 (duplicate)
-          ;; beq skip_3128 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta temp6 (duplicate)
-;; skip_3128: (duplicate)
+                    if temp6 & $80 then let temp6 = 0
+          lda temp6
+          and #$80
+          beq skip_3128
+          lda # 0
+          sta temp6
+skip_3128:
 
           ;; Set voice-specific AUDV
-          ;; lda temp6 (duplicate)
-          ;; cmp # 16 (duplicate)
-          ;; bcc skip_8808 (duplicate)
-          ;; lda # 15 (duplicate)
-          ;; sta temp6 (duplicate)
-;; skip_8808: (duplicate)
+          lda temp6
+          cmp # 16
+          bcc skip_8808
+          lda # 15
+          sta temp6
+skip_8808:
 
 
-          ;; rts (duplicate)
+          rts
 
-          ;; lda temp6 (duplicate)
-          ;; sta AUDV1 (duplicate)
+          lda temp6
+          sta AUDV1
 
-          ;; rts (duplicate)
+          rts
 
-;; .pend (no matching .proc)
+.pend (no matching .proc)
 
 UpdateMusicVoice0 .proc
 
@@ -659,26 +659,26 @@ UpdateMusicVoice0 .proc
 
           ;; Apply envelope using shared calculation
 
-          ;; lda # 0 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 0
+          sta temp1
 
           ;; Decrement frame counter
 
-          ;; jsr CalculateMusicVoiceEnvelope (duplicate)
+          jsr CalculateMusicVoiceEnvelope
 
           ;; Fix RMW: Read from _R, modify, write to _W
 
-          ;; lda musicVoice0Frame_R (duplicate)
-          ;; sec (duplicate)
-          ;; sbc # 1 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda musicVoice0Frame_R
+          sec
+          sbc # 1
+          sta temp4
 
-          ;; lda temp4 (duplicate)
-          ;; sta musicVoice0Frame_W (duplicate)
+          lda temp4
+          sta musicVoice0Frame_W
 
           ;; Frame counter reached 0 - load next note from appropriate
 
-          ;; rts (duplicate)
+          rts
 
           ;; bank
 
@@ -688,25 +688,25 @@ UpdateMusicVoice0 .proc
 
           ;; Song in Bank 15
 
-          ;; jsr LoadMusicNote0Bank15 (duplicate)
+          jsr LoadMusicNote0Bank15
 
           ;; Song in Bank 1
 
           ;; Cross-bank call to LoadMusicNote0 in bank 1
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadMusicNote0-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadMusicNote0-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 0 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadMusicNote0-1)
+          pha
+          lda # <(LoadMusicNote0-1)
+          pha
+                    ldx # 0
+          jmp BS_jsr
+return_point:
 
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
@@ -780,26 +780,26 @@ UpdateMusicVoice1 .proc
 
           ;; Apply envelope using shared calculation
 
-          ;; lda # 1 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 1
+          sta temp1
 
           ;; Decrement frame counter
 
-          ;; jsr CalculateMusicVoiceEnvelope (duplicate)
+          jsr CalculateMusicVoiceEnvelope
 
           ;; Fix RMW: Read from _R, modify, write to _W
 
-          ;; lda musicVoice1Frame_R (duplicate)
-          ;; sec (duplicate)
-          ;; sbc # 1 (duplicate)
-          ;; sta temp5 (duplicate)
+          lda musicVoice1Frame_R
+          sec
+          sbc # 1
+          sta temp5
 
-          ;; lda temp5 (duplicate)
-          ;; sta musicVoice1Frame_W (duplicate)
+          lda temp5
+          sta musicVoice1Frame_W
 
           ;; Frame counter reached 0 - load next note from appropriate
 
-          ;; rts (duplicate)
+          rts
 
           ;; bank
 
@@ -809,25 +809,25 @@ UpdateMusicVoice1 .proc
 
           ;; Song in Bank 15
 
-          ;; jsr LoadMusicNote1Bank15 (duplicate)
+          jsr LoadMusicNote1Bank15
 
           ;; Song in Bank 1
 
           ;; Cross-bank call to LoadMusicNote1 in bank 1
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadMusicNote1-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadMusicNote1-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 0 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadMusicNote1-1)
+          pha
+          lda # <(LoadMusicNote1-1)
+          pha
+                    ldx # 0
+          jmp BS_jsr
+return_point:
 
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
@@ -867,30 +867,30 @@ UpdateMusicVoice1 .proc
 
           ;; Zero TIA volumes
 
-          ;; AUDV0 = 0 (duplicate)
+          AUDV0 = 0
 
-          ;; AUDV1 = 0 (duplicate)
+          AUDV1 = 0
 
 
 
           ;; Clear voice pointers (high byte = 0 means inactive)
 
-          ;; lda # 0 (duplicate)
-          ;; sta musicVoice0Pointer (duplicate)
+          lda # 0
+          sta musicVoice0Pointer
 
-          ;; lda # 0 (duplicate)
-          ;; sta musicVoice1Pointer (duplicate)
+          lda # 0
+          sta musicVoice1Pointer
 
 
 
           ;; Reset frame counters
 
-          ;; lda # 0 (duplicate)
-          ;; sta musicVoice0Frame_W (duplicate)
+          lda # 0
+          sta musicVoice0Frame_W
 
-          ;; lda # 0 (duplicate)
-          ;; sta musicVoice1Frame_W (duplicate)
+          lda # 0
+          sta musicVoice1Frame_W
 
-          ;; jsr BS_return (duplicate)
-;; .pend (extra - no matching .proc)
+          jsr BS_return
+.pend (extra - no matching .proc)
 

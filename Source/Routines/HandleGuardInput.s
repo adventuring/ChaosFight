@@ -28,41 +28,41 @@ skip_3745:
 HGI_HandleDownPressed .proc
           ;; DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           ;; Returns: Far (return otherbank)
-                    ;; let temp4 = playerCharacter[temp1]         
-          ;; lda temp1 (duplicate)
+                    let temp4 = playerCharacter[temp1]         
+          lda temp1
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
+          lda playerCharacter,x
           sta temp4
           jsr BS_return
-          ;; lda temp4 (duplicate)
+          lda temp4
           cmp # 2
-          ;; bne skip_5422 (duplicate)
-          ;; jmp DragonOfStormsDown (duplicate)
+          bne skip_5422
+          jmp DragonOfStormsDown
 skip_5422:
 
-          ;; lda temp4 (duplicate)
-          ;; cmp # 6 (duplicate)
-          ;; bne skip_3530 (duplicate)
-          ;; jmp HarpyDown (duplicate)
+          lda temp4
+          cmp # 6
+          bne skip_3530
+          jmp HarpyDown
 skip_3530:
 
-          ;; lda temp4 (duplicate)
-          ;; cmp # 8 (duplicate)
-          ;; bne skip_9973 (duplicate)
-          ;; jmp FrootyDown (duplicate)
+          lda temp4
+          cmp # 8
+          bne skip_9973
+          jmp FrootyDown
 skip_9973:
 
-          ;; lda temp4 (duplicate)
-          ;; cmp # 13 (duplicate)
-          ;; bne skip_2334 (duplicate)
-          ;; jmp DCD_HandleRoboTitoDown_HGI (duplicate)
+          lda temp4
+          cmp # 13
+          bne skip_2334
+          jmp DCD_HandleRoboTitoDown_HGI
 skip_2334:
 
           ;; Tail call: goto instead of gosub to save 2 bytes on sta
 
           ;; Same-bank call (both in Bank 12) - saves 2 bytes vs cross-bank
-          ;; jmp StandardGuard (duplicate)
+          jmp StandardGuard
 
 .pend
 
@@ -71,44 +71,44 @@ DCD_HandleRoboTitoDown_HGI .proc
 
           ;; Note: RoboTitoDown may return early, so we need to handle that case
           ;; Cross-bank call to RoboTitoDown in bank 13
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(RoboTitoDown-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(RoboTitoDown-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(RoboTitoDown-1)
+          pha
+          lda # <(RoboTitoDown-1)
+          pha
                     ldx # 12
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
           ;; Same-bank call (both in Bank 12) - saves 2 bytes vs cross-bank
-          ;; jmp StandardGuard (duplicate)
+          jmp StandardGuard
 
 .pend
 
 HGI_CheckGuardRelease .proc
           ;; DOWN released - check for early guard release
           ;; Returns: Far (return otherbank)
-                    ;; let temp2 = playerState[temp1] & 2         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp2 (duplicate)
+                    let temp2 = playerState[temp1] & 2         
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          sta temp2
           ;; Not guarding, nothing to do
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
           ;; Stop guard early and start cooldown
-                    ;; let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           ;; Start cooldown timer
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda GuardTimerMaxFrames (duplicate)
-          ;; sta playerTimers_W,x (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda temp1
+          asl
+          tax
+          lda GuardTimerMaxFrames
+          sta playerTimers_W,x
+          jsr BS_return
 
 .pend
 

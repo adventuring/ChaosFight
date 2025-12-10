@@ -57,12 +57,12 @@ ArenaSelect1Loop .proc
           ;; Cross-bank call to SelectUpdateAnimations in bank 6
           lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SelectUpdateAnimations-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SelectUpdateAnimations-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(SelectUpdateAnimations-1)
+          pha
+          lda # <(SelectUpdateAnimations-1)
+          pha
                     ldx # 5
           jmp BS_jsr
 return_point:
@@ -73,175 +73,175 @@ return_point:
 
           ;; Check Game Select switch - return to Character Select
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
-          ;; lda switchselect (duplicate)
+          lda switchselect
           bne skip_5627
-          ;; jmp SkipReturnToCharacterSelect (duplicate)
+          jmp SkipReturnToCharacterSelect
 skip_5627:
 
 
-          ;; jmp ReturnToCharacterSelect (duplicate)
+          jmp ReturnToCharacterSelect
 
 SkipReturnToCharacterSelect
           ;; Check fire button hold detection (1 second to return to
           ;; Character Select)
-          ;; lda # 0 (duplicate)
+          lda # 0
           sta temp1
           ;; Check Player 1 fire button
           ;; Check Player 2 fire button
-                    ;; if joy0fire then let temp1 = 1          lda joy0fire          beq skip_3554
+                    if joy0fire then let temp1 = 1          lda joy0fire          beq skip_3554
 skip_3554:
-          ;; jmp skip_3554 (duplicate)
+          jmp skip_3554
 
           ;; Check Quadtari players (3 & 4) if active
-                    ;; if joy1fire then let temp1 = 1
-          ;; lda joy1fire (duplicate)
+                    if joy1fire then let temp1 = 1
+          lda joy1fire
           beq skip_4728
-          ;; lda 1 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda 1
+          sta temp1
 skip_4728:
 
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
-                    ;; if (controllerStatus & SetQuadtariDetected) <> 0 then goto CheckQuadtariFireHold
-          ;; lda controllerStatus (duplicate)
+                    if (controllerStatus & SetQuadtariDetected) <> 0 then goto CheckQuadtariFireHold
+          lda controllerStatus
           and SetQuadtariDetected
-          ;; beq skip_4971 (duplicate)
-          ;; jmp CheckQuadtariFireHold (duplicate)
+          beq skip_4971
+          jmp CheckQuadtariFireHold
 skip_4971:
 
-          ;; If fire button held, increment timer
-                    ;; if temp1 then goto IncrementFireHold
-          ;; lda temp1 (duplicate)
-          ;; beq skip_68 (duplicate)
-          ;; jmp IncrementFireHold (duplicate)
+          If fire button held, increment timer
+                    if temp1 then goto IncrementFireHold
+          lda temp1
+          beq skip_68
+          jmp IncrementFireHold
 skip_68:
 
           ;; Fire released, reset timer
-          ;; lda # 0 (duplicate)
-          ;; sta fireHoldTimer_W (duplicate)
-          ;; jmp FireHoldCheckDone (duplicate)
+          lda # 0
+          sta fireHoldTimer_W
+          jmp FireHoldCheckDone
 
 IncrementFireHold
-          ;; lda fireHoldTimer_R (duplicate)
-          ;; sta temp2 (duplicate)
+          lda fireHoldTimer_R
+          sta temp2
           inc temp2
           ;; FramesPerSecond frames = 1 second at current TV sta
 
-          ;; lda temp2 (duplicate)
-          ;; sta fireHoldTimer_W (duplicate)
-          ;; if temp2 >= FramesPerSecond then goto ReturnToCharacterSelect
-          ;; lda temp2 (duplicate)
+          lda temp2
+          sta fireHoldTimer_W
+          if temp2 >= FramesPerSecond then goto ReturnToCharacterSelect
+          lda temp2
           cmp FramesPerSecond
 
           bcc skip_2376
 
-          ;; jmp skip_2376 (duplicate)
+          jmp skip_2376
 
           skip_2376:
 
 FireHoldCheckDone
           ;; Handle LEFT/RIGHT navigation for arena selection
-                    ;; if joy0left then goto ArenaSelectLeft
-          ;; lda joy0left (duplicate)
-          ;; beq skip_3919 (duplicate)
-          ;; jmp ArenaSelectLeft (duplicate)
+                    if joy0left then goto ArenaSelectLeft
+          lda joy0left
+          beq skip_3919
+          jmp ArenaSelectLeft
 skip_3919:
 
-          ;; jmp ArenaSelectDoneLeft (duplicate)
+          jmp ArenaSelectDoneLeft
 
 .pend
 
 ArenaSelectLeft .proc
           ;; Decrement arena, wrap from 0 to RandomArena (255)
-          ;; lda selectedArena_R (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_3849 (duplicate)
-                    ;; let selectedArena_W = RandomArena : goto ArenaSelectLeftSound
+          lda selectedArena_R
+          cmp # 0
+          bne skip_3849
+                    let selectedArena_W = RandomArena : goto ArenaSelectLeftSound
 skip_3849:
 
-          ;; lda selectedArena_R (duplicate)
-          ;; cmp RandomArena (duplicate)
-          ;; bne skip_9093 (duplicate)
-                    ;; let selectedArena_W = MaxArenaID : goto ArenaSelectLeftSound
+          lda selectedArena_R
+          cmp RandomArena
+          bne skip_9093
+                    let selectedArena_W = MaxArenaID : goto ArenaSelectLeftSound
 skip_9093:
 
-          ;; lda selectedArena_R (duplicate)
-          ;; sta temp2 (duplicate)
+          lda selectedArena_R
+          sta temp2
           dec temp2
-          ;; lda temp2 (duplicate)
-          ;; sta selectedArena_W (duplicate)
+          lda temp2
+          sta selectedArena_W
 
 .pend
 
 ArenaSelectLeftSound .proc
           ;; Play navigation sound
-          ;; lda SoundMenuNavigate (duplicate)
-          ;; sta temp1 (duplicate)
+          lda SoundMenuNavigate
+          sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlaySoundEffect-1)
+          pha
+          lda # <(PlaySoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
 ArenaSelectDoneLeft
-                    ;; if joy0right then goto ArenaSelectRight
-          ;; lda joy0right (duplicate)
-          ;; beq skip_1901 (duplicate)
-          ;; jmp ArenaSelectRight (duplicate)
+                    if joy0right then goto ArenaSelectRight
+          lda joy0right
+          beq skip_1901
+          jmp ArenaSelectRight
 skip_1901:
 
-          ;; jmp ArenaSelectDoneRight (duplicate)
+          jmp ArenaSelectDoneRight
 
 .pend
 
 ArenaSelectRight .proc
           ;; Increment arena, wrap from MaxArenaID to 0, then to
           ;; RandomArena
-          ;; lda selectedArena_R (duplicate)
-          ;; cmp MaxArenaID (duplicate)
-          ;; bne skip_4092 (duplicate)
-                    ;; let selectedArena_W = RandomArena : goto ArenaSelectRightSound
+          lda selectedArena_R
+          cmp MaxArenaID
+          bne skip_4092
+                    let selectedArena_W = RandomArena : goto ArenaSelectRightSound
 skip_4092:
 
-          ;; lda selectedArena_R (duplicate)
-          ;; cmp RandomArena (duplicate)
-          ;; bne skip_2709 (duplicate)
-                    ;; let selectedArena_W = 0 : goto ArenaSelectRightSound
+          lda selectedArena_R
+          cmp RandomArena
+          bne skip_2709
+                    let selectedArena_W = 0 : goto ArenaSelectRightSound
 skip_2709:
 
-          ;; lda selectedArena_R (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; inc temp2 (duplicate)
+          lda selectedArena_R
+          sta temp2
+          inc temp2
           ;; Wrap from 255 to 0 if needed
-          ;; lda temp2 (duplicate)
-          ;; sta selectedArena_W (duplicate)
-                    ;; if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0
+          lda temp2
+          sta selectedArena_W
+                    if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0
 
 .pend
 
 ArenaSelectRightSound .proc
           ;; Play navigation sound
-          ;; lda SoundMenuNavigate (duplicate)
-          ;; sta temp1 (duplicate)
+          lda SoundMenuNavigate
+          sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlaySoundEffect-1)
+          pha
+          lda # <(PlaySoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
 ArenaSelectDoneRight
@@ -253,10 +253,10 @@ ArenaSelectDoneRight
           ;; Note: Tens digit only shown for arenas 10-32 (tensDigit >
           ;; 0)
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
-          ;; lda selectedArena_R (duplicate)
-          ;; cmp RandomArena (duplicate)
-          ;; bne skip_5275 (duplicate)
-          ;; jmp DisplayRandomArena (duplicate)
+          lda selectedArena_R
+          cmp RandomArena
+          bne skip_5275
+          jmp DisplayRandomArena
 skip_5275:
 
 
@@ -264,107 +264,107 @@ skip_5275:
           ;; Convert to two-digit display: tens and ones
           ;; Supports up to 32 arenas (tens digit: blank for 1-9, 1 for
           ;; 10-19, 2 for 20-29, 3 for 30-32)
-          ;; lda selectedArena_R (duplicate)
+          lda selectedArena_R
           clc
           adc # 1
-          ;; sta temp1 (duplicate)
+          sta temp1
           ;; arenaNumber = arena number (1-32)
           ;; Fast BCD extraction: extract tens and ones digits using assembly
           ;; For arena numbers 1-32, extract tens (0-3) and ones (0-9) digits
-            ;; lda temp1 (duplicate)
-                    ;; ldx # 0 (duplicate)
-            ;; jmp FastBCDStart (duplicate)
+            lda temp1
+                    ldx # 0
+            jmp FastBCDStart
 FastBCDOnesDigit
-            ;; adc # 10 (duplicate)
-            ;; sta temp4 (duplicate)
+            adc # 10
+            sta temp4
                     stx temp2
-            ;; jmp FastBCDDone (duplicate)
+            jmp FastBCDDone
 FastBCDMaxTens
-            ;; sta temp4 (duplicate)
-                    ;; stx temp2 (duplicate)
-            ;; jmp FastBCDDone (duplicate)
+            sta temp4
+                    stx temp2
+            jmp FastBCDDone
 FastBCDStart
 FastBCDDivideBy10
             sec
             sbc # 10
-            ;; bcc FastBCDOnesDigit (duplicate)
+            bcc FastBCDOnesDigit
             inx
           ;; TODO: cpx #3
-            ;; beq FastBCDMaxTens (duplicate)
-            ;; jmp FastBCDDivideBy10 (duplicate)
+            beq FastBCDMaxTens
+            jmp FastBCDDivideBy10
 FastBCDDone
           ;; temp2 = tens digit (0-3), temp4 = ones digit (0-9)
 
           ;; Draw tens digit (player4) - only if tensDigit > 0 (for
           ;; arenas 10-32)
-          ;; lda temp2 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bcc skip_4336 (duplicate)
+          lda temp2
+          cmp # 1
+          bcc skip_4336
 skip_4336:
 
 
-          ;; jmp SkipTens (duplicate)
+          jmp SkipTens
 
 .pend
 
 DrawTensDigit .proc
           ;; Set P4 fixed position and color (arena digits)
-          ;; lda temp2 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda # 80 (duplicate)
-          ;; sta player4x (duplicate)
-          ;; lda # 20 (duplicate)
-          ;; sta player4y (duplicate)
-          ;; lda $0E(14) (duplicate)
-          ;; sta COLUP4 (duplicate)
+          lda temp2
+          sta temp1
+          lda # 80
+          sta player4x
+          lda # 20
+          sta player4y
+          lda $0E(14)
+          sta COLUP4
           ;; Use player4 for tens digit
-          ;; lda # 4 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 4
+          sta temp3
           ;; Cross-bank call to SetGlyph in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetGlyph-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetGlyph-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetGlyph-1)
+          pha
+          lda # <(SetGlyph-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
 .pend
 
 SkipTens .proc
           ;; Draw ones digit (player5)
-          ;; lda temp4 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp4
+          sta temp1
           ;; Set P5 fixed position and color (arena digits)
-          ;; lda # 88 (duplicate)
-          ;; sta player5x (duplicate)
-          ;; lda # 20 (duplicate)
-          ;; sta player5y (duplicate)
-          ;; lda $0E(14) (duplicate)
-          ;; sta COLUP5 (duplicate)
+          lda # 88
+          sta player5x
+          lda # 20
+          sta player5y
+          lda $0E(14)
+          sta COLUP5
           ;; Use player5 for ones digit
-          ;; lda # 5 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 5
+          sta temp3
           ;; Cross-bank call to SetGlyph in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetGlyph-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetGlyph-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetGlyph-1)
+          pha
+          lda # <(SetGlyph-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
-          ;; jmp DisplayDone (duplicate)
+          jmp DisplayDone
 
 .pend
 
@@ -372,106 +372,106 @@ DisplayRandomArena .proc
           ;; Display ?? for random arena
           ;; Use player4 and player5 for two question marks
           ;; Question mark is digit 10 (hex A) in font
-          ;; lda # 10 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 10
+          sta temp1
           ;; First question mark: set P4 fixed position/color
-          ;; lda # 80 (duplicate)
-          ;; sta player4x (duplicate)
-          ;; lda # 20 (duplicate)
-          ;; sta player4y (duplicate)
-          ;; lda $0E(14) (duplicate)
-          ;; sta COLUP4 (duplicate)
+          lda # 80
+          sta player4x
+          lda # 20
+          sta player4y
+          lda $0E(14)
+          sta COLUP4
           ;; White
-          ;; lda # 4 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 4
+          sta temp3
           ;; Use player4
           ;; Cross-bank call to SetGlyph in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetGlyph-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetGlyph-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetGlyph-1)
+          pha
+          lda # <(SetGlyph-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
           ;; Second question mark: set P5 fixed position/color
-          ;; lda # 88 (duplicate)
-          ;; sta player5x (duplicate)
-          ;; lda # 20 (duplicate)
-          ;; sta player5y (duplicate)
-          ;; lda $0E(14) (duplicate)
-          ;; sta COLUP5 (duplicate)
+          lda # 88
+          sta player5x
+          lda # 20
+          sta player5y
+          lda $0E(14)
+          sta COLUP5
           ;; Use player5
-          ;; lda # 5 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 5
+          sta temp3
           ;; Cross-bank call to SetGlyph in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetGlyph-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetGlyph-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetGlyph-1)
+          pha
+          lda # <(SetGlyph-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
 DisplayDone
           ;; Handle fire button press (confirm selection, start game)
-                    ;; if joy0fire then goto ArenaSelectConfirm
-          ;; lda joy0fire (duplicate)
-          ;; beq skip_1340 (duplicate)
-          ;; jmp ArenaSelectConfirm (duplicate)
+                    if joy0fire then goto ArenaSelectConfirm
+          lda joy0fire
+          beq skip_1340
+          jmp ArenaSelectConfirm
 skip_1340:
 
-          ;; jmp ArenaSelectDoneConfirm (duplicate)
+          jmp ArenaSelectDoneConfirm
 
 ArenaSelectConfirm
           ;; Play selection sound
-          ;; lda SoundMenuSelect (duplicate)
-          ;; sta temp1 (duplicate)
+          lda SoundMenuSelect
+          sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlaySoundEffect-1)
+          pha
+          lda # <(PlaySoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
           ;; tail call
-          ;; jmp StartGame1 (duplicate)
+          jmp StartGame1
 
 ArenaSelectDoneConfirm
           ;; Update sound effects (active sound effects need per-frame updates)
           ;; Cross-bank call to UpdateSoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdateSoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdateSoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(UpdateSoundEffect-1)
+          pha
+          lda # <(UpdateSoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
           ;; drawscreen called by MainLoop
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 CheckQuadtariFireHold
           ;; Check Player 3 and 4 fire buttons (Quadtari)
@@ -490,19 +490,19 @@ CheckQuadtariFireHold
           ;; Constraints: Must be colocated with ArenaSelect1 (called via goto)
           ;; Check Player 3 and 4 fire buttons (Quadtari)
           ;; Player 3 fire button (left port, odd frame)
-                    ;; if !INPT0{7} then let temp1 = 1
+                    if !INPT0{7} then let temp1 = 1
 
           ;; Player 4 fire button (right port, odd frame)
-                    ;; if !INPT2{7} then let temp1 = 1
+                    if !INPT2{7} then let temp1 = 1
           bit INPT2
           bmi skip_78
-          ;; lda 1 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda 1
+          sta temp1
 skip_78:
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 ReturnToCharacterSelect
-          ;; Return to Character Select screen
+          Return to Character Select screen
           ;;
           ;; Input: None (called from ArenaSelect1)
           ;;
@@ -515,25 +515,25 @@ ReturnToCharacterSelect
           ;; mode sta
 
           ;; Constraints: Must be colocated with ArenaSelect1
-          ;; lda # 0 (duplicate)
-          ;; sta fireHoldTimer_W (duplicate)
-          ;; lda ModeCharacterSelect (duplicate)
-          ;; sta gameMode (duplicate)
+          lda # 0
+          sta fireHoldTimer_W
+          lda ModeCharacterSelect
+          sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(ChangeGameMode-1)
+          pha
+          lda # <(ChangeGameMode-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -550,23 +550,23 @@ StartGame1 .proc
           ;; mode sta
 
           ;; Constraints: Must be colocated with ArenaSelect1
-          ;; lda ModeGame (duplicate)
-          ;; sta gameMode (duplicate)
+          lda ModeGame
+          sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(ChangeGameMode-1)
+          pha
+          lda # <(ChangeGameMode-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
           ;;
           ;; Character Display and Animation
 
@@ -607,55 +607,55 @@ ArenaSelectDrawCharacters .proc
 
           ;; Playfield defined by ArenaSelect data; no per-frame register writes
           ;; Draw Player 1 character (top left) if selected
-                    ;; if playerCharacter[0] = NoCharacter then goto ArenaSelectDoneDrawP0
+                    if playerCharacter[0] = NoCharacter then goto ArenaSelectDoneDrawP0
 
-                    ;; if playerCharacter[0] = CPUCharacter then goto ArenaSelectDoneDrawP0
-          ;; lda # 0 (duplicate)
+                    if playerCharacter[0] = CPUCharacter then goto ArenaSelectDoneDrawP0
+          lda # 0
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp CPUCharacter (duplicate)
-          ;; bne skip_2941 (duplicate)
-          ;; jmp ArenaSelectDoneDrawP0 (duplicate)
+          lda playerCharacter,x
+          cmp CPUCharacter
+          bne skip_2941
+          jmp ArenaSelectDoneDrawP0
 skip_2941:
 
-                    ;; if playerCharacter[0] = RandomCharacter then goto ArenaSelectDoneDrawP0
-          ;; lda # 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp RandomCharacter (duplicate)
-          ;; bne skip_5028 (duplicate)
-          ;; jmp ArenaSelectDoneDrawP0 (duplicate)
+                    if playerCharacter[0] = RandomCharacter then goto ArenaSelectDoneDrawP0
+          lda # 0
+          asl
+          tax
+          lda playerCharacter,x
+          cmp RandomCharacter
+          bne skip_5028
+          jmp ArenaSelectDoneDrawP0
 skip_5028:
-          ;; lda # 0 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 0
+          sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayerPreviewSetPosition-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayerPreviewSetPosition-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayerPreviewSetPosition-1)
+          pha
+          lda # <(PlayerPreviewSetPosition-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; Cross-bank call to RenderPlayerPreview in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(RenderPlayerPreview-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(RenderPlayerPreview-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(RenderPlayerPreview-1)
+          pha
+          lda # <(RenderPlayerPreview-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
 ArenaSelectDoneDrawP0
@@ -672,55 +672,55 @@ ArenaSelectDoneDrawP0
           ;; Constraints: Must be colocated with
           ;; ArenaSelectDrawCharacters
           ;; Draw Player 2 character (top right) if selected
-                    ;; if playerCharacter[1] = NoCharacter then goto ArenaSelectDoneDrawP1
+                    if playerCharacter[1] = NoCharacter then goto ArenaSelectDoneDrawP1
 
-                    ;; if playerCharacter[1] = CPUCharacter then goto ArenaSelectDoneDrawP1
-          ;; lda # 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp CPUCharacter (duplicate)
-          ;; bne skip_7826 (duplicate)
-          ;; jmp ArenaSelectDoneDrawP1 (duplicate)
+                    if playerCharacter[1] = CPUCharacter then goto ArenaSelectDoneDrawP1
+          lda # 1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp CPUCharacter
+          bne skip_7826
+          jmp ArenaSelectDoneDrawP1
 skip_7826:
 
-                    ;; if playerCharacter[1] = RandomCharacter then goto ArenaSelectDoneDrawP1
-          ;; lda # 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp RandomCharacter (duplicate)
-          ;; bne skip_5463 (duplicate)
-          ;; jmp ArenaSelectDoneDrawP1 (duplicate)
+                    if playerCharacter[1] = RandomCharacter then goto ArenaSelectDoneDrawP1
+          lda # 1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp RandomCharacter
+          bne skip_5463
+          jmp ArenaSelectDoneDrawP1
 skip_5463:
-          ;; lda # 1 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 1
+          sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayerPreviewSetPosition-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayerPreviewSetPosition-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayerPreviewSetPosition-1)
+          pha
+          lda # <(PlayerPreviewSetPosition-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; Cross-bank call to RenderPlayerPreview in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(RenderPlayerPreview-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(RenderPlayerPreview-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(RenderPlayerPreview-1)
+          pha
+          lda # <(RenderPlayerPreview-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
 ArenaSelectDoneDrawP1
@@ -740,68 +740,68 @@ ArenaSelectDoneDrawP1
           ;; selected
           ;; No Quadtari detected; park lower previews off-screen via shared helper
           ;; Cross-bank call to SelectHideLowerPlayerPreviews in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SelectHideLowerPlayerPreviews-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SelectHideLowerPlayerPreviews-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SelectHideLowerPlayerPreviews-1)
+          pha
+          lda # <(SelectHideLowerPlayerPreviews-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
-                    ;; if playerCharacter[2] = NoCharacter then goto ArenaSelectDoneDrawP2
+                    if playerCharacter[2] = NoCharacter then goto ArenaSelectDoneDrawP2
 
-                    ;; if playerCharacter[2] = CPUCharacter then goto ArenaSelectDoneDrawP2
-          ;; lda # 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp CPUCharacter (duplicate)
-          ;; bne skip_5567 (duplicate)
-          ;; jmp ArenaSelectDoneDrawP2 (duplicate)
+                    if playerCharacter[2] = CPUCharacter then goto ArenaSelectDoneDrawP2
+          lda # 2
+          asl
+          tax
+          lda playerCharacter,x
+          cmp CPUCharacter
+          bne skip_5567
+          jmp ArenaSelectDoneDrawP2
 skip_5567:
 
-                    ;; if playerCharacter[2] = RandomCharacter then goto ArenaSelectDoneDrawP2
-          ;; lda # 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp RandomCharacter (duplicate)
-          ;; bne skip_5444 (duplicate)
-          ;; jmp ArenaSelectDoneDrawP2 (duplicate)
+                    if playerCharacter[2] = RandomCharacter then goto ArenaSelectDoneDrawP2
+          lda # 2
+          asl
+          tax
+          lda playerCharacter,x
+          cmp RandomCharacter
+          bne skip_5444
+          jmp ArenaSelectDoneDrawP2
 skip_5444:
-          ;; lda # 2 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 2
+          sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayerPreviewSetPosition-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayerPreviewSetPosition-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayerPreviewSetPosition-1)
+          pha
+          lda # <(PlayerPreviewSetPosition-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; Cross-bank call to RenderPlayerPreview in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(RenderPlayerPreview-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(RenderPlayerPreview-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(RenderPlayerPreview-1)
+          pha
+          lda # <(RenderPlayerPreview-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
 ArenaSelectDoneDrawP2
@@ -820,69 +820,69 @@ ArenaSelectDoneDrawP2
           ;; ArenaSelectDrawCharacters
           ;; Draw Player 4 character (bottom right) if Quadtari and
           ;; selected
-          ;; lda controllerStatus (duplicate)
-          ;; and SetQuadtariDetected (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_4430 (duplicate)
-          ;; jmp ArenaSelectDoneDrawP23 (duplicate)
+          lda controllerStatus
+          and SetQuadtariDetected
+          cmp # 0
+          bne skip_4430
+          jmp ArenaSelectDoneDrawP23
 skip_4430:
 
 
-                    ;; if playerCharacter[3] = NoCharacter then goto ArenaSelectDoneDrawP23
+                    if playerCharacter[3] = NoCharacter then goto ArenaSelectDoneDrawP23
 
-                    ;; if playerCharacter[3] = CPUCharacter then goto ArenaSelectDoneDrawP23
-          ;; lda # 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp CPUCharacter (duplicate)
-          ;; bne skip_1993 (duplicate)
-          ;; jmp ArenaSelectDoneDrawP23 (duplicate)
+                    if playerCharacter[3] = CPUCharacter then goto ArenaSelectDoneDrawP23
+          lda # 3
+          asl
+          tax
+          lda playerCharacter,x
+          cmp CPUCharacter
+          bne skip_1993
+          jmp ArenaSelectDoneDrawP23
 skip_1993:
 
-                    ;; if playerCharacter[3] = RandomCharacter then goto ArenaSelectDoneDrawP23
-          ;; lda # 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp RandomCharacter (duplicate)
-          ;; bne skip_4106 (duplicate)
-          ;; jmp ArenaSelectDoneDrawP23 (duplicate)
+                    if playerCharacter[3] = RandomCharacter then goto ArenaSelectDoneDrawP23
+          lda # 3
+          asl
+          tax
+          lda playerCharacter,x
+          cmp RandomCharacter
+          bne skip_4106
+          jmp ArenaSelectDoneDrawP23
 skip_4106:
-          ;; lda # 3 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 3
+          sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayerPreviewSetPosition-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayerPreviewSetPosition-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayerPreviewSetPosition-1)
+          pha
+          lda # <(PlayerPreviewSetPosition-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; Cross-bank call to RenderPlayerPreview in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(RenderPlayerPreview-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(RenderPlayerPreview-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(RenderPlayerPreview-1)
+          pha
+          lda # <(RenderPlayerPreview-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
 ArenaSelectDoneDrawP23
           ;; Skip Player 3/4 character drawing (not in 4-player mode or
           ;; not selected)
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

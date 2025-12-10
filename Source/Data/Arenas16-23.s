@@ -17,7 +17,7 @@ data_end:
 
 Arena17Playfield
           ;; Arena 17: The Spire (vertical tower platforms)
-;; playfield: (duplicate)
+playfield:
 
 %1111111111111111
 
@@ -34,7 +34,7 @@ data_end_2:
 
 Arena18Playfield
           ;; Arena 18: The Bridge (wide center platform)
-;; playfield: (duplicate)
+playfield:
 
           %0000000000000000
           %0000000000000000
@@ -51,7 +51,7 @@ data_end_3:
 
 Arena19Playfield
           ;; Arena 19: The Pits (narrow platforms with gaps)
-;; playfield: (duplicate)
+playfield:
 
           %1111000000001111
           %1111000000001111
@@ -66,7 +66,7 @@ data_end_4:
 
 Arena20Playfield
           ;; Arena 20: The Stairs (stepped platforms)
-;; playfield: (duplicate)
+playfield:
 
 %1111111111111111
 
@@ -83,7 +83,7 @@ data_end_5:
 
 Arena21Playfield
           ;; Arena 21: The Grid (checkerboard pattern)
-;; playfield: (duplicate)
+playfield:
 
           %1100110011001100
           %1100110011001100
@@ -98,7 +98,7 @@ data_end_6:
 
 Arena22Playfield
           ;; Arena 22: The Columns (vertical pillars)
-;; playfield: (duplicate)
+playfield:
 
           %1001001001001001
           %1001001001001001
@@ -113,7 +113,7 @@ data_end_7:
 
 Arena23Playfield
           ;; Arena 23: The Waves (curved platforms)
-;; playfield: (duplicate)
+playfield:
 
 %1111111111111111
 

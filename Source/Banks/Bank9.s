@@ -49,7 +49,6 @@ Bank9CodeEnds:
           ;; Include BankSwitching.s in Bank 9
           ;; Wrap in .block to create namespace Bank9BS (avoids duplicate definitions)
 Bank9BS: .block
-          current_bank = 9
-          
+          current_bank = 9        
           .include "Source/Common/BankSwitching.s"
           .bend

@@ -17,97 +17,97 @@ UpdatePlayerMovementSingle .proc
           jsr BS_return
           ;; Apply X Velocity To X Position (8.8 fixed-point)
           ;; Use batariBASIC’s built-in 16-bit addition for carry detection
-                    ;; let subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]         
+                    let subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]         
           lda currentPlayer
           asl
           tax
-          ;; lda playerSubpixelX_RL,x (duplicate)
+          lda playerSubpixelX_RL,x
           sta subpixelAccumulator
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerSubpixelX_WL,x (duplicate)
-          ;; lda temp3 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda temp2
+          sta playerSubpixelX_WL,x
+          lda temp3
           cmp # 1
           bcc skip_6578
-                    ;; let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
+                    let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
 skip_6578:
 
           ;; Apply integer velocity component
-                    ;; let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + playerVelocityX[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerSubpixelX_R,x (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityX,x (duplicate)
+                    let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + playerVelocityX[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerSubpixelX_R,x
+          sta temp6
+          lda currentPlayer
+          asl
+          tax
+          lda playerVelocityX,x
           clc
           adc temp6
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; sta playerSubpixelX_W,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          sta playerSubpixelX_W,x
           ;; Sync integer position for rendering
-                    ;; let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerSubpixelX_R,x (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; sta playerX,x (duplicate)
+                    let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerSubpixelX_R,x
+          lda currentPlayer
+          asl
+          tax
+          sta playerX,x
           ;; Apply Y Velocity To Y Position (8.8 fixed-point)
           ;; Use batariBASIC’s built-in 16-bit addition for carry detection
-                    ;; let subpixelAccumulator = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerSubpixelY_RL,x (duplicate)
-          ;; sta subpixelAccumulator (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerSubpixelY_WL,x (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bcc skip_2398 (duplicate)
-                    ;; let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + 1
+                    let subpixelAccumulator = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]         
+          lda currentPlayer
+          asl
+          tax
+          lda playerSubpixelY_RL,x
+          sta subpixelAccumulator
+          lda currentPlayer
+          asl
+          tax
+          lda temp2
+          sta playerSubpixelY_WL,x
+          lda temp3
+          cmp # 1
+          bcc skip_2398
+                    let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + 1
 skip_2398:
 
           ;; Apply integer velocity component
-                    ;; let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + playerVelocityY[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerSubpixelY_R,x (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityY,x (duplicate)
-          ;; clc (duplicate)
-          ;; adc temp6 (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; sta playerSubpixelY_W,x (duplicate)
+                    let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + playerVelocityY[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerSubpixelY_R,x
+          sta temp6
+          lda currentPlayer
+          asl
+          tax
+          lda playerVelocityY,x
+          clc
+          adc temp6
+          lda currentPlayer
+          asl
+          tax
+          sta playerSubpixelY_W,x
           ;; Sync integer position for rendering
-                    ;; let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerSubpixelY_R,x (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; sta playerY,x (duplicate)
-          ;; jsr BS_return (duplicate)
+                    let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerSubpixelY_R,x
+          lda currentPlayer
+          asl
+          tax
+          sta playerY,x
+          jsr BS_return
 
 .pend
 

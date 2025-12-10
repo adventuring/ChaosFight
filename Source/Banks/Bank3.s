@@ -9,9 +9,7 @@
           * = $F000
           .rept 256
           .byte $ff
-          .endrept  ;; Scram shadow (256 bytes of $FF)
-          * = $F100
-
+          .endrept
 Bank3DataStart:
 Character16DataStart:
 .include "Source/Generated/Character16.s"
@@ -57,7 +55,6 @@ Bank3CodeEnds:
 
           ;; Include BankSwitching.s in Bank 3
           ;; Wrap in .block to create namespace Bank3BS (avoids duplicate definitions)
-          ;; Note: BankSwitching.s now sets * = $FFE0 - bscode_length internally
 Bank3BS: .block
           current_bank = 3
           .include "Source/Common/BankSwitching.s"

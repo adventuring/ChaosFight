@@ -17,11 +17,11 @@ PlayerColors6:
 PlayerColors6_end:
 
 .else
-;; PlayerColors6: (duplicate)
+PlayerColors6:
 
           .byte $76, $46, $16, $96
 
-;; PlayerColors6_end: (duplicate)
+PlayerColors6_end:
 
 .fi
 

@@ -9,7 +9,7 @@ PlaySoundEffect .proc
           ;; Sound effects for gameplay (gameMode 6)
           ;; Uses interleaved 4-byte streams: AUDCV, AUDF, Duration,
           ;; Delay
-          ;; AUDCV = (AUDC << 4) | AUDV (packed into single byte)
+          AUDCV = (AUDC << 4) | AUDV (packed into single byte)
           ;;
           ;; High byte of pointer = 0 indicates sound inactive
           ;; Supports 2 simultaneous sound effects (one per voice)
@@ -20,7 +20,7 @@ PlaySoundEffect .proc
           ;; Plays sound effect if voice is free, else forgets it (no
           ;; queuing)
           ;; Start sound effect playback (plays sound if voice is free,
-          ;; else forgets it)
+          else forgets it)
           ;;
           ;; Input: temp1 = sound ID (0-255), musicVoice0Pointer,
           ;; musicVoice1Pointer (global 16-bit) = music voice pointers,
@@ -50,18 +50,18 @@ PlaySoundEffect .proc
           ;; Voice 0 tried first, Voice 1 as fallback
           ;; Check if music is active (music takes priority)
           jsr BS_return
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Lookup sound pointer from Sounds bank (Bank15)
           ;; Cross-bank call to LoadSoundPointer in bank 15
           lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadSoundPointer-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadSoundPointer-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadSoundPointer-1)
+          pha
+          lda # <(LoadSoundPointer-1)
+          pha
                     ldx # 14
           jmp BS_jsr
 return_point:
@@ -69,18 +69,18 @@ return_point:
 
           ;; Try Voice 0 first
 
-          ;; if soundEffectPointer then TryVoice1
-          ;; lda soundEffectPointer (duplicate)
+          if soundEffectPointer then TryVoice1
+          lda soundEffectPointer
           beq skip_8620
-          ;; jmp TryVoice1 (duplicate)
+          jmp TryVoice1
 skip_8620:
           
 
           ;; Voice 0 is free - LoadSoundPointer already set soundEffectPointer
-          ;; lda # 1 (duplicate)
+          lda # 1
           sta soundEffectFrame_W
           ;; tail call
-          ;; jmp UpdateSoundEffectVoice0 (duplicate)
+          jmp UpdateSoundEffectVoice0
 
 .pend
 
@@ -103,18 +103,18 @@ TryVoice1 .proc
           ;; Constraints: Internal helper for PlaySoundEffect, only
           ;; called when Voice 0 is busy
           ;; Try Voice 1
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Copy soundEffectPointer (var41.var42) to soundEffectPointer1 (var43.var44)
-          ;; lda var41 (duplicate)
-          ;; sta var43 (duplicate)
+          lda var41
+          sta var43
           ;; Voice 1 is free - use it
-          ;; lda var42 (duplicate)
-          ;; sta var44 (duplicate)
-          ;; lda # 1 (duplicate)
-          ;; sta soundEffectFrame1_W (duplicate)
+          lda var42
+          sta var44
+          lda # 1
+          sta soundEffectFrame1_W
           ;; tail call
-          ;; jmp UpdateSoundEffectVoice1 (duplicate)
+          jmp UpdateSoundEffectVoice1
 
 
 .pend

@@ -17,7 +17,7 @@ UpdateSingleGuardTimer .proc
           ;; bit
           ;;
           ;; Output: playerTimers_W[] decremented, playerState[] guard
-          ;; bit cleared when expired,
+          bit cleared when expired,
           ;; cooldown started when guard expires
           ;;
           ;; Mutates: temp1-temp3 (used for calculations),
@@ -39,16 +39,16 @@ UpdateSingleGuardTimer .proc
           ;;
           ;; EFFECTS: If guarding: decrements guard duration timer,
           ;; clears guard and starts cooldown when expired
-          ;; If not guarding: decrements cooldown timer (if active)
+          If not guarding: decrements cooldown timer (if active)
           ;; Check if player is guarding
-                    ;; let temp2 = playerState[temp1] & 2         
+                    let temp2 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
-          ;; lda playerState,x (duplicate)
+          lda playerState,x
           sta temp2
-          ;; if temp2 then UpdateGuardTimerActive
-          ;; lda temp2 (duplicate)
+          if temp2 then UpdateGuardTimerActive
+          lda temp2
           beq skip_2709
           jmp UpdateGuardTimerActive
 skip_2709:
@@ -56,21 +56,21 @@ skip_2709:
 
           ;; Player not guarding - decrement cooldown timer
           ;; Fix RMW: Read from _R, modify, write to _W
-                    ;; let temp3 = playerTimers_R[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerTimers_R,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = playerTimers_R[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerTimers_R,x
+          sta temp3
           jsr BS_return
           ;; No cooldown active
           dec temp3
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerTimers_W,x (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda temp1
+          asl
+          tax
+          lda temp3
+          sta playerTimers_W,x
+          jsr BS_return
 
 .pend
 
@@ -90,14 +90,14 @@ UpdateGuardTimerActive .proc
           ;; Called Routines: None
           ;; Constraints: Must be colocated with UpdateSingleGuardTimer, GuardTimerExpired
           ;; Player is guarding - decrement guard duration timer
-                    ;; let temp3 = playerTimers_R[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerTimers_R,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = playerTimers_R[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerTimers_R,x
+          sta temp3
           ;; Guard timer already expired (shouldn’t happen, but safety
-          ;; lda temp3 (duplicate)
+          lda temp3
           cmp # 0
           bne skip_3844
           ;; TODO: GuardTimerExpired
@@ -106,19 +106,19 @@ skip_3844:
           ;; check)
 
           ;; Decrement guard duration timer
-          ;; dec temp3 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerTimers_W,x (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_3844 (duplicate)
+          dec temp3
+          lda temp1
+          asl
+          tax
+          lda temp3
+          sta playerTimers_W,x
+          lda temp3
+          cmp # 0
+          bne skip_3844
           ;; TODO: GuardTimerExpired
-;; skip_3844: (duplicate)
+skip_3844:
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 .pend
 
 GuardTimerExpired .proc
@@ -141,13 +141,13 @@ GuardTimerExpired .proc
           ;; Called Routines: None
           ;; Constraints: Must be colocated with UpdateSingleGuardTimer, UpdateGuardTimerActive
           ;; Start cooldown timer (same duration as guard)
-                    ;; let playerState[temp1] = playerState[temp1] & MaskClearGuard
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda GuardTimerMaxFrames (duplicate)
-          ;; sta playerTimers_W,x (duplicate)
-          ;; jsr BS_return (duplicate)
+                    let playerState[temp1] = playerState[temp1] & MaskClearGuard
+          lda temp1
+          asl
+          tax
+          lda GuardTimerMaxFrames
+          sta playerTimers_W,x
+          jsr BS_return
 
 .pend
 

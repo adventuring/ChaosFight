@@ -9,7 +9,7 @@ CharacterExecuteNextAction:
 
 UpdateCharacterAnimations
           ;; Returns: Far (return otherbank)
-;; UpdateCharacterAnimations (duplicate)
+UpdateCharacterAnimations
 
           ;; Drives the 10fps animation system for every active player
           ;; Returns: Far (return otherbank)
@@ -23,80 +23,80 @@ UpdateCharacterAnimations
           ;; Constraints: None
           ;; CRITICAL: Skip sprite loading in Publisher Prelude and Author Prelude modes (no characters)
           jsr BS_return
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
           ;; TODO: dim UCA_quadtariActive = temp5
           lda controllerStatus
           and SetQuadtariDetected
           sta UCA_quadtariActive
           ;; TODO: for currentPlayer = 0 to 3
-          ;; ;; if currentPlayer >= 2 && !UCA_quadtariActive then goto AnimationNextPlayer
-          ;; lda currentPlayer (duplicate)
+          ;; if currentPlayer >= 2 && !UCA_quadtariActive then goto AnimationNextPlayer
+          lda currentPlayer
           cmp # 3
           bcc UCA_CheckPlayerLimit
-          ;; lda UCA_quadtariActive (duplicate)
+          lda UCA_quadtariActive
           bne UCA_CheckPlayerLimit
           jmp UpdateSprite.AnimationNextPlayer
 UCA_CheckPlayerLimit:
 
-          ;; lda currentPlayer (duplicate)
-          ;; cmp # 3 (duplicate)
-          ;; bcc UCA_CheckQuadtari (duplicate)
-          ;; lda UCA_quadtariActive (duplicate)
-          ;; bne UCA_CheckQuadtari (duplicate)
-          ;; jmp AnimationNextPlayer (duplicate)
+          lda currentPlayer
+          cmp # 3
+          bcc UCA_CheckQuadtari
+          lda UCA_quadtariActive
+          bne UCA_CheckQuadtari
+          jmp AnimationNextPlayer
 UCA_CheckQuadtari:
 
 
           ;; CRITICAL: Inlined UpdatePlayerAnimation to reduce stack depth from 19 to 17 bytes
           ;; Skip if player is eliminated (health = 0)
-                    ;; if playerHealth[currentPlayer] = 0 then goto AnimationNextPlayer
-          ;; lda currentPlayer (duplicate)
+                    if playerHealth[currentPlayer] = 0 then goto AnimationNextPlayer
+          lda currentPlayer
           asl
           tax
-          ;; lda playerHealth,x (duplicate)
-          ;; bne UCA_CheckPlayerHealth (duplicate)
-          ;; jmp AnimationNextPlayer (duplicate)
+          lda playerHealth,x
+          bne UCA_CheckPlayerHealth
+          jmp AnimationNextPlayer
 UCA_CheckPlayerHealth:
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; bne UCA_CheckCharacter (duplicate)
-          ;; jmp AnimationNextPlayer (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerHealth,x
+          bne UCA_CheckCharacter
+          jmp AnimationNextPlayer
 UCA_CheckCharacter:
 
 
           ;; Increment this sprite 10fps animation counter (NOT global
           ;; frame counter)
           ;; SCRAM read-modify-write: animationCounter_R → animationCounter_W
-          ;; ;; let temp4 = animationCounter_R[currentPlayer] + 1
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda animationCounter_R,x (duplicate)
+          ;; let temp4 = animationCounter_R[currentPlayer] + 1
+          lda currentPlayer
+          asl
+          tax
+          lda animationCounter_R,x
           clc
           adc # 1
-          ;; sta temp4 (duplicate)
+          sta temp4
 
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda animationCounter_R,x (duplicate)
-          ;; clc (duplicate)
-          ;; adc # 1 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; sta animationCounter_W,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda animationCounter_R,x
+          clc
+          adc # 1
+          sta temp4
+          lda currentPlayer
+          asl
+          tax
+          lda temp4
+          sta animationCounter_W,x
 
           ;; Check if time to advance animation frame (every AnimationFrameDelay frames)
-                    ;; if temp4 < AnimationFrameDelay then goto DoneAdvanceInlined
-          ;; lda temp4 (duplicate)
-          ;; cmp AnimationFrameDelay (duplicate)
+                    if temp4 < AnimationFrameDelay then goto DoneAdvanceInlined
+          lda temp4
+          cmp AnimationFrameDelay
           bcs UPA_CheckAnimationSpeed
-          ;; jmp DoneAdvanceInlined (duplicate)
+          jmp DoneAdvanceInlined
 UPA_CheckAnimationSpeed:
           
 
@@ -123,52 +123,52 @@ AdvanceFrame .proc
           ;; Constraints: Must be colocated with UpdatePlayerAnimation,
           ;; DoneAdvance, HandleFrame7Transition,
           ;; UpdateSprite
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta animationCounter_W,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta animationCounter_W,x
           ;; Inline AdvanceAnimationFrame
           ;; Advance to next frame in current animation action
           ;; Frame is from sprite 10fps counter
           ;; (currentAnimationFrame), not global frame
           ;; SCRAM read-modify-write: currentAnimationFrame_R → currentAnimationFrame_W
-                    ;; let temp4 = currentAnimationFrame_R[currentPlayer]
+                    let temp4 = currentAnimationFrame_R[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda currentAnimationFrame_R,x (duplicate)
-          ;; sta temp4 (duplicate)
-                    ;; let temp4 = 1 + temp4
-          ;; lda temp4 (duplicate)
-          ;; clc (duplicate)
-          ;; adc # 1 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; clc (duplicate)
-          ;; adc # 1 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; sta currentAnimationFrame_W,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda currentAnimationFrame_R,x
+          sta temp4
+                    let temp4 = 1 + temp4
+          lda temp4
+          clc
+          adc # 1
+          sta temp4
+          lda temp4
+          clc
+          adc # 1
+          sta temp4
+          lda currentPlayer
+          asl
+          tax
+          lda temp4
+          sta currentAnimationFrame_W,x
 
           ;; Check if we have completed the current action (8 frames
           ;; per action)
           ;; Use temp variable from previous increment
           ;; (temp4)
-          ;; if temp4 >= FramesPerSequence then goto HandleFrame7Transition
-          ;; lda temp4 (duplicate)
-          ;; cmp FramesPerSequence (duplicate)
+          if temp4 >= FramesPerSequence then goto HandleFrame7Transition
+          lda temp4
+          cmp FramesPerSequence
 
-          ;; bcc UPA_CheckAnimationLength (duplicate)
+          bcc UPA_CheckAnimationLength
 
-          ;; jmp UPA_CheckAnimationLength (duplicate)
+          jmp UPA_CheckAnimationLength
 
           UPA_CheckAnimationLength:
-          ;; jmp UpdateSprite (duplicate)
+          jmp UpdateSprite
 DoneAdvance
           rts
 HandleFrame7Transition
@@ -191,392 +191,392 @@ HandleFrame7Transition
           ;; CRITICAL: Inlined HandleAnimationTransition to save 4 bytes on sta
 
           ;; (was: gosub HandleAnimationTransition bank12)
-                    ;; let temp1 = currentAnimationSeq_R[currentPlayer]
+                    let temp1 = currentAnimationSeq_R[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda currentAnimationSeq_R,x (duplicate)
-          ;; sta temp1 (duplicate)
-                    ;; if ActionAttackRecovery < temp1 then goto AnimationTransitionLoopAnimation
-          ;; lda ActionAttackRecovery (duplicate)
-          ;; cmp temp1 (duplicate)
-          ;; bcs skip_613 (duplicate)
-          ;; jmp AnimationTransitionLoopAnimation (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda currentAnimationSeq_R,x
+          sta temp1
+                    if ActionAttackRecovery < temp1 then goto AnimationTransitionLoopAnimation
+          lda ActionAttackRecovery
+          cmp temp1
+          bcs skip_613
+          jmp AnimationTransitionLoopAnimation
 skip_613:
 
           
 
-          ;; jmp AnimationTransitionLoopAnimation (duplicate)
+          jmp AnimationTransitionLoopAnimation
 
 AnimationTransitionLoopAnimation
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta currentAnimationFrame_W,x (duplicate)
-          ;; jmp UpdateSprite (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta currentAnimationFrame_W,x
+          jmp UpdateSprite
 
 AnimationTransitionToIdle
-          ;; lda ActionIdle (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionIdle
+          sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          ;; jmp AnimationSetPlayerAnimationInlined (duplicate)
+          jmp AnimationSetPlayerAnimationInlined
 
 AnimationTransitionToFallen
-          ;; lda ActionFallen (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionFallen
+          sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          ;; jmp AnimationSetPlayerAnimationInlined (duplicate)
+          jmp AnimationSetPlayerAnimationInlined
 
 AnimationTransitionHandleJump
           ;; Stay on frame 7 until Y velocity goes negative
-          ;; if 0 < playerVelocityY[currentPlayer] then AnimationTransitionHandleJump_TransitionToFalling
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
+          if 0 < playerVelocityY[currentPlayer] then AnimationTransitionHandleJump_TransitionToFalling
+          lda currentPlayer
+          asl
 
-          ;; tax (duplicate)
+          tax
 
-          ;; lda playerVelocityY,x (duplicate)
-          ;; cmp # 1 (duplicate)
+          lda playerVelocityY,x
+          cmp # 1
 
-          ;; bcc skip_432 (duplicate)
+          bcc skip_432
 
-          ;; jmp skip_432 (duplicate)
+          jmp skip_432
 
           skip_432:
-          ;; lda ActionJumping (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionJumping
+          sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          ;; jmp AnimationSetPlayerAnimationInlined (duplicate)
+          jmp AnimationSetPlayerAnimationInlined
 
 AnimationTransitionHandleJump_TransitionToFalling
           ;; Falling (positive Y velocity), transition to falling
-          ;; lda ActionFalling (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionFalling
+          sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          ;; jmp AnimationSetPlayerAnimationInlined (duplicate)
+          jmp AnimationSetPlayerAnimationInlined
 
 AnimationTransitionHandleFallBack
           ;; Check wall collision using pfread
           ;; Convert player X position to playfield column (0-31)
-                    ;; let temp5 = playerX[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta temp5 (duplicate)
-          ;; ;; let temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc ScreenInsetX          sta temp5
-          ;; lda temp5 (duplicate)
+                    let temp5 = playerX[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerX,x
+          sta temp5
+          ;; let temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc ScreenInsetX          sta temp5
+          lda temp5
           sec
           sbc ScreenInsetX
-          ;; sta temp5 (duplicate)
+          sta temp5
 
-          ;; lda temp5 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc ScreenInsetX (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp5
+          sec
+          sbc ScreenInsetX
+          sta temp5
 
-          ;; ;; let temp5 = temp5 / 4          lda temp5          lsr          lsr          sta temp5
-          ;; lda temp5 (duplicate)
+          ;; let temp5 = temp5 / 4          lda temp5          lsr          lsr          sta temp5
+          lda temp5
           lsr
-          ;; lsr (duplicate)
-          ;; sta temp5 (duplicate)
+          lsr
+          sta temp5
 
-          ;; lda temp5 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp5
+          lsr
+          lsr
+          sta temp5
 
           ;; Convert player Y position to playfield row (0-7)
-                    ;; let temp6 = playerY[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = playerY[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerY,x
+          sta temp6
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; ;; let temp6 = temp6 / 8          lda temp6          lsr          lsr          lsr          sta temp6
-          ;; lda temp6 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp6 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerY,x
+          sta temp6
+          ;; let temp6 = temp6 / 8          lda temp6          lsr          lsr          lsr          sta temp6
+          lda temp6
+          lsr
+          lsr
+          lsr
+          sta temp6
 
-          ;; lda temp6 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp6
+          lsr
+          lsr
+          lsr
+          sta temp6
 
-          ;; lda temp5 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp5
+          sta temp1
+          lda temp2
+          sta temp3
+          lda temp6
+          sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayfieldRead-1)
+          pha
+          lda # <(PlayfieldRead-1)
+          pha
                     ldx # 15
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
-          ;; lda temp3 (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; if temp1 then AnimationTransitionHandleFallBack_HitWall
-          ;; lda temp1 (duplicate)
+          lda temp3
+          sta temp2
+          if temp1 then AnimationTransitionHandleFallBack_HitWall
+          lda temp1
           beq skip_6180
-          ;; jmp AnimationTransitionHandleFallBack_HitWall (duplicate)
+          jmp AnimationTransitionHandleFallBack_HitWall
 skip_6180:
           ;; No wall collision, transition to fallen
-          ;; lda ActionFallen (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionFallen
+          sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          ;; jmp AnimationSetPlayerAnimationInlined (duplicate)
+          jmp AnimationSetPlayerAnimationInlined
 
 AnimationTransitionHandleFallBack_HitWall
           ;; Hit wall, transition to idle
-          ;; lda ActionIdle (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionIdle
+          sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          ;; jmp AnimationSetPlayerAnimationInlined (duplicate)
+          jmp AnimationSetPlayerAnimationInlined
 
 AnimationHandleAttackTransition
-                    ;; let temp1 = currentAnimationSeq_R[currentPlayer]
+                    let temp1 = currentAnimationSeq_R[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda currentAnimationSeq_R,x (duplicate)
-          ;; sta temp1 (duplicate)
-                    ;; if temp1 < ActionAttackWindup then goto UpdateSprite
-          ;; lda temp1 (duplicate)
-          ;; cmp ActionAttackWindup (duplicate)
-          ;; bcs skip_3489 (duplicate)
-          ;; jmp UpdateSprite (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda currentAnimationSeq_R,x
+          sta temp1
+                    if temp1 < ActionAttackWindup then goto UpdateSprite
+          lda temp1
+          cmp ActionAttackWindup
+          bcs skip_3489
+          jmp UpdateSprite
 skip_3489:
           
-                    ;; let temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
-          ;; jmp AnimationHandleWindupEnd (duplicate)
-          ;; jmp UpdateSprite (duplicate)
+                    let temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
+          jmp AnimationHandleWindupEnd
+          jmp UpdateSprite
 
 AnimationHandleWindupEnd
-                    ;; let temp1 = playerCharacter[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
+                    let temp1 = playerCharacter[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; if temp1 >= 32 then goto UpdateSprite
-          ;; lda temp1 (duplicate)
-          ;; cmp 32 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
+          if temp1 >= 32 then goto UpdateSprite
+          lda temp1
+          cmp 32
 
-          ;; bcc skip_6005 (duplicate)
+          bcc skip_6005
 
-          ;; jmp skip_6005 (duplicate)
+          jmp skip_6005
 
           skip_6005:
-          ;; if temp1 >= 16 then let temp1 = 0
-          ;; lda temp1 (duplicate)
-          ;; cmp # 17 (duplicate)
+          if temp1 >= 16 then let temp1 = 0
+          lda temp1
+          cmp # 17
 
-          ;; bcc skip_4121 (duplicate)
+          bcc skip_4121
 
-          ;; lda # 0 (duplicate)
+          lda # 0
 
-          ;; sta .skip_4121 (duplicate)
+          sta .skip_4121
 
           label_unknown:
-                    ;; let temp2 = CharacterWindupNextAction[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterWindupNextAction,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; cmp # 255 (duplicate)
-          ;; bne skip_4504 (duplicate)
-          ;; jmp UpdateSprite (duplicate)
+                    let temp2 = CharacterWindupNextAction[temp1]         
+          lda temp1
+          asl
+          tax
+          lda CharacterWindupNextAction,x
+          sta temp2
+          lda temp2
+          cmp # 255
+          bne skip_4504
+          jmp UpdateSprite
 skip_4504:
 
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          ;; jmp AnimationSetPlayerAnimationInlined (duplicate)
+          jmp AnimationSetPlayerAnimationInlined
 
 AnimationHandleExecuteEnd
-                    ;; let temp1 = playerCharacter[currentPlayer]
+                    let temp1 = playerCharacter[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; if temp1 >= 32 then goto UpdateSprite
-          ;; lda temp1 (duplicate)
-          ;; cmp 32 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
+          if temp1 >= 32 then goto UpdateSprite
+          lda temp1
+          cmp 32
 
-          ;; bcc skip_6005 (duplicate)
+          bcc skip_6005
 
-          ;; jmp skip_6005 (duplicate)
+          jmp skip_6005
 
-          ;; skip_6005: (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; cmp # 6 (duplicate)
-          ;; bne skip_6753 (duplicate)
-          ;; jmp AnimationHarpyExecute (duplicate)
+          skip_6005:
+          lda temp1
+          cmp # 6
+          bne skip_6753
+          jmp AnimationHarpyExecute
 skip_6753:
 
-          ;; if temp1 >= 16 then let temp1 = 0
-          ;; lda temp1 (duplicate)
-          ;; cmp # 17 (duplicate)
+          if temp1 >= 16 then let temp1 = 0
+          lda temp1
+          cmp # 17
 
-          ;; bcc skip_4121 (duplicate)
+          bcc skip_4121
 
-          ;; lda # 0 (duplicate)
+          lda # 0
 
-          ;; sta .skip_4121 (duplicate)
+          sta .skip_4121
 
-          ;; label_unknown: (duplicate)
-          ;; let temp2 = CharacterExecuteNextAction[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterExecuteNextAction,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; cmp # 255 (duplicate)
-          ;; bne skip_4504 (duplicate)
-          ;; jmp UpdateSprite (duplicate)
-;; skip_4504: (duplicate)
+          label_unknown:
+          let temp2 = CharacterExecuteNextAction[temp1]
+          lda temp1
+          asl
+          tax
+          lda CharacterExecuteNextAction,x
+          sta temp2
+          lda temp2
+          cmp # 255
+          bne skip_4504
+          jmp UpdateSprite
+skip_4504:
 
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          ;; jmp AnimationSetPlayerAnimationInlined (duplicate)
+          jmp AnimationSetPlayerAnimationInlined
 
 AnimationHarpyExecute
           ;; Harpy: Execute → Idle
           ;; Clear dive flag and stop diagonal movement when attack completes
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp1 (duplicate)
+          lda currentPlayer
+          sta temp1
           ;; Clear dive flag (bit 4 in characterStateFlags)
-          ;; let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda characterStateFlags_R,x (duplicate)
-          ;; and # 239 (duplicate)
-          ;; sta C6E_stateFlags (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda C6E_stateFlags (duplicate)
-          ;; sta characterStateFlags_W,x (duplicate)
+          let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          and # 239
+          sta C6E_stateFlags
+          lda temp1
+          asl
+          tax
+          lda C6E_stateFlags
+          sta characterStateFlags_W,x
           ;; Stop horizontal velocity (zero X velocity)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityX,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityXL,x
           ;; Apply upward wing flap momentum after swoop attack
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 254 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 254
+          sta playerVelocityY,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
           ;; Transition to Idle
-          ;; lda ActionIdle (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionIdle
+          sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          ;; jmp AnimationSetPlayerAnimationInlined (duplicate)
+          jmp AnimationSetPlayerAnimationInlined
 
 AnimationHandleRecoveryEnd
           ;; All characters: Recovery → Idle
-          ;; lda ActionIdle (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionIdle
+          sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          ;; jmp AnimationSetPlayerAnimationInlined (duplicate)
+          jmp AnimationSetPlayerAnimationInlined
 
 AnimationSetPlayerAnimationInlined
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
           ;; Set animation action for a player (inlined from AnimationSystem.bas)
-          ;; if temp2 >= AnimationSequenceCount then goto UpdateSprite
-          ;; lda temp2 (duplicate)
-          ;; cmp AnimationSequenceCount (duplicate)
+          if temp2 >= AnimationSequenceCount then goto UpdateSprite
+          lda temp2
+          cmp AnimationSequenceCount
 
-          ;; bcc skip_3988 (duplicate)
+          bcc skip_3988
 
-          ;; jmp skip_3988 (duplicate)
+          jmp skip_3988
 
           skip_3988:
           ;; SCRAM write to currentAnimationSeq_W
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta currentAnimationSeq_W,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda temp2
+          sta currentAnimationSeq_W,x
           ;; Start at first frame
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta currentAnimationFrame_W,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta currentAnimationFrame_W,x
           ;; SCRAM write to animationCounter_W
           ;; Reset animation counter
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta animationCounter_W,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta animationCounter_W,x
           ;; Update character sprite immediately using inlined LoadPlayerSprite logic
           ;; Set up parameters for sprite loading (frame=0, action=temp2, player=currentPlayer)
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
-                    ;; let temp3 = currentAnimationSeq_R[currentPlayer]
+          lda # 0
+          sta temp2
+                    let temp3 = currentAnimationSeq_R[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda currentAnimationSeq_R,x (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp4 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda currentAnimationSeq_R,x
+          sta temp3
+          lda currentPlayer
+          sta temp4
           ;; Fall through to UpdateSprite which has inlined LoadPlayerSprite logic
 
 .pend
@@ -593,7 +593,7 @@ UpdateSprite .proc
           ;; animation sequences
           ;;
           ;; Output: Player sprite loaded with current animation frame
-          ;; and action
+          and action
           ;;
           ;; Mutates: temp2, temp3, temp4 (passed to LoadPlayerSprite),
           ;; player sprite pointers (via LoadPlayerSprite)
@@ -622,242 +622,242 @@ UpdateSprite .proc
           ;; SCRAM read: Read from r081
           ;; where dim entries concatenate with subsequent consta
 
-                    ;; let temp2 = currentAnimationFrame_R[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda currentAnimationFrame_R,x (duplicate)
-          ;; sta temp2 (duplicate)
-                    ;; let temp3 = currentAnimationSeq_R[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda currentAnimationSeq_R,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp2 = currentAnimationFrame_R[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda currentAnimationFrame_R,x
+          sta temp2
+                    let temp3 = currentAnimationSeq_R[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda currentAnimationSeq_R,x
+          sta temp3
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda currentAnimationSeq_R,x (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp4 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda currentAnimationSeq_R,x
+          sta temp3
+          lda currentPlayer
+          sta temp4
           ;; CRITICAL: Inlined LoadPlayerSprite dispatcher to save 4 bytes on sta
 
           ;; CRITICAL: Guard against calling bank 2 when no characters on screen
-                    ;; let currentCharacter = playerCharacter[currentPlayer]
+                    let currentCharacter = playerCharacter[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
-          ;; lda currentCharacter (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_4610 (duplicate)
-          ;; jmp AnimationNextPlayer (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
+          lda currentCharacter
+          cmp NoCharacter
+          bne skip_4610
+          jmp AnimationNextPlayer
 skip_4610:
 
-          ;; lda currentCharacter (duplicate)
-          ;; cmp CPUCharacter (duplicate)
-          ;; bne skip_6470 (duplicate)
-          ;; jmp AnimationNextPlayer (duplicate)
+          lda currentCharacter
+          cmp CPUCharacter
+          bne skip_6470
+          jmp AnimationNextPlayer
 skip_6470:
 
-          ;; lda currentCharacter (duplicate)
-          ;; cmp RandomCharacter (duplicate)
-          ;; bne skip_9690 (duplicate)
-          ;; jmp AnimationNextPlayer (duplicate)
+          lda currentCharacter
+          cmp RandomCharacter
+          bne skip_9690
+          jmp AnimationNextPlayer
 skip_9690:
 
           ;; CRITICAL: Validate character index is within valid range (0-MaxCharacter)
           ;; Uninitialized playerCharacter (0) is valid (Bernie), but values > MaxCharacter are invalid
-          ;; ;; if currentCharacter > MaxCharacter then goto AnimationNextPlayer
-          ;; lda currentCharacter (duplicate)
-          ;; sec (duplicate)
-          ;; sbc MaxCharacter (duplicate)
-          ;; bcc skip_758 (duplicate)
-          ;; beq skip_758 (duplicate)
-          ;; jmp AnimationNextPlayer (duplicate)
+          ;; if currentCharacter > MaxCharacter then goto AnimationNextPlayer
+          lda currentCharacter
+          sec
+          sbc MaxCharacter
+          bcc skip_758
+          beq skip_758
+          jmp AnimationNextPlayer
 skip_758:
 
-          ;; lda currentCharacter (duplicate)
-          ;; sec (duplicate)
-          ;; sbc MaxCharacter (duplicate)
-          ;; bcc skip_2038 (duplicate)
-          ;; beq skip_2038 (duplicate)
-          ;; jmp AnimationNextPlayer (duplicate)
+          lda currentCharacter
+          sec
+          sbc MaxCharacter
+          bcc skip_2038
+          beq skip_2038
+          jmp AnimationNextPlayer
 skip_2038:
 
 
-          ;; lda currentCharacter (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda currentCharacter
+          sta temp1
+          lda temp1
+          sta temp6
           ;; Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
-          ;; ;; if temp1 < 8 then goto UpdateSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_5345          jmp
-          ;; lda temp1 (duplicate)
-          ;; cmp # 8 (duplicate)
-          ;; bcs skip_8879 (duplicate)
+          ;; if temp1 < 8 then goto UpdateSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_5345          jmp
+          lda temp1
+          cmp # 8
+          bcs skip_8879
           Anim_goto_label:
 
-          ;; jmp goto_label (duplicate)
+          jmp goto_label
 skip_8879:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 8 (duplicate)
-          ;; bcs skip_2468 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp1
+          cmp # 8
+          bcs skip_2468
+          jmp goto_label
 skip_2468:
 
           
-          ;; ;; if temp1 < 16 then goto UpdateSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_8905          jmp
-          ;; lda temp1 (duplicate)
-          ;; cmp # 16 (duplicate)
-          ;; bcs skip_5626 (duplicate)
-          ;; jmp goto_label (duplicate)
+          ;; if temp1 < 16 then goto UpdateSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_8905          jmp
+          lda temp1
+          cmp # 16
+          bcs skip_5626
+          jmp goto_label
 skip_5626:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 16 (duplicate)
-          ;; bcs skip_6358 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp1
+          cmp # 16
+          bcs skip_6358
+          jmp goto_label
 skip_6358:
 
           
-          ;; ;; if temp1 < 24 then goto UpdateSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_205          jmp
-          ;; lda temp1 (duplicate)
-          ;; cmp # 24 (duplicate)
-          ;; bcs skip_8945 (duplicate)
-          ;; jmp goto_label (duplicate)
+          ;; if temp1 < 24 then goto UpdateSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_205          jmp
+          lda temp1
+          cmp # 24
+          bcs skip_8945
+          jmp goto_label
 skip_8945:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 24 (duplicate)
-          ;; bcs skip_458 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp1
+          cmp # 24
+          bcs skip_458
+          jmp goto_label
 skip_458:
 
           
-          ;; jmp UpdateSprite_Bank5Dispatch (duplicate)
+          jmp UpdateSprite_Bank5Dispatch
 
 UpdateSprite_Bank2Dispatch
-          ;; lda temp1 (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp1
+          sta temp6
+          lda temp4
+          sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank2 in bank 2
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerCharacterArtBank2-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerCharacterArtBank2-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 1 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerCharacterArtBank2-1)
+          pha
+          lda # <(SetPlayerCharacterArtBank2-1)
+          pha
+                    ldx # 1
+          jmp BS_jsr
+return_point:
 
-          ;; jmp AnimationNextPlayer (duplicate)
+          jmp AnimationNextPlayer
 
 UpdateSprite_Bank3Dispatch
-          ;; ;; let temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 8 (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
+          lda temp1
+          sec
+          sbc 8
+          sta temp6
 
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 8 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp1
+          sec
+          sbc 8
+          sta temp6
 
-          ;; lda temp4 (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp4
+          sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank3 in bank 3
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerCharacterArtBank3-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerCharacterArtBank3-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 2 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerCharacterArtBank3-1)
+          pha
+          lda # <(SetPlayerCharacterArtBank3-1)
+          pha
+                    ldx # 2
+          jmp BS_jsr
+return_point:
 
-          ;; jmp AnimationNextPlayer (duplicate)
+          jmp AnimationNextPlayer
 
 UpdateSprite_Bank4Dispatch
-          ;; ;; let temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 16 (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
+          lda temp1
+          sec
+          sbc 16
+          sta temp6
 
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 16 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp1
+          sec
+          sbc 16
+          sta temp6
 
-          ;; lda temp4 (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp4
+          sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank4 in bank 4
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerCharacterArtBank4-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerCharacterArtBank4-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 3 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerCharacterArtBank4-1)
+          pha
+          lda # <(SetPlayerCharacterArtBank4-1)
+          pha
+                    ldx # 3
+          jmp BS_jsr
+return_point:
 
-          ;; jmp AnimationNextPlayer (duplicate)
+          jmp AnimationNextPlayer
 
 UpdateSprite_Bank5Dispatch
-          ;; ;; let temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 24 (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
+          lda temp1
+          sec
+          sbc 24
+          sta temp6
 
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 24 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp1
+          sec
+          sbc 24
+          sta temp6
 
-          ;; lda temp4 (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp4
+          sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank5 in bank 5
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerCharacterArtBank5-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerCharacterArtBank5-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 4 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerCharacterArtBank5-1)
+          pha
+          lda # <(SetPlayerCharacterArtBank5-1)
+          pha
+                    ldx # 4
+          jmp BS_jsr
+return_point:
 
-          ;; jmp AnimationNextPlayer (duplicate)
+          jmp AnimationNextPlayer
 DoneAdvanceInlined
-          ;; End of inlined UpdatePlayerAnimation - skip to next player
-          ;; jmp AnimationNextPlayer (duplicate)
+          End of inlined UpdatePlayerAnimation - skip to next player
+          jmp AnimationNextPlayer
 AnimationNextPlayer:
 .pend
 
 Anim_next_label_1:.proc
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 SetPlayerAnimation
           ;; Returns: Far (return otherbank)
-;; SetPlayerAnimation (duplicate)
+SetPlayerAnimation
 
           ;; Set animation action for a player
           ;; Returns: Far (return otherbank)
@@ -892,71 +892,71 @@ SetPlayerAnimation
           ;; Called Routines: LoadPlayerSprite (bank16) - loads
           ;; character sprite graphics
           ;; Constraints: None
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; SCRAM write to currentAnimationFrame_W
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta currentAnimationSeq_W,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda temp2
+          sta currentAnimationSeq_W,x
           ;; Start at first frame
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta currentAnimationFrame_W,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta currentAnimationFrame_W,x
           ;; SCRAM write to animationCounter_W
           ;; Reset animation counter
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta animationCounter_W,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta animationCounter_W,x
 
           ;; Update character sprite immediately
           ;; Frame is from this sprite 10fps counter, action from
           ;; currentAnimationSeq
           ;; CRITICAL: Guard against calling LoadPlayerSprite when no characters on screen
           ;; Check if player has a valid character before loading sprite
-                    ;; let temp1 = playerCharacter[currentPlayer]
+                    let temp1 = playerCharacter[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; jsr BS_return (duplicate)
-          ;; jsr BS_return (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
+          jsr BS_return
+          jsr BS_return
+          jsr BS_return
           ;; Set up parameters for LoadPlayerSprite
           ;; SCRAM read: Read from r081 (we just wrote 0, so this is 0)
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
-                    ;; let temp3 = currentAnimationSeq_R[currentPlayer]
+          lda # 0
+          sta temp2
+                    let temp3 = currentAnimationSeq_R[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda currentAnimationSeq_R,x (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp4 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda currentAnimationSeq_R,x
+          sta temp3
+          lda currentPlayer
+          sta temp4
           ;; Cross-bank call to LoadPlayerSprite in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadPlayerSprite-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadPlayerSprite-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadPlayerSprite-1)
+          pha
+          lda # <(LoadPlayerSprite-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 InitializeAnimationSystem
           ;; Initialize animation system for all players
@@ -972,69 +972,69 @@ InitializeAnimationSystem
 
           ;; (ActionIdle)
           ;; Initialize all players to idle animation
-          ;; lda ActionIdle (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionIdle
+          sta temp2
           ;; TODO: for currentPlayer = 0 to 3
           ;; Cross-bank call to SetPlayerAnimation in bank 12
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SetPlayerAnimation-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SetPlayerAnimation-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 11 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SetPlayerAnimation-1)
+          pha
+          lda # <(SetPlayerAnimation-1)
+          pha
+                    ldx # 11
+          jmp BS_jsr
+return_point:
 
 .pend
 
 next_label_2_1:.proc
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 HandleAnimationTransition
           ;; Returns: Far (return thisbank)
-;; HandleAnimationTransition (duplicate)
-                    ;; let temp1 = currentAnimationSeq_R[currentPlayer]
+HandleAnimationTransition
+                    let temp1 = currentAnimationSeq_R[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda currentAnimationSeq_R,x (duplicate)
-          ;; sta temp1 (duplicate)
-                    ;; if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation
-          ;; lda ActionAttackRecovery (duplicate)
-          ;; cmp temp1 (duplicate)
-          ;; bcs skip_6040 (duplicate)
-          ;; jmp TransitionLoopAnimation (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda currentAnimationSeq_R,x
+          sta temp1
+                    if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation
+          lda ActionAttackRecovery
+          cmp temp1
+          bcs skip_6040
+          jmp TransitionLoopAnimation
 skip_6040:
 
           
 
-          ;; jmp TransitionLoopAnimation (duplicate)
+          jmp TransitionLoopAnimation
 
 TransitionLoopAnimation
           ;; SCRAM write to currentAnimationFrame_W
           ;; Returns: Far (return otherbank)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta currentAnimationFrame_W,x (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda 0
+          sta currentAnimationFrame_W,x
+          jsr BS_return
 TransitionToIdle
-          ;; lda ActionIdle (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionIdle
+          sta temp2
           ;; tail call
-          ;; jmp SetPlayerAnimation (duplicate)
+          jmp SetPlayerAnimation
 
 TransitionToFallen
           ;; Returns: Far (return otherbank)
-          ;; lda ActionFallen (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionFallen
+          sta temp2
           ;; tail call
           ;; Returns: Far (return otherbank)
-          ;; jmp SetPlayerAnimation (duplicate)
+          jmp SetPlayerAnimation
 
 TransitionHandleJump
           ;; Stay on frame 7 until Y velocity goes negative
@@ -1042,131 +1042,131 @@ TransitionHandleJump
           ;; Check if player is falling (positive Y velocity =
           ;; downward)
           ;; Still ascending (negative or zero Y velocity), stay in jump
-          ;; if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
+          if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
+          lda currentPlayer
+          asl
 
-          ;; tax (duplicate)
+          tax
 
-          ;; lda playerVelocityY,x (duplicate)
-          ;; cmp # 1 (duplicate)
+          lda playerVelocityY,x
+          cmp # 1
 
-          ;; bcc skip_4371 (duplicate)
+          bcc skip_4371
 
-          ;; jmp skip_4371 (duplicate)
+          jmp skip_4371
 
           skip_4371:
-          ;; lda ActionJumping (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionJumping
+          sta temp2
           ;; tail call
-          ;; jmp SetPlayerAnimation (duplicate)
+          jmp SetPlayerAnimation
 TransitionHandleJump_TransitionToFalling
           ;; Falling (positive Y velocity), transition to falling
           ;; Returns: Far (return otherbank)
-          ;; lda ActionFalling (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionFalling
+          sta temp2
           ;; tail call
-          ;; jmp SetPlayerAnimation (duplicate)
+          jmp SetPlayerAnimation
 
 TransitionHandleFallBack
           ;; Check wall collision using pfread
           ;; Returns: Far (return otherbank)
-          ;; If hit wall: goto idle, else: goto fallen
+          If hit wall: goto idle, else: goto fallen
           ;; Convert player X position to playfield column (0-31)
-                    ;; let temp5 = playerX[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerX,x (duplicate)
-          ;; sta temp5 (duplicate)
-          ;; ;; let temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc ScreenInsetX          sta temp5
-          ;; lda temp5 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc ScreenInsetX (duplicate)
-          ;; sta temp5 (duplicate)
+                    let temp5 = playerX[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerX,x
+          sta temp5
+          ;; let temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc ScreenInsetX          sta temp5
+          lda temp5
+          sec
+          sbc ScreenInsetX
+          sta temp5
 
-          ;; lda temp5 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc ScreenInsetX (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp5
+          sec
+          sbc ScreenInsetX
+          sta temp5
 
-          ;; ;; let temp5 = temp5 / 4          lda temp5          lsr          lsr          sta temp5
-          ;; lda temp5 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp5 (duplicate)
+          ;; let temp5 = temp5 / 4          lda temp5          lsr          lsr          sta temp5
+          lda temp5
+          lsr
+          lsr
+          sta temp5
 
-          ;; lda temp5 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp5 (duplicate)
+          lda temp5
+          lsr
+          lsr
+          sta temp5
 
           ;; Convert player Y position to playfield row (0-7)
-                    ;; let temp6 = playerY[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = playerY[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerY,x
+          sta temp6
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp6 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerY,x
+          sta temp6
           ;; Check if player hit a wall (playfield pixel is set)
-          ;; ;; let temp6 = temp6 / 8          lda temp6          lsr          lsr          lsr          sta temp6
-          ;; lda temp6 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp6 (duplicate)
+          ;; let temp6 = temp6 / 8          lda temp6          lsr          lsr          lsr          sta temp6
+          lda temp6
+          lsr
+          lsr
+          lsr
+          sta temp6
 
-          ;; lda temp6 (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp6
+          lsr
+          lsr
+          lsr
+          sta temp6
 
-          ;; lda temp5 (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp5
+          sta temp1
+          lda temp2
+          sta temp3
+          lda temp6
+          sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlayfieldRead-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(PlayfieldRead-1)
+          pha
+          lda # <(PlayfieldRead-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
-          ;; lda temp3 (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; if temp1 then TransitionHandleFallBack_HitWall
-          ;; lda temp1 (duplicate)
-          ;; beq skip_4030 (duplicate)
-          ;; jmp TransitionHandleFallBack_HitWall (duplicate)
+          lda temp3
+          sta temp2
+          if temp1 then TransitionHandleFallBack_HitWall
+          lda temp1
+          beq skip_4030
+          jmp TransitionHandleFallBack_HitWall
 skip_4030:
           
           ;; No wall collision, transition to fallen
-          ;; lda ActionFallen (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionFallen
+          sta temp2
           ;; tail call
-          ;; jmp SetPlayerAnimation (duplicate)
+          jmp SetPlayerAnimation
 TransitionHandleFallBack_HitWall
           ;; Hit wall, transition to idle
           ;; Returns: Far (return otherbank)
-          ;; lda ActionIdle (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionIdle
+          sta temp2
           ;; tail call
-          ;; jmp SetPlayerAnimation (duplicate)
+          jmp SetPlayerAnimation
 
           ;;
           ;; Attack Transition Handling
@@ -1174,95 +1174,95 @@ TransitionHandleFallBack_HitWall
 
 HandleAttackTransition
           ;; Returns: Far (return otherbank)
-                    ;; let temp1 = currentAnimationSeq_R[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda currentAnimationSeq_R,x (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; jsr BS_return (duplicate)
-          ;; ;; let temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc ActionAttackWindup (duplicate)
-          ;; sta temp1 (duplicate)
+                    let temp1 = currentAnimationSeq_R[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda currentAnimationSeq_R,x
+          sta temp1
+          jsr BS_return
+          ;; let temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
+          lda temp1
+          sec
+          sbc ActionAttackWindup
+          sta temp1
 
-          ;; lda temp1 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc ActionAttackWindup (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp1
+          sec
+          sbc ActionAttackWindup
+          sta temp1
 
-          ;; jmp HandleWindupEnd (duplicate)
-          ;; jsr BS_return (duplicate)
+          jmp HandleWindupEnd
+          jsr BS_return
 HandleWindupEnd
-                    ;; let temp1 = playerCharacter[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
+                    let temp1 = playerCharacter[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; rts (duplicate)
-          ;; if temp1 >= 16 then let temp1 = 0
-          ;; lda temp1 (duplicate)
-          ;; cmp # 17 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
+          rts
+          if temp1 >= 16 then let temp1 = 0
+          lda temp1
+          cmp # 17
 
-          ;; bcc skip_4121 (duplicate)
+          bcc skip_4121
 
-          ;; lda # 0 (duplicate)
+          lda # 0
 
-          ;; sta .skip_4121 (duplicate)
+          sta .skip_4121
 
-          ;; label_unknown: (duplicate)
-                    ;; let temp2 = CharacterWindupNextAction[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterWindupNextAction,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; rts (duplicate)
-          ;; jmp SetPlayerAnimation (duplicate)
+          label_unknown:
+                    let temp2 = CharacterWindupNextAction[temp1]         
+          lda temp1
+          asl
+          tax
+          lda CharacterWindupNextAction,x
+          sta temp2
+          rts
+          jmp SetPlayerAnimation
 
 HandleExecuteEnd
           ;; Returns: Far (return otherbank)
-                    ;; let temp1 = playerCharacter[currentPlayer]
+                    let temp1 = playerCharacter[currentPlayer]
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; jsr BS_return (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; cmp # 6 (duplicate)
-          ;; bne skip_2609 (duplicate)
-          ;; jmp HarpyExecute (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
+          jsr BS_return
+          lda temp1
+          cmp # 6
+          bne skip_2609
+          jmp HarpyExecute
 skip_2609:
 
-          ;; if temp1 >= 16 then let temp1 = 0
-          ;; lda temp1 (duplicate)
-          ;; cmp # 17 (duplicate)
+          if temp1 >= 16 then let temp1 = 0
+          lda temp1
+          cmp # 17
 
-          ;; bcc skip_4121 (duplicate)
+          bcc skip_4121
 
-          ;; lda # 0 (duplicate)
+          lda # 0
 
-          ;; sta .skip_4121 (duplicate)
+          sta .skip_4121
 
-          ;; label_unknown: (duplicate)
-          ;; let temp2 = CharacterExecuteNextAction[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterExecuteNextAction,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; jsr BS_return (duplicate)
-          ;; jmp SetPlayerAnimation (duplicate)
+          label_unknown:
+          let temp2 = CharacterExecuteNextAction[temp1]
+          lda temp1
+          asl
+          tax
+          lda CharacterExecuteNextAction,x
+          sta temp2
+          jsr BS_return
+          jmp SetPlayerAnimation
 
 .pend
 
@@ -1272,57 +1272,57 @@ HarpyExecute .proc
           ;; Clear dive flag and stop diagonal movement when attack
           ;; completes
           ;; Also apply upward wing flap momentum after swoop attack
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp1 (duplicate)
+          lda currentPlayer
+          sta temp1
           ;; Clear dive flag (bit 4 in characterStateFlags)
           ;; Fix RMW: Read from _R, modify, write to _W
-          ;; let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda characterStateFlags_R,x (duplicate)
-          ;; and # 239 (duplicate)
-          ;; sta C6E_stateFlags (duplicate)
+          let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          and # 239
+          sta C6E_stateFlags
           ;; Clear bit 4 (239 = 0xEF = ~0x10)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda C6E_stateFlags (duplicate)
-          ;; sta characterStateFlags_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda C6E_stateFlags
+          sta characterStateFlags_W,x
           ;; Stop horizontal velocity (zero X velocity)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityX,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityX,x
           ;; Apply upward wing flap momentum after swoop attack
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityXL,x
           ;; (equivalent to HarpyJump)
           ;; Same as normal flap: -2 pixels/frame upward (254 in twos
           ;; complement)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 254 (duplicate)
-          ;; sta playerVelocityY,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 254
+          sta playerVelocityY,x
           ;; -2 in 8-bit twos complement: 256 - 2 = 254
           ;; Keep jumping flag set to allow vertical movement
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerVelocityYL,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerVelocityYL,x
           ;; playerState[temp1] bit 2 (jumping) already set
           ;; from attack, keep it
           ;; Transition to Idle
-          ;; lda ActionIdle (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionIdle
+          sta temp2
           ;; tail call
-          ;; jmp SetPlayerAnimation (duplicate)
+          jmp SetPlayerAnimation
           ;; Placeholder characters (16-30) reuse the table entries for
           ;; Bernie (0) so they no-op on windup and fall to Idle on
           ;; execute, keeping the jump tables dense until bespoke logic
@@ -1331,10 +1331,10 @@ HarpyExecute .proc
 HandleRecoveryEnd
           ;; All characters: Recovery → Idle
           ;; Returns: Far (return otherbank)
-          ;; lda ActionIdle (duplicate)
-          ;; sta temp2 (duplicate)
+          lda ActionIdle
+          sta temp2
           ;; tail call
-          ;; jmp SetPlayerAnimation (duplicate)
+          jmp SetPlayerAnimation
 
 .pend
 

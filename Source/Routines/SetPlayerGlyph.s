@@ -23,13 +23,13 @@
 
           ;; temp4 = sprite type (0=QuestionMark, 1=CPU, 2=No)
 
-          ;; If temp4 is provided, temp1 is looked up from GlyphLookupTable
+          If temp4 is provided, temp1 is looked up from GlyphLookupTable
 
           ;;
           ;; OUTPUT: playerN pointer and height set (16)
 
           ;;
-          ;; NOTES:
+          NOTES:
 
           ;; - Glyphs are packed consecutively in SetFontNumbers (16 bytes per glyph)
 
@@ -63,11 +63,11 @@ skip_1166:
 
 
           ;; Look up glyph index from table (overwrites temp1)
-                    ;; let temp1 = GlyphLookupTable[temp4]         
-          ;; lda temp4 (duplicate)
+                    let temp1 = GlyphLookupTable[temp4]         
+          lda temp4
           asl
           tax
-          ;; lda GlyphLookupTable,x (duplicate)
+          lda GlyphLookupTable,x
           sta temp1
 
 .pend
@@ -76,24 +76,24 @@ SetPlayerGlyphDirectMode .proc
 
           ;; Calculate offset into SetFontNumbers (16 bytes per glyph)
           ;; Returns: Far (return otherbank)
-                    ;; let temp2 = temp1 * 16
+                    let temp2 = temp1 * 16
 
           ;; Set player pointer and height based on player index
 
           ;; Calculate base address: SetFontNumbers + temp2 (shared calculation)
-          ;; lda # <SetFontNumbers (duplicate)
+          lda # <SetFontNumbers
 
             clc
 
             adc temp2
 
-            ;; sta temp4 (duplicate)
+            sta temp4
 
-            ;; lda # >SetFontNumbers (duplicate)
+            lda # >SetFontNumbers
 
-            ;; adc # 0 (duplicate)
+            adc # 0
 
-            ;; sta temp5 (duplicate)
+            sta temp5
 
 
           ;; Store to appropriate player pointer based on temp3 (using on...goto for efficiency)
@@ -106,17 +106,17 @@ SetPlayerGlyphDirectMode .proc
 SetPlayerGlyphP5 .proc
           ;; Returns: Far (return otherbank)
 
-            ;; lda temp4 (duplicate)
+            lda temp4
 
-            ;; sta player5pointerlo (duplicate)
+            sta player5pointerlo
 
-            ;; lda temp5 (duplicate)
+            lda temp5
 
-            ;; sta player5pointerhi (duplicate)
+            sta player5pointerhi
 
-            ;; lda # 16 (duplicate)
+            lda # 16
 
-            ;; sta player5height (duplicate)
+            sta player5height
 
           jsr BS_return
 
@@ -125,95 +125,95 @@ SetPlayerGlyphP5 .proc
 SetPlayerGlyphP0 .proc
           ;; Returns: Far (return otherbank)
 
-            ;; lda temp4 (duplicate)
+            lda temp4
 
-            ;; sta player0pointerlo (duplicate)
+            sta player0pointerlo
 
-            ;; lda temp5 (duplicate)
+            lda temp5
 
-            ;; sta player0pointerhi (duplicate)
+            sta player0pointerhi
 
-            ;; lda # 16 (duplicate)
+            lda # 16
 
-            ;; sta player0height (duplicate)
+            sta player0height
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
 SetPlayerGlyphP1 .proc
           ;; Returns: Far (return otherbank)
 
-            ;; lda temp4 (duplicate)
+            lda temp4
 
-            ;; sta player1pointerlo (duplicate)
+            sta player1pointerlo
 
-            ;; lda temp5 (duplicate)
+            lda temp5
 
-            ;; sta player1pointerhi (duplicate)
+            sta player1pointerhi
 
-            ;; lda # 16 (duplicate)
+            lda # 16
 
-            ;; sta player1height (duplicate)
+            sta player1height
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
 SetPlayerGlyphP2 .proc
           ;; Returns: Far (return otherbank)
 
-            ;; lda temp4 (duplicate)
+            lda temp4
 
-            ;; sta player2pointerlo (duplicate)
+            sta player2pointerlo
 
-            ;; lda temp5 (duplicate)
+            lda temp5
 
-            ;; sta player2pointerhi (duplicate)
+            sta player2pointerhi
 
-            ;; lda # 16 (duplicate)
+            lda # 16
 
-            ;; sta player2height (duplicate)
+            sta player2height
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
 SetPlayerGlyphP3 .proc
           ;; Returns: Far (return otherbank)
 
-            ;; lda temp4 (duplicate)
+            lda temp4
 
-            ;; sta player3pointerlo (duplicate)
+            sta player3pointerlo
 
-            ;; lda temp5 (duplicate)
+            lda temp5
 
-            ;; sta player3pointerhi (duplicate)
+            sta player3pointerhi
 
-            ;; lda # 16 (duplicate)
+            lda # 16
 
-            ;; sta player3height (duplicate)
+            sta player3height
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
 SetPlayerGlyphP4 .proc
           ;; Returns: Far (return otherbank)
 
-            ;; lda temp4 (duplicate)
+            lda temp4
 
-            ;; sta player4pointerlo (duplicate)
+            sta player4pointerlo
 
-            ;; lda temp5 (duplicate)
+            lda temp5
 
-            ;; sta player4pointerhi (duplicate)
+            sta player4pointerhi
 
-            ;; lda # 16 (duplicate)
+            lda # 16
 
-            ;; sta player4height (duplicate)
+            sta player4height
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Backward compatibility wrappers
           ;; Returns: Far (return otherbank)
@@ -229,9 +229,9 @@ SetGlyph .proc
           ;; Input: temp1 = glyph index, temp3 = player index
 
           ;; Set temp4 to invalid value to force direct mode
-          ;; lda # 255 (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; jmp SetPlayerGlyph (duplicate)
+          lda # 255
+          sta temp4
+          jmp SetPlayerGlyph
 
 .pend
 
@@ -244,7 +244,7 @@ CopyGlyphToPlayer .proc
           ;; Input: temp3 = player index, temp4 = sprite type (0-2)
 
           ;; temp4 already set by caller, will trigger lookup mode
-          ;; jmp SetPlayerGlyph (duplicate)
+          jmp SetPlayerGlyph
 
 .pend
 

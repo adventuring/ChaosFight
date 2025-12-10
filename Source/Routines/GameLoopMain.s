@@ -8,7 +8,7 @@
 ReadEnhancedButtons
           ;; Returns: Near (return thisbank)
 
-;; ReadEnhancedButtons (duplicate)
+ReadEnhancedButtons
 
           ;; Read enhanced controller buttons (Genesis Button C, Joy2B+ Button II)
           ;; Returns: Near (return thisbank)
@@ -32,38 +32,38 @@ ReadEnhancedButtons
           sta temp1
 
           ;; Player 1 (INPT0) - Genesis/Joy2b+ Button C/II
-                    ;; if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = temp1 | 1
-                    ;; if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 1
-          ;; lda controllerStatus (duplicate)
+                    if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = temp1 | 1
+                    if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 1
+          lda controllerStatus
           and SetLeftPortJoy2bPlus
           beq skip_978
           bit INPT0
           bmi skip_978
-          ;; lda temp1 (duplicate)
+          lda temp1
           ora # 1
-          ;; sta temp1 (duplicate)
+          sta temp1
 skip_978:
 
           ;; Player 2 (INPT2) - Genesis/Joy2b+ Button C/II
-          ;; lda INPT2 (duplicate)
-          ;; and # 128 (duplicate)
+          lda INPT2
+          and # 128
           cmp # 0
           bne skip_3413
-                    ;; let temp1 = temp1 | 2
+                    let temp1 = temp1 | 2
 skip_3413:
 
-          ;; lda INPT2 (duplicate)
-          ;; and # 128 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_1297 (duplicate)
-                    ;; let temp1 = temp1 | 2
+          lda INPT2
+          and # 128
+          cmp # 0
+          bne skip_1297
+                    let temp1 = temp1 | 2
 skip_1297:
 
 
           ;; Players 3-4 cannot have enhanced controllers (require Quadtari)
           ;; Bits 2-3 remain 0
-          ;; lda temp1 (duplicate)
-          ;; sta enhancedButtonStates_W (duplicate)
+          lda temp1
+          sta enhancedButtonStates_W
           rts
 
 
@@ -86,7 +86,7 @@ GameMainLoop .proc
           ;; frame - Frame counter
           ;; systemFlags - bit 4 (SystemFlagGameStatePaused):
           ;; 0=normal, 1=paused
-          ;; bit 3 (SystemFlagGameStateEnding): 0=normal, 1=ending
+          bit 3 (SystemFlagGameStateEnding): 0=normal, 1=ending
           ;; qtcontroller - Quadtari multiplexing sta
 
           ;; All Player arrays (X,y, State, Health, etc.)
@@ -125,9 +125,9 @@ GameMainLoop .proc
           ;; CRITICAL: Guard against being called in wrong game mode
           ;; This prevents crashes when gameMode is corrupted or incorrectly set
           ;; Only run game logic when actually in game mode (ModeGame = 6)
-          ;; lda gameMode (duplicate)
-          ;; cmp ModeGame (duplicate)
-          ;; bne skip_5419 (duplicate)
+          lda gameMode
+          cmp ModeGame
+          bne skip_5419
           jmp GameMainLoopContinue
 skip_5419:
 
@@ -141,90 +141,90 @@ GameMainLoopContinue
 
           ;; Read enhanced controller buttons (Genesis Button C, Joy2B+
           ;; II/III)
-          ;; jsr ReadEnhancedButtons (duplicate)
+          jsr ReadEnhancedButtons
 
           ;; Handle console switches (in Bank 13)
           ;; Cross-bank call to HandleConsoleSwitches in bank 13
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(HandleConsoleSwitches-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(HandleConsoleSwitches-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(HandleConsoleSwitches-1)
+          pha
+          lda # <(HandleConsoleSwitches-1)
+          pha
                     ldx # 12
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
           ;; Handle all player input (with Quadtari multiplexing) (in Bank 8)
           ;; Cross-bank call to InputHandleAllPlayers in bank 8
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(InputHandleAllPlayers-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(InputHandleAllPlayers-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 7 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(InputHandleAllPlayers-1)
+          pha
+          lda # <(InputHandleAllPlayers-1)
+          pha
+                    ldx # 7
+          jmp BS_jsr
+return_point:
 
 
           ;; Update guard timers (duration and cooldown)
           ;; Cross-bank call to UpdateGuardTimers in bank 6
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdateGuardTimers-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdateGuardTimers-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 5 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(UpdateGuardTimers-1)
+          pha
+          lda # <(UpdateGuardTimers-1)
+          pha
+                    ldx # 5
+          jmp BS_jsr
+return_point:
 
 
           ;; Update attack cooldown timers (in Bank 12)
           ;; Cross-bank call to UpdateAttackCooldowns in bank 12
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdateAttackCooldowns-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdateAttackCooldowns-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 11 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(UpdateAttackCooldowns-1)
+          pha
+          lda # <(UpdateAttackCooldowns-1)
+          pha
+                    ldx # 11
+          jmp BS_jsr
+return_point:
 
 
           ;; Issue #1177: Update Frooty charge system every frame
           ;; TODO: for currentPlayer = 0 to 3
-          ;; if currentPlayer >= 2 then goto FrootyChargeQuadtariCheck
-          ;; lda currentPlayer (duplicate)
-          ;; cmp 2 (duplicate)
+          if currentPlayer >= 2 then goto FrootyChargeQuadtariCheck
+          lda currentPlayer
+          cmp 2
 
           bcc skip_3439
 
-          ;; jmp skip_3439 (duplicate)
+          jmp skip_3439
 
           skip_3439:
 
-          ;; jmp FrootyChargeUpdate (duplicate)
+          jmp FrootyChargeUpdate
 
 .pend
 
 FrootyChargeQuadtariCheck .proc
-          ;; lda controllerStatus (duplicate)
-          ;; and SetQuadtariDetected (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_204 (duplicate)
-          ;; jmp FrootyChargeNext (duplicate)
+          lda controllerStatus
+          and SetQuadtariDetected
+          cmp # 0
+          bne skip_204
+          jmp FrootyChargeNext
 skip_204:
 
 
@@ -232,17 +232,17 @@ skip_204:
 
 FrootyChargeUpdate .proc
           ;; Cross-bank call to FrootyAttack in bank 8
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(FrootyAttack-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(FrootyAttack-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 7 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(FrootyAttack-1)
+          pha
+          lda # <(FrootyAttack-1)
+          pha
+                    ldx # 7
+          jmp BS_jsr
+return_point:
 
 
 .pend
@@ -255,17 +255,17 @@ next_label_1_L253:.proc
           ;; Update sound effects (game mode 6 only)
           ;; Sound updates must happen in overscan so they are ready for vblank
           ;; Cross-bank call to UpdateSoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdateSoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdateSoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(UpdateSoundEffect-1)
+          pha
+          lda # <(UpdateSoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
 
           ;; Heavy game logic (physics, collisions, rendering) moved to vblank handler
@@ -276,7 +276,7 @@ next_label_1_L253:.proc
           ;; kernel
           ;; Heavy game logic (physics, collisions, rendering) is handled
           ;; in vblank handler (VblankModeGameMain) for better time distribution
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -285,7 +285,7 @@ GameMainLoopPaused .proc
           ;; Returns: Far (return otherbank)
           ;; but still allow console switch handling for unpause
           ;; Vblank handler will also check pause state and skip logic
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

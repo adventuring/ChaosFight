@@ -7,24 +7,24 @@ GetPlayerPosition
           ;; Output: temp2 = X position, temp3 = Y position
           ;; Mutates: temp2, temp3
           ;; Constraints: Callers should consume the values immediately; temps are volatile.
-                    ;; let temp2 = playerX[currentPlayer]
+                    let temp2 = playerX[currentPlayer]
           lda currentPlayer
           asl
           tax
-          ;; lda playerX,x (duplicate)
+          lda playerX,x
           sta temp2
-                    ;; let temp3 = playerY[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = playerY[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerY,x
+          sta temp3
          
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp3 (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda playerY,x
+          sta temp3
           rts
 
 

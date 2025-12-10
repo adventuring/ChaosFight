@@ -16,14 +16,14 @@ ApplyGuardColor .proc
           ;;
           ;; Constraints: Must remain colocated with GuardColor0-GuardColor3 jump table
           ;; Check if player is guarding
-                    ;; let temp2 = playerState[temp1] & 2         
+                    let temp2 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
-          ;; lda playerState,x (duplicate)
+          lda playerState,x
           sta temp2
           ;; Not guarding
-          ;; lda temp2 (duplicate)
+          lda temp2
           bne skip_5941
 skip_5941:
 
@@ -40,17 +40,17 @@ GuardColor0 .proc
 
 GuardColor1 .proc
           _COLUP1 = ColCyan(12)
-          ;; rts (duplicate)
+          rts
 .pend
 
 GuardColor2 .proc
           COLUP2 = ColCyan(12)
-          ;; rts (duplicate)
+          rts
 .pend
 
 GuardColor3 .proc
           COLUP3 = ColCyan(12)
-          ;; rts (duplicate)
+          rts
 
 .pend
 

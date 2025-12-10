@@ -10,35 +10,35 @@ SetPlayerPosition
           lda temp1
           asl
           tax
-          ;; lda temp2 (duplicate)
+          lda temp2
           sta playerX,x
           ;; SCRAM write to playerSubpixelX_W
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerSubpixelX_W,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelX_WL,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerY,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda temp2
+          sta playerSubpixelX_W,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerSubpixelX_WL,x
+          lda temp1
+          asl
+          tax
+          lda temp3
+          sta playerY,x
           ;; SCRAM write to playerSubpixelY_W
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta playerSubpixelY_W,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelY_WL,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda temp3
+          sta playerSubpixelY_W,x
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerSubpixelY_WL,x
           rts
 
 

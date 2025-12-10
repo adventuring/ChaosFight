@@ -43,76 +43,76 @@ MomentumRecoveryLoop .proc
           ;; Check if player is active (P1/P2 always active, P3/P4 need
           ;; Quadtari)
           ;; Players 0-1 always active
-          ;; ;; if temp1 < 2 then MomentumRecoveryProcess
-          ;; lda temp1 (duplicate)
+          ;; if temp1 < 2 then MomentumRecoveryProcess
+          lda temp1
           cmp # 2
           bcs skip_1629
           jmp MomentumRecoveryProcess
 skip_1629:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bcs skip_7629 (duplicate)
-          ;; jmp MomentumRecoveryProcess (duplicate)
+          lda temp1
+          cmp # 2
+          bcs skip_7629
+          jmp MomentumRecoveryProcess
 skip_7629:
 
 
-          ;; lda controllerStatus (duplicate)
+          lda controllerStatus
           and SetQuadtariDetected
-          ;; cmp # 0 (duplicate)
+          cmp # 0
           bne skip_8430
-          ;; jmp MomentumRecoveryNext (duplicate)
+          jmp MomentumRecoveryNext
 skip_8430:
 
-          ;; ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto MomentumRecoveryNext
-          ;; lda temp1 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_853 (duplicate)
-          ;; lda 2 (duplicate)
+          ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto MomentumRecoveryNext
+          lda temp1
+          cmp # 2
+          bne skip_853
+          lda 2
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_853 (duplicate)
-          ;; jmp MomentumRecoveryNext (duplicate)
+          lda playerCharacter,x
+          cmp NoCharacter
+          bne skip_853
+          jmp MomentumRecoveryNext
 skip_853:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_1820 (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_1820 (duplicate)
-          ;; jmp MomentumRecoveryNext (duplicate)
+          lda temp1
+          cmp # 2
+          bne skip_1820
+          lda 2
+          asl
+          tax
+          lda playerCharacter,x
+          cmp NoCharacter
+          bne skip_1820
+          jmp MomentumRecoveryNext
 skip_1820:
 
 
-          ;; ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto MomentumRecoveryNext
-          ;; lda temp1 (duplicate)
-          ;; cmp # 3 (duplicate)
-          ;; bne skip_8242 (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_8242 (duplicate)
-          ;; jmp MomentumRecoveryNext (duplicate)
+          ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto MomentumRecoveryNext
+          lda temp1
+          cmp # 3
+          bne skip_8242
+          lda 3
+          asl
+          tax
+          lda playerCharacter,x
+          cmp NoCharacter
+          bne skip_8242
+          jmp MomentumRecoveryNext
 skip_8242:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 3 (duplicate)
-          ;; bne skip_5063 (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp NoCharacter (duplicate)
-          ;; bne skip_5063 (duplicate)
-          ;; jmp MomentumRecoveryNext (duplicate)
+          lda temp1
+          cmp # 3
+          bne skip_5063
+          lda 3
+          asl
+          tax
+          lda playerCharacter,x
+          cmp NoCharacter
+          bne skip_5063
+          jmp MomentumRecoveryNext
 skip_5063:
 
 
@@ -122,191 +122,191 @@ skip_5063:
 MomentumRecoveryProcess .proc
           ;; Decrement recovery frames (velocity is applied by
           ;; UpdatePlayerMovement)
-          ;; ;; if playerRecoveryFrames[temp1] > 0 then let playerRecoveryFrames[temp1] = playerRecoveryFrames[temp1] - 1
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerRecoveryFrames,x (duplicate)
+          ;; if playerRecoveryFrames[temp1] > 0 then let playerRecoveryFrames[temp1] = playerRecoveryFrames[temp1] - 1
+          lda temp1
+          asl
+          tax
+          lda playerRecoveryFrames,x
           beq skip_2355
           dec playerRecoveryFrames,x
 skip_2355:
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerRecoveryFrames,x (duplicate)
-          ;; beq skip_9119 (duplicate)
-          ;; dec playerRecoveryFrames,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          beq skip_9119
+          dec playerRecoveryFrames,x
 skip_9119:
 
 
           ;; Synchronize playerState bit 3 with recovery frames
           ;; Set bit 3 (recovery flag) when recovery frames > 0
-                    ;; if playerRecoveryFrames[temp1] > 0 then let playerState[temp1] = playerState[temp1] | PlayerStateBitRecovery
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerRecoveryFrames,x (duplicate)
-          ;; beq skip_6729 (duplicate)
-          ;; lda playerState,x (duplicate)
+                    if playerRecoveryFrames[temp1] > 0 then let playerState[temp1] = playerState[temp1] | PlayerStateBitRecovery
+          lda temp1
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          beq skip_6729
+          lda playerState,x
           ora PlayerStateBitRecovery
-          ;; sta playerState,x (duplicate)
+          sta playerState,x
 skip_6729:
           ;; Clear bit 3 (recovery flag) when recovery frames = 0
-          ;; ;; if ! playerRecoveryFrames[temp1] then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitRecovery)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerRecoveryFrames,x (duplicate)
-          ;; bne skip_7596 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState (duplicate)
-          ;; sta playerState,x (duplicate)
+          ;; if ! playerRecoveryFrames[temp1] then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitRecovery)
+          lda temp1
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          bne skip_7596
+          lda temp1
+          asl
+          tax
+          lda playerState
+          sta playerState,x
 skip_7596:
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerRecoveryFrames,x (duplicate)
-          ;; bne skip_3094 (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState (duplicate)
-          ;; sta playerState,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          bne skip_3094
+          lda temp1
+          asl
+          tax
+          lda playerState
+          sta playerState,x
 skip_3094:
 
 
           ;; Decay velocity if recovery frames active
           ;; Velocity decay during recovery (knockback slows down over
-          ;; ;; if ! playerRecoveryFrames[temp1] then goto MomentumRecoveryNext
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerRecoveryFrames,x (duplicate)
-          ;; bne skip_6205 (duplicate)
-          ;; jmp MomentumRecoveryNext (duplicate)
+          ;; if ! playerRecoveryFrames[temp1] then goto MomentumRecoveryNext
+          lda temp1
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          bne skip_6205
+          jmp MomentumRecoveryNext
 skip_6205:
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerRecoveryFrames,x (duplicate)
-          ;; bne skip_4277 (duplicate)
-          ;; jmp MomentumRecoveryNext (duplicate)
+          lda temp1
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          bne skip_4277
+          jmp MomentumRecoveryNext
 skip_4277:
 
 
           ;; time)
-          ;; ;; if playerVelocityX[temp1] <= 0 then MomentumRecoveryDecayNegative
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityX,x (duplicate)
-          ;; beq skip_7633 (duplicate)
+          ;; if playerVelocityX[temp1] <= 0 then MomentumRecoveryDecayNegative
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          beq skip_7633
           bmi skip_7633
-          ;; jmp MomentumRecoveryDecayNegative (duplicate)
+          jmp MomentumRecoveryDecayNegative
 skip_7633:
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityX,x (duplicate)
-          ;; beq skip_2625 (duplicate)
-          ;; bmi skip_2625 (duplicate)
-          ;; jmp MomentumRecoveryDecayNegative (duplicate)
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          beq skip_2625
+          bmi skip_2625
+          jmp MomentumRecoveryDecayNegative
 skip_2625:
 
 
           ;; Positive velocity: decay by 1
-          ;; ;; let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; dec playerVelocityX,x (duplicate)
+          ;; let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
+          lda temp1
+          asl
+          tax
+          dec playerVelocityX,x
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; dec playerVelocityX,x (duplicate)
+          lda temp1
+          asl
+          tax
+          dec playerVelocityX,x
 
           ;; Also decay subpixel if integer velocity is zero
-                    ;; if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityX,x (duplicate)
-          ;; bne skip_5069 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
+                    if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          bne skip_5069
+          lda # 0
+          sta playerVelocityXL,x
 skip_5069:
-          ;; jmp MomentumRecoveryNext (duplicate)
+          jmp MomentumRecoveryNext
 
 .pend
 
 MomentumRecoveryDecayNegative .proc
           ;; Negative velocity: decay by 1 (add 1 to make less
-          ;; ;; if playerVelocityX[temp1] >= 0 then goto MomentumRecoveryNext
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityX,x (duplicate)
-          ;; bmi skip_8611 (duplicate)
-          ;; jmp MomentumRecoveryNext (duplicate)
+          ;; if playerVelocityX[temp1] >= 0 then goto MomentumRecoveryNext
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          bmi skip_8611
+          jmp MomentumRecoveryNext
 skip_8611:
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityX,x (duplicate)
-          ;; bmi skip_7514 (duplicate)
-          ;; jmp MomentumRecoveryNext (duplicate)
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          bmi skip_7514
+          jmp MomentumRecoveryNext
 skip_7514:
 
 
           ;; negative)
-          ;; ;; let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
+          ;; let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
+          lda temp1
+          asl
+          tax
           inc playerVelocityX,x
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; inc playerVelocityX,x (duplicate)
+          lda temp1
+          asl
+          tax
+          inc playerVelocityX,x
 
           ;; Also decay subpixel if integer velocity is zero
-                    ;; if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerVelocityX,x (duplicate)
-          ;; bne skip_5069 (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta playerVelocityXL,x (duplicate)
-;; skip_5069: (duplicate)
+                    if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          bne skip_5069
+          lda # 0
+          sta playerVelocityXL,x
+skip_5069:
 
 .pend
 
 MomentumRecoveryNext .proc
           ;; Next player
-          ;; inc temp1 (duplicate)
-          ;; ;; if temp1 < 4 then goto MomentumRecoveryLoop          lda temp1          cmp 4          bcs .skip_9998          jmp
-          ;; lda temp1 (duplicate)
-          ;; cmp # 4 (duplicate)
-          ;; bcs skip_6719 (duplicate)
+          inc temp1
+          ;; if temp1 < 4 then goto MomentumRecoveryLoop          lda temp1          cmp 4          bcs .skip_9998          jmp
+          lda temp1
+          cmp # 4
+          bcs skip_6719
           goto_label:
 
-          ;; jmp goto_label (duplicate)
+          jmp goto_label
 skip_6719:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 4 (duplicate)
-          ;; bcs skip_8865 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp1
+          cmp # 4
+          bcs skip_8865
+          jmp goto_label
 skip_8865:
 
           

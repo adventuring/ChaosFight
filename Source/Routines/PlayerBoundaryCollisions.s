@@ -3,7 +3,7 @@
 
 CheckBoundaryCollisions
 ;;; Returns: Far (return otherbank)
-;; CheckBoundaryCollisions (duplicate)
+CheckBoundaryCollisions
           ;; Player Physics - Boundary Collisions
           ;; Returns: Far (return otherbank)
           ;; Handles horizontal wraparound and vertical clamps for all players.
@@ -37,35 +37,35 @@ CheckBoundaryCollisions
           ;; Y > ScreenBottom triggers elimination). Players 3/4 only checked if Quadtari detected.
           lda selectedArena_R
           sta temp3
-          ;; lda temp3 (duplicate)
+          lda temp3
           cmp RandomArena
           bne skip_7276
-                    ;; let temp3 = rand : temp3 = temp3 & 15
+                    let temp3 = rand : temp3 = temp3 & 15
 skip_7276:
 
 
           ;; TODO: for temp1 = 0 to 3
-          ;; ;; if temp1 < 2 then goto PBC_ProcessPlayer          lda temp1          cmp 2          bcs .skip_8159          jmp
-          ;; lda temp1 (duplicate)
-          ;; cmp # 2 (duplicate)
+          ;; if temp1 < 2 then goto PBC_ProcessPlayer          lda temp1          cmp 2          bcs .skip_8159          jmp
+          lda temp1
+          cmp # 2
           bcs skip_2435
           goto_label:
 
           jmp goto_label
 skip_2435:
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bcs skip_2705 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp1
+          cmp # 2
+          bcs skip_2705
+          jmp goto_label
 skip_2705:
 
           
-                    ;; if controllerStatus & SetQuadtariDetected then goto PBC_CheckActivePlayer
-          ;; jmp PBC_NextPlayer (duplicate)
+                    if controllerStatus & SetQuadtariDetected then goto PBC_CheckActivePlayer
+          jmp PBC_NextPlayer
 
 PBC_CheckActivePlayer .proc
-                    ;; if playerCharacter[temp1] = NoCharacter then goto PBC_NextPlayer
+                    if playerCharacter[temp1] = NoCharacter then goto PBC_NextPlayer
 .pend
 
 PBC_ProcessPlayer .proc
@@ -99,81 +99,81 @@ CheckPlayerBoundary .proc
           ;; Called Routines: CheckPlayerElimination (bank14)
           ;;
           ;; Constraints: Uses temp1 as player index, temp2 as scratch.
-                    ;; if playerX[temp1] < PlayerLeftWrapThreshold then let playerX[temp1] = PlayerRightEdge : let playerSubpixelX_W[temp1] = PlayerRightEdge : let playerSubpixelX_WL[temp1] = 0
+                    if playerX[temp1] < PlayerLeftWrapThreshold then let playerX[temp1] = PlayerRightEdge : let playerSubpixelX_W[temp1] = PlayerRightEdge : let playerSubpixelX_WL[temp1] = 0
 
-                    ;; if playerX[temp1] > PlayerRightWrapThreshold then let playerX[temp1] = PlayerLeftEdge : let playerSubpixelX_W[temp1] = PlayerLeftEdge
-          ;; lda temp1 (duplicate)
+                    if playerX[temp1] > PlayerRightWrapThreshold then let playerX[temp1] = PlayerLeftEdge : let playerSubpixelX_W[temp1] = PlayerLeftEdge
+          lda temp1
           asl
           tax
-          ;; lda playerX,x (duplicate)
+          lda playerX,x
           sec
           sbc PlayerRightWrapThreshold
           bcc skip_141
           beq skip_141
-          ;; lda PlayerLeftEdge (duplicate)
-          ;; sta playerX,x (duplicate)
-          ;; lda PlayerLeftEdge (duplicate)
-          ;; sta playerSubpixelX_W,x (duplicate)
+          lda PlayerLeftEdge
+          sta playerX,x
+          lda PlayerLeftEdge
+          sta playerSubpixelX_W,x
 skip_141: : let playerSubpixelX_WL[temp1] = 0
 
-                    ;; if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY_W[temp1] = 20 : let playerSubpixelY_WL[temp1] = 0
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; cmp 20 (duplicate)
-          ;; bcs skip_8639 (duplicate)
-          ;; lda 20 (duplicate)
-          ;; sta playerY,x (duplicate)
-          ;; lda 20 (duplicate)
-          ;; sta playerSubpixelY_W,x (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta playerSubpixelY_WL,x (duplicate)
+                    if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY_W[temp1] = 20 : let playerSubpixelY_WL[temp1] = 0
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          cmp 20
+          bcs skip_8639
+          lda 20
+          sta playerY,x
+          lda 20
+          sta playerSubpixelY_W,x
+          lda # 0
+          sta playerSubpixelY_WL,x
 skip_8639: : let playerVelocityY[temp1] = 0 : let playerVelocityYL[temp1] = 0
 
-          ;; rts (duplicate)
+          rts
 
-                    ;; if playerCharacter[temp1] = CharacterBernie then goto CheckPlayerBoundary_BernieWrap
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; cmp CharacterBernie (duplicate)
-          ;; bne skip_8254 (duplicate)
-          ;; jmp CheckPlayerBoundary_BernieWrap (duplicate)
+                    if playerCharacter[temp1] = CharacterBernie then goto CheckPlayerBoundary_BernieWrap
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp CharacterBernie
+          bne skip_8254
+          jmp CheckPlayerBoundary_BernieWrap
 skip_8254:
 
-                    ;; let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank14
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta playerHealth,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; sta currentPlayer (duplicate)
-          ;; lda # >(return_point-1) (duplicate)
+                    let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank14
+          lda temp1
+          asl
+          tax
+          lda # 0
+          sta playerHealth,x
+          lda temp1
+          sta currentPlayer
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(CheckPlayerElimination-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(CheckPlayerElimination-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(CheckPlayerElimination-1)
+          pha
+          lda # <(CheckPlayerElimination-1)
+          pha
           ldx # 13
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
 CheckPlayerBoundary_BernieWrap .proc
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta playerSubpixelY_WL,x (duplicate)
-          ;; rts (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta playerSubpixelY_WL,x
+          rts
 
 
 .pend

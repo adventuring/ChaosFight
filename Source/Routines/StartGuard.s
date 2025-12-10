@@ -19,7 +19,7 @@ StartGuard .proc
           ;; Called Routines: None
           ;; Constraints: None
           ;; Set guard bit in playerState
-                    ;; let playerState[temp1] = playerState[temp1] | 2
+                    let playerState[temp1] = playerState[temp1] | 2
 
           ;; Set guard duration timer using GuardTimerMaxFrames (TV-standard aware)
           ;; Store guard duration timer in playerTimers array
@@ -27,7 +27,7 @@ StartGuard .proc
           lda temp1
           asl
           tax
-          ;; lda GuardTimerMaxFrames (duplicate)
+          lda GuardTimerMaxFrames
           sta playerTimers_W,x
 
           rts

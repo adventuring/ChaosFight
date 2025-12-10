@@ -14,18 +14,9 @@
           ;; The scram (256 bytes of $FF) is at file space $0000-$00FF (CPU space $F000-$F0FF)
           ;; "Start of data" is at file space $0100 (CPU space $F100), after the scram
           * = $F000
-          ;; Verify we're at the correct address before filling scram
-          .if * != $F000
-              .error format("Bank 0: Expected $F000 but got $%04x - code may have been placed before scram", *)
-          .fi
           .rept 256
           .byte $ff
           .endrept
-          ;; Verify scram fill completed correctly
-          .if * != $F100
-              .error format("Bank 0: Scram fill failed - expected $F100 but got $%04x", *)
-          .fi
-          * = $F100
           .if * != $F100
               .error "Bank 0: data must start at $F100"
           .fi
@@ -261,17 +252,8 @@ MusicBankHelpersEnd:
           ;; MusicSystem moved to Bank 14 to fix cross-bank label resolution
 Bank0CodeEnds:
 
-          ;; CRITICAL: Jump to bank switching code location to avoid placing code in gap
-          ;; Set CPU address before block to ensure no code is placed in the gap between
-          ;; Bank0CodeEnds and the bank switching code
-          * = $FFE0 - bscode_length
-          .if * < Bank0CodeEnds
-              .error format("Bank 0 overflow: Code ends at $%04x but bank switching starts at $%04x", Bank0CodeEnds, *)
-          .fi
-
           ;; Include BankSwitching.s in Bank 0
           ;; Wrap in .block to create namespace Bank0BS (avoids duplicate definitions)
-          ;; Note: * = is set above, so BankSwitching.s will be placed at the correct address
 Bank0BS: .block
           current_bank = 0
           .include "Source/Common/BankSwitching.s"

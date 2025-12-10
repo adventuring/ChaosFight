@@ -23,46 +23,46 @@ DetectPads .proc
           ;; Constraints: Upgrades only – never clears previously detected hardware
           lda controllerStatus
           sta temp1
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 0
+          sta temp2
 
           ;; TODO: #ifndef TV_SECAM
-          ;; lda systemFlags (duplicate)
+          lda systemFlags
           and ClearSystemFlagColorBWOverride
-          ;; sta systemFlags (duplicate)
-          ;; lda systemFlags (duplicate)
-          ;; and ClearSystemFlagPauseButtonPrev (duplicate)
-          ;; sta systemFlags (duplicate)
+          sta systemFlags
+          lda systemFlags
+          and ClearSystemFlagPauseButtonPrev
+          sta systemFlags
 
           ;; TODO: #.fi
           ;; Check for Quadtari
-                    ;; if INPT0{7} then CDP_CheckRightSide
+                    if INPT0{7} then CDP_CheckRightSide
 
-                    ;; if !INPT1{7} then CDP_CheckRightSide
+                    if !INPT1{7} then CDP_CheckRightSide
           bit INPT1
           bmi skip_7772
           jmp CDP_CheckRightSide
 skip_7772:
-          ;; jmp CDP_QuadtariFound (duplicate)
+          jmp CDP_QuadtariFound
 
 .pend
 
 CDP_CheckRightSide .proc
-                    ;; if INPT2{7} then goto CDP_CheckGenesis
+                    if INPT2{7} then goto CDP_CheckGenesis
 
           ;; fall through to CDP_QuadtariFound
-                    ;; if !INPT3{7} then goto CDP_CheckGenesis
-          ;; bit INPT3 (duplicate)
-          ;; bmi skip_725 (duplicate)
-          ;; jmp CDP_CheckGenesis (duplicate)
+                    if !INPT3{7} then goto CDP_CheckGenesis
+          bit INPT3
+          bmi skip_725
+          jmp CDP_CheckGenesis
 skip_725:
 
 CDP_QuadtariFound
           ;; Returns: Far (return otherbank)
-          ;; lda temp2 (duplicate)
+          lda temp2
           ora SetQuadtariDetected
-          ;; sta temp2 (duplicate)
-          ;; jmp CDP_MergeStatus (duplicate)
+          sta temp2
+          jmp CDP_MergeStatus
 
 .pend
 
@@ -70,9 +70,9 @@ CDP_CheckGenesis .proc
           ;; Check for Genesis controller (only if Quadtari not already
           ;; Returns: Far (return otherbank)
           ;; detected)
-          ;; If Quadtari was previously detected, skip all other
+          If Quadtari was previously detected, skip all other
           ;; detection
-                    ;; if temp1 & SetQuadtariDetected then goto CDP_MergeStatus
+                    if temp1 & SetQuadtariDetected then goto CDP_MergeStatus
 
           ;; Genesis controllers pull INPT0 and INPT1 HIGH when idle
           ;; Method: Ground paddle ports via VBLANK, wait a frame,
@@ -85,10 +85,10 @@ CDP_CheckGenesis .proc
 CDP_MergeStatus .proc
           ;; Merge detected capabilities into controllerStatus
           ;; Returns: Far (return otherbank)
-          ;; lda controllerStatus (duplicate)
-          ;; ora temp2 (duplicate)
-          ;; sta controllerStatus (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda controllerStatus
+          ora temp2
+          sta controllerStatus
+          jsr BS_return
 
 .pend
 

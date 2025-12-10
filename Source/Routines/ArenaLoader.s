@@ -45,7 +45,7 @@ LoadArena .proc
 skip_5483:
 
 
-          ;; lda selectedArena_R (duplicate)
+          lda selectedArena_R
           sta temp1
           ;; Get arena index (0-15)
 
@@ -54,48 +54,48 @@ skip_5483:
 LoadArenaDispatch .proc
           ;; Returns: Far (return otherbank)
           ;; Cross-bank call to DWS_GetBWMode in bank 15
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(DWS_GetBWMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(DWS_GetBWMode-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(DWS_GetBWMode-1)
+          pha
+          lda # <(DWS_GetBWMode-1)
+          pha
                     ldx # 14
           jmp BS_jsr
 return_point:
 
-          ;; lda temp2 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp2
+          sta temp6
           ;; Cross-bank call to LoadArenaByIndex in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadArenaByIndex-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadArenaByIndex-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadArenaByIndex-1)
+          pha
+          lda # <(LoadArenaByIndex-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
-                    ;; if temp6 then goto LA_LoadBWColors
-          ;; lda temp6 (duplicate)
+                    if temp6 then goto LA_LoadBWColors
+          lda temp6
           beq skip_9916
-          ;; jmp LA_LoadBWColors (duplicate)
+          jmp LA_LoadBWColors
 skip_9916:
           ;; Load color color table - fall through to LoadArenaColorsColor
           ;; Returns: Far (return otherbank)
-          ;; jmp LA_LoadColorColors (duplicate)
+          jmp LA_LoadColorColors
 .pend
 
 LA_LoadBWColors .proc
           ;; Load B&W color table (shared routine)
           ;; Returns: Far (return otherbank)
           jsr LoadArenaColorsBW
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 .pend
 
 LA_LoadColorColors .proc
@@ -106,29 +106,29 @@ LoadArenaColorsColor .proc
 
           ;; Load arena color table pointer using stride calculation
           ;; Returns: Far (return otherbank)
-            ;; lda # <Arena0Colors (duplicate)
-            ;; sta pfcolortable (duplicate)
-            ;; lda # >Arena0Colors (duplicate)
-            ;; sta pfcolortable+1 (duplicate)
+            lda # <Arena0Colors
+            sta pfcolortable
+            lda # >Arena0Colors
+            sta pfcolortable+1
 
-                    ;; ldx temp1 (duplicate)
-            ;; beq SetArenaColorPointerDone (duplicate)
+                    ldx temp1
+            beq SetArenaColorPointerDone
 
 AdvanceArenaColorPointer:
 
             clc
-            ;; lda pfcolortable (duplicate)
+            lda pfcolortable
             adc # <(Arena1Colors - Arena0Colors)
-            ;; sta pfcolortable (duplicate)
-            ;; lda pfcolortable+1 (duplicate)
-            ;; adc # >(Arena1Colors - Arena0Colors) (duplicate)
-            ;; sta pfcolortable+1 (duplicate)
+            sta pfcolortable
+            lda pfcolortable+1
+            adc # >(Arena1Colors - Arena0Colors)
+            sta pfcolortable+1
             dex
-            ;; bne AdvanceArenaColorPointer (duplicate)
+            bne AdvanceArenaColorPointer
 
 SetArenaColorPointerDone:
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -145,10 +145,10 @@ LoadArenaColorsBW .proc
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with LoadArena
-            ;; lda # <ArenaColorsBW (duplicate)
-            ;; sta pfcolortable (duplicate)
-            ;; lda # >ArenaColorsBW (duplicate)
-            ;; sta pfcolortable+1 (duplicate)
+            lda # <ArenaColorsBW
+            sta pfcolortable
+            lda # >ArenaColorsBW
+            sta pfcolortable+1
           rts
 .pend
 
@@ -171,73 +171,73 @@ LoadArenaRandom .proc
           ;; Constraints: None
           ;; Select random arena (0-31) using proper RNG
           ;; Get random value (0-255)
-          ;; lda rand (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; ;; let temp1 = temp1 & 31
-          ;; lda temp1 (duplicate)
+          lda rand
+          sta temp1
+          ;; let temp1 = temp1 & 31
+          lda temp1
           and # 31
-          ;; sta temp1 (duplicate)
+          sta temp1
 
-          ;; lda temp1 (duplicate)
-          ;; and # 31 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda temp1
+          and # 31
+          sta temp1
 
-                    ;; if temp1 > MaxArenaID then LoadArenaRandom
+                    if temp1 > MaxArenaID then LoadArenaRandom
           ;; Fall through to LoadArenaDispatch logic (inline to avoid goto)
           ;; Cross-bank call to DWS_GetBWMode in bank 15
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(DWS_GetBWMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(DWS_GetBWMode-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(DWS_GetBWMode-1)
+          pha
+          lda # <(DWS_GetBWMode-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
+return_point:
 
-          ;; lda temp2 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp2
+          sta temp6
           ;; Cross-bank call to LoadArenaByIndex in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadArenaByIndex-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadArenaByIndex-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadArenaByIndex-1)
+          pha
+          lda # <(LoadArenaByIndex-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
-                    ;; if temp6 then goto LAR_LoadBWColors
-          ;; lda temp6 (duplicate)
-          ;; beq skip_4691 (duplicate)
-          ;; jmp LAR_LoadBWColors (duplicate)
+                    if temp6 then goto LAR_LoadBWColors
+          lda temp6
+          beq skip_4691
+          jmp LAR_LoadBWColors
 skip_4691:
           ;; Load color color table (use gosub to avoid goto)
           ;; Cross-bank call to LoadArenaColorsColor in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadArenaColorsColor-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadArenaColorsColor-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadArenaColorsColor-1)
+          pha
+          lda # <(LoadArenaColorsColor-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 .pend
 
 LAR_LoadBWColors .proc
           ;; Load B&W color table (shared routine)
           ;; Returns: Far (return otherbank)
-          ;; jsr LoadArenaColorsBW (duplicate)
-          ;; jsr BS_return (duplicate)
+          jsr LoadArenaColorsBW
+          jsr BS_return
 .pend
 

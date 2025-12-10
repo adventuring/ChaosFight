@@ -53,32 +53,32 @@ FrootyAttack .proc
 
           ;; temp2 = 0 for players 0,2 (joy0fire); 1 for players 1,3 (joy1fire)
 
-          ;; ;; let temp2 = temp1 & 1
+          ;; let temp2 = temp1 & 1
           lda temp1
           and # 1
           sta temp2
 
-          ;; lda temp1 (duplicate)
-          ;; and # 1 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp1
+          and # 1
+          sta temp2
 
 
           ;; Player 1 or 3: check joy1fire
 
-          ;; lda temp2 (duplicate)
+          lda temp2
           cmp # 0
           bne skip_6886
           jmp FrootyCheckJoy0
 skip_6886:
 
 
-          ;; lda joy1fire (duplicate)
-          ;; bne skip_4765 (duplicate)
-          ;; jmp FrootyButtonReleased (duplicate)
+          lda joy1fire
+          bne skip_4765
+          jmp FrootyButtonReleased
 skip_4765:
 
 
-          ;; jmp FrootyButtonHeld (duplicate)
+          jmp FrootyButtonHeld
 
 .pend
 
@@ -89,9 +89,9 @@ FrootyCheckJoy0 .proc
 
           ;; Button is held - continue charging
 
-          ;; lda joy0fire (duplicate)
-          ;; bne skip_5594 (duplicate)
-          ;; jmp FrootyButtonReleased (duplicate)
+          lda joy0fire
+          bne skip_5594
+          jmp FrootyButtonReleased
 skip_5594:
 
 
@@ -106,25 +106,25 @@ FrootyButtonHeld
 
           ;; Get current state (bit 7 = charging flag, bits 0-2 = frame counter 0-5)
 
-                    ;; let temp3 = frootyChargeState_R[temp1]         
-          ;; lda temp1 (duplicate)
+                    let temp3 = frootyChargeState_R[temp1]         
+          lda temp1
           asl
           tax
-          ;; lda frootyChargeState_R,x (duplicate)
-          ;; sta temp3 (duplicate)
+          lda frootyChargeState_R,x
+          sta temp3
 
           ;; Extract frame counter (bits 0-2)
 
           ;; Increment frame counter
 
-          ;; ;; let temp4 = temp3 & 7
-          ;; lda temp3 (duplicate)
-          ;; and # 7 (duplicate)
-          ;; sta temp4 (duplicate)
+          ;; let temp4 = temp3 & 7
+          lda temp3
+          and # 7
+          sta temp4
 
-          ;; lda temp3 (duplicate)
-          ;; and # 7 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp3
+          and # 7
+          sta temp4
 
 
           ;; Check if frame counter reached 6 (time to increment charge)
@@ -133,41 +133,41 @@ FrootyButtonHeld
 
           ;; Frame counter reached 6 - increment charge timer and reset counter
 
-          ;; ;; if temp4 < 6 then goto FrootyUpdateFrameCounter          lda temp4          cmp 6          bcs .skip_7916          jmp
-          ;; lda temp4 (duplicate)
-          ;; cmp # 6 (duplicate)
+          ;; if temp4 < 6 then goto FrootyUpdateFrameCounter          lda temp4          cmp 6          bcs .skip_7916          jmp
+          lda temp4
+          cmp # 6
           bcs skip_6023
           goto_label:
 
-          ;; jmp goto_label (duplicate)
+          jmp goto_label
 skip_6023:
 
-          ;; lda temp4 (duplicate)
-          ;; cmp # 6 (duplicate)
-          ;; bcs skip_5475 (duplicate)
-          ;; jmp goto_label (duplicate)
+          lda temp4
+          cmp # 6
+          bcs skip_5475
+          jmp goto_label
 skip_5475:
 
           
 
           ;; Increment charge timer (0-30 range, 30 = 3 seconds at 10 Hz)
 
-          ;; lda # 0 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda # 0
+          sta temp4
 
           ;; At max charge, don’t increment further, but still update frame counter
 
-                    ;; if frootyChargeTimer_R[temp1] >= 30 then goto FrootyUpdateFrameCounter
+                    if frootyChargeTimer_R[temp1] >= 30 then goto FrootyUpdateFrameCounter
 
-                    ;; let frootyChargeTimer_W[temp1] = frootyChargeTimer_R[temp1]
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda frootyChargeTimer_R,x (duplicate)
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; sta frootyChargeTimer_W,x + 1 (duplicate)
+                    let frootyChargeTimer_W[temp1] = frootyChargeTimer_R[temp1]
+          lda temp1
+          asl
+          tax
+          lda frootyChargeTimer_R,x
+          lda temp1
+          asl
+          tax
+          sta frootyChargeTimer_W,x + 1
 
 .pend
 
@@ -176,18 +176,18 @@ FrootyUpdateFrameCounter .proc
           ;; Update charge state: set charging flag (bit 7) and frame counter (bits 0-2)
           ;; Returns: Far (return otherbank)
 
-          ;; bit 7 = 1 (charging), bits 0-2 = frame counter
-          ;; lda 128 (duplicate)
+          bit 7 = 1 (charging), bits 0-2 = frame counter
+          lda 128
           ora temp4
-          ;; sta temp3 (duplicate)
+          sta temp3
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta frootyChargeState_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda temp3
+          sta frootyChargeState_W,x
 
-          ;; jmp FrootyChargeDone (duplicate)
+          jmp FrootyChargeDone
 
 
 
@@ -197,30 +197,30 @@ FrootyButtonReleased
 
           ;; Returns: Far (return otherbank)
 
-                    ;; let temp3 = frootyChargeState_R[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda frootyChargeState_R,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = frootyChargeState_R[temp1]         
+          lda temp1
+          asl
+          tax
+          lda frootyChargeState_R,x
+          sta temp3
 
           ;; Extract charging flag (bit 7)
 
-          ;; ;; let temp4 = temp3 & 128
-          ;; lda temp3 (duplicate)
-          ;; and # 128 (duplicate)
-          ;; sta temp4 (duplicate)
+          ;; let temp4 = temp3 & 128
+          lda temp3
+          and # 128
+          sta temp4
 
-          ;; lda temp3 (duplicate)
-          ;; and # 128 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp3
+          and # 128
+          sta temp4
 
 
           ;; Was charging - spawn projectile with charge-based lifetime
 
-          ;; lda temp4 (duplicate)
-          ;; bne skip_4109 (duplicate)
-          ;; jmp FrootyChargeDone (duplicate)
+          lda temp4
+          bne skip_4109
+          jmp FrootyChargeDone
 skip_4109:
 
 
@@ -228,90 +228,90 @@ skip_4109:
 
           ;; Reset charge state and timer
 
-                    ;; let temp2 = frootyChargeTimer_R[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda frootyChargeTimer_R,x (duplicate)
-          ;; sta temp2 (duplicate)
+                    let temp2 = frootyChargeTimer_R[temp1]         
+          lda temp1
+          asl
+          tax
+          lda frootyChargeTimer_R,x
+          sta temp2
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta frootyChargeState_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta frootyChargeState_W,x
 
           ;; Spawn projectile with ricochet physics
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 0 (duplicate)
-          ;; sta frootyChargeTimer_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda 0
+          sta frootyChargeTimer_W,x
 
           ;; Use SpawnMissile but override lifetime
 
           ;; Override missile lifetime with charge time (in frames)
 
           ;; Cross-bank call to SpawnMissile in bank 7
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SpawnMissile-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SpawnMissile-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(SpawnMissile-1)
+          pha
+          lda # <(SpawnMissile-1)
+          pha
                     ldx # 6
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
           ;; Charge is in 10 Hz ticks, convert to frames: charge × 6
 
-          ;; Lifetime = charge × 6 frames (each tick = 0.1s = 6 frames at 60fps)
+          Lifetime = charge × 6 frames (each tick = 0.1s = 6 frames at 60fps)
 
           ;; Clamp to reasonable range (minimum 6 frames, maximum 180 frames = 3 seconds)
 
-                    ;; let temp3 = temp2 * 6
+                    let temp3 = temp2 * 6
 
-          ;; ;; if temp3 < 6 then let temp3 = 6
-          ;; lda temp3 (duplicate)
-          ;; cmp # 6 (duplicate)
-          ;; bcs skip_6653 (duplicate)
-          ;; jmp let_label (duplicate)
+          ;; if temp3 < 6 then let temp3 = 6
+          lda temp3
+          cmp # 6
+          bcs skip_6653
+          jmp let_label
 skip_6653:
 
-          ;; lda temp3 (duplicate)
-          ;; cmp # 6 (duplicate)
-          ;; bcs skip_2633 (duplicate)
-          ;; jmp let_label (duplicate)
+          lda temp3
+          cmp # 6
+          bcs skip_2633
+          jmp let_label
 skip_2633:
 
 
 
-          ;; lda temp3 (duplicate)
-          ;; cmp # 181 (duplicate)
+          lda temp3
+          cmp # 181
           bcc skip_8491
-          ;; lda # 180 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 180
+          sta temp3
 skip_8491:
 
 
           ;; Set ricochet velocity - Frooty’s missile will bounce off bounds
 
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp3 (duplicate)
-          ;; sta missileLifetime_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda temp3
+          sta missileLifetime_W,x
 
           ;; Ricochet logic handled in UpdateOneMissile via bounds checking
 
           ;; Set animation sta
 
 
-                    ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
 
 
 

@@ -24,17 +24,17 @@ HandleFlyingCharacterMovement .proc
 
           ;; for players 1,3
 
-                    ;; let temp5 = playerCharacter[temp1]         
+                    let temp5 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
+          lda playerCharacter,x
           sta temp5
 
           ;; Save player index to global variable
 
-          ;; lda temp1 (duplicate)
-          ;; sta currentPlayer (duplicate)
+          lda temp1
+          sta currentPlayer
 
           ;; Determine which joy port to use based on player index
 
@@ -42,40 +42,40 @@ HandleFlyingCharacterMovement .proc
 
           ;; temp6 = 0 for players 0,2 (joy0), 2 for players 1,3 (joy1)
 
-          ;; ;; let temp6 = temp1 & 2
-          ;; lda temp1 (duplicate)
+          ;; let temp6 = temp1 & 2
+          lda temp1
           and # 2
-          ;; sta temp6 (duplicate)
+          sta temp6
 
-          ;; lda temp1 (duplicate)
-          ;; and # 2 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda temp1
+          and # 2
+          sta temp6
 
 
           ;; Check left movement
 
-          ;; lda temp6 (duplicate)
+          lda temp6
           cmp # 0
           bne skip_1208
           ;; TODO: HFCM_CheckLeftJoy0
 skip_1208:
 
 
-          ;; lda joy1left (duplicate)
-          ;; bne skip_7853 (duplicate)
+          lda joy1left
+          bne skip_7853
           jmp HFCM_CheckRight
 skip_7853:
 
 
-          ;; jmp HFCM_DoLeft (duplicate)
+          jmp HFCM_DoLeft
 
 .pend
 
 HFCM_CheckLeftJoy0 .proc
 
-          ;; lda joy0left (duplicate)
-          ;; bne skip_712 (duplicate)
-          ;; jmp HFCM_CheckRight (duplicate)
+          lda joy0left
+          bne skip_712
+          jmp HFCM_CheckRight
 skip_712:
 
 
@@ -98,29 +98,29 @@ HFCM_CheckRight .proc
           ;; Check right movement
           ;; Returns: Far (return otherbank)
 
-          ;; lda temp6 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_8068 (duplicate)
+          lda temp6
+          cmp # 0
+          bne skip_8068
           ;; TODO: HFCM_CheckRightJoy0
 skip_8068:
 
 
-          ;; lda joy1right (duplicate)
-          ;; bne skip_2833 (duplicate)
-          ;; jmp HFCM_CheckVertical (duplicate)
+          lda joy1right
+          bne skip_2833
+          jmp HFCM_CheckVertical
 skip_2833:
 
 
-          ;; jmp HFCM_DoRight (duplicate)
+          jmp HFCM_DoRight
 
 .pend
 
 HFCM_CheckRightJoy0 .proc
           ;; Returns: Far (return otherbank)
 
-          ;; lda joy0right (duplicate)
-          ;; bne skip_3184 (duplicate)
-          ;; jmp HFCM_CheckVertical (duplicate)
+          lda joy0right
+          bne skip_3184
+          jmp HFCM_CheckVertical
 skip_3184:
 
 
@@ -143,40 +143,40 @@ HFCM_CheckVertical .proc
           ;; Vertical control for flying characters: UP/DOWN
           ;; Returns: Far (return otherbank)
 
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp1 (duplicate)
+          lda currentPlayer
+          sta temp1
 
-                    ;; let temp5 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp5
+                    let temp5 = playerCharacter[temp1]          lda temp1          asl          tax          lda playerCharacter,x          sta temp5
 
-                    ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]
-          ;; lda temp5 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMovementSpeed,x (duplicate)
-          ;; sta characterMovementSpeed (duplicate)
-          ;; lda temp5 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterMovementSpeed,x (duplicate)
-          ;; sta characterMovementSpeed (duplicate)
+                    let characterMovementSpeed = CharacterMovementSpeed[temp5]
+          lda temp5
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta characterMovementSpeed
+          lda temp5
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta characterMovementSpeed
 
-          ;; lda temp6 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_6783 (duplicate)
+          lda temp6
+          cmp # 0
+          bne skip_6783
           ;; TODO: HFCM_VertJoy0
 skip_6783:
 
 
-                    ;; if joy1up then goto HFCM_VertUp
-          ;; lda joy1up (duplicate)
+                    if joy1up then goto HFCM_VertUp
+          lda joy1up
           beq skip_3244
-          ;; jmp HFCM_VertUp (duplicate)
+          jmp HFCM_VertUp
 skip_3244:
 
-                    ;; if joy1down then goto HFCM_VertDown
-          ;; lda joy1down (duplicate)
-          ;; beq skip_9526 (duplicate)
-          ;; jmp HFCM_VertDown (duplicate)
+                    if joy1down then goto HFCM_VertDown
+          lda joy1down
+          beq skip_9526
+          jmp HFCM_VertDown
 skip_9526:
 
           jsr BS_return
@@ -185,39 +185,39 @@ skip_9526:
 
 HFCM_VertJoy0 .proc
 
-                    ;; if joy0up then goto HFCM_VertUp
-          ;; lda joy0up (duplicate)
-          ;; beq skip_6096 (duplicate)
-          ;; jmp HFCM_VertUp (duplicate)
+                    if joy0up then goto HFCM_VertUp
+          lda joy0up
+          beq skip_6096
+          jmp HFCM_VertUp
 skip_6096:
 
-                    ;; if joy0down then goto HFCM_VertDown
-          ;; lda joy0down (duplicate)
-          ;; beq skip_3350 (duplicate)
-          ;; jmp HFCM_VertDown (duplicate)
+                    if joy0down then goto HFCM_VertDown
+          lda joy0down
+          beq skip_3350
+          jmp HFCM_VertDown
 skip_3350:
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
 HFCM_VertUp .proc
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
 HFCM_VertDown .proc
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 

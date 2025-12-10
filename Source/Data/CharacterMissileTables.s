@@ -27,7 +27,7 @@ CharacterMissileWidths:
 CharacterMissileWidths_end:
 
           ;; Precomputed NUSIZ values per character (optimization)
-          ;; NUSIZ = (width-1)x16, clamped to 0 for width 0
+          NUSIZ = (width-1)x16, clamped to 0 for width 0
           ;; Precomputed to avoid per-spawn arithmetic: width 0→0, 1→0, 2→16, 4→48
 CharacterMissileNUSIZ:
           .byte 0, 48, 16, 48, 48, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -88,7 +88,7 @@ CharacterMissileFlags:
           .byte 0, MissileFlagCurlerFull, MissileFlagHitBackgroundAndGravity, MissileFlagHitBackground, 0, 0, 0, 0, MissileFlagHitBackgroundAndGravity, 0, 0, 0, 0, 0, 0, 0
 CharacterMissileFlags_end:
 
-          ;; bit mask lookup table
+          bit mask lookup table
 BitMask:
           .byte 1, 2, 4, 8, 16, 32, 64, 128
 BitMask_end:

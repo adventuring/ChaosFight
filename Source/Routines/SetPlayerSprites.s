@@ -47,27 +47,27 @@ SetPlayerSprites .proc
           lda # 0
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    ;; let temp2 = playerRecoveryFrames[0]          lda 0          asl          tax          lda playerRecoveryFrames,x          sta temp2
-                    ;; let temp3 = playerState[0]
-          ;; lda 0 (duplicate)
+                    let temp2 = playerRecoveryFrames[0]          lda 0          asl          tax          lda playerRecoveryFrames,x          sta temp2
+                    let temp3 = playerState[0]
+          lda 0
           asl
           tax
-          ;; lda playerState,x (duplicate)
-          ;; sta temp3 & PlayerStateBitGuarding (duplicate)
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp3 (duplicate)
+          lda playerState,x
+          sta temp3 & PlayerStateBitGuarding
+          lda 0
+          asl
+          tax
+          lda playerState,x
+          sta temp3
           ;; Cross-bank call to LoadCharacterColors in bank 14
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadCharacterColors-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadCharacterColors-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadCharacterColors-1)
+          pha
+          lda # <(LoadCharacterColors-1)
+          pha
                     ldx # 13
           jmp BS_jsr
 return_point:
@@ -77,36 +77,36 @@ Player1ColorDone
 
           ;; Set sprite reflection based on facing direction (bit 3:
           ;; 0=left, 1=right) - matches REFP0 bit 3 for direct copy
-            ;; lda playerState (duplicate)
+            lda playerState
             and # PlayerStateBitFacing
-            ;; sta REFP0 (duplicate)
+            sta REFP0
 
 
           ;; Load sprite data from character definition
-                    ;; let currentCharacter = playerCharacter[0]         
-          ;; lda 0 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
+                    let currentCharacter = playerCharacter[0]         
+          lda 0
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
           ;; Animation frame (0 = idle)
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 0
+          sta temp2
           ;; Animation action (0 = idle)
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 0
+          sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadCharacterSprite-1)
+          pha
+          lda # <(LoadCharacterSprite-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
           ;; Set Player 2 color and sprite
@@ -114,33 +114,33 @@ Player1ColorDone
           ;; NOTE: Multi-sprite kernel requires _COLUP1 (with
           ;; Player index
           ;; Hurt flag (non-zero = recovering)
-          ;; lda # 1 (duplicate)
-          ;; sta currentPlayer (duplicate)
+          lda # 1
+          sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    ;; let temp2 = playerRecoveryFrames[1]          lda 1          asl          tax          lda playerRecoveryFrames,x          sta temp2
-                    ;; let temp3 = playerState[1]
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp3 & PlayerStateBitGuarding (duplicate)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp2 = playerRecoveryFrames[1]          lda 1          asl          tax          lda playerRecoveryFrames,x          sta temp2
+                    let temp3 = playerState[1]
+          lda 1
+          asl
+          tax
+          lda playerState,x
+          sta temp3 & PlayerStateBitGuarding
+          lda 1
+          asl
+          tax
+          lda playerState,x
+          sta temp3
           ;; Cross-bank call to LoadCharacterColors in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadCharacterColors-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadCharacterColors-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadCharacterColors-1)
+          pha
+          lda # <(LoadCharacterColors-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
           _COLUP1 = temp6
 
@@ -151,44 +151,44 @@ Player2ColorDone
           ;; for Player 2 virtual sprite
           ;; NUSIZ reflection uses bit 6 - preserve other bits (size,
           ;; etc.)
-          ;; lda _NUSIZ1 (duplicate)
-          ;; and # NUSIZMaskReflection (duplicate)
-          ;; sta _NUSIZ1 (duplicate)
-          ;; lda playerState+1 (duplicate)
-          ;; and # PlayerStateBitFacing (duplicate)
+          lda _NUSIZ1
+          and # NUSIZMaskReflection
+          sta _NUSIZ1
+          lda playerState+1
+          and # PlayerStateBitFacing
           beq Player2ReflectionDone
-          ;; lda _NUSIZ1 (duplicate)
+          lda _NUSIZ1
           ora # PlayerStateBitFacingNUSIZ
-          ;; sta _NUSIZ1 (duplicate)
+          sta _NUSIZ1
 Player2ReflectionDone:
 
 
 
           ;; Load sprite data from character definition
-                    ;; let currentCharacter = playerCharacter[1]         
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
+                    let currentCharacter = playerCharacter[1]         
+          lda 1
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
           ;; Animation frame (0 = idle)
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 0
+          sta temp2
           ;; Animation action (0 = idle)
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 0
+          sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadCharacterSprite-1)
+          pha
+          lda # <(LoadCharacterSprite-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
           ;; Set colors for Players 3 & 4 (multisprite kernel)
@@ -198,29 +198,29 @@ Player2ReflectionDone:
 
           ;; Set Player 3 color and sprite (if active)
 
-          ;; lda controllerStatus (duplicate)
-          ;; and SetQuadtariDetected (duplicate)
+          lda controllerStatus
+          and SetQuadtariDetected
           cmp # 0
           bne skip_2154
-          ;; jmp DonePlayer3Sprite (duplicate)
+          jmp DonePlayer3Sprite
 skip_2154:
 
-                    ;; if playerCharacter[2] = NoCharacter then goto DonePlayer3Sprite
-          ;; ;; if ! playerHealth[2] then goto DonePlayer3Sprite
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; bne skip_3705 (duplicate)
-          ;; jmp DonePlayer3Sprite (duplicate)
+                    if playerCharacter[2] = NoCharacter then goto DonePlayer3Sprite
+          ;; if ! playerHealth[2] then goto DonePlayer3Sprite
+          lda 2
+          asl
+          tax
+          lda playerHealth,x
+          bne skip_3705
+          jmp DonePlayer3Sprite
 skip_3705:
 
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; bne skip_5360 (duplicate)
-          ;; jmp DonePlayer3Sprite (duplicate)
+          lda 2
+          asl
+          tax
+          lda playerHealth,x
+          bne skip_5360
+          jmp DonePlayer3Sprite
 skip_5360:
 
 
@@ -228,33 +228,33 @@ skip_5360:
           ;; Use LoadCharacterColors for consistent color handling
           ;; Player index
           ;; Hurt flag (non-zero = recovering)
-          ;; lda # 2 (duplicate)
-          ;; sta currentPlayer (duplicate)
+          lda # 2
+          sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    ;; let temp2 = playerRecoveryFrames[2]          lda 2          asl          tax          lda playerRecoveryFrames,x          sta temp2
-                    ;; let temp3 = playerState[2]
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp3 & PlayerStateBitGuarding (duplicate)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp2 = playerRecoveryFrames[2]          lda 2          asl          tax          lda playerRecoveryFrames,x          sta temp2
+                    let temp3 = playerState[2]
+          lda 2
+          asl
+          tax
+          lda playerState,x
+          sta temp3 & PlayerStateBitGuarding
+          lda 2
+          asl
+          tax
+          lda playerState,x
+          sta temp3
           ;; Cross-bank call to LoadCharacterColors in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadCharacterColors-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadCharacterColors-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadCharacterColors-1)
+          pha
+          lda # <(LoadCharacterColors-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
           ;; fall through to Player3ColorDone
           COLUP2 = temp6
@@ -264,73 +264,73 @@ Player3ColorDone
           ;; Set sprite reflection based on facing direction
           ;; NUSIZ reflection uses bit 6 - preserve other bits (size,
           ;; etc.)
-            ;; lda NewNUSIZ+2 (duplicate)
-            ;; and # NUSIZMaskReflection (duplicate)
-            ;; sta NewNUSIZ+2 (duplicate)
-            ;; lda playerState+2 (duplicate)
-            ;; and # PlayerStateBitFacing (duplicate)
-            ;; beq Player3ReflectionDone (duplicate)
-            ;; lda NewNUSIZ+2 (duplicate)
-            ;; ora # PlayerStateBitFacingNUSIZ (duplicate)
-            ;; sta NewNUSIZ+2 (duplicate)
+            lda NewNUSIZ+2
+            and # NUSIZMaskReflection
+            sta NewNUSIZ+2
+            lda playerState+2
+            and # PlayerStateBitFacing
+            beq Player3ReflectionDone
+            lda NewNUSIZ+2
+            ora # PlayerStateBitFacingNUSIZ
+            sta NewNUSIZ+2
 Player3ReflectionDone:
 
 
 
           ;; Load sprite data from character definition
-                    ;; let currentCharacter = playerCharacter[2]         
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
+                    let currentCharacter = playerCharacter[2]         
+          lda 2
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
           ;; Animation frame (0 = idle)
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 0
+          sta temp2
           ;; Animation action (0 = idle)
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 0
+          sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadCharacterSprite-1)
+          pha
+          lda # <(LoadCharacterSprite-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
 DonePlayer3Sprite
 
           ;; Set Player 4 color and sprite (if active)
 
-          ;; lda controllerStatus (duplicate)
-          ;; and SetQuadtariDetected (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_9777 (duplicate)
-          ;; jmp DonePlayer4Sprite (duplicate)
+          lda controllerStatus
+          and SetQuadtariDetected
+          cmp # 0
+          bne skip_9777
+          jmp DonePlayer4Sprite
 skip_9777:
 
-                    ;; if playerCharacter[3] = NoCharacter then goto DonePlayer4Sprite
-          ;; ;; if ! playerHealth[3] then goto DonePlayer4Sprite
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; bne skip_9091 (duplicate)
-          ;; jmp DonePlayer4Sprite (duplicate)
+                    if playerCharacter[3] = NoCharacter then goto DonePlayer4Sprite
+          ;; if ! playerHealth[3] then goto DonePlayer4Sprite
+          lda 3
+          asl
+          tax
+          lda playerHealth,x
+          bne skip_9091
+          jmp DonePlayer4Sprite
 skip_9091:
 
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; bne skip_9007 (duplicate)
-          ;; jmp DonePlayer4Sprite (duplicate)
+          lda 3
+          asl
+          tax
+          lda playerHealth,x
+          bne skip_9007
+          jmp DonePlayer4Sprite
 skip_9007:
 
 
@@ -339,33 +339,33 @@ skip_9007:
           ;; Player 4: Turquoise (player index color), hurt handled by
           ;; Player index
           ;; Hurt flag (non-zero = recovering)
-          ;; lda # 3 (duplicate)
-          ;; sta currentPlayer (duplicate)
+          lda # 3
+          sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    ;; let temp2 = playerRecoveryFrames[3]          lda 3          asl          tax          lda playerRecoveryFrames,x          sta temp2
-                    ;; let temp3 = playerState[3]
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp3 & PlayerStateBitGuarding (duplicate)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp2 = playerRecoveryFrames[3]          lda 3          asl          tax          lda playerRecoveryFrames,x          sta temp2
+                    let temp3 = playerState[3]
+          lda 3
+          asl
+          tax
+          lda playerState,x
+          sta temp3 & PlayerStateBitGuarding
+          lda 3
+          asl
+          tax
+          lda playerState,x
+          sta temp3
           ;; Cross-bank call to LoadCharacterColors in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadCharacterColors-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadCharacterColors-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadCharacterColors-1)
+          pha
+          lda # <(LoadCharacterColors-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
           COLUP3 = temp6
 
@@ -374,44 +374,44 @@ Player4ColorDone
           ;; Set sprite reflection based on facing direction
           ;; NUSIZ reflection uses bit 6 - preserve other bits (size,
           ;; etc.)
-            ;; lda NewNUSIZ+3 (duplicate)
-            ;; and # NUSIZMaskReflection (duplicate)
-            ;; sta NewNUSIZ+3 (duplicate)
-            ;; lda playerState+3 (duplicate)
-            ;; and # PlayerStateBitFacing (duplicate)
-            ;; beq Player4ReflectionDone (duplicate)
-            ;; lda NewNUSIZ+3 (duplicate)
-            ;; ora # PlayerStateBitFacingNUSIZ (duplicate)
-            ;; sta NewNUSIZ+3 (duplicate)
+            lda NewNUSIZ+3
+            and # NUSIZMaskReflection
+            sta NewNUSIZ+3
+            lda playerState+3
+            and # PlayerStateBitFacing
+            beq Player4ReflectionDone
+            lda NewNUSIZ+3
+            ora # PlayerStateBitFacingNUSIZ
+            sta NewNUSIZ+3
 Player4ReflectionDone:
 
 
 
           ;; Load sprite data from character definition
-                    ;; let currentCharacter = playerCharacter[3]         
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
+                    let currentCharacter = playerCharacter[3]         
+          lda 3
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
           ;; Animation frame (0 = idle)
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 0
+          sta temp2
           ;; Animation action (0 = idle)
-          ;; lda # 0 (duplicate)
-          ;; sta temp3 (duplicate)
+          lda # 0
+          sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 15 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadCharacterSprite-1)
+          pha
+          lda # <(LoadCharacterSprite-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+return_point:
 
 
 DonePlayer4Sprite

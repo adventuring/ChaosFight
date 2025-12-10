@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 InputHandleRightPortPlayerFunction
-;; InputHandleRightPortPlayerFunction (duplicate)
+InputHandleRightPortPlayerFunction
 
           ;;
           ;; RIGHT PORT PLAYER INPUT HANDLER (joy1 - Players 2 & 4)
@@ -12,17 +12,17 @@ InputHandleRightPortPlayerFunction
           ;; Cache animation state at start (used for movement, jump,
           lda temp1
           sta currentPlayer
-          ;; and attack checks)
+          and attack checks)
           ;; block movement during attack animations (states 13-15)
-                    ;; let temp2 = playerState[temp1] / 16         
-          ;; lda temp1 (duplicate)
+                    let temp2 = playerState[temp1] / 16         
+          lda temp1
           asl
           tax
-          ;; lda playerState,x (duplicate)
-          ;; sta temp2 (duplicate)
+          lda playerState,x
+          sta temp2
           ;; Block movement during attack windup/execute/recovery
-          ;; if temp2 >= 13 then goto DoneRightPortMovement
-          ;; lda temp2 (duplicate)
+          if temp2 >= 13 then goto DoneRightPortMovement
+          lda temp2
           cmp 13
 
           bcc skip_9612
@@ -34,52 +34,52 @@ InputHandleRightPortPlayerFunction
           ;; Process left/right movement (with playfield collision for
           ;; flying characters)
           ;; Check if player is guarding - guard blocks movement
-                    ;; let temp6 = playerState[temp1] & 2         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = playerState[temp1] & 2         
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          sta temp6
           ;; Guarding - block movement
-                    ;; if temp6 then goto DoneRightPortMovement
-          ;; lda temp6 (duplicate)
+                    if temp6 then goto DoneRightPortMovement
+          lda temp6
           beq skip_7029
-          ;; jmp DoneRightPortMovement (duplicate)
+          jmp DoneRightPortMovement
 skip_7029:
 
           ;; Frooty (8) and Dragon of Storms (2) need collision checks
           ;; for horizontal movement
-                    ;; let temp5 = playerCharacter[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp5 (duplicate)
-          ;; lda temp5 (duplicate)
-          ;; cmp # 8 (duplicate)
+                    let temp5 = playerCharacter[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp5
+          lda temp5
+          cmp # 8
           bne skip_3821
-          ;; jmp IHRP_FlyingMovement (duplicate)
+          jmp IHRP_FlyingMovement
 skip_3821:
 
-          ;; lda temp5 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_2215 (duplicate)
-          ;; jmp IHRP_FlyingMovement (duplicate)
+          lda temp5
+          cmp # 2
+          bne skip_2215
+          jmp IHRP_FlyingMovement
 skip_2215:
 
 
           ;; Standard horizontal movement (uses shared routine)
           ;; Cross-bank call to ProcessStandardMovement in bank 13
-          ;; lda # >(return_point_1_L83-1) (duplicate)
+          lda # >(return_point_1_L83-1)
           pha
-          ;; lda # <(return_point_1_L83-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ProcessStandardMovement-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ProcessStandardMovement-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point_1_L83-1)
+          pha
+          lda # >(ProcessStandardMovement-1)
+          pha
+          lda # <(ProcessStandardMovement-1)
+          pha
                     ldx # 12
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point_1_L83:
 
 
@@ -88,7 +88,7 @@ DoneRightPortMovement
 IHRP_FlyingMovement .proc
           ;; Tail call: goto instead of gosub to save 2 bytes on sta
 
-          ;; jmp HandleFlyingCharacterMovement (duplicate)
+          jmp HandleFlyingCharacterMovement
 IHRP_DoneFlyingLeftRight
 
           ;; Process UP input for character-specific behaviors
@@ -98,26 +98,26 @@ IHRP_DoneFlyingLeftRight
           ;; Process jump input from enhanced buttons (must be identical
           ;; effect to HandleUpInput for all characters)
           ;; Cross-bank call to ProcessJumpInput in bank 8
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ProcessJumpInput-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ProcessJumpInput-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 7 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(ProcessJumpInput-1)
+          pha
+          lda # <(ProcessJumpInput-1)
+          pha
+                    ldx # 7
+          jmp BS_jsr
+return_point:
 
 InputDoneRightPortJump
 
           ;; Process down/guard input (fully inlined to save 2 bytes on sta
 
           ;; Check joy1down (right port uses joy1)
-          ;; lda joy1down (duplicate)
-          ;; bne skip_8210 (duplicate)
-          ;; jmp IHRP_CheckGuardRelease (duplicate)
+          lda joy1down
+          bne skip_8210
+          jmp IHRP_CheckGuardRelease
 skip_8210:
 
 
@@ -125,113 +125,113 @@ skip_8210:
 
 IHRP_HandleDownPressed .proc
           ;; DOWN pressed - dispatch to character-specific down handler
-                    ;; let temp4 = playerCharacter[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp4 (duplicate)
-          ;; if temp4 >= 32 then goto IHRP_ProcessAttack
-          ;; lda temp4 (duplicate)
-          ;; cmp 32 (duplicate)
+                    let temp4 = playerCharacter[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp4
+          if temp4 >= 32 then goto IHRP_ProcessAttack
+          lda temp4
+          cmp 32
 
-          ;; bcc skip_104 (duplicate)
+          bcc skip_104
 
-          ;; jmp skip_104 (duplicate)
+          jmp skip_104
 
           skip_104:
-          ;; lda temp4 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_7070 (duplicate)
-          ;; jmp DragonOfStormsDown (duplicate)
+          lda temp4
+          cmp # 2
+          bne skip_7070
+          jmp DragonOfStormsDown
 skip_7070:
 
-          ;; lda temp4 (duplicate)
-          ;; cmp # 6 (duplicate)
-          ;; bne skip_7956 (duplicate)
-          ;; jmp HarpyDown (duplicate)
+          lda temp4
+          cmp # 6
+          bne skip_7956
+          jmp HarpyDown
 skip_7956:
 
-          ;; lda temp4 (duplicate)
-          ;; cmp # 8 (duplicate)
-          ;; bne skip_8836 (duplicate)
-          ;; jmp FrootyDown (duplicate)
+          lda temp4
+          cmp # 8
+          bne skip_8836
+          jmp FrootyDown
 skip_8836:
 
-          ;; lda temp4 (duplicate)
-          ;; cmp # 13 (duplicate)
-          ;; bne skip_4027 (duplicate)
-          ;; jmp IHRP_HandleRoboTitoDown (duplicate)
+          lda temp4
+          cmp # 13
+          bne skip_4027
+          jmp IHRP_HandleRoboTitoDown
 skip_4027:
 
           ;; Same-bank call (both in Bank 12) - saves 2 bytes vs cross-bank
-          ;; jmp StandardGuard (duplicate)
+          jmp StandardGuard
 
 .pend
 
 IHRP_HandleRoboTitoDown .proc
           ;; Cross-bank call to RoboTitoDown in bank 13
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(RoboTitoDown-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(RoboTitoDown-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 12 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(RoboTitoDown-1)
+          pha
+          lda # <(RoboTitoDown-1)
+          pha
+                    ldx # 12
+          jmp BS_jsr
+return_point:
 
-          ;; lda temp2 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_9606 (duplicate)
-          ;; jmp IHRP_ProcessAttack (duplicate)
+          lda temp2
+          cmp # 1
+          bne skip_9606
+          jmp IHRP_ProcessAttack
 skip_9606:
 
-          ;; jmp StandardGuard (duplicate)
+          jmp StandardGuard
 
 .pend
 
 IHRP_CheckGuardRelease .proc
           ;; DOWN released - check for early guard release (inlined to save 2 bytes)
-                    ;; let temp6 = playerState[temp1] & PlayerStateBitGuarding         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = playerState[temp1] & PlayerStateBitGuarding         
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          sta temp6
           ;; Not guarding, nothing to do
-          ;; lda temp6 (duplicate)
-          ;; bne skip_8955 (duplicate)
-          ;; jmp IHRP_ProcessAttack (duplicate)
+          lda temp6
+          bne skip_8955
+          jmp IHRP_ProcessAttack
 skip_8955:
 
           ;; Stop guard early and start cooldown
-                    ;; let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           ;; Start cooldown timer
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda GuardTimerMaxFrames (duplicate)
-          ;; sta playerTimers_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda GuardTimerMaxFrames
+          sta playerTimers_W,x
 
 .pend
 
 IHRP_ProcessAttack .proc
           ;; Process attack input
           ;; Cross-bank call to ProcessAttackInput in bank 10
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ProcessAttackInput-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ProcessAttackInput-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 9 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(ProcessAttackInput-1)
+          pha
+          lda # <(ProcessAttackInput-1)
+          pha
+                    ldx # 9
+          jmp BS_jsr
+return_point:
 
 InputDoneRightPortAttack
 

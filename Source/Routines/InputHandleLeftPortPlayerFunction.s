@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 InputHandleLeftPortPlayerFunction
-;; InputHandleLeftPortPlayerFunction (duplicate)
+InputHandleLeftPortPlayerFunction
 
           ;;
           ;; LEFT PORT PLAYER INPUT HANDLER (joy0 - Players 1 & 3)
@@ -12,17 +12,17 @@ InputHandleLeftPortPlayerFunction
           ;; Cache animation state at start (used for movement, jump,
           lda temp1
           sta currentPlayer
-          ;; and attack checks)
+          and attack checks)
           ;; block movement during attack animations (states 13-15)
-                    ;; let temp2 = playerState[temp1] / 16         
-          ;; lda temp1 (duplicate)
+                    let temp2 = playerState[temp1] / 16         
+          lda temp1
           asl
           tax
-          ;; lda playerState,x (duplicate)
-          ;; sta temp2 (duplicate)
+          lda playerState,x
+          sta temp2
           ;; Block movement during attack windup/execute/recovery
-          ;; if temp2 >= 13 then goto DoneLeftPortMovement
-          ;; lda temp2 (duplicate)
+          if temp2 >= 13 then goto DoneLeftPortMovement
+          lda temp2
           cmp 13
 
           bcc skip_243
@@ -35,37 +35,37 @@ InputHandleLeftPortPlayerFunction
           ;; flying characters)
           ;; Frooty (8) and Dragon of Storms (2) need collision checks
           ;; for horizontal movement
-                    ;; let temp5 = playerCharacter[temp1]         
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp5 (duplicate)
-          ;; lda temp5 (duplicate)
-          ;; cmp # 8 (duplicate)
+                    let temp5 = playerCharacter[temp1]         
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp5
+          lda temp5
+          cmp # 8
           bne skip_33
-          ;; jmp IHLP_FlyingMovement (duplicate)
+          jmp IHLP_FlyingMovement
 skip_33:
 
-          ;; lda temp5 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_4346 (duplicate)
-          ;; jmp IHLP_FlyingMovement (duplicate)
+          lda temp5
+          cmp # 2
+          bne skip_4346
+          jmp IHLP_FlyingMovement
 skip_4346:
 
 
           ;; Standard horizontal movement (uses shared routine)
           ;; Cross-bank call to ProcessStandardMovement in bank 13
-          ;; lda # >(return_point_1-1) (duplicate)
+          lda # >(return_point_1-1)
           pha
-          ;; lda # <(return_point_1-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ProcessStandardMovement-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ProcessStandardMovement-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point_1-1)
+          pha
+          lda # >(ProcessStandardMovement-1)
+          pha
+          lda # <(ProcessStandardMovement-1)
+          pha
                     ldx # 12
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point_1:
 
 
@@ -74,7 +74,7 @@ DoneLeftPortMovement
 IHLP_FlyingMovement .proc
           ;; Tail call: goto instead of gosub to save 2 bytes on sta
 
-          ;; jmp HandleFlyingCharacterMovement (duplicate)
+          jmp HandleFlyingCharacterMovement
 IHLP_DoneFlyingLeftRight
 
           ;; Process UP input for character-specific behaviors
@@ -84,48 +84,48 @@ IHLP_DoneFlyingLeftRight
           ;; Process jump input from enhanced buttons (must be identical
           ;; effect to HandleUpInput for all characters)
           ;; Cross-bank call to ProcessJumpInput in bank 8
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ProcessJumpInput-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ProcessJumpInput-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 7 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(ProcessJumpInput-1)
+          pha
+          lda # <(ProcessJumpInput-1)
+          pha
+                    ldx # 7
+          jmp BS_jsr
+return_point:
 
 InputDoneLeftPortJump
 
           ;; Process down/guard input
           ;; Cross-bank call to HandleGuardInput in bank 12
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(HandleGuardInput-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(HandleGuardInput-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 11 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(HandleGuardInput-1)
+          pha
+          lda # <(HandleGuardInput-1)
+          pha
+                    ldx # 11
+          jmp BS_jsr
+return_point:
 
 
           ;; Process attack input
           ;; Cross-bank call to ProcessAttackInput in bank 10
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ProcessAttackInput-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ProcessAttackInput-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 9 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(ProcessAttackInput-1)
+          pha
+          lda # <(ProcessAttackInput-1)
+          pha
+                    ldx # 9
+          jmp BS_jsr
+return_point:
 
 InputDoneLeftPortAttack
 

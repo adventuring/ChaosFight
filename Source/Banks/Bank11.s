@@ -10,9 +10,7 @@
           * = $F000
           .rept 256
           .byte $ff
-          .endrept  ;; Scram shadow (256 bytes of $FF)
-          * = $F100
-
+          .endrept
           ;; Character data tables
 .include "Source/Data/CharacterThemeSongIndices.s"
 
@@ -49,14 +47,5 @@ Bank11CodeEnds:
           ;; Wrap in .block to create namespace Bank11BS (avoids duplicate definitions)
 Bank11BS: .block
           current_bank = 11
-                    ;; Set file offset and CPU address for bankswitch code
-          ;; File offset: (11 * $1000) + ($FFE0 - bscode_length - $F000) = $11FC8
-          ;; CPU address: $FFE0 - bscode_length = $FFC8
-          ;; Use .org to set file offset, then * = to set CPU address
-          ;; Code appears at $ECA but should be at $FC8, difference is $FE
-          ;; So adjust .org by $FE
-          * = $FFE0 - bscode_length
-          
-          
           .include "Source/Common/BankSwitching.s"
           .bend

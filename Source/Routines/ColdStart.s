@@ -59,7 +59,7 @@ ColdStart .proc
           ;; Must be done before any sprite loading to ensure pointers
           ;; point to SCRAM buffers instead of ROM
           ;; CRITICAL: InitializeSpritePointers is called both same-bank (from ColdStart)
-          ;; and cross-bank (from BeginGameLoop). Since it’s called cross-bank, it must
+          and cross-bank (from BeginGameLoop). Since it’s called cross-bank, it must
           ;; always use return otherbank. When called same-bank, specifying bank14 still
           ;; uses cross-bank mechanism, so the return otherbank matches.
           ;; Cross-bank call to InitializeSpritePointers in bank 14
@@ -81,25 +81,25 @@ ColdStart .proc
 
           ;; Step 5: Initialize game state and transition to first mode
           ;; Set initial game mode (Publisher Prelude)
-          ;; lda ModePublisherPrelude (duplicate)
+          lda ModePublisherPrelude
           sta gameMode
           ;; OPTIMIZATION: Call BeginPublisherPrelude directly to save 4 bytes
           ;; (skip ChangeGameMode dispatcher overhead)
           ;; Cross-bank call to BeginPublisherPrelude in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(BeginPublisherPrelude-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(BeginPublisherPrelude-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(BeginPublisherPrelude-1)
+          pha
+          lda # <(BeginPublisherPrelude-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
           ;; Step 6: Tail call to MainLoop
-          ;; jmp MainLoop (duplicate)
+          jmp MainLoop
 
 .pend
 

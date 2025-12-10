@@ -23,7 +23,7 @@ UpdateCharacterParade .proc
 
           ;; titleParadeActive - Boolean: parade currently running
 
-          ;; TIMING:
+          TIMING:
 
           ;; - Parade starts after ~4 seconds (TitleParadeDelayFrames frames, TV-dependent)
 
@@ -152,23 +152,23 @@ StartNewParadeCharacter .proc
 Roll .proc
           ;; Returns: Far (return otherbank)
 
-          ;; lda rand (duplicate)
+          lda rand
           and #$1f
           sta titleParadeCharacter
 
           ;; Random character 0-MaxCharacter
           ;; Returns: Far (return otherbank)
 
-                    ;; if titleParadeCharacter > MaxCharacter then Roll
+                    if titleParadeCharacter > MaxCharacter then Roll
 
           ;; Start off-screen left
-          ;; lda # 246 (duplicate)
-          ;; sta titleParadeX (duplicate)
+          lda # 246
+          sta titleParadeX
 
-          ;; lda # 1 (duplicate)
-          ;; sta titleParadeActive (duplicate)
+          lda # 1
+          sta titleParadeActive
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -195,22 +195,22 @@ MoveParadeCharacter .proc
 
           ;; Move 2 pixels per frame
 
-          ;; lda titleParadeX (duplicate)
+          lda titleParadeX
           clc
           adc # 2
-          ;; sta titleParadeX (duplicate)
+          sta titleParadeX
 
 
 
           ;; Check if character has left screen
 
-          ;; lda titleParadeX (duplicate)
+          lda titleParadeX
           cmp # 171
           bcc skip_6836
 skip_6836:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -239,24 +239,24 @@ ParadeCharacterLeft .proc
 
           ;; Constraints: Must be colocated with UpdateCharacterParade
 
-          ;; lda # 0 (duplicate)
-          ;; sta titleParadeActive (duplicate)
+          lda # 0
+          sta titleParadeActive
 
           ;; Reset timer for next character
 
-          ;; ;; let titleParadeTimer = titleParadeTimer - FramesPerSecond          lda titleParadeTimer          sec          sbc FramesPerSecond          sta titleParadeTimer
-          ;; lda titleParadeTimer (duplicate)
+          ;; let titleParadeTimer = titleParadeTimer - FramesPerSecond          lda titleParadeTimer          sec          sbc FramesPerSecond          sta titleParadeTimer
+          lda titleParadeTimer
           sec
           sbc FramesPerSecond
-          ;; sta titleParadeTimer (duplicate)
+          sta titleParadeTimer
 
-          ;; lda titleParadeTimer (duplicate)
-          ;; sec (duplicate)
-          ;; sbc FramesPerSecond (duplicate)
-          ;; sta titleParadeTimer (duplicate)
+          lda titleParadeTimer
+          sec
+          sbc FramesPerSecond
+          sta titleParadeTimer
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -336,40 +336,40 @@ DrawParadeCharacterSprite .proc
 
           ;; Uses default walking animation for parade march
 
-          ;; lda titleParadeCharacter (duplicate)
-          ;; sta currentCharacter (duplicate)
+          lda titleParadeCharacter
+          sta currentCharacter
 
-          ;; lda # 0 (duplicate)
-          ;; sta currentPlayer (duplicate)
+          lda # 0
+          sta currentPlayer
 
-          ;; ;; let temp2 = titleParadeTimer & 7
-          ;; lda titleParadeTimer (duplicate)
-          ;; and # 7 (duplicate)
-          ;; sta temp2 (duplicate)
+          ;; let temp2 = titleParadeTimer & 7
+          lda titleParadeTimer
+          and # 7
+          sta temp2
 
-          ;; lda titleParadeTimer (duplicate)
-          ;; and # 7 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda titleParadeTimer
+          and # 7
+          sta temp2
 
 
-          ;; lda ActionWalking (duplicate)
-          ;; sta temp3 (duplicate)
+          lda ActionWalking
+          sta temp3
 
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(LoadCharacterSprite-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(LoadCharacterSprite-1)
+          pha
+          lda # <(LoadCharacterSprite-1)
+          pha
                     ldx # 15
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

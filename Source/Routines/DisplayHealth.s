@@ -54,7 +54,7 @@ DisplayHealth .proc
 
           ;; recovery. Players 3/4 only checked if Quadtari detected
 
-          ;; and selected
+          and selected
 
           ;; Flash Participant 1 sprite (array [0], P0) if health is
 
@@ -62,27 +62,27 @@ DisplayHealth .proc
 
           ;; Use skip-over pattern to avoid complex || operator
 
-                    ;; if playerHealth[0] >= 25 then goto DoneParticipant1Flash
+                    if playerHealth[0] >= 25 then goto DoneParticipant1Flash
 
-                    ;; if playerRecoveryFrames[0] = 0 then FlashParticipant1
+                    if playerRecoveryFrames[0] = 0 then FlashParticipant1
           lda # 0
           asl
           tax
-          ;; lda playerRecoveryFrames,x (duplicate)
+          lda playerRecoveryFrames,x
           bne skip_9594
           jmp FlashParticipant1
 skip_9594:
-          ;; jmp DoneParticipant1Flash (duplicate)
+          jmp DoneParticipant1Flash
 
 .pend
 
 FlashParticipant1 .proc
 
-                    ;; if frame & 8 then let player0x = 200
-          ;; lda frame (duplicate)
+                    if frame & 8 then let player0x = 200
+          lda frame
           and 8
           beq skip_3682
-          ;; lda # 200 (duplicate)
+          lda # 200
           sta player0x
 skip_3682:
 
@@ -99,28 +99,28 @@ DoneParticipant1Flash
 
           ;; Use skip-over pattern to avoid complex || operator
 
-                    ;; if playerHealth[1] >= 25 then goto DoneParticipant2Flash
+                    if playerHealth[1] >= 25 then goto DoneParticipant2Flash
 
-                    ;; if playerRecoveryFrames[1] = 0 then FlashParticipant2
-          ;; lda # 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerRecoveryFrames,x (duplicate)
-          ;; bne skip_6320 (duplicate)
-          ;; jmp FlashParticipant2 (duplicate)
+                    if playerRecoveryFrames[1] = 0 then FlashParticipant2
+          lda # 1
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          bne skip_6320
+          jmp FlashParticipant2
 skip_6320:
-          ;; jmp DoneParticipant2Flash (duplicate)
+          jmp DoneParticipant2Flash
 
 .pend
 
 FlashParticipant2 .proc
 
-                    ;; if frame & 8 then let player1x = 200
-          ;; lda frame (duplicate)
-          ;; and 8 (duplicate)
-          ;; beq skip_4325 (duplicate)
-          ;; lda # 200 (duplicate)
-          ;; sta player1x (duplicate)
+                    if frame & 8 then let player1x = 200
+          lda frame
+          and 8
+          beq skip_4325
+          lda # 200
+          sta player1x
 skip_4325:
 
 DoneParticipant2Flash
@@ -131,57 +131,57 @@ DoneParticipant2Flash
 
 
 
-          ;; lda controllerStatus (duplicate)
-          ;; and SetQuadtariDetected (duplicate)
+          lda controllerStatus
+          and SetQuadtariDetected
           cmp # 0
-          ;; bne skip_8664 (duplicate)
-          ;; jmp DonePlayer3Flash (duplicate)
+          bne skip_8664
+          jmp DonePlayer3Flash
 skip_8664:
 
 
-                    ;; if playerCharacter[2] = NoCharacter then goto DonePlayer3Flash
+                    if playerCharacter[2] = NoCharacter then goto DonePlayer3Flash
 
-          ;; ;; if ! playerHealth[2] then goto DonePlayer3Flash
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; bne skip_6091 (duplicate)
-          ;; jmp DonePlayer3Flash (duplicate)
+          ;; if ! playerHealth[2] then goto DonePlayer3Flash
+          lda 2
+          asl
+          tax
+          lda playerHealth,x
+          bne skip_6091
+          jmp DonePlayer3Flash
 skip_6091:
 
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; bne skip_190 (duplicate)
-          ;; jmp DonePlayer3Flash (duplicate)
+          lda 2
+          asl
+          tax
+          lda playerHealth,x
+          bne skip_190
+          jmp DonePlayer3Flash
 skip_190:
 
 
 
-                    ;; if playerHealth[2] >= 25 then goto DonePlayer3Flash
+                    if playerHealth[2] >= 25 then goto DonePlayer3Flash
 
-                    ;; if playerRecoveryFrames[2] = 0 then FlashPlayer3
-          ;; lda # 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerRecoveryFrames,x (duplicate)
-          ;; bne skip_5628 (duplicate)
-          ;; jmp FlashPlayer3 (duplicate)
+                    if playerRecoveryFrames[2] = 0 then FlashPlayer3
+          lda # 2
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          bne skip_5628
+          jmp FlashPlayer3
 skip_5628:
-          ;; jmp DonePlayer3Flash (duplicate)
+          jmp DonePlayer3Flash
 
 .pend
 
 FlashPlayer3 .proc
 
-                    ;; if frame & 8 then let player2x = 200
-          ;; lda frame (duplicate)
-          ;; and 8 (duplicate)
-          ;; beq skip_46 (duplicate)
-          ;; lda # 200 (duplicate)
-          ;; sta player2x (duplicate)
+                    if frame & 8 then let player2x = 200
+          lda frame
+          and 8
+          beq skip_46
+          lda # 200
+          sta player2x
 skip_46:
 
 DonePlayer3Flash
@@ -195,57 +195,57 @@ DonePlayer3Flash
 
 
 
-          ;; lda controllerStatus (duplicate)
-          ;; and SetQuadtariDetected (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_1843 (duplicate)
-          ;; jmp DonePlayer4Flash (duplicate)
+          lda controllerStatus
+          and SetQuadtariDetected
+          cmp # 0
+          bne skip_1843
+          jmp DonePlayer4Flash
 skip_1843:
 
 
-                    ;; if playerCharacter[3] = NoCharacter then goto DonePlayer4Flash
+                    if playerCharacter[3] = NoCharacter then goto DonePlayer4Flash
 
-          ;; ;; if ! playerHealth[3] then goto DonePlayer4Flash
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; bne skip_6517 (duplicate)
-          ;; jmp DonePlayer4Flash (duplicate)
+          ;; if ! playerHealth[3] then goto DonePlayer4Flash
+          lda 3
+          asl
+          tax
+          lda playerHealth,x
+          bne skip_6517
+          jmp DonePlayer4Flash
 skip_6517:
 
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; bne skip_2604 (duplicate)
-          ;; jmp DonePlayer4Flash (duplicate)
+          lda 3
+          asl
+          tax
+          lda playerHealth,x
+          bne skip_2604
+          jmp DonePlayer4Flash
 skip_2604:
 
 
 
-                    ;; if playerHealth[3] >= 25 then goto DonePlayer4Flash
+                    if playerHealth[3] >= 25 then goto DonePlayer4Flash
 
-                    ;; if playerRecoveryFrames[3] = 0 then FlashPlayer4
-          ;; lda # 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerRecoveryFrames,x (duplicate)
-          ;; bne skip_5482 (duplicate)
-          ;; jmp FlashPlayer4 (duplicate)
+                    if playerRecoveryFrames[3] = 0 then FlashPlayer4
+          lda # 3
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          bne skip_5482
+          jmp FlashPlayer4
 skip_5482:
-          ;; jmp DonePlayer4Flash (duplicate)
+          jmp DonePlayer4Flash
 
 .pend
 
 FlashPlayer4 .proc
 
-                    ;; if frame & 8 then let player3x = 200
-          ;; lda frame (duplicate)
-          ;; and 8 (duplicate)
-          ;; beq skip_7229 (duplicate)
-          ;; lda # 200 (duplicate)
-          ;; sta player3x (duplicate)
+                    if frame & 8 then let player3x = 200
+          lda frame
+          and 8
+          beq skip_7229
+          lda # 200
+          sta player3x
 skip_7229:
 
 DonePlayer4Flash

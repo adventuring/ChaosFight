@@ -9,9 +9,7 @@
           * = $F000
           .rept 256
           .byte $ff
-          .endrept  ;; Scram shadow (256 bytes of $FF)
-          * = $F100
-
+          .endrept
 Bank4DataStart:
 Character24DataStart:
 .include "Source/Generated/Character24.s"
@@ -58,14 +56,5 @@ Bank4CodeEnds:
           ;; Wrap in .block to create namespace Bank4BS (avoids duplicate definitions)
 Bank4BS: .block
           current_bank = 4
-                    ;; Set file offset and CPU address for bankswitch code
-          ;; File offset: (4 * $1000) + ($FFE0 - bscode_length - $F000) = $4FC8
-          ;; CPU address: $FFE0 - bscode_length = $FFC8
-          ;; Use .org to set file offset, then * = to set CPU address
-          ;; Code appears at $ECA but should be at $FC8, difference is $FE
-          ;; So adjust .org by $FE
-          * = $FFE0 - bscode_length
-          
-          
           .include "Source/Common/BankSwitching.s"
           .bend

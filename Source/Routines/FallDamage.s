@@ -14,16 +14,16 @@ CheckFallDamage .proc
           ;; Constraints: Must remain colocated with fall-damage helpers that reuse temp scratch bytes
 
           ;; Get character type for this player
-                    ;; let currentCharacter = playerCharacter[currentPlayer]         
+                    let currentCharacter = playerCharacter[currentPlayer]         
           lda currentPlayer
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
+          lda playerCharacter,x
           sta currentCharacter
 
           ;; Issue #1178: Bernie post-fall stun - check before immunity
           ;; Bernie is immune to fall damage but still gets stunned from high falls
-          ;; lda currentCharacter (duplicate)
+          lda currentCharacter
           cmp CharacterBernie
           bne skip_9340
           jmp CheckBernieStun
@@ -33,24 +33,24 @@ skip_9340:
           ;; Check for fall damage immunity (Frooty, DragonOfStorms)
           jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Calculate safe fall velocity threshold
           ;; Formula: safe_velocity = 120 ÷ weight
           ;; Use lookup table to avoid variable division
           ;; Pre-computed values in SafeFallVelocityThresholds table
-                    ;; let temp3 = SafeFallVelocityThresholds[currentCharacter]         
-          ;; lda currentCharacter (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda SafeFallVelocityThresholds,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = SafeFallVelocityThresholds[currentCharacter]         
+          lda currentCharacter
+          asl
+          tax
+          lda SafeFallVelocityThresholds,x
+          sta temp3
           ;; Safe fall velocity threshold
 
           ;; Check if fall velocity exceeds safe threshold
 
           ;; Safe landing, no damage
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Check if player is guarding - guard does NOT block fall
           ;; damage
@@ -63,19 +63,19 @@ skip_9340:
           ;; base_damage_multiplier
           ;; Base damage multiplier: 2 (so 1 extra velocity = 2 × base
           ;; damage)
-          ;; ;; let temp4 = temp2 - temp3          lda temp2          sec          sbc temp3          sta temp4
-          ;; lda temp2 (duplicate)
+          ;; let temp4 = temp2 - temp3          lda temp2          sec          sbc temp3          sta temp4
+          lda temp2
           sec
           sbc temp3
-          ;; sta temp4 (duplicate)
+          sta temp4
 
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc temp3 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp2
+          sec
+          sbc temp3
+          sta temp4
 
           ;; Multiply by 2 to double the base damage
-                    ;; let temp4 = temp4 * 2
+                    let temp4 = temp4 * 2
 
           ;; Apply weight-based damage multiplier: the bigger they
           ;; are, the harder they fall
@@ -86,71 +86,71 @@ skip_9340:
           ;; Use lookup table for weight/20, then multiply by damage
           ;; temp2 = weight / 20 from lookup table
           ;; Apply weight-based damage multiplier (temp2 = 0-5)
-                    ;; let temp2 = WeightDividedBy20[currentCharacter]         
-          ;; lda currentCharacter (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda WeightDividedBy20,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_7704 (duplicate)
-                    ;; let temp4 = 0 : goto WeightMultDone
+                    let temp2 = WeightDividedBy20[currentCharacter]         
+          lda currentCharacter
+          asl
+          tax
+          lda WeightDividedBy20,x
+          sta temp2
+          lda temp2
+          cmp # 0
+          bne skip_7704
+                    let temp4 = 0 : goto WeightMultDone
 skip_7704:
 
 
           ;; temp2 is 2-5: multiply temp4 by temp2 using compact ASM
-          ;; lda temp2 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_6573 (duplicate)
-          ;; jmp WeightMultDone (duplicate)
+          lda temp2
+          cmp # 1
+          bne skip_6573
+          jmp WeightMultDone
 skip_6573:
 
 
-            ;; lda temp4 (duplicate)
+            lda temp4
                     ldx temp2
             dex
-            ;; dex (duplicate)
+            dex
             beq mult2
-            ;; dex (duplicate)
-            ;; beq mult3 (duplicate)
-            ;; dex (duplicate)
-            ;; beq mult4 (duplicate)
-            ;; dex (duplicate)
-            ;; beq mult5 (duplicate)
-            ;; sta temp4 (duplicate)
-            ;; jmp multdone (duplicate)
+            dex
+            beq mult3
+            dex
+            beq mult4
+            dex
+            beq mult5
+            sta temp4
+            jmp multdone
 mult2:
 
-          ;; asl (duplicate)
+          asl
 
-            ;; sta temp4 (duplicate)
-            ;; jmp multdone (duplicate)
+            sta temp4
+            jmp multdone
 mult3:
 
-          ;; sta (duplicate)
+          sta
 
-            ;; asl (duplicate)
+            asl
             clc
             adc temp3
-            ;; sta temp4 (duplicate)
-            ;; jmp multdone (duplicate)
+            sta temp4
+            jmp multdone
 mult4:
 
-          ;; asl (duplicate)
+          asl
 
-            ;; asl (duplicate)
-            ;; sta temp4 (duplicate)
-            ;; jmp multdone (duplicate)
+            asl
+            sta temp4
+            jmp multdone
 mult5:
 
-          ;; sta (duplicate)
+          sta
 
-            ;; asl (duplicate)
-            ;; asl (duplicate)
-            ;; clc (duplicate)
-            ;; adc temp3 (duplicate)
-            ;; sta temp4 (duplicate)
+            asl
+            asl
+            clc
+            adc temp3
+            sta temp4
 multdone:
 
 WeightMultDone
@@ -158,138 +158,138 @@ WeightMultDone
           ;; Returns: Far (return otherbank)
 
           ;; Apply damage reduction (NinjishGuy, RoboTito: half damage)
-          ;; lda currentCharacter (duplicate)
-          ;; cmp CharacterNinjishGuy (duplicate)
-          ;; bne skip_7713 (duplicate)
-          ;; ;; let temp4 = temp4 / 2          lda temp4          lsr          sta temp4
-          ;; lda temp4 (duplicate)
+          lda currentCharacter
+          cmp CharacterNinjishGuy
+          bne skip_7713
+          ;; let temp4 = temp4 / 2          lda temp4          lsr          sta temp4
+          lda temp4
           lsr
-          ;; sta temp4 (duplicate)
+          sta temp4
 
-          ;; lda temp4 (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp4
+          lsr
+          sta temp4
 
 skip_7713:
 
 
-          ;; lda currentCharacter (duplicate)
-          ;; cmp CharacterRoboTito (duplicate)
-          ;; bne skip_2723 (duplicate)
-          ;; ;; let temp4 = temp4 / 2          lda temp4          lsr          sta temp4
-          ;; lda temp4 (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp4 (duplicate)
+          lda currentCharacter
+          cmp CharacterRoboTito
+          bne skip_2723
+          ;; let temp4 = temp4 / 2          lda temp4          lsr          sta temp4
+          lda temp4
+          lsr
+          sta temp4
 
-          ;; lda temp4 (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp4 (duplicate)
+          lda temp4
+          lsr
+          sta temp4
 
 skip_2723:
 
 
           ;; Cap maximum fall damage at 50
-          ;; lda temp4 (duplicate)
-          ;; cmp # 51 (duplicate)
+          lda temp4
+          cmp # 51
           bcc skip_6992
-          ;; lda # 50 (duplicate)
-          ;; sta temp4 (duplicate)
+          lda # 50
+          sta temp4
 skip_6992:
 
 
           ;; Apply fall damage (byte-safe clamp)
           ;; Use oldHealthValue for byte-safe clamp check
-                    ;; let oldHealthValue = playerHealth[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; sta oldHealthValue (duplicate)
-                    ;; let playerHealth[currentPlayer] = playerHealth[currentPlayer] - temp4
-                    ;; if playerHealth[currentPlayer] > oldHealthValue then let playerHealth[currentPlayer] = 0
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerHealth,x (duplicate)
-          ;; sec (duplicate)
-          ;; sbc oldHealthValue (duplicate)
-          ;; bcc skip_819 (duplicate)
-          ;; beq skip_819 (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta playerHealth,x (duplicate)
+                    let oldHealthValue = playerHealth[currentPlayer]         
+          lda currentPlayer
+          asl
+          tax
+          lda playerHealth,x
+          sta oldHealthValue
+                    let playerHealth[currentPlayer] = playerHealth[currentPlayer] - temp4
+                    if playerHealth[currentPlayer] > oldHealthValue then let playerHealth[currentPlayer] = 0
+          lda currentPlayer
+          asl
+          tax
+          lda playerHealth,x
+          sec
+          sbc oldHealthValue
+          bcc skip_819
+          beq skip_819
+          lda currentPlayer
+          asl
+          tax
+          lda # 0
+          sta playerHealth,x
 skip_819:
 
           ;; Set recovery frames (damage/2, clamped 10-30)
-          ;; ;; let temp2 = temp4 / 2          lda temp4          lsr          sta temp2
-          ;; lda temp4 (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp2 (duplicate)
+          ;; let temp2 = temp4 / 2          lda temp4          lsr          sta temp2
+          lda temp4
+          lsr
+          sta temp2
 
-          ;; lda temp4 (duplicate)
-          ;; lsr (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp4
+          lsr
+          sta temp2
 
-          ;; ;; if temp2 < 10 then let temp2 = 10
-          ;; lda temp2 (duplicate)
-          ;; cmp # 10 (duplicate)
+          ;; if temp2 < 10 then let temp2 = 10
+          lda temp2
+          cmp # 10
           bcs skip_1297
-          ;; jmp let_label (duplicate)
+          jmp let_label
 skip_1297:
 
-          ;; lda temp2 (duplicate)
-          ;; cmp # 10 (duplicate)
-          ;; bcs skip_425 (duplicate)
-          ;; jmp let_label (duplicate)
+          lda temp2
+          cmp # 10
+          bcs skip_425
+          jmp let_label
 skip_425:
 
 
 
-          ;; lda temp2 (duplicate)
-          ;; cmp # 31 (duplicate)
-          ;; bcc skip_1266 (duplicate)
-          ;; lda # 30 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp2
+          cmp # 31
+          bcc skip_1266
+          lda # 30
+          sta temp2
 skip_1266:
 
 
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp2 (duplicate)
-          ;; sta playerRecoveryFrames,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda temp2
+          sta playerRecoveryFrames,x
 
           ;; Synchronize playerState bit 3 with recovery frames
-                    ;; let playerState[currentPlayer] = playerState[currentPlayer] | 8
+                    let playerState[currentPlayer] = playerState[currentPlayer] | 8
           ;; Set bit 3 (recovery flag) when recovery frames are set
 
           ;; Set animation state to recovering (state 9)
-                    ;; let temp2 = playerState[currentPlayer] & MaskPlayerStateLower         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp2 (duplicate)
-                    ;; let playerState[currentPlayer] = temp2 | MaskAnimationRecovering
-          ;; lda SoundLandingDamage (duplicate)
-          ;; sta temp1 (duplicate)
+                    let temp2 = playerState[currentPlayer] & MaskPlayerStateLower         
+          lda currentPlayer
+          asl
+          tax
+          lda playerState,x
+          sta temp2
+                    let playerState[currentPlayer] = temp2 | MaskAnimationRecovering
+          lda SoundLandingDamage
+          sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(PlaySoundEffect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 14 (duplicate)
-          ;; jmp BS_jsr (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(PlaySoundEffect-1)
+          pha
+          lda # <(PlaySoundEffect-1)
+          pha
+                    ldx # 14
+          jmp BS_jsr
 return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -313,34 +313,34 @@ CheckBernieStun .proc
           ;; Constraints: Must be colocated with CheckFallDamage
           ;; Check if fall velocity exceeds safe threshold (would trigger fall damage)
           ;; Bernie’s safe fall velocity threshold
-                    ;; let temp3 = SafeFallVelocityThresholds[CharacterBernie]         
-          ;; lda CharacterBernie (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda SafeFallVelocityThresholds,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = SafeFallVelocityThresholds[CharacterBernie]         
+          lda CharacterBernie
+          asl
+          tax
+          lda SafeFallVelocityThresholds,x
+          sta temp3
           ;; Safe landing, no stun needed
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Fall velocity exceeds threshold - trigger stun
           ;; Set stun timer to 1 second (frame-rate independent: 60fps NTSC, 50fps PAL/SECAM)
           ;; Set recovery flag to prevent movement during stun
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda FramesPerSecond (duplicate)
-          ;; sta playerRecoveryFrames,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda FramesPerSecond
+          sta playerRecoveryFrames,x
           ;; Set animation state to ’Fallen down’ (state 8, shifted = 128)
-                    ;; let playerState[currentPlayer] = playerState[currentPlayer] | PlayerStateBitRecovery
-                    ;; let temp3 = playerState[currentPlayer] & MaskPlayerStateFlags         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let playerState[currentPlayer] = playerState[currentPlayer] | PlayerStateBitRecovery
+                    let temp3 = playerState[currentPlayer] & MaskPlayerStateFlags         
+          lda currentPlayer
+          asl
+          tax
+          lda playerState,x
+          sta temp3
           ;; Animation state 8 (Fallen down) << 4 = 128
-                    ;; let playerState[currentPlayer] = temp3 | ActionFallenDownShifted
-          ;; jsr BS_return (duplicate)
+                    let playerState[currentPlayer] = temp3 | ActionFallenDownShifted
+          jsr BS_return
 
 .pend
 
@@ -352,11 +352,11 @@ FallDamageApplyGravity .proc
           ;; Handles character-specific gravity rates and terminal
           ;; velocity.
           ;;
-          ;; INPUT:
+          INPUT:
           ;; currentPlayer (global) = player index (0-3)
           ;; temp2 = current vertical momentum (positive = down)
           ;;
-          ;; OUTPUT:
+          OUTPUT:
           ;; temp2 = updated vertical momentum
           ;; Applies gravity acceleration to a player each frame
           ;;
@@ -373,42 +373,42 @@ FallDamageApplyGravity .proc
           ;; Called Routines: None
           ;; Constraints: None
           ;; Get character type
-                    ;; let currentCharacter = playerCharacter[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
+                    let currentCharacter = playerCharacter[currentPlayer]         
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
 
           ;; Check for no-gravity characters (Frooty, DragonOfStorms)
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; Apply gravity (default 2, Harpy 1)
-          ;; lda # 2 (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda currentCharacter (duplicate)
-          ;; cmp CharacterHarpy (duplicate)
-          ;; bne skip_8668 (duplicate)
-          ;; lda # 1 (duplicate)
-          ;; sta temp6 (duplicate)
+          lda # 2
+          sta temp6
+          lda currentCharacter
+          cmp CharacterHarpy
+          bne skip_8668
+          lda # 1
+          sta temp6
 skip_8668:
 
 
           ;; Apply gravity acceleration
-                    ;; let temp2 = temp2 + temp6
+                    let temp2 = temp2 + temp6
 
-                    ;; if temp2 > TerminalVelocity then let temp2 = TerminalVelocity
-          ;; lda temp2 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc TerminalVelocity (duplicate)
-          ;; bcc skip_2372 (duplicate)
-          ;; beq skip_2372 (duplicate)
-          ;; lda TerminalVelocity (duplicate)
-          ;; sta temp2 (duplicate)
+                    if temp2 > TerminalVelocity then let temp2 = TerminalVelocity
+          lda temp2
+          sec
+          sbc TerminalVelocity
+          bcc skip_2372
+          beq skip_2372
+          lda TerminalVelocity
+          sta temp2
 skip_2372:
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 CheckGroundCollision
           ;;
@@ -417,7 +417,7 @@ CheckGroundCollision
           ;; Checks if player has landed on ground or platform.
           ;; Calls CheckFallDamage if landing detected.
           ;;
-          ;; INPUT:
+          INPUT:
           ;; currentPlayer (global) = player index (0-3)
           ;; temp2 = vertical momentum before position update
           ;; This routine should be called AFTER vertical position
@@ -445,32 +445,32 @@ CheckGroundCollision
           ;; Constraints: Tail call to CheckFallDamage
           ;; Should be called AFTER vertical position
           ;; update but BEFORE momentum is cleared
-          ;; lda temp1 (duplicate)
-          ;; sta currentPlayer (duplicate)
-                    ;; let currentCharacter = playerCharacter[currentPlayer]          lda currentPlayer          asl          tax          lda playerCharacter,x          sta currentCharacter
+          lda temp1
+          sta currentPlayer
+                    let currentCharacter = playerCharacter[currentPlayer]          lda currentPlayer          asl          tax          lda playerCharacter,x          sta currentCharacter
           ;; Get player Y position
-                    ;; let temp3 = playerY[currentPlayer]
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp3 (duplicate)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta temp3 (duplicate)
+                    let temp3 = playerY[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerY,x
+          sta temp3
+          lda currentPlayer
+          asl
+          tax
+          lda playerY,x
+          sta temp3
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 176 (duplicate)
-          ;; sta playerY,x (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda 176
+          sta playerY,x
+          jsr BS_return
 
-          ;; jmp CheckFallDamage (duplicate)
+          jmp CheckFallDamage
 
 .pend
 
@@ -481,28 +481,28 @@ HandleFrootyVertical .proc
           ;; Frooty has no gravity and can move up/down freely.
           ;; Down button moves down (no guard action).
           ;;
-          ;; INPUT:
+          INPUT:
           ;; currentPlayer (global) = player index (0-3, but should only be called for
           ;; Frooty)
           ;; This should be called from PlayerInput.bas when processing
           ;; joystick up/down for Frooty.
-          ;; lda temp1 (duplicate)
-          ;; sta currentPlayer (duplicate)
+          lda temp1
+          sta currentPlayer
           ;; Check character type to confirm
-                    ;; let currentCharacter = playerCharacter[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
-          ;; lda currentCharacter (duplicate)
-          ;; cmp CharacterFrooty (duplicate)
-          ;; bne skip_155 (duplicate)
-          ;; jmp FrootyFallDamage (duplicate)
+                    let currentCharacter = playerCharacter[currentPlayer]         
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
+          lda currentCharacter
+          cmp CharacterFrooty
+          bne skip_155
+          jmp FrootyFallDamage
 skip_155:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -515,38 +515,38 @@ FrootyFallDamage .proc
           ;; This needs to be integrated with PlayerInput.bas
           ;; Fall damage calculation based on character weight
 
-          ;; If joyup pressed: move up
+          If joyup pressed: move up
           ;; playerY[currentPlayer] = playerY[currentPlayer] - 2
 
-          ;; If joydown pressed: move down (replaces guard action)
+          If joydown pressed: move down (replaces guard action)
           ;; playerY[currentPlayer] = playerY[currentPlayer] + 2
 
           ;; Clamp to screen bounds
           ;; Byte-safe clamp: if wrapped below 0, the new value will
           ;; exceed the old
-                    ;; let oldHealthValue = playerY[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sta oldHealthValue (duplicate)
+                    let oldHealthValue = playerY[currentPlayer]         
+          lda currentPlayer
+          asl
+          tax
+          lda playerY,x
+          sta oldHealthValue
           ;; Reuse oldHealthValue for byte-safe clamp check (not
           ;; actually health, but same pattern)
-                    ;; if playerY[currentPlayer] > oldHealthValue then let playerY[currentPlayer] = 0
+                    if playerY[currentPlayer] > oldHealthValue then let playerY[currentPlayer] = 0
 
-                    ;; if playerY[currentPlayer] > 176 then let playerY[currentPlayer] = 176
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerY,x (duplicate)
-          ;; sec (duplicate)
-          ;; sbc 176 (duplicate)
-          ;; bcc skip_1739 (duplicate)
-          ;; beq skip_1739 (duplicate)
-          ;; lda 176 (duplicate)
-          ;; sta playerY,x (duplicate)
+                    if playerY[currentPlayer] > 176 then let playerY[currentPlayer] = 176
+          lda currentPlayer
+          asl
+          tax
+          lda playerY,x
+          sec
+          sbc 176
+          bcc skip_1739
+          beq skip_1739
+          lda 176
+          sta playerY,x
 skip_1739:
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -557,29 +557,29 @@ HandleHarpySwoopAttack .proc
           ;; Harpy attack causes an instant redirection into a rapid
           ;; downward diagonal strike at ~45° to the facing direction.
           ;;
-          ;; INPUT:
+          INPUT:
           ;; currentPlayer (global) = player index (0-3, but should only be called for
           ;; Harpy)
           ;;
-          ;; OUTPUT:
+          OUTPUT:
           ;; Sets player momentum for diagonal downward swoop
-          ;; lda temp1 (duplicate)
-          ;; sta currentPlayer (duplicate)
+          lda temp1
+          sta currentPlayer
           ;; Check character type to confirm
-                    ;; let currentCharacter = playerCharacter[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
-          ;; lda currentCharacter (duplicate)
-          ;; cmp CharacterHarpy (duplicate)
-          ;; bne skip_6023 (duplicate)
-          ;; jmp HarpyDive (duplicate)
+                    let currentCharacter = playerCharacter[currentPlayer]         
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
+          lda currentCharacter
+          cmp CharacterHarpy
+          bne skip_6023
+          jmp HarpyDive
 skip_6023:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -588,40 +588,40 @@ HarpyDive .proc
           ;; Returns: Far (return otherbank)
 
           ;; Get facing direction from playerState bit 0
-                    ;; let temp6 = playerState[currentPlayer] & PlayerStateBitFacing         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = playerState[currentPlayer] & PlayerStateBitFacing         
+          lda currentPlayer
+          asl
+          tax
+          lda playerState,x
+          sta temp6
 
           ;; Set diagonal momentum at ~45° angle
           ;; Horizontal: 4 pixels/frame (in facing direction)
           ;; Vertical: 4 pixels/frame (downward)
           ;; Facing left: set negative momentum (252 = -4 in signed
-          ;; lda temp6 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_9112 (duplicate)
-          ;; jmp SetHorizontalMomentumRight (duplicate)
+          lda temp6
+          cmp # 0
+          bne skip_9112
+          jmp SetHorizontalMomentumRight
 skip_9112:
 
 
           ;; 8-bit)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 252 (duplicate)
-          ;; sta playerVelocityX,x (duplicate)
-          ;; jmp SetVerticalMomentum (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda 252
+          sta playerVelocityX,x
+          jmp SetVerticalMomentum
 
 SetHorizontalMomentumRight
           ;; Facing right: set positive momentum
           ;; Returns: Far (return otherbank)
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda 4 (duplicate)
-          ;; sta playerVelocityX,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda 4
+          sta playerVelocityX,x
 
 .pend
 
@@ -636,40 +636,40 @@ SetVerticalMomentum .proc
           ;; Set animation state to swooping attack
           ;; This could be animation state 10 or special attack
           ;; animation
-                    ;; let temp6 = playerState[currentPlayer] & MaskPlayerStateLower         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerState,x (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; lda temp6 (duplicate)
+                    let temp6 = playerState[currentPlayer] & MaskPlayerStateLower         
+          lda currentPlayer
+          asl
+          tax
+          lda playerState,x
+          sta temp6
+          lda temp6
           ora MaskAnimationFalling
-          ;; sta temp6 (duplicate)
+          sta temp6
           ;; Animation state 10
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda temp6 (duplicate)
-          ;; sta playerState,x (duplicate)
+          lda currentPlayer
+          asl
+          tax
+          lda temp6
+          sta playerState,x
 
           ;; Spawn mêlée attack missile for swoop hit detection
-          ;; lda currentPlayer (duplicate)
-          ;; sta temp1 (duplicate)
+          lda currentPlayer
+          sta temp1
           ;; Cross-bank call to SpawnMissile in bank 7
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(SpawnMissile-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(SpawnMissile-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 6 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(SpawnMissile-1)
+          pha
+          lda # <(SpawnMissile-1)
+          pha
+                    ldx # 6
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -691,23 +691,23 @@ DivideBy20 .proc
           ;; TODO: ; rem
           ;; TODO: ; rem OUTPUT: A register = quotient (result in temp2)
           ;; TODO: ; rem Uses 18 bytes, 32 cycles
-            ;; lda temp2 (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; sta temp6 (duplicate)
-            ;; lsr (duplicate)
-            ;; adc temp6 (duplicate)
+            lda temp2
+            lsr
+            lsr
+            sta temp6
+            lsr
+            adc temp6
             ror
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; adc temp6 (duplicate)
-            ;; ror (duplicate)
-            ;; adc temp6 (duplicate)
-            ;; ror (duplicate)
-            ;; lsr (duplicate)
-            ;; lsr (duplicate)
-            ;; sta temp2 (duplicate)
-          ;; jsr BS_return (duplicate)
+            lsr
+            lsr
+            adc temp6
+            ror
+            adc temp6
+            ror
+            lsr
+            lsr
+            sta temp2
+          jsr BS_return
 
 .pend
 
@@ -719,13 +719,13 @@ DivideBy100 .proc
           ;;
           ;; OUTPUT: temp2 = quotient (0, 1, or 2)
           ;; Fast approximation for values 0-255
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; jsr BS_return (duplicate)
+          lda # 0
+          sta temp2
+          jsr BS_return
 
 .pend
 
@@ -738,92 +738,92 @@ CalculateSafeFallDistance .proc
           ;; character.
           ;; Used for AI and display purposes.
           ;;
-          ;; INPUT:
+          INPUT:
           ;; currentPlayer (global) = player index (0-3)
           ;;
-          ;; OUTPUT:
+          OUTPUT:
           ;; temp2 = safe fall distance in pixels
           ;; Get character type and weight
-          ;; lda temp1 (duplicate)
-          ;; sta currentPlayer (duplicate)
-                    ;; let currentCharacter = playerCharacter[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta currentCharacter (duplicate)
+          lda temp1
+          sta currentPlayer
+                    let currentCharacter = playerCharacter[currentPlayer]         
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          sta currentCharacter
 
           ;; Check for fall damage immunity
-          ;; lda currentCharacter (duplicate)
-          ;; cmp CharacterBernie (duplicate)
-          ;; bne skip_5834 (duplicate)
-          ;; jmp SetInfiniteFallDista (duplicate)
+          lda currentCharacter
+          cmp CharacterBernie
+          bne skip_5834
+          jmp SetInfiniteFallDista
 
 skip_5834:
 
 
-          ;; lda currentCharacter (duplicate)
-          ;; cmp CharacterRoboTito (duplicate)
-          ;; bne skip_8991 (duplicate)
-          ;; jmp SetInfiniteFallDista (duplicate)
+          lda currentCharacter
+          cmp CharacterRoboTito
+          bne skip_8991
+          jmp SetInfiniteFallDista
 
 skip_8991:
 
 
-          ;; lda currentCharacter (duplicate)
-          ;; cmp CharacterFrooty (duplicate)
-          ;; bne skip_9478 (duplicate)
-          ;; jmp SetInfiniteFallDista (duplicate)
+          lda currentCharacter
+          cmp CharacterFrooty
+          bne skip_9478
+          jmp SetInfiniteFallDista
 
 skip_9478:
 
 
-          ;; lda currentCharacter (duplicate)
-          ;; cmp CharacterDragonOfStorms (duplicate)
-          ;; bne skip_6876 (duplicate)
-          ;; jmp SetInfiniteFallDista (duplicate)
+          lda currentCharacter
+          cmp CharacterDragonOfStorms
+          bne skip_6876
+          jmp SetInfiniteFallDista
 
 skip_6876:
 
 
-          ;; jmp CalculateFallDistanceNormal (duplicate)
+          jmp CalculateFallDistanceNormal
 
 .pend
 
 SetInfiniteFallDistance .proc
-          ;; lda InfiniteFallDista (duplicate)
+          lda InfiniteFallDista
 
-          ;; sta temp2 (duplicate)
-          ;; jsr BS_return (duplicate)
+          sta temp2
+          jsr BS_return
 
 .pend
 
 CalculateFallDistanceNormal .proc
-                    ;; let temp3 = SafeFallVelocityThresholds[currentCharacter]          lda currentCharacter          asl          tax          lda SafeFallVelocityThresholds,x          sta temp3
-          ;; lda temp3 (duplicate)
-          ;; sec (duplicate)
-          ;; sbc # 1 (duplicate)
-          ;; sta temp4 (duplicate)
-                    ;; let temp2 = SquareTable[temp4]
-          ;; lda temp4 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda SquareTable,x (duplicate)
-          ;; sta temp2 (duplicate)
-          ;; lda temp4 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda SquareTable,x (duplicate)
-          ;; sta temp2 (duplicate)
-            ;; lsr temp2 (duplicate)
-            ;; lsr temp2 (duplicate)
-          ;; lda currentCharacter (duplicate)
-          ;; cmp CharacterNinjishGuy (duplicate)
-          ;; bne skip_4750 (duplicate)
-                    ;; let temp2 = temp2 * 2
+                    let temp3 = SafeFallVelocityThresholds[currentCharacter]          lda currentCharacter          asl          tax          lda SafeFallVelocityThresholds,x          sta temp3
+          lda temp3
+          sec
+          sbc # 1
+          sta temp4
+                    let temp2 = SquareTable[temp4]
+          lda temp4
+          asl
+          tax
+          lda SquareTable,x
+          sta temp2
+          lda temp4
+          asl
+          tax
+          lda SquareTable,x
+          sta temp2
+            lsr temp2
+            lsr temp2
+          lda currentCharacter
+          cmp CharacterNinjishGuy
+          bne skip_4750
+                    let temp2 = temp2 * 2
 skip_4750:
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

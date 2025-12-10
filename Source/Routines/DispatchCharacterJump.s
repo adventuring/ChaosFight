@@ -18,7 +18,7 @@ DispatchCharacterJump .proc
           ;; Constraints: Now in Bank 7 (same bank as ProcessJumpInput). Jump functions are in Bank 11.
           ;; Handle out-of-range characters (>= 32)
           ;; Characters 16-30 (unused) and Meth Hound mirror Shamone
-          ;; if temp4 >= 32 then goto DCJ_StandardJump
+          if temp4 >= 32 then goto DCJ_StandardJump
           lda temp4
           cmp 32
           bcs DCJ_StandardJump

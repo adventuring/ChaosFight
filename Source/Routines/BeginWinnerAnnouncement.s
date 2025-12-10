@@ -47,87 +47,87 @@ BeginWinnerAnnouncement .proc
           ;; Set screen layout (32×8 for character display) - inlined
           lda ScreenPfRowHeight
           sta pfrowheight
-          ;; lda ScreenPfRows (duplicate)
-          ;; sta pfrows (duplicate)
+          lda ScreenPfRows
+          sta pfrows
 
           ;; Background: black (COLUBK starts black, no need to set)
 
           ;; Initialize display rank (starts at 0, may be updated by
           ;; DisplayWinScreen if implemented)
-          ;; lda # 0 (duplicate)
-          ;; sta displayRank_W (duplicate)
+          lda # 0
+          sta displayRank_W
 
           ;; Get winner’s character index
-          ;; lda winnerPlayerIndex_R (duplicate)
-          ;; sta temp1 (duplicate)
-          ;; lda temp1 (duplicate)
+          lda winnerPlayerIndex_R
+          sta temp1
+          lda temp1
           cmp # 0
           bne skip_3841
-                    ;; let temp2 = playerCharacter[0]         
-          ;; lda 0 (duplicate)
+                    let temp2 = playerCharacter[0]         
+          lda 0
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp2 (duplicate)
+          lda playerCharacter,x
+          sta temp2
 skip_3841:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_7445 (duplicate)
-                    ;; let temp2 = playerCharacter[1]         
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp1
+          cmp # 1
+          bne skip_7445
+                    let temp2 = playerCharacter[1]         
+          lda 1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp2
 skip_7445:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 2 (duplicate)
-          ;; bne skip_6650 (duplicate)
-                    ;; let temp2 = playerCharacter[2]         
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp1
+          cmp # 2
+          bne skip_6650
+                    let temp2 = playerCharacter[2]         
+          lda 2
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp2
 skip_6650:
 
 
-          ;; lda temp1 (duplicate)
-          ;; cmp # 3 (duplicate)
-          ;; bne skip_3547 (duplicate)
-                    ;; let temp2 = playerCharacter[3]         
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda playerCharacter,x (duplicate)
-          ;; sta temp2 (duplicate)
+          lda temp1
+          cmp # 3
+          bne skip_3547
+                    let temp2 = playerCharacter[3]         
+          lda 3
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp2
 skip_3547:
 
 
           ;; Look up full song ID from mapping table (table contains
           ;; song ID consta
 
-                    ;; let temp1 = CharacterThemeSongIndices[temp2]         
-          ;; lda temp2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CharacterThemeSongIndices,x (duplicate)
-          ;; sta temp1 (duplicate)
+                    let temp1 = CharacterThemeSongIndices[temp2]         
+          lda temp2
+          asl
+          tax
+          lda CharacterThemeSongIndices,x
+          sta temp1
 
           ;; Start winner’s character theme song
           ;; Cross-bank call to StartMusic in bank 15
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(StartMusic-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(StartMusic-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(StartMusic-1)
+          pha
+          lda # <(StartMusic-1)
+          pha
                     ldx # 14
           jmp BS_jsr
 return_point:

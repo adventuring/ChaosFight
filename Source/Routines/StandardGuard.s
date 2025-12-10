@@ -30,39 +30,39 @@ StandardGuard .proc
           ;; guard cooldown, StartGuard (bank6) - activates guard
           ;;
           ;; Constraints: Flying characters (Frooty=8, Dragon of
-          ;; Storms=2, Harpy=6) cannot guard. Guard blocked if in
+          Storms=2, Harpy=6) cannot guard. Guard blocked if in
           ;; cooldown
           ;; Flying characters cannot guard - DOWN is used for vertical
           ;; movement
           ;; Frooty (8): DOWN = fly down (no gravity)
           ;; Dragon of Storms (2): DOWN = fly down (no gravity)
           ;; Harpy (6): DOWN = fly down (reduced gravity)
-                    ;; let temp4 = playerCharacter[temp1]         
+                    let temp4 = playerCharacter[temp1]         
           lda temp1
           asl
           tax
-          ;; lda playerCharacter,x (duplicate)
+          lda playerCharacter,x
           sta temp4
 
           jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
           ;; Check if guard is allowed (not in cooldown)
 
           ;; Cross-bank call to CheckGuardCooldown in bank 6
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(CheckGuardCooldown-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(CheckGuardCooldown-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(CheckGuardCooldown-1)
+          pha
+          lda # <(CheckGuardCooldown-1)
+          pha
                     ldx # 5
           jmp BS_jsr
 return_point:
@@ -70,7 +70,7 @@ return_point:
 
           ;; Guard blocked by cooldown
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -78,16 +78,16 @@ return_point:
 
           ;; Set guard bit in playerState
 
-                    ;; let playerState[temp1] = playerState[temp1] | 2
+                    let playerState[temp1] = playerState[temp1] | 2
 
           ;; Set guard duration timer
-          ;; lda temp1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda GuardTimerMaxFrames (duplicate)
-          ;; sta playerTimers_W,x (duplicate)
+          lda temp1
+          asl
+          tax
+          lda GuardTimerMaxFrames
+          sta playerTimers_W,x
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 .pend

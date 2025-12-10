@@ -55,7 +55,7 @@ SetupPublisherPrelude .proc
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
 
-          ;; jmp BeginPublisherPrelude (duplicate)
+          jmp BeginPublisherPrelude
 
 .pend
 
@@ -78,7 +78,7 @@ SetupAuthorPrelude .proc
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
 
-          ;; jmp BeginAuthorPrelude (duplicate)
+          jmp BeginAuthorPrelude
 
 .pend
 
@@ -101,7 +101,7 @@ SetupTitle .proc
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
 
-          ;; jmp BeginTitleScreen (duplicate)
+          jmp BeginTitleScreen
 
 .pend
 
@@ -109,7 +109,7 @@ SetupCharacterSelect .proc
           ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           ;; Returns: Far (return otherbank)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 SetupFallingAnimation
           ;; Character select uses its own internal flow
@@ -144,18 +144,18 @@ SetupFallingAnimation
           ;; Cross-bank call to BeginFallingAnimation in bank 14
           lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(BeginFallingAnimation-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(BeginFallingAnimation-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(BeginFallingAnimation-1)
+          pha
+          lda # <(BeginFallingAnimation-1)
+          pha
                     ldx # 13
-          ;; jmp BS_jsr (duplicate)
+          jmp BS_jsr
 return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -177,20 +177,20 @@ SetupArenaSelect .proc
           ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; Cross-bank call to BeginArenaSelect in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(BeginArenaSelect-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(BeginArenaSelect-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(BeginArenaSelect-1)
+          pha
+          lda # <(BeginArenaSelect-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -214,20 +214,20 @@ SetupGame .proc
           ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; Cross-bank call to BeginGameLoop in bank 11
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(BeginGameLoop-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(BeginGameLoop-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 10 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(BeginGameLoop-1)
+          pha
+          lda # <(BeginGameLoop-1)
+          pha
+                    ldx # 10
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -249,20 +249,20 @@ SetupWinner .proc
           ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; Cross-bank call to BeginWinnerAnnouncement in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(BeginWinnerAnnouncement-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(BeginWinnerAnnouncement-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(BeginWinnerAnnouncement-1)
+          pha
+          lda # <(BeginWinnerAnnouncement-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -285,7 +285,7 @@ SetupAttract .proc
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
 
-          ;; jmp BeginAttractMode (duplicate)
+          jmp BeginAttractMode
           ;; ============================================================
           ;; Near thunks for on...goto jump table
           ;; Placed at end to prevent accidental fall-through
@@ -296,61 +296,61 @@ SetupAttract .proc
 CGM_ThunkPublisherPrelude .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
-          ;; jmp SetupPublisherPrelude (duplicate)
+          jmp SetupPublisherPrelude
 
 .pend
 
 CGM_ThunkAuthorPrelude .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
-          ;; jmp SetupAuthorPrelude (duplicate)
+          jmp SetupAuthorPrelude
 
 .pend
 
 CGM_ThunkTitle .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
-          ;; jmp SetupTitle (duplicate)
+          jmp SetupTitle
 
 .pend
 
 CGM_ThunkCharacterSelect .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
-          ;; jmp SetupCharacterSelect (duplicate)
+          jmp SetupCharacterSelect
 
 CGM_ThunkFallingAnimation
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
-          ;; jmp SetupFallingAnimation (duplicate)
+          jmp SetupFallingAnimation
 
 .pend
 
 CGM_ThunkArenaSelect .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
-          ;; jmp SetupArenaSelect (duplicate)
+          jmp SetupArenaSelect
 
 .pend
 
 CGM_ThunkGame .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
-          ;; jmp SetupGame (duplicate)
+          jmp SetupGame
 
 .pend
 
 CGM_ThunkWinner .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
-          ;; jmp SetupWinner (duplicate)
+          jmp SetupWinner
 
 .pend
 
 CGM_ThunkAttract .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
-          ;; jmp SetupAttract (duplicate)
+          jmp SetupAttract
 
 .pend
 

@@ -48,7 +48,7 @@ end
           asm
 Bank12CodeEnds
            echo "// Bank 11: ", [Bank12AfterUpdateAttackCooldowns - Bank12DataEnds]d, " bytes = UpdateAttackCooldowns"
-           echo "// Bank 11: ", [Bank12AfterHandleFlyingCharacterMovement - Bank12AfterUpdateAttackCooldowns]d, " bytes = HandleFlyingCharacterMovement (CharacterDamage removed - was empty)"
+           echo "// Bank 11: ", [Bank12AfterHandleFlyingCharacterMovement - Bank12AfterUpdateAttackCooldowns]d, " bytes = HandleFlyingCharacterMovement"
            echo "// Bank 11: ", [Bank12AfterHandleGuardInput - Bank12AfterHandleFlyingCharacterMovement]d, " bytes = HandleGuardInput"
            echo "// Bank 11: ", [Bank12AfterStandardGuard - Bank12AfterHandleGuardInput]d, " bytes = StandardGuard"
            echo "// Bank 11: ", [Bank12AfterRadishGoblinMovement - Bank12AfterStandardGuard]d, " bytes = RadishGoblinMovement"

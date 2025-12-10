@@ -32,84 +32,84 @@ CharacterSelectEntry .proc
           lda 0
           asl
           tax
-          ;; lda RandomCharacter (duplicate)
+          lda RandomCharacter
           sta playerCharacter,x
           ;; Player 3: NoCharacter (locked)
-          ;; lda 1 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda CPUCharacter (duplicate)
-          ;; sta playerCharacter,x (duplicate)
+          lda 1
+          asl
+          tax
+          lda CPUCharacter
+          sta playerCharacter,x
           ;; Player 4: NoCharacter (locked)
-          ;; lda 2 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda NoCharacter (duplicate)
-          ;; sta playerCharacter,x (duplicate)
+          lda 2
+          asl
+          tax
+          lda NoCharacter
+          sta playerCharacter,x
           ;; Initialize playerLocked (bit-packed)
-          ;; lda 3 (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda NoCharacter (duplicate)
-          ;; sta playerCharacter,x (duplicate)
+          lda 3
+          asl
+          tax
+          lda NoCharacter
+          sta playerCharacter,x
           ;; Lock Player 2 (CPUCharacter)
-          ;; lda # 0 (duplicate)
-          ;; sta playerLocked (duplicate)
+          lda # 0
+          sta playerLocked
           ;; Lock Player 3 (NoCharacter)
-                    ;; let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+                    let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
 
           ;; Lock Player 4 (NoCharacter)
-                    ;; let temp1 = 2
-          ;; lda # 2 (duplicate)
-          ;; sta temp1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6 (duplicate)
+                    let temp1 = 2
+          lda # 2
+          sta temp1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
 
           ;; NOTE: Do NOT clear controllerStatus flags here - monotonic
-                    ;; let temp1 = 3
-          ;; lda # 3 (duplicate)
-          ;; sta temp1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6 (duplicate)
+                    let temp1 = 3
+          lda # 3
+          sta temp1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
 
           ;; detection (upgrades only)
           ;; Controller detection is handled by DetectPads with
           ;; monotonic state machine
 
           ;; Initialize character select animations
-          ;; lda # 0 (duplicate)
-          ;; sta characterSelectAnimationTimer (duplicate)
+          lda # 0
+          sta characterSelectAnimationTimer
           ;; Start with idle animation
-          ;; lda # 0 (duplicate)
-          ;; sta characterSelectAnimationState (duplicate)
+          lda # 0
+          sta characterSelectAnimationState
           ;; Start with first character
-          ;; lda # 0 (duplicate)
-          ;; sta characterSelectCharacterIndex_W (duplicate)
-          ;; lda # 0 (duplicate)
-          ;; sta characterSelectAnimationFrame (duplicate)
+          lda # 0
+          sta characterSelectCharacterIndex_W
+          lda # 0
+          sta characterSelectAnimationFrame
 
           ;; Check for Quadtari adapter (inlined for performance)
           ;; CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
           ;; Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) and Right (INPT2 LOW, INPT3 HIGH)
-                    ;; if INPT0{7} then goto CharacterSelectQuadtariAbsent
+                    if INPT0{7} then goto CharacterSelectQuadtariAbsent
 
-                    ;; if !INPT1{7} then goto CharacterSelectQuadtariAbsent
+                    if !INPT1{7} then goto CharacterSelectQuadtariAbsent
           bit INPT1
           bmi skip_5888
           jmp CharacterSelectQuadtariAbsent
 skip_5888:
 
-                    ;; if INPT2{7} then goto CharacterSelectQuadtariAbsent
-          ;; bit INPT2 (duplicate)
+                    if INPT2{7} then goto CharacterSelectQuadtariAbsent
+          bit INPT2
           bpl skip_4108
-          ;; jmp CharacterSelectQuadtariAbsent (duplicate)
+          jmp CharacterSelectQuadtariAbsent
 skip_4108:
 
           ;; All checks passed - Quadtari detected
-                    ;; if !INPT3{7} then goto CharacterSelectQuadtariAbsent
-          ;; bit INPT3 (duplicate)
-          ;; bmi skip_7109 (duplicate)
-          ;; jmp CharacterSelectQuadtariAbsent (duplicate)
+                    if !INPT3{7} then goto CharacterSelectQuadtariAbsent
+          bit INPT3
+          bmi skip_7109
+          jmp CharacterSelectQuadtariAbsent
 skip_7109:
-          ;; lda controllerStatus (duplicate)
+          lda controllerStatus
           ora SetQuadtariDetected
-          ;; sta controllerStatus (duplicate)
+          sta controllerStatus
 
 .pend
 

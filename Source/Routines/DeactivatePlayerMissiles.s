@@ -9,15 +9,15 @@ DeactivatePlayerMissiles .proc
           ;; Output: Clears this player’s missile bit
           ;; Mutates: missileActive
           ;; Clear missile active bit for this player
-                    ;; let missileActive = missileActive & PlayerANDMask[currentPlayer]
+                    let missileActive = missileActive & PlayerANDMask[currentPlayer]
           lda currentPlayer
           asl
           tax
-          ;; lda PlayerANDMask,x (duplicate)
+          lda PlayerANDMask,x
           and missileActive
           sta missileActive
           rts
-          ;; and masks to clear player missile bits (inverted BitMask values)
+          and masks to clear player missile bits (inverted BitMask values)
 PlayerANDMask:
           .byte 7
 

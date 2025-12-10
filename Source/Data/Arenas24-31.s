@@ -17,7 +17,7 @@ data_end:
 
 Arena25Playfield
           ;; Arena 25: The Maze (complex wall pattern)
-;; playfield: (duplicate)
+playfield:
 
 %1111111111111111
 
@@ -34,7 +34,7 @@ data_end_2:
 
 Arena26Playfield
           ;; Arena 26: The Islands (scattered platforms)
-;; playfield: (duplicate)
+playfield:
 
           %1100000000000011
           %1100000000000011
@@ -49,7 +49,7 @@ data_end_3:
 
 Arena27Playfield
           ;; Arena 27: The Rings (concentric platforms)
-;; playfield: (duplicate)
+playfield:
 
 %1111111111111111
 
@@ -66,7 +66,7 @@ data_end_4:
 
 Arena28Playfield
           ;; Arena 28: The Slopes (diagonal platforms)
-;; playfield: (duplicate)
+playfield:
 
 %1111111111111111
 
@@ -83,7 +83,7 @@ data_end_5:
 
 Arena29Playfield
           ;; Arena 29: The Zigzag (zigzag pattern)
-;; playfield: (duplicate)
+playfield:
 
           %1111000000001111
           %0011110000111100
@@ -98,7 +98,7 @@ data_end_6:
 
 Arena30Playfield
           ;; Arena 30: The Ladder (vertical rungs)
-;; playfield: (duplicate)
+playfield:
 
           %1001001001001001
           %1001001001001001
@@ -113,7 +113,7 @@ data_end_7:
 
 Arena31Playfield
           ;; Arena 31: The Final Battle (complex multi-platform)
-;; playfield: (duplicate)
+playfield:
 
 %1111111111111111
 

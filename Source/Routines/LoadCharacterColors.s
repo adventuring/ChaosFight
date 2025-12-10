@@ -66,21 +66,21 @@ skip_4192:
 
           ;; TODO: #ifdef TV_SECAM
 
-          ;; lda ColMagenta(12) (duplicate)
+          lda ColMagenta(12)
           sta temp6
 
           ;; TODO: #else
 
-                    ;; let temp6 = PlayerColors6[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
+                    let temp6 = PlayerColors6[currentPlayer]         
+          lda currentPlayer
           asl
           tax
-          ;; lda PlayerColors6,x (duplicate)
-          ;; sta temp6 (duplicate)
+          lda PlayerColors6,x
+          sta temp6
 
           ;; TODO: #.fi
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 
 
@@ -92,14 +92,14 @@ NormalColorState .proc
 
           ;; Returns: Far (return otherbank)
 
-                    ;; let temp6 = PlayerColors12[currentPlayer]         
-          ;; lda currentPlayer (duplicate)
-          ;; asl (duplicate)
-          ;; tax (duplicate)
-          ;; lda PlayerColors12,x (duplicate)
-          ;; sta temp6 (duplicate)
+                    let temp6 = PlayerColors12[currentPlayer]         
+          lda currentPlayer
+          asl
+          tax
+          lda PlayerColors12,x
+          sta temp6
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

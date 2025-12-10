@@ -33,8 +33,8 @@ WarmStart .proc
           ;; Clear paused flag (0 = normal, not paused, not ending)
           ;; Initialize frame counter to 0 on warm sta
 
-          ;; lda # 0 (duplicate)
-          ;; sta frame (duplicate)
+          lda # 0
+          sta frame
 
           ;; Step 2: Reinitialize TIA color registers to safe defaults
           ;; Match ColdStart initialization for consistency
@@ -58,17 +58,17 @@ WarmStart .proc
           ENABL = 0
 
           ;; Step 5: Reset game mode to startup sequence
-          ;; lda ModePublisherPrelude (duplicate)
-          ;; sta gameMode (duplicate)
+          lda ModePublisherPrelude
+          sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          ;; lda # >(return_point-1) (duplicate)
+          lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ChangeGameMode-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(ChangeGameMode-1)
+          pha
+          lda # <(ChangeGameMode-1)
+          pha
                     ldx # 13
           jmp BS_jsr
 return_point:
@@ -81,7 +81,7 @@ return_point:
 HandleConsoleSwitches
           ;; Returns: Far (return otherbank)
 
-;; HandleConsoleSwitches (duplicate)
+HandleConsoleSwitches
 
 
 
@@ -90,112 +90,112 @@ HandleConsoleSwitches
           ;;
           ;; Game Select switch or Joy2B+ Button III - toggle pause
           ;; mode
-          ;; lda # 0 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 0
+          sta temp2
           ;; Check Player 1 buttons
-          ;; jsr CheckEnhancedPause (duplicate)
+          jsr CheckEnhancedPause
 
-          ;; lda temp1 (duplicate)
+          lda temp1
           bne skip_2900
 skip_2900:
 
           ;; Re-detect controllers when Select is pressed
           ;; Cross-bank call to DetectPads in bank 13
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(DetectPads-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(DetectPads-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 12 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(DetectPads-1)
+          pha
+          lda # <(DetectPads-1)
+          pha
+                    ldx # 12
+          jmp BS_jsr
+return_point:
 
 
-          ;; lda systemFlags (duplicate)
-          ;; and SystemFlagGameStatePaused (duplicate)
+          lda systemFlags
+          and SystemFlagGameStatePaused
           cmp # 0
-          ;; bne skip_1411 (duplicate)
-                    ;; let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
+          bne skip_1411
+                    let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
 skip_1411:
 
-          ;; lda systemFlags (duplicate)
-          ;; and ClearSystemFlagGameStatePaused (duplicate)
-          ;; sta systemFlags (duplicate)
+          lda systemFlags
+          and ClearSystemFlagGameStatePaused
+          sta systemFlags
 
 Player1PauseDone
           ;; Debounce - wait for button release (drawscreen called by
           ;; Returns: Far (return otherbank)
           ;; HandleConsoleSwitches is called cross-bank, so must use return otherbank
           ;; MainLoop)
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 DonePlayer1Pause
-          ;; lda # 1 (duplicate)
-          ;; sta temp2 (duplicate)
+          lda # 1
+          sta temp2
           ;; Check Player 2 buttons
-          ;; jsr CheckEnhancedPause (duplicate)
+          jsr CheckEnhancedPause
 
-          ;; lda temp1 (duplicate)
-          ;; bne skip_4884 (duplicate)
+          lda temp1
+          bne skip_4884
 skip_4884:
 
           ;; Re-detect controllers when Select is pressed
           ;; Cross-bank call to DetectPads in bank 13
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(DetectPads-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(DetectPads-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 12 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(DetectPads-1)
+          pha
+          lda # <(DetectPads-1)
+          pha
+                    ldx # 12
+          jmp BS_jsr
+return_point:
 
 
-          ;; lda systemFlags (duplicate)
-          ;; and SystemFlagGameStatePaused (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_3376 (duplicate)
-                    ;; let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
+          lda systemFlags
+          and SystemFlagGameStatePaused
+          cmp # 0
+          bne skip_3376
+                    let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
 skip_3376:
 
-          ;; lda systemFlags (duplicate)
-          ;; and ClearSystemFlagGameStatePaused (duplicate)
-          ;; sta systemFlags (duplicate)
+          lda systemFlags
+          and ClearSystemFlagGameStatePaused
+          sta systemFlags
 
 Player2PauseDone
           ;; Debounce - wait for button release (drawscreen called by
           ;; Returns: Far (return otherbank)
           ;; HandleConsoleSwitches is called cross-bank, so must use return otherbank
           ;; MainLoop)
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 DonePlayer2Pause
           ;; Color/B&W switch - re-detect controllers when toggled
           ;; CRITICAL: Use bank13 even though same-bank to match return otherbank
           ;; Cross-bank call to CheckColorBWToggle in bank 13
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(CheckColorBWToggle-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(CheckColorBWToggle-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 12 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(CheckColorBWToggle-1)
+          pha
+          lda # <(CheckColorBWToggle-1)
+          pha
+                    ldx # 12
+          jmp BS_jsr
+return_point:
 
 
           ;; TODO: #ifndef TV_SECAM
           ;; 7800 Pause button - toggle Color/B&W mode (not in SECAM)
           ;; tail call
-          ;; jmp Check7800Pause (duplicate)
+          jmp Check7800Pause
 
 .pend
 
@@ -209,10 +209,10 @@ Check7800Pause .proc
           ;; This function is a placeholder for future 7800-specific pause handling.
           ;;
           ;; Constraints: NTSC/PAL only (not SECAM)
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
           ;; TODO: #.fi
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -239,28 +239,28 @@ CheckEnhancedPause .proc
           ;;
           ;; Constraints: None
           ;; Default to no pause button pressed
-          ;; lda # 0 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 0
+          sta temp1
 
           ;; Always check Game Select switch first (works with any controller)
           rts
 
-          ;; Then check enhanced pause buttons for the specified player
+          Then check enhanced pause buttons for the specified player
           ;; Joy2B+ Button III uses different registers than Button II/C
-          ;; lda temp2 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_9581 (duplicate)
-          ;; jmp CEP_CheckPlayer1 (duplicate)
+          lda temp2
+          cmp # 0
+          bne skip_9581
+          jmp CEP_CheckPlayer1
 skip_9581:
 
 
-          ;; lda temp2 (duplicate)
-          ;; cmp # 1 (duplicate)
-          ;; bne skip_8204 (duplicate)
-          ;; jmp CEP_CheckPlayer2 (duplicate)
+          lda temp2
+          cmp # 1
+          bne skip_8204
+          jmp CEP_CheckPlayer2
 skip_8204:
 
-          ;; rts (duplicate)
+          rts
 
 .pend
 
@@ -268,17 +268,17 @@ CEP_CheckPlayer1 .proc
           ;; Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from CheckEnhancedPause, so use return thisbank
-                    ;; if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = 1
-                    ;; if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
-          ;; lda controllerStatus (duplicate)
-          ;; and SetLeftPortJoy2bPlus (duplicate)
+                    if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = 1
+                    if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
+          lda controllerStatus
+          and SetLeftPortJoy2bPlus
           beq skip_4516
           bit INPT1
           bmi skip_4516
-          ;; lda # 1 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda # 1
+          sta temp1
 skip_4516:
-          ;; rts (duplicate)
+          rts
 
 .pend
 
@@ -286,23 +286,23 @@ CEP_CheckPlayer2 .proc
           ;; Player 2: Check Genesis Button C (INPT2) or Joy2B+ Button III (INPT3)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from CheckEnhancedPause, so use return thisbank
-          ;; lda INPT2 (duplicate)
-          ;; and # 128 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_6018 (duplicate)
-          ;; lda # 1 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda INPT2
+          and # 128
+          cmp # 0
+          bne skip_6018
+          lda # 1
+          sta temp1
 skip_6018:
 
-          ;; lda INPT3 (duplicate)
-          ;; and # 128 (duplicate)
-          ;; cmp # 0 (duplicate)
-          ;; bne skip_4127 (duplicate)
-          ;; lda # 1 (duplicate)
-          ;; sta temp1 (duplicate)
+          lda INPT3
+          and # 128
+          cmp # 0
+          bne skip_4127
+          lda # 1
+          sta temp1
 skip_4127:
 
-          ;; rts (duplicate)
+          rts
           ;;
           ;; Color/B&W switch change detection (triggers controller re-detect)
 
@@ -332,35 +332,35 @@ CheckColorBWToggle .proc
 
           ;; Constraints: Must be colocated with DoneSwitchChange (called via goto)
           ;; Optimized: Check Color/B&W switch state change directly
-          ;; lda # 0 (duplicate)
-          ;; sta temp6 (duplicate)
-          ;; if switchbw then let temp6 = 1
-          ;; lda switchbw (duplicate)
-          ;; beq skip_1649 (duplicate)
-          ;; jmp skip_1649 (duplicate)
+          lda # 0
+          sta temp6
+          if switchbw then let temp6 = 1
+          lda switchbw
+          beq skip_1649
+          jmp skip_1649
 skip_1649:
-          ;; lda temp6 (duplicate)
-          ;; cmp colorBWPrevious_R (duplicate)
-          ;; bne skip_7622 (duplicate)
+          lda temp6
+          cmp colorBWPrevious_R
+          bne skip_7622
           ;; TODO: DoneSwitchChange
 skip_7622:
 
           ;; Cross-bank call to DetectPads in bank 13
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(DetectPads-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(DetectPads-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 12 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(DetectPads-1)
+          pha
+          lda # <(DetectPads-1)
+          pha
+                    ldx # 12
+          jmp BS_jsr
+return_point:
 
 
-          ;; lda temp6 (duplicate)
-          ;; sta colorBWPrevious_W (duplicate)
+          lda temp6
+          sta colorBWPrevious_W
 
 DoneSwitchChange
           ;; Color/B&W switch change check complete (label only, no
@@ -387,17 +387,17 @@ DoneSwitchChange
           ;; variable.
           ;; Reload arena colors if switch or override changed
           ;; Note: colorBWOverride check handled in
-          ;; if temp1 then ReloadArenaColorsNow
-          ;; lda temp1 (duplicate)
-          ;; beq skip_9286 (duplicate)
-          ;; jmp ReloadArenaColorsNow (duplicate)
+          if temp1 then ReloadArenaColorsNow
+          lda temp1
+          beq skip_9286
+          jmp ReloadArenaColorsNow
 skip_9286:
           
           ;; Check7800PauseButton
           ;; (NTSC/PAL only, not SECAM)
           ;; CRITICAL: CheckColorBWToggle is called from HandleConsoleSwitches which is
           ;; called cross-bank, so this return must be return otherbank
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 
@@ -407,20 +407,20 @@ ReloadArenaColorsNow .proc
           ;; Returns: Far (return otherbank)
           ;; CheckColorBWToggle is called cross-bank, so must use return otherbank
           ;; Cross-bank call to ReloadArenaColors in bank 14
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(ReloadArenaColors-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(ReloadArenaColors-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 13 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(ReloadArenaColors-1)
+          pha
+          lda # <(ReloadArenaColors-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+return_point:
 
 
-          ;; jsr BS_return (duplicate)
+          jsr BS_return
 
 .pend
 

@@ -26,7 +26,7 @@ UpdatePlayerMovement .proc
           ;; NOTE: batariBASIC automatically handles carry operations
           ;; for 8.8 fixed-point arithmetic.
           ;; When you add two 8.8 values, the compiler generates code
-          ;; that:
+          that:
           ;; 1. Adds the low bytes (with carry)
           ;; 2. Adds the high bytes (plus carry from low byte addition)
           ;; This eliminates the need for manual carry checking and
@@ -43,12 +43,12 @@ UpdatePlayerMovement .proc
           ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
           lda # >(return_point-1)
           pha
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdatePlayerMovementSingle-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdatePlayerMovementSingle-1) (duplicate)
-          ;; pha (duplicate)
+          lda # <(return_point-1)
+          pha
+          lda # >(UpdatePlayerMovementSingle-1)
+          pha
+          lda # <(UpdatePlayerMovementSingle-1)
+          pha
                     ldx # 7
           jmp BS_jsr
 return_point:
@@ -57,26 +57,26 @@ return_point:
 .pend
 
 next_label_1_L59:.proc
-          ;; lda controllerStatus (duplicate)
+          lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
           bne skip_9367
-          ;; jmp UpdatePlayerMovementQuadtariSkip (duplicate)
+          jmp UpdatePlayerMovementQuadtariSkip
 skip_9367:
 
           ;; TODO: for currentPlayer = 2 to 3
           ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
-          ;; lda # >(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(return_point-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # >(UpdatePlayerMovementSingle-1) (duplicate)
-          ;; pha (duplicate)
-          ;; lda # <(UpdatePlayerMovementSingle-1) (duplicate)
-          ;; pha (duplicate)
-                    ;; ldx # 7 (duplicate)
-          ;; jmp BS_jsr (duplicate)
-;; return_point: (duplicate)
+          lda # >(return_point-1)
+          pha
+          lda # <(return_point-1)
+          pha
+          lda # >(UpdatePlayerMovementSingle-1)
+          pha
+          lda # <(UpdatePlayerMovementSingle-1)
+          pha
+                    ldx # 7
+          jmp BS_jsr
+return_point:
 
 .pend
 

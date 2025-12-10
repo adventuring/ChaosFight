@@ -1,9 +1,7 @@
 ;;; ChaosFight - Source/Routines/CheckPlayerElimination.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-CheckPlayerElimination
-;;; Returns: Far (return otherbank)
-CheckPlayerElimination
+CheckPlayerElimination:
           ;;
           ;; Returns: Far (return otherbank)
           ;; Check Single Player Elimination
@@ -13,14 +11,14 @@ CheckPlayerElimination
           ;; INPUT: currentPlayer = player index (0-3) (global
           ;; variable)
           ;;
-          MUTATES:
+          ;; MUTATES:
           ;; temp2 = temp2 ÷ temp2 (reused, internal)
           ;; temp6 = temp6 (internal)
           ;; WARNING: temp2 and temp6 are mutated during execution. Do
           ;; not
           ;; use these temp variables after calling this subroutine.
           ;;
-          EFFECTS:
+          ;; EFFECTS:
           ;; Triggers elimination effects
           ;; Check if specified player should be eliminated (health =
           ;; 0) and trigger elimination effects
@@ -50,7 +48,7 @@ CheckPlayerElimination
           ;; execution. Do not use these temp variables after calling
           ;; this subroutine.
           ;; Check if health has reached 0
-                    let temp2 = playerHealth[currentPlayer]         
+          ;; let temp2 = playerHealth[currentPlayer]         
           lda currentPlayer
           asl
           tax
@@ -76,10 +74,10 @@ CheckPlayerElimination
           pha
           lda # <(UpdatePlayers34ActiveFlag-1)
           pha
-                    ldx # 13
+          ldx # 13
           jmp BS_jsr
-CPE_return_point_1:
 
+CPE_return_point_1:
 
           ;; Cross-bank call to UpdatePlayers34ActiveFlag in bank 14
           lda # >(return_point-1)
@@ -90,14 +88,13 @@ CPE_return_point_1:
           pha
           lda # <(UpdatePlayers34ActiveFlag-1)
           pha
-                    ldx # 13
+          ldx # 13
           jmp BS_jsr
+
 return_point:
 
-
-UpdatePlayers34Done
+UpdatePlayers34Done:
           ;; Returns: Far (return otherbank)
-UpdatePlayers34Done
 
           ;; Record elimination order
           ;; Returns: Far (return otherbank)

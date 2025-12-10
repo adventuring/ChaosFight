@@ -2,6 +2,19 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 BudgetedMissileCollisionCheck:
+
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: (document parameters)
+          ;;
+          ;; Output: (document return values)
+          ;;
+          ;; Mutates: (document modified variables)
+          ;;
+          ;; Called Routines: (document subroutines called)
+          ;;
+          ;; Constraints: (document colocation/bank requirements)
+
           ;; Budget Missile Collision Detection
           ;; Check missile collisions for at most 2 missiles per frame.
           ;;

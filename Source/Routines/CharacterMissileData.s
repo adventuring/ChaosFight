@@ -88,10 +88,11 @@ GetMissileWidth .proc
           lda CharacterMissileWidths,x
           sta temp2
           rts
+
 .pend
 
 GetMissileHeight .proc
-          Return missile height (stub - use CharacterMissileHeights[] directly)
+          ;; Return missile height (stub - use CharacterMissileHeights[] directly)
           ;; Input: temp1 = character index (0-MaxCharacter)
           ;; Output: temp2 = missile height
           ;; Mutates: temp2 (return value)
@@ -104,10 +105,11 @@ GetMissileHeight .proc
           lda CharacterMissileHeights,x
           sta temp2
           rts
+
 .pend
 
 GetMissileFlags .proc
-          Return missile flags (stub - use CharacterMissileFlags[] directly)
+          ;; Return missile flags (stub - use CharacterMissileFlags[] directly)
           ;; Input: temp1 = character index (0-MaxCharacter)
           ;; Output: temp2 = missile flags
           ;; Mutates: temp2 (return value)
@@ -120,10 +122,11 @@ GetMissileFlags .proc
           lda CharacterMissileFlags,x
           sta temp2
           rts
+
 .pend
 
 GetMissileMomentumX .proc
-          Return missile horizontal momentum from CharacterMissileMomentumX[temp1].
+          ;; Return missile horizontal momentum from CharacterMissileMomentumX[temp1].
           ;; Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMomentumY lookup)
           ;; Output: temp2 = missile momentum X
           ;; Mutates: temp2 (return value - missile momentum X)
@@ -135,10 +138,11 @@ GetMissileMomentumX .proc
           lda CharacterMissileMomentumX,x
           sta temp2
           rts
+
 .pend
 
 GetMissileMomentumY .proc
-          Return missile vertical momentum from CharacterMissileMomentumY[temp1].
+          ;; Return missile vertical momentum from CharacterMissileMomentumY[temp1].
           ;; Parameters: temp1 = character index (0-MaxCharacter)
           ;; Output: temp2 = missile momentum Y
           ;; Mutates: temp2 (return value - missile momentum Y)

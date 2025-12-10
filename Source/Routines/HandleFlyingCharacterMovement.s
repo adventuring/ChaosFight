@@ -56,15 +56,15 @@ HandleFlyingCharacterMovement .proc
 
           lda temp6
           cmp # 0
-          bne skip_1208
+          bne HFCM_CheckLeftJoy1
           ;; TODO: HFCM_CheckLeftJoy0
-skip_1208:
+HFCM_CheckLeftJoy1:
 
 
           lda joy1left
-          bne skip_7853
+          bne HFCM_DoLeft
           jmp HFCM_CheckRight
-skip_7853:
+HFCM_DoLeft:
 
 
           jmp HFCM_DoLeft
@@ -74,9 +74,9 @@ skip_7853:
 HFCM_CheckLeftJoy0 .proc
 
           lda joy0left
-          bne skip_712
+          bne HFCM_DoLeft
           jmp HFCM_CheckRight
-skip_712:
+HFCM_DoLeft:
 
 
 .pend
@@ -100,15 +100,15 @@ HFCM_CheckRight .proc
 
           lda temp6
           cmp # 0
-          bne skip_8068
+          bne HFCM_CheckRightJoy1
           ;; TODO: HFCM_CheckRightJoy0
-skip_8068:
+HFCM_CheckRightJoy1:
 
 
           lda joy1right
-          bne skip_2833
+          bne HFCM_DoRight
           jmp HFCM_CheckVertical
-skip_2833:
+HFCM_DoRight:
 
 
           jmp HFCM_DoRight
@@ -119,9 +119,9 @@ HFCM_CheckRightJoy0 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0right
-          bne skip_3184
+          bne HFCM_DoRight
           jmp HFCM_CheckVertical
-skip_3184:
+HFCM_DoRight:
 
 
 .pend
@@ -163,22 +163,22 @@ HFCM_CheckVertical .proc
 
           lda temp6
           cmp # 0
-          bne skip_6783
+          bne HFCM_VertJoy1
           ;; TODO: HFCM_VertJoy0
-skip_6783:
+HFCM_VertJoy1:
 
 
           ;; if joy1up then goto HFCM_VertUp
           lda joy1up
-          beq skip_3244
+          beq CheckJoy1Down
           jmp HFCM_VertUp
-skip_3244:
+CheckJoy1Down:
 
           ;; if joy1down then goto HFCM_VertDown
           lda joy1down
-          beq skip_9526
+          beq HandleFlyingCharacterMovementDone
           jmp HFCM_VertDown
-skip_9526:
+HandleFlyingCharacterMovementDone:
 
           jsr BS_return
 
@@ -188,15 +188,15 @@ HFCM_VertJoy0 .proc
 
           ;; if joy0up then goto HFCM_VertUp
           lda joy0up
-          beq skip_6096
+          beq CheckJoy0Down
           jmp HFCM_VertUp
-skip_6096:
+CheckJoy0Down:
 
           ;; if joy0down then goto HFCM_VertDown
           lda joy0down
-          beq skip_3350
+          beq HandleFlyingCharacterMovementDone
           jmp HFCM_VertDown
-skip_3350:
+HandleFlyingCharacterMovementDone:
 
           jsr BS_return
 

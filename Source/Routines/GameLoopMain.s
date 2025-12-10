@@ -112,7 +112,7 @@ GameMainLoop .proc
           ;; ProcessAllAttacks (bank7), CheckAllPlayerEliminations (bank14),
           ;; UpdateAllMissiles (bank7),
           ;; CheckRoboTitoStretchMissileCollisions (bank10), SetPlayerSprites (bank2),
-          ;; DisplayHealth (bank6), UpdatePlayer12HealthBars (bank6),
+          ;; UpdatePlayer12HealthBars (bank6),
           ;; UpdatePlayer34HealthBars (bank6), UpdateSoundEffect
           ;; (bank15)
           ;;

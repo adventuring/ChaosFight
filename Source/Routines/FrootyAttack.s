@@ -1,11 +1,19 @@
 ;;; ChaosFight - Source/Routines/FrootyAttack.bas
 
+          ;; Forward declarations
+FrootyButtonHeld:
+FrootyButtonReleased:
+
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 ;;; Issue #1177: Frooty lollipop charge-and-bounce attack
 
 
 
+
+          ;; Forward declarations for labels defined later
+FrootyButtonHeld:
+FrootyButtonReleased:
 
 FrootyAttack .proc
 
@@ -67,15 +75,14 @@ FrootyAttack .proc
 
           lda temp2
           cmp # 0
-          bne skip_6886
+          bne CheckJoy1Fire
           jmp FrootyCheckJoy0
-skip_6886:
+CheckJoy1Fire:
 
 
-          lda joy1fire
-          bne skip_4765
+          lda INPT4
+          bne FrootyButtonHeld
           jmp FrootyButtonReleased
-skip_4765:
 
 
           jmp FrootyButtonHeld
@@ -89,13 +96,11 @@ FrootyCheckJoy0 .proc
 
           ;; Button is held - continue charging
 
-          lda joy0fire
-          bne skip_5594
+          lda INPT0
+          bne FrootyButtonHeld
           jmp FrootyButtonReleased
-skip_5594:
 
 
-FrootyButtonHeld
 
           ;; Button is held - increment charge timer at 10 Hz (every 6 frames at 60fps)
           ;; Returns: Far (return otherbank)
@@ -136,17 +141,17 @@ FrootyButtonHeld
           ;; if temp4 < 6 then goto FrootyUpdateFrameCounter          lda temp4          cmp 6          bcs .skip_7916          jmp
           lda temp4
           cmp # 6
-          bcs skip_6023
+          bcs IncrementChargeTimer
           goto_label:
 
-          jmp goto_label
-skip_6023:
+          jmp FrootyUpdateFrameCounter
+IncrementChargeTimer:
 
           lda temp4
           cmp # 6
-          bcs skip_5475
-          jmp goto_label
-skip_5475:
+          bcs IncrementChargeTimerDone
+          jmp FrootyUpdateFrameCounter
+IncrementChargeTimerDone:
 
           
 
@@ -159,7 +164,7 @@ skip_5475:
 
           ;; if frootyChargeTimer_R[temp1] >= 30 then goto FrootyUpdateFrameCounter
 
-                    let frootyChargeTimer_W[temp1] = frootyChargeTimer_R[temp1]
+          ;; let frootyChargeTimer_W[temp1] = frootyChargeTimer_R[temp1]
           lda temp1
           asl
           tax
@@ -176,7 +181,7 @@ FrootyUpdateFrameCounter .proc
           ;; Update charge state: set charging flag (bit 7) and frame counter (bits 0-2)
           ;; Returns: Far (return otherbank)
 
-          bit 7 = 1 (charging), bits 0-2 = frame counter
+          ;; bit 7 = 1 (charging), bits 0-2 = frame counter
           lda 128
           ora temp4
           sta temp3
@@ -191,7 +196,6 @@ FrootyUpdateFrameCounter .proc
 
 
 
-FrootyButtonReleased
 
           ;; Button released - check if we were charging (bit 7 of charge sta
 
@@ -219,9 +223,9 @@ FrootyButtonReleased
           ;; Was charging - spawn projectile with charge-based lifetime
 
           lda temp4
-          bne skip_4109
+          bne SpawnProjectile
           jmp FrootyChargeDone
-skip_4109:
+SpawnProjectile:
 
 
           ;; Get charge value (0-30)
@@ -269,7 +273,7 @@ return_point:
 
           ;; Charge is in 10 Hz ticks, convert to frames: charge × 6
 
-          Lifetime = charge × 6 frames (each tick = 0.1s = 6 frames at 60fps)
+          ;; Lifetime = charge * 6 frames (each tick = 0.1s = 6 frames at 60fps)
 
           ;; Clamp to reasonable range (minimum 6 frames, maximum 180 frames = 3 seconds)
 
@@ -278,24 +282,24 @@ return_point:
           ;; if temp3 < 6 then let temp3 = 6
           lda temp3
           cmp # 6
-          bcs skip_6653
-          jmp let_label
-skip_6653:
+          bcs CheckMaximumLifetime
+          ;; jmp let_label
+CheckMaximumLifetime:
 
           lda temp3
           cmp # 6
-          bcs skip_2633
-          jmp let_label
-skip_2633:
+          bcs CheckMaximumLifetimeDone
+          ;; jmp let_label
+CheckMaximumLifetimeDone:
 
 
 
           lda temp3
           cmp # 181
-          bcc skip_8491
+          bcc SetMissileLifetime
           lda # 180
           sta temp3
-skip_8491:
+SetMissileLifetime:
 
 
           ;; Set ricochet velocity - Frooty’s missile will bounce off bounds
@@ -311,7 +315,7 @@ skip_8491:
           ;; Set animation sta
 
 
-                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
 
 
 

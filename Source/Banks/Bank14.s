@@ -193,7 +193,7 @@ SoundLandingDamageEnd:
             .warn format("// Bank 14: %d bytes = Sound.SoundLandingDamage", [SoundLandingDamageEnd - SoundLandingDamageStart])
 SoundPointersStart:
 
-          Data segment for sound and song pointer tables
+          ;; Data segment for sound and song pointer tables
 .include "Source/Data/SoundPointers.s"
 SoundPointersEnd:
             .warn format("// Bank 14: %d bytes = SoundPointers", [SoundPointersEnd - SoundPointersStart])

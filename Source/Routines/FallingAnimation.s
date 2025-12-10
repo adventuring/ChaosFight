@@ -49,10 +49,10 @@ FallingAnimation1
           inc fallFrame
           lda fallFrame
           cmp # 4
-          bcc skip_3293
+          bcc MovePlayer1
           lda # 0
           sta fallFrame
-skip_3293:
+MovePlayer1:
 
 
           ;; Move Player 1 from quadrant to target (if active)
@@ -117,9 +117,9 @@ Player1TargetDone:
 return_point:
 
 
-                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
-skip_6580:
-          jmp skip_6580
+                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq DonePlayer1Move
+DonePlayer1Move:
+          jmp DonePlayer1Move
 
 DonePlayer1Move
           ;; reached = 1 if reached target
@@ -143,9 +143,9 @@ DonePlayer1Move
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne skip_6968
+          bne SetPlayer2Target
           jmp DonePlayer2Move
-skip_6968:
+SetPlayer2Target:
 
           ;; Check if 4-player mode for target X
           lda # 1
@@ -205,9 +205,9 @@ Player2TargetDone
 return_point:
 
 
-                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
-skip_6580:
-          jmp skip_6580
+                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq DonePlayer1Move
+DonePlayer1Move:
+          jmp DonePlayer1Move
 
 DonePlayer2Move
           ;; Player 2 movement complete (skipped if not active)
@@ -227,8 +227,8 @@ DonePlayer2Move
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_6194
-skip_6194:
+          bne MovePlayer3
+MovePlayer3:
 
 
                     if playerCharacter[2] = NoCharacter then DonePlayer3Move
@@ -253,9 +253,9 @@ skip_6194:
 return_point:
 
 
-                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
-skip_6580:
-          jmp skip_6580
+                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq DonePlayer1Move
+DonePlayer1Move:
+          jmp DonePlayer1Move
 
 DonePlayer3Move
           ;; Player 3 movement complete (skipped if not in 4-player
@@ -276,8 +276,8 @@ DonePlayer3Move
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_4267
-skip_4267:
+          bne MovePlayer4
+MovePlayer4:
 
 
                     if playerCharacter[3] = NoCharacter then DonePlayer4Move
@@ -302,9 +302,9 @@ skip_4267:
 return_point:
 
 
-                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq skip_6580
-skip_6580:
-          jmp skip_6580
+                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq DonePlayer1Move
+DonePlayer1Move:
+          jmp DonePlayer1Move
 
 DonePlayer4Move
           ;; Player 4 movement complete (skipped if not in 4-player
@@ -325,9 +325,9 @@ DonePlayer4Move
                     if fallComplete >= activePlayers then FallingComplete1
           lda fallComplete
           cmp activePlayers
-          bcc skip_1796
+          bcc UpdateSprites
           jmp FallingComplete1
-skip_1796:
+UpdateSprites:
 
           ;; Set sprite positions and load character sprites
           ;; dynamically

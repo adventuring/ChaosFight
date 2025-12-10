@@ -16,30 +16,30 @@ ConstrainToScreen
           tax
           lda playerX,x
           cmp PlayerLeftEdge
-          bcs skip_3749
+          bcs CheckRightEdge
           lda PlayerLeftEdge
           sta playerX,x
-skip_3749:
+CheckRightEdge:
                     if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_W[temp1] = PlayerLeftEdge
           lda temp1
           asl
           tax
           lda playerX,x
           cmp PlayerLeftEdge
-          bcs skip_3303
+          bcs CheckRightEdgeSubpixel
           lda PlayerLeftEdge
           sta playerSubpixelX_W,x
-skip_3303:
+CheckRightEdgeSubpixel:
                     if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_WL[temp1] = 0
           lda temp1
           asl
           tax
           lda playerX,x
           cmp PlayerLeftEdge
-          bcs skip_4739
+          bcs CheckRightEdgeClamp
           lda 0
           sta playerSubpixelX_WL,x
-skip_4739:
+CheckRightEdgeClamp:
                     if playerX[temp1] > PlayerRightEdge then let playerX[temp1] = PlayerRightEdge
           lda temp1
           asl
@@ -47,11 +47,11 @@ skip_4739:
           lda playerX,x
           sec
           sbc PlayerRightEdge
-          bcc skip_8156
-          beq skip_8156
+          bcc CheckTopEdge
+          beq CheckTopEdge
           lda PlayerRightEdge
           sta playerX,x
-skip_8156:
+CheckTopEdge:
                     if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_W[temp1] = PlayerRightEdge
           lda temp1
           asl
@@ -59,11 +59,11 @@ skip_8156:
           lda playerX,x
           sec
           sbc PlayerRightEdge
-          bcc skip_4401
-          beq skip_4401
+          bcc CheckTopEdgeSubpixel
+          beq CheckTopEdgeSubpixel
           lda PlayerRightEdge
           sta playerSubpixelX_W,x
-skip_4401:
+CheckTopEdgeSubpixel:
                     if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_WL[temp1] = 0
           lda temp1
           asl
@@ -71,14 +71,14 @@ skip_4401:
           lda playerX,x
           sec
           sbc PlayerRightEdge
-          bcc skip_7460
-          beq skip_7460
+          bcc CheckTopEdgeClamp
+          beq CheckTopEdgeClamp
           lda temp1
           asl
           tax
           lda # 0
           sta playerSubpixelX_WL,x
-skip_7460:
+CheckTopEdgeClamp:
 
           ;; Constrain Y position (20 to 80 for screen bounds)
           ;; SCRAM write to playerSubpixelY_W
@@ -88,30 +88,30 @@ skip_7460:
           tax
           lda playerY,x
           cmp 20
-          bcs skip_9811
+          bcs CheckBottomEdge
           lda 20
           sta playerY,x
-skip_9811:
+CheckBottomEdge:
                     if playerY[temp1] < 20 then let playerSubpixelY_W[temp1] = 20
           lda temp1
           asl
           tax
           lda playerY,x
           cmp 20
-          bcs skip_5142
+          bcs CheckBottomEdgeSubpixel
           lda 20
           sta playerSubpixelY_W,x
-skip_5142:
+CheckBottomEdgeSubpixel:
                     if playerY[temp1] < 20 then let playerSubpixelY_WL[temp1] = 0
           lda temp1
           asl
           tax
           lda playerY,x
           cmp 20
-          bcs skip_8164
+          bcs CheckBottomEdgeClamp
           lda 0
           sta playerSubpixelY_WL,x
-skip_8164:
+CheckBottomEdgeClamp:
                     if playerY[temp1] > 80 then let playerY[temp1] = 80
           lda temp1
           asl
@@ -119,11 +119,11 @@ skip_8164:
           lda playerY,x
           sec
           sbc 80
-          bcc skip_7749
-          beq skip_7749
+          bcc ConstrainToScreenDone
+          beq ConstrainToScreenDone
           lda 80
           sta playerY,x
-skip_7749:
+ConstrainToScreenDone:
                     if playerY[temp1] > 80 then let playerSubpixelY_W[temp1] = 80
           lda temp1
           asl
@@ -131,11 +131,11 @@ skip_7749:
           lda playerY,x
           sec
           sbc 80
-          bcc skip_7917
-          beq skip_7917
+          bcc ConstrainToScreenDoneSubpixel
+          beq ConstrainToScreenDoneSubpixel
           lda 80
           sta playerSubpixelY_W,x
-skip_7917:
+ConstrainToScreenDoneSubpixel:
                     if playerY[temp1] > 80 then let playerSubpixelY_WL[temp1] = 0
           lda temp1
           asl
@@ -143,14 +143,14 @@ skip_7917:
           lda playerY,x
           sec
           sbc 80
-          bcc skip_7176
-          beq skip_7176
+          bcc ConstrainToScreenDoneClamp
+          beq ConstrainToScreenDoneClamp
           lda temp1
           asl
           tax
           lda # 0
           sta playerSubpixelY_WL,x
-skip_7176:
+ConstrainToScreenDoneClamp:
 
           rts
 

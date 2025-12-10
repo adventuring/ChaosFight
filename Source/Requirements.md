@@ -380,8 +380,7 @@ brick" logic when he falls off the screen and resets at the top.
     players
 15. **Sprite Graphics**: Load character sprites based on animation state
     and facing
-16. **Health Display**: Show health bars, flash sprites when health is
-    low
+16. **Health Display**: Show health bars
 17. **Screen Draw**: Render complete frame
 
 ### Player Actions

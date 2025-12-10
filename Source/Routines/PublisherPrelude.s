@@ -56,15 +56,15 @@ PublisherPreludeMain .proc
           ;; Check for button press on any controller to skip
           ;; if joy0fire then goto PublisherPreludeComplete
           lda joy0fire
-          beq skip_7935
+          beq CheckJoy1Fire
           jmp PublisherPreludeComplete
-skip_7935:
+CheckJoy1Fire:
 
           ;; if joy1fire then goto PublisherPreludeComplete
           lda joy1fire
-          beq skip_5538
+          beq CheckEnhancedControllers
           jmp PublisherPreludeComplete
-skip_5538:
+CheckEnhancedControllers:
 
           ;; Check MegaDrive/Joy2b+ controllers if detected
           ;; Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0) or Joy2b+ Button III (INPT1)
@@ -72,25 +72,25 @@ skip_5538:
           ;; let temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
           ;; if temp1 then if !INPT0{7} then goto PublisherPreludeComplete
           lda temp1
-          beq skip_4033
+          beq CheckRightPortControllers
           bit INPT0
-          bmi skip_4033
+          bmi CheckRightPortControllers
           jmp PublisherPreludeComplete
-skip_4033:
+CheckRightPortControllers:
 
 lda temp1
 
-beq skip_7601
+beq CheckRightPortControllersLabel
 
-skip_7601:
-          jmp skip_7601
+CheckRightPortControllersLabel:
+          jmp CheckRightPortControllersLabel
 
           lda controllerStatus
           and SetLeftPortJoy2bPlus
           sta temp1
-          ;; if temp1 then if !INPT1{7} then goto PublisherPreludeComplete          lda temp1          beq skip_4785
-skip_4785:
-          jmp skip_4785
+          ;; if temp1 then if !INPT1{7} then goto PublisherPreludeComplete          lda temp1          beq CheckRightPortControllersLabel2
+CheckRightPortControllersLabel2:
+          jmp CheckRightPortControllersLabel2
 
           ;; Player 2: Genesis Button C (INPT2) or Joy2b+ Button C/II (INPT2) or Joy2b+ Button III (INPT3)
           ;; let temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
@@ -99,38 +99,38 @@ skip_4785:
           sta temp1
           ;; if temp1 then if !INPT2{7} then goto PublisherPreludeComplete
           lda temp1
-          beq skip_5689
+          beq CheckAutoAdvance
           bit INPT2
-          bmi skip_5689
+          bmi CheckAutoAdvance
           jmp PublisherPreludeComplete
-skip_5689:
+CheckAutoAdvance:
 
 lda temp1
 
-beq skip_5903
+beq CheckAutoAdvanceLabel
 
-skip_5903:
-          jmp skip_5903
+CheckAutoAdvanceLabel:
+          jmp CheckAutoAdvanceLabel
 
           lda controllerStatus
           and SetRightPortJoy2bPlus
           sta temp1
-          ;; if temp1 then if !INPT3{7} then goto PublisherPreludeComplete          lda temp1          beq skip_8894
-skip_8894:
-          jmp skip_8894
+          ;; if temp1 then if !INPT3{7} then goto PublisherPreludeComplete          lda temp1          beq CheckAutoAdvanceLabel2
+CheckAutoAdvanceLabel2:
+          jmp CheckAutoAdvanceLabel2
 
           ;; Auto-advance after music completes + 0.5s
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
           ;; if preambleTimer > 30 && musicPlaying = 0 then goto
           lda preambleTimer
           cmp # 31
-          bcc skip_5880
+          bcc IncrementTimer
           lda musicPlaying
-          bne skip_5880
+          bne IncrementTimer
           goto_label:
 
-          jmp goto_label_label
-skip_5880:
+          jmp PublisherPreludeComplete
+IncrementTimer:
           ;; PublisherPreludeComplete
 
           inc preambleTimer

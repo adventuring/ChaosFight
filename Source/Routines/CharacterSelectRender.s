@@ -29,10 +29,10 @@ SelectDrawScreen .proc
                     if controllerStatus & SetQuadtariDetected then let temp6 = 4
           lda controllerStatus
           and SetQuadtariDetected
-          beq skip_9550
+          beq SetPlayerCount
           lda # 4
           sta temp6
-skip_9550:
+SetPlayerCount:
           lda # 0
           sta temp1
 .pend
@@ -43,9 +43,9 @@ SelectDrawScreenLoop .proc
           ;; if temp1 < temp6 then goto SelectDrawScreenLoop
           lda temp1
           cmp temp6
-          bcs skip_4617
+          bcs SelectDrawScreenDone
           jmp SelectDrawScreenLoop
-skip_4617:
+SelectDrawScreenDone:
           
           jsr BS_return
           ;; Cross-bank call to SelectHideLowerPlayerPreviews in bank 6
@@ -191,11 +191,11 @@ RenderPlayerPreview .proc
           lda currentCharacter
           cmp RandomCharacter
 
-          bcc skip_163
+          bcc GetAnimationFrame
 
-          jmp skip_163
+          jmp RenderPlayerPreviewDefault
 
-skip_163:
+GetAnimationFrame:
           ;; let temp4 = characterSelectPlayerAnimationFrame_R[currentPlayer]
           lda currentPlayer
           asl
@@ -224,10 +224,10 @@ return_point_5:
           sta temp3
           lda temp5
           cmp PlayerHandicapped
-          bne skip_6659
+          bne RenderPlayerPreviewInvoke
           lda ActionFallen
           sta temp3
-skip_6659:
+RenderPlayerPreviewInvoke:
 
           jmp RenderPlayerPreviewInvoke
 RenderPlayerPreviewDefault
@@ -235,7 +235,6 @@ RenderPlayerPreviewDefault
           sta temp2
           lda ActionIdle
           sta temp3
-RenderPlayerPreviewInvoke
           ;; Cross-bank call to LoadCharacterSprite in bank 16
           lda # >(return_point-1)
           pha
@@ -322,10 +321,10 @@ SelectSetPlayerColorHandicap .proc
           ;; if controllerStatus & SetQuadtariDetected then let temp6 = 4
           lda controllerStatus
           and SetQuadtariDetected
-          beq skip_9550
+          beq SetPlayerCount
           lda # 4
           sta temp6
-skip_9550:
+SetPlayerCount:
           lda # 0
           sta temp1
 SelectUpdateAnimationLoop
@@ -344,18 +343,18 @@ return_point_7:
 
           ;; if temp2 then goto SelectUpdateAnimationNext
           lda temp2
-          beq skip_6708
+          beq UpdatePlayerAnimation
           jmp SelectUpdateAnimationNext
-skip_6708:
+UpdatePlayerAnimation:
           ;; if playerCharacter[temp1] >= RandomCharacter then goto SelectUpdateAnimationNext
           jsr SelectUpdatePlayerAnimation
 SelectUpdateAnimationNext
           ;; if temp1 < temp6 then goto SelectUpdateAnimationLoop
           lda temp1
           cmp temp6
-          bcs skip_343
+          bcs SelectUpdateAnimationsDone
           jmp SelectUpdateAnimationLoop
-skip_343:
+SelectUpdateAnimationsDone:
           
 
 SelectUpdatePlayerAnimation
@@ -407,16 +406,16 @@ SelectUpdatePlayerAnimation
           ;; Returns: Far (return otherbank)
           ;; if switchselect then goto CharacterSelectDoRescan
           lda INPT4
-          beq skip_2466
+          beq CheckColorBWToggle
           jmp CharacterSelectDoRescan
-skip_2466:
+CheckColorBWToggle:
           lda switchbw
           sta temp6
           lda temp6
           cmp colorBWPrevious_R
-          bne skip_8969
+          bne TriggerRescan
           jsr BS_return
-skip_8969:
+TriggerRescan:
 
           ;; Cross-bank call to DetectPads in bank 13
           lda # >(return_point-1)

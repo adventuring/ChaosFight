@@ -94,10 +94,10 @@ DragonOfStormsDown
                     if temp2 & $80 then let temp2 = 0
           lda temp2
           cmp # 32
-          bcc skip_2621
+          bcc CheckRowBelow
           lda # 31
           sta temp2
-skip_2621:
+CheckRowBelow:
 
 
 
@@ -159,9 +159,9 @@ skip_2621:
 return_point:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
-skip_955:
-          jmp skip_955
+                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown
+BlockedCannotMoveDown:
+          jmp BlockedCannotMoveDown
           lda temp6
           sta temp1
 
@@ -275,15 +275,15 @@ HarpyDown .proc
           ;; if temp2 < 60 then HarpySetDive
           lda temp2
           cmp # 60
-          bcs skip_953
+          bcs HarpyNormalDown
           jmp HarpySetDive
-skip_953:
+HarpyNormalDown:
 
           lda temp2
           cmp # 60
-          bcs skip_8696
+          bcs HarpyNormalDownLabel
           jmp HarpySetDive
-skip_8696:
+HarpyNormalDownLabel:
 
 
 
@@ -413,10 +413,10 @@ HarpyNormalDown .proc
                     if temp2 & $80 then let temp2 = 0
           lda temp2
           cmp # 32
-          bcc skip_2621
+          bcc CheckRowBelow
           lda # 31
           sta temp2
-skip_2621:
+CheckRowBelow:
 
 
 
@@ -478,9 +478,9 @@ skip_2621:
 return_point:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
-skip_955:
-          jmp skip_955
+                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown
+BlockedCannotMoveDown:
+          jmp BlockedCannotMoveDown
           lda temp6
           sta temp1
 
@@ -609,10 +609,10 @@ FrootyDown .proc
                     if temp2 & $80 then let temp2 = 0
           lda temp2
           cmp # 32
-          bcc skip_2621
+          bcc CheckRowBelow
           lda # 31
           sta temp2
-skip_2621:
+CheckRowBelow:
 
 
 
@@ -671,9 +671,9 @@ skip_2621:
 return_point:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
-skip_955:
-          jmp skip_955
+                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown
+BlockedCannotMoveDown:
+          jmp BlockedCannotMoveDown
           lda temp6
           sta temp1
 
@@ -736,8 +736,8 @@ RoboTitoDown .proc
           lda characterStateFlags_R[temp1]
           and 1
           cmp # 0
-          bne skip_3661
-skip_3661:
+          bne RoboTitoInitiateDrop
+RoboTitoInitiateDrop:
 
 
           jsr BS_return
@@ -793,7 +793,6 @@ RoboTitoVoluntaryDrop .proc
 
           ;; StandardJump is defined in CharacterControlsJump.bas (bank 12)
 
-          ;; This duplicate definition has been removed to fix label conflict
 
           ;; Apply upward velocity impulse (input applies impulse to
 

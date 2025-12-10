@@ -16,7 +16,10 @@
 
           ;; Kernel configuration
           ;; Note: Most of these are automatically defined by batariBASIC based on
+.weak
 pfres = 8
+          ;; set kernel and set romsize commands, but pfres must be defined manually
+.endweak
           ;; set kernel and set romsize commands, but pfres must be defined manually
           ;; Playfield resolution: 8 rows (fixed for all playfields)
 

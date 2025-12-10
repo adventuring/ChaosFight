@@ -191,7 +191,7 @@ VblankModeGameMainContinue
           ;; CheckAllPlayerCollisions, ProcessAllAttacks,
           ;; CheckAllPlayerEliminations, UpdateAllMissiles,
           ;; CheckRoboTitoStretchMissileCollisions, SetPlayerSprites,
-          ;; DisplayHealth, UpdatePlayer12HealthBars, UpdatePlayer34HealthBars
+          ;; UpdatePlayer12HealthBars, UpdatePlayer34HealthBars
           ;; Constraints: Must be colocated with VblankModeGameMain
 
           ;; Check if game is paused - skip all movement/physics/animation if so
@@ -1236,19 +1236,8 @@ return_point:
 return_point:
 
 
-          ;; Display health information (in Bank 11)
-          ;; Cross-bank call to DisplayHealth in bank 11
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(DisplayHealth-1)
-          pha
-          lda # <(DisplayHealth-1)
-          pha
-                    ldx # 10
-          jmp BS_jsr
-return_point:
+          ;; Health display is handled by UpdatePlayer12HealthBars and
+          ;; UpdatePlayer34HealthBars below. DisplayHealth is no longer used.
 
 
           ;; Update P1/P2 health bars using pfscore system

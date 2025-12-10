@@ -39,7 +39,7 @@ TriggerEliminationEffects
 TEE_return_point_1:
 
           ;; Set elimination visual effect timer
-          ;; This could trigger screen flash, particle effects, etc.
+          ;; This could trigger particle effects, etc.
           lda # 30
           sta temp2
           ;; 30 frames of elimination effect

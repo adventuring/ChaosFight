@@ -16,9 +16,9 @@ RoboTitoJump .proc
           asl
           tax
           lda characterSpecialAbility_R,x
-          bne skip_2293
+          bne RoboTitoCanStretch
           jmp RoboTitoCannotStretch
-skip_2293:
+RoboTitoCanStretch:
           jmp RoboTitoCanStretch
 
 .pend
@@ -68,11 +68,11 @@ GroundSearchLoop .proc
           lda temp5
           cmp pfrows
 
-          bcc skip_1208
+          bcc CheckPlayfieldPixel
 
-          jmp skip_1208
+          jmp GroundSearchBottom
 
-          skip_1208:
+          CheckPlayfieldPixel:
           lda # 0
           sta temp6
           lda temp1
@@ -94,16 +94,16 @@ GroundSearchLoop .proc
           jmp BS_jsr
 return_point:
 
-                    if temp1 then let temp6 = 1          lda temp1          beq skip_8161
-skip_8161:
-          jmp skip_8161
+                    if temp1 then let temp6 = 1          lda temp1          beq CheckGroundFound
+CheckGroundFound:
+          jmp CheckGroundFound
           lda temp3
           sta temp1
           lda temp6
           cmp # 1
-          bne skip_5697
+          bne ContinueGroundSearch
           jmp GroundFound
-skip_5697:
+ContinueGroundSearch:
 
           inc temp5
           jmp GroundSearchLoop
@@ -140,23 +140,23 @@ GroundSearchDone
 
           lda temp3
           cmp # 81
-          bcc skip_6767
+          bcc CheckMinimumHeight
           lda # 80
           sta temp3
-skip_6767:
+CheckMinimumHeight:
 
           ;; if temp3 < 1 then let temp3 = 1
           lda temp3
           cmp # 1
-          bcs skip_9147
+          bcs SetStretchHeight
           jmp let_label
-skip_9147:
+SetStretchHeight:
 
           lda temp3
           cmp # 1
-          bcs skip_9194
+          bcs SetStretchHeightLabel
           jmp let_label
-skip_9194:
+SetStretchHeightLabel:
 
 
           lda temp1
@@ -215,9 +215,9 @@ return_point:
           lda temp4
           beq RoboTitoLatch
           bmi RoboTitoLatch
-          jmp skip_6419
+          jmp CheckCeilingPixel
 RoboTitoLatch:
-skip_6419:
+CheckCeilingPixel:
           dec temp4
           lda temp1
           sta temp5
@@ -240,9 +240,9 @@ return_point:
 
           ;; if temp1 then goto RoboTitoLatch
           lda temp1
-          beq skip_4515
+          beq ContinueStretching
           jmp RoboTitoLatch
-skip_4515:
+ContinueStretching:
           lda temp5
           sta temp1
                     let playerY[temp1] = playerY[temp1] - 3
@@ -272,8 +272,9 @@ RoboTitoLatch .proc
           ;; if temp2 <= 0 then goto RTL_HeightCleared
           lda temp2
           cmp # 26
-          bcc skip_4784
-skip_4784:
+          bcc RTL_ReduceHeight
+          jmp RTL_HeightCleared
+RTL_ReduceHeight:
 
           lda temp1
           asl

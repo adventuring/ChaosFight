@@ -40,8 +40,7 @@
 ;; var48-var127 don't exist - SuperChip RAM accessed via r000-r127/w000-w127 only
 ;; playerCharacter is in SCRAM (w111-w114), defined in Variables.s
 ;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
-;; Z/z removed - use SCRAM for any variables that were using z
-
+;; Z/z - use SCRAM for any variables that were using z 
 .include "Source/Common/Colors.s"
 .include "Source/Common/Constants.s"
 .include "Source/Common/Enums.s"
@@ -50,5 +49,5 @@
 
 ;;; Bank switching labels - defined in Banks.s after Bank1.s is included
 ;;; Note: BS_return and BS_jsr are sequential - BS_jsr comes after BS_return
-;;; Forward declarations removed - will be defined in Banks.s as Bank0BS.BS_return and Bank0BS.BS_jsr
+;;; Forward declarations not needed - will be defined in Banks.s as Bank0BS.BS_return and Bank0BS.BS_jsr
 ;;; Global labels BS_return and BS_jsr reference Bank 0 block; all banks have identical addresses

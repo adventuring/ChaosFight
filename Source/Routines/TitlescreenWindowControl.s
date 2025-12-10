@@ -10,7 +10,7 @@ SetPublisherWindowValues .proc
           ;; titlescreen kernel.
           ;; Window values control which bitmaps display on each
           ;; screen.
-          Requirements:
+          ;; Requirements:
           ;;
           ;; Publisher (gameMode 0): AtariAge logo + AtariAge text (2
           ;; bitmaps)
@@ -56,7 +56,6 @@ SetPublisherWindowValues .proc
 .pend
 
 SetAuthorWindowValues .proc
-
           ;; Initialize window values for Author screen
           ;; Returns: Near (return thisbank) - called same-bank from BeginAuthorPrelude
           ;; Shows: BRP (slot 4)

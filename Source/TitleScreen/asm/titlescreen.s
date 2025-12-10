@@ -1,6 +1,8 @@
 
+
+.include "../../Source/Common/Preamble.s"
+
 .include "TitleScreen/asm/layoutmacros.s"
-;; titlescreen_layout.s macro expanded inline below (line 85-88) - .include removed to avoid macro definition processing
 
 ;; Optional bitmap index offsets - data (.byte 0) moved to Bank9.bas data segment
 ;; Symbol definitions only (no data) - these are compile-time consta
@@ -52,7 +54,6 @@ title_do_vertical_sync:
 titleframe = missile0x
           inc titleframe ;;; increment the frame counter
 
-	;; Removed unused .title_vblank conditional
 
 title_vblank_loop:
           lda INTIM
@@ -112,7 +113,6 @@ draw_48x2_4_1:
           ;; titlescreen_colors.s is now included in Bank9.bas after bitmap data,
           ;;   not here, to avoid origin reverse-indexed errors
 
-	;; Unused 48x1 kernels removed - only 48x2 bitmaps are active
 
 	;; Load per-bitmap pointer tables and wrappers
           .include "TitleScreen/asm/48x2_1_kernel.s"
@@ -122,7 +122,6 @@ draw_48x2_4_1:
 
           .include "TitleScreen/asm/draw_bmp_48x2_X.s"
 
-	;; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 
           .if  mk_score_on
 .include "TitleScreen/asm/score_kernel.s"
@@ -191,7 +190,6 @@ playerheightfixloop:
           sta VBLANK
           rts
 
-	;; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 	;; Bitmap image data is included from generated Art.*.s files in Bank8
 	;; The TitleScreen/48x2_N_image.s files are NOT included here to avoid duplicate definitions
 	;; .if  mk_48x2_1_on
@@ -207,6 +205,5 @@ playerheightfixloop:
 	.include "TitleScreen/48x2_4_image.s"
 	;; .fi
 
-	;; Removed unused player, score, and gameselect minikernels
 
           rts

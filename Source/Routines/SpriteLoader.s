@@ -25,46 +25,46 @@ LoadCharacterSprite .proc
           ;; but normal character loading must be guarded
           ;; Handle special sprite cases first (these are safe)
           ;; Cross-bank call to CopyGlyphToPlayer in bank 15
-          lda # >(return_point-1)
+          lda # >(return_point1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point1-1)
           pha
           lda # >(CopyGlyphToPlayer-1)
           pha
           lda # <(CopyGlyphToPlayer-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
-return_point:
 
+return_point1:
 
           ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(CopyGlyphToPlayer-1)
           pha
           lda # <(CopyGlyphToPlayer-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
-return_point:
 
+return_point2:
 
           ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(return_point-1)
+          lda # >(return_point3-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point3-1)
           pha
           lda # >(CopyGlyphToPlayer-1)
           pha
           lda # <(CopyGlyphToPlayer-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
-return_point:
 
+return_point3:
 
           ;; Normal character sprite loading
           lda currentPlayer
@@ -72,9 +72,9 @@ return_point:
           lda currentCharacter
           sta temp1
           ;; Cross-bank call to LocateCharacterArt in bank 9
-          lda # >(return_point-1)
+          lda # >(return_point4-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point4-1)
           pha
           lda # >(LocateCharacterArt-1)
           pha

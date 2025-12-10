@@ -19,11 +19,10 @@ DeactivatePlayerMissiles:
           sta missileActive
           rts
 
+.pend
+
           ;; and masks to clear player missile bits (inverted BitMask values)
 
 PlayerANDMask:
           .byte 7
-
-
-.pend
 

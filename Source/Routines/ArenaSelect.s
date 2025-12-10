@@ -63,10 +63,10 @@ ArenaSelect1Loop .proc
           pha
           lda # <(SelectUpdateAnimations-1)
           pha
-                    ldx # 5
+          ldx # 5
           jmp BS_jsr
-return_point:
 
+return_point:
 
           ;; Draw locked-in player characters
           jsr ArenaSelectDrawCharacters
@@ -75,7 +75,9 @@ return_point:
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
           lda switchselect
           bne SkipReturnToCharacterSelect
-          jmp SkipReturnToCharacterSelect
+
+          jmp ReturnToCharacterSelect
+
 SkipReturnToCharacterSelect:
 
 

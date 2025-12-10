@@ -3,7 +3,6 @@
 
 
 CheckGuardCooldown .proc
-
           ;;
           ;; Returns: Far (return otherbank)
           ;; Check guard cooldown (1 second lockout after guard ends).
@@ -46,6 +45,11 @@ CheckCooldownTimer:
           lda temp3
           cmp # 1
           bcc CooldownExpired
+
+          ;; Cooldown expired, guard allowed
+          lda # 1
+          sta temp2
+          jsr BS_return
 
 CooldownExpired:
 

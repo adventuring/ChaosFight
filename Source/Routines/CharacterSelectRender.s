@@ -70,7 +70,7 @@ return_point:
 
 .pend
 
-SelectRenderPlayerPreview:
+SelectRenderPlayerPreview .proc
           ;; Returns: Near (return thisbank)
           ;; Draw character preview for the specified player and apply lock tinting
           ;; Called same-bank from SelectDrawScreenLoop, so use return thisbank

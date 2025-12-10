@@ -185,13 +185,11 @@ IHRP_HandleRoboTitoDown .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
 
           lda temp2
           cmp # 1
           bne UseStandardGuard
           jmp IHRP_ProcessAttack
-UseStandardGuard:
 
           jmp StandardGuard
 
@@ -235,7 +233,6 @@ IHRP_ProcessAttack .proc
           pha
                     ldx # 9
           jmp BS_jsr
-return_point:
 
 InputDoneRightPortAttack
 

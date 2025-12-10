@@ -170,7 +170,7 @@ PUA_RoboTitoAscend:
             lsr temp2
           lda temp2
           cmp # 32
-          bcc skip_9153
+          bcc ColumnInRange
 
           lda # 31
           sta temp2

@@ -29,7 +29,6 @@ StartGuard .proc
           tax
           lda # GuardTimerMaxFrames
           sta playerTimers_W,x
-
           rts
 
 .pend

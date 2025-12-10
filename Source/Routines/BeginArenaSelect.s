@@ -1,6 +1,5 @@
 
 BeginArenaSelect .proc
-
           ;;
           ;; Returns: Far (return otherbank)
           ;; ChaosFight - Source/Routines/BeginArenaSelect.bas
@@ -48,9 +47,9 @@ BeginArenaSelect .proc
           ;; Select)
 
           ;; Set screen layout (32×8 for character display) - inlined
-          lda ScreenPfRowHeight
+          lda # ScreenPfRowHeight
           sta pfrowheight
-          lda ScreenPfRows
+          lda # ScreenPfRows
           sta pfrows
 
           ;; Background: black (COLUBK starts black, no need to set)

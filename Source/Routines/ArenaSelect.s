@@ -198,19 +198,18 @@ ArenaSelectLeftSound .proc
           pha
           lda # <(PlaySoundEffect-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
+
 return_point:
 
-
-ArenaSelectDoneLeft
           ;; if joy0right then goto ArenaSelectRight
           lda joy0right
-          beq ArenaSelectDoneRight
-          jmp ArenaSelectRight
-ArenaSelectDoneRight:
+          beq ArenaSelectDoneLeft
 
-          jmp ArenaSelectDoneRight
+          jmp ArenaSelectRight
+
+ArenaSelectDoneLeft:
 
 .pend
 
@@ -218,15 +217,25 @@ ArenaSelectRight .proc
           ;; Increment arena, wrap from MaxArenaID to 0, then to
           ;; RandomArena
           lda selectedArena_R
-          cmp MaxArenaID
+          cmp # MaxArenaID
           bne CheckRandomArenaRight
+
           ;; let selectedArena_W = RandomArena : goto ArenaSelectRightSound
+          lda # RandomArena
+          sta selectedArena_W
+          jmp ArenaSelectRightSound
+
 CheckRandomArenaRight:
 
           lda selectedArena_R
-          cmp RandomArena
+          cmp # RandomArena
           bne IncrementArena
+
           ;; let selectedArena_W = 0 : goto ArenaSelectRightSound
+          lda # 0
+          sta selectedArena_W
+          jmp ArenaSelectRightSound
+
 IncrementArena:
 
           lda selectedArena_R
@@ -235,29 +244,28 @@ IncrementArena:
           ;; Wrap from 255 to 0 if needed
           lda temp2
           sta selectedArena_W
-                    if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0
+          if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0
 
 .pend
 
 ArenaSelectRightSound .proc
           ;; Play navigation sound
-          lda SoundMenuNavigate
+          lda # SoundMenuNavigate
           sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(PlaySoundEffect-1)
           pha
           lda # <(PlaySoundEffect-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
-return_point:
 
+return_point2:
 
-ArenaSelectDoneRight
           ;; Display arena number ( 1-32) or ?? (random)
           ;; Display using player4 (tens digit) and player5 (ones
           ;; digit)
@@ -267,9 +275,11 @@ ArenaSelectDoneRight
           ;; 0)
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
           lda selectedArena_R
-          cmp RandomArena
+          cmp # RandomArena
           bne DisplayArenaNumber
+
           jmp DisplayRandomArena
+
 DisplayArenaNumber:
 
 
@@ -284,28 +294,35 @@ DisplayArenaNumber:
           ;; arenaNumber = arena number (1-32)
           ;; Fast BCD extraction: extract tens and ones digits using assembly
           ;; For arena numbers 1-32, extract tens (0-3) and ones (0-9) digits
-            lda temp1
-                    ldx # 0
-            jmp FastBCDStart
-FastBCDOnesDigit
-            adc # 10
-            sta temp4
-                    stx temp2
-            jmp FastBCDDone
-FastBCDMaxTens
-            sta temp4
-                    stx temp2
-            jmp FastBCDDone
-FastBCDStart
-FastBCDDivideBy10
-            sec
-            sbc # 10
-            bcc FastBCDOnesDigit
-            inx
+          lda temp1
+          ldx # 0
+          jmp FastBCDStart
+
+FastBCDOnesDigit:
+          adc # 10
+          sta temp4
+          stx temp2
+          jmp FastBCDDone
+
+FastBCDMaxTens:
+          sta temp4
+          stx temp2
+          jmp FastBCDDone
+
+FastBCDStart:
+
+FastBCDDivideBy10:
+          sec
+          sbc # 10
+          bcc FastBCDOnesDigit
+
+          inx
           ;; TODO: cpx #3
-            beq FastBCDMaxTens
-            jmp FastBCDDivideBy10
-FastBCDDone
+          beq FastBCDMaxTens
+
+          jmp FastBCDDivideBy10
+
+FastBCDDone:
           ;; temp2 = tens digit (0-3), temp4 = ones digit (0-9)
 
           ;; Draw tens digit (player4) - only if tensDigit > 0 (for
@@ -313,10 +330,10 @@ FastBCDDone
           lda temp2
           cmp # 1
           bcc SkipTens
+
+          jmp DrawTensDigit
+
 SkipTens:
-
-
-          jmp SkipTens
 
 .pend
 
@@ -334,17 +351,18 @@ DrawTensDigit .proc
           lda # 4
           sta temp3
           ;; Cross-bank call to SetGlyph in bank 16
-          lda # >(return_point-1)
+          lda # >(return_point3-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point3-1)
           pha
           lda # >(SetGlyph-1)
           pha
           lda # <(SetGlyph-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
-return_point:
+
+return_point3:
 
 
 .pend

@@ -6,7 +6,6 @@
 
 
 PhysicsApplyGravity .proc
-
           ;; Player Physics - Gravity and Momentum
           ;; Returns: Far (return otherbank)
           ;; Handles gravity, momentum, and recovery for all players.
@@ -73,6 +72,7 @@ PhysicsApplyGravity .proc
           ;; Loop through all players (0-3)
           lda # 0
           sta temp1
+
 .pend
 
 GravityLoop .proc

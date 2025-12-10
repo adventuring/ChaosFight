@@ -1,6 +1,5 @@
 
 BeginPublisherPrelude .proc
-
           ;;
           ;; ChaosFight - Source/Routines/BeginPublisherPrelude.bas
           ;; Copyright © 2025 Bruce-Robert Pocock.
@@ -49,7 +48,7 @@ BeginPublisherPrelude .proc
           ;; Background: black (COLUBK starts black, no need to set)
 
           ;; Start AtariToday music
-          lda MusicAtariToday
+          lda # MusicAtariToday
           sta temp1
           ;; Cross-bank call to StartMusic in bank 15
           lda # >(return_point-1)
@@ -60,10 +59,10 @@ BeginPublisherPrelude .proc
           pha
           lda # <(StartMusic-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
-return_point:
 
+return_point:
 
           ;; Set window values for Publisher screen (AtariAge logo + AtariAge text)
           ;; Window values are set once during setup, not every frame

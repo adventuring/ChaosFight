@@ -4,12 +4,8 @@
 
 
 
-CheckPlayfieldCollisionAllDirections
+CheckPlayfieldCollisionAllDirections:
           ;; Returns: Far (return otherbank)
-
-
-CheckPlayfieldCollisionAllDirections
-
 
           ;; Check Playfield Collision All Directions
           ;; Returns: Far (return otherbank)
@@ -20,7 +16,6 @@ CheckPlayfieldCollisionAllDirections
 
           ;;
           ;; Input: ;; TODO: Convert assignment: currentPlayer = player index (0-3)
-
 
           ;; playerX[], playerY[], playerCharacter[]
 
@@ -50,8 +45,12 @@ CheckPlayfieldCollisionAllDirections
           ;;
           ;; Constraints: Checks collisions at head, middle, and feet positions.
 
-                    let ;; TODO: Convert assignment: temp2 = playerX[currentPlayer]          lda currentPlayer          asl          tax          lda playerX,x          sta temp2
-
+          let ;; TODO: Convert assignment: temp2 = playerX[currentPlayer]
+          lda currentPlayer
+          asl
+          tax
+          lda playerX,x
+          sta temp2
 
           let ;; TODO: Convert assignment: temp3 = playerY[currentPlayer]
 
@@ -69,83 +68,52 @@ CheckPlayfieldCollisionAllDirections
           lda playerCharacter,x
           sta temp4
 
-                    let ;; TODO: Convert assignment: temp5 = CharacterHeights[temp4]
+          let ;; TODO: Convert assignment: temp5 = CharacterHeights[temp4]
 
-          lda temp4
-          asl
-          tax
-          lda CharacterHeights,x
-          sta temp5 / 16
           lda temp4
           asl
           tax
           lda CharacterHeights,x
           sta temp5
 
-          ;; let ;; TODO: Convert assignment: temp6 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp6
-
+          ;; let ;; TODO: Convert assignment: temp6 = temp2 - ScreenInsetX
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp6
 
-          lda temp2
-          sec
-          sbc ScreenInsetX
-          sta temp6
-
-
-          ;; let ;; TODO: Convert assignment: temp6 = temp6 / 4          lda temp6          lsr          lsr          sta temp6
-
+          ;; let ;; TODO: Convert assignment: temp6 = temp6 / 4
           lda temp6
           lsr
           lsr
           sta temp6
 
-          lda temp6
-          lsr
-          lsr
-          sta temp6
-
-
-                    if temp6 & $80 then let ;; TODO: Convert assignment: temp6 = 0
+          if temp6 & $80 then let ;; TODO: Convert assignment: temp6 = 0
 
           lda temp6
           cmp # 32
           bcc skip_9653
+
           lda # 31
           sta temp6
+
 skip_9653:
 
-
-
-
-                    let ;; TODO: Convert assignment: playfieldRow = temp3 / 16
-
+          let ;; TODO: Convert assignment: playfieldRow = temp3 / 16
 
           ;; if playfieldRow >= pfrows then let
           lda playfieldRow
           cmp pfrows
           bcc skip_7030
-          let_label:
 
-          jmp let_label
-skip_7030: lda pfrows
- sec
- sbc #1
- sta playfieldRow
-
-
-lda pfrows
-
+          lda pfrows
           sec
+          sbc # 1
+          sta playfieldRow
 
-sbc 1
+skip_7030:
 
-sta playfieldRow
-
-
-                    if playfieldRow & $80 then let ;; TODO: Convert assignment: playfieldRow = 0
+          if playfieldRow & $80 then let ;; TODO: Convert assignment: playfieldRow = 0
 
           lda playfieldRow
           and #$80

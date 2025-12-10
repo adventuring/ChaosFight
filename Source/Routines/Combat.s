@@ -26,8 +26,6 @@ GetWeightBasedDamage .proc
           sta temp3
           jsr BS_return
 
-          jsr BS_return
-
           lda # 22
           sta temp2
           jsr BS_return
@@ -35,11 +33,10 @@ GetWeightBasedDamage .proc
 .pend
 
 ApplyDamage .proc
-
           ;; Apply damage from attacker to defender
           ;; Returns: Near (return thisbank) - called same-bank
           ;;
-          Process:
+          ;; Process:
           ;; 1. Player begins hurt animation (ActionHit = 5)
           ;; 2. Player enters recovery frames count and color dims (or
           ;; magenta on SECAM)
@@ -73,8 +70,12 @@ ApplyDamage .proc
           ;; PlayDamageSound, GetWeightBasedDamage (called via goto/gosub)
 
           ;; Issue #1149: Use shared helper instead of duplicated logic
-                    ;; let temp1 = playerCharacter[attackerID]
-                    lda attackerID          asl          tax          lda playerCharacter,x          sta temp1
+          ;; let temp1 = playerCharacter[attackerID]
+          lda attackerID
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp1
           jsr GetWeightBasedDamage
 
           lda temp2
@@ -85,17 +86,12 @@ ApplyDamage .proc
           tax
           lda playerCharacter,x
           sta temp1
-          lda defenderID
-          asl
-          tax
-          lda playerCharacter,x
-          sta temp1
           ;; Calculate damage (considering defender sta
 
           jsr GetWeightBasedDamage
 
           ;; Minimum damage
-          ;; let temp1 = temp4 - temp2          lda temp4          sec          sbc temp2          sta temp1
+          ;; let temp1 = temp4 - temp2
           lda temp4
           sec
           sbc temp2

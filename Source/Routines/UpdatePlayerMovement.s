@@ -62,11 +62,11 @@ next_label_1_L59 .proc
           lda controllerStatus
           and # SetQuadtariDetected
           cmp # 0
-          bne skip_9367
+          bne UpdatePlayerMovementQuadtari
 
           jmp UpdatePlayerMovementQuadtariSkip
 
-skip_9367:
+UpdatePlayerMovementQuadtari:
 
           ;; TODO: for currentPlayer = 2 to 3
           ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8

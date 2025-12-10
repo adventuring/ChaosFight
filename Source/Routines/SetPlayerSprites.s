@@ -215,9 +215,9 @@ return_point:
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_2154
+          bne CheckPlayer3Health
           jmp DonePlayer3Sprite
-skip_2154:
+CheckPlayer3Health:
 
           ;; if playerCharacter[2] = NoCharacter then goto DonePlayer3Sprite
           ;; if ! playerHealth[2] then goto DonePlayer3Sprite
@@ -225,17 +225,17 @@ skip_2154:
           asl
           tax
           lda playerHealth,x
-          bne skip_3705
+          bne CheckPlayer3HealthThreshold
           jmp DonePlayer3Sprite
-skip_3705:
+CheckPlayer3HealthThreshold:
 
           lda 2
           asl
           tax
           lda playerHealth,x
-          bne skip_5360
+          bne SetPlayer3Color
           jmp DonePlayer3Sprite
-skip_5360:
+SetPlayer3Color:
 
 
 
@@ -326,9 +326,9 @@ DonePlayer3Sprite
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_9777
+          bne CheckPlayer4Health
           jmp DonePlayer4Sprite
-skip_9777:
+CheckPlayer4Health:
 
           ;; if playerCharacter[3] = NoCharacter then goto DonePlayer4Sprite
           ;; if ! playerHealth[3] then goto DonePlayer4Sprite
@@ -336,17 +336,17 @@ skip_9777:
           asl
           tax
           lda playerHealth,x
-          bne skip_9091
+          bne CheckPlayer4HealthThreshold
           jmp DonePlayer4Sprite
-skip_9091:
+CheckPlayer4HealthThreshold:
 
           lda 3
           asl
           tax
           lda playerHealth,x
-          bne skip_9007
+          bne SetPlayer4Color
           jmp DonePlayer4Sprite
-skip_9007:
+SetPlayer4Color:
 
 
 

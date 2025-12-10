@@ -259,9 +259,9 @@ return_point:
 
           lda GPL_lockedState
           cmp PlayerHandicapped
-          bne skip_9953
+          bne PlayerHealthInitDone
                     let playerHealth[currentPlayer] = PlayerHealthHandicap : goto PlayerHealthInitDone
-skip_9953:
+PlayerHealthInitDone:
 
           lda currentPlayer
           asl

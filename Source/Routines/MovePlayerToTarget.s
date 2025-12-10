@@ -93,13 +93,13 @@ MPT_NudgeRight .proc
 
           lda temp6
           cmp # 1
-          bne skip_2842
+          bne MPT_NudgeRightDone
           lda temp1
           asl
           tax
           lda originalPlayerX_R
           sta playerX,x
-skip_2842:
+MPT_NudgeRightDone:
 
           rts
 
@@ -111,13 +111,13 @@ MPT_NudgeLeft .proc
 
           lda temp6
           cmp # 1
-          bne skip_2842
+          bne MPT_NudgeRightDone
           lda temp1
           asl
           tax
           lda originalPlayerX_R
           sta playerX,x
-skip_2842:
+MPT_NudgeRightDone:
 
           rts
 .pend
@@ -147,10 +147,10 @@ MPT_CheckCollision:
 
           lda temp2
           cmp # 32
-          bcc skip_7663
+          bcc CheckPlayfieldPixel
           lda # 31
           sta temp2
-skip_7663:
+CheckPlayfieldPixel:
 
           ;; if temp2 & $80 then let temp2 = 0
           lda originalPlayerY_R
@@ -177,9 +177,9 @@ skip_7663:
           jmp BS_jsr
 return_point:
 
-          ;; if temp1 then let temp6 = 1          lda temp1          beq skip_8161
-skip_8161:
-          jmp skip_8161
+          ;; if temp1 then let temp6 = 1          lda temp1          beq MPT_CheckCollisionDone
+MPT_CheckCollisionDone:
+          jmp MPT_CheckCollisionDone
           lda temp4
           sta temp1
           lda temp3

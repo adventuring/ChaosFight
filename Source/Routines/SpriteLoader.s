@@ -185,45 +185,45 @@ return_point:
           ;; if temp1 < 8 then goto LoadPlayerSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_4485          jmp
           lda temp1
           cmp # 8
-          bcs skip_7079
+          bcs CheckBank3
           goto_label:
 
-          jmp goto_label
-skip_7079:
+          jmp LoadPlayerSprite_Bank2Dispatch
+CheckBank3:
 
           lda temp1
           cmp # 8
-          bcs skip_3862
-          jmp goto_label
-skip_3862:
+          bcs CheckBank3Label
+          jmp LoadPlayerSprite_Bank2Dispatch
+CheckBank3Label:
 
           
           ;; if temp1 < 16 then goto LoadPlayerSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_8460          jmp
           lda temp1
           cmp # 16
-          bcs skip_1377
-          jmp goto_label
-skip_1377:
+          bcs CheckBank4
+          jmp LoadPlayerSprite_Bank3Dispatch
+CheckBank4:
 
           lda temp1
           cmp # 16
-          bcs skip_5784
-          jmp goto_label
-skip_5784:
+          bcs CheckBank4Label
+          jmp LoadPlayerSprite_Bank3Dispatch
+CheckBank4Label:
 
           
           ;; if temp1 < 24 then goto LoadPlayerSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_2409          jmp
           lda temp1
           cmp # 24
-          bcs skip_6013
-          jmp goto_label
-skip_6013:
+          bcs LoadPlayerSprite_Bank5Dispatch
+          jmp LoadPlayerSprite_Bank4Dispatch
+LoadPlayerSprite_Bank5Dispatch:
 
           lda temp1
           cmp # 24
-          bcs skip_466
-          jmp goto_label
-skip_466:
+          bcs LoadPlayerSprite_Bank5DispatchDone
+          jmp LoadPlayerSprite_Bank4Dispatch
+LoadPlayerSprite_Bank5DispatchDone:
 
           
           jmp LoadPlayerSprite_Bank5Dispatch

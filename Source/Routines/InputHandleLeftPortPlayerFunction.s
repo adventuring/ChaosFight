@@ -23,11 +23,11 @@ InputHandleLeftPortPlayerFunction:
           lda temp2
           cmp # 13
 
-          bcc skip_243
+          bcc CheckGuardStatus
 
           jmp DoneLeftPortMovement
 
-skip_243:
+CheckGuardStatus:
 
           ;; Process left/right movement (with playfield collision for
           ;; flying characters)
@@ -41,19 +41,19 @@ skip_243:
           sta temp5
           lda temp5
           cmp # 8
-          bne skip_33
+          bne CheckDragonOfStorms
 
           jmp IHLP_FlyingMovement
 
-skip_33:
+CheckDragonOfStorms:
 
           lda temp5
           cmp # 2
-          bne skip_4346
+          bne ProcessStandardMovement
 
           jmp IHLP_FlyingMovement
 
-skip_4346:
+ProcessStandardMovement:
 
           ;; Standard horizontal movement (uses shared routine)
           ;; Cross-bank call to ProcessStandardMovement in bank 13

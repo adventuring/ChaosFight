@@ -575,10 +575,10 @@ ApplyImpulseLeft:
           sec
           sbc 4
           bcc skip_4706
-          beq skip_4706
+          beq PCR_ImpulseDone
           lda 4
           sta playerVelocityX,x
-skip_4706:
+PCR_ImpulseDone:
 
                     if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
           lda temp2

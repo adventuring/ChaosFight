@@ -123,9 +123,9 @@ GameMainLoop .proc
           ;; Only run game logic when actually in game mode (ModeGame = 6)
           lda gameMode
           cmp ModeGame
-          bne skip_5419
+          bne GameMainLoopPaused
           jmp GameMainLoopContinue
-skip_5419:
+GameMainLoopPaused:
 
 
           jsr BS_return
@@ -205,11 +205,11 @@ return_point:
           lda currentPlayer
           cmp 2
 
-          bcc skip_3439
+          bcc FrootyChargeUpdate
 
-          jmp skip_3439
+          jmp FrootyChargeQuadtariCheck
 
-          skip_3439:
+          FrootyChargeQuadtariCheck:
 
           jmp FrootyChargeUpdate
 
@@ -219,9 +219,9 @@ FrootyChargeQuadtariCheck .proc
           lda controllerStatus
           and SetQuadtariDetected
           cmp # 0
-          bne skip_204
+          bne FrootyChargeUpdate
           jmp FrootyChargeNext
-skip_204:
+FrootyChargeUpdate:
 
 
 .pend

@@ -175,7 +175,7 @@ PUA_RoboTitoAscend:
           lda # 31
           sta temp2
 
-skip_9153:
+ColumnInRange:
 
           ;; if temp2 & $80 then let temp2 = 0
           ;; Save playfield column (temp2 will be overwritten)

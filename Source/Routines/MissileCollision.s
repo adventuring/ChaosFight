@@ -355,7 +355,6 @@ CheckFacingDirection:
           cmp # 0
           bne CheckAOEDirection_Right
           ;; jmp CheckAOEDirection_Left
-CheckAOEDirection_Right:
 
 
           ;; jmp CheckAOEDirection_Right
@@ -466,12 +465,12 @@ CheckAOEDirection_Left
           ;; Formula: AOE_X = playerX + 7 - offset
 
           ;;
-          INPUT:
+          ;; INPUT:
 
           ;; temp1 = attacker player index (0-3)
 
           ;;
-          OUTPUT:
+          ;; OUTPUT:
 
           ;; temp4 = hit player index (0-3), or 255 if no hit
 

@@ -91,22 +91,22 @@ CharacterSelectEntry .proc
 
                     if !INPT1{7} then goto CharacterSelectQuadtariAbsent
           bit INPT1
-          bmi skip_5888
+          bmi CheckINPT2
           jmp CharacterSelectQuadtariAbsent
-skip_5888:
+CheckINPT2:
 
           ;; if INPT2{7} then goto CharacterSelectQuadtariAbsent
           bit INPT2
-          bpl skip_4108
+          bpl CheckINPT3
           jmp CharacterSelectQuadtariAbsent
-skip_4108:
+CheckINPT3:
 
           ;; All checks passed - Quadtari detected
                     if !INPT3{7} then goto CharacterSelectQuadtariAbsent
           bit INPT3
-          bmi skip_7109
+          bmi SetQuadtariDetected
           jmp CharacterSelectQuadtariAbsent
-skip_7109:
+SetQuadtariDetected:
           lda controllerStatus
           ora SetQuadtariDetected
           sta controllerStatus

@@ -132,7 +132,7 @@ rand = $DB
 ;; Note: qtcontroller uses $e7 (same as L/l would have used)
 qtcontroller = $e7
 ;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
-;; Z/z not available - use SCRAM - use SCRAM for any variables that were using z
+;; Z/z not available - use SCRAM for any variables that were using z
 ;; stack1-4 are stack addresses ($f6-$f9) - defined as constants for kernel code
 ;; but they are NOT variables - they are stack space that kernel may use directly
 stack1 = $f6
@@ -429,7 +429,7 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           Y = $EF
 ;;           y = $EF
 ;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
-;; Z/z not available - use SCRAM - use SCRAM for any variables that were using z
+;; Z/z not available - use SCRAM for any variables that were using z
 ;; stack1-4 are stack addresses ($f6-$f9) - defined as constants for kernel code
 ;; but they are NOT variables - they are stack space that kernel may use directly
 ;;           stack1 = $F6

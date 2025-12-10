@@ -74,57 +74,67 @@ CheckEnhancedControllers:
           ;; Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0) or Joy2b+ Button III (INPT1)
           ;; OR flags together and check for nonzero match
           ;; let temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
+          lda controllerStatus
+          and # SetLeftPortGenesis
+          sta temp1
+          lda controllerStatus
+          and # SetLeftPortJoy2bPlus
+          ora temp1
+          sta temp1
           ;; if temp1 then if !INPT0{7} then goto PublisherPreludeComplete
           lda temp1
-          beq CheckRightPortControllers
+          beq CheckPlayer1Joy2bPlusButton3
 
           bit INPT0
-          bmi CheckRightPortControllers
+          bmi CheckPlayer1Joy2bPlusButton3
 
           jmp PublisherPreludeComplete
 
-CheckRightPortControllers:
+CheckPlayer1Joy2bPlusButton3:
 
-lda temp1
-
-beq CheckRightPortControllersLabel
-
-CheckRightPortControllersLabel:
-          jmp CheckRightPortControllersLabel
-
+          ;; Check Joy2b+ Button III (INPT1) for Player 1
           lda controllerStatus
-          and SetLeftPortJoy2bPlus
-          sta temp1
-          ;; if temp1 then if !INPT1{7} then goto PublisherPreludeComplete          lda temp1          beq CheckRightPortControllersLabel2
-CheckRightPortControllersLabel2:
-          jmp CheckRightPortControllersLabel2
+          and # SetLeftPortJoy2bPlus
+          beq CheckPlayer2Enhanced
+
+          bit INPT1
+          bmi CheckPlayer2Enhanced
+
+          jmp PublisherPreludeComplete
+
+CheckPlayer2Enhanced:
 
           ;; Player 2: Genesis Button C (INPT2) or Joy2b+ Button C/II (INPT2) or Joy2b+ Button III (INPT3)
           ;; let temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
           lda controllerStatus
-          and # 96
+          and # SetRightPortGenesis
+          sta temp1
+          lda controllerStatus
+          and # SetRightPortJoy2bPlus
+          ora temp1
           sta temp1
           ;; if temp1 then if !INPT2{7} then goto PublisherPreludeComplete
           lda temp1
-          beq CheckAutoAdvance
+          beq CheckPlayer2Joy2bPlusButton3
+
           bit INPT2
-          bmi CheckAutoAdvance
+          bmi CheckPlayer2Joy2bPlusButton3
+
           jmp PublisherPreludeComplete
-CheckAutoAdvance:
 
-lda temp1
+CheckPlayer2Joy2bPlusButton3:
 
-beq CheckAutoAdvanceLabel
-
-CheckAutoAdvanceLabel:
-          jmp CheckAutoAdvanceLabel
-
+          ;; Check Joy2b+ Button III (INPT3) for Player 2
           lda controllerStatus
-          and SetRightPortJoy2bPlus
-          sta temp1
-          ;; if temp1 then if !INPT3{7} then goto PublisherPreludeComplete          lda temp1          beq CheckAutoAdvanceLabel2
-CheckAutoAdvanceLabel2:
-          jmp CheckAutoAdvanceLabel2
+          and # SetRightPortJoy2bPlus
+          beq CheckAutoAdvance
+
+          bit INPT3
+          bmi CheckAutoAdvance
+
+          jmp PublisherPreludeComplete
+
+CheckAutoAdvance:
 
           ;; Auto-advance after music completes + 0.5s
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
@@ -169,7 +179,7 @@ PublisherPreludeComplete
           pha
           lda # <(BeginAuthorPrelude-1)
           pha
-                    ldx # 13
+          ldx # 13
           jmp BS_jsr
 return_point:
 

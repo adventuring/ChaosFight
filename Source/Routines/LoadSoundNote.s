@@ -3,7 +3,6 @@
 
 
 LoadSoundNote .proc
-
           ;; Load next sound-effect note (assembly pointer access, Voice 0).
           ;; Returns: Far (return otherbank)
           ;; Input: soundEffectPointer (global 16-bit) = current note pointer
@@ -21,20 +20,20 @@ LoadSoundNote .proc
           ;; AUDC/AUDV), AUDF, Duration, Delay. Extracts AUDC (upper 4
           ;; bits) and AUDV (lower 4 bits) from AUDCV. End of sound
           ;; marked by Duration = 0 (sets soundEffectPointer = 0 and
-          AUDV0 = 0). Uses Voice 0 for sound effects
+          ;; AUDV0 = 0). Uses Voice 0 for sound effects
           ;; TODO: ; Load 4 bytes from stream[pointer]
           ;; TODO: ldy #0
-            lda (soundEffectPointer),y  ; Load AUDCV
-            sta temp2
-            iny
-            lda (soundEffectPointer),y  ; Load AUDF
-            sta temp3
-            iny
-            lda (soundEffectPointer),y  ; Load Duration
-            sta temp4
-            iny
-            lda (soundEffectPointer),y  ; Load Delay
-            sta temp5
+          lda (soundEffectPointer),y  ; Load AUDCV
+          sta temp2
+          iny
+          lda (soundEffectPointer),y  ; Load AUDF
+          sta temp3
+          iny
+          lda (soundEffectPointer),y  ; Load Duration
+          sta temp4
+          iny
+          lda (soundEffectPointer),y  ; Load Delay
+          sta temp5
 
           ;; Check for end of sound (Duration = 0)
           jsr BS_return
@@ -73,7 +72,6 @@ LoadSoundNote .proc
           sta soundEffectPointer
 
           jsr BS_return
-
 
 .pend
 

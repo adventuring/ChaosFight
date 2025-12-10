@@ -1,6 +1,5 @@
 
 BeginTitleScreen .proc
-
           ;; ChaosFight - Source/Routines/BeginTitleScreen.bas
           ;; Copyright © 2025 Bruce-Robert Pocock.
 
@@ -36,7 +35,7 @@ BeginTitleScreen .proc
           ;; Background: black (COLUBK starts black, no need to set)
 
           ;; Start Chaotica title music
-          lda MusicChaotica
+          lda # MusicChaotica
           sta temp1
           ;; Cross-bank call to StartMusic in bank 15
           lda # >(return_point-1)
@@ -47,10 +46,10 @@ BeginTitleScreen .proc
           pha
           lda # <(StartMusic-1)
           pha
-                    ldx # 14
+          ldx # 14
           jmp BS_jsr
-return_point:
 
+return_point:
 
           ;; Set window values for Title screen (ChaosFight only)
           ;; OPTIMIZATION: Inlined to save call overhead (only used once)

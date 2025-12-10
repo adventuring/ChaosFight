@@ -24,20 +24,20 @@ LoadSoundNote1 .proc
           ;; AUDC/AUDV), AUDF, Duration, Delay. Extracts AUDC (upper 4
           ;; bits) and AUDV (lower 4 bits) from AUDCV. End of sound
           ;; marked by Duration = 0 (sets soundEffectPointer1 = 0 and
-          AUDV1 = 0). Uses Voice 1 for sound effects
+          ;; AUDV1 = 0). Uses Voice 1 for sound effects
           ;; TODO: ; Load 4 bytes from stream[pointer]
           ;; TODO: ldy #0
-            lda (soundEffectPointer1),y  ; Load AUDCV
-            sta temp2
-            iny
-            lda (soundEffectPointer1),y  ; Load AUDF
-            sta temp3
-            iny
-            lda (soundEffectPointer1),y  ; Load Duration
-            sta temp4
-            iny
-            lda (soundEffectPointer1),y  ; Load Delay
-            sta temp5
+          lda (soundEffectPointer1),y  ; Load AUDCV
+          sta temp2
+          iny
+          lda (soundEffectPointer1),y  ; Load AUDF
+          sta temp3
+          iny
+          lda (soundEffectPointer1),y  ; Load Duration
+          sta temp4
+          iny
+          lda (soundEffectPointer1),y  ; Load Delay
+          sta temp5
 
           ;; Check for end of sound (Duration = 0)
           jsr BS_return
@@ -76,7 +76,6 @@ LoadSoundNote1 .proc
           sta soundEffectPointer1
 
           jsr BS_return
-
 
 .pend
 

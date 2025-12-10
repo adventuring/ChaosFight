@@ -2,7 +2,8 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-FindWinner .proc
+FindWinner:
+.proc
           ;;
           ;; Returns: Far (return otherbank)
           ;; Find Winner
@@ -27,36 +28,43 @@ FindWinner .proc
           pha
           lda # <(IsPlayerEliminated-1)
           pha
-                    ldx # 12
+          ldx # 12
           jmp BS_jsr
+
 return_point:
 
           lda temp2
           bne skip_610
+
           lda currentPlayer
           sta winnerPlayerIndex_W
+
 skip_610:
 
 .pend
 
-FW_next_label_1:.proc
+FW_next_label_1:
+.proc
 
-          If no winner found (all eliminated), pick last eliminated
+          ;; If no winner found (all eliminated), pick last eliminated
           lda winnerPlayerIndex_R
           cmp # 255
           bne skip_6101
+
           jmp FindLastEliminated
+
 skip_6101:
 
           ;; tail call
           lda winnerPlayerIndex_R
           cmp # 255
-          bne skip_6101
+          bne skip_6102
+
           jmp FindLastEliminated
-skip_6101:
+
+skip_6102:
 
           jsr BS_return
-
 
 .pend
 

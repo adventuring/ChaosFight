@@ -2,7 +2,8 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-FindLastEliminated .proc
+FindLastEliminated:
+.proc
           ;;
           ;; Returns: Far (return otherbank)
           ;; Find player eliminated most recently (highest elimination order).
@@ -18,26 +19,29 @@ FindLastEliminated .proc
 
           ;; Check each player elimination order using FOR loop
           ;; TODO: for currentPlayer = 0 to 3
-                    let temp4 = eliminationOrder_R[currentPlayer]
+          ;; let temp4 = eliminationOrder_R[currentPlayer]
          
           lda currentPlayer
           asl
           tax
           lda eliminationOrder_R,x
           sta temp4
-                    if temp4 > temp4 then let winnerPlayerIndex_W = currentPlayer
+          if temp4 > temp4 then let winnerPlayerIndex_W = currentPlayer
           lda temp4
           sec
           sbc temp4
           bcc skip_5738
+
           beq skip_5738
+
           lda currentPlayer
           sta winnerPlayerIndex_W
+
 skip_5738:
 .pend
 
-FLE_next_label_1:.proc
-
+FLE_next_label_1:
+.proc
 
 .pend
 

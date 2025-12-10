@@ -36,18 +36,19 @@ DrawTitleScreen .proc
           ;; gameMode 0 = Publisher Prelude, 1 = Author Prelude, 2 = Title Screen
           lda gameMode
           cmp # 0
-          bne skip_4934
-          jmp DrawPublisherScreen
-skip_4934:
+          bne CheckAuthorMode
 
+          jmp DrawPublisherScreen
+
+CheckAuthorMode:
 
           lda gameMode
           cmp # 1
-          bne skip_8757
+          bne DrawTitleScreenOnly
+
           jmp DrawAuthorScreen
-skip_8757:
 
-
+DrawTitleScreenOnly:
           ;; Default: Title screen (gameMode = 2)
           jmp DrawTitleScreenOnly
 

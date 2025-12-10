@@ -25,9 +25,6 @@
 
 
 BeginGameLoop .proc
-
-
-
           ;; Initialize all game state for the main gameplay loop
           ;; Returns: Far (return otherbank)
           ;;

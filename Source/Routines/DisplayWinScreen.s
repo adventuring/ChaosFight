@@ -2,10 +2,9 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 DisplayWinScreen .proc
-
           ;; Displays the winner podium with character sprites
           ;; Returns: Far (return otherbank)
-          Layout:
+          ;; Layout:
           ;; - Fixed playfield pattern (podium/platform design)
           ;; - 1 player: Winner centered on podium
           ;; - 2 players: Winner centered, runner-up on left platform
@@ -55,9 +54,9 @@ DisplayWinScreen .proc
           ;; Called from WinnerAnnouncementLoop per-frame loop
 
           ;; Set screen layout (32×8 for character display) - inlined
-          lda ScreenPfRowHeight
+          lda # ScreenPfRowHeight
           sta pfrowheight
-          lda ScreenPfRows
+          lda # ScreenPfRows
           sta pfrows
 
           ;; Load winner screen playfield pattern

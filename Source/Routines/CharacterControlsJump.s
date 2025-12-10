@@ -14,14 +14,13 @@ StandardJump .proc
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
           ;; Output: Upward velocity applied, jumping flag set
-                    ;; let temp2 = playerCharacter[temp1]
-                    lda temp1          asl          tax          lda playerCharacter,x          sta temp2
-          ;; let temp2 = CharacterJumpVelocities[temp2]
-          lda temp2
+          ;; let temp2 = playerCharacter[temp1]
+          lda temp1
           asl
           tax
-          lda CharacterJumpVelocities,x
-          sta temp2         
+          lda playerCharacter,x
+          sta temp2
+          ;; let temp2 = CharacterJumpVelocities[temp2]
           lda temp2
           asl
           tax
@@ -37,13 +36,14 @@ StandardJump .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
-                    let playerState[temp1] = playerState[temp1] | 4
+          let playerState[temp1] = playerState[temp1] | 4
           jsr BS_return
 
-CCJ_ConvertPlayerXToPlayfieldColumn
-CCJ_ConvertPlayerXToPlayfieldColumn
+.pend
+
+CCJ_ConvertPlayerXToPlayfieldColumn:
           ;; Convert player × to playfield column (0-31)
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
@@ -55,23 +55,13 @@ CCJ_ConvertPlayerXToPlayfieldColumn
           tax
           lda playerX,x
           sta temp2
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; let temp2 = temp2 - ScreenInsetX
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
-          lda temp2
-          sec
-          sbc ScreenInsetX
-          sta temp2
-
-          ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
-          lda temp2
-          lsr
-          lsr
-          sta temp2
-
+          ;; let temp2 = temp2 / 4
           lda temp2
           lsr
           lsr
@@ -134,9 +124,9 @@ return_point:
 return_point:
 
 
-                    if temp1 then let temp4 = 1          lda temp1          beq skip_5294
-skip_5294:
-          jmp skip_5294
+                    if temp1 then let temp4 = 1          lda temp1          beq BernieCheckBottomWrap
+BernieCheckBottomWrap:
+          jmp BernieCheckBottomWrap
           lda temp3
           sta temp1
           jsr BS_return
@@ -168,9 +158,9 @@ skip_5294:
 return_point:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
-skip_955:
-          jmp skip_955
+                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrap
+BernieCheckBottomWrap:
+          jmp BernieCheckBottomWrap
           lda temp3
           sta temp1
           jsr BS_return
@@ -218,9 +208,9 @@ BernieCheckBottomWrap .proc
 return_point:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
-skip_955:
-          jmp skip_955
+                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrap
+BernieCheckBottomWrap:
+          jmp BernieCheckBottomWrap
           lda temp3
           sta temp1
           jsr BS_return
@@ -272,9 +262,9 @@ CCJ_FreeFlightUp .proc
 return_point:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq skip_955
-skip_955:
-          jmp skip_955
+                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrap
+BernieCheckBottomWrap:
+          jmp BernieCheckBottomWrap
           lda temp6
           sta temp1
           rts
@@ -323,10 +313,10 @@ HarpyJump .proc
 
           lda temp2
           cmp # 128
-          bcc skip_1730
+          bcc CheckCooldownExpired
           lda # 127
           sta temp2
-skip_1730:
+CheckCooldownExpired:
 
           jsr BS_return
 

@@ -55,18 +55,18 @@ HandleCharacterSelectFire .proc
 
           lda temp1
           cmp # 0
-          bne skip_5663
-          ;; TODO: HCSF_CheckJoy0
-skip_5663:
+          bne CheckPlayer2Joy
+          jmp HCSF_CheckJoy0
+CheckPlayer2Joy:
 
 
           ;; Players 1,3 use joy1
 
           lda temp1
           cmp # 2
-          bne skip_3179
-          ;; TODO: HCSF_CheckJoy0
-skip_3179:
+          bne CheckJoy1
+          jmp HCSF_CheckJoy0
+CheckJoy1:
 
 
           jsr BS_return
@@ -74,9 +74,9 @@ skip_3179:
           lda # 1
           sta temp2
 
-                    if joy1down then let temp4 = 1 : goto HCSF_HandleFire          lda joy1down          beq skip_7055
-skip_7055:
-          jmp skip_7055
+                    if joy1down then let temp4 = 1 : goto HCSF_HandleFire          lda joy1down          beq SetNormalLock
+SetNormalLock:
+          jmp SetNormalLock
           lda # 0
           sta temp4
 
@@ -166,9 +166,9 @@ HCSF_HandleFire .proc
 
           if temp4 then HCSF_HandleHandicap
           lda temp4
-          beq skip_1914
+          beq SetNormalLock
           jmp HCSF_HandleHandicap
-skip_1914:
+SetNormalLock:
           
 
           lda temp1
@@ -322,9 +322,9 @@ HCSF_HandleRandom .proc
 
           ;; Store handicap flag if down was held
 
-                    if temp4 then let randomSelectFlags_W[temp1] = TRUE : goto HCSF_HandleRandomSound          lda temp4          beq skip_9263
-skip_9263:
-          jmp skip_9263
+                    if temp4 then let randomSelectFlags_W[temp1] = TRUE : goto HCSF_HandleRandomSound          lda temp4          beq HCSF_HandleRandomSound
+HCSF_HandleRandomSound:
+          jmp HCSF_HandleRandomSound
           lda temp1
           asl
           tax

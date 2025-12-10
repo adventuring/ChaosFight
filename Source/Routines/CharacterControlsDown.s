@@ -1,17 +1,8 @@
 ;;; DOWN BUTTON HANDLERS (Called via on goto from PlayerInput)
 
-DragonOfStormsDown
-;;; Returns: Far (return otherbank)
-
-          jsr BS_return
-
-
-          ;; TODO: DragonOfStormsDown = .DragonOfStormsDown
-
-
-          ;; DRAGON OF STORMS (2) - FLY DOWN (no guard action)
+DragonOfStormsDown:
           ;; Returns: Far (return otherbank)
-
+          ;; DRAGON OF STORMS (2) - FLY DOWN (no guard action)
           ;; Dragon of Storms flies down instead of guarding
 
           ;;
@@ -63,21 +54,19 @@ DragonOfStormsDown
           lda playerX,x
           sta temp2
 
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; let temp2 = temp2 - ScreenInsetX
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
-
-          lda temp2
-          sec
-          sbc ScreenInsetX
-          sta temp2
-
 
           ;; pfColumn = playfield column (0-31)
 
-          ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          ;; let temp2 = temp2 / 4
+          lda temp2
+          lsr
+          lsr
+          sta temp2
           lda temp2
           lsr
           lsr

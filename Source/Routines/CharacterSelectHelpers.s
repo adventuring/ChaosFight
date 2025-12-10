@@ -3,7 +3,7 @@
 
 
 SelectStickLeft .proc
-;;; Handle stick-left navigation for the active player
+          ;; Handle stick-left navigation for the active player
           ;;
           ;; Input: currentPlayer (global) = player index (0-3)
           ;; playerCharacter[] (global) = browsing selections
@@ -19,12 +19,7 @@ SelectStickLeft .proc
           tax
           dec playerCharacter,x
 
-          lda currentPlayer
-          asl
-          tax
-          dec playerCharacter,x
-
-                    if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
+          if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
           lda # >(return_point-1)
@@ -35,10 +30,10 @@ SelectStickLeft .proc
           pha
           lda # <(SetPlayerLocked-1)
           pha
-                    ldx # 5
+          ldx # 5
           jmp BS_jsr
-return_point:
 
+return_point:
 
           rts
 
@@ -61,23 +56,18 @@ SelectStickRight .proc
           tax
           inc playerCharacter,x
 
-          lda currentPlayer
-          asl
-          tax
-          inc playerCharacter,x
-
-                    if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
+          if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(SetPlayerLocked-1)
           pha
           lda # <(SetPlayerLocked-1)
           pha
-                    ldx # 5
+          ldx # 5
           jmp BS_jsr
 return_point:
 

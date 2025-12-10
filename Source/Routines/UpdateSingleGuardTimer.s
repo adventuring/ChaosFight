@@ -41,7 +41,7 @@ UpdateSingleGuardTimer .proc
           ;; clears guard and starts cooldown when expired
           If not guarding: decrements cooldown timer (if active)
           ;; Check if player is guarding
-                    let temp2 = playerState[temp1] & 2         
+          ;; let temp2 = playerState[temp1] & 2         
           lda temp1
           asl
           tax
@@ -49,14 +49,14 @@ UpdateSingleGuardTimer .proc
           sta temp2
           if temp2 then UpdateGuardTimerActive
           lda temp2
-          beq skip_2709
+          beq UpdateCooldownTimer
           jmp UpdateGuardTimerActive
-skip_2709:
+UpdateCooldownTimer:
           
 
           ;; Player not guarding - decrement cooldown timer
           ;; Fix RMW: Read from _R, modify, write to _W
-                    let temp3 = playerTimers_R[temp1]         
+          ;; let temp3 = playerTimers_R[temp1]         
           lda temp1
           asl
           tax
@@ -90,7 +90,7 @@ UpdateGuardTimerActive .proc
           ;; Called Routines: None
           ;; Constraints: Must be colocated with UpdateSingleGuardTimer, GuardTimerExpired
           ;; Player is guarding - decrement guard duration timer
-                    let temp3 = playerTimers_R[temp1]         
+          ;; let temp3 = playerTimers_R[temp1]         
           lda temp1
           asl
           tax
@@ -99,9 +99,9 @@ UpdateGuardTimerActive .proc
           ;; Guard timer already expired (shouldn’t happen, but safety
           lda temp3
           cmp # 0
-          bne skip_3844
+          bne SkipExpiredCheck
           ;; TODO: GuardTimerExpired
-skip_3844:
+SkipExpiredCheck:
 
           ;; check)
 
@@ -114,9 +114,9 @@ skip_3844:
           sta playerTimers_W,x
           lda temp3
           cmp # 0
-          bne skip_3844
+          bne GuardTimerStillActive
           ;; TODO: GuardTimerExpired
-skip_3844:
+GuardTimerStillActive:
 
           jsr BS_return
 .pend

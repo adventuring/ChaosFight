@@ -49,34 +49,40 @@ UpdatePlayerMovement .proc
           pha
           lda # <(UpdatePlayerMovementSingle-1)
           pha
-                    ldx # 7
+          ldx # 7
           jmp BS_jsr
+
 return_point:
 
           ;; Players 2-3 only if Quadtari detected
+
 .pend
 
-next_label_1_L59:.proc
+next_label_1_L59:
+.proc
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne skip_9367
+
           jmp UpdatePlayerMovementQuadtariSkip
+
 skip_9367:
 
           ;; TODO: for currentPlayer = 2 to 3
           ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
-          lda # >(return_point-1)
+          lda # >(return_point2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(return_point2-1)
           pha
           lda # >(UpdatePlayerMovementSingle-1)
           pha
           lda # <(UpdatePlayerMovementSingle-1)
           pha
-                    ldx # 7
+          ldx # 7
           jmp BS_jsr
-return_point:
+
+return_point2:
 
 .pend
 

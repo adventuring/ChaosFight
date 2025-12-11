@@ -255,14 +255,14 @@ return_point:
 FrootyChargeNext .proc
 .pend
 
-next_label_1_L253:.proc
+UpdateSoundEffects .proc
 
           ;; Update sound effects (game mode 6 only)
           ;; Sound updates must happen in overscan so they are ready for vblank
           ;; Cross-bank call to UpdateSoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(UpdateSoundEffectsReturn-1)
           pha
-          lda # <(return_point-1)
+          lda # <(UpdateSoundEffectsReturn-1)
           pha
           lda # >(UpdateSoundEffect-1)
           pha
@@ -270,7 +270,7 @@ next_label_1_L253:.proc
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+UpdateSoundEffectsReturn:
 
 
           ;; Heavy game logic (physics, collisions, rendering) moved to vblank handler

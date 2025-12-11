@@ -272,7 +272,7 @@ PlayerHealthInitDone:
 PlayerHealthInitDone
 .pend
 
-next_label_1_L278:.proc
+InitializePlayerTimers .proc
 
           ;; Initialize player timers
           ;; TODO: #1254 for currentPlayer = 0 to 3
@@ -308,7 +308,7 @@ next_label_1_L278:.proc
           sta playerSubpixelY_W,x
 .pend
 
-next_label_2_1_L314:.proc
+SetPlayers34ActiveFlag .proc
 
           ;; Optimized: Set Players34Active flag based on character selections
           lda controllerStatus

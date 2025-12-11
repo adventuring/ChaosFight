@@ -8,6 +8,10 @@
 
 ;; CRITICAL: Define memory address variables FIRST to allow DASM to resolve forward references
 ;; These must be defined before any code that uses them
+;; NOTE: .weak protection needed because Preamble.s (which includes this file)
+;; may be included multiple times. 64tass doesn't support .ifndef include guards,
+;; so .weak/.endweak is the standard way to allow duplicate symbol definitions.
+.weak
 missile1height = $A4
 missile0height = $A5
 ;; playfieldRow is defined via dim in Variables.s
@@ -157,7 +161,6 @@ stack4 = $f9
 ;; The definitions above match multisprite.h, which is the authoritative source
 ;; --- Multisprite compatibility macros ----------------------------------------
 ;; Preserve the RETURN macro expected by multisprite-generated assembly.
-.endweak
 ;; This must be defined early so it is available to all included files.
           RETURN .macro
           .if !bankswitch
@@ -887,4 +890,4 @@ r127 = $F0FF
           ;; Do NOT define it here - it causes syntax errors when used as an operator
           ;; If you need a bitwise NOT mask, use ($FF ^ value) instead of (NOT value)
 
-
+.endweak

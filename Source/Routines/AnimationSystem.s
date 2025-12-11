@@ -975,11 +975,9 @@ return_point:
 
 .pend
 
-next_label_2_1:.proc
+HandleAnimationTransition .proc
           jsr BS_return
-HandleAnimationTransition
           ;; Returns: Far (return thisbank)
-HandleAnimationTransition
           ;; let temp1 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer

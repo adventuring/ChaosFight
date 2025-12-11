@@ -157,7 +157,6 @@ GroundFound .proc
           asl
           asl
           sta temp2
-          jmp RTJ_GroundSearchDone
 
 .pend
 
@@ -165,7 +164,7 @@ GroundSearchBottom .proc
           lda ScreenBottom
           sta temp2
 
-RTJ_GroundSearchDone:
+GroundSearchDone:
           ;; Common exit point for GroundFound and GroundSearchBottom
           ;; Continue with rest of routine
           ;; let temp3 = playerY[temp1]         

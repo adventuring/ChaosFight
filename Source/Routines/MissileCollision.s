@@ -688,7 +688,7 @@ HitDetected:
 CPB_NextPlayer:
           rts
 
-next_label_1_L693:.proc
+CheckPlayersAgainstCachedHitboxDone .proc
 
           jsr BS_return
 

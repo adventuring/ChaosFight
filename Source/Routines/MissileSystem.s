@@ -286,12 +286,11 @@ UpdateAllMissiles .proc
           jsr UpdateOneMissile
 .pend
 
-next_label_1_L280:.proc
+UpdateMissilesDone .proc
           jsr BS_return
 
-UpdateOneMissile
+UpdateOneMissile:
           ;; Returns: Near (return thisbank)
-UpdateOneMissile
           ;;
           ;; Returns: Near (return thisbank)
           ;; Update One Missile

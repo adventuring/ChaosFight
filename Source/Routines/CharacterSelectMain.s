@@ -788,13 +788,9 @@ CharacterSelectRollRandomPlayer:
 
           jsr CharacterSelectRollRandomPlayer
 
-.pend
-
-next_label_1_L793:.proc
+CharacterSelectRollRandomPlayerReturn:
 
           jmp CharacterSelectRollsDone
-
-
 
 .pend
 
@@ -994,17 +990,17 @@ CharacterSelectQuadtariReadyNext .proc
 
 .pend
 
-next_label_2_1_L997:.proc
+CharacterSelectReadyCheck .proc
 
           ;; if readyCount >= 2 then goto CharacterSelectFinish
           lda readyCount
-          cmp 2
+          cmp # 2
 
           bcc CharacterSelectReadyDone
 
-          jmp CharacterSelectReadyDone
+          jmp CharacterSelectFinish
 
-          CharacterSelectReadyDone:
+CharacterSelectReadyDone:
 
 
 
@@ -1072,15 +1068,13 @@ CharacterSelectSkipFacing .proc
 
 .pend
 
-next_label_3 .proc
-
-
+UpdateSoundEffects .proc
 
           ;; Update sound effects (active sound effects need per-frame updates)
           ;; Cross-bank call to UpdateSoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(UpdateSoundEffectsReturn-1)
           pha
-          lda # <(return_point-1)
+          lda # <(UpdateSoundEffectsReturn-1)
           pha
           lda # >(UpdateSoundEffect-1)
           pha
@@ -1088,7 +1082,7 @@ next_label_3 .proc
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+UpdateSoundEffectsReturn:
 
 
           ;; Transition to falling animation

@@ -58,7 +58,7 @@ return_point:
 
 .pend
 
-next_label_1_L59 .proc
+UpdatePlayerMovementQuadtariCheck .proc
           lda controllerStatus
           and # SetQuadtariDetected
           cmp # 0

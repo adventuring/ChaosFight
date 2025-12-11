@@ -140,9 +140,9 @@ ProcessLeftCollision:
           sta temp3
 
           ;; Cross-bank call to PF_ProcessHorizontalCollision in bank 10
-          lda # >(return_point_1_L184-1)
+          lda # >(PFCheckRightReturn-1)
           pha
-          lda # <(return_point_1_L184-1)
+          lda # <(PFCheckRightReturn-1)
           pha
           lda # >(PF_ProcessHorizontalCollision-1)
           pha
@@ -151,7 +151,7 @@ ProcessLeftCollision:
           ldx # 9
           jmp BS_jsr
 
-return_point_1_L184:
+PFCheckRightReturn:
 
 PFCheckRight .proc
           ;; Returns: Far (return otherbank)
@@ -175,9 +175,9 @@ ProcessRightCollision:
           sta temp3
 
           ;; Cross-bank call to PF_ProcessHorizontalCollision in bank 10
-          lda # >(return_point2-1)
+          lda # >(PFCheckLeftReturn-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(PFCheckLeftReturn-1)
           pha
           lda # >(PF_ProcessHorizontalCollision-1)
           pha
@@ -186,7 +186,7 @@ ProcessRightCollision:
           ldx # 9
           jmp BS_jsr
 
-return_point2:
+PFCheckLeftReturn:
 
 .pend
 
@@ -210,9 +210,9 @@ CheckUpCollision:
           sta temp2
 
           ;; Cross-bank call to PF_CheckRowColumns in bank 10
-          lda # >(return_point3-1)
+          lda # >(PFCheckRowColumnsReturn-1)
           pha
-          lda # <(return_point3-1)
+          lda # <(PFCheckRowColumnsReturn-1)
           pha
           lda # >(PF_CheckRowColumns-1)
           pha
@@ -221,7 +221,7 @@ CheckUpCollision:
           ldx # 9
           jmp BS_jsr
 
-return_point3:
+PFCheckRowColumnsReturn:
 
           ;; if temp4 then goto PFBlockUp
           lda temp4
@@ -379,12 +379,9 @@ PFCS_SampleLoop .proc
           ;; if rowCounter >= pfrows then goto PFCS_Advance
           lda rowCounter
           cmp pfrows
-          bcc SamplePlayfieldPixel
-          jmp
-SamplePlayfieldPixel:
-
-
-          label_unknown:
+          bcc PFCS_ReadPlayfieldPixel
+          jmp PFCS_Advance
+PFCS_ReadPlayfieldPixel:
 
           lda playfieldColumn
           sta temp1
@@ -393,9 +390,9 @@ SamplePlayfieldPixel:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(PFCS_PlayfieldReadReturn-1)
           pha
-          lda # <(return_point-1)
+          lda # <(PFCS_PlayfieldReadReturn-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -540,13 +537,6 @@ PRC_CheckRightDone:
 
 .pend
 
-PRC_Done .proc
-          lda temp4  ;;; PRC_result
-          sta temp4
-          jsr BS_return
-
-.pend
-
 PRC_CheckLeft .proc
           lda temp6
           sec
@@ -629,6 +619,12 @@ return_point:
           sta temp1
 
           ;; if playerCharacter[temp1] = CharacterRadishGoblin then goto PHC_ClampOnly
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CharacterRadishGoblin
+          beq PHC_ClampOnly
 
           ;; if PHC_direction then goto PHC_CheckRightVelocity
           lda temp4  ;;; PHC_direction
@@ -650,7 +646,16 @@ CheckLeftVelocity:
           tax
           lda # 0
           sta playerVelocityXL,x
-          jmp PHC_ClampOnly
+
+PHC_ClampOnly:
+          lda temp6
+          sta rowYPosition
+
+          ;; if PHC_direction then goto PHC_ClampRight
+          lda temp4  ;;; PHC_direction
+          beq ClampLeftPosition
+          jmp PHC_ClampRight
+ClampLeftPosition:
 
 .pend
 

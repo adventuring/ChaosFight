@@ -804,7 +804,7 @@ NextDefender
           ;; Returns: Near (return thisbank) - called same-bank
 .pend
 
-next_label_1_L825:.proc
+ProcessAllAttacksDone .proc
           jsr BS_return
 
 .pend
@@ -878,7 +878,7 @@ NextAttacker .proc
           ;; Returns: Near (return thisbank) - called same-bank
 .pend
 
-next_label_2 .proc
+ProcessAllAttacksDone .proc
           jsr BS_return
           ;; Input: None (label only)
           ;;

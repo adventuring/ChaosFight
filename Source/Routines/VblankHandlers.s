@@ -945,12 +945,12 @@ return_point:
 VblankAnimationNextPlayer
 .pend
 
-next_label_1_L950:.proc
-          End of shared inlined UpdateCharacterAnimations code
+VblankGameModeCheck .proc
+          ;; End of shared inlined UpdateCharacterAnimations code
           ;; For game mode, continue with additional game logic
           ;; For other modes, return immediately
           lda gameMode
-          cmp ModeGame
+          cmp # ModeGame
           bne VblankHandlerDone
           jmp VblankModeGameMainAfterAnimations
 VblankHandlerDone:
@@ -1085,7 +1085,7 @@ return_point:
 
 .pend
 
-next_label_2_1_L1090:.proc
+VblankGameMainQuadtariCheckDone .proc
 
 .pend
 

@@ -4,6 +4,10 @@
 ;;;; Note: This file is included once in Preamble.s before MultiSpriteSuperChip.s
 ;;;; Workaround: 64tass can use macro-local variables in .rept expressions,
 ;;;; so we calculate the .rept count directly from the macro argument
+;;;; NOTE: .weak protection needed because Preamble.s (which includes this file)
+;;;; is included multiple times. 64tass doesn't support .ifndef include guards,
+;;;; so .weak/.endweak is the standard way to allow duplicate symbol definitions.
+.weak
 
 SLEEP .macro duration
           ;;; usage: .SLEEP n (n>1)
@@ -28,4 +32,5 @@ SLEEP .macro duration
           .next
 .fi
 .endm
+
 .endweak

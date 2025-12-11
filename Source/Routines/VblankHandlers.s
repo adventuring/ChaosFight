@@ -121,9 +121,9 @@ PlayTitleScreenMusic:
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           ;; When called from Vblank, stack is shallower than when called from MainLoop
           ;; Cross-bank call to PlayMusic in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterPlayMusicTitleScreen-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayMusicTitleScreen-1)
           pha
           lda # >(PlayMusic-1)
           pha
@@ -131,7 +131,7 @@ PlayTitleScreenMusic:
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterPlayMusicTitleScreen:
 
 
 .pend

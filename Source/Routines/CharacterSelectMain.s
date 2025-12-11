@@ -642,9 +642,9 @@ ProcessPlayerInput .proc
           ;; NOTE: DASM raises ’Label mismatch’ if multiple banks re-include HandleCharacterSelectFire
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSetPlayerLockedJoy0Input-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetPlayerLockedJoy0Input-1)
           pha
           lda # >(SetPlayerLocked-1)
           pha
@@ -652,13 +652,13 @@ ProcessPlayerInput .proc
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSetPlayerLockedJoy0Input:
 
 
           ;; Cross-bank call to HandleCharacterSelectFire in bank 7
-          lda # >(return_point-1)
+          lda # >(AfterHandleCharacterSelectFireJoy0Input-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterHandleCharacterSelectFireJoy0Input-1)
           pha
           lda # >(HandleCharacterSelectFire-1)
           pha
@@ -666,7 +666,7 @@ return_point:
           pha
                     ldx # 6
           jmp BS_jsr
-return_point:
+AfterHandleCharacterSelectFireJoy0Input:
 
 
 

@@ -69,9 +69,9 @@ BeginGameLoop .proc
           ;; Initialize sprite pointers to RAM addresses
           ;; Ensure pointers are set before loading any sprite data
           ;; Cross-bank call to InitializeSpritePointers in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterInitializeSpritePointers-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterInitializeSpritePointers-1)
           pha
           lda # >(InitializeSpritePointers-1)
           pha
@@ -79,7 +79,7 @@ BeginGameLoop .proc
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterInitializeSpritePointers:
 
 
           ;; Set screen layout for gameplay (32×8 game layout) - inlined
@@ -244,9 +244,9 @@ InitPositionsDone
           lda currentPlayer
           sta GPL_playerIndex
           ;; Cross-bank call to GetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerLockedInit-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerLockedInit-1)
           pha
           lda # >(GetPlayerLocked-1)
           pha
@@ -254,7 +254,7 @@ InitPositionsDone
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterGetPlayerLockedInit:
 
 
           lda GPL_lockedState

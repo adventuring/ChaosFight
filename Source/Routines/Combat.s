@@ -878,7 +878,7 @@ NextAttacker .proc
           ;; Returns: Near (return thisbank) - called same-bank
 .pend
 
-ProcessAllAttacksDone .proc
+ProcessAllAttacksDone2 .proc
           jsr BS_return
           ;; Input: None (label only)
           ;;

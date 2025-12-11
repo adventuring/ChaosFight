@@ -1,9 +1,8 @@
-;;; ChaosFight - Source/Routines/DisplayHealth.bas
+;;; ChaosFight - Source/Routines/DisplayHealth.s
 
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-DisplayHealth:
-.proc
+DisplayHealth .proc
           ;;
           ;; Returns: Far (return otherbank)
           ;;

@@ -264,8 +264,25 @@ CEP_CheckPlayer1 .proc
           ;; Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from CheckEnhancedPause, so use return thisbank
-                    if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = 1
-                    if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
+          ;; if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = 1
+          lda controllerStatus
+          and # SetLeftPortGenesis
+          beq CH_CheckJoy2bPlus
+          bit INPT0
+          bmi CH_CheckJoy2bPlus
+          lda # 1
+          sta temp1
+          jmp CH_EnhancedDone
+CH_CheckJoy2bPlus:
+          ;; if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
+          lda controllerStatus
+          and # SetLeftPortJoy2bPlus
+          beq CH_EnhancedDone
+          bit INPT1
+          bmi CH_EnhancedDone
+          lda # 1
+          sta temp1
+CH_EnhancedDone:
           lda controllerStatus
           and SetLeftPortJoy2bPlus
           beq CEP_CheckPlayer1Done
@@ -330,9 +347,12 @@ CheckColorBWToggle .proc
           ;; Optimized: Check Color/B&W switch state change directly
           lda # 0
           sta temp6
-          if switchbw then let temp6 = 1
+          ;; if switchbw then let temp6 = 1
           lda switchbw
           beq CheckSwitchChanged
+          lda # 1
+          sta temp6
+CheckSwitchChanged:
           jmp CheckSwitchChanged
 CheckSwitchChanged:
           lda temp6
@@ -383,9 +403,10 @@ DoneSwitchChange
           ;; variable.
           ;; Reload arena colors if switch or override changed
           ;; Note: colorBWOverride check handled in
-          if temp1 then ReloadArenaColorsNow
+          ;; if temp1 then ReloadArenaColorsNow
           lda temp1
           beq CheckColorBWToggleDone
+          jmp ReloadArenaColorsNow
           jmp ReloadArenaColorsNow
 CheckColorBWToggleDone:
           

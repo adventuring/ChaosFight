@@ -595,11 +595,17 @@ CharacterSelectHandleTwoPlayers
           lda # 255
           sta temp4
 CheckQuadtariActive:
-
-
-                    if controllerStatus & SetQuadtariDetected then let temp4 = 255
+          ;; if controllerStatus & SetQuadtariDetected then let temp4 = 255
           lda controllerStatus
           and # SetQuadtariDetected
+          beq CSM_NoQuadtari2
+          lda # 255
+          sta temp4
+          jmp CSM_QuadtariDone2
+CSM_NoQuadtari2:
+          lda # 0
+          sta temp4
+CSM_QuadtariDone2:
           beq ProcessPlayerInput
           lda # 255
           sta temp4
@@ -775,10 +781,13 @@ CharacterSelectHandleRandomRolls .proc
 
           lda # 1
           sta temp1
-
-                    if controllerStatus & SetQuadtariDetected then let temp1 = 3
+          ;; if controllerStatus & SetQuadtariDetected then let temp1 = 3
           lda controllerStatus
           and # SetQuadtariDetected
+          beq CSM_NoQuadtari3
+          lda # 3
+          sta temp1
+CSM_NoQuadtari3:
           beq CharacterSelectRollRandomPlayer
           lda # 3
           sta temp1
@@ -1051,8 +1060,7 @@ CharacterSelectFinish .proc
           ;; TODO: #1254 for currentPlayer = 0 to 3
 
           ;; if playerCharacter[currentPlayer] = NoCharacter then goto CharacterSelectSkipFacing
-
-                    let playerState[currentPlayer] = playerState[currentPlayer]
+          ;; let playerState[currentPlayer] = playerState[currentPlayer] (no-op, removed)
           lda currentPlayer
           asl
           tax

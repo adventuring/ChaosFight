@@ -55,16 +55,16 @@ PhysicsApplyGravity .proc
           ;; arrays) = subpixel Y positions, playerState[] (global
           ;; array) = player states (jumping flag cleared on landing),
           ;; characterSpecialAbility_W[] (global SCRAM array) = stretch
-          ;; permission (via PAG_SetRoboTitoStretchPermission),
+          ;; permission (via SetRoboTitoStretchPermission),
           ;; missileStretchHeight_W[] (global SCRAM array) = stretch
-          ;; missile heights (via PAG_SetRoboTitoStretchPermission),
+          ;; missile heights (via SetRoboTitoStretchPermission),
           ;; rowYPosition, rowCounter (global) = calculation
           ;; temporaries
           ;; Called Routines: AddVelocitySubpixelY (bank8) - adds
           ;; gravity to vertical velocity,
           ;; CCJ_ConvertPlayerXToPlayfieldColumn (inlined) - converts player
           ;; × to playfield column,y divided by 16 (pfrowheight is always 16)
-          ;; row height, PAG_SetRoboTitoStretchPermission - sets
+          ;; row height, SetRoboTitoStretchPermission - sets
           ;; RoboTito stretch permission on landing
           ;; Constraints: Frooty (8) and Dragon of Storms (2) skip
           ;; gravity entirely. RoboTito (13) skips gravity when latched
@@ -441,7 +441,7 @@ GravityNextPlayer:
 
           jmp GravityNextPlayer
 
-PAG_SetRoboTitoStretchPermission
+SetRoboTitoStretchPermission
           ;; Set RoboTito stretch permission on landing (allows
           ;; stretching again)
           ;; Input: temp1 (temp1) = player index (0-3),

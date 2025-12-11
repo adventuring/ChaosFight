@@ -448,8 +448,6 @@ Right:
 
           jsr BS_return
 
-
-
 Left:
 
           ;; Returns: Near (return thisbank) - called same-bank

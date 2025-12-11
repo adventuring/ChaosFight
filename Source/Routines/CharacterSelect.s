@@ -717,8 +717,9 @@ CharacterSelectQuadtariDetected .proc
           ;; existing capabilities
           ;; OR merge ensures upgrades only, never downgrades
           lda controllerStatus
-          ora SetQuadtariDetected
+          ora # SetQuadtariDetected
           sta controllerStatus
+
           rts
 
 .pend

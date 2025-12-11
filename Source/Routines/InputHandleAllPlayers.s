@@ -305,10 +305,12 @@ InputDonePlayer3Input
 
           ;; Constraints: Must be colocated with InputHandleQuadtariPlayers
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne CheckPlayer4Character
+
           jmp InputDonePlayer4Input
+
 CheckPlayer4Character:
 
 

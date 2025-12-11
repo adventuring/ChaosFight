@@ -724,9 +724,9 @@ CheckHarpyFlap:
           tax
           lda playerCharacter,x
           cmp CharacterHarpy
-          bne StandardJump
+          bne HUIEB_StandardJump
           jmp HUIEB_HarpyFlap
-StandardJump:
+HUIEB_StandardJump:
           lda # 1
           sta temp3
 
@@ -891,7 +891,7 @@ HUIEB_RoboTitoCheckJoy0 .proc
 HUIEB_RoboTitoDoneJoy0:
           jmp HUIEB_RoboTitoDoneJoy0
 
-HUIEB_RoboTitoDoneJoy0Label
+HUIEB_RoboTitoDoneJoy0Label:
           lda # 0
           sta temp3
 
@@ -1118,17 +1118,15 @@ HUIEB_JumpProceed .proc
 
           jsr DispatchCharacterJump
 
-HUIEB_JumpDoneLabel
+HUIEB_JumpDoneLabel:
 
           ;; Set Zoe Ryen double-jump flag if applicable
           ;; Returns: Far (return otherbank)
-
           lda temp6
           cmp # 1
           bne HUIEB_JumpDoneCheck
-          jmp HUIEB_JumpDoneCheck
+          let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
 HUIEB_JumpDoneCheck:
-                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
 
           jmp BS_return
 
@@ -1186,9 +1184,9 @@ HSHM_UseJoy0 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0left
-          bne HSHM_HandleLeft
+          bne HSHM_HandleLeftJoy0
           jmp HSHM_CheckRight
-HSHM_HandleLeft:
+HSHM_HandleLeftJoy0:
 
 
 .pend
@@ -1679,11 +1677,11 @@ HFCM_UseJoy0 .proc
 
           ;; If joy0left, then jmp HFCM_CheckLeftCollision
           lda joy0left
-          beq HFCM_CheckRightMovement
+          beq HFCM_CheckRightMovementJoy0
           jmp HFCM_CheckLeftCollision
-HFCM_CheckRightMovement:
+HFCM_CheckRightMovementJoy0:
 
-          jmp HFCM_CheckRightMovement
+          jmp HFCM_CheckRightMovementJoy0
 
 HFCM_CheckLeftCollision
 
@@ -1733,10 +1731,10 @@ ColumnInRangeLeft:
 
           ;; If temp2 <= 0, then jmp HFCM_CheckRightMovement
           lda temp2
-          beq HFCM_CheckRightMovement
-          bmi HFCM_CheckRightMovement
+          beq HFCM_CheckRightMovementColumn
+          bmi HFCM_CheckRightMovementColumn
           jmp CheckColumnLeft
-HFCM_CheckRightMovement:
+HFCM_CheckRightMovementColumn:
 CheckColumnLeft:
 
           ;; Already at left edge
@@ -1881,9 +1879,9 @@ CheckBottomRowMoveLeftBottom:
 
           lda temp5
           cmp # 1
-          bne HFCM_MoveLeftOK
-          jmp HFCM_CheckRightMovement
-HFCM_MoveLeftOK:
+          bne HFCM_MoveLeftOKLabel
+          jmp HFCM_CheckRightMovementJoy0
+HFCM_MoveLeftOKLabel:
 
 
 .pend
@@ -2022,9 +2020,9 @@ HFCM_CheckRightMovement .proc
           ;; Returns: Far (return otherbank)
           lda temp1
           cmp # 0
-          bne CheckPlayer2JoyPortRight
+          bne CheckPlayer2JoyPortRightMovement
           jmp HFCM_CheckRightJoy0
-CheckPlayer2JoyPortRight:
+CheckPlayer2JoyPortRightMovement:
 
 
           ;; Players 1,3 use joy1
@@ -2327,15 +2325,15 @@ AfterGetPlayerAnimationStateInline2:
           ;; If temp2 < 5, then jmp SPF_InlineNo2          lda temp2          cmp 5          bcs .skip_5155          jmp
           lda temp2
           cmp # 5
-          bcs CheckAnimationState10Right
+          bcs CheckAnimationState10RightSPF
           jmp SPF_InlineNo2
-CheckAnimationState10Right:
+CheckAnimationState10RightSPF:
 
           lda temp2
           cmp # 5
-          bcs CheckAnimationState10RightLabel
+          bcs CheckAnimationState10RightLabelSPF
           jmp SPF_InlineNo2
-CheckAnimationState10RightLabel:
+CheckAnimationState10RightLabelSPF:
 
           
 
@@ -2376,15 +2374,15 @@ HSHM_AfterRightSetDone:
           ;; If temp1 & 2 = 0, then jmp HFCM_VertJoy0
           lda temp1
           and # 2
-          bne CheckJoy1Up
+          bne CheckJoy1UpHSHM
           jmp HFCM_VertJoy0
-CheckJoy1Up:
+CheckJoy1UpHSHM:
 
           ;; If joy1up, then jmp HFCM_VertUp
           lda joy1up
-          beq CheckJoy1Down
+          beq CheckJoy1DownHSHM
           jmp HFCM_VertUp
-CheckJoy1Down:
+CheckJoy1DownHSHM:
 
           ;; If joy1down, then jmp HFCM_VertDown
           lda joy1down
@@ -2524,9 +2522,9 @@ CheckRadishGoblin:
 
           lda temp5
           cmp CharacterRadishGoblin
-          bne HandleStandardHorizontalMovement
+          bne HandleStandardHorizontalMovementLabel
           jmp IHLP_RadishGoblinMovement
-HandleStandardHorizontalMovement:
+HandleStandardHorizontalMovementLabel:
 
 
 

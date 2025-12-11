@@ -71,7 +71,7 @@ CheckZoeRyen:
 
           jmp ZoeJumpCheckUpAction
 
-StandardJump:
+PUA_StandardJump:
 
           ;; Standard jump - block during attack animations (states 13-15)
           ;; Tail call to DispatchCharacterJump - it returns directly to our caller

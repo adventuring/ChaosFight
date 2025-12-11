@@ -4,20 +4,21 @@
 ;;; Detects whether running on Atari 2600 or 7800 console
 ;;; Based on DetectConsole.s assembly implementation
           ;; DETECTION LOGIC:
-          if $D0 contains $2C and #$D1 contains $A9 then
-          ;; system = 7800 // game was loaded from Harmony menu on a
-          ;; 7800
-          else if both contain $00 then
-          ;; system = ZP RAM $80 // game was flashed to Harmony/Melody
-          ;; so CDFJ
-          ;; // driver checked $D0 and #$D1 for us and saved
-          ;; // results in $80
+          ;; Check if $D0 contains $2C and $D1 contains $A9 (7800 console)
+          lda $D0
+          cmp # $2C
+          bne CheckFlashed
+          lda $D1
+          cmp # $A9
+          bne CheckFlashed
+          jmp Is7800
+          ;; Check if both contain $00 (flashed to Harmony/Melody)
           ;; else
           ;; system = 2600 // game was loaded from Harmony menu on a
           ;; 2600
           ;; Main console detection routine
 
-ConsoleDetHW:
+ConsoleDetHW .proc
           ;; Detect whether running on Atari 2600 or 7800 console
           ;;
           ;; Input: $D0, $D1 (hardware registers) = console detection
@@ -126,8 +127,7 @@ CDFJDriverDetected7800:
 
 .pend
 
-Is7800:
-.proc
+Is7800 .proc
           ;; 7800 console detected
           ;;
           ;; Input: systemFlags (global) = system flags
@@ -144,8 +144,7 @@ Is7800:
 
 .pend
 
-Is2600:
-.proc
+Is2600 .proc
           ;; 2600 console detected
 
 ConsoleDetected:

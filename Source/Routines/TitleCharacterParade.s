@@ -307,7 +307,7 @@ DrawParadeCharacter .proc
           sta REFP0
 
           ;; Parade render uses fixed white color
-          lda # ColGray(12)
+          lda # ColGrey(12)
           sta COLUP0
 
 

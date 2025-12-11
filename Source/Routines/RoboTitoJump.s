@@ -322,9 +322,9 @@ RoboTitoLatch .proc
           ;; if temp2 <= 0 then jmp RTL_HeightCleared
           lda temp2
           cmp # 26
-          bcc RTL_ReduceHeight
+          bcc RTL_ReduceHeightZero
           jmp RTL_HeightCleared
-RTL_ReduceHeight:
+RTL_ReduceHeightZero:
 
           lda temp1
           asl

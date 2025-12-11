@@ -664,7 +664,7 @@ PHC_CheckRightVelocity .proc
           asl
           tax
           lda playerVelocityX,x
-          bpl PHC_ClampOnly
+          bpl PHC_ClampOnlyRight
           lda # 0
           sta playerVelocityX,x
           lda temp1
@@ -673,7 +673,7 @@ PHC_CheckRightVelocity .proc
           lda # 0
           sta playerVelocityXL,x
 
-PHC_ClampOnly:
+PHC_ClampOnlyRight:
           lda temp6
           sta rowYPosition
 

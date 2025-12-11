@@ -34,9 +34,11 @@ DetectPads .proc
           sta systemFlags
           .fi
           ;; Check for Quadtari
-          if INPT0{7} then CDP_CheckRightSide
+          ;; if INPT0{7} then CDP_CheckRightSide
+          bit INPT0
+          bpl CDP_CheckRightSide
 
-          if !INPT1{7} then CDP_CheckRightSide
+          ;; if !INPT1{7} then CDP_CheckRightSide
           bit INPT1
           bmi CheckLeftSideQuadtari
 
@@ -50,9 +52,15 @@ CheckLeftSideQuadtari:
 
 CDP_CheckRightSide .proc
           ;; if INPT2{7} then jmp CDP_CheckGenesis
+          bit INPT2
+          bpl CDP_CheckGenesis
 
           ;; fall through to CDP_QuadtariFound
-          if !INPT3{7} then jmp CDP_CheckGenesis
+          ;; if !INPT3{7} then jmp CDP_CheckGenesis
+          bit INPT3
+          bmi CheckRightSideQuadtari
+
+          jmp CDP_CheckGenesis
           bit INPT3
           bmi CheckRightSideQuadtari
 

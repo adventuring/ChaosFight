@@ -29,16 +29,16 @@ HarpyCheckDiveVelocity .proc
           tax
           lda characterStateFlags_R,x
           and # 4
-          beq VelocityDone
+          beq VelocityDoneHarpyCheck
 
           jsr HarpyBoostDiveVelocity
 
-VelocityDone:
+VelocityDoneHarpyCheck:
           rts
 
 .pend
 
-VelocityDoneGlobal:
+VelocityDone:
           ;; Global label for cross-file reference from MissileSystem.s (same bank)
           rts
 

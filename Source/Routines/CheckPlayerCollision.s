@@ -50,7 +50,7 @@ XDistanceCheckCollision:
           sta temp5
           ;;
           ;; Calculate Y distance
-          if temp4 >= temp5, then CPC_CalcYDistance
+          ;; if temp4 >= temp5 then CPC_CalcYDistance
           lda temp4
           cmp temp5
           bcc YDistanceCalcRight

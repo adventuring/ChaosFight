@@ -274,7 +274,7 @@ BernieCheckBottomWrapFreeFlight2:
           sta playerState,x
           rts
 
-DragonOfStormsJump .proc:
+DragonOfStormsJump .proc
           ;; Returns: Far (return otherbank)
           jmp CCJ_FreeFlightCharacterJump
           ;; ZOE RYEN (3) - STANDARD JUMP (dispatched directly to StandardJump)

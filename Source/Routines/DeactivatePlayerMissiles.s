@@ -2,8 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-DeactivatePlayerMissiles:
-.proc
+DeactivatePlayerMissiles .proc
           ;;
           ;; Deactivate Player Missiles
           ;; Input: currentPlayer (0-3), missileActive flags

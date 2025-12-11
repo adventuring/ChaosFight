@@ -33,7 +33,7 @@ UpdateCharacterAnimations:
           lda UCA_quadtariActive
           bne UCA_CheckQuadtari
 
-          jmp AnimationNextPlayer
+          jmp AnimationNextPlayerLabel
 
 UCA_CheckQuadtari:
 
@@ -81,7 +81,7 @@ UCA_CheckCharacter:
           lda temp4
           cmp AnimationFrameDelay
           bcs UPA_CheckAnimationSpeed
-          jmp DoneAdvanceInlined
+          jmp DoneAdvanceInlinedLabel
 UPA_CheckAnimationSpeed:
           
 
@@ -831,11 +831,11 @@ UpdateSprite_Bank5Dispatch
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank5:
 
-          jmp AnimationNextPlayer
-DoneAdvanceInlined
-          End of inlined UpdatePlayerAnimation - skip to next player
-          jmp AnimationNextPlayer
-AnimationNextPlayer:
+          jmp AnimationNextPlayerLabel
+DoneAdvanceInlinedLabel:
+          ;; End of inlined UpdatePlayerAnimation - skip to next player
+          jmp AnimationNextPlayerLabel
+AnimationNextPlayerLabel:
 .pend
 
 Anim_next_label_1:.proc

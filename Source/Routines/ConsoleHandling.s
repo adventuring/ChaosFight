@@ -42,9 +42,9 @@ WarmStart .proc
           ;; Player 0: bright blue
           lda # ColBlue(14)
           sta COLUP0
-          ;; Player 1: bright red (multisprite kernel requires _COLUP1)
+          ;; Player 1: bright red (multisprite kernel requires NewCOLUP1)
           lda # ColRed(14)
-          sta _COLUP1
+          sta NewCOLUP1
 
           ;; Step 3: Initialize audio channels (silent on reset)
           lda # 0
@@ -346,11 +346,9 @@ CheckColorBWToggle .proc
           sta temp6
           ;; If switchbw, set temp6 = 1
           lda switchbw
-          beq CheckSwitchChangedLabel
+          beq CheckSwitchChanged
           lda # 1
           sta temp6
-CheckSwitchChangedLabel:
-          jmp CheckSwitchChangedLabel
 CheckSwitchChanged:
           lda temp6
           cmp colorBWPrevious_R

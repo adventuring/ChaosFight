@@ -805,10 +805,13 @@ SetScoreBytes .proc
 
 
           ;; Score colors are now set directly in MultiSpriteKernel.s
-
-          COLUP0 = ColIndigo(12), COLUP1 = ColRed(12)
-
-          COLUPF = ColIndigo(12) (for pfscore mode)
+          ;; Note: These assignments are obsolete - colors set in MultiSpriteKernel.s
+          ;; lda # ColIndigo(12)
+          ;; sta COLUP0
+          ;; lda # ColRed(12)
+          ;; sta COLUP1
+          ;; lda # ColIndigo(12)
+          ;; sta COLUPF
 
           ;; (Issue #600 - completed)
 

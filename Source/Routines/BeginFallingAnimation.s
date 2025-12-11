@@ -67,7 +67,13 @@ BeginFallingAnimation:
 
           ;; Initialize player positions in quadrants
           ;; Player 1: Top-left quadrant (unless NO)
-          if playerCharacter[0] = NoCharacter then DonePlayer1Init
+          ;; if playerCharacter[0] = NoCharacter then DonePlayer1Init
+          lda # 0
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq DonePlayer1Init
           lda # 0
           asl
           tax
@@ -77,12 +83,12 @@ BeginFallingAnimation:
           lda # 0
           asl
           tax
-          lda 8
+          lda # 8
           sta playerY,x
           ;; Top-left Y position (near top)
           inc activePlayers
 
-DonePlayer1Init
+DonePlayer1Init:
           ;; Player 1 initialization complete (skipped if not active)
           ;; Returns: Far (return otherbank)
           ;;
@@ -97,22 +103,28 @@ DonePlayer1Init
           ;; Constraints: Must be colocated with BeginFallingAnimation
 
           ;; Player 2: Top-right quadrant (unless NO)
-                    if playerCharacter[1] = NoCharacter then DonePlayer2Init
-          lda 1
+          ;; if playerCharacter[1] = NoCharacter then DonePlayer2Init
+          lda # 1
           asl
           tax
-          lda 144
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq DonePlayer2Init
+          lda # 1
+          asl
+          tax
+          lda # 144
           sta playerX,x
           ;; Top-right X position
-          lda 1
+          lda # 1
           asl
           tax
-          lda 8
+          lda # 8
           sta playerY,x
           ;; Top-right Y position (near top)
           inc activePlayers
 
-DonePlayer2Init
+DonePlayer2Init:
           ;; Player 2 initialization complete (skipped if not active)
           ;; Returns: Far (return otherbank)
           ;;
@@ -136,22 +148,28 @@ DonePlayer2Init
 CheckPlayer3Character:
 
 
-                    if playerCharacter[2] = NoCharacter then DonePlayer3Init
-          lda 2
+          ;; if playerCharacter[2] = NoCharacter then DonePlayer3Init
+          lda # 2
           asl
           tax
-          lda 16
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq DonePlayer3Init
+          lda # 2
+          asl
+          tax
+          lda # 16
           sta playerX,x
           ;; Bottom-left X position
-          lda 2
+          lda # 2
           asl
           tax
-          lda 80
+          lda # 80
           sta playerY,x
           ;; Bottom-left Y position (near bottom)
           inc activePlayers
 
-DonePlayer3Init
+DonePlayer3Init:
           ;; Player 3 initialization complete (skipped if not in
           ;; Returns: Far (return otherbank)
           ;; 4-player mode or not active)
@@ -176,22 +194,28 @@ DonePlayer3Init
 CheckPlayer4Character:
 
 
-                    if playerCharacter[3] = NoCharacter then DonePlayer4Init
-          lda 3
+          ;; if playerCharacter[3] = NoCharacter then DonePlayer4Init
+          lda # 3
           asl
           tax
-          lda 144
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq DonePlayer4Init
+          lda # 3
+          asl
+          tax
+          lda # 144
           sta playerX,x
           ;; Bottom-right X position
-          lda 3
+          lda # 3
           asl
           tax
-          lda 80
+          lda # 80
           sta playerY,x
           ;; Bottom-right Y position (near bottom)
           inc activePlayers
 
-DonePlayer4Init
+DonePlayer4Init:
           ;; Player 4 initialization complete (skipped if not in
           ;; Returns: Far (return otherbank)
           ;; 4-player mode or not active)

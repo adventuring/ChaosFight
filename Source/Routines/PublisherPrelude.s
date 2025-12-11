@@ -170,9 +170,9 @@ PublisherPreludeComplete
           lda ModeAuthorPrelude
           sta gameMode
           ;; Cross-bank call to BeginAuthorPrelude in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterBeginAuthorPrelude-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterBeginAuthorPrelude-1)
           pha
           lda # >(BeginAuthorPrelude-1)
           pha

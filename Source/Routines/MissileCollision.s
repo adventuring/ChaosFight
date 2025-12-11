@@ -382,6 +382,8 @@ CheckBernieAOE .proc
           jsr BS_return
 
 
+.pend
+
 CheckAOEDirection .proc
           ;; Returns: Near (return thisbank) - called same-bank
 

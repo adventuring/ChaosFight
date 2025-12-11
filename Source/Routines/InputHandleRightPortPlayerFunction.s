@@ -90,7 +90,8 @@ DoneRightPortMovement
 
 IHRP_FlyingMovement .proc
           ;; Tail call: goto instead of gosub to save 2 bytes on sta
-
+          ;; Note: HandleFlyingCharacterMovement is in Bank 11, but we use jmp (tail call)
+          ;; so it doesn't add to stack depth
           jmp HandleFlyingCharacterMovement
 IHRP_DoneFlyingLeftRight
 

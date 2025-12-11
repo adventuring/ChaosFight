@@ -358,7 +358,7 @@ DrawParadeCharacterSprite .proc
           ;; Cross-bank call to LoadCharacterSprite in bank 16
           lda # >(return_point-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadCharacterSpriteParade-1)
           pha
           lda # >(LoadCharacterSprite-1)
           pha
@@ -366,7 +366,7 @@ DrawParadeCharacterSprite .proc
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterLoadCharacterSpriteParade:
 
 
           jsr BS_return

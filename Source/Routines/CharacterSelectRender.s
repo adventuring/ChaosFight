@@ -211,9 +211,9 @@ GetAnimationFrame:
           sta temp4
           lda currentPlayer
           ;; Cross-bank call to GetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerLockedPreview-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerLockedPreview-1)
           pha
           lda # >(GetPlayerLocked-1)
           pha
@@ -221,7 +221,7 @@ GetAnimationFrame:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point_5:
+AfterGetPlayerLockedPreview:
 
           lda temp2
           sta temp5
@@ -243,9 +243,9 @@ RenderPlayerPreviewDefault
           lda ActionIdle
           sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterLoadCharacterSpritePreview-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadCharacterSpritePreview-1)
           pha
           lda # >(LoadCharacterSprite-1)
           pha
@@ -253,7 +253,7 @@ RenderPlayerPreviewDefault
           pha
                     ldx # 15
           jmp BS_jsr
-return_point_6:
+AfterLoadCharacterSpritePreview:
 
           ;; let temp2 = SelectPlayerColorNormal[currentPlayer]         
           lda currentPlayer
@@ -336,9 +336,9 @@ SetPlayerCount:
           sta temp1
 SelectUpdateAnimationLoop
           ;; Cross-bank call to GetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerLockedAnimation-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerLockedAnimation-1)
           pha
           lda # >(GetPlayerLocked-1)
           pha
@@ -346,7 +346,7 @@ SelectUpdateAnimationLoop
           pha
                     ldx # 5
           jmp BS_jsr
-return_point_7:
+AfterGetPlayerLockedAnimation:
 
           ;; if temp2 then goto SelectUpdateAnimationNext
           lda temp2
@@ -425,9 +425,9 @@ CheckColorBWToggle:
 TriggerRescan:
 
           ;; Cross-bank call to DetectPads in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterDetectPadsColorBW-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDetectPadsColorBW-1)
           pha
           lda # >(DetectPads-1)
           pha
@@ -435,7 +435,7 @@ TriggerRescan:
           pha
                     ldx # 12
           jmp BS_jsr
-return_point_8:
+AfterDetectPadsColorBW:
 
           lda switchbw
           sta colorBWPrevious_W
@@ -444,9 +444,9 @@ return_point_8:
 
 CharacterSelectDoRescan .proc
           ;; Cross-bank call to DetectPads in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterDetectPadsRescan-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDetectPadsRescan-1)
           pha
           lda # >(DetectPads-1)
           pha
@@ -454,7 +454,7 @@ CharacterSelectDoRescan .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point_9:
+AfterDetectPadsRescan:
 
 CharacterSelectRescanDone:
 

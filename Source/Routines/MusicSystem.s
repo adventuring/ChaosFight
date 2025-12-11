@@ -693,9 +693,9 @@ UpdateMusicVoice0 .proc
           ;; Song in Bank 1
 
           ;; Cross-bank call to LoadMusicNote0 in bank 1
-          lda # >(return_point-1)
+          lda # >(AfterLoadMusicNote0Bank1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadMusicNote0Bank1-1)
           pha
           lda # >(LoadMusicNote0-1)
           pha
@@ -703,7 +703,7 @@ UpdateMusicVoice0 .proc
           pha
                     ldx # 0
           jmp BS_jsr
-return_point:
+AfterLoadMusicNote0Bank1:
 
 
           rts
@@ -814,9 +814,9 @@ UpdateMusicVoice1 .proc
           ;; Song in Bank 1
 
           ;; Cross-bank call to LoadMusicNote1 in bank 1
-          lda # >(return_point-1)
+          lda # >(AfterLoadMusicNote1Bank1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadMusicNote1Bank1-1)
           pha
           lda # >(LoadMusicNote1-1)
           pha
@@ -824,7 +824,7 @@ UpdateMusicVoice1 .proc
           pha
                     ldx # 0
           jmp BS_jsr
-return_point:
+AfterLoadMusicNote1Bank1:
 
 
           rts

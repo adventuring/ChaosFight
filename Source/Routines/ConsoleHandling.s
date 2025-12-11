@@ -152,7 +152,7 @@ CheckSelectPressedP2:
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterDetectPadsSelectP2:
 
 
           lda systemFlags

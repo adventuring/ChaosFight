@@ -165,7 +165,7 @@ Player2ColorDone
           ;; for Player 2 virtual sprite
           ;; NUSIZ reflection uses bit 6 - preserve other bits (size,
           ;; etc.)
-          lda _NUSIZ1
+          lda NewNUSIZ
           and # NUSIZMaskReflection
           sta _NUSIZ1
           lda playerState+1

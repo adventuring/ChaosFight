@@ -54,9 +54,9 @@ LoadArenaDispatch:
 LoadArenaDispatch .proc
           ;; Returns: Far (return otherbank)
           ;; Cross-bank call to DWS_GetBWMode in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterDWS_GetBWModeDispatch-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDWS_GetBWModeDispatch-1)
           pha
           lda # >(DWS_GetBWMode-1)
           pha
@@ -65,14 +65,14 @@ LoadArenaDispatch .proc
           ldx # 14
           jmp BS_jsr
 
-return_point:
+AfterDWS_GetBWModeDispatch:
 
           lda temp2
           sta temp6
           ;; Cross-bank call to LoadArenaByIndex in bank 16
-          lda # >(return_point2-1)
+          lda # >(AfterLoadArenaByIndexDispatch-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterLoadArenaByIndexDispatch-1)
           pha
           lda # >(LoadArenaByIndex-1)
           pha
@@ -80,7 +80,7 @@ return_point:
           pha
           ldx # 15
           jmp BS_jsr
-return_point:
+AfterLoadArenaByIndexDispatch:
 
           ;; if temp6 then goto LA_LoadBWColors
           lda temp6
@@ -186,9 +186,9 @@ LoadArenaRandom .proc
                     if temp1 > MaxArenaID then LoadArenaRandom
           ;; Fall through to LoadArenaDispatch logic (inline to avoid goto)
           ;; Cross-bank call to DWS_GetBWMode in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterDWS_GetBWModeRandom-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDWS_GetBWModeRandom-1)
           pha
           lda # >(DWS_GetBWMode-1)
           pha
@@ -196,14 +196,14 @@ LoadArenaRandom .proc
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterDWS_GetBWModeRandom:
 
           lda temp2
           sta temp6
           ;; Cross-bank call to LoadArenaByIndex in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterLoadArenaByIndexRandom-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadArenaByIndexRandom-1)
           pha
           lda # >(LoadArenaByIndex-1)
           pha
@@ -211,7 +211,7 @@ return_point:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterLoadArenaByIndexRandom:
 
           ;; if temp6 then goto LAR_LoadBWColors
           lda temp6
@@ -220,9 +220,9 @@ return_point:
 LoadArenaColorsColor:
           ;; Load color color table (use gosub to avoid goto)
           ;; Cross-bank call to LoadArenaColorsColor in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterLoadArenaColorsColorRandom-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadArenaColorsColorRandom-1)
           pha
           lda # >(LoadArenaColorsColor-1)
           pha
@@ -230,7 +230,7 @@ LoadArenaColorsColor:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterLoadArenaColorsColorRandom:
 
           jsr BS_return
 .pend

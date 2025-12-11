@@ -647,9 +647,9 @@ CheckRowBelow:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadFrootyDown-1)
+          lda # >(return_point-1)
           pha
-          lda # <(AfterPlayfieldReadFrootyDown-1)
+          lda # <(return_point-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -657,7 +657,7 @@ CheckRowBelow:
           pha
                     ldx # 15
           jmp BS_jsr
-AfterPlayfieldReadFrootyDown:
+return_point:
 
 
                     if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown
@@ -894,9 +894,9 @@ StandardGuard = .StandardGuard
           ;; Check if guard is allowed (not in cooldown)
 
           ;; Cross-bank call to CheckGuardCooldown in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterCheckGuardCooldownStandard-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckGuardCooldownStandard-1)
           pha
           lda # >(CheckGuardCooldown-1)
           pha
@@ -904,7 +904,7 @@ StandardGuard = .StandardGuard
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterCheckGuardCooldownStandard:
 
 
           ;; Guard blocked by cooldown

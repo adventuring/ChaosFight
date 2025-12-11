@@ -359,9 +359,9 @@ HCSF_HandleRandomSound .proc
           ;; Fall through - character will stay as RandomCharacter
 
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterPlaySoundEffectRandom-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlaySoundEffectRandom-1)
           pha
           lda # >(PlaySoundEffect-1)
           pha
@@ -369,7 +369,7 @@ HCSF_HandleRandomSound .proc
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterPlaySoundEffectRandom:
 
 
           ;; until roll succeeds

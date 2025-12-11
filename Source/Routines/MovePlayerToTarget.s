@@ -14,15 +14,15 @@ MovePlayerToTarget .proc
           ;; Mutates: playerX[], playerY[], temp4-temp6, distanceUp_W
 
           ;; Update × axis (one pixel per frame)
-          ;; let temp4 = playerX[temp1]         
+          ;; Set temp4 = playerX[temp1]         
           lda temp1
           asl
           tax
           lda playerX,x
           sta temp4
-          ;; if temp4 < temp2 then let playerX[temp1] = temp4 + 1
+          ;; If temp4 < temp2 then let playerX[temp1] = temp4 + 1
           ;; Update Y axis (one pixel per frame)
-          ;; if temp4 > temp2 then let
+          ;; if temp4 > temp2, then let
           lda temp4
           sec
           sbc temp2
@@ -35,15 +35,15 @@ MovePlayerToTarget .proc
           sta playerX,x
 
 MovePlayerXRight:
-          ;; let temp4 = playerY[temp1]         
+          ;; Set temp4 = playerY[temp1]         
           lda temp1
           asl
           tax
           lda playerY,x
           sta temp4
-          ;; if temp4 < temp3 then let playerY[temp1] = temp4 + 1
+          ;; If temp4 < temp3 then let playerY[temp1] = temp4 + 1
           ;; Check if at target and nudge if needed
-          ;; if temp4 > temp3 then let
+          ;; if temp4 > temp3, then let
           lda temp4
           sec
           sbc temp3
@@ -67,7 +67,7 @@ NudgePlayerFromPlayfield .proc
           ;; Returns: Near (return thisbank) - called same-bank from MovePlayerToTarget
           ;; Input: temp1 = player index
           ;; Output: Player position adjusted to avoid playfield
-          ;; let originalPlayerX_W = playerX[temp1]
+          ;; Set originalPlayerX_W = playerX[temp1]
           lda temp1
           asl
           tax
@@ -127,7 +127,7 @@ CheckCollisionMovePlayer:
           ;; Returns: Near (return thisbank) - called same-bank from NudgeRightMovePlayer/NudgeLeftMovePlayer
           ;; Input: temp1 = player index, playerX[temp1] = test position, originalPlayerY_R = Y
           ;; Output: temp6 = 1 if collision, 0 if clear
-          ;; let temp2 = playerX[temp1] - ScreenInsetX         
+          ;; Set temp2 = playerX[temp1] - ScreenInsetX         
           lda temp1
           asl
           tax
@@ -153,10 +153,10 @@ CheckCollisionMovePlayer:
           sta temp2
 CheckPlayfieldPixel:
 
-          ;; if temp2 & $80 then let temp2 = 0
+          ;; If temp2 & $80, set temp2 = 0
           lda originalPlayerY_R
           sta temp3
-          ;; let temp5 = temp3 / 16
+          ;; Set temp5 = temp3 / 16
           lda # 0
           sta temp6
           lda temp1
@@ -178,7 +178,7 @@ CheckPlayfieldPixel:
           jmp BS_jsr
 AfterPlayfieldReadNudge1:
 
-          ;; if temp1 then let temp6 = 1          lda temp1          beq CheckCollisionMovePlayerDone
+          ;; If temp1, set temp6 = 1          lda temp1          beq CheckCollisionMovePlayerDone
 CheckCollisionMovePlayerDone:
           jmp CheckCollisionMovePlayerDone
           lda temp4
@@ -187,7 +187,7 @@ CheckCollisionMovePlayerDone:
           clc
           adc # 16
           sta temp3
-          ;; let temp5 = temp3 / 16
+          ;; Set temp5 = temp3 / 16
           ;; CheckCollisionMovePlayer is called same-bank, so use return thisbank
           ;; Cross-bank call to PlayfieldRead in bank 16
           lda # >(AfterPlayfieldReadNudge2-1)

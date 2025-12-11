@@ -601,6 +601,7 @@ _suppress_pf_pointer_code = 1
           HMCLR = $2C  ;;; Clear horizontal motion registers
           CXCLR = $2C  ;;; Clear collision latches
           INTIM = $0284  ;;; Timer (read-only)
+          SWCHA = $0280  ;;; Port A data (joystick directions)
           INPT0 = $08  ;;; Input port 0 (joystick/button)
           INPT1 = $09  ;;; Input port 1
           INPT2 = $0A  ;;; Input port 2

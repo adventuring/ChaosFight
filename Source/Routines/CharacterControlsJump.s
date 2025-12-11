@@ -14,7 +14,7 @@ StandardJump .proc
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
           ;; Output: Upward velocity applied, jumping flag set
-          ;; let temp2 = playerCharacter[temp1]
+          ;; Set temp2 = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -68,7 +68,7 @@ BernieJump .proc
           sta temp2
 
 
-          ;; let temp3 = playerY[temp1]         
+          ;; Set temp3 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -108,7 +108,7 @@ BernieCheckBottomWrapFirst:
           sta temp1
           jmp BS_return
 
-          ;; if temp6 >= pfrows - 1 then goto BernieCheckBottomWrap
+          ;; If temp6 >= pfrows - 1, then goto BernieCheckBottomWrap
           lda temp6
           clc
           adc # 1
@@ -207,7 +207,7 @@ CCJ_FreeFlightUp .proc
           ;; Input: temp1 = player index, temp2 = playfield column (inlined from CCJ_ConvertPlayerXToPlayfieldColumn)
           ;; Output: Upward velocity applied if clear above, jumping flag set
           ;; Mutates: temp3-temp6, playerVelocityY[], playerVelocityYL[], playerState[]
-          ;; let temp3 = playerY[temp1]         
+          ;; Set temp3 = playerY[temp1]         
           lda temp1
           asl
           tax
@@ -276,7 +276,7 @@ HarpyJump .proc
           ;; Output: Upward velocity if energy available and cooldown expired
           jmp BS_return
 
-          ;; let temp2 = frame - harpyLastFlapFrame_R[temp1]
+          ;; Set temp2 = frame - harpyLastFlapFrame_R[temp1]
           lda frame
           sec
           sbc harpyLastFlapFrame_R
@@ -296,7 +296,7 @@ CheckCooldownExpired:
 
           jmp BS_return
 
-          ;; if playerY[temp1] <= 5 then goto HarpyFlapRecord
+          ;; If playerY[temp1] <= 5, then goto HarpyFlapRecord
           lda temp1
           asl
           tax

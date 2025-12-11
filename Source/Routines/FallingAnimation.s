@@ -63,7 +63,7 @@ MovePlayer1:
           tax
           lda playerCharacter,x
           cmp # NoCharacter
-          beq DonePlayer1MoveLabel
+          beq DonePlayer1Move
           ;; targetY = target Y (24)
           lda # 0
           sta temp1
@@ -124,9 +124,9 @@ Player1TargetDone:
 FallingAnimationPlayer1Return:
           ;; Increment fallComplete if player reached target
           lda temp4
-          beq DonePlayer1MoveLabel
+          beq DonePlayer1Move
           inc fallComplete
-DonePlayer1MoveLabel:
+DonePlayer1Move:
           ;; reached = 1 if reached target
           ;; Returns: Far (return otherbank)
           ;; Player 1 movement complete (skipped if not active)
@@ -262,7 +262,7 @@ MovePlayer3:
 AfterMovePlayerToTargetP3:
 
 
-          ;; if temp4 then let fallComplete = fallComplete + 1
+          ;; If temp4 is non-zero, increment fallComplete
           lda temp4
           beq DonePlayer3MoveLabel
           inc fallComplete

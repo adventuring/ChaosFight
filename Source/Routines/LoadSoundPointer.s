@@ -46,7 +46,7 @@ LoadSoundPointer .proc
 
 SoundIDInRange:
 
-          ;; let soundEffectPointerH = SoundPointersH[temp1]
+          ;; Set soundEffectPointerH = SoundPointersH[temp1]
           lda temp1
           asl
           tax

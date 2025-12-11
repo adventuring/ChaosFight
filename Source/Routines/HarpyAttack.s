@@ -34,7 +34,7 @@ HarpyAttack .proc
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with HarpySetLeftVelocity,
-          ;; HarpySetVerticalVelocity (called via goto)
+          ;; HarpySetVerticalVelocity (called via jmp)
 
           ;; Set attack animation sta
 
@@ -51,7 +51,7 @@ HarpyAttack .proc
           sta playerState,x
 
           ;; Get facing direction (bit 0: 0=left, 1=right)
-          ;; let temp2 = playerState[temp1] & PlayerStateBitFacing         
+          ;; Set temp2 = playerState[temp1] & PlayerStateBitFacing         
           lda temp1
           asl
           tax
@@ -65,7 +65,7 @@ HarpyAttack .proc
           ;; When temp2=0 (left): want 252 (-4), when temp2≠ 0 (right): want 4
           lda # 252
           sta temp4
-          ;; if temp2 then temp4 = 4
+          ;; If temp2, then temp4 = 4
           lda temp2
           beq HarpyAttackDone
           lda # 4
@@ -148,7 +148,7 @@ HarpySetVerticalVelocity .proc
           ;; Fix RMW: Read from _R, modify, write to _W
           ;; Use temp1 directly for indexed addressing (batariBASIC
           ;; does not resolve dim aliases)
-          ;; let temp5 = characterStateFlags_R[temp1] | 4         
+          ;; Set temp5 = characterStateFlags_R[temp1] | 4         
           lda temp1
           asl
           tax

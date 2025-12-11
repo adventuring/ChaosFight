@@ -71,7 +71,7 @@ StartMusic .proc
 
           ;; LoadSongVoice1PointerBank1 - calculates Voice 1 pointer, PlayMusic (tail
 
-          ;; call via goto) - starts first notes
+          ;; call via jmp) - starts first notes
 
           ;;
           ;; Constraints: Songs in Bank 15: Bernie (0), OCascadia (1),
@@ -106,7 +106,7 @@ StartMusic .proc
 
           ;; Route to correct bank based on song ID
 
-          ;; if temp1 < Bank0MinSongID then goto LoadSongFromBank15
+          ;; If temp1 < Bank0MinSongID, then goto LoadSongFromBank15
           lda temp1
           cmp Bank0MinSongID
           bcs LoadSongFromBank1
@@ -204,7 +204,7 @@ LoadSongPointersDone
 
 
 
-          ;; StartMusic is called via gosub from other banks, so must return otherbank
+          ;; StartMusic is called via cross-bank call from other banks, so must return otherbank
 
           ;; PlayMusic will be called every frame from MainLoop
 
@@ -426,7 +426,7 @@ CalcElapsedFrames .proc
           ;; Calculate frames elapsed = TotalFrames - FrameCounter
           ;; Returns: Far (return thisbank)
 
-          ;; let temp4 = temp2 - temp3          lda temp2          sec          sbc temp3          sta temp4
+          ;; Set temp4 = temp2 - temp3          lda temp2          sec          sbc temp3          sta temp4
           lda temp2
           sec
           sbc temp3
@@ -439,7 +439,7 @@ CalcElapsedFrames .proc
 
 
           ;; Check if in attack phase (first NoteAttackFrames frames)
-          ;; if temp4 < NoteAttackFrames then ApplyAttackEnvelope
+          ;; If temp4 < NoteAttackFrames, then ApplyAttackEnvelope
           lda temp4
           cmp # NoteAttackFrames
           bcs CheckDecayPhase
@@ -447,7 +447,7 @@ CalcElapsedFrames .proc
 CheckDecayPhase:
 
           ;; Check if in decay phase (last NoteDecayFrames frames)
-          ;; if temp3 <= NoteDecayFrames then ApplyDecayEnvelope
+          ;; If temp3 <= NoteDecayFrames, then ApplyDecayEnvelope
           lda temp3
           sec
           sbc NoteDecayFrames
@@ -498,7 +498,7 @@ ApplyAttackEnvelope .proc
           lda temp5
           sta temp6
 
-          ;; let temp6 = temp6 - NoteAttackFrames          lda temp6          sec          sbc NoteAttackFrames          sta temp6
+          ;; Set temp6 = temp6 - NoteAttackFrames          lda temp6          sec          sbc NoteAttackFrames          sta temp6
           lda temp6
           sec
           sbc NoteAttackFrames
@@ -512,8 +512,8 @@ ApplyAttackEnvelope .proc
 
           ;; Check for wraparound: clamp to 0 if negative
 
-          ;; let temp6 = temp6 + temp4
-          ;; if temp6 & $80 then let temp6 = 0
+          ;; Set temp6 = temp6 + temp4
+          ;; If temp6 & $80, set temp6 = 0
           lda temp6
           and #$80
           beq ClampAUDV
@@ -568,7 +568,7 @@ ApplyDecayEnvelope .proc
           lda temp5
           sta temp6
 
-          ;; let temp6 = temp6 - NoteDecayFrames          lda temp6          sec          sbc NoteDecayFrames          sta temp6
+          ;; Set temp6 = temp6 - NoteDecayFrames          lda temp6          sec          sbc NoteDecayFrames          sta temp6
           lda temp6
           sec
           sbc NoteDecayFrames
@@ -585,7 +585,7 @@ ApplyDecayEnvelope .proc
           ;; Check for wraparound: clamp to 0 if negative
 
           dec temp6
-          ;; if temp6 & $80 then let temp6 = 0
+          ;; If temp6 & $80, set temp6 = 0
           lda temp6
           and #$80
           beq ClampAUDVCheck

@@ -85,11 +85,8 @@ LocateCharacterArtBank5 .proc
           asl
           ;;;;; action << 3 (action * 8)
           clc
-frame:
-
-
-action:
-
+          adc temp2
+          ;;;;; Add frame to action * 8
 
           tay
           ;;;;; Use as index into FrameMap (0-127)
@@ -210,11 +207,8 @@ SetPlayerCharacterArtBank5 .proc
           asl
           ;;;;; action << 3 (action * 8)
           clc
-frame:
-
-
-action:
-
+          adc temp2
+          ;;;;; Add frame to action * 8
 
           tay
           ;;;;; Use as index into FrameMap (0-127)
@@ -347,7 +341,7 @@ SetHeightBank5:
           lda # 16
           ;;;;; All sprites are 16 scanlines
           sta player0height,x ;;;;; Store using indexed addressing (player0height=$B0, so $B0+x = correct address)
-          ;;; CRITICAL: This routine is called cross-bank via gosub ... bank5
+          ;;; CRITICAL: This routine is called cross-bank via BS_jsr ... bank5
           ;;; Must use jmp BS_return instead of rts to properly decode encoded return address
           jmp BS_return
 .pend

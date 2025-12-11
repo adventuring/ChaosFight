@@ -86,10 +86,7 @@ AfterChangeGameModeReset:
           ;; Reset complete - return to MainLoop which will dispatch to
           ;; new mode
 
-HandleConsoleSwitches
-          ;; Returns: Far (return otherbank)
-
-HandleConsoleSwitches:
+HandleConsoleSwitches .proc
 
           ;; Main console switch handler
           ;; Returns: Far (return otherbank)
@@ -167,7 +164,7 @@ AfterDetectPadsSelectP2:
           and SystemFlagGameStatePaused
           cmp # 0
           bne SetPausedFlagP2
-          ;; let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
+          ;; Set systemFlags = systemFlags | SystemFlagGameStatePaused, then jump to Player2PauseDone
 SetPausedFlagP2:
 
           lda systemFlags
@@ -282,7 +279,7 @@ CheckPlayer1EnhancedPause .proc
           sta temp1
           jmp CheckPlayer1EnhancedPauseDone
 CheckJoy2bPlus:
-          ;; if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
+          ;; If controllerStatus & SetLeftPortJoy2bPlus and !INPT1{7}, set temp1 = 1
           lda controllerStatus
           and # SetLeftPortJoy2bPlus
           beq CheckPlayer1EnhancedPauseDone

@@ -242,11 +242,12 @@ PSM_InlineNoRight1 .proc
           lda # 0
           sta temp3
 
-PSM_InlineDoneRight1
+PSM_InlineDoneRight1Check
           lda temp3
-          bne PSM_InlineDoneRight1
+          bne PSM_InlineDoneRight1Apply
+          jmp PSM_InlineDoneRight1Apply
+PSM_InlineDoneRight1Apply:
                     let playerState[temp1] = playerState[temp1] | 1
-PSM_InlineDoneRight1:
 
           jmp BS_return
 
@@ -473,11 +474,12 @@ PSM_InlineNoRight0 .proc
           lda # 0
           sta temp3
 
-PSM_InlineDoneRight0
+PSM_InlineDoneRight0Check
           lda temp3
-          bne PSM_InlineDoneRight1
+          bne PSM_InlineDoneRight0Apply
+          jmp PSM_InlineDoneRight0Apply
+PSM_InlineDoneRight0Apply:
                     let playerState[temp1] = playerState[temp1] | 1
-PSM_InlineDoneRight1:
 
           jmp BS_return
 

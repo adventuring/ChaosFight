@@ -37,11 +37,11 @@ MoveLeftRadishGoblin:
 
 CheckJoy0RadishGoblin .proc
           lda joy0left
-          bne MoveLeftRadishGoblin
+          bne MoveLeftRadishGoblinLabel
 
           jmp CheckRightRadishGoblin
 
-MoveLeftRadishGoblin:
+MoveLeftRadishGoblinLabel:
 
 .pend
 
@@ -534,11 +534,11 @@ StickJoy0RadishGoblin .proc
 
           if joy0up then let temp3 = 1
           lda joy0up
-          beq ApplyBounceRadishGoblin
+          beq ApplyBounceRadishGoblinLabel
           lda # 1
           sta temp3
-ApplyBounceRadishGoblin:
-          jmp ApplyBounceRadishGoblin
+ApplyBounceRadishGoblinLabel:
+          jmp ApplyBounceRadishGoblinLabel
 
 .pend
 

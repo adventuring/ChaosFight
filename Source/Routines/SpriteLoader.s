@@ -146,9 +146,9 @@ temp4 = player number (0-3)
 AfterCopyGlyphToPlayerBank16First:
 
           ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(AfterCopyGlyphToPlayerBank16Second-1)
+          lda # >(AfterCopyGlyphToPlayerBank16SecondFirst-1)
           pha
-          lda # <(AfterCopyGlyphToPlayerBank16Second-1)
+          lda # <(AfterCopyGlyphToPlayerBank16SecondFirst-1)
           pha
           lda # >(CopyGlyphToPlayer-1)
           pha
@@ -156,7 +156,20 @@ AfterCopyGlyphToPlayerBank16First:
           pha
                     ldx # 15
           jmp BS_jsr
-AfterCopyGlyphToPlayerBank16Second:
+AfterCopyGlyphToPlayerBank16SecondFirst:
+
+          ;; Cross-bank call to CopyGlyphToPlayer in bank 16
+          lda # >(AfterCopyGlyphToPlayerBank16SecondSecond-1)
+          pha
+          lda # <(AfterCopyGlyphToPlayerBank16SecondSecond-1)
+          pha
+          lda # >(CopyGlyphToPlayer-1)
+          pha
+          lda # <(CopyGlyphToPlayer-1)
+          pha
+                    ldx # 15
+          jmp BS_jsr
+AfterCopyGlyphToPlayerBank16SecondSecond:
 
           ;; Cross-bank call to CopyGlyphToPlayer in bank 16
           lda # >(AfterCopyGlyphToPlayerBank16Third-1)

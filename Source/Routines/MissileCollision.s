@@ -648,7 +648,7 @@ CheckRightEdge:
           sec
           sbc cachedHitboxRight_R
           bcc CheckVerticalOverlap
-          jmp CPB_NextPlayerRight
+          jmp CPB_NextPlayerBottom
 CheckVerticalOverlap:
 
           ;; if playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R then CPB_NextPlayer

@@ -63,9 +63,9 @@ InputHandleAllPlayers .proc
 
           ;; InputSkipPlayer3Input,
 
-          ;; InputSkipPlayer4Input (all called via goto or gosub)
+          ;; InputSkipPlayer4Input (all called via jmp or gosub)
 
-          ;; if qtcontroller then goto InputHandleQuadtariPlayers
+          ;; If qtcontroller, then goto InputHandleQuadtariPlayers
           lda qtcontroller
           beq HandlePlayers12
           jmp InputHandleQuadtariPlayers
@@ -85,9 +85,9 @@ CheckPlayer0State:
 
                     if (playerState[0] & 8) then InputDonePlayer0Input
 
-          ;; let temp1 = 0
+          ;; Set temp1 = 0
           lda # 0
-          sta temp1 : gosub InputHandleLeftPortPlayerFunction
+          sta temp1 : cross-bank call to InputHandleLeftPortPlayerFunction
 
 
 
@@ -264,9 +264,9 @@ CheckPlayer3State:
 
                     if (playerState[2] & 8) then InputDonePlayer3Input
 
-          ;; let temp1 = 2
+          ;; Set temp1 = 2
           lda # 2
-          sta temp1 : gosub InputHandleLeftPortPlayerFunction
+          sta temp1 : cross-bank call to InputHandleLeftPortPlayerFunction
 
 
 
@@ -315,9 +315,9 @@ CheckPlayer4State:
 
                     if (playerState[3] & 8) then InputDonePlayer4Input
 
-          ;; let temp1 = 3
+          ;; Set temp1 = 3
           lda # 3
-          sta temp1 : gosub InputHandleRightPortPlayerFunction
+          sta temp1 : cross-bank call to InputHandleRightPortPlayerFunction
 
 
 

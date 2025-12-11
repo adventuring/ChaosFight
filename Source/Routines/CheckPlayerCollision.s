@@ -15,7 +15,7 @@ XDistanceDone:
           ;;
           ;; Constraints: None
           ;;
-          ;; if temp6 >= PlayerSpriteWidth then NoCollision
+          ;; If temp6 >= PlayerSpriteWidth, then NoCollision
           lda temp6
           cmp # PlayerSpriteWidth
           bcc XDistanceCheckCollision
@@ -29,14 +29,14 @@ XDistanceCheckCollision:
           sta temp3
           ;;
           ;; Check Y collision
-          ;; if temp3 == 0 then CPC_Done
+          ;; If temp3 == 0 then CPC_Done
           lda temp3
           cmp # 0
           beq CPC_Done
 
           ;;
           ;; Load player Y positions into temporaries
-          ;; let temp4 = playerY[temp1]
+          ;; Set temp4 = playerY[temp1]
           lda temp1
           asl
           tax
@@ -50,7 +50,7 @@ XDistanceCheckCollision:
           sta temp5
           ;;
           ;; Calculate Y distance
-          if temp4 >= temp5 then CPC_CalcYDistance
+          if temp4 >= temp5, then CPC_CalcYDistance
           lda temp4
           cmp temp5
           bcc YDistanceCalcRight
@@ -58,7 +58,7 @@ XDistanceCheckCollision:
           jmp CPC_CalcYDistance
 
 YDistanceCalcRight:
-          ;; let temp6 = temp5 - temp4
+          ;; Set temp6 = temp5 - temp4
           lda temp5
           sec
           sbc temp4
@@ -80,7 +80,7 @@ CPC_CalcYDistance:
           ;;
           ;; Constraints: None
           ;;
-          ;; let temp6 = temp4 - temp5
+          ;; Set temp6 = temp4 - temp5
           lda temp4
           sec
           sbc temp5
@@ -102,7 +102,7 @@ YDistanceDone:
           ;;
           ;; Constraints: None
           ;;
-          ;; if temp6 >= CharacterHeights[playerCharacter[temp1]] then NoCollision
+          ;; If temp6 >= CharacterHeights[playerCharacter[temp1]], then NoCollision
           lda temp1
           asl
           tax
@@ -164,7 +164,7 @@ CheckPlayerCollision:
           ;; Uses temp1-temp6 (temp4-5 reused after X/Y checks)
 
           ;; Load player X positions into temporaries
-          ;; let temp4 = playerX[temp1]
+          ;; Set temp4 = playerX[temp1]
           lda temp1
           asl
           tax
@@ -178,7 +178,7 @@ CheckPlayerCollision:
           sta temp5
 
           ;; Calculate absolute × distance between players
-          ;; if temp4 >= temp5 then CalcXDistanceRight
+          ;; If temp4 >= temp5 then CalcXDistanceRight
           lda temp4
           cmp temp5
           bcc CalcXDistanceRight
@@ -249,7 +249,7 @@ CalcYDistanceDown .proc
             sta halfHeight2
 
           ;; Compute absolute Y distance between player centers
-          ;; if temp4 >= temp5 then CalcYDistanceDown
+          ;; if temp4 >= temp5, then CalcYDistanceDown
           lda temp4
           cmp temp5
           bcc CalcYDistanceDown

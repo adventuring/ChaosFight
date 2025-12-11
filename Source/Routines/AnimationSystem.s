@@ -25,7 +25,7 @@ UpdateCharacterAnimations:
           and # SetQuadtariDetected
           sta UCA_quadtariActive
           ;; TODO: #1254 for currentPlayer = 0 to 3
-          ;; if currentPlayer >= 2 && !UCA_quadtariActive then goto AnimationNextPlayer
+          ;; If currentPlayer >= 2 && !UCA_quadtariActive, then goto AnimationNextPlayer
           lda currentPlayer
           cmp # 3
           bcc UCA_CheckQuadtari
@@ -39,7 +39,7 @@ UCA_CheckQuadtari:
 
           ;; CRITICAL: Inlined UpdatePlayerAnimation to reduce stack depth from 19 to 17 bytes
           ;; Skip if player is eliminated (health = 0)
-          ;; if playerHealth[currentPlayer] = 0 then goto AnimationNextPlayer
+          ;; If playerHealth[currentPlayer] = 0, then goto AnimationNextPlayer
           lda currentPlayer
           asl
           tax
@@ -54,7 +54,7 @@ UCA_CheckCharacter:
           ;; Increment this sprite 10fps animation counter (NOT global
           ;; frame counter)
           ;; SCRAM read-modify-write: animationCounter_R → animationCounter_W
-          ;; let temp4 = animationCounter_R[currentPlayer] + 1
+          ;; Set temp4 = animationCounter_R[currentPlayer] + 1
           lda currentPlayer
           asl
           tax
@@ -77,7 +77,7 @@ UCA_CheckCharacter:
           sta animationCounter_W,x
 
           ;; Check if time to advance animation frame (every AnimationFrameDelay frames)
-          ;; if temp4 < AnimationFrameDelay then goto DoneAdvanceInlined
+          ;; If temp4 < AnimationFrameDelay, then goto DoneAdvanceInlined
           lda temp4
           cmp AnimationFrameDelay
           bcs UPA_CheckAnimationSpeed
@@ -118,7 +118,7 @@ AdvanceFrame .proc
           ;; Frame is from sprite 10fps counter
           ;; (currentAnimationFrame), not global frame
           ;; SCRAM read-modify-write: currentAnimationFrame_R → currentAnimationFrame_W
-          ;; let temp4 = currentAnimationFrame_R[currentPlayer]
+          ;; Set temp4 = currentAnimationFrame_R[currentPlayer]
          
           lda currentPlayer
           asl
@@ -144,7 +144,7 @@ AdvanceFrame .proc
           ;; per action)
           ;; Use temp variable from previous increment
           ;; (temp4)
-          ;; if temp4 >= FramesPerSequence then goto HandleFrame7Transition
+          ;; If temp4 >= FramesPerSequence, then goto HandleFrame7Transition
           lda temp4
           cmp FramesPerSequence
 
@@ -175,15 +175,15 @@ HandleFrame7Transition
           ;; AdvanceAnimationFrame, UpdateSprite
           ;; CRITICAL: Inlined HandleAnimationTransition to save 4 bytes on sta
 
-          ;; (was: gosub HandleAnimationTransition bank12)
-          ;; let temp1 = currentAnimationSeq_R[currentPlayer]
+          ;; (was: cross-bank call to HandleAnimationTransition bank12)
+          ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
           asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-          ;; if ActionAttackRecovery < temp1 then goto AnimationTransitionLoopAnimation
+          ;; If ActionAttackRecovery < temp1, then goto AnimationTransitionLoopAnimation
           lda ActionAttackRecovery
           cmp temp1
           bcs AnimationTransitionLoopAnimation
@@ -249,7 +249,7 @@ AnimationTransitionHandleJump_TransitionToFalling
 AnimationTransitionHandleFallBack
           ;; Check wall collision using pfread
           ;; Convert player X position to playfield column (0-31)
-          ;; let temp5 = playerX[currentPlayer]
+          ;; Set temp5 = playerX[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -345,14 +345,14 @@ AnimationTransitionHandleFallBack_HitWall
           jmp AnimationSetPlayerAnimationInlined
 
 AnimationHandleAttackTransition
-          ;; let temp1 = currentAnimationSeq_R[currentPlayer]
+          ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
           asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-          ;; if temp1 < ActionAttackWindup then goto UpdateSprite
+          ;; If temp1 < ActionAttackWindup, then goto UpdateSprite
           lda temp1
           cmp ActionAttackWindup
           bcs HandleWindupEnd
@@ -364,7 +364,7 @@ HandleWindupEnd:
           jmp UpdateSprite
 
 AnimationHandleWindupEnd
-          ;; let temp1 = playerCharacter[currentPlayer]
+          ;; Set temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -376,7 +376,7 @@ AnimationHandleWindupEnd
           tax
           lda playerCharacter,x
           sta temp1
-          ;; if temp1 >= 32 then goto UpdateSprite
+          ;; If temp1 >= 32, then goto UpdateSprite
           lda temp1
           cmp 32
 
@@ -396,7 +396,7 @@ AnimationHandleWindupEnd
           sta .GetWindupNextAction
 
           label_unknown:
-          ;; let temp2 = CharacterWindupNextAction[temp1]         
+          ;; Set temp2 = CharacterWindupNextAction[temp1]         
           lda temp1
           asl
           tax
@@ -413,14 +413,14 @@ SetWindupAnimation:
           jmp AnimationSetPlayerAnimationInlined
 
 AnimationHandleExecuteEnd
-          ;; let temp1 = playerCharacter[currentPlayer]
+          ;; Set temp1 = playerCharacter[currentPlayer]
          
           lda currentPlayer
           asl
           tax
           lda playerCharacter,x
           sta temp1
-          ;; if temp1 >= 32 then goto UpdateSprite
+          ;; If temp1 >= 32, then goto UpdateSprite
           lda temp1
           cmp 32
 
@@ -446,7 +446,7 @@ GetExecuteNextAction:
           sta .GetExecuteNextActionLabel
 
           label_unknown:
-          ;; let temp2 = CharacterExecuteNextAction[temp1]
+          ;; Set temp2 = CharacterExecuteNextAction[temp1]
           lda temp1
           asl
           tax
@@ -521,7 +521,7 @@ AnimationSetPlayerAnimationInlined
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
           ;; Set animation action for a player (inlined from AnimationSystem.bas)
-          ;; if temp2 >= AnimationSequenceCount then goto UpdateSprite
+          ;; If temp2 >= AnimationSequenceCount, then goto UpdateSprite
           lda temp2
           cmp AnimationSequenceCount
 
@@ -553,7 +553,7 @@ AnimationSetPlayerAnimationInlined
           ;; Set up parameters for sprite loading (frame=0, action=temp2, player=currentPlayer)
           lda # 0
           sta temp2
-          ;; let temp3 = currentAnimationSeq_R[currentPlayer]
+          ;; Set temp3 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
           asl
@@ -607,7 +607,7 @@ UpdateSprite .proc
           ;; SCRAM read: Read from r081
           ;; where dim entries concatenate with subsequent consta
 
-          ;; let temp2 = currentAnimationFrame_R[currentPlayer]
+          ;; Set temp2 = currentAnimationFrame_R[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -630,7 +630,7 @@ UpdateSprite .proc
           ;; CRITICAL: Inlined LoadPlayerSprite dispatcher to save 4 bytes on sta
 
           ;; CRITICAL: Guard against calling bank 2 when no characters on screen
-          ;; let currentCharacter = playerCharacter[currentPlayer]
+          ;; Set currentCharacter = playerCharacter[currentPlayer]
          
           lda currentPlayer
           asl
@@ -657,7 +657,7 @@ ValidateCharacterRangeSprite:
 
           ;; CRITICAL: Validate character index is within valid range (0-MaxCharacter)
           ;; Uninitialized playerCharacter (0) is valid (Bernie), but values > MaxCharacter are invalid
-          ;; if currentCharacter > MaxCharacter then goto AnimationNextPlayer
+          ;; If currentCharacter > MaxCharacter, then goto AnimationNextPlayer
           lda currentCharacter
           sec
           sbc MaxCharacter
@@ -680,7 +680,7 @@ CheckBank2:
           lda temp1
           sta temp6
           ;; Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
-          ;; if temp1 < 8 then goto UpdateSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_5345          jmp
+          ;; If temp1 < 8, then goto UpdateSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_5345          jmp
           lda temp1
           cmp # 8
           bcs CheckBank3
@@ -696,7 +696,7 @@ CheckBank3:
 CheckBank3Dispatch:
 
           
-          ;; if temp1 < 16 then goto UpdateSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_8905          jmp
+          ;; If temp1 < 16, then goto UpdateSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_8905          jmp
           lda temp1
           cmp # 16
           bcs CheckBank4
@@ -710,7 +710,7 @@ CheckBank4:
 CheckBank4Dispatch:
 
           
-          ;; if temp1 < 24 then goto UpdateSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_205          jmp
+          ;; If temp1 < 24, then goto UpdateSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_205          jmp
           lda temp1
           cmp # 24
           bcs UseBank5
@@ -747,7 +747,7 @@ AfterSetPlayerCharacterArtBank2:
           jmp AnimationNextPlayer
 
 UpdateSprite_Bank3Dispatch
-          ;; let temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
+          ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
           lda temp1
           sec
           sbc 8
@@ -776,7 +776,7 @@ AfterSetPlayerCharacterArtBank3:
           jmp AnimationNextPlayer
 
 UpdateSprite_Bank4Dispatch
-          ;; let temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
+          ;; Set temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
           lda temp1
           sec
           sbc 16
@@ -805,7 +805,7 @@ AfterSetPlayerCharacterArtBank4:
           jmp AnimationNextPlayer
 
 UpdateSprite_Bank5Dispatch
-          ;; let temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
+          ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
           lda temp1
           sec
           sbc 24
@@ -904,7 +904,7 @@ SetPlayerAnimation
           ;; currentAnimationSeq
           ;; CRITICAL: Guard against calling LoadPlayerSprite when no characters on screen
           ;; Check if player has a valid character before loading sprite
-          ;; let temp1 = playerCharacter[currentPlayer]
+          ;; Set temp1 = playerCharacter[currentPlayer]
          
           lda currentPlayer
           asl
@@ -918,7 +918,7 @@ SetPlayerAnimation
           ;; SCRAM read: Read from r081 (we just wrote 0, so this is 0)
           lda # 0
           sta temp2
-          ;; let temp3 = currentAnimationSeq_R[currentPlayer]
+          ;; Set temp3 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
           asl
@@ -978,14 +978,14 @@ AfterSetPlayerAnimationTransition:
 HandleAnimationTransition .proc
           jmp BS_return
           ;; Returns: Far (return thisbank)
-          ;; let temp1 = currentAnimationSeq_R[currentPlayer]
+          ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
           asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-          ;; if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation
+          ;; If ActionAttackRecovery < temp1, then goto TransitionLoopAnimation
           lda ActionAttackRecovery
           cmp temp1
           bcs TransitionLoopAnimation
@@ -1056,7 +1056,7 @@ TransitionHandleFallBack
           ;; Returns: Far (return otherbank)
           If hit wall: goto idle, else: goto fallen
           ;; Convert player X position to playfield column (0-31)
-          ;; let temp5 = playerX[currentPlayer]
+          ;; Set temp5 = playerX[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -1157,7 +1157,7 @@ TransitionHandleFallBack_HitWall
 
 HandleAttackTransition
           ;; Returns: Far (return otherbank)
-          ;; let temp1 = currentAnimationSeq_R[currentPlayer]
+          ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -1202,7 +1202,7 @@ HandleWindupEnd
           sta .GetWindupNextActionHandle
 
           label_unknown:
-          ;; let temp2 = CharacterWindupNextAction[temp1]         
+          ;; Set temp2 = CharacterWindupNextAction[temp1]         
           lda temp1
           asl
           tax
@@ -1213,7 +1213,7 @@ HandleWindupEnd
 
 HandleExecuteEnd
           ;; Returns: Far (return otherbank)
-          ;; let temp1 = playerCharacter[currentPlayer]
+          ;; Set temp1 = playerCharacter[currentPlayer]
          
           lda currentPlayer
           asl
@@ -1238,7 +1238,7 @@ GetExecuteNextActionHandle:
           sta .GetExecuteNextActionHandleLabel
 
           label_unknown:
-          ;; let temp2 = CharacterExecuteNextAction[temp1]
+          ;; Set temp2 = CharacterExecuteNextAction[temp1]
           lda temp1
           asl
           tax

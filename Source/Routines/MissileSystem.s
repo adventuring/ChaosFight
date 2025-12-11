@@ -255,7 +255,7 @@ ApplyFacingDirectionDone:
           jmp HarpyCheckDiveVelocity
 VelocityDone:
 
-          ;; VelocityDone label is in MissileCharacterHandlers.bas (same bank)
+          ;; VelocityDone label is in MissileCharacterHandlers.s (same bank)
           jmp VelocityDone
 
           jmp BS_return

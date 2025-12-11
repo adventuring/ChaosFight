@@ -952,9 +952,9 @@ VblankGameModeCheck .proc
           ;; For other modes, return immediately
           lda gameMode
           cmp # ModeGame
-          bne VblankHandlerDone
+          bne VblankHandlerDoneCheck
           jmp VblankModeGameMainAfterAnimations
-VblankHandlerDone:
+VblankHandlerDoneCheck:
 
 
           rts

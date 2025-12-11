@@ -39,8 +39,8 @@ PlaySoundEffect .proc
           ;;
           ;; Called Routines: LoadSoundPointer (bank15) - looks up
           ;; sound pointer from Sounds bank, UpdateSoundEffectVoice0
-          ;; (tail call via goto) - starts Voice 0 playback,
-          ;; UpdateSoundEffectVoice1 (tail call via goto) - sta
+          ;; (tail call via jmp) - starts Voice 0 playback,
+          ;; UpdateSoundEffectVoice1 (tail call via jmp) - starts
 
           ;; Voice 1 playback
           ;;
@@ -96,7 +96,7 @@ TryVoice1 .proc
 
           ;;
           ;; Called Routines: UpdateSoundEffectVoice1 (tail call via
-          ;; goto) - starts Voice 1 playback
+          ;; jmp) - starts Voice 1 playback
           ;;
           ;; Constraints: Internal helper for PlaySoundEffect, only
           ;; called when Voice 0 is busy

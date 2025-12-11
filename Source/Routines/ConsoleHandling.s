@@ -37,22 +37,32 @@ WarmStart .proc
           ;; Match ColdStart initialization for consistency
           ;; Background: black (COLUBK starts black, no need to set)
           ;; Playfield: white
-          COLUPF = $0E(14)
+          lda # $0E
+          sta COLUPF
           ;; Player 0: bright blue
-          COLUP0 = ColBlue(14)
+          lda # ColBlue(14)
+          sta COLUP0
           ;; Player 1: bright red (multisprite kernel requires _COLUP1)
-          _COLUP1 = ColRed(14)
+          lda # ColRed(14)
+          sta _COLUP1
 
           ;; Step 3: Initialize audio channels (silent on reset)
-          AUDC0 = 0
-          AUDV0 = 0
-          AUDC1 = 0
-          AUDV1 = 0
+          lda # 0
+          sta AUDC0
+          lda # 0
+          sta AUDV0
+          lda # 0
+          sta AUDC1
+          lda # 0
+          sta AUDV1
 
           ;; Step 4: Clear sprite enable registers
-          ENAM0 = 0
-          ENAM1 = 0
-          ENABL = 0
+          lda # 0
+          sta ENAM0
+          lda # 0
+          sta ENAM1
+          lda # 0
+          sta ENABL
 
           ;; Step 5: Reset game mode to startup sequence
           lda # ModePublisherPrelude

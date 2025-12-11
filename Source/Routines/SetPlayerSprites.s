@@ -78,8 +78,8 @@ SetPlayerSprites .proc
           jmp BS_jsr
 
 AfterLoadCharacterColorsP0:
-
-          COLUP0 = temp6
+          lda temp6
+          sta COLUP0
 
 Player1ColorDone:
 
@@ -276,7 +276,8 @@ SetPlayer3Color:
 AfterLoadCharacterColorsP3:
 
           ;; fall through to Player3ColorDone
-          COLUP2 = temp6
+          lda temp6
+          sta COLUP2
 
 Player3ColorDone
 
@@ -391,7 +392,8 @@ SetPlayer4Color:
           jmp BS_jsr
 AfterLoadCharacterColorsP4:
 
-          COLUP3 = temp6
+          lda temp6
+          sta COLUP3
 
 Player4ColorDone
 

@@ -58,9 +58,12 @@ LoadSoundNote1 .proc
           sta soundEffectID_W
 
           ;; Write to TIA registers (use Voice 1 for sound effects)
-          AUDC1 = temp6
-          AUDF1 = temp3
-          AUDV1 = soundEffectID_R
+          lda temp6
+          sta AUDC1
+          lda temp3
+          sta AUDF1
+          lda soundEffectID_R
+          sta AUDV1
 
           ;; Set frame counter = Duration + Delay
           ;; let soundEffectFrame1_W = temp4 + temp5

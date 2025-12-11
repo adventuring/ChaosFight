@@ -84,14 +84,19 @@ sprite_init_return:
           ;; Background: black (COLUBK starts black, no need to set)
           ;; Playfield: white
           ;; Player 1 (P0): indigo
-          COLUPF = $0E(14)
+          lda # $0E
+          sta COLUPF
           ;; Player 2: bright red (multisprite kernel requires _COLUP1)
-          COLUP0 = ColIndigo(12)
+          lda # ColIndigo(12)
+          sta COLUP0
           ;; Player 3: yellow
-          _COLUP1 = ColRed(12)
+          lda # ColRed(12)
+          sta _COLUP1
           ;; Player 4: green
-          COLUP2 = ColYellow(12)
-          COLUP3 = ColGreen(12)
+          lda # ColYellow(12)
+          sta COLUP2
+          lda # ColGreen(12)
+          sta COLUP3
 
           ;; Step 4: Initialize game state and transition to first mode
           ;; Set initial game mode (Publisher Prelude)

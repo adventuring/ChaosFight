@@ -159,8 +159,10 @@ SSP_NextParticipant .proc
           ;; multiplexing
           ;; because we only need to multiplex when participants 3 or 4
           ;; are actually in the game
-          ENAM0 = 0
-          ENAM1 = 0
+          lda # 0
+          sta ENAM0
+          lda # 0
+          sta ENAM1
           lda # 0
           sta missile0height
           lda # 0
@@ -351,8 +353,10 @@ SSP_CheckMissile0:
           sta missile1x
           lda temp2
           sta missile1y
-          ENAM1 = 1
-          NUSIZ1 = temp3
+          lda # 1
+          sta ENAM1
+          lda temp3
+          sta NUSIZ1
           lda temp4
           sta missile1height
           rts
@@ -362,8 +366,10 @@ SSP_WriteUnified0:
           sta missile0x
           lda temp2
           sta missile0y
-          ENAM0 = 1
-          NUSIZ0 = temp3
+          lda # 1
+          sta ENAM0
+          lda temp3
+          sta NUSIZ0
           lda temp4
           sta missile0height
           rts

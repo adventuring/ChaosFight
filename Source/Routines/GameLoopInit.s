@@ -423,15 +423,19 @@ SkipPlayer4 .proc
           sta systemFlags
 
           ;; Initialize player sprite NUSIZ registers (double width)
-          NUSIZ = 5: double width, single copy
+          ;; NUSIZ = 5: double width, single copy
           ;; Player 0 (Player 1)
-          NUSIZ0 = 5
+          lda # 5
+          sta NUSIZ0
           ;; Player 1 (Player 2) - multisprite kernel uses _NUSIZ1
-          _NUSIZ1 = 5
+          lda # 5
+          sta _NUSIZ1
           ;; Player 2 (Player 3) - multisprite kernel
-          NUSIZ2 = 5
+          lda # 5
+          sta NUSIZ2
           ;; Player 3 (Player 4) - multisprite kernel
-          NUSIZ3 = 5
+          lda # 5
+          sta NUSIZ3
 
           ;; Initialize health bars
           ;; Cross-bank call to InitializeHealthBars in bank 6

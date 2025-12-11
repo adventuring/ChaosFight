@@ -859,10 +859,10 @@ AfterLoadMusicNote1Bank1:
           ;; Constraints: None
 
           ;; Zero TIA volumes
-
-          AUDV0 = 0
-
-          AUDV1 = 0
+          lda # 0
+          sta AUDV0
+          lda # 0
+          sta AUDV1
 
 
 

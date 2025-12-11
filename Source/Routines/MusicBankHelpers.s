@@ -291,12 +291,12 @@ LoadMusicNote0 .proc
           ;; Write to TIA registers (will be adjusted by envelope in
 
           ;; UpdateMusicVoice0)
-
-          AUDC0 = temp6
-
-          AUDF0 = temp3
-
-          AUDV0 = musicVoice0TargetAUDV_R
+          lda temp6
+          sta AUDC0
+          lda temp3
+          sta AUDF0
+          lda musicVoice0TargetAUDV_R
+          sta AUDV0
 
 
 
@@ -430,12 +430,12 @@ LoadMusicNote1 .proc
           ;; Write to TIA registers (will be adjusted by envelope in
 
           ;; UpdateMusicVoice1)
-
-          AUDC1 = temp6
-
-          AUDF1 = temp3
-
-          AUDV1 = musicVoice1TargetAUDV_R
+          lda temp6
+          sta AUDC1
+          lda temp3
+          sta AUDF1
+          lda musicVoice1TargetAUDV_R
+          sta AUDV1
 
 
 

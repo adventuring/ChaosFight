@@ -297,22 +297,18 @@ DrawParadeCharacter .proc
           ;; (tail call)
 
           ;; Position character at bottom (y=80) and current X position
-
-          player0x = titleParadeX
-
-          player0y = 80
-
-
+          lda titleParadeX
+          sta player0x
+          lda # 80
+          sta player0y
 
           ;; Always face right while marching across the title screen
-
-          REFP0 = PlayerStateBitFacing
-
-
+          lda # PlayerStateBitFacing
+          sta REFP0
 
           ;; Parade render uses fixed white color
-
-          COLUP0 = ColGray(12)
+          lda # ColGray(12)
+          sta COLUP0
 
 
 

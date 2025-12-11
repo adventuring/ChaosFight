@@ -22,8 +22,10 @@ StopSoundEffects .proc
           ;;
           ;; Constraints: None
           ;; Zero TIA volumes
-          AUDV0 = 0
-          AUDV1 = 0
+          lda # 0
+          sta AUDV0
+          lda # 0
+          sta AUDV1
 
           ;; Clear sound pointers (high byte = 0 means inactive)
           lda # 0

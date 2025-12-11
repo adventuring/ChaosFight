@@ -159,28 +159,38 @@ SelectApplyPreviewPosition
           ;; Optimized: Use on...goto jump table for O(1) dispatch
           jmp SelectApplyPreviewPositionP0
 SelectApplyPreviewPositionP0
-          player0x = temp2
-          player0y = temp3
+          lda temp2
+          sta player0x
+          lda temp3
+          sta player0y
           jmp BS_return
 SelectApplyPreviewPositionP1
-          player1x = temp2
-          player1y = temp3
+          lda temp2
+          sta player1x
+          lda temp3
+          sta player1y
           jmp BS_return
 SelectApplyPreviewPositionP2
-          player2x = temp2
-          player2y = temp3
+          lda temp2
+          sta player2x
+          lda temp3
+          sta player2y
           jmp BS_return
 SelectApplyPreviewPositionP3
-          player3x = temp2
-          player3y = temp3
+          lda temp2
+          sta player3x
+          lda temp3
+          sta player3y
 
 .pend
 
 SelectHideLowerPlayerPreviews .proc
           ;; Move lower-player previews off-screen when Quadtari is absent
           ;; Returns: Far (return otherbank)
-          player2y = 200
-          player3y = 200
+          lda # 200
+          sta player2y
+          lda # 200
+          sta player3y
 .pend
 
 RenderPlayerPreview .proc
@@ -278,7 +288,8 @@ SelectApplyPlayerColor .proc
 .pend
 
 SelectApplyPlayerColorP0 .proc
-          COLUP0 = temp2
+          lda temp2
+          sta COLUP0
           rts
 .pend
 
@@ -287,11 +298,13 @@ SelectApplyPlayerColorP1 .proc
 .pend
 
 SelectApplyPlayerColorP2 .proc
-          COLUP2 = temp2
+          lda temp2
+          sta COLUP2
 .pend
 
 SelectApplyPlayerColorP3 .proc
-          COLUP3 = temp2
+          lda temp2
+          sta COLUP3
 
 .pend
 

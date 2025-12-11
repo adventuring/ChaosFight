@@ -303,9 +303,9 @@ CharacterSelectDoneQuadtariPlayersInline
           ;; ;;           ;; let temp1 = 0 : gosub GetPlayerLocked bank6
           lda 0
           sta temp1
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerLockedCheckReady-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerLockedCheckReady-1)
           pha
           lda # >(GetPlayerLocked-1)
           pha
@@ -313,7 +313,7 @@ CharacterSelectDoneQuadtariPlayersInline
           pha
           ldx # 5
           jmp BS_jsr
-return_point: : if temp2 then goto CharacterSelectCompleted
+AfterGetPlayerLockedCheckReady: : if temp2 then goto CharacterSelectCompleted
 
 lda temp2
 
@@ -477,9 +477,9 @@ HCSPI_UseJoy0 .proc
 
           ;; Handle fire button (selection)
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSetPlayerLockedJoy0-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetPlayerLockedJoy0-1)
           pha
           lda # >(SetPlayerLocked-1)
           pha
@@ -487,13 +487,13 @@ HCSPI_UseJoy0 .proc
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSetPlayerLockedJoy0:
 
 
           ;; Cross-bank call to HandleCharacterSelectFire in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterHandleCharacterSelectFireJoy0-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterHandleCharacterSelectFireJoy0-1)
           pha
           lda # >(HandleCharacterSelectFire-1)
           pha
@@ -501,7 +501,7 @@ return_point:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterHandleCharacterSelectFireJoy0:
 
 
           rts

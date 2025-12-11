@@ -43,52 +43,29 @@ StandardJump .proc
 
 .pend
 
-CCJ_ConvertPlayerXToPlayfieldColumn:
-          ;; Convert player × to playfield column (0-31)
-          ;; Returns: Far (return otherbank)
-          ;; Input: temp1 = player index
-          ;; Output: temp2 = playfield column
-          ;; FIXME: #1250 This should be inlined.
-          ;; let temp2 = playerX[temp1]         
-          lda temp1
-          asl
-          tax
-          lda playerX,x
-          sta temp2
-          ;; let temp2 = temp2 - ScreenInsetX
-          lda temp2
-          sec
-          sbc # ScreenInsetX
-          sta temp2
-
-          ;; let temp2 = temp2 / 4
-          lda temp2
-          lsr
-          lsr
-          sta temp2
-
-          jsr BS_return
-
-.pend
+;; CCJ_ConvertPlayerXToPlayfieldColumn has been inlined at all call sites (FIXME #1250)
+;; The inlined code is: (playerX[temp1] - ScreenInsetX) / 4 -> temp2
 
 BernieJump .proc
           ;; BERNIE (0) - Drop through single-row platforms
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
           ;; Output: playerY[] updated when falling through
-          ;; CRITICAL: CCJ_ConvertPlayerXToPlayfieldColumn is in Bank 12, use bank12 to match return otherbank
-          ;; Cross-bank call to CCJ_ConvertPlayerXToPlayfieldColumn in bank 12
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(CCJ_ConvertPlayerXToPlayfieldColumn-1)
-          pha
-          lda # <(CCJ_ConvertPlayerXToPlayfieldColumn-1)
-          pha
-                    ldx # 11
-          jmp BS_jsr
-return_point:
+          ;; Inlined CCJ_ConvertPlayerXToPlayfieldColumn (FIXME #1250)
+          ;; Convert player X to playfield column: (playerX[temp1] - ScreenInsetX) / 4
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+          lda temp2
+          sec
+          sbc # ScreenInsetX
+          sta temp2
+          lda temp2
+          lsr
+          lsr
+          sta temp2
 
 
           ;; let temp3 = playerY[temp1]         
@@ -227,7 +204,7 @@ BernieCheckBottomWrap:
 CCJ_FreeFlightUp .proc
           ;; Shared free flight upward movement (DragonOfStorms, Frooty)
           ;; Calling Convention: Near
-          ;; Input: temp1 = player index, temp2 = playfield column (from CCJ_ConvertPlayerXToPlayfieldColumn)
+          ;; Input: temp1 = player index, temp2 = playfield column (inlined from CCJ_ConvertPlayerXToPlayfieldColumn)
           ;; Output: Upward velocity applied if clear above, jumping flag set
           ;; Mutates: temp3-temp6, playerVelocityY[], playerVelocityYL[], playerState[]
           ;; let temp3 = playerY[temp1]         
@@ -366,20 +343,21 @@ CCJ_FreeFlightCharacterJump .proc
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
           ;; Output: Upward velocity if clear above
-          ;; CRITICAL: CCJ_ConvertPlayerXToPlayfieldColumn is in Bank 12, use bank12 to match return otherbank
-          ;; Cross-bank call to CCJ_ConvertPlayerXToPlayfieldColumn in bank 12
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(CCJ_ConvertPlayerXToPlayfieldColumn-1)
-          pha
-          lda # <(CCJ_ConvertPlayerXToPlayfieldColumn-1)
-          pha
-                    ldx # 11
-          jmp BS_jsr
-return_point:
-
+          ;; Inlined CCJ_ConvertPlayerXToPlayfieldColumn (FIXME #1250)
+          ;; Convert player X to playfield column: (playerX[temp1] - ScreenInsetX) / 4
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+          lda temp2
+          sec
+          sbc # ScreenInsetX
+          sta temp2
+          lda temp2
+          lsr
+          lsr
+          sta temp2
 
           jsr CCJ_FreeFlightUp
 

@@ -62,7 +62,7 @@ PhysicsApplyGravity .proc
           ;; temporaries
           ;; Called Routines: AddVelocitySubpixelY (bank8) - adds
           ;; gravity to vertical velocity,
-          ;; CCJ_ConvertPlayerXToPlayfieldColumn (bank12) - converts player
+          ;; CCJ_ConvertPlayerXToPlayfieldColumn (inlined) - converts player
           ;; × to playfield column,y divided by 16 (pfrowheight is always 16)
           ;; row height, PAG_SetRoboTitoStretchPermission - sets
           ;; RoboTito stretch permission on landing

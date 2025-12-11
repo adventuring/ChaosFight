@@ -42,20 +42,21 @@ RoboTitoCanStretch .proc
 
 RoboTitoStretching .proc
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
-          ;; CRITICAL: CCJ_ConvertPlayerXToPlayfieldColumn is in Bank 12, not Bank 13
-          ;; Cross-bank call to CCJ_ConvertPlayerXToPlayfieldColumn in bank 12
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(CCJ_ConvertPlayerXToPlayfieldColumn-1)
-          pha
-          lda # <(CCJ_ConvertPlayerXToPlayfieldColumn-1)
-          pha
-          ldx # 11
-          jmp BS_jsr
-
-return_point:
+          ;; Inlined CCJ_ConvertPlayerXToPlayfieldColumn (FIXME #1250)
+          ;; Convert player X to playfield column: (playerX[temp1] - ScreenInsetX) / 4
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+          lda temp2
+          sec
+          sbc # ScreenInsetX
+          sta temp2
+          lda temp2
+          lsr
+          lsr
+          sta temp2
 
           lda temp2
           sta temp4
@@ -189,19 +190,21 @@ SetStretchHeightLabel:
 .pend
 
 RoboTitoCheckCeiling .proc
-          ;; CRITICAL: CCJ_ConvertPlayerXToPlayfieldColumn is in Bank 12, not Bank 13
-          ;; Cross-bank call to CCJ_ConvertPlayerXToPlayfieldColumn in bank 12
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(CCJ_ConvertPlayerXToPlayfieldColumn-1)
-          pha
-          lda # <(CCJ_ConvertPlayerXToPlayfieldColumn-1)
-          pha
-                    ldx # 11
-          jmp BS_jsr
-return_point:
+          ;; Inlined CCJ_ConvertPlayerXToPlayfieldColumn (FIXME #1250)
+          ;; Convert player X to playfield column: (playerX[temp1] - ScreenInsetX) / 4
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+          lda temp2
+          sec
+          sbc # ScreenInsetX
+          sta temp2
+          lda temp2
+          lsr
+          lsr
+          sta temp2
 
           ;; let temp3 = playerY[temp1]         
           lda temp1

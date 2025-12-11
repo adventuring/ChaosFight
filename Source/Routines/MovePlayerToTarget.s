@@ -119,9 +119,6 @@ NudgeLeftMovePlayer .proc
           sta playerX,x
 NudgeLeftMovePlayerDone:
           rts
-NudgeRightMovePlayerDone:
-
-          rts
 .pend
 
 CheckCollisionMovePlayer:

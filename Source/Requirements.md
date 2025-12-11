@@ -916,21 +916,21 @@ errors.
 **CRITICAL**: Failure to comply with these rules *will* break the game every time.
 
 - **Labels** at left margin (first column)
-- **"end" markers** at left margin (first column)
-- **All other statements**, including "rem", start after 10 spaces
-- **data, asm, and for loops**: indent 2 additional spaces (12 spaces total)
+- **Directives** (`.proc`, `.pend`, `.block`, `.bend`, `.if`, `.fi`, etc.) at left margin or indented to match surrounding code
+- **All other statements**, including comments (`;;`), start after 10 spaces
+- **Data tables** (`.byte`, `.word`, etc.): indent 2 additional spaces (12 spaces total) for interior elements
 
-## Remarks and Quotation Marks
+## Comments and Quotation Marks
 
 **CRITICAL**: Failure to comply with these rules *will* break the game every time.
 
-- **Remarks must precede code**: Remarks always precede the code that they describe. Code statements must not be followed by remarks on the same line or have remarks appear after the code they describe.
+- **Comments must precede code**: Comments always precede the code that they describe. Code statements must not be followed by comments on the same line or have comments appear after the code they describe.
 
 ### Quotation Mark and Apostrophe Rules
 
 Different contexts require different quotation mark characters:
 
-- **`rem` statements**: **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes. U+0027 (straight apostrophe `'`) is **NEVER** allowed. Examples: use "don't" (U+2019) not "don't" (U+0027), use "doesn't" (U+2019) not "doesn't" (U+0027), use "they're" (U+2019) not "they're" (U+0027).
+- **`rem` statements** (in `.bas` files): **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes. U+0027 (straight apostrophe `'`) is **NEVER** allowed. Examples: use "don't" (U+2019) not "don't" (U+0027), use "doesn't" (U+2019) not "doesn't" (U+0027), use "they're" (U+2019) not "they're" (U+0027).
 
 - **`echo` statements**: **MUST** use U+0022 (straight double quotation mark `"`) for all string delimiters. U+2019, U+2018, U+201C, U+201D (typographic quotes) are **NEVER** allowed. Example: `echo "// Bank 14: ", [size]d, " bytes"`
 
@@ -970,61 +970,63 @@ If the target routine uses plain `rts` instead of `jsr BS_return`:
 ### Rules
 
 - **Cross-bank calls**: 
-  - **Call site**: MUST use `gosub routine bankN` (far call) form
-  - **Return site**: MUST use `return otherbank` for **ALL** return paths in the routine
-  - **All return paths**: Every `return` statement in a cross-bank-called routine must be `return otherbank`, including early returns, error returns, and fall-through returns
+  - **Call site**: MUST push return address (4 bytes) then use `jmp BS_jsr` with target bank in X register
+  - **Return site**: MUST use `jsr BS_return` (or `jmp BS_return` for tail calls) for **ALL** return paths in the routine
+  - **All return paths**: Every return in a cross-bank-called routine must be `jsr BS_return` or `jmp BS_return`, including early returns, error returns, and fall-through returns
   
 - **Same-bank calls**: 
-  - **Call site**: Use `gosub routine` (near call) - strongly preferred for efficiency
-  - **Return site**: Use `return` (near return) - faster and smaller
+  - **Call site**: Use `jsr RoutineName` (near call) - strongly preferred for efficiency
+  - **Return site**: Use `rts` (near return) - faster and smaller
   - **Optimization**: If a routine is never called cross-bank, use near calls for better performance
 
 - **Routine Analysis**: 
   - Before writing or modifying a routine, determine if it will be called cross-bank
-  - If ANY call site uses `gosub routine bankN`, the routine MUST use `return otherbank`
-  - If ALL call sites use `gosub routine` (same-bank), the routine MUST use `return`
+  - If ANY call site uses `BS_jsr`, the routine MUST use `jsr BS_return` or `jmp BS_return`
+  - If ALL call sites use `jsr` (same-bank), the routine MUST use `rts`
 
 - **Variable verification**: Verify variable use of called routine (or routines that it calls) do not interfere with the caller's
 
-- **Call depth**: Verify that no sequence of "gosubs" will ever nest more than 3 subroutines deep
+- **Call depth**: Verify that no sequence of calls will ever nest more than 3 subroutines deep
 
 ### Examples
 
 **CORRECT - Cross-bank routine:**
-```basic
-ProcessAllAttacks
-  rem Called from GameLoopMain.bas with: gosub ProcessAllAttacks bank7
-  for attackerID = 0 to 3
-    if playerHealth[attackerID] <= 0 then NextAttacker
-    gosub ProcessAttackerAttacks
-NextAttacker
-    next
-  return otherbank  rem MUST use return otherbank - called cross-bank
+```assembly
+ProcessAllAttacks .proc
+          ;; Called from GameLoopMain.s with: BS_jsr (cross-bank)
+          ;; ... process attacks ...
+          jsr BS_return  ;; MUST use jsr BS_return - called cross-bank
+.pend
 ```
 
 **CORRECT - Same-bank routine:**
-```basic
-ProcessAttackerAttacks
-  rem Only called from ProcessAllAttacks (same bank)
-  rem Calculate hitbox, check collisions, apply damage
-  return  rem Use return - only called same-bank
+```assembly
+ProcessAttackerAttacks .proc
+          ;; Only called from ProcessAllAttacks (same bank)
+          ;; Calculate hitbox, check collisions, apply damage
+          rts  ;; Use rts - only called same-bank
+.pend
 ```
 
 **WRONG - Mixed conventions (CRITICAL BUG):**
-```basic
-HandleConsoleSwitches
-  rem Called from GameLoopMain.bas with: gosub HandleConsoleSwitches bank13
-  if switchselect then 
-    rem handle pause
-    return otherbank  rem Correct
-  endif
-  rem handle other switches
-  return  rem WRONG! Must be return otherbank - routine is called cross-bank
+```assembly
+HandleConsoleSwitches .proc
+          ;; Called from GameLoopMain.s with: BS_jsr (cross-bank)
+          lda switchselect
+          beq HandleOtherSwitches
+          ;; handle pause
+          jsr BS_return  ;; Correct
+HandleOtherSwitches:
+          ;; handle other switches
+          rts  ;; WRONG! Must be jsr BS_return - routine is called cross-bank
+.pend
 ```
 
 ### Verification
 
 All routines must be verified to ensure:
-1. If called cross-bank, ALL return statements use `return otherbank`
-2. If only called same-bank, ALL return statements use `return`
+1. If called cross-bank, ALL return statements use `jsr BS_return` or `jmp BS_return`
+2. If only called same-bank, ALL return statements use `rts`
 3. No routine mixes the two conventions
+
+See `Source/StyleGuide.md` for detailed guidelines on calling conventions and assembly syntax.

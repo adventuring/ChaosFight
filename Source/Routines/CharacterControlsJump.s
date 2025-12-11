@@ -26,8 +26,6 @@ StandardJump .proc
           tax
           lda CharacterJumpVelocities,x
           sta temp2
-          jmp BS_return
-
           lda temp1
           asl
           tax

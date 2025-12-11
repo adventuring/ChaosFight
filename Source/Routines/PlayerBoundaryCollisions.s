@@ -178,7 +178,7 @@ SkipBernieWrap:
           sta playerHealth,x
           lda temp1
           sta currentPlayer
-          lda # >(return_point-1)
+          lda # >(AfterCheckPlayerEliminationBoundary-1)
           pha
           lda # <(AfterCheckPlayerEliminationBoundary-1)
           pha

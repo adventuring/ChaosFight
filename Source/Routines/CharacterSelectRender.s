@@ -106,9 +106,9 @@ AfterRenderPlayerPreview:
 
           lda currentPlayer
           ;; Cross-bank call to GetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerLockedRender-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerLockedRender-1)
           pha
           lda # >(GetPlayerLocked-1)
           pha

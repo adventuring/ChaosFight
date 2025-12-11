@@ -192,9 +192,9 @@ Player2ReflectionDone:
           lda # 0
           sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterLoadCharacterSpriteP1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadCharacterSpriteP1-1)
           pha
           lda # >(LoadCharacterSprite-1)
           pha
@@ -245,8 +245,12 @@ SetPlayer3Color:
           lda # 2
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    ;; let temp2 = playerRecoveryFrames[2]
-                    lda 2          asl          tax          lda playerRecoveryFrames,x          sta temp2
+          ;; let temp2 = playerRecoveryFrames[2]
+          lda # 2
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          sta temp2
           ;; let temp3 = playerState[2]
           lda 2
           asl
@@ -357,8 +361,12 @@ SetPlayer4Color:
           lda # 3
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-                    ;; let temp2 = playerRecoveryFrames[3]
-                    lda 3          asl          tax          lda playerRecoveryFrames,x          sta temp2
+          ;; let temp2 = playerRecoveryFrames[3]
+          lda # 3
+          asl
+          tax
+          lda playerRecoveryFrames,x
+          sta temp2
           ;; let temp3 = playerState[3]
           lda 3
           asl

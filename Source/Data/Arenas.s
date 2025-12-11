@@ -1,5 +1,4 @@
-.include "Source/Common/Colors.s"
-  ;;; Commented out - Colors.s already included via Preamble.s
+;;; Colors.s is included in Preamble.s - do not include here
 Arenas_rem_label_1:
 
 ;;; ChaosFight - Source/Data/Arenas%0bas

@@ -1,16 +1,19 @@
 ;; Colors.s - Color definitions for different TV standards
 ;; Uses TVStandard (NTSC=0, PAL=1, SECAM=2) with enumerated constants
+;; Only one TV standard's colors are included based on TVStandard
 
-;; Always include NTSC colors (base set)
-.include "Source/Platform/ColorsNTSC.h"
-
-;; Conditionally include PAL colors if TVStandard == PAL
-.if TVStandard == PAL
-.include "Source/Platform/ColorsPAL.h"
+;; Include NTSC colors if TVStandard == 0
+.if TVStandard == 0
+.include "Source/Platform/ColorsNTSC.s"
 .fi
 
-;; SECAM color definitions if TVStandard == SECAM
-.if TVStandard == SECAM
+;; Include PAL colors if TVStandard == 1
+.if TVStandard == 1
+.include "Source/Platform/ColorsPAL.s"
+.fi
+
+;; SECAM color definitions if TVStandard == 2
+.if TVStandard == 2
 ;; SECAM color functions - 8 colors: RGB, CMY, KW (luminance selects black vs chroma)
 ;; Precompute luminance mappings
 

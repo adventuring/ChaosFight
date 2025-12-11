@@ -214,9 +214,9 @@ StopGuardEarly:
 IHRP_ProcessAttack .proc
           ;; Process attack input
           ;; Cross-bank call to ProcessAttackInput in bank 10
-          lda # >(return_point-1)
+          lda # >(InputDoneRightPortAttack-1)
           pha
-          lda # <(return_point-1)
+          lda # <(InputDoneRightPortAttack-1)
           pha
           lda # >(ProcessAttackInput-1)
           pha
@@ -225,7 +225,7 @@ IHRP_ProcessAttack .proc
                     ldx # 9
           jmp BS_jsr
 
-InputDoneRightPortAttack
+InputDoneRightPortAttack:
 
           rts
 .pend

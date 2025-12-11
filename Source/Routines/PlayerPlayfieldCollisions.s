@@ -390,9 +390,9 @@ PFCS_ReadPlayfieldPixel:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(PFCS_PlayfieldReadReturn-1)
+          lda # >(AfterPlayfieldReadColumnSpan-1)
           pha
-          lda # <(PFCS_PlayfieldReadReturn-1)
+          lda # <(AfterPlayfieldReadColumnSpan-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -429,10 +429,10 @@ PFCS_Advance .proc
 
           AdvanceRowCounter:
 
-          lda PCC_rowSpan
+          lda temp3
           cmp # 0
           bne IncrementRowCounter
-          jmp PFCS_Done
+          jmp PFCS_Done:
 IncrementRowCounter:
 
 
@@ -442,7 +442,7 @@ IncrementRowCounter:
 
 
 
-PFCS_Done
+PFCS_Done:
           ;; Returns: Far (return otherbank)
 
           lda temp5  ;;; PCC_result
@@ -598,9 +598,9 @@ PF_ProcessHorizontalCollision .proc
           sta temp3
 
           ;; Cross-bank call to PF_CheckColumnSpan in bank 10
-          lda # >(return_point-1)
+          lda # >(AfterCheckColumnSpan-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckColumnSpan-1)
           pha
           lda # >(PF_CheckColumnSpan-1)
           pha

@@ -92,9 +92,9 @@ InputDoneLeftPortJump
 
           ;; Process down/guard input
           ;; Cross-bank call to HandleGuardInput in bank 12
-          lda # >(return_point-1)
+          lda # >(IHLPF_CCJReturn-1)
           pha
-          lda # <(return_point-1)
+          lda # <(IHLPF_CCJReturn-1)
           pha
           lda # >(HandleGuardInput-1)
           pha

@@ -289,9 +289,9 @@ Bank3Dispatch
           ;; temp3=action, temp5=player
 
           ;; Cross-bank call to SetPlayerCharacterArtBank3 in bank 3
-          lda # >(return_point-1)
+          lda # >(SLCAB3_return_point-1)
           pha
-          lda # <(return_point-1)
+          lda # <(SLCAB3_return_point-1)
           pha
           lda # >(SetPlayerCharacterArtBank3-1)
           pha

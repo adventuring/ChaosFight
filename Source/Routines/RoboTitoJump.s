@@ -118,9 +118,9 @@ CheckPlayfieldPixel:
           lda temp5
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadStretch-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadStretch-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -268,9 +268,9 @@ CheckCeilingPixel:
           lda temp4
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadCeiling-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadCeiling-1)
           pha
           lda # >(PlayfieldRead-1)
           pha

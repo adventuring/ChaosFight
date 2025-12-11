@@ -89,9 +89,9 @@ BernieFallThroughUpAction .proc
           lda # 0
           sta temp3
           ;; Cross-bank call to BernieJump in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterBernieJump-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterBernieJump-1)
           pha
           lda # >(BernieJump-1)
           pha
@@ -211,9 +211,9 @@ CheckCeilingPixel:
           lda temp3
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadRoboTitoAscend-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadRoboTitoAscend-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -224,11 +224,11 @@ CheckCeilingPixel:
 
 AfterPlayfieldReadRoboTitoAscend:
 
-          ;; if temp1 then goto RoboTitoLatchUpAction
+          ;; if temp1 then goto PUA_RoboTitoLatch
           lda temp1
           beq CheckDownPressed
 
-          jmp RoboTitoLatchUpAction
+          jmp PUA_RoboTitoLatch
 
 CheckDownPressed:
           ;; Clear latch if DOWN pressed (check appropriate port)

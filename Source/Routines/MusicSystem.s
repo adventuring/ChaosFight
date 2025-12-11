@@ -81,12 +81,10 @@ StartMusic .proc
           ;; Routes to correct bank based on song ID
 
           ;; Stop any current music
-
-          AUDV0 = 0
-
-          AUDV1 = 0
-
-
+          lda # 0
+          sta AUDV0
+          lda # 0
+          sta AUDV1
 
           ;; Clear voice pointers (high byte = 0 means inactive)
 

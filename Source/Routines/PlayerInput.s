@@ -1860,9 +1860,9 @@ HFCM_MoveLeftOK:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadMoveLeftCurrentRow-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadMoveLeftCurrentRow-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -1870,7 +1870,7 @@ HFCM_MoveLeftOK:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadMoveLeftCurrentRow:
 
 
                     if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow

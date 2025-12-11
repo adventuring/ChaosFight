@@ -19,7 +19,6 @@ UpdateCharacterAnimations:
           ;; Calls: UpdatePlayerAnimation (bank10), LoadPlayerSprite (bank16)
           ;; Constraints: None
           ;; CRITICAL: Skip sprite loading in Publisher Prelude and Author Prelude modes (no characters)
-          jmp BS_return
           ;; UCA_quadtariActive uses temp5 directly (no dim needed)
           lda controllerStatus
           and # SetQuadtariDetected
@@ -46,7 +45,7 @@ UCA_CheckQuadtari:
           lda playerHealth,x
           bne UCA_CheckCharacter
 
-          jmp AnimationNextPlayer
+          jmp AnimationNextPlayerLabel
 
 UCA_CheckCharacter:
 
@@ -359,7 +358,11 @@ AnimationHandleAttackTransition
           jmp UpdateSprite
 HandleWindupEnd:
           
-                    let temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
+          ;; Set temp1 = temp1 - ActionAttackWindup
+          lda temp1
+          sec
+          sbc # ActionAttackWindup
+          sta temp1
           jmp AnimationHandleWindupEnd
           jmp UpdateSprite
 

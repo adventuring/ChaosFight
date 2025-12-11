@@ -397,7 +397,7 @@ AfterSetPlayerSpritesFalling:
           ;; drawscreen called by MainLoop
           jmp BS_return
 
-FallingComplete1
+FallingComplete1 .proc
           ;; All players have reached row 2 positions
           ;; Returns: Far (return otherbank)
           ;;

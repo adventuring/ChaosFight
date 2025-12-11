@@ -26,8 +26,6 @@ VblankHandlerDispatcher .proc
           ;; Execution continues at ongosub0 label
           jmp VblankHandlerDone
 
-          jmp BS_return
-
 .pend
 
 VblankModePublisherPrelude .proc
@@ -1316,6 +1314,7 @@ VblankWinnerAnnouncementSkipMusic .proc
           ;; Update character animations for winner screen
           ;; CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on sta
 
+.pend
 
 VblankHandlerDone:
           ;; Vblank handler complete
@@ -1324,6 +1323,4 @@ VblankHandlerDone:
           jmp BS_return
           ;; Note: vblank_bB_code constant is defined in Bank15.s pointing to VblankHandlerTrampoline
           ;; The trampoline calls this dispatcher via cross-bank call
-
-.pend
 

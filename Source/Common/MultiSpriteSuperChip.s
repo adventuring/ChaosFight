@@ -8,9 +8,11 @@
 
 ;; CRITICAL: Define memory address variables FIRST to allow DASM to resolve forward references
 ;; These must be defined before any code that uses them
-.ifndef MULTISPRITE_SUPERCHIP_DEFINED
-MULTISPRITE_SUPERCHIP_DEFINED = 1
-
+;; NOTE: .weak protection needed because Preamble.s (which includes this file)
+;; is included multiple times: once by platform files (NTSC.s/PAL.s/SECAM.s)
+;; and once by titlescreen.s. 64tass doesn't support .ifndef include guards,
+;; so .weak/.endweak is the standard way to allow duplicate symbol definitions.
+.weak
 missile1height = $A4
 missile0height = $A5
 ;; playfieldRow is defined via dim in Variables.s

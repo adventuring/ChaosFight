@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 ;; Include guard: ensure this file is only processed once per compilation
-.ifndef PREAMBLE_INCLUDED
+.if !defined(PREAMBLE_INCLUDED)
 PREAMBLE_INCLUDED = 1
 
 ;; CRITICAL: Include AssemblyConfig.s FIRST to set processor directive
@@ -55,5 +55,3 @@ PREAMBLE_INCLUDED = 1
 ;;; Note: BS_return and BS_jsr are sequential - BS_jsr comes after BS_return
 ;;; Forward declarations not needed - will be defined in Banks.s as Bank0BS.BS_return and Bank0BS.BS_jsr
 ;;; Global labels BS_return and BS_jsr reference Bank 0 block; all banks have identical addresses
-
-.fi ;;; PREAMBLE_INCLUDED

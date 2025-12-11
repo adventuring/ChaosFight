@@ -5,8 +5,7 @@
 ;;;; Workaround: 64tass can use macro-local variables in .rept expressions,
 ;;;; so we calculate the .rept count directly from the macro argument
 
-.ifndef SLEEP_MACRO_DEFINED
-SLEEP_MACRO_DEFINED = 1
+.weak
 
 SLEEP .macro duration
           ;;; usage: .SLEEP n (n>1)

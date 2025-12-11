@@ -146,18 +146,6 @@ SetRecoveryFlag:
           asl
           tax
           lda playerRecoveryFrames,x
-          beq AMAR_RecoveryDone
-          lda temp1
-          asl
-          tax
-          lda playerState,x
-          ora # PlayerStateBitRecovery
-          sta playerState,x
-AMAR_RecoveryDone:
-          lda temp1
-          asl
-          tax
-          lda playerRecoveryFrames,x
           beq ClearRecoveryFlag
           lda playerState,x
           ora # PlayerStateBitRecovery

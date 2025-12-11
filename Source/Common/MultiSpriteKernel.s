@@ -16,6 +16,13 @@ PFStart:
 pfsub:
           .byte 8,4,2,2,1,0,0,1,0
           .fi
+
+;; Initial sprite color and height data tables (5 sprites: indices 0-4)
+CopyColorData:
+          .byte $0E, $0E, $0E, $0E, $0E
+SpriteHeightTable:
+          .byte 16, 16, 16, 16, 16
+
           ;;--set initial P1 positions
 multisprite_setup:
           lda # 15

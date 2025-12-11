@@ -54,9 +54,9 @@ ColumnInRange:
           lda temp7
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadMoveLeft1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadMoveLeft1-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -65,7 +65,7 @@ ColumnInRange:
           ldx # 15
           jmp BS_jsr
 
-return_point:
+AfterPlayfieldReadMoveLeft1:
 
           jsr BS_return
 
@@ -93,9 +93,9 @@ RowInRange:
           lda temp7
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point2-1)
+          lda # >(AfterPlayfieldReadMoveLeft2-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterPlayfieldReadMoveLeft2-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -104,7 +104,7 @@ RowInRange:
           ldx # 15
           jmp BS_jsr
 
-return_point2:
+AfterPlayfieldReadMoveLeft2:
 
           jsr BS_return
 .pend
@@ -192,9 +192,9 @@ HFCM_LeftDirect .proc
 HFCM_LeftFacing .proc
           jsr BS_return
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerAnimationStateLeft-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerAnimationStateLeft-1)
           pha
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
@@ -202,7 +202,7 @@ HFCM_LeftFacing .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point_fmh3:
+AfterGetPlayerAnimationStateLeft:
 
           ;; if temp2 < 5 then HFCM_SetFacingLeft
           lda temp2
@@ -322,9 +322,9 @@ return_point_fmh4:
           lda temp7
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadMoveRight2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadMoveRight2-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -332,7 +332,7 @@ return_point_fmh4:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point_fmh5:
+AfterPlayfieldReadMoveRight2:
 
           jsr BS_return
 .pend
@@ -411,9 +411,9 @@ HFCM_RightDirect .proc
 HFCM_RightFacing .proc
           jsr BS_return
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerAnimationStateRight-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerAnimationStateRight-1)
           pha
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
@@ -421,7 +421,7 @@ HFCM_RightFacing .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point_fmh6:
+AfterGetPlayerAnimationStateRight:
 
           ;; if temp2 < 5 then HFCM_SetFacingRight
           lda temp2

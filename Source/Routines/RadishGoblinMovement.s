@@ -23,29 +23,29 @@ RadishGoblinHandleInput .proc
 
           jsr BS_return
 
-          ;; if temp1 & 2 = 0 then goto RGHI_Joy0
+          ;; if temp1 & 2 = 0 then goto CheckJoy0RadishGoblin
           lda joy1left
-          bne RGHI_Left
+          bne MoveLeftRadishGoblin
 
-          jmp RGHI_CheckRight
+          jmp CheckRightRadishGoblin
 
-RGHI_Left:
+MoveLeftRadishGoblin:
 
-          jmp RGHI_Left
+          jmp MoveLeftRadishGoblin
 
 .pend
 
-RGHI_Joy0 .proc
+CheckJoy0RadishGoblin .proc
           lda joy0left
-          bne RGHI_Left
+          bne MoveLeftRadishGoblin
 
-          jmp RGHI_CheckRight
+          jmp CheckRightRadishGoblin
 
-RGHI_Left:
+MoveLeftRadishGoblin:
 
 .pend
 
-RGHI_Left .proc
+MoveLeftRadishGoblin .proc
           ;; let temp4 = playerCharacter[temp1]
           lda temp1
           asl
@@ -67,7 +67,7 @@ RGHI_Left .proc
           lda # 0
           sta playerVelocityXL,x
 
-                    if (playerState[temp1] & 8) then goto RGHI_AfterLeft
+                    if (playerState[temp1] & 8) then goto AfterLeftRadishGoblin
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateLeft-1)
@@ -83,9 +83,9 @@ RGHI_Left .proc
 AfterGetPlayerAnimationStateLeft:
 
 
-          ;; if temp2 < 5 then goto RGHI_SPF_No1
+          ;; if temp2 < 5 then goto SkipSetFacingLeftRadishGoblin
           lda temp2
-          cmp 5
+          cmp # 5
           bcs .skip_7968
           jmp
           lda temp2
@@ -106,45 +106,45 @@ CheckAnimationFrame10Label:
 
           lda temp2
           cmp # 10
-          bcc RGHI_AfterLeft
-RGHI_AfterLeft:
+          bcc AfterLeftRadishGoblin
+AfterLeftRadishGoblin:
 
 
-          jmp RGHI_AfterLeft
+          jmp AfterLeftRadishGoblin
 
 .pend
 
-RGHI_SPF_No1 .proc
+SkipSetFacingLeftRadishGoblin .proc
 
                     let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
 
 .pend
 
-RGHI_AfterLeft .proc
+AfterLeftRadishGoblin .proc
 
 .pend
 
-RGHI_CheckRight .proc
+CheckRightRadishGoblin .proc
 
-          ;; if temp1 & 2 = 0 then goto RGHI_CheckRightJoy0
+          ;; if temp1 & 2 = 0 then goto CheckRightJoy0RadishGoblin
           lda temp1
           and # 2
-          bne RGHI_Right
-          jmp RGHI_CheckRightJoy0
-RGHI_Right:
+          bne MoveRightRadishGoblin
+          jmp CheckRightJoy0RadishGoblin
+MoveRightRadishGoblin:
 
           rts
-          jmp RGHI_Right
+          jmp MoveRightRadishGoblin
 
 .pend
 
-RGHI_CheckRightJoy0 .proc
+CheckRightJoy0RadishGoblin .proc
 
           rts
 
 .pend
 
-RGHI_Right .proc
+MoveRightRadishGoblin .proc
 
           ;; let temp4 = playerCharacter[temp1]
           lda temp1
@@ -169,7 +169,7 @@ RGHI_Right .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
           rts
@@ -188,9 +188,9 @@ RGHI_Right .proc
 AfterGetPlayerAnimationStateLeft:
 
 
-          ;; if temp2 < 5 then goto RGHI_SPF_No2
+          ;; if temp2 < 5 then goto SkipSetFacingRightRadishGoblin
           lda temp2
-          cmp 5
+          cmp # 5
           bcs .CheckAnimationFrame10Right
           jmp
           lda temp2
@@ -209,15 +209,15 @@ CheckAnimationFrame10RightLabel:
 
           lda temp2
           cmp # 10
-          bcc RGHI_RightDone
-RGHI_RightDone:
+          bcc AfterRightRadishGoblin
+AfterRightRadishGoblin:
 
 
           rts
 
 .pend
 
-RGHI_SPF_No2 .proc
+SkipSetFacingRightRadishGoblin .proc
 
                     let playerState[temp1] = playerState[temp1] | 1
 

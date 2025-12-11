@@ -391,31 +391,7 @@ PositionRunnerUp:
           sta currentPlayer
           jsr LoadIdleSpriteWinScreen
 
-          jmp Hide2PlayerWinScreenDone
-
-.pend
-
-Hide2PlayerWinScreen .proc
-          ;; Hide Player 2 (no runner-up)
-          ;; Returns: Far (return otherbank)
-          ;;
-          ;; Input: None (called from Position2PlayersWinScreen)
-          ;;
-          ;; Output: playerX[1] set to 0
-          ;;
-          ;; Mutates: playerX[1] (TIA register)
-          ;;
-          ;; Called Routines: None
-          ;;
-          ;; Constraints: Must be colocated with DisplayWinScreen,
-          ;; Position2PlayersWinScreen, Hide2PlayerWinScreenDone
-          lda 1
-          asl
-          tax
-          lda 0
-          sta playerX,x
-
-Hide2PlayerWinScreenDone
+Hide2PlayerWinScreenDone:
           ;; Hide Player 2 complete (label only)
           ;; Returns: Far (return otherbank)
           ;;
@@ -431,6 +407,28 @@ Hide2PlayerWinScreenDone
           jsr HidePlayers123WinScreen
 
           jsr BS_return
+
+Hide2PlayerWinScreen:
+          ;; Hide Player 2 (no runner-up)
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: None (called from Position2PlayersWinScreen)
+          ;;
+          ;; Output: playerX[1] set to 0
+          ;;
+          ;; Mutates: playerX[1] (TIA register)
+          ;;
+          ;; Called Routines: None
+          ;;
+          ;; Constraints: Must be colocated with DisplayWinScreen,
+          ;; Position2PlayersWinScreen, Hide2PlayerWinScreenDone
+          lda # 1
+          asl
+          tax
+          lda # 0
+          sta playerX,x
+
+          jmp Hide2PlayerWinScreenDone
 
 Position3PlayersWinScreen
           ;; 3+ players: Winner centered high, 2nd left, 3rd right

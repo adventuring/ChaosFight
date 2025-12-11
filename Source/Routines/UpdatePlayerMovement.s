@@ -41,9 +41,9 @@ UpdatePlayerMovement .proc
           ;; Constraints: Must be colocated with UpdatePlayerMovementQuadtariSkip (goto target)
           ;; TODO: #1254 for currentPlayer = 0 to 1
           ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
-          lda # >(return_point-1)
+          lda # >(AfterUpdatePlayerMovementSingle-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterUpdatePlayerMovementSingle-1)
           pha
           lda # >(UpdatePlayerMovementSingle-1)
           pha
@@ -52,7 +52,7 @@ UpdatePlayerMovement .proc
           ldx # 7
           jmp BS_jsr
 
-return_point:
+AfterUpdatePlayerMovementSingle:
 
           ;; Players 2-3 only if Quadtari detected
 
@@ -70,9 +70,9 @@ UpdatePlayerMovementQuadtari:
 
           ;; TODO: #1254 for currentPlayer = 2 to 3
           ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
-          lda # >(return_point2-1)
+          lda # >(AfterUpdatePlayerMovementSingleQuadtari-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterUpdatePlayerMovementSingleQuadtari-1)
           pha
           lda # >(UpdatePlayerMovementSingle-1)
           pha
@@ -81,7 +81,7 @@ UpdatePlayerMovementQuadtari:
           ldx # 7
           jmp BS_jsr
 
-return_point2:
+AfterUpdatePlayerMovementSingleQuadtari:
 
 .pend
 

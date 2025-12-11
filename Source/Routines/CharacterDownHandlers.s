@@ -127,9 +127,9 @@ CheckRowBelow:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(CDH_return_point_1-1)
+          lda # >(CDH_PlayfieldReadReturn-1)
           pha
-          lda # <(CDH_return_point_1-1)
+          lda # <(CDH_PlayfieldReadReturn-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -137,7 +137,7 @@ CheckRowBelow:
           pha
                     ldx # 15
           jmp BS_jsr
-CDH_return_point_1:
+CDH_PlayfieldReadReturn:
 
 
                     if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown
@@ -416,9 +416,9 @@ CheckRowBelowHarpy:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadHarpy-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadHarpy-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -426,7 +426,7 @@ CheckRowBelowHarpy:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadHarpy:
 
 
           if temp1 then let temp5 = 1
@@ -599,9 +599,9 @@ CheckRowBelowFrooty:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadRadishGoblin-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadRadishGoblin-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -609,7 +609,7 @@ CheckRowBelowFrooty:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadRadishGoblin:
 
 
                     if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown

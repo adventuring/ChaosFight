@@ -71,9 +71,9 @@ ShamoneAttack:
           ;; Then execute the attack (inline former PerformMeleeAttack)
 
           ;; Cross-bank call to SpawnMissile in bank 7
-          lda # >(return_point_1_L88-1)
+          lda # >(ShamoneAttackSpawnMissileReturn-1)
           pha
-          lda # <(return_point_1_L88-1)
+          lda # <(ShamoneAttackSpawnMissileReturn-1)
           pha
           lda # >(SpawnMissile-1)
           pha
@@ -82,7 +82,7 @@ ShamoneAttack:
           ldx # 6
           jmp BS_jsr
 
-return_point_1_L88:
+ShamoneAttackSpawnMissileReturn:
 
           ;; playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           lda temp1

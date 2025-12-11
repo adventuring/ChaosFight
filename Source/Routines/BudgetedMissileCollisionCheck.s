@@ -54,9 +54,9 @@ Use4PlayerMode:
           and temp6
           sta temp4
           ;; Cross-bank call to CheckAllMissileCollisions in bank 8
-          lda # >(return_point_bmc-1)
+          lda # >(AfterCheckAllMissileCollisions-1)
           pha
-          lda # <(return_point_bmc-1)
+          lda # <(AfterCheckAllMissileCollisions-1)
           pha
           lda # >(CheckAllMissileCollisions-1)
           pha
@@ -65,7 +65,7 @@ Use4PlayerMode:
           ldx # 7
           jmp BS_jsr
 
-return_point_bmc:
+AfterCheckAllMissileCollisions:
 
           rts
 
@@ -89,9 +89,9 @@ BudgetedMissileCollisionCheck2P:
           and temp6
           sta temp4
           ;; Cross-bank call to CheckAllMissileCollisions in bank 8
-          lda # >(return_point2-1)
+          lda # >(AfterCheckAllMissileCollisions2P-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterCheckAllMissileCollisions2P-1)
           pha
           lda # >(CheckAllMissileCollisions-1)
           pha
@@ -100,7 +100,7 @@ BudgetedMissileCollisionCheck2P:
           ldx # 7
           jmp BS_jsr
 
-return_point2:
+AfterCheckAllMissileCollisions2P:
 
           rts
 

@@ -98,9 +98,9 @@ BernieAttack .proc
 
           ;; Attack facing direction
           ;; Cross-bank call to PerformGenericAttack in bank 7
-          lda # >(return_point-1)
+          lda # >(AfterPerformGenericAttackFacing-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPerformGenericAttackFacing-1)
           pha
           lda # >(PerformGenericAttack-1)
           pha
@@ -108,7 +108,7 @@ BernieAttack .proc
           pha
                     ldx # 6
           jmp BS_jsr
-BA_return_point_1:
+AfterPerformGenericAttackFacing:
 
 
           ;; Attack opposite direction (toggle facing)
@@ -121,9 +121,9 @@ BA_return_point_1:
           sta playerState,x
 
           ;; Cross-bank call to PerformGenericAttack in bank 7
-          lda # >(return_point-1)
+          lda # >(AfterPerformGenericAttackOpposite-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPerformGenericAttackOpposite-1)
           pha
           lda # >(PerformGenericAttack-1)
           pha
@@ -131,7 +131,7 @@ BA_return_point_1:
           pha
                     ldx # 6
           jmp BS_jsr
-BA_return_point_2:
+AfterPerformGenericAttackOpposite:
 
 
           ;; Restore original facing direction

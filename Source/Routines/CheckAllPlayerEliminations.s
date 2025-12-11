@@ -51,9 +51,9 @@ CheckAllPlayerEliminations:
           ;; Check each player for elimination using FOR loop
           ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; Cross-bank call to CheckPlayerElimination in bank 14
-          lda # >(CAPE_return_point_1-1)
+          lda # >(CAPE_CheckPlayerEliminationReturn-1)
           pha
-          lda # <(CAPE_return_point_1-1)
+          lda # <(CAPE_CheckPlayerEliminationReturn-1)
           pha
           lda # >(CheckPlayerElimination-1)
           pha
@@ -62,7 +62,7 @@ CheckAllPlayerEliminations:
           ldx # 13
           jmp BS_jsr
 
-CAPE_return_point_1:
+CAPE_CheckPlayerEliminationReturn:
 
 CAPE_next_label_1 .proc
 
@@ -81,15 +81,15 @@ CAPE_next_label_1 .proc
           ldx # 13
           jmp BS_jsr
 
-return_point:
+AfterCountRemainingPlayers:
 
           ;; If players still remain, no game end yet
           jsr BS_return
 
           ;; Cross-bank call to FindWinner in bank 14
-          lda # >(return_point2-1)
+          lda # >(AfterFindWinner-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterFindWinner-1)
           pha
           lda # >(FindWinner-1)
           pha
@@ -98,7 +98,7 @@ return_point:
           ldx # 13
           jmp BS_jsr
 
-return_point2:
+AfterFindWinner:
 
           lda # 180
           sta gameEndTimer_W

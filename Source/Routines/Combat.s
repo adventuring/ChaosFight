@@ -137,9 +137,9 @@ ApplyDamageToPlayer:
           lda # ActionHit
           sta temp2
           ;; Cross-bank call to SetPlayerAnimation in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterSetPlayerAnimation-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetPlayerAnimation-1)
           pha
           lda # >(SetPlayerAnimation-1)
           pha
@@ -148,7 +148,7 @@ ApplyDamageToPlayer:
           ldx # 11
           jmp BS_jsr
 
-return_point:
+AfterSetPlayerAnimation:
 
           ;; Calculate recovery frames (damage / 2, clamped 10-30)
           ;; let temp4 = temp1 / 2
@@ -305,9 +305,9 @@ PlayerDies .proc
           lda defenderID
           sta currentPlayer
           ;; Cross-bank call to CheckPlayerElimination in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterCheckPlayerElimination-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckPlayerElimination-1)
           pha
           lda # >(CheckPlayerElimination-1)
           pha
@@ -315,7 +315,7 @@ PlayerDies .proc
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterCheckPlayerElimination:
 
 
           ;; Sound effect
@@ -923,9 +923,9 @@ ProcessAllAttacksDone .proc
           lda SoundAttackHit
           sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterPlaySoundEffect-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlaySoundEffect-1)
           pha
           lda # >(PlaySoundEffect-1)
           pha
@@ -933,7 +933,7 @@ ProcessAllAttacksDone .proc
           pha
                     ldx # 14
           jmp BS_jsr
-return_point_combat3:
+AfterPlaySoundEffect:
 
 
           jsr BS_return

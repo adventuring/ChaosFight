@@ -57,9 +57,9 @@ ProcessStandardMovement:
 
           ;; Standard horizontal movement (uses shared routine)
           ;; Cross-bank call to ProcessStandardMovement in bank 13
-          lda # >(return_point_1-1)
+          lda # >(IHLPF_ProcessStandardMovementReturn-1)
           pha
-          lda # <(return_point_1-1)
+          lda # <(IHLPF_ProcessStandardMovementReturn-1)
           pha
           lda # >(ProcessStandardMovement-1)
           pha
@@ -68,7 +68,7 @@ ProcessStandardMovement:
           ldx # 12
           jmp BS_jsr
 
-return_point_1:
+IHLPF_ProcessStandardMovementReturn:
 
 DoneLeftPortMovement:
 
@@ -102,14 +102,14 @@ InputDoneLeftPortJump
           pha
                     ldx # 11
           jmp BS_jsr
-return_point_ihlpf2:
+IHLPF_CCJReturn:
 
 
           ;; Process attack input
           ;; Cross-bank call to ProcessAttackInput in bank 10
-          lda # >(return_point-1)
+          lda # >(IHLPF_ProcessAttackInputReturn-1)
           pha
-          lda # <(return_point-1)
+          lda # <(IHLPF_ProcessAttackInputReturn-1)
           pha
           lda # >(ProcessAttackInput-1)
           pha
@@ -117,7 +117,7 @@ return_point_ihlpf2:
           pha
                     ldx # 9
           jmp BS_jsr
-return_point_ihlpf3:
+IHLPF_ProcessAttackInputReturn:
 
 InputDoneLeftPortAttack
 

@@ -73,9 +73,9 @@ IHRP_ProcessStandardMovement:
 
           ;; Standard horizontal movement (uses shared routine)
           ;; Cross-bank call to ProcessStandardMovement in bank 13
-          lda # >(return_point_1_L83-1)
+          lda # >(IHRPF_ProcessStandardMovementReturn-1)
           pha
-          lda # <(return_point_1_L83-1)
+          lda # <(IHRPF_ProcessStandardMovementReturn-1)
           pha
           lda # >(ProcessStandardMovement-1)
           pha
@@ -83,7 +83,7 @@ IHRP_ProcessStandardMovement:
           pha
           ldx # 12
           jmp BS_jsr
-return_point_1_L83:
+IHRPF_ProcessStandardMovementReturn:
 
 
 DoneRightPortMovement

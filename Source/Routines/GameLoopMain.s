@@ -150,9 +150,9 @@ GameMainLoopContinue
 
           ;; Handle console switches (in Bank 13)
           ;; Cross-bank call to HandleConsoleSwitches in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterConsoleSwitches-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterConsoleSwitches-1)
           pha
           lda # >(HandleConsoleSwitches-1)
           pha
@@ -160,14 +160,14 @@ GameMainLoopContinue
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterConsoleSwitches:
 
 
           ;; Handle all player input (with Quadtari multiplexing) (in Bank 8)
           ;; Cross-bank call to InputHandleAllPlayers in bank 8
-          lda # >(return_point-1)
+          lda # >(AfterInputHandled-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterInputHandled-1)
           pha
           lda # >(InputHandleAllPlayers-1)
           pha
@@ -175,14 +175,14 @@ return_point:
           pha
                     ldx # 7
           jmp BS_jsr
-return_point:
+AfterInputHandled:
 
 
           ;; Update guard timers (duration and cooldown)
           ;; Cross-bank call to UpdateGuardTimers in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterGuardTimersUpdated-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGuardTimersUpdated-1)
           pha
           lda # >(UpdateGuardTimers-1)
           pha
@@ -190,7 +190,7 @@ return_point:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterGuardTimersUpdated:
 
 
           ;; Update attack cooldown timers (in Bank 12)
@@ -247,7 +247,7 @@ FrootyChargeUpdate .proc
           pha
                     ldx # 7
           jmp BS_jsr
-return_point:
+AfterFrootyAttack:
 
 
 .pend

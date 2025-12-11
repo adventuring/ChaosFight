@@ -400,7 +400,7 @@ PFCS_ReadPlayfieldPixel:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadColumnSpan:
 
 
           ;; if temp1 then PCC_result = 1 : goto PFCS_Done
@@ -489,7 +489,7 @@ PF_CheckRowColumns .proc
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadCenter:
 
 
           ;; if temp1 then PRC_result = 1 : goto PRC_Done
@@ -608,7 +608,7 @@ PF_ProcessHorizontalCollision .proc
           pha
                     ldx # 9
           jmp BS_jsr
-return_point:
+AfterCheckColumnSpan:
 
 
           jsr BS_return
@@ -817,9 +817,9 @@ PFCheckDown_Body .proc
           sta temp2
 
           ;; Cross-bank call to PF_CheckRowColumns in bank 10
-          lda # >(return_point-1)
+          lda # >(AfterCheckRowColumns-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckRowColumns-1)
           pha
           lda # >(PF_CheckRowColumns-1)
           pha
@@ -827,7 +827,7 @@ PFCheckDown_Body .proc
           pha
                     ldx # 9
           jmp BS_jsr
-return_point:
+AfterCheckRowColumns:
 
 
           ;; if temp4 then goto PFBlockDown

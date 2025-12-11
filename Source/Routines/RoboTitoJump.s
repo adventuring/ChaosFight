@@ -128,7 +128,7 @@ CheckPlayfieldPixel:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadStretch:
 
           ;; if temp1 then temp6 = 1
           lda temp1
@@ -278,7 +278,7 @@ CheckCeilingPixel:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadCeiling:
 
           ;; if temp1 then goto RoboTitoLatch
           lda temp1

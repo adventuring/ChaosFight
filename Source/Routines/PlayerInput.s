@@ -2624,9 +2624,9 @@ HGI_CheckJoy0_1 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0down
-          bne HGI_HandleDownPressed1
+          bne HGI_HandleDownPressed1Joy0
           jmp HGI_CheckGuardRelease1
-HGI_HandleDownPressed1:
+HGI_HandleDownPressed1Joy0:
 
 
 .pend

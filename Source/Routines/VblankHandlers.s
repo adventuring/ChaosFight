@@ -213,9 +213,10 @@ VblankSharedUpdateCharacterAnimations
           ;; CRITICAL: Skip sprite loading in Publisher Prelude and Author Prelude modes (no characters)
           rts
           rts
+
           ;; TODO: #1300 dim VblankUCA_quadtariActive = temp5
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           sta VblankUCA_quadtariActive
           ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; if currentPlayer >= 2 && !VblankUCA_quadtariActive then goto VblankAnimationNextPlayer

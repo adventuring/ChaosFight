@@ -537,11 +537,8 @@ CacheAOERightHitbox .proc
           asl
           tax
           lda playerX,x
-          sta cachedHitboxLeft_W + aoeOffset
-          lda temp1
-          asl
-          tax
-          lda playerX,x
+          clc
+          adc aoeOffset
           sta cachedHitboxLeft_W
 
           ;; let cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
@@ -584,24 +581,13 @@ CacheAOELeftHitbox .proc
           lda playerX,x
           sta cachedHitboxRight_W
 
-          ;; let cachedHitboxLeft_W = cachedHitboxRight_R - PlayerSpriteHalfWidth          lda cachedHitboxRight_R          sec          sbc PlayerSpriteHalfWidth          sta cachedHitboxLeft_W
+          ;; let cachedHitboxLeft_W = cachedHitboxRight_R - PlayerSpriteHalfWidth
           lda cachedHitboxRight_R
           sec
-          sbc PlayerSpriteHalfWidth
+          sbc # PlayerSpriteHalfWidth
           sta cachedHitboxLeft_W
-
-          lda cachedHitboxRight_R
-          sec
-          sbc PlayerSpriteHalfWidth
-          sta cachedHitboxLeft_W
-
 
           ;; let cachedHitboxTop_W = playerY[temp1]
-          lda temp1
-          asl
-          tax
-          lda playerY,x
-          sta cachedHitboxTop_W
           lda temp1
           asl
           tax
@@ -611,10 +597,6 @@ CacheAOELeftHitbox .proc
           ;; let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
 
           rts
-
-
-
-.pend
 
 .pend
 

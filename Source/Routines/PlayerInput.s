@@ -141,7 +141,7 @@ InputHandleAllPlayers .proc
           ;; qtcontroller (toggled between 0 and 1)
 
           ;;
-          ;; Called Routines: IsPlayerAlive (bank13) - checks if player is
+          ;; Called Routines: (IsPlayerAlive inlined) - checks if player is
 
           ;; alive (returns health in temp2),
 
@@ -174,7 +174,12 @@ HandlePlayers12:
 
           ;; Even frame: Handle Players 1 & 2 - only if alive
 
-          ;; let currentPlayer = 0 : gosub IsPlayerAlive bank13
+          ;; Inlined IsPlayerAlive check for player 0
+          lda # 0
+          asl
+          tax
+          lda playerHealth,x
+          sta temp2
           lda temp2
           cmp # 0
           bne CheckPlayer0State
@@ -212,20 +217,12 @@ InputDonePlayer0Input
 
 
 
-          ;; let currentPlayer = 1 : gosub IsPlayerAlive bank13
-          lda 1
-          sta currentPlayer
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(IsPlayerAlive-1)
-          pha
-          lda # <(IsPlayerAlive-1)
-          pha
-          ldx # 12
-          jmp BS_jsr
-return_point:
+          ;; Inlined IsPlayerAlive check for player 1
+          lda # 1
+          asl
+          tax
+          lda playerHealth,x
+          sta temp2
           lda temp2
           cmp # 0
           bne CheckPlayer1State
@@ -323,7 +320,7 @@ InputHandleQuadtariPlayers .proc
           ;; qtcontroller (reset to 0)
 
           ;;
-          ;; Called Routines: IsPlayerAlive (bank13) - checks if player is
+          ;; Called Routines: (IsPlayerAlive inlined) - checks if player is
 
           ;; alive (returns health in temp2),
 
@@ -356,20 +353,12 @@ CheckPlayer3Character:
 
           ;; if playerCharacter[2] = NoCharacter then goto InputDonePlayer3Input
 
-          ;; let currentPlayer = 2 : gosub IsPlayerAlive bank13
-          lda 2
-          sta currentPlayer
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(IsPlayerAlive-1)
-          pha
-          lda # <(IsPlayerAlive-1)
-          pha
-          ldx # 12
-          jmp BS_jsr
-return_point:
+          ;; Inlined IsPlayerAlive check for player 2
+          lda # 2
+          asl
+          tax
+          lda playerHealth,x
+          sta temp2
           lda temp2
           cmp # 0
           bne CheckPlayer3State
@@ -415,20 +404,12 @@ CheckPlayer4Character:
 
           ;; if playerCharacter[3] = NoCharacter then goto InputDonePlayer4Input
 
-          ;; let currentPlayer = 3 : gosub IsPlayerAlive bank13
-          lda 3
-          sta currentPlayer
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(IsPlayerAlive-1)
-          pha
-          lda # <(IsPlayerAlive-1)
-          pha
-          ldx # 12
-          jmp BS_jsr
-return_point:
+          ;; Inlined IsPlayerAlive check for player 3
+          lda # 3
+          asl
+          tax
+          lda playerHealth,x
+          sta temp2
           lda temp2
           cmp # 0
           bne CheckPlayer4State

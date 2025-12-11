@@ -56,10 +56,7 @@ IsPlayerEliminatedStart:
 .include "Source/Routines/IsPlayerEliminated.s"
 IsPlayerEliminatedEnd:
             .warn format("// Bank 12: %d bytes = IsPlayerEliminated", [IsPlayerEliminatedEnd - IsPlayerEliminatedStart])
-IsPlayerAliveStart:
-.include "Source/Routines/IsPlayerAlive.s"
-IsPlayerAliveEnd:
-            .warn format("// Bank 12: %d bytes = IsPlayerAlive", [IsPlayerAliveEnd - IsPlayerAliveStart])
+;; IsPlayerAlive has been inlined at all call sites (FIXME #1252)
 CharacterDownHandlersStart:
 .include "Source/Routines/CharacterDownHandlers.s"
 CharacterDownHandlersEnd:

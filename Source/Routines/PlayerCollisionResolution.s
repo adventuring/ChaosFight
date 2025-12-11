@@ -145,7 +145,7 @@ PCR_CheckPair .proc
 PCR_CheckP2Active .proc
 
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne CheckP2Character
           jmp PCR_NextInner

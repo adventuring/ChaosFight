@@ -217,7 +217,7 @@ return_point:
 
 FrootyChargeQuadtariCheck .proc
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne FrootyChargeUpdate
           jmp FrootyChargeNext

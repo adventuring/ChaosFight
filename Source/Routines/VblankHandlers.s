@@ -1240,7 +1240,6 @@ return_point:
 
 
           ;; Health display is handled by UpdatePlayer12HealthBars and
-          ;; UpdatePlayer34HealthBars below. DisplayHealth is no longer used.
 
 
           ;; Update P1/P2 health bars using pfscore system

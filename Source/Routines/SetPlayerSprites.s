@@ -213,7 +213,7 @@ return_point:
           ;; Set Player 3 color and sprite (if active)
 
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne CheckPlayer3Health
           jmp DonePlayer3Sprite
@@ -324,7 +324,7 @@ DonePlayer3Sprite
           ;; Set Player 4 color and sprite (if active)
 
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne CheckPlayer4Health
           jmp DonePlayer4Sprite

@@ -605,7 +605,7 @@ UpdatePlayer34HealthBars .proc
           If no Quadtari, display CF2026 instead of player health
 
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne UpdatePlayer34Health
           jmp DisplayCF2026

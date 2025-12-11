@@ -75,12 +75,7 @@ end
           asm
 IsPlayerEliminatedEnd
             echo "// Bank 12: ", [IsPlayerEliminatedEnd - IsPlayerEliminatedStart]d, " bytes = IsPlayerEliminated"
-IsPlayerAliveStart
-end
-#include "Source/Routines/IsPlayerAlive.bas"
-          asm
-IsPlayerAliveEnd
-            echo "// Bank 12: ", [IsPlayerAliveEnd - IsPlayerAliveStart]d, " bytes = IsPlayerAlive"
+;; IsPlayerAlive has been inlined at all call sites (FIXME #1252)
 CharacterDownHandlersStart
 end
 #include "Source/Routines/CharacterDownHandlers.bas"

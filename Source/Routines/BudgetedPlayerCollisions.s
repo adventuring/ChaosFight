@@ -52,7 +52,7 @@ BPC_CheckPhase0:
           cmp # 1
           bne BPC_CheckPhase1
 
-          ;; TODO: BPC_Phase1
+          ;; TODO: #1306 BPC_Phase1
 
 BPC_CheckPhase1:
 

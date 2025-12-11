@@ -172,7 +172,7 @@ HFCM_CheckVertical .proc
           lda temp6
           cmp # 0
           bne HFCM_VertJoy1
-          ;; TODO: HFCM_VertJoy0
+          ;; TODO: #1307 HFCM_VertJoy0
 HFCM_VertJoy1:
 
 

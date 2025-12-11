@@ -35,7 +35,7 @@ MultiplyBy8:
           lda temp3
           sta temp5
 
-          ;; TODO: ; Multiply by 2 (1 shift)
+          ;; TODO: #1305 ; Multiply by 2 (1 shift)
           asl temp2
           rol temp3
 

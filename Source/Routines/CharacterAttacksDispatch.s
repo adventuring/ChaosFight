@@ -230,7 +230,7 @@ CheckEnhancedJumpButton:
           lda currentPlayer
           cmp # 0
           bne CheckPlayer1Enhanced
-          ;; TODO: CEJB_CheckPlayer0
+          ;; TODO: #1308 CEJB_CheckPlayer0
 CheckPlayer1Enhanced:
 
 

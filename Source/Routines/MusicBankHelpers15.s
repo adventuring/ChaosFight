@@ -128,7 +128,7 @@ LoadMusicNote0Bank15
           ;; bits) and AUDV (lower 4 bits) from AUDCV. End of track
           ;; marked by Duration = 0. Chaotica loop handled in
           ;; PlayMusic when both voices end
-          ;; TODO: ; Load 4 bytes from stream[pointer]
+          ;; TODO: #1296 ; Load 4 bytes from stream[pointer]
           ;; TODO: #1296 ldy #0
             lda (musicVoice0Pointer),y  ; Load AUDCV
             sta temp2
@@ -215,7 +215,7 @@ LoadMusicNote1Bank15
           ;; bits) and AUDV (lower 4 bits) from AUDCV. End of track
           ;; marked by Duration = 0. Chaotica loop handled in
           ;; PlayMusic when both voices end
-          ;; TODO: ; Load 4 bytes from stream[pointer]
+          ;; TODO: #1296 ; Load 4 bytes from stream[pointer]
           ;; TODO: #1296 ldy #0
             lda (musicVoice1Pointer),y  ; Load AUDCV
             sta temp2

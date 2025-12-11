@@ -161,8 +161,8 @@ SSP_NextParticipant .proc
           ;; are actually in the game
           ENAM0 = 0
           ENAM1 = 0
-          ;; TODO: missile0height = 0
-          ;; TODO: missile1height = 0
+          ;; TODO: #1297 missile0height = 0
+          ;; TODO: #1297 missile1height = 0
           jsr SetSpritePositionsRenderMissiles
 
           jsr BS_return
@@ -349,8 +349,8 @@ SSP_WriteMissileRegistersUnified
 SSP_CheckMissile0:
 
 
-          ;; TODO: missile1x = temp6
-          ;; TODO: missile1y = temp2
+          ;; TODO: #1297 missile1x = temp6
+          ;; TODO: #1297 missile1y = temp2
           ENAM1 = 1
           NUSIZ1 = temp3
           ;; TODO: #1297 missile1height = temp4
@@ -361,7 +361,7 @@ SSP_WriteUnified0
           ;; TODO: #1297 missile0y = temp2
           ENAM0 = 1
           NUSIZ0 = temp3
-          ;; TODO: missile0height = temp4
+          ;; TODO: #1297 missile0height = temp4
           rts
 RenderRoboTitoStretchMissile
           ;; Returns: Far (return otherbank)

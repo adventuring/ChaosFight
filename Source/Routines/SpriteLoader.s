@@ -93,7 +93,7 @@ LoadPlayerSprite .proc
           ;; TODO: #1304 ;
           ;; TODO: #1304 ; LOAD PLAYER SPRITE (generic Dispatcher)
 ; Load sprite data for any player using character art system
-          ;; TODO: ;
+          ;; TODO: #1304 ;
 Input:
 
 currentPlayer
@@ -102,10 +102,10 @@ currentPlayer
 playerCharacter[] (global array) = character indices per
 ;
 player:
-          ;; TODO: ;        temp2 = animation frame (0-7) from sprite 10fps
-          ;; TODO: ;        counter
-          ;; TODO: ;        temp3 = animation action (0-15) from
-          ;; TODO: ;        currentAnimationSeq
+          ;; TODO: #1304 ;        temp2 = animation frame (0-7) from sprite 10fps
+          ;; TODO: #1304 ;        counter
+          ;; TODO: #1304 ;        temp3 = animation action (0-15) from
+          ;; TODO: #1304 ;        currentAnimationSeq
 ;
 temp4 = player number (0-3)
           ;; TODO: #1304 ; Note: Frame is relative to sprite own 10fps counter, NOT

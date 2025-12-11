@@ -45,14 +45,14 @@ CheckPlayfieldCollisionAllDirections:
           ;;
           ;; Constraints: Checks collisions at head, middle, and feet positions.
 
-          let ;; TODO: Convert assignment: temp2 = playerX[currentPlayer]
+          let ;; TODO: #1298 Convert assignment: temp2 = playerX[currentPlayer]
           lda currentPlayer
           asl
           tax
           lda playerX,x
           sta temp2
 
-          let ;; TODO: Convert assignment: temp3 = playerY[currentPlayer]
+          let ;; TODO: #1298 Convert assignment: temp3 = playerY[currentPlayer]
 
           lda currentPlayer
           asl
@@ -60,7 +60,7 @@ CheckPlayfieldCollisionAllDirections:
           lda playerY,x
           sta temp3
 
-          let ;; TODO: Convert assignment: temp4 = playerCharacter[currentPlayer]
+          let ;; TODO: #1298 Convert assignment: temp4 = playerCharacter[currentPlayer]
 
           lda currentPlayer
           asl
@@ -68,7 +68,7 @@ CheckPlayfieldCollisionAllDirections:
           lda playerCharacter,x
           sta temp4
 
-          let ;; TODO: Convert assignment: temp5 = CharacterHeights[temp4]
+          let ;; TODO: #1298 Convert assignment: temp5 = CharacterHeights[temp4]
 
           lda temp4
           asl
@@ -76,19 +76,19 @@ CheckPlayfieldCollisionAllDirections:
           lda CharacterHeights,x
           sta temp5
 
-          ;; let ;; TODO: Convert assignment: temp6 = temp2 - ScreenInsetX
+          ;; let ;; TODO: #1298 Convert assignment: temp6 = temp2 - ScreenInsetX
           lda temp2
           sec
           sbc # ScreenInsetX
           sta temp6
 
-          ;; let ;; TODO: Convert assignment: temp6 = temp6 / 4
+          ;; let ;; TODO: #1298 Convert assignment: temp6 = temp6 / 4
           lda temp6
           lsr
           lsr
           sta temp6
 
-          if temp6 & $80 then let ;; TODO: Convert assignment: temp6 = 0
+          if temp6 & $80 then let ;; TODO: #1298 Convert assignment: temp6 = 0
 
           lda temp6
           cmp # 32
@@ -99,7 +99,7 @@ CheckPlayfieldCollisionAllDirections:
 
 ColumnInRange:
 
-          let ;; TODO: Convert assignment: playfieldRow = temp3 / 16
+          let ;; TODO: #1298 Convert assignment: playfieldRow = temp3 / 16
 
           ;; if playfieldRow >= pfrows then let
           lda playfieldRow
@@ -113,7 +113,7 @@ ColumnInRange:
 
 RowInRange:
 
-          if playfieldRow & $80 then let ;; TODO: Convert assignment: playfieldRow = 0
+          if playfieldRow & $80 then let ;; TODO: #1298 Convert assignment: playfieldRow = 0
 
           lda playfieldRow
           and #$80
@@ -265,7 +265,7 @@ PFBlockUpClamp .proc
           adc # 1
           sta rowYPosition
 
-                    let ;; TODO: Convert assignment: rowYPosition = rowYPosition * 16
+                    let ;; TODO: #1298 Convert assignment: rowYPosition = rowYPosition * 16
 
 
                     if playerY[currentPlayer] < rowYPosition then let playerY[currentPlayer] = rowYPosition
@@ -320,10 +320,10 @@ PF_CheckColumnSpan .proc
           ;; Helper: sample a column at up to three row offsets (top/mid/bottom)
           ;; Returns: Far (return otherbank)
 
-          ;; Input: playfieldColumn (global), playfieldRow (global top row), ;; TODO: Convert assignment: temp3 = row span
+          ;; Input: playfieldColumn (global), playfieldRow (global top row), ;; TODO: #1298 Convert assignment: temp3 = row span
 
 
-          ;; Output: ;; TODO: Convert assignment: temp4 = 1 if any solid pixel encountered
+          ;; Output: ;; TODO: #1298 Convert assignment: temp4 = 1 if any solid pixel encountered
 
 
           ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PCC_rowSpan = temp3
@@ -377,7 +377,7 @@ SamplePlayfieldPixel:
 return_point:
 
 
-                    if temp1 then let ;; TODO: Convert assignment: PCC_result = 1 : goto PFCS_Done          lda temp1          beq PFCS_AdvanceLabel
+                    if temp1 then let ;; TODO: #1298 Convert assignment: PCC_result = 1 : goto PFCS_Done          lda temp1          beq PFCS_AdvanceLabel
 
 PFCS_AdvanceLabel:
           jmp PFCS_AdvanceLabel
@@ -405,7 +405,7 @@ PFCS_Advance .proc
 IncrementRowCounter:
 
 
-                    let ;; TODO: Convert assignment: rowCounter = rowCounter + PCC_rowSpan
+                    let ;; TODO: #1298 Convert assignment: rowCounter = rowCounter + PCC_rowSpan
 
           jmp PFCS_SampleLoop
 
@@ -427,13 +427,13 @@ PF_CheckRowColumns .proc
           ;; Helper: test current row for center/side collisions
           ;; Returns: Far (return otherbank)
 
-          ;; Input: ;; TODO: Convert assignment: temp2 = row index, temp6 = center column
+          ;; Input: ;; TODO: #1298 Convert assignment: temp2 = row index, temp6 = center column
 
 
-          ;; Output: ;; TODO: Convert assignment: temp4 = 1 if any column collides
+          ;; Output: ;; TODO: #1298 Convert assignment: temp4 = 1 if any column collides
 
 
-          dim ;; TODO: Convert assignment: PRC_rowIndex = temp2 (dim removed - variable definitions handled elsewhere)
+          dim ;; TODO: #1298 Convert assignment: PRC_rowIndex = temp2 (dim removed - variable definitions handled elsewhere)
 
 
           ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PRC_result = temp4
@@ -468,7 +468,7 @@ PF_CheckRowColumns .proc
 return_point:
 
 
-                    if temp1 then let ;; TODO: Convert assignment: PRC_result = 1 : goto PRC_Done          lda temp1          beq CheckRightColumnCenter
+                    if temp1 then let ;; TODO: #1298 Convert assignment: PRC_result = 1 : goto PRC_Done          lda temp1          beq CheckRightColumnCenter
 
 CheckRightColumnCenter:
           jmp CheckRightColumnCenter
@@ -506,7 +506,7 @@ PRC_CheckLeft .proc
 return_point:
 
 
-                    if temp1 then let ;; TODO: Convert assignment: PRC_result = 1 : goto PRC_Done          lda temp1          beq PRC_DoneLabel
+                    if temp1 then let ;; TODO: #1298 Convert assignment: PRC_result = 1 : goto PRC_Done          lda temp1          beq PRC_DoneLabel
 
 PRC_DoneLabel:
           jmp PRC_DoneLabel
@@ -547,7 +547,7 @@ PRC_CheckRight .proc
 return_point:
 
 
-                    if temp1 then let ;; TODO: Convert assignment: PRC_result = 1          lda temp1          beq PRC_DoneLabel2
+                    if temp1 then let ;; TODO: #1298 Convert assignment: PRC_result = 1          lda temp1          beq PRC_DoneLabel2
 
 PRC_DoneLabel2:
           jmp PRC_DoneLabel2
@@ -568,7 +568,7 @@ PF_ProcessHorizontalCollision
           ;; Helper: evaluate horizontal collision for given column and clamp
           ;; Returns: Far (return otherbank)
 
-          ;; Input: ;; TODO: Convert assignment: temp1 = column index, temp3 = direction (0=left, 1=right)
+          ;; Input: ;; TODO: #1298 Convert assignment: temp1 = column index, temp3 = direction (0=left, 1=right)
 
 
           ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PHC_column = temp1
@@ -639,10 +639,10 @@ ClampLeftPosition:
 
           inc rowYPosition
 
-                    let ;; TODO: Convert assignment: rowYPosition = rowYPosition * 4
+                    let ;; TODO: #1298 Convert assignment: rowYPosition = rowYPosition * 4
 
 
-                    let ;; TODO: Convert assignment: rowYPosition = rowYPosition + ScreenInsetX
+                    let ;; TODO: #1298 Convert assignment: rowYPosition = rowYPosition + ScreenInsetX
 
           lda rowYPosition
           clc
@@ -689,10 +689,10 @@ PHC_ClampRight .proc
 
           dec rowYPosition
 
-                    let ;; TODO: Convert assignment: rowYPosition = rowYPosition * 4
+                    let ;; TODO: #1298 Convert assignment: rowYPosition = rowYPosition * 4
 
 
-                    let ;; TODO: Convert assignment: rowYPosition = rowYPosition + ScreenInsetX
+                    let ;; TODO: #1298 Convert assignment: rowYPosition = rowYPosition + ScreenInsetX
 
           lda rowYPosition
           clc
@@ -746,7 +746,7 @@ PHC_ClampRightDone:
 
 PFCheckDown_Body .proc
 
-                    let ;; TODO: Convert assignment: rowCounter = playfieldRow + temp5
+                    let ;; TODO: #1298 Convert assignment: rowCounter = playfieldRow + temp5
 
           jsr BS_return
 

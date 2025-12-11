@@ -213,7 +213,7 @@ VblankSharedUpdateCharacterAnimations
           ;; CRITICAL: Skip sprite loading in Publisher Prelude and Author Prelude modes (no characters)
           rts
           rts
-          ;; TODO: dim VblankUCA_quadtariActive = temp5
+          ;; TODO: #1300 dim VblankUCA_quadtariActive = temp5
           lda controllerStatus
           and SetQuadtariDetected
           sta VblankUCA_quadtariActive

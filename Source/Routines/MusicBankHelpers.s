@@ -235,7 +235,7 @@ LoadMusicNote0 .proc
           ;; PlayMusic when both voices end
 
 
-          ;; TODO: ; Load 4 bytes from stream[pointer]
+          ;; TODO: #1296 ; Load 4 bytes from stream[pointer]
 
           ;; TODO: #1296 ldy #0
 
@@ -383,7 +383,7 @@ LoadMusicNote1 .proc
           ;; PlayMusic when both voices end
 
 
-          ;; TODO: ; Load 4 bytes from stream[pointer]
+          ;; TODO: #1296 ; Load 4 bytes from stream[pointer]
 
           ;; TODO: #1296 ldy #0
 

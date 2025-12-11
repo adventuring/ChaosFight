@@ -30,6 +30,8 @@ Use4PlayerMode:
           lda # 4
           sta temp6
 
+.pend
+
 SkipElseCollisionCheck .proc
           lda # 0
           sta temp1
@@ -37,8 +39,6 @@ SkipElseCollisionCheck .proc
 .pend
 
 OuterLoopCollisionCheck .proc
-          rts
-
           ;; If temp1 >= 2, then jmp CheckP1ActiveCollision
           lda temp1
           cmp # 2

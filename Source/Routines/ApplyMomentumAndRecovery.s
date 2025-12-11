@@ -232,7 +232,7 @@ DecayPositiveVelocityApply:
           dec playerVelocityX,x
 
           ;; Also decay subpixel if integer velocity is zero
-                    if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
+          ;; If playerVelocityX[temp1] = 0, then set playerVelocityXL[temp1] = 0
           lda temp1
           asl
           tax
@@ -277,7 +277,7 @@ DecayNegativeVelocityLabel:
           inc playerVelocityX,x
 
           ;; Also decay subpixel if integer velocity is zero
-                    if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
+          ;; If playerVelocityX[temp1] = 0, then set playerVelocityXL[temp1] = 0
           lda temp1
           asl
           tax

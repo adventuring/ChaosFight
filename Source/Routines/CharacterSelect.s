@@ -208,7 +208,16 @@ SelectStickLeft .proc
           tax
           dec playerCharacter,x
 
-                    if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
+          ;; If playerCharacter[currentPlayer] > MaxCharacter, then set playerCharacter[currentPlayer] = MaxCharacter
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # MaxCharacter
+          bcc CheckMaxCharacterDone
+          lda # MaxCharacter
+          sta playerCharacter,x
+CheckMaxCharacterDone:
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
           lda # >(AfterSetPlayerLockedStickLeft-1)

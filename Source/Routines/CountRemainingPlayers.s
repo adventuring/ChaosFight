@@ -38,7 +38,7 @@ SkipIncrementPlayer0:
 
 SkipIncrementPlayer1:
 
-          if playerHealth[2] > 0 then let temp1 = 1 + temp1
+          ;; If playerHealth[2] > 0, increment temp1
           lda # 2
           asl
           tax

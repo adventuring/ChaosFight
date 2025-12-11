@@ -70,7 +70,13 @@ DragonOfStormsDown:
 
           ;; Check for wraparound: if subtraction wrapped negative, result ≥ 128
 
-          if temp2 & $80 then let temp2 = 0
+          ;; If temp2 & $80, set temp2 = 0
+          lda temp2
+          and # $80
+          beq CheckTemp2Range
+          lda # 0
+          sta temp2
+CheckTemp2Range:
           lda temp2
           cmp # 32
           bcc CheckRowBelow
@@ -366,7 +372,13 @@ HarpyNormalDown .proc
 
           ;; Check for wraparound: if subtraction wrapped negative, result ≥ 128
 
-          if temp2 & $80 then let temp2 = 0
+          ;; If temp2 & $80, set temp2 = 0
+          lda temp2
+          and # $80
+          beq CheckTemp2Range
+          lda # 0
+          sta temp2
+CheckTemp2Range:
           lda temp2
           cmp # 32
           bcc CheckRowBelowHarpy
@@ -557,7 +569,13 @@ FrootyDown .proc
           ;; Check for wraparound: if subtraction wrapped negative,
           ;; result ≥ 128
 
-          if temp2 & $80 then let temp2 = 0
+          ;; If temp2 & $80, set temp2 = 0
+          lda temp2
+          and # $80
+          beq CheckTemp2Range
+          lda # 0
+          sta temp2
+CheckTemp2Range:
           lda temp2
           cmp # 32
           bcc CheckRowBelowFrooty

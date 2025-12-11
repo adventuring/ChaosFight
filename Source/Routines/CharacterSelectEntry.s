@@ -56,17 +56,64 @@ CharacterSelectEntry .proc
           lda # 0
           sta playerLocked
           ;; Lock Player 3 (NoCharacter)
-          ;; Set temp1 = 1 let temp2 = PlayerLockedNormal : cross-bank call to SetPlayerLocked bank6
+          ;; Set temp1 = 1
+          lda # 1
+          sta temp1
+          ;; Set temp2 = PlayerLockedNormal
+          lda # PlayerLockedNormal
+          sta temp2
+          ;; Cross-bank call to SetPlayerLocked bank6
+          lda # >(AfterSetPlayerLockedP3-1)
+          pha
+          lda # <(AfterSetPlayerLockedP3-1)
+          pha
+          lda # >(SetPlayerLocked-1)
+          pha
+          lda # <(SetPlayerLocked-1)
+          pha
+          ldx # 5
+          jmp BS_jsr
+AfterSetPlayerLockedP3:
 
           ;; Lock Player 4 (NoCharacter)
           ;; Set temp1 = 2
           lda # 2
-          sta temp1 : let temp2 = PlayerLockedNormal : cross-bank call to SetPlayerLocked bank6
+          sta temp1
+          ;; Set temp2 = PlayerLockedNormal
+          lda # PlayerLockedNormal
+          sta temp2
+          ;; Cross-bank call to SetPlayerLocked bank6
+          lda # >(AfterSetPlayerLockedP4-1)
+          pha
+          lda # <(AfterSetPlayerLockedP4-1)
+          pha
+          lda # >(SetPlayerLocked-1)
+          pha
+          lda # <(SetPlayerLocked-1)
+          pha
+          ldx # 5
+          jmp BS_jsr
+AfterSetPlayerLockedP4:
 
           ;; NOTE: Do NOT clear controllerStatus flags here - monotonic
           ;; Set temp1 = 3
           lda # 3
-          sta temp1 : let temp2 = PlayerLockedNormal : cross-bank call to SetPlayerLocked bank6
+          sta temp1
+          ;; Set temp2 = PlayerLockedNormal
+          lda # PlayerLockedNormal
+          sta temp2
+          ;; Cross-bank call to SetPlayerLocked bank6
+          lda # >(AfterSetPlayerLockedP3Second-1)
+          pha
+          lda # <(AfterSetPlayerLockedP3Second-1)
+          pha
+          lda # >(SetPlayerLocked-1)
+          pha
+          lda # <(SetPlayerLocked-1)
+          pha
+          ldx # 5
+          jmp BS_jsr
+AfterSetPlayerLockedP3Second:
 
           ;; detection (upgrades only)
           ;; Controller detection is handled by DetectPads with
@@ -87,22 +134,26 @@ CharacterSelectEntry .proc
           ;; Check for Quadtari adapter (inlined for performance)
           ;; CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
           ;; Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) and Right (INPT2 LOW, INPT3 HIGH)
-          ;; if INPT0{7} then jmp CharacterSelectQuadtariAbsent
+          ;; If INPT0{7} is set, Quadtari absent
+          bit INPT0
+          bpl CheckINPT1
+          jmp CharacterSelectQuadtariAbsent
+CheckINPT1:
 
-                    if !INPT1{7} then jmp CharacterSelectQuadtariAbsent
+          ;; If !INPT1{7}, Quadtari absent
           bit INPT1
           bmi CheckINPT2
           jmp CharacterSelectQuadtariAbsent
 CheckINPT2:
 
-          ;; if INPT2{7} then jmp CharacterSelectQuadtariAbsent
+          ;; If INPT2{7} is set, Quadtari absent
           bit INPT2
           bpl CheckINPT3
           jmp CharacterSelectQuadtariAbsent
 CheckINPT3:
 
           ;; All checks passed - Quadtari detected
-                    if !INPT3{7} then jmp CharacterSelectQuadtariAbsent
+          ;; If !INPT3{7}, Quadtari absent
           bit INPT3
           bmi SetQuadtariDetected
           jmp CharacterSelectQuadtariAbsent

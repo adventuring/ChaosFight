@@ -1058,16 +1058,20 @@ CharacterSelectFinish .proc
 
           ;; TODO: #1254 for currentPlayer = 0 to 3
 
-          ;; if playerCharacter[currentPlayer] = NoCharacter then jmp CharacterSelectSkipFacing
-          ;; let playerState[currentPlayer] = playerState[currentPlayer] (no-op, removed)
+          ;; If playerCharacter[currentPlayer] = NoCharacter, then jmp CharacterSelectSkipFacing
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq CharacterSelectSkipFacing
+          ;; Set playerState[currentPlayer] = playerState[currentPlayer] | PlayerStateBitFacing
           lda currentPlayer
           asl
           tax
           lda playerState,x
-          lda currentPlayer
-          asl
-          tax
-          sta playerState,x | PlayerStateBitFacing
+          ora # PlayerStateBitFacing
+          sta playerState,x
 
 .pend
 

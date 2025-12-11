@@ -72,7 +72,7 @@ LoadSongVoice1PointerBank15:
           ;;
           ;; Input: temp1 = song ID (Bank 15 songs: 0-Bank14MaxSongID),
           ;; SongPointers2SecondL[], SongPointers2SecondH[] (global
-          data tables) = Voice 1 song pointer tables
+          ;; data tables) = Voice 1 song pointer tables
           ;;
           ;; Output: songPointer = pointer to Song_Voice1 stream
           ;;

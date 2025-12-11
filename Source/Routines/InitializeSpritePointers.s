@@ -77,7 +77,7 @@ InitializeSpritePointers .proc
           ;; perfectly with RAM
           ;; addresses. No kernel modifications needed!
           ;; InitializeSpritePointers is called both same-bank (from ColdStart bank14)
-          and cross-bank (from BeginGameLoop bank11). Since it’s called cross-bank,
+          ;;  and cross-bank (from BeginGameLoop bank11). Since it’s called cross-bank,
           ;; it must always use return otherbank per the fundamental rule.
           jmp BS_return
 

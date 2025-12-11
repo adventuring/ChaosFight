@@ -15,7 +15,8 @@ XDistanceDone:
           ;;
           ;; Constraints: None
           ;;
-          if temp6 >= PlayerSpriteWidth then NoCollision
+          ;; if temp6 >= PlayerSpriteWidth then NoCollision
+          lda temp6
           cmp # PlayerSpriteWidth
           bcc XDistanceCheckCollision
 
@@ -28,7 +29,7 @@ XDistanceCheckCollision:
           sta temp3
           ;;
           ;; Check Y collision
-          if temp3 == 0 then CPC_Done
+          ;; if temp3 == 0 then CPC_Done
           lda temp3
           cmp # 0
           beq CPC_Done
@@ -101,7 +102,7 @@ YDistanceDone:
           ;;
           ;; Constraints: None
           ;;
-          if temp6 >= CharacterHeights[playerCharacter[temp1]] then NoCollision
+          ;; if temp6 >= CharacterHeights[playerCharacter[temp1]] then NoCollision
           lda temp1
           asl
           tax
@@ -177,7 +178,10 @@ CheckPlayerCollision:
           sta temp5
 
           ;; Calculate absolute × distance between players
-          if temp4 >= temp5 then CalcXDistanceRight
+          ;; if temp4 >= temp5 then CalcXDistanceRight
+          lda temp4
+          cmp temp5
+          bcc CalcXDistanceRight
 
           ;; let temp6 = temp5 - temp4
           lda temp5
@@ -245,9 +249,12 @@ CalcYDistanceDown .proc
             sta halfHeight2
 
           ;; Compute absolute Y distance between player centers
-                    if temp4 >= temp5 then CalcYDistanceDown
+          ;; if temp4 >= temp5 then CalcYDistanceDown
+          lda temp4
+          cmp temp5
+          bcc CalcYDistanceDown
 
-          ;; let temp6 = temp5 - temp4          lda temp5          sec          sbc temp4          sta temp6
+          ;; let temp6 = temp5 - temp4
           lda temp5
           sec
           sbc temp4

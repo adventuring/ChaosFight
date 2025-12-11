@@ -892,5 +892,4 @@ AfterLoadMusicNote1Bank1:
           sta musicVoice1Frame_W
 
           jmp BS_return
-.pend (extra - no matching .proc)
 

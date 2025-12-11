@@ -215,9 +215,9 @@ return_point:
           sta temp1
 
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterPlaySoundEffectNormal-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlaySoundEffectNormal-1)
           pha
           lda # >(PlaySoundEffect-1)
           pha
@@ -225,7 +225,7 @@ return_point:
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterPlaySoundEffectNormal:
 
 
           jsr BS_return
@@ -282,9 +282,9 @@ AfterSetPlayerLockedHandicap:
           sta temp1
 
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterPlaySoundEffectHandicap-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlaySoundEffectHandicap-1)
           pha
           lda # >(PlaySoundEffect-1)
           pha
@@ -292,7 +292,7 @@ AfterSetPlayerLockedHandicap:
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterPlaySoundEffectHandicap:
 
 
           jsr BS_return

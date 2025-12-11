@@ -214,7 +214,7 @@ VblankSharedUpdateCharacterAnimations
           rts
           rts
 
-          ;; TODO: #1300 dim VblankUCA_quadtariActive = temp5
+          ;; VblankUCA_quadtariActive uses temp5 directly (no dim needed)
           lda controllerStatus
           and # SetQuadtariDetected
           sta VblankUCA_quadtariActive

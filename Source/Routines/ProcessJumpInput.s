@@ -27,27 +27,65 @@ ProcessJumpInput .proc
           ;;
           ;; Constraints: Must be colocated with ProcessUpAction in same bank
 
+          ;; Inlined CheckEnhancedJumpButton to save 4 bytes stack depth (FIXME #1236)
           ;; Check enhanced button first (sets temp3 = 1 if pressed, 0 otherwise)
           ;; Check Genesis/Joy2b+ Button C/II
-          ;; Cross-bank call to CheckEnhancedJumpButton in bank 10
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(CheckEnhancedJumpButton-1)
-          pha
-          lda # <(CheckEnhancedJumpButton-1)
-          pha
-          ldx # 9
-          jmp BS_jsr
+          ;; Initialize to no jump
+          lda # 0
+          sta temp3
 
-return_point:
-
+          ;; Only players 0-1 can have enhanced controllers
+          ;; Players 2-3 (Quadtari players) cannot have enhanced controllers
+          lda currentPlayer
+          cmp # 0
+          beq PJI_CheckPlayer0Enhanced
+          cmp # 1
+          beq PJI_CheckPlayer1Enhanced
+          jmp ProcessJumpInputDone
+PJI_CheckPlayer0Enhanced:
+          ;; Player 0: Check Genesis controller first
+          lda controllerStatus
+          and # SetLeftPortGenesis
+          beq PJI_CheckPlayer0Joy2bPlus
+          bit INPT0
+          bmi PJI_CheckPlayer0Joy2bPlus
+          lda # 1
+          sta temp3
+          jmp ProcessJumpInputDone
+PJI_CheckPlayer0Joy2bPlus:
+          ;; Player 0: Check Joy2b+ controller (fallback)
+          lda controllerStatus
+          and # SetLeftPortJoy2bPlus
+          beq ProcessJumpInputDone
+          bit INPT0
+          bmi ProcessJumpInputDone
+          lda # 1
+          sta temp3
+          jmp ProcessJumpInputDone
+PJI_CheckPlayer1Enhanced:
+          ;; Player 1: Check Genesis controller first
+          lda controllerStatus
+          and # SetRightPortGenesis
+          beq PJI_CheckPlayer1Joy2bPlus
+          bit INPT2
+          bmi PJI_CheckPlayer1Joy2bPlus
+          lda # 1
+          sta temp3
+          jmp ProcessJumpInputDone
+PJI_CheckPlayer1Joy2bPlus:
+          ;; Player 1: Check Joy2b+ controller (fallback)
+          lda controllerStatus
+          and # SetRightPortJoy2bPlus
+          beq ProcessJumpInputDone
+          bit INPT2
+          bmi ProcessJumpInputDone
+          lda # 1
+          sta temp3
+ProcessJumpInputDone:
           ;; If enhanced button not pressed, return (no action)
           lda temp3
-          beq ProcessJumpInputDone
-          rts
-ProcessJumpInputDone:
+          beq ProcessJumpInputReturn
+          ;; Button pressed - continue to ProcessUpAction
 
           ;; Execute character-specific UP action (UP = Button C = Button II)
           jsr ProcessUpAction

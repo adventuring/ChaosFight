@@ -475,34 +475,37 @@ ApplyFriction:
           ;; Calculate reduction amount (velocity / 64 using 6-bit shift)
           lda missileVelocityXCalc
           sta velocityCalculation
-            lda velocityCalculation
-          ;; TODO: #1301 bpl FrictionPositive
-            eor #$FF
-            adc # 0
-FrictionPositive
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            sta velocityCalculation
+          lda velocityCalculation
+          bpl FrictionPositive
+          ;; Negative velocity: convert to positive for shift calculation
+          eor #$FF
+          adc # 0
+FrictionPositive:
+          ;; Shift right 6 times (divide by 64)
+          lsr
+          lsr
+          lsr
+          lsr
+          lsr
+          lsr
+          sta velocityCalculation
           ;; Apply reduction: subtract for positive, add for negative (both reduce magnitude)
           lda missileVelocityXCalc
           cmp # 128
-          bcc FrictionPositive
-          ;; let missileVelocityXCalc = missileVelocityXCalc + velocityCalculation else let missileVelocityXCalc = missileVelocityXCalc - velocityCalculation          lda missileVelocityXCalc          sec          sbc velocityCalculation          sta missileVelocityXCalc
+          bcc FrictionSubtract
+          ;; Negative velocity: add reduction (increases toward zero)
+          lda missileVelocityXCalc
+          clc
+          adc velocityCalculation
+          sta missileVelocityXCalc
+          jmp FrictionApplyDone
+FrictionSubtract:
+          ;; Positive velocity: subtract reduction (decreases toward zero)
           lda missileVelocityXCalc
           sec
           sbc velocityCalculation
           sta missileVelocityXCalc
-
-          lda missileVelocityXCalc
-          sec
-          sbc velocityCalculation
-          sta missileVelocityXCalc
-
-FrictionPositive:
+FrictionApplyDone:
 
           lda temp1
           asl

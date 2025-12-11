@@ -747,7 +747,7 @@ UpdateSprite_Bank2Dispatch
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank2:
 
-          jmp AnimationNextPlayer
+          jmp AnimationNextPlayerLabel
 
 UpdateSprite_Bank3Dispatch
           ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6

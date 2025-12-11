@@ -27,7 +27,7 @@ ChangeGameMode .proc
           ;; Thunks ensure labels resolve correctly within same bank
           ;; Thunks are placed at end of file to prevent fall-through
           ;; Note: on...goto pushes 2 bytes then immediately pops them (net zero stack change)
-          jmp CGM_ThunkPublisherPrelude
+          jmp ThunkPublisherPrelude
 
           ;; Safety exit if gameMode is invalid
           jsr BS_return

@@ -117,7 +117,7 @@
           ;; HCSC_CheckJoy1Left, HandleCharacterSelectCycle
 
 
-HCSC_CheckJoy0 .proc
+CheckJoy0CharacterSelect .proc
 
           ;; Check joy0 for players 0,2
           ;; Returns: Far (return otherbank)
@@ -131,7 +131,7 @@ HCSC_CheckJoy0 .proc
 
 
           ;;
-          ;; Output: Dispatches to HCSC_CheckJoy0Left or HandleCharacterSelectCycle
+          ;; Output: Dispatches to CheckJoy0LeftCharacterSelect or HandleCharacterSelectCycle
 
           ;;
           ;; Mutates: None (dispatcher only)
@@ -149,7 +149,7 @@ HCSC_CheckJoy0 .proc
           lda temp2
           cmp # 0
           bne HandleCharacterSelectCycle
-          jmp HCSC_CheckJoy0Left
+          jmp CheckJoy0LeftCharacterSelect
 HandleCharacterSelectCycle:
 
 
@@ -159,7 +159,7 @@ HandleCharacterSelectCycle:
 
 .pend
 
-HCSC_CheckJoy0Left .proc
+CheckJoy0LeftCharacterSelect .proc
 
           ;; Check joy0 left button
           ;; Returns: Far (return otherbank)
@@ -185,7 +185,7 @@ HCSC_CheckJoy0Left .proc
 
 .pend
 
-HCSC_CheckJoy1Left .proc
+CheckJoy1LeftCharacterSelect .proc
 
           ;; Check joy1 left button
           ;; Returns: Far (return otherbank)
@@ -268,16 +268,16 @@ HandleCharacterSelectCycle .proc
 
           lda temp2
           cmp # 0
-          bne HCSC_CycleRight
-          jmp HCSC_CycleLeft
-HCSC_CycleRight:
+          bne CycleRightCharacterSelect
+          jmp CycleLeftCharacterSelect
+CycleRightCharacterSelect:
 
 
-          jmp HCSC_CycleRight
+          jmp CycleRightCharacterSelect
 
 .pend
 
-HCSC_CycleLeft .proc
+CycleLeftCharacterSelect .proc
 
           ;; Handle stick-left navigation with ordered wrap logic
           ;; Returns: Far (return otherbank)
@@ -285,73 +285,73 @@ HCSC_CycleLeft .proc
           lda temp1
           cmp RandomCharacter
           bne CheckNoCharacterLeft
-          jmp HCSC_LeftFromRandom
+          jmp LeftFromRandomCharacterSelect
 CheckNoCharacterLeft:
 
 
           lda temp1
           cmp NoCharacter
           bne CheckCPUCharacterLeft
-          jmp HCSC_LeftFromNoOrCPU
+          jmp LeftFromNoOrCPUCharacterSelect
 CheckCPUCharacterLeft:
 
 
           lda temp1
           cmp CPUCharacter
           bne CheckZeroLeft
-          jmp HCSC_LeftFromNoOrCPU
+          jmp LeftFromNoOrCPUCharacterSelect
 CheckZeroLeft:
 
 
           lda temp1
           cmp # 0
           bne DecrementCharacter
-          jmp HCSC_LeftFromZero
+          jmp LeftFromZeroCharacterSelect
 DecrementCharacter:
 
 
           dec temp1
 
-          jmp HCSC_CycleDone
+          jmp CycleDoneCharacterSelect
 
 .pend
 
-HCSC_LeftFromRandom .proc
+LeftFromRandomCharacterSelect .proc
 
           lda temp3
           cmp # 0
           bne SetNoCharacterLeft
-          ;; let temp1 = MaxCharacter : goto HCSC_CycleDone
+          ;; let temp1 = MaxCharacter : goto CycleDoneCharacterSelect
 SetNoCharacterLeft:
 
-          jsr HCSC_GetPlayer2Tail
+          jsr GetPlayer2TailCharacterSelect
 
           lda NoCharacter
           sta temp1
 
-          jmp HCSC_CycleDone
+          jmp CycleDoneCharacterSelect
 
 .pend
 
-HCSC_LeftFromNoOrCPU .proc
+LeftFromNoOrCPUCharacterSelect .proc
 
           lda MaxCharacter
           sta temp1
 
-          jmp HCSC_CycleDone
+          jmp CycleDoneCharacterSelect
 
 .pend
 
-HCSC_LeftFromZero .proc
+LeftFromZeroCharacterSelect .proc
 
           lda RandomCharacter
           sta temp1
 
-          jmp HCSC_CycleDone
+          jmp CycleDoneCharacterSelect
 
 .pend
 
-HCSC_CycleRight .proc
+CycleRightCharacterSelect .proc
 
           ;; Handle stick-right navigation with ordered wrap logic
           ;; Returns: Far (return otherbank)
@@ -359,73 +359,73 @@ HCSC_CycleRight .proc
           lda temp1
           cmp RandomCharacter
           bne CheckNoCharacterRight
-          jmp HCSC_RightFromRandom
+          jmp RightFromRandomCharacterSelect
 CheckNoCharacterRight:
 
 
           lda temp1
           cmp NoCharacter
           bne CheckCPUCharacterRight
-          jmp HCSC_RightFromNoOrCPU
+          jmp RightFromNoOrCPUCharacterSelect
 CheckCPUCharacterRight:
 
 
           lda temp1
           cmp CPUCharacter
           bne CheckMaxCharacterRight
-          jmp HCSC_RightFromNoOrCPU
+          jmp RightFromNoOrCPUCharacterSelect
 CheckMaxCharacterRight:
 
 
           lda temp1
           cmp MaxCharacter
           bne IncrementCharacter
-          jmp HCSC_RightFromMax
+          jmp RightFromMaxCharacterSelect
 IncrementCharacter:
 
 
           inc temp1
 
-          jmp HCSC_CycleDone
+          jmp CycleDoneCharacterSelect
 
 .pend
 
-HCSC_RightFromRandom .proc
+RightFromRandomCharacterSelect .proc
 
           lda # 0
           sta temp1
 
-          jmp HCSC_CycleDone
+          jmp CycleDoneCharacterSelect
 
 .pend
 
-HCSC_RightFromNoOrCPU .proc
+RightFromNoOrCPUCharacterSelect .proc
 
           lda RandomCharacter
           sta temp1
 
-          jmp HCSC_CycleDone
+          jmp CycleDoneCharacterSelect
 
 .pend
 
-HCSC_RightFromMax .proc
+RightFromMaxCharacterSelect .proc
 
           lda temp3
           cmp # 0
           bne SetNoCharacterRight
-          ;; let temp1 = RandomCharacter : goto HCSC_CycleDone
+          ;; let temp1 = RandomCharacter : goto CycleDoneCharacterSelect
 SetNoCharacterRight:
 
-          jsr HCSC_GetPlayer2Tail
+          jsr GetPlayer2TailCharacterSelect
 
           lda NoCharacter
           sta temp1
 
-          jmp HCSC_CycleDone
+          jmp CycleDoneCharacterSelect
 
 .pend
 
-HCSC_GetPlayer2Tail .proc
+GetPlayer2TailCharacterSelect .proc
 
 
           ;; Determine whether Player 2 wraps to CPU or NO
@@ -434,25 +434,25 @@ HCSC_GetPlayer2Tail .proc
           lda CPUCharacter
           sta temp6
 
-          ;; if playerCharacter[2] = NoCharacter then goto HCSC_P2TailCheckP4
+          ;; if playerCharacter[2] = NoCharacter then goto P2TailCheckP4CharacterSelect
           lda NoCharacter
           sta temp6
 
-          jmp HCSC_P2TailDone
+          jmp P2TailDoneCharacterSelect
 
 .pend
 
-HCSC_P2TailCheckP4 .proc
+P2TailCheckP4CharacterSelect .proc
 
-          ;; if playerCharacter[3] = NoCharacter then goto HCSC_P2TailDone
+          ;; if playerCharacter[3] = NoCharacter then goto P2TailDoneCharacterSelect
           lda NoCharacter
           sta temp6
 
-HCSC_P2TailDone
+P2TailDoneCharacterSelect
 
           rts
 
-HCSC_CycleDone
+CycleDoneCharacterSelect
 
           ;; Character cycling complete
           ;; Returns: Far (return otherbank)

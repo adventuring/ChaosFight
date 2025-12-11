@@ -552,9 +552,9 @@ ReturnToCharacterSelect
           lda ModeCharacterSelect
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterChangeGameModeReturnToCharacterSelect-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterChangeGameModeReturnToCharacterSelect-1)
           pha
           lda # >(ChangeGameMode-1)
           pha
@@ -562,7 +562,7 @@ ReturnToCharacterSelect
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterChangeGameModeReturnToCharacterSelect:
 
 
           jsr BS_return
@@ -585,9 +585,9 @@ StartGame1 .proc
           lda ModeGame
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterChangeGameModeStartGame-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterChangeGameModeStartGame-1)
           pha
           lda # >(ChangeGameMode-1)
           pha
@@ -595,7 +595,7 @@ StartGame1 .proc
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterChangeGameModeStartGame:
 
 
           jsr BS_return
@@ -772,9 +772,9 @@ ArenaSelectDoneDrawP1
           ;; selected
           ;; No Quadtari detected; park lower previews off-screen via shared helper
           ;; Cross-bank call to SelectHideLowerPlayerPreviews in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSelectHideLowerPlayerPreviews-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSelectHideLowerPlayerPreviews-1)
           pha
           lda # >(SelectHideLowerPlayerPreviews-1)
           pha
@@ -782,7 +782,7 @@ ArenaSelectDoneDrawP1
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSelectHideLowerPlayerPreviews:
 
 
           ;; if playerCharacter[2] = NoCharacter then goto ArenaSelectDoneDrawP2
@@ -809,9 +809,9 @@ DrawPlayer2Character:
           lda # 2
           sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterPlayerPreviewSetPositionP2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayerPreviewSetPositionP2-1)
           pha
           lda # >(PlayerPreviewSetPosition-1)
           pha
@@ -819,13 +819,13 @@ DrawPlayer2Character:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterPlayerPreviewSetPositionP2:
 
 
           ;; Cross-bank call to RenderPlayerPreview in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterRenderPlayerPreviewP2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRenderPlayerPreviewP2-1)
           pha
           lda # >(RenderPlayerPreview-1)
           pha
@@ -833,7 +833,7 @@ return_point:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterRenderPlayerPreviewP2:
 
 
 ArenaSelectDoneDrawP2

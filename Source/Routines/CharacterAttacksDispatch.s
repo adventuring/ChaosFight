@@ -261,10 +261,10 @@ CEJB_ReadButton0
 
                     if !INPT0{7} then let
           bit INPT0
-          bmi CEJB_Done
+          bmi CEJB_DonePlayer0
           jmp let_label
-CEJB_Done: temp3 = 1
-          jmp CEJB_Done
+CEJB_DonePlayer0: temp3 = 1
+          jmp CEJB_DonePlayer0
 
 .pend
 
@@ -273,7 +273,7 @@ CEJB_CheckPlayer0Joy2bPlus .proc
           ;; Player 0: Check Joy2b+ controller (fallback)
           ;; Returns: Far (return otherbank)
 
-                    if !controllerStatus{1} then CEJB_Done
+                    if !controllerStatus{1} then CEJB_DonePlayer0
           jmp CEJB_ReadButton0
 
 .pend
@@ -286,11 +286,11 @@ CEJB_CheckPlayer2 .proc
           lda controllerStatus
           and # 4
           cmp # 0
-          bne CEJB_ReadButton2
-CEJB_ReadButton2:
+          bne CEJB_ReadButton2Label
+CEJB_ReadButton2Label:
 
 
-CEJB_ReadButton2
+CEJB_ReadButton2 .proc
 
           ;; Shared button read for Player 1 enhanced controllers (Button C/II)
           ;; Returns: Far (return otherbank)
@@ -298,13 +298,14 @@ CEJB_ReadButton2
           lda INPT2
           and # 128
           cmp # 0
-          bne CEJB_Done
+          bne CEJB_DonePlayer2
           lda # 1
           sta temp3
-CEJB_Done:
+CEJB_DonePlayer2:
 
 
-          jmp CEJB_Done
+          jmp BS_return
+.pend
 
 .pend
 
@@ -316,8 +317,8 @@ CEJB_CheckPlayer2Joy2bPlus .proc
           lda controllerStatus
           and # 8
           cmp # 0
-          bne CEJB_ReadButton2
-CEJB_ReadButton2:
+          bne CEJB_ReadButton2Label2
+CEJB_ReadButton2Label2:
 
 
           jmp CEJB_ReadButton2

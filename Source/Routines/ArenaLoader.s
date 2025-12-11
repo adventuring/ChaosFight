@@ -215,9 +215,9 @@ AfterLoadArenaByIndexRandom:
 
           ;; if temp6 then goto LAR_LoadBWColors
           lda temp6
-          beq LoadArenaColorsColor
+          beq LoadArenaColorsColorLabel
           jmp LAR_LoadBWColors
-LoadArenaColorsColor:
+LoadArenaColorsColorLabel:
           ;; Load color color table (use gosub to avoid goto)
           ;; Cross-bank call to LoadArenaColorsColor in bank 16
           lda # >(AfterLoadArenaColorsColorRandom-1)

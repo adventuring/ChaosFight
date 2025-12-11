@@ -343,10 +343,10 @@ SelectSetPlayerColorHandicap .proc
           ;; if controllerStatus & SetQuadtariDetected then let temp6 = 4
           lda controllerStatus
           and # SetQuadtariDetected
-          beq SetPlayerCount
+          beq SetPlayerCountCheck
           lda # 4
           sta temp6
-SetPlayerCount:
+SetPlayerCountCheck:
           lda # 0
           sta temp1
 SelectUpdateAnimationLoop

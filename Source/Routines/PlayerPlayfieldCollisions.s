@@ -651,9 +651,9 @@ PHC_ClampOnly:
 
           ;; if PHC_direction then goto PHC_ClampRight
           lda temp4  ;;; PHC_direction
-          beq ClampLeftPosition
+          beq ClampLeftPositionFirst
           jmp PHC_ClampRight
-ClampLeftPosition:
+ClampLeftPositionFirst:
 
 .pend
 
@@ -679,9 +679,9 @@ PHC_ClampOnly:
 
           ;; if PHC_direction then goto PHC_ClampRight
           lda temp4  ;;; PHC_direction
-          beq ClampLeftPosition
+          beq ClampLeftPositionSecond
           jmp PHC_ClampRight
-ClampLeftPosition:
+ClampLeftPositionSecond:
 
           inc rowYPosition
 

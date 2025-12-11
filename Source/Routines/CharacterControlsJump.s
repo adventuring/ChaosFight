@@ -101,9 +101,9 @@ BernieJump .proc
 AfterPlayfieldReadFirst:
 
 
-                    if temp1 then let temp4 = 1          lda temp1          beq BernieCheckBottomWrap
-BernieCheckBottomWrap:
-          jmp BernieCheckBottomWrap
+                    if temp1 then let temp4 = 1          lda temp1          beq BernieCheckBottomWrapFirst
+BernieCheckBottomWrapFirst:
+          jmp BernieCheckBottomWrapFirst
           lda temp3
           sta temp1
           jmp BS_return
@@ -135,9 +135,9 @@ BernieCheckBottomWrap:
 AfterPlayfieldReadSecond:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrap
-BernieCheckBottomWrap:
-          jmp BernieCheckBottomWrap
+                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrapSecond
+BernieCheckBottomWrapSecond:
+          jmp BernieCheckBottomWrapSecond
           lda temp3
           sta temp1
           jmp BS_return
@@ -172,9 +172,9 @@ BernieCheckBottomWrap .proc
           lda temp4
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadJump1-1)
+          lda # >(AfterPlayfieldReadFreeFlightUp1-1)
           pha
-          lda # <(AfterPlayfieldReadJump1-1)
+          lda # <(AfterPlayfieldReadFreeFlightUp1-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -182,12 +182,12 @@ BernieCheckBottomWrap .proc
           pha
                     ldx # 15
           jmp BS_jsr
-AfterPlayfieldReadJump1:
+AfterPlayfieldReadFreeFlightUp1:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrap
-BernieCheckBottomWrap:
-          jmp BernieCheckBottomWrap
+                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrapFreeFlight1
+BernieCheckBottomWrapFreeFlight1:
+          jmp BernieCheckBottomWrapFreeFlight1
           lda temp3
           sta temp1
           jmp BS_return
@@ -226,9 +226,9 @@ CCJ_FreeFlightUp .proc
           lda temp4
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadJump1-1)
+          lda # >(AfterPlayfieldReadFreeFlightUp2-1)
           pha
-          lda # <(AfterPlayfieldReadJump1-1)
+          lda # <(AfterPlayfieldReadFreeFlightUp2-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -236,12 +236,12 @@ CCJ_FreeFlightUp .proc
           pha
                     ldx # 15
           jmp BS_jsr
-AfterPlayfieldReadJump1:
+AfterPlayfieldReadFreeFlightUp2:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrap
-BernieCheckBottomWrap:
-          jmp BernieCheckBottomWrap
+                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrapFreeFlight2
+BernieCheckBottomWrapFreeFlight2:
+          jmp BernieCheckBottomWrapFreeFlight2
           lda temp6
           sta temp1
           rts
@@ -259,9 +259,8 @@ BernieCheckBottomWrap:
                     let playerState[temp1] = playerState[temp1] | 4
           rts
 
-DragonOfStormsJump
+DragonOfStormsJump:
           ;; Returns: Far (return otherbank)
-DragonOfStormsJump
           jmp CCJ_FreeFlightCharacterJump
           ;; ZOE RYEN (3) - STANDARD JUMP (dispatched directly to StandardJump)
           ;; Returns: Far (return otherbank)

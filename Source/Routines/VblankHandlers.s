@@ -456,7 +456,6 @@ VblankTransitionHandleFallBack
                     ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadVblank:
-AfterPlayfieldReadVblankTransition:
 
 
           lda temp3
@@ -577,10 +576,10 @@ VblankHandleWindupEnd
           ;; if temp1 >= 16 then let temp1 = 0
           lda temp1
           cmp # 16
-          bcc GetWindupNextAction
+          bcc GetWindupNextActionCheck
           lda # 0
           sta temp1
-GetWindupNextAction:
+GetWindupNextActionCheck:
 
           lda # 0
 
@@ -623,9 +622,9 @@ VblankHandleExecuteEnd
 
           lda temp1
           cmp # 6
-          bne GetExecuteNextAction
+          bne GetExecuteNextActionCheck
           jmp VblankHarpyExecute
-GetExecuteNextAction:
+GetExecuteNextActionCheck:
 
 
           if temp1 >= 16 then let temp1 = 0

@@ -64,7 +64,7 @@ HarpyBoostDiveVelocity .proc
           sta velocityCalculation
           ;; let temp6 = temp6 + velocityCalculation
 
-VelocityDone:
+VelocityDoneHarpy:
           lda temp1
           asl
           tax
@@ -291,9 +291,9 @@ HandleKnightGuyMissile .proc
           If animation state is not ActionAttackExecute (14), attack is complete
           lda temp6
           cmp # 14
-          bne DeactivateMissile
+          bne DeactivateMissileKnightGuy
           ;; TODO: #1311 KnightGuyAttackActive
-DeactivateMissile:
+DeactivateMissileKnightGuy:
 
 
           ;; Attack complete - deactivate missile

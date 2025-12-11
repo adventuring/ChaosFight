@@ -98,12 +98,6 @@ SetQuadtariDetected:
 
 .pend
 
-CharacterSelectQuadtariAbsent .proc
-          ;; Background: black (COLUBK starts black, no need to set)
-          ;; Always black background
-
-.pend
-
 CharacterSelectLoop .proc
           ;; Per-frame character select screen loop with Quadtari
           ;; multiplexing

@@ -138,9 +138,9 @@ CheckPairCollision .proc
 
           lda temp2
           cmp # 2
-          bcc CheckDistanceCollision
+          bcc CheckDistanceCollisionP1
           jmp CheckP2ActiveCollision
-CheckDistanceCollision:
+CheckDistanceCollisionP1:
 
 
 .pend
@@ -185,15 +185,15 @@ CheckP2CharacterActive:
           ;; if temp2 = 3 && playerCharacter[3] = NoCharacter then goto NextInnerCollisionCheck
           lda temp2
           cmp # 3
-          bne CheckDistanceCollision
+          bne CheckDistanceCollisionP2
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne CheckDistanceCollision
+          bne CheckDistanceCollisionP2
           jmp NextInnerCollisionCheck
-CheckDistanceCollision:
+CheckDistanceCollisionP2:
 
           lda temp2
           cmp # 3
@@ -674,13 +674,12 @@ ClampPlayer2Velocity:
           lda playerVelocityX,x
           sec
           sbc # 4
-          bcc ImpulseDoneCollision
-          beq ImpulseDoneCollision
+          bcc ImpulseDoneCollisionRight
+          beq ImpulseDoneCollisionRight
           lda # 4
           sta playerVelocityX,x
-ImpulseDoneCollision:
+ImpulseDoneCollisionRight:
 
-ImpulseDoneCollision
           lda temp1
           asl
           tax

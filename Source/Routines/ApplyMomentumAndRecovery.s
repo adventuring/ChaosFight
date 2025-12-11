@@ -205,18 +205,18 @@ DecayPositiveVelocity:
           tax
           lda playerVelocityX,x
           beq DecayPositiveVelocity
-          bmi DecayPositiveVelocity
+          bmi DecayPositiveVelocityCheck
           jmp MomentumRecoveryDecayNegative
-DecayPositiveVelocity:
+DecayPositiveVelocityCheck:
 
           lda temp1
           asl
           tax
           lda playerVelocityX,x
-          beq DecayPositiveVelocityLabel
-          bmi DecayPositiveVelocityLabel
+          beq DecayPositiveVelocityApply
+          bmi DecayPositiveVelocityApply
           jmp MomentumRecoveryDecayNegative
-DecayPositiveVelocityLabel:
+DecayPositiveVelocityApply:
 
 
           ;; Positive velocity: decay by 1
@@ -237,11 +237,10 @@ DecayPositiveVelocityLabel:
           asl
           tax
           lda playerVelocityX,x
-          bne MomentumRecoveryNext
+          bne MomentumRecoveryNextPositive
           lda # 0
           sta playerVelocityXL,x
-MomentumRecoveryNext:
-          jmp MomentumRecoveryNext
+MomentumRecoveryNextPositive:
 
 .pend
 
@@ -253,7 +252,7 @@ MomentumRecoveryDecayNegative .proc
           tax
           lda playerVelocityX,x
           bmi DecayNegativeVelocity
-          jmp MomentumRecoveryNext
+          jmp MomentumRecoveryNextNegative
 DecayNegativeVelocity:
 
           lda temp1
@@ -261,7 +260,7 @@ DecayNegativeVelocity:
           tax
           lda playerVelocityX,x
           bmi DecayNegativeVelocityLabel
-          jmp MomentumRecoveryNext
+          jmp MomentumRecoveryNextNegative
 DecayNegativeVelocityLabel:
 
 
@@ -283,10 +282,10 @@ DecayNegativeVelocityLabel:
           asl
           tax
           lda playerVelocityX,x
-          bne MomentumRecoveryNext
+          bne MomentumRecoveryNextNegative
           lda # 0
           sta playerVelocityXL,x
-MomentumRecoveryNext:
+MomentumRecoveryNextNegative:
 
 .pend
 

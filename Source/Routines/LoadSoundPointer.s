@@ -46,35 +46,35 @@ LoadSoundPointer .proc
 
 SoundIDInRange:
 
-          ;; let var41 = SoundPointersH[temp1]
+          ;; let soundEffectPointerH = SoundPointersH[temp1]
           lda temp1
           asl
           tax
           lda SoundPointersH,x
-          sta var41
+          sta soundEffectPointerH
 
-          ;; let var42 = SoundPointersL[temp1]
+          ;; let soundEffectPointer = SoundPointersL[temp1]
           lda temp1
           asl
           tax
           lda SoundPointersL,x
-          sta var42
+          sta soundEffectPointer
 
           jmp LoadSoundPointerReturn
 
 .pend
 
 LoadSoundPointerOutOfRange .proc
-          ;; Set pointer to 0 (var41.var42 = 0.0)
+          ;; Set pointer to 0 (soundEffectPointer = 0.0)
           ;; Returns: Far (return otherbank)
 
           lda # 0
-          sta var41
+          sta soundEffectPointerH
 
           ;; Out of range - mark sound pointer inactive
 
           lda # 0
-          sta var42
+          sta soundEffectPointer
 
 LoadSoundPointerReturn:
           rts

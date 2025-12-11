@@ -66,8 +66,7 @@ PlaySoundEffect .proc
 AfterLoadSoundPointer:
 
           ;; Try Voice 0 first
-
-          if soundEffectPointer then TryVoice1
+          ;; if soundEffectPointer then TryVoice1
           lda soundEffectPointer
           beq UseVoice0
 
@@ -104,12 +103,12 @@ TryVoice1 .proc
           ;; Try Voice 1
           jmp BS_return
 
-          ;; Copy soundEffectPointer (var41.var42) to soundEffectPointer1 (var43.var44)
-          lda var41
-          sta var43
+          ;; Copy soundEffectPointer to soundEffectPointer1
+          lda soundEffectPointer
+          sta soundEffectPointer1
           ;; Voice 1 is free - use it
-          lda var42
-          sta var44
+          lda soundEffectPointerH
+          sta soundEffectPointer1H
           lda # 1
           sta soundEffectFrame1_W
           ;; tail call

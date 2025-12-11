@@ -181,9 +181,9 @@ HCSF_HandleFire .proc
 
           if temp4 then HCSF_HandleHandicap
           lda temp4
-          beq SetNormalLock
+          beq SetNormalLockHandleFire
           jmp HCSF_HandleHandicap
-SetNormalLock:
+SetNormalLockHandleFire:
           
 
           lda temp1

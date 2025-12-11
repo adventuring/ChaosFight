@@ -89,9 +89,7 @@ AfterChangeGameModeReset:
 HandleConsoleSwitches
           ;; Returns: Far (return otherbank)
 
-HandleConsoleSwitches
-
-
+HandleConsoleSwitches:
 
           ;; Main console switch handler
           ;; Returns: Far (return otherbank)
@@ -351,11 +349,11 @@ CheckColorBWToggle .proc
           sta temp6
           ;; if switchbw then let temp6 = 1
           lda switchbw
-          beq CheckSwitchChanged
+          beq CheckSwitchChangedLabel
           lda # 1
           sta temp6
-CheckSwitchChanged:
-          jmp CheckSwitchChanged
+CheckSwitchChangedLabel:
+          jmp CheckSwitchChangedLabel
 CheckSwitchChanged:
           lda temp6
           cmp colorBWPrevious_R

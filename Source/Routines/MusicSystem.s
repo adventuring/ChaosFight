@@ -513,8 +513,7 @@ ApplyAttackEnvelope .proc
           ;; Check for wraparound: clamp to 0 if negative
 
           ;; let temp6 = temp6 + temp4
-
-                    if temp6 & $80 then let temp6 = 0
+          ;; if temp6 & $80 then let temp6 = 0
           lda temp6
           and #$80
           beq ClampAUDV
@@ -586,22 +585,21 @@ ApplyDecayEnvelope .proc
           ;; Check for wraparound: clamp to 0 if negative
 
           dec temp6
-
-                    if temp6 & $80 then let temp6 = 0
+          ;; if temp6 & $80 then let temp6 = 0
           lda temp6
           and #$80
-          beq ClampAUDV
+          beq ClampAUDVCheck
           lda # 0
           sta temp6
-ClampAUDV:
+ClampAUDVCheck:
 
           ;; Set voice-specific AUDV
           lda temp6
           cmp # 16
-          bcc SetAUDV
+          bcc SetAUDVCheck
           lda # 15
           sta temp6
-SetAUDV:
+SetAUDVCheck:
 
 
           rts

@@ -135,11 +135,12 @@ PSM_InlineNoLeft .proc
           lda # 0
           sta temp3
 
-PSM_InlineDoneLeft
+PSM_InlineDoneLeftCheck
           lda temp3
-          bne PSM_InlineDoneLeft
+          bne PSM_InlineDoneLeftApply
+          jmp PSM_InlineDoneLeftApply
+PSM_InlineDoneLeftApply:
                     let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
-PSM_InlineDoneLeft:
 
 
 .pend

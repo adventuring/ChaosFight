@@ -83,10 +83,10 @@ DragonOfStormsDown:
                     if temp2 & $80 then let temp2 = 0
           lda temp2
           cmp # 32
-          bcc CheckRowBelow
+          bcc CheckRowBelowStandard
           lda # 31
           sta temp2
-CheckRowBelow:
+CheckRowBelowStandard:
 
 
 
@@ -148,9 +148,9 @@ CheckRowBelow:
 AfterPlayfieldReadDownFirst:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown
-BlockedCannotMoveDown:
-          jmp BlockedCannotMoveDown
+                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDownStandard
+BlockedCannotMoveDownStandard:
+          jmp BlockedCannotMoveDownStandard
           lda temp6
           sta temp1
 
@@ -601,7 +601,7 @@ FrootyDown .proc
           bcc CheckRowBelow
           lda # 31
           sta temp2
-CheckRowBelow:
+CheckRowBelowFrooty:
 
 
 
@@ -660,9 +660,9 @@ CheckRowBelow:
 AfterPlayfieldReadFrootyDown:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown
-BlockedCannotMoveDown:
-          jmp BlockedCannotMoveDown
+                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDownFrooty
+BlockedCannotMoveDownFrooty:
+          jmp BlockedCannotMoveDownFrooty
           lda temp6
           sta temp1
 

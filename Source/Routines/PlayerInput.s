@@ -500,9 +500,9 @@ CheckJoy1:
 
 
           lda joy1down
-          bne HGI_HandleDownPressed
+          bne HGI_HandleDownPressedJoy1
           jmp HGI_CheckGuardRelease
-HGI_HandleDownPressed:
+HGI_HandleDownPressedJoy1:
 
 
           jmp HGI_HandleDownPressed
@@ -515,9 +515,9 @@ HGI_CheckJoy0 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0down
-          bne HGI_HandleDownPressed
+          bne HGI_HandleDownPressedJoy0
           jmp HGI_CheckGuardRelease
-HGI_HandleDownPressed:
+HGI_HandleDownPressedJoy0:
 
 
 .pend
@@ -664,9 +664,9 @@ CheckJoy1Up:
 
 
           lda joy1up
-          bne HUIEB_HandleUp
+          bne HUIEB_HandleUpJoy1
           jmp HUIEB_CheckEnhanced
-HUIEB_HandleUp:
+HUIEB_HandleUpJoy1:
 
 
           jmp HUIEB_HandleUp
@@ -679,9 +679,9 @@ HUIEB_UseJoy0 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0up
-          bne HUIEB_HandleUp
+          bne HUIEB_HandleUpJoy0
           jmp HUIEB_CheckEnhanced
-HUIEB_HandleUp:
+HUIEB_HandleUpJoy0:
 
 
 .pend
@@ -867,9 +867,9 @@ HUIEB_RoboTitoLatch:
 
           lda temp1
           cmp # 0
-          bne CheckPlayer2JoyPort
+          bne CheckPlayer2JoyPortRoboTito
           jmp HUIEB_RoboTitoCheckJoy0
-CheckPlayer2JoyPort:
+CheckPlayer2JoyPortRoboTito:
 
 
           lda temp1
@@ -879,20 +879,20 @@ CheckPlayer2JoyPort:
 CheckJoy1Down:
 
 
-                    if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy1down          beq HUIEB_RoboTitoDone
-HUIEB_RoboTitoDone:
-          jmp HUIEB_RoboTitoDone
-          jmp HUIEB_RoboTitoDone
+                    if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy1down          beq HUIEB_RoboTitoDoneJoy1
+HUIEB_RoboTitoDoneJoy1:
+          jmp HUIEB_RoboTitoDoneJoy1
+          jmp HUIEB_RoboTitoDoneJoy1
 
 .pend
 
 HUIEB_RoboTitoCheckJoy0 .proc
 
-                    if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq HUIEB_RoboTitoDone
-HUIEB_RoboTitoDone:
-          jmp HUIEB_RoboTitoDone
+                    if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq HUIEB_RoboTitoDoneJoy0
+HUIEB_RoboTitoDoneJoy0:
+          jmp HUIEB_RoboTitoDoneJoy0
 
-HUIEB_RoboTitoDone
+HUIEB_RoboTitoDoneJoy0Label
           lda # 0
           sta temp3
 
@@ -1119,16 +1119,17 @@ HUIEB_JumpProceed .proc
 
           jsr DispatchCharacterJump
 
-HUIEB_JumpDone
+HUIEB_JumpDoneLabel
 
           ;; Set Zoe Ryen double-jump flag if applicable
           ;; Returns: Far (return otherbank)
 
           lda temp6
           cmp # 1
-          bne HUIEB_JumpDone
+          bne HUIEB_JumpDoneCheck
+          jmp HUIEB_JumpDoneCheck
+HUIEB_JumpDoneCheck:
                     let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
-HUIEB_JumpDone:
 
           jmp BS_return
 
@@ -1156,9 +1157,9 @@ HandleStandardHorizontalMovement
 
           lda temp1
           cmp # 0
-          bne CheckPlayer2JoyPort
+          bne CheckPlayer2JoyPortHSHM
           jmp HSHM_UseJoy0
-CheckPlayer2JoyPort:
+CheckPlayer2JoyPortHSHM:
 
 
           ;; Players 1,3 use joy1
@@ -1806,9 +1807,9 @@ CheckColumnLeft:
 AfterPlayfieldReadMoveLeftCurrentRow:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow
-CheckBottomRow:
-          jmp CheckBottomRow
+                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRowMoveLeft
+CheckBottomRowMoveLeft:
+          jmp CheckBottomRowMoveLeft
           lda currentPlayer
           sta temp1
 
@@ -1873,9 +1874,9 @@ HFCM_MoveLeftOK:
 AfterPlayfieldReadMoveLeftBottomRow:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow
-CheckBottomRow:
-          jmp CheckBottomRow
+                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRowMoveLeftBottom
+CheckBottomRowMoveLeftBottom:
+          jmp CheckBottomRowMoveLeftBottom
           lda currentPlayer
           sta temp1
 
@@ -2229,9 +2230,9 @@ CheckBottomRow:
 AfterPlayfieldReadMoveRightBottomRow:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow
-CheckBottomRow:
-          jmp CheckBottomRow
+                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRowMoveRightBottom
+CheckBottomRowMoveRightBottom:
+          jmp CheckBottomRowMoveRightBottom
           lda currentPlayer
           sta temp1
 
@@ -2388,9 +2389,9 @@ CheckJoy1Down:
 
           ;; if joy1down then goto HFCM_VertDown
           lda joy1down
-          beq HandleFlyingCharacterMovementDone
+          beq HandleFlyingCharacterMovementDoneJoy1
           jmp HFCM_VertDown
-HandleFlyingCharacterMovementDone:
+HandleFlyingCharacterMovementDoneJoy1:
 
           jmp BS_return
 
@@ -2406,9 +2407,9 @@ CheckJoy0Down:
 
           ;; if joy0down then goto HFCM_VertDown
           lda joy0down
-          beq HandleFlyingCharacterMovementDone
+          beq HandleFlyingCharacterMovementDoneJoy0
           jmp HFCM_VertDown
-HandleFlyingCharacterMovementDone:
+HandleFlyingCharacterMovementDoneJoy0:
 
           rts
 

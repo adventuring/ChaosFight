@@ -617,7 +617,7 @@ CheckPlayersAgainstCachedHitbox .proc
           lda temp2
           cmp temp1
           bne CheckPlayerHealth
-          jmp CPB_NextPlayer
+          jmp CPB_NextPlayerBottom
 CheckPlayerHealth:
 
 
@@ -634,10 +634,10 @@ CheckPlayerHealth:
           lda temp6
           sec
           sbc cachedHitboxLeft_R
-          bcc CPB_NextPlayer
-          beq CPB_NextPlayer
+          bcc CPB_NextPlayerLeft
+          beq CPB_NextPlayerLeft
           jmp CheckRightEdge
-CPB_NextPlayer:
+CPB_NextPlayerLeft:
 CheckRightEdge:
 
           ;; if playerX[temp2] >= cachedHitboxRight_R then CPB_NextPlayer
@@ -648,7 +648,7 @@ CheckRightEdge:
           sec
           sbc cachedHitboxRight_R
           bcc CheckVerticalOverlap
-          jmp CPB_NextPlayer
+          jmp CPB_NextPlayerRight
 CheckVerticalOverlap:
 
           ;; if playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R then CPB_NextPlayer
@@ -662,10 +662,10 @@ CheckVerticalOverlap:
           lda temp6
           sec
           sbc cachedHitboxTop_R
-          bcc CPB_NextPlayer
-          beq CPB_NextPlayer
+          bcc CPB_NextPlayerTop
+          beq CPB_NextPlayerTop
           jmp CheckBottomEdge
-CPB_NextPlayer_dup11:
+CPB_NextPlayerTop:
 CheckBottomEdge:
 
           ;; if playerY[temp2] >= cachedHitboxBottom_R then CPB_NextPlayer
@@ -676,7 +676,7 @@ CheckBottomEdge:
           sec
           sbc cachedHitboxBottom_R
           bcc HitDetected
-          jmp CPB_NextPlayer
+          jmp CPB_NextPlayerBottom
 HitDetected:
           lda temp2
           sta temp4
@@ -685,7 +685,7 @@ HitDetected:
 
 .pend
 
-CPB_NextPlayer:
+CPB_NextPlayerBottom:
           rts
 
 CheckPlayersAgainstCachedHitboxDone .proc

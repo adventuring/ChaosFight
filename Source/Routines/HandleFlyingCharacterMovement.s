@@ -71,7 +71,7 @@ HFCM_CheckLeftJoy1:
           and # $08
           bne HFCM_CheckRight
 
-HFCM_DoLeft:
+          jmp HFCM_DoLeft
 
 .pend
 
@@ -80,7 +80,7 @@ HFCM_CheckLeftJoy0 .proc
           and # $80
           bne HFCM_CheckRight
 
-HFCM_DoLeft:
+          jmp HFCM_DoLeft
 
 
 .pend
@@ -112,7 +112,7 @@ HFCM_CheckRightJoy1:
           and # $04
           bne HFCM_CheckVertical
 
-HFCM_DoRight:
+          jmp HFCM_DoRight
 
 .pend
 
@@ -123,7 +123,7 @@ HFCM_CheckRightJoy0 .proc
           and # $40
           bne HFCM_CheckVertical
 
-HFCM_DoRight:
+          jmp HFCM_DoRight
 
 
 .pend
@@ -184,9 +184,9 @@ CheckJoy1Down:
           ;; if joy1down then goto HFCM_VertDown
           lda SWCHA
           and # $02
-          bne HandleFlyingCharacterMovementDone
+          bne HandleFlyingCharacterMovementDoneJoy1
           jmp HFCM_VertDown
-HandleFlyingCharacterMovementDone:
+HandleFlyingCharacterMovementDoneJoy1:
 
           rts
 
@@ -202,9 +202,9 @@ CheckJoy0Down:
 
           ;; if joy0down then goto HFCM_VertDown
           lda joy0down
-          beq HandleFlyingCharacterMovementDone
+          beq HandleFlyingCharacterMovementDoneJoy0
           jmp HFCM_VertDown
-HandleFlyingCharacterMovementDone:
+HandleFlyingCharacterMovementDoneJoy0:
 
           rts
 

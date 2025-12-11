@@ -140,9 +140,9 @@ CheckRowBelow:
 CDH_PlayfieldReadReturn:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown
-BlockedCannotMoveDown:
-          jmp BlockedCannotMoveDown
+                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDownStandard
+BlockedCannotMoveDownStandard:
+          jmp BlockedCannotMoveDownStandard
           lda temp6
           sta temp1
 

@@ -205,11 +205,11 @@ AfterPlaySoundEffectLeft:
 
           ;; if joy0right then goto ArenaSelectRight
           lda joy0right
-          beq ArenaSelectDoneLeft
+          beq ArenaSelectDoneLeftSecond
 
           jmp ArenaSelectRight
 
-ArenaSelectDoneLeft:
+ArenaSelectDoneLeftSecond:
 
 .pend
 

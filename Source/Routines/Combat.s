@@ -779,10 +779,10 @@ CheckDefenderHealth:
           asl
           tax
           lda playerHealth,x
-          beq CheckAttackHit
-          bmi CheckAttackHit
+          beq CheckAttackHitDefender
+          bmi CheckAttackHitDefender
           jmp NextDefender
-CheckAttackHit:
+CheckAttackHitDefender:
 
           lda defenderID
           asl
@@ -865,10 +865,10 @@ CheckAttackWindow:
           lda temp1
           sec
           sbc ActionAttackRecoveryShifted
-          bcc ProcessAttackerAttacks
-          beq ProcessAttackerAttacks
+          bcc ProcessAttackerAttacksLabel
+          beq ProcessAttackerAttacksLabel
           jmp NextAttacker
-ProcessAttackerAttacks:
+ProcessAttackerAttacksLabel:
           jsr ProcessAttackerAttacks
 
 .pend

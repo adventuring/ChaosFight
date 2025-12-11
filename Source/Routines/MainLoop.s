@@ -47,7 +47,7 @@ MainLoop .proc
 
 AfterWarmStart:
 
-skip_reset_check:
+SkipResetCheck:
 
           ;; Execution falls through to continue
 
@@ -124,9 +124,9 @@ MainLoopModeTitleScreen .proc
           ;; Returns: Near (return thisbank)
           ;; Must use return thisbank (RTS) to match the near call
           ;; Cross-bank call to TitleScreenMain in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterTitleScreenMain-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterTitleScreenMain-1)
           pha
           lda # >(TitleScreenMain-1)
           pha
@@ -134,7 +134,7 @@ MainLoopModeTitleScreen .proc
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterTitleScreenMain:
 
 
           rts

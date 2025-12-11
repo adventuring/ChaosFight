@@ -133,9 +133,9 @@ temp4 = player number (0-3)
           ;; CRITICAL: Guard against invalid characters - prevent calling bank 2 when no characters on screen
           ;; Handle special sprite cases first (these are safe and don’t need bank dispatch)
           ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterCopyGlyphToPlayerBank16First-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCopyGlyphToPlayerBank16First-1)
           pha
           lda # >(CopyGlyphToPlayer-1)
           pha
@@ -143,12 +143,12 @@ temp4 = player number (0-3)
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterCopyGlyphToPlayerBank16First:
 
           ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterCopyGlyphToPlayerBank16Second-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCopyGlyphToPlayerBank16Second-1)
           pha
           lda # >(CopyGlyphToPlayer-1)
           pha
@@ -156,12 +156,12 @@ return_point:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterCopyGlyphToPlayerBank16Second:
 
           ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterCopyGlyphToPlayerBank16Third-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCopyGlyphToPlayerBank16Third-1)
           pha
           lda # >(CopyGlyphToPlayer-1)
           pha
@@ -169,7 +169,7 @@ return_point:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterCopyGlyphToPlayerBank16Third:
 
           ;; Inline LocateCharacterArt to reduce call chain depth (stack overflow fix)
           ;; Returns: Far (return otherbank)
@@ -236,9 +236,9 @@ LoadPlayerSprite_Bank2Dispatch
           lda temp4
           sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank2 in bank 2
-          lda # >(SL_AfterSetPlayerCharacterArtBank2-1)
+          lda # >(AfterSetPlayerCharacterArtBank2-1)
           pha
-          lda # <(SL_AfterSetPlayerCharacterArtBank2-1)
+          lda # <(AfterSetPlayerCharacterArtBank2-1)
           pha
           lda # >(SetPlayerCharacterArtBank2-1)
           pha
@@ -246,7 +246,7 @@ LoadPlayerSprite_Bank2Dispatch
           pha
                     ldx # 1
           jmp BS_jsr
-SL_AfterSetPlayerCharacterArtBank2:
+AfterSetPlayerCharacterArtBank2:
 
           jsr BS_return
 
@@ -267,9 +267,9 @@ LoadPlayerSprite_Bank3Dispatch
           lda temp4
           sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank3 in bank 3
-          lda # >(SL_AfterSetPlayerCharacterArtBank3-1)
+          lda # >(AfterSetPlayerCharacterArtBank3-1)
           pha
-          lda # <(SL_AfterSetPlayerCharacterArtBank3-1)
+          lda # <(AfterSetPlayerCharacterArtBank3-1)
           pha
           lda # >(SetPlayerCharacterArtBank3-1)
           pha
@@ -277,7 +277,7 @@ LoadPlayerSprite_Bank3Dispatch
           pha
                     ldx # 2
           jmp BS_jsr
-SL_AfterSetPlayerCharacterArtBank3:
+AfterSetPlayerCharacterArtBank3:
 
           jsr BS_return
 
@@ -298,9 +298,9 @@ LoadPlayerSprite_Bank4Dispatch
           lda temp4
           sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank4 in bank 4
-          lda # >(SL_AfterSetPlayerCharacterArtBank4-1)
+          lda # >(AfterSetPlayerCharacterArtBank4-1)
           pha
-          lda # <(SL_AfterSetPlayerCharacterArtBank4-1)
+          lda # <(AfterSetPlayerCharacterArtBank4-1)
           pha
           lda # >(SetPlayerCharacterArtBank4-1)
           pha
@@ -308,7 +308,7 @@ LoadPlayerSprite_Bank4Dispatch
           pha
                     ldx # 3
           jmp BS_jsr
-SL_AfterSetPlayerCharacterArtBank4:
+AfterSetPlayerCharacterArtBank4:
 
           jsr BS_return
 
@@ -329,9 +329,9 @@ LoadPlayerSprite_Bank5Dispatch
           lda temp4
           sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank5 in bank 5
-          lda # >(SL_AfterSetPlayerCharacterArtBank5-1)
+          lda # >(AfterSetPlayerCharacterArtBank5-1)
           pha
-          lda # <(SL_AfterSetPlayerCharacterArtBank5-1)
+          lda # <(AfterSetPlayerCharacterArtBank5-1)
           pha
           lda # >(SetPlayerCharacterArtBank5-1)
           pha
@@ -339,7 +339,7 @@ LoadPlayerSprite_Bank5Dispatch
           pha
                     ldx # 4
           jmp BS_jsr
-SL_AfterSetPlayerCharacterArtBank5:
+AfterSetPlayerCharacterArtBank5:
 
           jsr BS_return
 

@@ -264,7 +264,7 @@ ArenaSelectRightSound .proc
           ldx # 14
           jmp BS_jsr
 
-return_point2:
+AfterPlaySoundEffectRight:
 
           ;; Display arena number ( 1-32) or ?? (random)
           ;; Display using player4 (tens digit) and player5 (ones

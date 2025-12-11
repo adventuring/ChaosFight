@@ -140,10 +140,39 @@ GetEliminationOrder:
           sta winScreenCandidateOrder
 
           ;; Check if this is 2nd place (higher order than current 2nd)
-                    if winScreenCandidateOrder > temp5 then DWS_UpdateSecond
-          jmp DWS_CheckThird
+          ;; if winScreenCandidateOrder > temp5 then DWS_UpdateSecond
+          lda winScreenCandidateOrder
+          cmp temp5
+          bcc DWS_CheckThird
+          beq DWS_CheckThird
+          jmp DWS_UpdateSecond
 
 DWS_UpdateSecond
+          ;; Move current 2nd to 3rd, then update 2nd
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: temp3, temp5, winScreenCandidateOrder,
+          ;; temp1 (from DWS_RankLoop)
+          ;;
+          ;; Output: temp4, winScreenThirdPlaceOrder updated,
+          ;; temp3, temp5 updated
+          ;;
+          ;; Mutates: temp4, winScreenThirdPlaceOrder,
+          ;; temp3, temp5
+          ;;
+          ;; Called Routines: None
+          ;; Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
+          lda temp5
+          sta winScreenThirdPlaceOrder
+          lda temp3
+          sta temp4
+          lda winScreenCandidateOrder
+          sta temp5
+          lda temp1
+          sta temp3
+          jmp DWS_RankNext
+
+DWS_UpdateSecond .proc
           ;; Move current 2nd to 3rd, then update 2nd
           ;; Returns: Far (return otherbank)
           ;;
@@ -187,7 +216,17 @@ DWS_CheckThird .proc
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; DWS_RankLoop, DWS_RankNext
-                    if winScreenCandidateOrder > winScreenThirdPlaceOrder then let winScreenThirdPlaceOrder = winScreenCandidateOrder : let temp4 = temp1
+          ;; if winScreenCandidateOrder > winScreenThirdPlaceOrder then let winScreenThirdPlaceOrder = winScreenCandidateOrder : let temp4 = temp1
+          lda winScreenCandidateOrder
+          cmp winScreenThirdPlaceOrder
+          bcc DWS_CheckThirdDone
+          beq DWS_CheckThirdDone
+          lda winScreenCandidateOrder
+          sta winScreenThirdPlaceOrder
+          lda temp1
+          sta temp4
+DWS_CheckThirdDone:
+          rts
 
 .pend
 
@@ -207,22 +246,10 @@ DWS_RankNext .proc
           inc temp1
           ;; if temp1 < 4 then goto DWS_RankLoop
           lda temp1
-          cmp 4
-          bcs PositionCharacters
-          jmp
-          lda temp1
           cmp # 4
           bcs PositionCharacters
-          goto_label:
-
           jmp DWS_RankLoop
 PositionCharacters:
-
-          lda temp1
-          cmp # 4
-          bcs PositionCharactersDone
-          jmp DWS_RankLoop
-PositionCharactersDone:
 
           
 
@@ -249,6 +276,8 @@ PositionThreePlayers:
 
           jmp DWS_Position3Players
 
+          jsr BS_return
+
 .pend
 
 DWS_LoadIdleSprite .proc
@@ -271,12 +300,14 @@ DWS_LoadIdleSprite .proc
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterLoadCharacterSpriteWinScreen:
 
 
           rts
 
-DWS_Position1Player
+.pend
+
+DWS_Position1Player .proc
           ;; 1 player: Winner centered on podium
           ;; Returns: Far (return otherbank)
           ;;
@@ -294,15 +325,15 @@ DWS_Position1Player
           ;; Called Routines: LoadCharacterSprite (bank16) - loads
           ;; character sprite
           ;; Constraints: Must be colocated with DisplayWinScreen
-          lda 0
+          lda # 0
           asl
           tax
-          lda 80
+          lda # 80
           sta playerX,x
-          lda 0
+          lda # 0
           asl
           tax
-          lda 192
+          lda # 192
           sta playerY,x
           ;; Load winner sprite
           ;; let currentCharacter = playerCharacter[temp2]         
@@ -341,15 +372,15 @@ DWS_Position2Players
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; DWS_Hide2Player, DWS_Hide2PlayerDone
           ;; Winner (P0)
-          lda 0
+          lda # 0
           asl
           tax
-          lda 80
+          lda # 80
           sta playerX,x
-          lda 0
+          lda # 0
           asl
           tax
-          lda 192
+          lda # 192
           sta playerY,x
           ;; let currentCharacter = playerCharacter[temp2]         
           lda temp2
@@ -452,16 +483,16 @@ DWS_Position3Players
           ;; DWS_Hide3Player2, DWS_Hide3Player2Done,
           ;; DWS_Hide3Player3, DWS_Hide3Player3Done
           ;; Winner (P0) - higher platform
-          lda 0
+          lda # 0
           asl
           tax
-          lda 80
+          lda # 80
           sta playerX,x
           ;; Row 16 = 128 pixels (16 × 8)
-          lda 0
+          lda # 0
           asl
           tax
-          lda 128
+          lda # 128
           sta playerY,x
           ;; let currentCharacter = playerCharacter[temp2]         
           lda temp2
@@ -481,15 +512,15 @@ DWS_Position3Players
 PositionSecondPlace:
 
 
-          lda 1
+          lda # 1
           asl
           tax
-          lda 40
+          lda # 40
           sta playerX,x
-          lda 1
+          lda # 1
           asl
           tax
-          lda 192
+          lda # 192
           sta playerY,x
           ;; let currentCharacter = playerCharacter[temp3]         
           lda temp3
@@ -503,9 +534,7 @@ PositionSecondPlace:
 
           jmp DWS_Hide3Player2Done
 
-.pend
-
-DWS_Hide3Player2 .proc
+DWS_Hide3Player2:
           ;; Hide Player 2 (no 2nd place)
           ;; Returns: Far (return otherbank)
           ;;
@@ -519,15 +548,13 @@ DWS_Hide3Player2 .proc
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; DWS_Position3Players, DWS_Hide3Player2Done
-          lda 1
+          lda # 1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerX,x
 
           jsr BS_return
-
-.pend
 
 DWS_Hide3Player2Done:
           ;; Hide Player 2 complete (label only)
@@ -551,15 +578,15 @@ DWS_Hide3Player2Done:
 PositionThirdPlace:
 
 
-          lda 2
+          lda # 2
           asl
           tax
-          lda 120
+          lda # 120
           sta playerX,x
-          lda 2
+          lda # 2
           asl
           tax
-          lda 192
+          lda # 192
           sta playerY,x
           ;; let currentCharacter = playerCharacter[temp4]         
           lda temp4
@@ -573,9 +600,7 @@ PositionThirdPlace:
 
           jmp DWS_Hide3Player3Done
 
-.pend
-
-DWS_Hide3Player3 .proc
+DWS_Hide3Player3:
           ;; Hide Player 3 (no 3rd place)
           ;; Returns: Far (return otherbank)
           ;;
@@ -589,15 +614,13 @@ DWS_Hide3Player3 .proc
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; DWS_Position3Players, DWS_Hide3Player3Done
-          lda 2
+          lda # 2
           asl
           tax
-          lda 0
+          lda # 0
           sta playerX,x
 
           jsr BS_return
-
-.pend
 
 DWS_Hide3Player3Done:
           ;; Hide Player 3 complete (label only)
@@ -613,10 +636,10 @@ DWS_Hide3Player3Done:
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen
           ;; Hide unused player
-          lda 3
+          lda # 3
           asl
           tax
-          lda 0
+          lda # 0
           sta playerX,x
           jsr BS_return
 
@@ -626,20 +649,20 @@ DWS_HidePlayers123 .proc
           ;; Helper: Hide players 1, 2, 3 (saves bytes by consolidating repeated code)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from DisplayWinScreen, so use return thisbank
-          lda 1
+          lda # 1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerX,x
-          lda 2
+          lda # 2
           asl
           tax
-          lda 0
+          lda # 0
           sta playerX,x
-          lda 3
+          lda # 3
           asl
           tax
-          lda 0
+          lda # 0
           sta playerX,x
           rts
 
@@ -660,12 +683,13 @@ DWS_GetBWMode .proc
           ;;
           ;; Constraints: Must reside in bank 15 (DisplayWinScreen.bas)
           lda systemFlags
-          and SystemFlagColorBWOverride
+          and # SystemFlagColorBWOverride
           sta temp2
-          if temp2 then let temp2 = 1
+          ;; if temp2 then let temp2 = 1
           lda temp2
           beq DWS_GetBWModeDone
-          jmp DWS_GetBWModeDone
+          lda # 1
+          sta temp2
 DWS_GetBWModeDone:
           jsr BS_return
 

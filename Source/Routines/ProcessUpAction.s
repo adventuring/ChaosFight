@@ -83,7 +83,7 @@ StandardJump:
           sta temp4
           jmp DispatchCharacterJump
 
-PUA_BernieFallThrough .proc
+BernieFallThroughUpAction .proc
           ;; Bernie UP handled in BernieJump routine (fall through 1-row floors)
           ;; CRITICAL: Must use gosub/return, not goto, because BernieJump returns otherbank
           lda # 0
@@ -100,21 +100,21 @@ PUA_BernieFallThrough .proc
           ldx # 11
           jmp BS_jsr
 
-return_point:
+AfterBernieJump:
 
           rts
 
 .pend
 
-PUA_HarpyFlap .proc
+HarpyFlapUpAction .proc
           ;; Harpy UP handled in HarpyJump routine (flap to fly)
           ;; CRITICAL: Must use gosub/return, not goto, because HarpyJump returns otherbank
           lda # 0
           sta temp3
           ;; Cross-bank call to HarpyJump in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterHarpyJump-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterHarpyJump-1)
           pha
           lda # >(HarpyJump-1)
           pha
@@ -123,12 +123,12 @@ PUA_HarpyFlap .proc
           ldx # 11
           jmp BS_jsr
 
-return_point_pua5:
+AfterHarpyJump:
 
           rts
 .pend
 
-PUA_RoboTitoAscend:
+RoboTitoAscendUpAction:
           ;; Ascend toward ceiling
           ;; let temp6 = playerCharacter[temp1]
           lda temp1
@@ -196,7 +196,7 @@ ColumnInRange:
           cmp # 0
           bne CheckCeilingPixel
 
-          jmp PUA_RoboTitoLatch
+          jmp RoboTitoLatchUpAction
 
 CheckCeilingPixel:
 
@@ -222,19 +222,19 @@ CheckCeilingPixel:
           ldx # 15
           jmp BS_jsr
 
-return_point_pua8:
+AfterPlayfieldReadRoboTitoAscend:
 
           ;; if temp1 then goto PUA_RoboTitoLatch
           lda temp1
           beq CheckDownPressed
 
-          jmp PUA_RoboTitoLatch
+          jmp RoboTitoLatchUpAction
 
 CheckDownPressed:
           ;; Clear latch if DOWN pressed (check appropriate port)
           lda currentPlayer
           sta temp1
-          ;; if temp1 & 2 = 0 then goto PUA_CheckJoy0Down
+          ;; if temp1 & 2 = 0 then goto CheckJoy0DownUpAction
           ;; if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
           ;; lda joy1down (undefined - commented out)
           beq ProcessUpActionDone
@@ -251,7 +251,7 @@ ProcessUpActionDone:
           sta temp3
           rts
 
-PUA_CheckJoy0Down .proc
+CheckJoy0DownUpAction .proc
           ;; if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
           lda joy0down
           beq ProcessUpActionDoneLabel
@@ -273,7 +273,7 @@ PUA_RoboTitoLatch .proc
 
 .pend
 
-PUA_ZoeJumpCheck .proc
+ZoeJumpCheckUpAction .proc
           ;; Zoe Ryen: Allow single mid-air double-jump
           lda # 0
           sta temp6

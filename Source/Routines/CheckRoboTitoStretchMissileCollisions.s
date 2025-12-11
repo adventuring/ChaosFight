@@ -16,24 +16,24 @@ CheckRoboTitoStretchMissileCollisions:
           lda # 0
           sta temp1
 
-CRTSMC_PlayerLoop .proc
+PlayerLoopStretchMissileCheck .proc
           ;; Check if player is RoboTito and stretching
-          ;; if playerCharacter[temp1] = CharacterRoboTito then CRTSMC_IsRoboTito
+          ;; if playerCharacter[temp1] = CharacterRoboTito then IsRoboTitoStretchCheck
           lda temp1
           asl
           tax
           lda playerCharacter,x
           cmp # CharacterRoboTito
-          beq CRTSMC_IsRoboTito
-          jmp CRTSMC_NextPlayer
+          beq IsRoboTitoStretchCheck
+          jmp NextPlayerStretchCheck
 
-CRTSMC_IsRoboTito:
+IsRoboTitoStretchCheck:
 
-          jmp CRTSMC_NextPlayer
+          jmp NextPlayerStretchCheck
 
 .pend
 
-CRTSMC_IsRoboTito .proc
+IsRoboTitoStretchCheck .proc
           ;; Player is RoboTito, check stretching sta
 
           ;; Check if stretching (not latched, ActionJumping animation
@@ -45,11 +45,11 @@ CRTSMC_IsRoboTito .proc
           tax
           lda characterStateFlags_R,x
           sta temp5
-          ;; if temp5 then goto CRTSMC_NextPlayer
+          ;; if temp5 then goto NextPlayerStretchCheck
           lda temp5
           beq CheckStretchingAnimation
 
-          jmp CRTSMC_NextPlayer
+          jmp NextPlayerStretchCheck
 
 CheckStretchingAnimation:
           ;; Mask bits 4-7 (animation sta
@@ -68,13 +68,13 @@ CheckStretchingAnimation:
           ;; let playerStateTemp = playerStateTemp / 16
           lda playerStateTemp
           cmp # 10
-          bne CRTSMC_NextPlayer
+          bne NextPlayerStretchCheck
 
-          jmp CRTSMC_IsStretching
+          jmp IsStretchingAnimation
 
 .pend
 
-CRTSMC_IsStretching .proc
+IsStretchingAnimation .proc
           ;; In stretching animation, check for stretch missile
 
           ;; Check if stretch missile has height > 0

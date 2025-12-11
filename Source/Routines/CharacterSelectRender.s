@@ -116,7 +116,7 @@ AfterRenderPlayerPreview:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point_4:
+AfterGetPlayerLockedRender:
 
 
           lda temp2

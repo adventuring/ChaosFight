@@ -181,7 +181,7 @@ PublisherPreludeComplete
           pha
           ldx # 13
           jmp BS_jsr
-return_point:
+AfterBeginAuthorPrelude:
 
 
           jsr BS_return

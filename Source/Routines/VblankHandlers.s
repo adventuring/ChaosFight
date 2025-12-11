@@ -359,12 +359,10 @@ VblankTransitionToFallen
 
 VblankTransitionHandleJump
           ;; Stay on frame 7 until Y velocity goes negative
-          if 0 < playerVelocityY[currentPlayer] then VblankTransitionHandleJump_TransitionToFalling
+          ;; if 0 < playerVelocityY[currentPlayer] then VblankTransitionHandleJumpTransitionToFalling
           lda currentPlayer
           asl
-
           tax
-
           lda playerVelocityY,x
           cmp # 1
 
@@ -380,7 +378,7 @@ VblankTransitionHandleJump
 
           jmp VblankSetPlayerAnimationInlined
 
-VblankTransitionHandleJump_TransitionToFalling
+VblankTransitionHandleJumpTransitionToFalling
           ;; Falling (positive Y velocity), transition to falling
           lda ActionFalling
           sta temp2
@@ -462,10 +460,10 @@ AfterPlayfieldReadVblankTransition:
 
           lda temp3
           sta temp2
-          if temp1 then VblankTransitionHandleFallBack_HitWall
+          if temp1 then VblankTransitionHandleFallBackHitWall
           lda temp1
           beq TransitionToFallen
-          jmp VblankTransitionHandleFallBack_HitWall
+          jmp VblankTransitionHandleFallBackHitWall
 TransitionToFallen:
           
 
@@ -476,7 +474,7 @@ TransitionToFallen:
 
           jmp VblankSetPlayerAnimationInlined
 
-VblankTransitionHandleFallBack_HitWall
+VblankTransitionHandleFallBackHitWall
           ;; Hit wall, transition to idle
           lda ActionIdle
           sta temp2
@@ -545,9 +543,11 @@ VblankHandleAttackTransition
           bcs HandleWindupEnd
           jmp VblankUpdateSprite
 HandleWindupEnd:
-          
-
-                    let temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
+          ;; let temp1 = temp1 - ActionAttackWindup
+          lda temp1
+          sec
+          sbc # ActionAttackWindup
+          sta temp1
           jmp VblankHandleWindupEnd
 
           jmp VblankUpdateSprite
@@ -573,12 +573,13 @@ VblankHandleWindupEnd
           jmp CheckWindupNextAction
 
           CheckWindupNextAction:
-
-          if temp1 >= 16 then let temp1 = 0
+          ;; if temp1 >= 16 then let temp1 = 0
           lda temp1
-          cmp # 17
-
+          cmp # 16
           bcc GetWindupNextAction
+          lda # 0
+          sta temp1
+GetWindupNextAction:
 
           lda # 0
 
@@ -782,7 +783,7 @@ DetermineSpriteBank:
           lda temp1
           sta temp6
           ;; Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
-          ;; if temp1 < 8 then goto VblankUpdateSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_680          jmp
+          ;; if temp1 < 8 then goto VblankUpdateSpriteBank2Dispatch          lda temp1          cmp 8          bcs .skip_680          jmp
           lda temp1
           cmp # 8
           bcs CheckBank3
@@ -799,7 +800,7 @@ CheckBank3Dispatch:
 
           
 
-          ;; if temp1 < 16 then goto VblankUpdateSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_6822          jmp
+          ;; if temp1 < 16 then goto VblankUpdateSpriteBank3Dispatch          lda temp1          cmp 16          bcs .skip_6822          jmp
           lda temp1
           cmp # 16
           bcs CheckBank4
@@ -814,7 +815,7 @@ CheckBank4Dispatch:
 
           
 
-          ;; if temp1 < 24 then goto VblankUpdateSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_5055          jmp
+          ;; if temp1 < 24 then goto VblankUpdateSpriteBank4Dispatch          lda temp1          cmp 24          bcs .skip_5055          jmp
           lda temp1
           cmp # 24
           bcs UseBank5
@@ -829,9 +830,9 @@ UseBank5Dispatch:
 
           
 
-          jmp VblankUpdateSprite_Bank5Dispatch
+          jmp VblankUpdateSpriteBank5Dispatch
 
-VblankUpdateSprite_Bank2Dispatch
+VblankUpdateSpriteBank2Dispatch
           lda temp1
           sta temp6
           lda temp4
@@ -852,7 +853,7 @@ AfterSetPlayerCharacterArtBank2Vblank:
 
           jmp VblankAnimationNextPlayer
 
-VblankUpdateSprite_Bank3Dispatch
+VblankUpdateSpriteBank3Dispatch
           ;; let temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
           lda temp1
           sec
@@ -882,7 +883,7 @@ AfterSetPlayerCharacterArtBank3Vblank:
 
           jmp VblankAnimationNextPlayer
 
-VblankUpdateSprite_Bank4Dispatch
+VblankUpdateSpriteBank4Dispatch
           ;; let temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
           lda temp1
           sec
@@ -912,7 +913,7 @@ AfterSetPlayerCharacterArtBank4Vblank:
 
           jmp VblankAnimationNextPlayer
 
-VblankUpdateSprite_Bank5Dispatch
+VblankUpdateSpriteBank5Dispatch
           ;; let temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
           lda temp1
           sec

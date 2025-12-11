@@ -23,9 +23,9 @@ TriggerEliminationEffects:
           sta temp1
           ;; PlaySoundEffect expects temp1 = sound ID
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(TEE_PlaySoundEffectReturn-1)
+          lda # >(AfterPlaySoundEffect-1)
           pha
-          lda # <(TEE_PlaySoundEffectReturn-1)
+          lda # <(AfterPlaySoundEffect-1)
           pha
           lda # >(PlaySoundEffect-1)
           pha
@@ -34,7 +34,7 @@ TriggerEliminationEffects:
           ldx # 14
           jmp BS_jsr
 
-TEE_PlaySoundEffectReturn:
+AfterPlaySoundEffect:
 
           ;; Set elimination visual effect timer
           ;; This could trigger particle effects, etc.

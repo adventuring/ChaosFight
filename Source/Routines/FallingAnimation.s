@@ -57,13 +57,21 @@ MovePlayer1:
 
           ;; Move Player 1 from quadrant to target (if active)
           ;; playerIndex = 0 (player index), targetX = target X,
-                    if playerCharacter[0] = NoCharacter then DonePlayer1Move
-
+          ;; if playerCharacter[0] = NoCharacter then DonePlayer1Move
+          lda # 0
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq DonePlayer1Move
           ;; targetY = target Y (24)
           lda # 0
           sta temp1
           ;; Check if 4-player mode for target X
-                    if controllerStatus & SetQuadtariDetected then Player1Target4P
+          ;; if controllerStatus & SetQuadtariDetected then Player1Target4P
+          lda controllerStatus
+          and # SetQuadtariDetected
+          bne Player1Target4P
 
           ;; 2-player mode: target × = 53
           lda # 53
@@ -114,14 +122,13 @@ Player1TargetDone:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+FallingAnimationPlayer1Return:
 
-
-                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq DonePlayer1Move
+          ;; if temp4 then let fallComplete = fallComplete + 1
+          lda temp4
+          beq DonePlayer1Move
+          inc fallComplete
 DonePlayer1Move:
-          jmp DonePlayer1Move
-
-DonePlayer1Move
           ;; reached = 1 if reached target
           ;; Returns: Far (return otherbank)
           ;; Player 1 movement complete (skipped if not active)
@@ -137,20 +144,21 @@ DonePlayer1Move
           ;; Constraints: Must be colocated with FallingAnimation1
 
           ;; Move Player 2 from quadrant to target (if active)
-                    if playerCharacter[1] = NoCharacter then DonePlayer2Move
+          ;; if playerCharacter[1] = NoCharacter then DonePlayer2Move
           lda # 1
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
-          bne SetPlayer2Target
-          jmp DonePlayer2Move
+          cmp # NoCharacter
+          beq DonePlayer2Move
 SetPlayer2Target:
-
           ;; Check if 4-player mode for target X
           lda # 1
           sta temp1
-                    if controllerStatus & SetQuadtariDetected then Player2Target4P
+          ;; if controllerStatus & SetQuadtariDetected then Player2Target4P
+          lda controllerStatus
+          and # SetQuadtariDetected
+          bne Player2Target4P
 
           ;; 2-player mode: target × = 107
           lda # 107

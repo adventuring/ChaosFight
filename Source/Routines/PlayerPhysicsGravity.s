@@ -436,7 +436,7 @@ CheckRoboTitoLanding:
           lda temp6
           cmp CharacterRoboTito
           bne GravityNextPlayer
-          jmp PAG_SetRoboTitoStretchPermission
+          jmp SetRoboTitoStretchPermission
 GravityNextPlayer:
 
           jmp GravityNextPlayer
@@ -537,7 +537,7 @@ CheckRoboTitoBottomLanding:
           lda temp6
           cmp CharacterRoboTito
           bne GravityNextPlayerLabel
-          jmp PAG_SetRoboTitoStretchPermission
+          jmp SetRoboTitoStretchPermission
 GravityNextPlayerLabel:
 
 

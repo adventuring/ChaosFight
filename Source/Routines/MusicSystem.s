@@ -385,9 +385,9 @@ CalculateMusicVoiceEnvelope .proc
 
           lda temp1
           cmp # 0
-          bne CMVE_GetVoice1Vars
-          jmp CMVE_GetVoice0Vars
-CMVE_GetVoice1Vars:
+          bne GetVoice1Vars
+          jmp GetVoice0Vars
+GetVoice1Vars:
 
 
           ;; Voice 1
@@ -401,11 +401,11 @@ CMVE_GetVoice1Vars:
           lda musicVoice1TargetAUDV_R
           sta temp5
 
-          jmp CMVE_CalcElapsed
+          jmp CalcElapsedFrames
 
 .pend
 
-CMVE_GetVoice0Vars .proc
+GetVoice0Vars .proc
 
           ;; Voice 0
           ;; Returns: Far (return thisbank)
@@ -419,11 +419,11 @@ CMVE_GetVoice0Vars .proc
           lda musicVoice0TargetAUDV_R
           sta temp5
 
-          jmp CMVE_CalcElapsed
+          jmp CalcElapsedFrames
 
 .pend
 
-CMVE_CalcElapsed .proc
+CalcElapsedFrames .proc
 
           ;; Calculate frames elapsed = TotalFrames - FrameCounter
           ;; Returns: Far (return thisbank)
@@ -442,19 +442,19 @@ CMVE_CalcElapsed .proc
 
           ;; Check if in attack phase (first NoteAttackFrames frames)
 
-                    if temp4 < NoteAttackFrames then CMVE_ApplyAttack
+                    if temp4 < NoteAttackFrames then ApplyAttackEnvelope
 
           ;; Check if in decay phase (last NoteDecayFrames frames)
 
-                    if temp3 <= NoteDecayFrames then CMVE_ApplyDecay
+                    if temp3 <= NoteDecayFrames then ApplyDecayEnvelope
           lda temp3
           sec
           sbc NoteDecayFrames
-          bcc CMVE_ApplyDecay
-          beq CMVE_ApplyDecay
-          jmp CMVE_ApplySustain
-CMVE_ApplyDecay:
-CMVE_ApplySustain:
+          bcc ApplyDecayEnvelope
+          beq ApplyDecayEnvelope
+          jmp ApplySustainEnvelope
+ApplyDecayEnvelope:
+ApplySustainEnvelope:
 
           ;; Sustain phase - use target AUDV (already set)
 
@@ -462,7 +462,7 @@ CMVE_ApplySustain:
 
 .pend
 
-CMVE_ApplyAttack .proc
+ApplyAttackEnvelope .proc
 
           ;; Helper: Applies attack envelope (ramps up volume)
           ;; Returns: Far (return thisbank)
@@ -539,7 +539,7 @@ SetAUDV:
 
 .pend
 
-CMVE_ApplyDecay .proc
+ApplyDecayEnvelope .proc
 
           ;; Helper: Applies decay envelope (ramps down volume)
           ;; Returns: Near (return thisbank) - called same-bank

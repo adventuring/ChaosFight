@@ -110,11 +110,11 @@
           ;; PlaySoundEffect (bank15) - plays navigation sound
 
           ;;
-          ;; Constraints: Must be colocated with HCSC_CheckJoy0,
+          ;; Constraints: Must be colocated with CheckJoy0CharacterSelect,
 
-          ;; HCSC_CheckJoy0Left,
+          ;; CheckJoy0LeftCharacterSelect,
 
-          ;; HCSC_CheckJoy1Left, HandleCharacterSelectCycle
+          ;; CheckJoy1LeftCharacterSelect, HandleCharacterSelectCycle
 
 
 CheckJoy0CharacterSelect .proc

@@ -23,39 +23,39 @@ CheckAllPlayerCollisions:
           cmp # 0
           bne Use4PlayerMode
 
-          ;; let temp6 = 2 : goto PCR_SkipElse
+          ;; let temp6 = 2 : goto SkipElseCollisionCheck
 
 Use4PlayerMode:
 
           lda # 4
           sta temp6
 
-PCR_SkipElse .proc
+SkipElseCollisionCheck .proc
           lda # 0
           sta temp1
 
 .pend
 
-PCR_OuterLoop .proc
+OuterLoopCollisionCheck .proc
           rts
 
-          if temp1 >= 2 then PCR_CheckP1Active
+          if temp1 >= 2 then CheckP1ActiveCollision
 
-          jmp PCR_InnerLoop
+          jmp InnerLoopCollisionCheck
 
 .pend
 
-PCR_CheckP1Active .proc
+CheckP1ActiveCollision .proc
           lda controllerStatus
           and # SetQuadtariDetected
           cmp # 0
           bne CheckPlayer2Character
 
-          jmp PCR_NextOuter
+          jmp NextOuterCollisionCheck
 
 CheckPlayer2Character:
 
-          ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto PCR_NextOuter
+          ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto NextOuterCollisionCheck
           lda temp1
           cmp # 2
           bne CheckPlayer3Character
@@ -67,7 +67,7 @@ CheckPlayer2Character:
           cmp # NoCharacter
           bne CheckPlayer3Character
 
-          jmp PCR_NextOuter
+          jmp NextOuterCollisionCheck
 
 CheckPlayer3Character:
 
@@ -81,41 +81,41 @@ CheckPlayer3Character:
           lda playerCharacter,x
           cmp NoCharacter
           bne CheckPlayer3Active
-          jmp PCR_NextOuter
+          jmp NextOuterCollisionCheck
 CheckPlayer3Active:
 
 
 
-          ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto PCR_NextOuter
+          ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto NextOuterCollisionCheck
           lda temp1
           cmp # 3
-          bne PCR_InnerLoop
+          bne InnerLoopCollisionCheck
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne PCR_InnerLoop
-          jmp PCR_NextOuter
-PCR_InnerLoop:
+          bne InnerLoopCollisionCheck
+          jmp NextOuterCollisionCheck
+InnerLoopCollisionCheck:
 
           lda temp1
           cmp # 3
-          bne PCR_CheckPair
+          bne CheckPairCollision
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne PCR_CheckPair
-          jmp PCR_NextOuter
-PCR_CheckPair:
+          bne CheckPairCollision
+          jmp NextOuterCollisionCheck
+CheckPairCollision:
 
 
 
 .pend
 
-PCR_InnerLoop .proc
+InnerLoopCollisionCheck .proc
 
           lda temp1
           clc
@@ -124,35 +124,35 @@ PCR_InnerLoop .proc
 
 .pend
 
-PCR_CheckPair .proc
+CheckPairCollision .proc
 
-          ;; if temp2 >= temp6 then goto PCR_NextOuter
+          ;; if temp2 >= temp6 then goto NextOuterCollisionCheck
           lda temp2
           cmp temp6
 
-          bcc PCR_CheckP2Active
+          bcc CheckP2ActiveCollision
 
-          jmp PCR_CheckP2Active
+          jmp CheckP2ActiveCollision
 
-          PCR_CheckP2Active:
+          CheckP2ActiveCollision:
 
-                    if temp2 >= 2 then PCR_CheckP2Active
-          jmp PCR_CheckDista
+                    if temp2 >= 2 then CheckP2ActiveCollision
+          jmp CheckDistanceCollision
 
 
 .pend
 
-PCR_CheckP2Active .proc
+CheckP2ActiveCollision .proc
 
           lda controllerStatus
           and # SetQuadtariDetected
           cmp # 0
           bne CheckP2Character
-          jmp PCR_NextInner
+          jmp NextInnerCollisionCheck
 CheckP2Character:
 
 
-          ;; if temp2 = 2 && playerCharacter[2] = NoCharacter then goto PCR_NextInner
+          ;; if temp2 = 2 && playerCharacter[2] = NoCharacter then goto NextInnerCollisionCheck
           lda temp2
           cmp # 2
           bne CheckP2Character3
@@ -162,7 +162,7 @@ CheckP2Character:
           lda playerCharacter,x
           cmp NoCharacter
           bne CheckP2Character3
-          jmp PCR_NextInner
+          jmp NextInnerCollisionCheck
 CheckP2Character3:
 
           lda temp2
@@ -174,23 +174,23 @@ CheckP2Character3:
           lda playerCharacter,x
           cmp NoCharacter
           bne CheckP2CharacterActive
-          jmp PCR_NextInner
+          jmp NextInnerCollisionCheck
 CheckP2CharacterActive:
 
 
 
-          ;; if temp2 = 3 && playerCharacter[3] = NoCharacter then goto PCR_NextInner
+          ;; if temp2 = 3 && playerCharacter[3] = NoCharacter then goto NextInnerCollisionCheck
           lda temp2
           cmp # 3
-          bne PCR_CheckDistance
+          bne CheckDistanceCollision
           lda 3
           asl
           tax
           lda playerCharacter,x
           cmp NoCharacter
-          bne PCR_CheckDistance
-          jmp PCR_NextInner
-PCR_CheckDistance:
+          bne CheckDistanceCollision
+          jmp NextInnerCollisionCheck
+CheckDistanceCollision:
 
           lda temp2
           cmp # 3
@@ -201,31 +201,31 @@ PCR_CheckDistance:
           lda playerCharacter,x
           cmp NoCharacter
           bne CheckDistanceActive
-          jmp PCR_NextInner
+          jmp NextInnerCollisionCheck
 CheckDistanceActive:
 
 
 
 .pend
 
-PCR_CheckDistance .proc
+CheckDistanceCollision .proc
 
-          ;; if playerHealth[temp1] = 0 then goto PCR_NextInner
+          ;; if playerHealth[temp1] = 0 then goto NextInnerCollisionCheck
           lda temp1
           asl
           tax
           lda playerHealth,x
           bne CheckPlayer2Health
-          jmp PCR_NextInner
+          jmp NextInnerCollisionCheck
 CheckPlayer2Health:
 
-          ;; if playerHealth[temp2] = 0 then goto PCR_NextInner
+          ;; if playerHealth[temp2] = 0 then goto NextInnerCollisionCheck
           lda temp2
           asl
           tax
           lda playerHealth,x
           bne CalculateXDistance
-          jmp PCR_NextInner
+          jmp NextInnerCollisionCheck
 CalculateXDistance:
 
           ;; let temp3 = playerX[temp2] - playerX[temp1]         
@@ -256,7 +256,7 @@ CalculateYDistance:
 
 
 
-          ;; if temp3 >= PlayerCollisionDistance then goto PCR_NextInner
+          ;; if temp3 >= PlayerCollisionDistance then goto NextInnerCollisionCheck
           lda temp3
           cmp PlayerCollisionDista
 
@@ -334,11 +334,11 @@ CalculateWeights:
           lda totalHeight
           cmp # 0
           bne CheckHeightCollision
-          jmp PCR_NextInner
+          jmp NextInnerCollisionCheck
 CheckHeightCollision:
 
 
-          ;; if temp4 >= totalHeight then goto PCR_NextInner
+          ;; if temp4 >= totalHeight then goto NextInnerCollisionCheck
           lda temp4
           cmp totalHeight
 
@@ -373,11 +373,11 @@ CheckHeightCollision:
           lda totalWeight
           cmp # 0
           bne CalculateWeightDifference
-          jmp PCR_NextInner
+          jmp NextInnerCollisionCheck
 CalculateWeightDifference:
 
 
-          ;; if playerX[temp1] < playerX[temp2] then goto PCR_SepLeft
+          ;; if playerX[temp1] < playerX[temp2] then goto SepLeftCollision
 
           ;; let weightDifference = halfHeight1 - halfHeight2          lda halfHeight1          sec          sbc halfHeight2          sta weightDifference
           lda halfHeight1
@@ -395,7 +395,7 @@ CalculateWeightDifference:
           lda weightDifference
           sta impulseStrength
 
-          ;; if halfHeight1 >= halfHeight2 then goto PCR_ApplyImpulseRight
+          ;; if halfHeight1 >= halfHeight2 then goto ApplyImpulseRightCollision
           lda halfHeight1
           cmp halfHeight2
 
@@ -461,7 +461,7 @@ CalculateWeightDifference:
 
 .pend
 
-PCR_Div32_1 .proc
+Div32ImpulseStrength .proc
           ;; Returns: Far (return otherbank)
 
 
@@ -480,11 +480,11 @@ PCR_Div32_1 .proc
             sta impulseStrength
 
 
-          jmp PCR_ImpulseDone_1
+          jmp ImpulseDoneFirst
 
 .pend
 
-PCR_Div64_1 .proc
+Div64ImpulseStrength .proc
           ;; Returns: Far (return otherbank)
 
 
@@ -505,11 +505,11 @@ PCR_Div64_1 .proc
             sta impulseStrength
 
 
-          jmp PCR_ImpulseDone_1
+          jmp ImpulseDoneFirst
 
 .pend
 
-PCR_Div128_1 .proc
+Div128ImpulseStrength .proc
           ;; Returns: Far (return otherbank)
 
 
@@ -532,23 +532,23 @@ PCR_Div128_1 .proc
             sta impulseStrength
 
 
-PCR_ImpulseDone_1
+ImpulseDoneFirst
 
           lda # 1
           sta temp5
 
-          jmp PCR_ApplyImpulse
+          jmp ApplyImpulseCollision
 
 .pend
 
-PCR_ApplyImpulseRight .proc
+ApplyImpulseRightCollision .proc
 
           lda # 0
           sta temp5
 
 .pend
 
-PCR_ApplyImpulse .proc
+ApplyImpulseCollision .proc
 
           lda impulseStrength
           cmp # 0
@@ -561,7 +561,7 @@ CheckImpulseDirection:
           lda temp5
           cmp # 0
           bne ApplyImpulseLeft
-          jmp PCR_ImpulseRightDir
+          jmp ImpulseRightDirection
 ApplyImpulseLeft:
 
 
@@ -575,10 +575,10 @@ ApplyImpulseLeft:
           sec
           sbc 4
           bcc skip_4706
-          beq PCR_ImpulseDone
-          lda 4
+          beq ImpulseDoneCollision
+          lda # 4
           sta playerVelocityX,x
-PCR_ImpulseDone:
+ImpulseDoneCollision:
 
                     if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
           lda temp2
@@ -599,17 +599,17 @@ ClampPlayer2VelocityMax:
           tax
           lda playerVelocityX,x
           sec
-          sbc 252
-          bcc PCR_ImpulseDone
-          beq PCR_ImpulseDone
-          lda 252
+          sbc # 252
+          bcc ImpulseDoneCollision
+          beq ImpulseDoneCollision
+          lda # 252
           sta playerVelocityX,x
-PCR_ImpulseDone:
-          jmp PCR_ImpulseDone
+ImpulseDoneCollision:
+          jmp ImpulseDoneCollision
 
 .pend
 
-PCR_ImpulseRightDir .proc
+ImpulseRightDirection .proc
 
                     if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
 
@@ -619,23 +619,25 @@ PCR_ImpulseRightDir .proc
           tax
           lda playerVelocityX,x
           sec
-          sbc 252
+          sbc # 252
           bcc ClampPlayer1VelocityMax
           beq ClampPlayer1VelocityMax
-          lda 252
+          lda # 252
           sta playerVelocityX,x
 ClampPlayer1VelocityMax:
 
-                    if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX
+                    if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
           lda temp2
           asl
           tax
           lda playerVelocityX,x
-          cmp 4
+          cmp # 4
           bcs ClampPlayer2Velocity
-          lda playerVelocityX
+          lda playerVelocityX,x
+          clc
+          adc impulseStrength
           sta playerVelocityX,x
-ClampPlayer2Velocity:[temp2] + impulseStrength
+ClampPlayer2Velocity:
 
                     if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           lda temp2
@@ -643,31 +645,31 @@ ClampPlayer2Velocity:[temp2] + impulseStrength
           tax
           lda playerVelocityX,x
           sec
-          sbc 4
-          bcc PCR_ImpulseDone
-          beq PCR_ImpulseDone
-          lda 4
+          sbc # 4
+          bcc ImpulseDoneCollision
+          beq ImpulseDoneCollision
+          lda # 4
           sta playerVelocityX,x
-PCR_ImpulseDone:
+ImpulseDoneCollision:
 
-PCR_ImpulseDone
+ImpulseDoneCollision
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
           lda temp2
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
-          jmp PCR_NextInner
+          jmp NextInnerCollisionCheck
 
 .pend
 
-PCR_SepLeft .proc
+SepLeftCollision .proc
 
           ;; let weightDifference = halfHeight1 - halfHeight2          lda halfHeight1          sec          sbc halfHeight2          sta weightDifference
           lda halfHeight1
@@ -685,7 +687,7 @@ PCR_SepLeft .proc
           lda weightDifference
           sta impulseStrength
 
-          ;; if halfHeight1 >= halfHeight2 then goto PCR_ApplyImpulseLeft
+          ;; if halfHeight1 >= halfHeight2 then goto ApplyImpulseLeftCollision
           lda halfHeight1
           cmp halfHeight2
 
@@ -751,7 +753,7 @@ PCR_SepLeft .proc
 
 .pend
 
-PCR_Div32_2 .proc
+Div32ImpulseStrength2 .proc
           ;; Returns: Far (return otherbank)
 
 
@@ -770,11 +772,11 @@ PCR_Div32_2 .proc
             sta impulseStrength
 
 
-          jmp PCR_ImpulseDone_2
+          jmp ImpulseDoneSecond
 
 .pend
 
-PCR_Div64_2 .proc
+Div64ImpulseStrength2 .proc
           ;; Returns: Far (return otherbank)
 
 
@@ -795,11 +797,11 @@ PCR_Div64_2 .proc
             sta impulseStrength
 
 
-          jmp PCR_ImpulseDone_2
+          jmp ImpulseDoneSecond
 
 .pend
 
-PCR_Div128_2 .proc
+Div128ImpulseStrength2 .proc
           ;; Returns: Far (return otherbank)
 
 
@@ -822,42 +824,42 @@ PCR_Div128_2 .proc
             sta impulseStrength
 
 
-PCR_ImpulseDone_2
+ImpulseDoneSecond
 
           lda # 0
           sta temp5
 
-          jmp PCR_ApplyImpulse
+          jmp ApplyImpulseCollision
 
 .pend
 
-PCR_ApplyImpulseLeft .proc
+ApplyImpulseLeftCollision .proc
 
           lda # 1
           sta temp5
 
-          jmp PCR_ApplyImpulse
+          jmp ApplyImpulseCollision
 
 .pend
 
-PCR_NextInner .proc
+NextInnerCollisionCheck .proc
 
           inc temp2
 
-          jmp PCR_CheckPair
+          jmp CheckPairCollision
 
 .pend
 
-PCR_NextOuter .proc
+NextOuterCollisionCheck .proc
 
           inc temp1
 
-          ;; if temp1 < temp6 then goto PCR_OuterLoop
+          ;; if temp1 < temp6 then goto OuterLoopCollisionCheck
           lda temp1
           cmp temp6
-          bcs PCR_NextOuterDone
-          jmp PCR_OuterLoop
-PCR_NextOuterDone:
+          bcs NextOuterCollisionCheckDone
+          jmp OuterLoopCollisionCheck
+NextOuterCollisionCheckDone:
 
           
 

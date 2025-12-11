@@ -55,9 +55,9 @@ SelectDrawScreenDone:
           jsr BS_return
 
           ;; Cross-bank call to SelectHideLowerPlayerPreviews in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSelectHideLowerPlayerPreviews-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSelectHideLowerPlayerPreviews-1)
           pha
           lda # >(SelectHideLowerPlayerPreviews-1)
           pha
@@ -66,7 +66,7 @@ SelectDrawScreenDone:
           ldx # 5
           jmp BS_jsr
 
-return_point:
+AfterSelectHideLowerPlayerPreviews:
 
 .pend
 
@@ -76,9 +76,9 @@ SelectRenderPlayerPreview .proc
           ;; Called same-bank from SelectDrawScreenLoop, so use return thisbank
           ;; Optimized: Combined duplicate conditionals, early return thisbank for common case
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
-          lda # >(return_point2-1)
+          lda # >(AfterPlayerPreviewSetPosition-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterPlayerPreviewSetPosition-1)
           pha
           lda # >(PlayerPreviewSetPosition-1)
           pha
@@ -86,14 +86,14 @@ SelectRenderPlayerPreview .proc
           pha
           ldx # 5
           jmp BS_jsr
-return_point_2:
+AfterPlayerPreviewSetPosition:
 
 
           ;; Same-bank call to RenderPlayerPreview (defined in this file)
           ;; Cross-bank call to RenderPlayerPreview (defined later in this file, same bank)
-          lda # >(return_point_render-1)
+          lda # >(AfterRenderPlayerPreview-1)
           pha
-          lda # <(return_point_render-1)
+          lda # <(AfterRenderPlayerPreview-1)
           pha
           lda # >(RenderPlayerPreview-1)
           pha
@@ -101,7 +101,7 @@ return_point_2:
           pha
           ldx # 5
           jmp BS_jsr
-return_point_render:
+AfterRenderPlayerPreview:
 
 
           lda currentPlayer

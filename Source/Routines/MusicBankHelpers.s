@@ -376,25 +376,16 @@ LoadMusicNote1 .proc
 
           ;; TODO: #1296 ldy #0
 
-            lda (musicVoice1Pointer),y  ; Load AUDCV
-
-            sta temp2
-
-            iny
-
-            lda (musicVoice1Pointer),y  ; Load AUDF
-
-            sta temp3
-
-            iny
-
-            lda (musicVoice1Pointer),y  ; Load Duration
-
-            sta temp4
-
-            iny
-
-            lda (musicVoice1Pointer),y  ; Load Delay
+          lda (musicVoice1Pointer),y      ; Load AUDCV
+          sta temp2
+          iny
+          lda (musicVoice1Pointer),y      ; Load AUDF
+          sta temp3
+          iny
+          lda (musicVoice1Pointer),y      ; Load Duration
+          sta temp4
+          iny
+          lda (musicVoice1Pointer),y      ; Load Delay
 
             sta temp5
 

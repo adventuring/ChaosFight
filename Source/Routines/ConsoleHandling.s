@@ -58,9 +58,9 @@ WarmStart .proc
           lda # ModePublisherPrelude
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterChangeGameModeReset-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterChangeGameModeReset-1)
           pha
           lda # >(ChangeGameMode-1)
           pha
@@ -69,7 +69,7 @@ WarmStart .proc
           ldx # 13
           jmp BS_jsr
 
-return_point:
+AfterChangeGameModeReset:
 
           jsr BS_return
 
@@ -99,9 +99,9 @@ CheckSelectPressed:
 
           ;; Re-detect controllers when Select is pressed
           ;; Cross-bank call to DetectPads in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterDetectPadsSelect-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDetectPadsSelect-1)
           pha
           lda # >(DetectPads-1)
           pha
@@ -109,7 +109,7 @@ CheckSelectPressed:
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterDetectPadsSelect:
 
 
           lda systemFlags
@@ -177,9 +177,9 @@ DonePlayer2Pause
           ;; Color/B&W switch - re-detect controllers when toggled
           ;; CRITICAL: Use bank13 even though same-bank to match return otherbank
           ;; Cross-bank call to CheckColorBWToggle in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterCheckColorBWToggle-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckColorBWToggle-1)
           pha
           lda # >(CheckColorBWToggle-1)
           pha
@@ -187,7 +187,7 @@ DonePlayer2Pause
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterCheckColorBWToggle:
 
 
           ;; 7800 Pause button - toggle Color/B&W mode (not in SECAM)
@@ -354,9 +354,9 @@ CheckSwitchChanged:
 TriggerDetectPads:
 
           ;; Cross-bank call to DetectPads in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterDetectPadsColorBW-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDetectPadsColorBW-1)
           pha
           lda # >(DetectPads-1)
           pha
@@ -364,7 +364,7 @@ TriggerDetectPads:
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterDetectPadsColorBW:
 
 
           lda temp6
@@ -416,9 +416,9 @@ ReloadArenaColorsNow .proc
           ;; Returns: Far (return otherbank)
           ;; CheckColorBWToggle is called cross-bank, so must use return otherbank
           ;; Cross-bank call to ReloadArenaColors in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterReloadArenaColors-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterReloadArenaColors-1)
           pha
           lda # >(ReloadArenaColors-1)
           pha
@@ -426,7 +426,7 @@ ReloadArenaColorsNow .proc
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterReloadArenaColors:
 
 
           jsr BS_return

@@ -48,9 +48,9 @@ PlayPublisherPreludeMusic:
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           ;; When called from Vblank, stack is shallower than when called from MainLoop
           ;; Cross-bank call to PlayMusic in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterPlayMusicPublisherPrelude-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayMusicPublisherPrelude-1)
           pha
           lda # >(PlayMusic-1)
           pha
@@ -445,9 +445,9 @@ VblankTransitionHandleFallBack
           lda temp6
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadVblank-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadVblank-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -455,6 +455,7 @@ VblankTransitionHandleFallBack
           pha
                     ldx # 15
           jmp BS_jsr
+AfterPlayfieldReadVblank:
 AfterPlayfieldReadVblankTransition:
 
 
@@ -585,7 +586,7 @@ GetWindupNextAction:
 
           sta .GetWindupNextAction
 
-          label_unknown:
+GetWindupNextAction:
           ;; let temp2 = CharacterWindupNextAction[temp1]         
           lda temp1
           asl
@@ -637,7 +638,7 @@ GetExecuteNextAction:
 
           sta .skip_6145
 
-          label_unknown:
+GetExecuteNextAction:
           ;; let temp2 = CharacterExecuteNextAction[temp1]         
           lda temp1
           asl
@@ -962,9 +963,9 @@ VblankHandlerDone:
 VblankModeGameMainAfterAnimations
           ;; Update movement system (full frame rate movement) (in Bank 8)
           ;; Cross-bank call to UpdatePlayerMovement in bank 8
-          lda # >(return_point-1)
+          lda # >(AfterUpdatePlayerMovement-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterUpdatePlayerMovement-1)
           pha
           lda # >(UpdatePlayerMovement-1)
           pha
@@ -972,6 +973,7 @@ VblankModeGameMainAfterAnimations
           pha
                     ldx # 7
           jmp BS_jsr
+AfterUpdatePlayerMovement:
 AfterUpdatePlayerMovementVblank:
 
 
@@ -1296,9 +1298,9 @@ PlayWinnerAnnouncementMusic:
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           ;; When called from Vblank, stack is shallower than when called from MainLoop
           ;; Cross-bank call to PlayMusic in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterPlayMusicWinnerAnnouncement-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayMusicWinnerAnnouncement-1)
           pha
           lda # >(PlayMusic-1)
           pha

@@ -3027,9 +3027,9 @@ AfterRadishGoblinHandleInputRightPort:
 IHRP_FlyingMovement .proc
 
           ;; Cross-bank call to HandleFlyingCharacterMovement in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterHandleFlyingCharacterMovementRightPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterHandleFlyingCharacterMovementRightPort-1)
           pha
           lda # >(HandleFlyingCharacterMovement-1)
           pha
@@ -3037,7 +3037,7 @@ IHRP_FlyingMovement .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterHandleFlyingCharacterMovementRightPort:
 
 
 IHRP_DoneFlyingLeftRight
@@ -3165,9 +3165,9 @@ HGI_HandleRadishGoblinDown2 .proc
           ;; Returns: Far (return otherbank)
 
           ;; Cross-bank call to RadishGoblinHandleStickDown in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterRadishGoblinHandleStickDownRightPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRadishGoblinHandleStickDownRightPort-1)
           pha
           lda # >(RadishGoblinHandleStickDown-1)
           pha
@@ -3175,7 +3175,7 @@ HGI_HandleRadishGoblinDown2 .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterRadishGoblinHandleStickDownRightPort:
 
 
           jmp StandardGuard
@@ -3185,9 +3185,9 @@ return_point:
 DCD_HandleRoboTitoDown2 .proc
 
           ;; Cross-bank call to RoboTitoDown in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterRoboTitoDownInput2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRoboTitoDownInput2-1)
           pha
           lda # >(RoboTitoDown-1)
           pha
@@ -3195,7 +3195,7 @@ DCD_HandleRoboTitoDown2 .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterRoboTitoDownInput2:
 
 
           lda temp2
@@ -3248,9 +3248,9 @@ HGI_CheckRadishGoblinRelease2 .proc
           ;; Returns: Far (return otherbank)
 
           ;; Cross-bank call to RadishGoblinHandleStickDownRelease in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterRadishGoblinHandleStickDownReleaseRightPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRadishGoblinHandleStickDownReleaseRightPort-1)
           pha
           lda # >(RadishGoblinHandleStickDownRelease-1)
           pha
@@ -3258,7 +3258,7 @@ HGI_CheckRadishGoblinRelease2 .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterRadishGoblinHandleStickDownReleaseRightPort:
 
 
 HGI_Done2

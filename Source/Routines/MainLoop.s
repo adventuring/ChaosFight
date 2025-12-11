@@ -294,7 +294,13 @@ AfterDrawTitleScreen:
           ;; After DrawTitleScreen bank9 returns via BS_return, we’re back in bank 16
           ;; MainLoopDrawScreen is in bank 16, and drawscreen is also in bank 16
           ;; Use batariBASIC’s drawscreen statement which handles bank context correctly
-                    if gameMode >= 3 then drawscreen
+          ;; if gameMode >= 3 then drawscreen
+          lda gameMode
+          cmp # 3
+          bcc MainLoopSkipDrawScreen
+          ;; drawscreen is handled by MainLoopDrawScreen routine
+          jmp MainLoopDrawScreen
+MainLoopSkipDrawScreen:
           jmp MainLoop
 
 .pend

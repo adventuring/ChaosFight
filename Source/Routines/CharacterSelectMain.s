@@ -599,7 +599,7 @@ CheckQuadtariActive:
 
                     if controllerStatus & SetQuadtariDetected then let temp4 = 255
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           beq ProcessPlayerInput
           lda # 255
           sta temp4
@@ -778,7 +778,7 @@ CharacterSelectHandleRandomRolls .proc
 
                     if controllerStatus & SetQuadtariDetected then let temp1 = 3
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           beq CharacterSelectRollRandomPlayer
           lda # 3
           sta temp1

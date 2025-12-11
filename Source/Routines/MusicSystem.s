@@ -386,7 +386,7 @@ CalculateMusicVoiceEnvelope .proc
           lda temp1
           cmp # 0
           bne CMVE_GetVoice1Vars
-          ;; TODO: #1299 CMVE_GetVoice0Vars
+          jmp CMVE_GetVoice0Vars
 CMVE_GetVoice1Vars:
 
 

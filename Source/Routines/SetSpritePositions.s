@@ -161,8 +161,10 @@ SSP_NextParticipant .proc
           ;; are actually in the game
           ENAM0 = 0
           ENAM1 = 0
-          ;; TODO: #1297 missile0height = 0
-          ;; TODO: #1297 missile1height = 0
+          lda # 0
+          sta missile0height
+          lda # 0
+          sta missile1height
           jsr SetSpritePositionsRenderMissiles
 
           jsr BS_return
@@ -233,37 +235,33 @@ RenderMissileForParticipant:
           ;;
           ;; Mutates: temp1-temp5 (used for calculations), missile registers
           ;;
-          ;; TODO: #1297 dim RMF_participant = temp1
-          ;; TODO: #1297 dim RMF_select = temp2
-          ;; TODO: #1297 dim RMF_mask = temp3
-          ;; TODO: #1297 dim RMF_character = temp4
-          ;; TODO: #1297 dim RMF_active = temp5
+          ;; RMF_participant = temp1 (input parameter)
+          ;; RMF_select = temp2 (calculated)
+          ;; RMF_mask = temp3 (calculated)
+          ;; RMF_character = temp4 (calculated)
+          ;; RMF_active = temp5 (calculated)
           ;; let RMF_select = RMF_participant & 1
-          lda RMF_participant
+          lda temp1
           and # 1
-          sta RMF_select
-
-          lda RMF_participant
-          and # 1
-          sta RMF_select
+          sta temp2
 
           ;; let RMF_mask = SetSpriteMissileMask[RMF_participant]         
-          lda RMF_participant
+          lda temp1
           asl
           tax
           lda SetSpriteMissileMask,x
-          sta RMF_mask
+          sta temp3
           lda missileActive
-          and RMF_mask
-          sta RMF_active
+          and temp3
+          sta temp5
           ;; if RMF_active then goto RMF_MissileActive
-          lda RMF_active
+          lda temp5
           beq RMF_CheckMissileActive
 
           jmp RMF_MissileActive
 
 RMF_CheckMissileActive:
-          lda RMF_select
+          lda temp2
           sta temp2
           ;; Cross-bank call to RenderRoboTitoStretchMissile in bank 8
           lda # >(RMF_ReturnPoint-1)
@@ -286,12 +284,12 @@ RMF_ReturnPoint:
 RMF_MissileActive .proc
           ;; Returns: Far (return otherbank)
           ;; let RMF_character = playerCharacter[RMF_participant]         
-          lda RMF_participant
+          lda temp1
           asl
           tax
           lda playerCharacter,x
-          sta RMF_character
-          lda RMF_select
+          sta temp4
+          lda temp2
           sta temp5
           jsr SSP_WriteMissileRegisters
           jsr BS_return
@@ -300,33 +298,32 @@ RMF_MissileActive .proc
 SSP_WriteMissileRegisters .proc
           ;; Write missile registers for selected hardware slot
           ;; Returns: Near (return thisbank)
-          ;; Input: temp5 = missile select (0=missile0, 1=missile1), RMF_participant, RMF_character
+          ;; Input: temp5 = missile select (0=missile0, 1=missile1), temp1 = participant index, temp4 = character
           ;; Use unified helper to write missile registers
           ;; Save values to temp variables for unified helper (temp2-temp4 already used by caller, use temp6)
           ;; temp2 = Y position
-                    ;; let temp6 = missileX[RMF_participant]
-                    lda RMF_participant          asl          tax          lda missileX,x          sta temp6
+          ;; let temp6 = missileX[temp1]
+          lda temp1
+          asl
+          tax
+          lda missileX,x
+          sta temp6
           ;; temp3 = NUSIZ value
-          ;; let temp2 = missileY_R[RMF_participant]
-          lda RMF_participant
+          ;; let temp2 = missileY_R[temp1]
+          lda temp1
           asl
           tax
           lda missileY_R,x
           sta temp2
-          ;; temp4 = height (overwrite RMF_character after reading it)
-          ;; let temp3 = missileNUSIZ_R[RMF_participant]
-          lda RMF_participant
+          ;; temp4 = height (overwrite character after reading it)
+          ;; let temp3 = missileNUSIZ_R[temp1]
+          lda temp1
           asl
           tax
           lda missileNUSIZ_R,x
           sta temp3
-          ;; let temp4 = CharacterMissileHeights[RMF_character]
-          lda RMF_character
-          asl
-          tax
-          lda CharacterMissileHeights,x
-          sta temp4
-          lda RMF_character
+          ;; let temp4 = CharacterMissileHeights[temp4]
+          lda temp4
           asl
           tax
           lda CharacterMissileHeights,x
@@ -349,19 +346,25 @@ SSP_WriteMissileRegistersUnified
 SSP_CheckMissile0:
 
 
-          ;; TODO: #1297 missile1x = temp6
-          ;; TODO: #1297 missile1y = temp2
+          lda temp6
+          sta missile1x
+          lda temp2
+          sta missile1y
           ENAM1 = 1
           NUSIZ1 = temp3
-          ;; TODO: #1297 missile1height = temp4
+          lda temp4
+          sta missile1height
           rts
 
 SSP_WriteUnified0
-          ;; TODO: #1297 missile0x = temp6
-          ;; TODO: #1297 missile0y = temp2
+          lda temp6
+          sta missile0x
+          lda temp2
+          sta missile0y
           ENAM0 = 1
           NUSIZ0 = temp3
-          ;; TODO: #1297 missile0height = temp4
+          lda temp4
+          sta missile0height
           rts
 RenderRoboTitoStretchMissile
           ;; Returns: Far (return otherbank)
@@ -408,7 +411,7 @@ RRTM_CheckStretch .proc
           lda temp3
           cmp # 10
           bne RRTM_CheckStretchActive
-          ;; TODO: #1297 RRTM_ReadStretchHeight
+          jsr RRTM_ReadStretchHeight
 RRTM_CheckStretchActive:
 
           jsr BS_return

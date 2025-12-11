@@ -552,7 +552,7 @@ DoubleBounceHeight:
             asl temp2
 
 
-RGBGB_DoneApply
+DoneApplyBounceRadishGoblin
 
                     let playerVelocityY[temp1] = 0 - temp2
           lda temp1

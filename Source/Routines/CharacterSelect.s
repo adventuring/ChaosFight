@@ -217,9 +217,9 @@ SelectStickLeft .proc
                     if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSetPlayerLockedStickLeft-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetPlayerLockedStickLeft-1)
           pha
           lda # >(SetPlayerLocked-1)
           pha
@@ -227,7 +227,7 @@ SelectStickLeft .proc
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSetPlayerLockedStickLeft:
 
 
           rts
@@ -259,9 +259,9 @@ SelectStickRight .proc
                     if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = CharacterBernie
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSetPlayerLockedStickRight-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetPlayerLockedStickRight-1)
           pha
           lda # >(SetPlayerLocked-1)
           pha
@@ -269,7 +269,7 @@ SelectStickRight .proc
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSetPlayerLockedStickRight:
 
 
           rts
@@ -377,9 +377,9 @@ CharacterSelectDoneQuadtariReadyInline
 CharacterSelectDrawScreen .proc
           ;; Draw character selection screen via shared renderer
           ;; Cross-bank call to SelectDrawScreen in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSelectDrawScreen-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSelectDrawScreen-1)
           pha
           lda # >(SelectDrawScreen-1)
           pha
@@ -387,7 +387,7 @@ CharacterSelectDrawScreen .proc
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSelectDrawScreen:
 
 
           rts

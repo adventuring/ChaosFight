@@ -246,7 +246,7 @@ CheckEnhancedPause .proc
           lda temp2
           cmp # 0
           bne CheckPlayer2Pause
-          jmp CEP_CheckPlayer1
+          jmp CheckPlayer1EnhancedPause
 CheckPlayer2Pause:
 
 
@@ -260,37 +260,29 @@ CheckEnhancedPauseDone:
 
 .pend
 
-CEP_CheckPlayer1 .proc
+CheckPlayer1EnhancedPause .proc
           ;; Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from CheckEnhancedPause, so use return thisbank
           ;; if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = 1
           lda controllerStatus
           and # SetLeftPortGenesis
-          beq CH_CheckJoy2bPlus
+          beq CheckJoy2bPlus
           bit INPT0
-          bmi CH_CheckJoy2bPlus
+          bmi CheckJoy2bPlus
           lda # 1
           sta temp1
-          jmp CH_EnhancedDone
-CH_CheckJoy2bPlus:
+          jmp CheckPlayer1EnhancedPauseDone
+CheckJoy2bPlus:
           ;; if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
           lda controllerStatus
           and # SetLeftPortJoy2bPlus
-          beq CH_EnhancedDone
+          beq CheckPlayer1EnhancedPauseDone
           bit INPT1
-          bmi CH_EnhancedDone
+          bmi CheckPlayer1EnhancedPauseDone
           lda # 1
           sta temp1
-CH_EnhancedDone:
-          lda controllerStatus
-          and SetLeftPortJoy2bPlus
-          beq CEP_CheckPlayer1Done
-          bit INPT1
-          bmi CEP_CheckPlayer1Done
-          lda # 1
-          sta temp1
-CEP_CheckPlayer1Done:
+CheckPlayer1EnhancedPauseDone:
           rts
 
 .pend

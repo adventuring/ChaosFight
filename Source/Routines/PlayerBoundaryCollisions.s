@@ -133,7 +133,7 @@ SkipRightWrap:
           sta playerSubpixelX_WL,x
 
 CheckTopClamp:
-          ;; Check top clamp (Y < 20)
+          ;; Check top clamp (Y < 20, clamp to 20)
           lda temp1
           asl
           tax
@@ -149,7 +149,7 @@ CheckTopClamp:
           sta playerSubpixelY_WL,x
 
 SkipTopClamp:
-          ;; Zero vertical velocity at boundaries
+          ;; Zero vertical velocity at boundaries (prevent upward movement)
           lda temp1
           asl
           tax
@@ -170,7 +170,6 @@ SkipTopClamp:
           jmp CheckPlayerBoundary_BernieWrap
 
 SkipBernieWrap:
-
           ;; Set player health to 0 and eliminate
           lda temp1
           asl

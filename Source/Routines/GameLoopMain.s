@@ -28,7 +28,7 @@ ReadEnhancedButtons:
           sta temp1
 
           ;; Player 1 (INPT0) - Genesis/Joy2b+ Button C/II
-          ;; if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then temp1 = temp1 | 1
+          ;; Check Genesis controller button C
           lda controllerStatus
           and # SetLeftPortGenesis
           beq GLM_CheckJoy2bPlus
@@ -38,7 +38,7 @@ ReadEnhancedButtons:
           ora # 1
           sta temp1
 GLM_CheckJoy2bPlus:
-          ;; if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then temp1 = temp1 | 1
+          ;; Check Joy2b+ controller button II
           lda controllerStatus
           and # SetLeftPortJoy2bPlus
           beq CheckPlayer2Enhanced

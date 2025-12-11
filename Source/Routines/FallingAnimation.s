@@ -56,8 +56,8 @@ MovePlayer1:
 
 
           ;; Move Player 1 from quadrant to target (if active)
-          ;; playerIndex = 0 (player index), targetX = target X,
-          ;; if playerCharacter[0] = NoCharacter then DonePlayer1Move
+          ;; playerIndex = 0 (player index), targetX = target X
+          ;; Check if player 1 is active
           lda # 0
           asl
           tax
@@ -68,7 +68,6 @@ MovePlayer1:
           lda # 0
           sta temp1
           ;; Check if 4-player mode for target X
-          ;; if controllerStatus & SetQuadtariDetected then Player1Target4P
           lda controllerStatus
           and # SetQuadtariDetected
           bne Player1Target4P
@@ -123,8 +122,7 @@ Player1TargetDone:
                     ldx # 5
           jmp BS_jsr
 FallingAnimationPlayer1Return:
-
-          ;; if temp4 then let fallComplete = fallComplete + 1
+          ;; Increment fallComplete if player reached target
           lda temp4
           beq DonePlayer1Move
           inc fallComplete
@@ -144,7 +142,7 @@ DonePlayer1Move:
           ;; Constraints: Must be colocated with FallingAnimation1
 
           ;; Move Player 2 from quadrant to target (if active)
-          ;; if playerCharacter[1] = NoCharacter then DonePlayer2Move
+          ;; Check if player 2 is active
           lda # 1
           asl
           tax
@@ -155,7 +153,6 @@ SetPlayer2Target:
           ;; Check if 4-player mode for target X
           lda # 1
           sta temp1
-          ;; if controllerStatus & SetQuadtariDetected then Player2Target4P
           lda controllerStatus
           and # SetQuadtariDetected
           bne Player2Target4P
@@ -200,9 +197,9 @@ Player2TargetDone
           lda # 24
           sta temp3
           ;; Cross-bank call to MovePlayerToTarget in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterMovePlayerToTargetP1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterMovePlayerToTargetP1-1)
           pha
           lda # >(MovePlayerToTarget-1)
           pha
@@ -210,10 +207,8 @@ Player2TargetDone
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
-
-
-          ;; if temp4 then let fallComplete = fallComplete + 1
+AfterMovePlayerToTargetP1:
+          ;; Increment fallComplete if player reached target
           lda temp4
           beq DonePlayer1Move
           inc fallComplete
@@ -241,9 +236,13 @@ DonePlayer2Move
           bne MovePlayer3
 
 MovePlayer3:
-
-
-                    if playerCharacter[2] = NoCharacter then DonePlayer3Move
+          ;; Check if player 3 is active
+          lda # 2
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq DonePlayer3Move
           lda # 2
           sta temp1
           ;; 4-player mode: target × = 64
@@ -252,9 +251,9 @@ MovePlayer3:
           lda # 24
           sta temp3
           ;; Cross-bank call to MovePlayerToTarget in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterMovePlayerToTargetP3-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterMovePlayerToTargetP3-1)
           pha
           lda # >(MovePlayerToTarget-1)
           pha
@@ -262,7 +261,7 @@ MovePlayer3:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterMovePlayerToTargetP3:
 
 
           ;; if temp4 then let fallComplete = fallComplete + 1
@@ -305,9 +304,9 @@ MovePlayer4:
           lda # 24
           sta temp3
           ;; Cross-bank call to MovePlayerToTarget in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterMovePlayerToTargetP4-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterMovePlayerToTargetP4-1)
           pha
           lda # >(MovePlayerToTarget-1)
           pha
@@ -315,10 +314,8 @@ MovePlayer4:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
-
-
-          ;; if temp4 then let fallComplete = fallComplete + 1
+AfterMovePlayerToTargetP4:
+          ;; Increment fallComplete if player reached target
           lda temp4
           beq DonePlayer1Move
           inc fallComplete
@@ -341,7 +338,6 @@ DonePlayer4Move
           ;; Constraints: Must be colocated with FallingAnimation1
 
           ;; Check if all players have reached their targets
-                    if fallComplete >= activePlayers then FallingComplete1
           lda fallComplete
           cmp activePlayers
           bcc UpdateSprites
@@ -353,9 +349,9 @@ UpdateSprites:
           ;; Use dynamic sprite setting instead of relying on player
           ;; declarations
           ;; Cross-bank call to SetSpritePositions in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSetSpritePositions-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetSpritePositions-1)
           pha
           lda # >(SetSpritePositions-1)
           pha
@@ -363,13 +359,13 @@ UpdateSprites:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSetSpritePositions:
 
 
           ;; Cross-bank call to SetPlayerSprites in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSetPlayerSpritesFalling-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetPlayerSpritesFalling-1)
           pha
           lda # >(SetPlayerSprites-1)
           pha
@@ -377,7 +373,7 @@ return_point:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSetPlayerSpritesFalling:
 
 
           ;; drawscreen called by MainLoop
@@ -407,9 +403,9 @@ FallingComplete1
           ;; Note: BeginGameLoop will use final positions from falling
           ;; animation
           ;; Cross-bank call to BeginGameLoop in bank 11
-          lda # >(return_point-1)
+          lda # >(AfterBeginGameLoop-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterBeginGameLoop-1)
           pha
           lda # >(BeginGameLoop-1)
           pha
@@ -417,16 +413,16 @@ FallingComplete1
           pha
                     ldx # 10
           jmp BS_jsr
-return_point:
+AfterBeginGameLoop:
 
 
           ;; Transition to Game Mode
           lda ModeGame
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterChangeGameModeFalling-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterChangeGameModeFalling-1)
           pha
           lda # >(ChangeGameMode-1)
           pha
@@ -434,7 +430,7 @@ return_point:
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterChangeGameModeFalling:
 
 
           jsr BS_return

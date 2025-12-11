@@ -142,7 +142,6 @@ SetRecoveryFlag:
 
           ;; Synchronize playerState bit 3 with recovery frames
           ;; Set bit 3 (recovery flag) when recovery frames > 0
-          ;; if playerRecoveryFrames[temp1] > 0 then let playerState[temp1] = playerState[temp1] | PlayerStateBitRecovery
           lda temp1
           asl
           tax

@@ -57,8 +57,7 @@ ShamoneAttack:
           sta playerY,x
 
           ;; Light character, good jump
-
-          ;; playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
+          ;; Set jumping flag
           lda temp1
           asl
           tax
@@ -83,8 +82,7 @@ ShamoneAttack:
           jmp BS_jsr
 
 ShamoneAttackSpawnMissileReturn:
-
-          ;; playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          ;; Set attack animation state
           lda temp1
           asl
           tax

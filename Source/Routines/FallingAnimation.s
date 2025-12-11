@@ -160,7 +160,7 @@ SetPlayer2Target:
           ;; 2-player mode: target × = 107
           lda # 107
           sta temp2
-          jmp Player2TargetDone:
+          jmp Player2TargetDone
 
 .pend
 
@@ -182,7 +182,7 @@ Player2Target4P .proc
           lda # 128
           sta temp2
 
-Player2TargetDone
+Player2TargetDone:
           ;; Player 2 target calculation complete
           ;; Returns: Far (return otherbank)
           ;;
@@ -197,9 +197,9 @@ Player2TargetDone
           lda # 24
           sta temp3
           ;; Cross-bank call to MovePlayerToTarget in bank 6
-          lda # >(AfterMovePlayerToTargetP1-1)
+          lda # >(AfterMovePlayerToTargetP2-1)
           pha
-          lda # <(AfterMovePlayerToTargetP1-1)
+          lda # <(AfterMovePlayerToTargetP2-1)
           pha
           lda # >(MovePlayerToTarget-1)
           pha
@@ -207,15 +207,13 @@ Player2TargetDone
           pha
                     ldx # 5
           jmp BS_jsr
-AfterMovePlayerToTargetP1:
+AfterMovePlayerToTargetP2:
           ;; Increment fallComplete if player reached target
           lda temp4
-          beq DonePlayer1Move
+          beq DonePlayer2Move
           inc fallComplete
-DonePlayer1Move:
-          jmp BS_return
-
 DonePlayer2Move:
+          jmp BS_return
           ;; Player 2 movement complete (skipped if not active)
           ;; Returns: Far (return otherbank)
           ;;

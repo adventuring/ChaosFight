@@ -93,7 +93,7 @@ CheckINPT3:
           jmp CharacterSelectQuadtariAbsent
 SetQuadtariDetected:
           lda controllerStatus
-          ora SetQuadtariDetected
+          ora # SetQuadtariDetected
           sta controllerStatus
 
 .pend

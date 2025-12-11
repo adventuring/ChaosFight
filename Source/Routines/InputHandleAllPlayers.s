@@ -246,10 +246,12 @@ InputHandleQuadtariPlayers .proc
           ;; alive)
 
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne CheckPlayer3Character
+
           jmp InputDonePlayer3InputDone
+
 CheckPlayer3Character:
 
 

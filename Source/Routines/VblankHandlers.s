@@ -95,7 +95,7 @@ PlayAuthorPreludeMusic:
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterPlayMusicAuthorPrelude:
 
 
 .pend
@@ -877,7 +877,7 @@ VblankUpdateSprite_Bank3Dispatch
           pha
                     ldx # 2
           jmp BS_jsr
-return_point:
+AfterSetPlayerCharacterArtBank3Vblank:
 
 
           jmp VblankAnimationNextPlayer
@@ -907,7 +907,7 @@ VblankUpdateSprite_Bank4Dispatch
           pha
                     ldx # 3
           jmp BS_jsr
-return_point:
+AfterSetPlayerCharacterArtBank4Vblank:
 
 
           jmp VblankAnimationNextPlayer
@@ -937,7 +937,7 @@ VblankUpdateSprite_Bank5Dispatch
           pha
                     ldx # 4
           jmp BS_jsr
-return_point:
+AfterSetPlayerCharacterArtBank5Vblank:
 
 
           jmp VblankAnimationNextPlayer
@@ -971,14 +971,14 @@ VblankModeGameMainAfterAnimations
           pha
                     ldx # 7
           jmp BS_jsr
-return_point:
+AfterUpdatePlayerMovementVblank:
 
 
           ;; Apply gravity and physics (in Bank 13)
           ;; Cross-bank call to PhysicsApplyGravity in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterPhysicsApplyGravity-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPhysicsApplyGravity-1)
           pha
           lda # >(PhysicsApplyGravity-1)
           pha
@@ -986,14 +986,14 @@ return_point:
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterPhysicsApplyGravity:
 
 
           ;; Apply momentum and recovery effects (in Bank 8)
           ;; Cross-bank call to ApplyMomentumAndRecovery in bank 8
-          lda # >(return_point-1)
+          lda # >(AfterApplyMomentumAndRecovery-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterApplyMomentumAndRecovery-1)
           pha
           lda # >(ApplyMomentumAndRecovery-1)
           pha
@@ -1001,14 +1001,14 @@ return_point:
           pha
                     ldx # 7
           jmp BS_jsr
-return_point:
+AfterApplyMomentumAndRecovery:
 
 
           ;; Check boundary collisions (in Bank 10)
           ;; Cross-bank call to CheckBoundaryCollisions in bank 10
-          lda # >(return_point-1)
+          lda # >(AfterCheckBoundaryCollisions-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckBoundaryCollisions-1)
           pha
           lda # >(CheckBoundaryCollisions-1)
           pha
@@ -1016,7 +1016,7 @@ return_point:
           pha
                     ldx # 9
           jmp BS_jsr
-return_point:
+AfterCheckBoundaryCollisions:
 
 
           ;; Optimized: Single loop for playfield collisions (walls, ceilings, ground)
@@ -1042,9 +1042,9 @@ VblankCheckQuadtariSkip .proc
 VblankProcessCollision
           ;; Check for Radish Goblin bounce movement (ground and wall bounces)
           ;; Cross-bank call to CheckPlayfieldCollisionAllDirections in bank 10
-          lda # >(return_point-1)
+          lda # >(AfterCheckPlayfieldCollisionAllDirections-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckPlayfieldCollisionAllDirections-1)
           pha
           lda # >(CheckPlayfieldCollisionAllDirections-1)
           pha
@@ -1052,13 +1052,13 @@ VblankProcessCollision
           pha
                     ldx # 9
           jmp BS_jsr
-return_point:
+AfterCheckPlayfieldCollisionAllDirections:
 
 
           ;; Cross-bank call to RadishGoblinCheckGroundBounce in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterRadishGoblinCheckGroundBounce-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRadishGoblinCheckGroundBounce-1)
           pha
           lda # >(RadishGoblinCheckGroundBounce-1)
           pha
@@ -1066,13 +1066,13 @@ return_point:
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterRadishGoblinCheckGroundBounce:
 
 
           ;; Cross-bank call to RadishGoblinCheckWallBounce in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterRadishGoblinCheckWallBounce-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRadishGoblinCheckWallBounce-1)
           pha
           lda # >(RadishGoblinCheckWallBounce-1)
           pha
@@ -1080,7 +1080,7 @@ return_point:
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterRadishGoblinCheckWallBounce:
 
 
 .pend
@@ -1092,9 +1092,9 @@ VblankGameMainQuadtariCheckDone .proc
 VblankGameMainQuadtariSkip .proc
           ;; Check multi-player collisions (in Bank 11)
           ;; Cross-bank call to CheckAllPlayerCollisions in bank 11
-          lda # >(return_point-1)
+          lda # >(AfterCheckAllPlayerCollisions-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckAllPlayerCollisions-1)
           pha
           lda # >(CheckAllPlayerCollisions-1)
           pha
@@ -1102,14 +1102,14 @@ VblankGameMainQuadtariSkip .proc
           pha
                     ldx # 10
           jmp BS_jsr
-return_point:
+AfterCheckAllPlayerCollisions:
 
 
           ;; Process mêlée and area attack collisions (in Bank 7)
           ;; Cross-bank call to ProcessAllAttacks in bank 7
-          lda # >(return_point-1)
+          lda # >(AfterProcessAllAttacks-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterProcessAllAttacks-1)
           pha
           lda # >(ProcessAllAttacks-1)
           pha
@@ -1117,14 +1117,14 @@ return_point:
           pha
                     ldx # 6
           jmp BS_jsr
-return_point:
+AfterProcessAllAttacks:
 
 
           ;; Check for player eliminations
           ;; Cross-bank call to CheckAllPlayerEliminations in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterCheckAllPlayerEliminations-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckAllPlayerEliminations-1)
           pha
           lda # >(CheckAllPlayerEliminations-1)
           pha
@@ -1132,14 +1132,14 @@ return_point:
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterCheckAllPlayerEliminations:
 
 
           ;; Update missiles (in Bank 7)
           ;; Cross-bank call to UpdateAllMissiles in bank 7
-          lda # >(return_point-1)
+          lda # >(AfterUpdateAllMissiles-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterUpdateAllMissiles-1)
           pha
           lda # >(UpdateAllMissiles-1)
           pha
@@ -1147,7 +1147,7 @@ return_point:
           pha
                     ldx # 6
           jmp BS_jsr
-return_point:
+AfterUpdateAllMissiles:
 
 
           ;; Check if game should end and transition to winner screen
@@ -1175,12 +1175,12 @@ DecrementGameEndTimer:
 VblankTransitionToWinner
           ;; Transition to winner announcement mode
           ;; Returns: Near (return thisbank)
-          lda ModeWinner
+          lda # ModeWinner
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterChangeGameModeToWinner-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterChangeGameModeToWinner-1)
           pha
           lda # >(ChangeGameMode-1)
           pha
@@ -1188,7 +1188,7 @@ VblankTransitionToWinner
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterChangeGameModeToWinner:
 
 
           rts
@@ -1196,9 +1196,9 @@ return_point:
 VblankGameEndCheckDone
           ;; Update missiles again (in Bank 7)
           ;; Cross-bank call to UpdateAllMissiles in bank 7
-          lda # >(return_point-1)
+          lda # >(AfterUpdateAllMissilesSecond-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterUpdateAllMissilesSecond-1)
           pha
           lda # >(UpdateAllMissiles-1)
           pha
@@ -1206,14 +1206,14 @@ VblankGameEndCheckDone
           pha
                     ldx # 6
           jmp BS_jsr
-return_point:
+AfterUpdateAllMissilesSecond:
 
 
           ;; Check RoboTito stretch missile collisions (bank 7)
           ;; Cross-bank call to CheckRoboTitoStretchMissileCollisions in bank 10
-          lda # >(return_point-1)
+          lda # >(AfterCheckRoboTitoStretchMissileCollisions-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckRoboTitoStretchMissileCollisions-1)
           pha
           lda # >(CheckRoboTitoStretchMissileCollisions-1)
           pha
@@ -1221,14 +1221,14 @@ return_point:
           pha
                     ldx # 9
           jmp BS_jsr
-return_point:
+AfterCheckRoboTitoStretchMissileCollisions:
 
 
           ;; Set sprite graphics (in Bank 6)
           ;; Cross-bank call to SetPlayerSprites in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSetPlayerSprites-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetPlayerSprites-1)
           pha
           lda # >(SetPlayerSprites-1)
           pha
@@ -1236,7 +1236,7 @@ return_point:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSetPlayerSprites:
 
 
           ;; Health display is handled by UpdatePlayer12HealthBars and

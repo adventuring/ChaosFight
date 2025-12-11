@@ -437,9 +437,9 @@ UseJoy1:
 
           ;; Handle fire button (selection)
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSetPlayerLockedInput-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetPlayerLockedInput-1)
           pha
           lda # >(SetPlayerLocked-1)
           pha
@@ -447,13 +447,13 @@ UseJoy1:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSetPlayerLockedInput:
 
 
           ;; Cross-bank call to HandleCharacterSelectFire in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterHandleCharacterSelectFireInput-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterHandleCharacterSelectFireInput-1)
           pha
           lda # >(HandleCharacterSelectFire-1)
           pha
@@ -461,7 +461,7 @@ return_point:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterHandleCharacterSelectFireInput:
 
 
           rts

@@ -136,8 +136,11 @@ CheckPairCollision .proc
 
           CheckP2ActiveCollision:
 
-                    if temp2 >= 2 then CheckP2ActiveCollision
-          jmp CheckDistanceCollision
+          lda temp2
+          cmp # 2
+          bcc CheckDistanceCollision
+          jmp CheckP2ActiveCollision
+CheckDistanceCollision:
 
 
 .pend
@@ -239,26 +242,35 @@ CalculateXDistance:
           lda temp3
           cmp # 0
           bcs CheckCollisionDistance
-          jmp let_label
+          lda # 0
+          sec
+          sbc temp3
+          sta temp3
 CheckCollisionDistance:
 
           lda temp3
           cmp # 0
           bcs CheckDistanceThreshold
-          jmp let_label
+          lda # 0
+          sec
+          sbc temp3
+          sta temp3
 CheckDistanceThreshold:
 
           lda temp3
           cmp # 0
           bcs CalculateYDistance
-          jmp let_label
+          lda # 0
+          sec
+          sbc temp3
+          sta temp3
 CalculateYDistance:
 
 
 
           ;; if temp3 >= PlayerCollisionDistance then goto NextInnerCollisionCheck
           lda temp3
-          cmp PlayerCollisionDista
+          cmp # PlayerCollisionDistance
 
 
           bcc CheckCollisionDistanceThreshold
@@ -278,27 +290,40 @@ CalculateYDistance:
           lda temp4
           cmp # 0
           bcs CheckTotalHeight
-          jmp let_label
+          lda # 0
+          sec
+          sbc temp4
+          sta temp4
 CheckTotalHeight:
 
           lda temp4
           cmp # 0
           bcs CheckHeightThreshold
-          jmp let_label
+          lda # 0
+          sec
+          sbc temp4
+          sta temp4
 CheckHeightThreshold:
 
           lda temp4
           cmp # 0
           bcs CalculateWeights
-          jmp let_label
+          lda # 0
+          sec
+          sbc temp4
+          sta temp4
 CalculateWeights:
 
 
 
           ;; Use bit shift instead of division (optimized for Atari 2600)
 
-                    ;; let characterHeight = CharacterHeights[temp1]
-                    lda temp1          asl          tax          lda CharacterHeights,x          sta characterHeight
+          ;; let characterHeight = CharacterHeights[temp1]
+          lda temp1
+          asl
+          tax
+          lda CharacterHeights,x
+          sta characterHeight
 
 
             lda characterHeight
@@ -344,12 +369,15 @@ CheckHeightCollision:
 
           bcc CalculateWeights
 
-          jmp CalculateWeights
+          jmp CalculateWeightsLabel
 
-          CalculateWeights:
-
-                    ;; let characterWeight = CharacterWeights[temp1]
-                    lda temp1          asl          tax          lda CharacterWeights,x          sta characterWeight
+CalculateWeightsLabel:
+          ;; let characterWeight = CharacterWeights[temp1]
+          lda temp1
+          asl
+          tax
+          lda CharacterWeights,x
+          sta characterWeight
 
           lda characterWeight
           sta halfHeight1
@@ -749,7 +777,7 @@ SepLeftCollision .proc
             sta impulseStrength
 
 
-          jmp PCR_ImpulseDone_2
+          jmp ImpulseDoneSecond
 
 .pend
 

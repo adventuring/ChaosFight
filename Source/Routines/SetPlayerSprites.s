@@ -157,7 +157,7 @@ AfterLoadCharacterSpriteP0:
 AfterLoadCharacterColorsP1:
 
           lda temp6
-          sta _COLUP1
+          sta NewCOLUP1
 
 Player2ColorDone
 

@@ -52,12 +52,6 @@ FallingAnimation1:
           lda # 0
           sta fallFrame
 
-DonePlayer1MoveLabel:
-          jmp BS_return
-
-Player1TargetDoneLabel:
-          jmp Player1Target4P.Player1TargetDone
-
 MovePlayer1:
 
 
@@ -81,7 +75,7 @@ MovePlayer1:
           ;; 2-player mode: target × = 53
           lda # 53
           sta temp2
-          jmp Player1TargetDoneLabel
+          jmp Player1Target4P.Player1TargetDone
 
 
 Player1Target4P .proc

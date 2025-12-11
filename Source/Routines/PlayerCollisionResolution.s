@@ -4,7 +4,7 @@
 
 
 
-CheckAllPlayerCollisions:
+CheckAllPlayerCollisions .proc
           ;; Returns: Far (return otherbank)
 
           ;; Check Multi-player Collisions

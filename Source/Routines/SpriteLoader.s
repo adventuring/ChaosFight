@@ -53,9 +53,9 @@ AfterCopyGlyphToPlayerBank15:
 AfterCopyGlyphToPlayerBank16:
 
           ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(SL_AfterCopyGlyphToPlayerBank16Second-1)
+          lda # >(AfterCopyGlyphToPlayerBank16Second-1)
           pha
-          lda # <(SL_AfterCopyGlyphToPlayerBank16Second-1)
+          lda # <(AfterCopyGlyphToPlayerBank16Second-1)
           pha
           lda # >(CopyGlyphToPlayer-1)
           pha

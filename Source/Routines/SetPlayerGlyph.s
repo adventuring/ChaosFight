@@ -41,8 +41,7 @@
 
 GlyphLookupTable:
 
-SetPlayerGlyph:
-.proc
+SetPlayerGlyph .proc
           ;; Unified function supports two input modes:
           ;; Returns: Far (return otherbank)
 
@@ -73,8 +72,7 @@ UseLookupMode:
 
 .pend
 
-SetPlayerGlyphDirectMode:
-.proc
+SetPlayerGlyphDirectMode .proc
 
           ;; Calculate offset into SetFontNumbers (16 bytes per glyph)
           ;; Returns: Far (return otherbank)

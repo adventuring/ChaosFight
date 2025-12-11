@@ -24,12 +24,13 @@ MainLoop .proc
           ;; Skip reset check when frame = 1 (first frame after cold start)
           lda frame
           cmp # 1
-          beq skip_reset_check
+          beq SkipResetCheck
 
           ;; Check if reset switch is pressed (SWCHB bit 0: 0 = pressed, 1 = not pressed)
-          lda SWCHB
+          ;; SWCHB = $0282 (RIOT port B - switches)
+          lda $0282
           and # 1
-          bne skip_reset_check
+          bne SkipResetCheck
 
           ;; Bit 0 = 1 means reset not pressed, skip
           ;; Reset switch pressed - call WarmStart
@@ -60,8 +61,7 @@ SkipResetCheck:
           ;; TODO: #1303 CRITICAL FIX: ongosub0 is at same address as MainLoopModePublisherPrelude, causing fall-through
           ; We need to add explicit jump here to prevent fall-through into handlers
           ; This will be placed at ongosub0 by the assembler
-          jmp MainLoopContinue
-
+MainLoopContinue:
           ;; Routes audio updates after per-mode execution
           ;; CRITICAL: PlayMusic is called from Vblank handlers (earlier in frame) to reduce stack depth
           ;; Modes < 3 and mode 7 handle music in VblankMode handlers (VblankHandlers.bas)

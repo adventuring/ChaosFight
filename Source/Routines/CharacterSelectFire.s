@@ -196,9 +196,9 @@ SetNormalLock:
           sta temp2
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSetPlayerLockedNormal-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetPlayerLockedNormal-1)
           pha
           lda # >(SetPlayerLocked-1)
           pha
@@ -206,7 +206,7 @@ SetNormalLock:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSetPlayerLockedNormal:
 
 
           ;; Play selection sound

@@ -172,6 +172,8 @@ UpdateSecondPlace:
           sta temp3
           jmp RankNextWinScreen
 
+.pend
+
 CheckThirdPlace .proc
           ;; Check if this is 3rd place (higher order than current 3rd,
           ;; Returns: Far (return otherbank)
@@ -245,11 +247,9 @@ CheckTwoPlayers:
           lda temp1
           cmp # 2
           bne PositionThreePlayers
-          jmp Position2PlayersWinScreen
+          jmp Position2PlayersWinScreen:
 PositionThreePlayers:
-
-
-          jmp Position3PlayersWinScreen
+          jmp Position3PlayersWinScreen:
 
 LoadIdleSpriteWinScreen .proc
 
@@ -322,7 +322,7 @@ Position1PlayerWinScreen .proc
 
           jsr BS_return
 
-Position2PlayersWinScreen
+Position2PlayersWinScreen::
           ;; 2 players: Winner centered, runner-up left
           ;; Returns: Far (return otherbank)
           ;;
@@ -412,7 +412,7 @@ Hide2PlayerWinScreen:
           ;; Hide Player 2 (no runner-up)
           ;; Returns: Far (return otherbank)
           ;;
-          ;; Input: None (called from Position2PlayersWinScreen)
+          ;; Input: None (called from Position2PlayersWinScreen:)
           ;;
           ;; Output: playerX[1] set to 0
           ;;
@@ -421,7 +421,7 @@ Hide2PlayerWinScreen:
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
-          ;; Position2PlayersWinScreen, Hide2PlayerWinScreenDone
+          ;; Position2PlayersWinScreen:, Hide2PlayerWinScreenDone
           lda # 1
           asl
           tax
@@ -430,7 +430,7 @@ Hide2PlayerWinScreen:
 
           jmp Hide2PlayerWinScreenDone
 
-Position3PlayersWinScreen
+Position3PlayersWinScreen:
           ;; 3+ players: Winner centered high, 2nd left, 3rd right
           ;; Returns: Far (return otherbank)
           ;;
@@ -507,7 +507,7 @@ Hide3Player2WinScreen:
           ;; Hide Player 2 (no 2nd place)
           ;; Returns: Far (return otherbank)
           ;;
-          ;; Input: None (called from Position3PlayersWinScreen)
+          ;; Input: None (called from Position3PlayersWinScreen:)
           ;;
           ;; Output: playerX[1] set to 0
           ;;
@@ -516,7 +516,7 @@ Hide3Player2WinScreen:
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
-          ;; Position3PlayersWinScreen, Hide3Player2WinScreenDone
+          ;; Position3PlayersWinScreen:, Hide3Player2WinScreenDone
           lda # 1
           asl
           tax
@@ -573,7 +573,7 @@ Hide3Player3WinScreen:
           ;; Hide Player 3 (no 3rd place)
           ;; Returns: Far (return otherbank)
           ;;
-          ;; Input: None (called from Position3PlayersWinScreen)
+          ;; Input: None (called from Position3PlayersWinScreen:)
           ;;
           ;; Output: playerX[2] set to 0
           ;;
@@ -582,7 +582,7 @@ Hide3Player3WinScreen:
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
-          ;; Position3PlayersWinScreen, Hide3Player3WinScreenDone
+          ;; Position3PlayersWinScreen:, Hide3Player3WinScreenDone
           lda # 2
           asl
           tax

@@ -57,7 +57,7 @@ ReadZero:
           ; Store result
           jsr BS_return
 
-          bit mask lookup table for playfield column bits
+          ;; Bit mask lookup table for playfield column bits
           ;; TODO: #1311 ifndef BitMask
           ;; TODO: #1311 BitMask       BYTE 1,2,4,8,$10,$20,$40,$80
 

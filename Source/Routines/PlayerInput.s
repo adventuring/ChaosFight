@@ -571,9 +571,9 @@ UseStandardGuard:
 DCD_HandleRoboTitoDown .proc
 
           ;; Cross-bank call to RoboTitoDown in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterRoboTitoDownInput-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRoboTitoDownInput-1)
           pha
           lda # >(RoboTitoDown-1)
           pha
@@ -581,7 +581,7 @@ DCD_HandleRoboTitoDown .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterRoboTitoDownInput:
 
 
           rts
@@ -923,9 +923,9 @@ HUIEB_BernieFallThrough .proc
           ;; Returns: Far (return otherbank)
 
           ;; Cross-bank call to BernieJump in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterBernieJumpInput-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterBernieJumpInput-1)
           pha
           lda # >(BernieJump-1)
           pha
@@ -933,7 +933,7 @@ HUIEB_BernieFallThrough .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterBernieJumpInput:
 
 
           lda # 0
@@ -949,9 +949,9 @@ HUIEB_HarpyFlap .proc
           ;; Returns: Far (return otherbank)
 
           ;; Cross-bank call to HarpyJump in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterHarpyJumpInput-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterHarpyJumpInput-1)
           pha
           lda # >(HarpyJump-1)
           pha
@@ -959,7 +959,7 @@ HUIEB_HarpyFlap .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterHarpyJumpInput:
 
 
           lda # 0
@@ -1023,9 +1023,9 @@ HUIEB_EnhancedCheck .proc
           ;; Returns: Far (return otherbank)
 
           ;; Cross-bank call to CheckEnhancedJumpButton in bank 10
-          lda # >(return_point-1)
+          lda # >(AfterCheckEnhancedJumpButtonEnhanced-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckEnhancedJumpButtonEnhanced-1)
           pha
           lda # >(CheckEnhancedJumpButton-1)
           pha
@@ -1033,7 +1033,7 @@ HUIEB_EnhancedCheck .proc
           pha
                     ldx # 9
           jmp BS_jsr
-return_point:
+AfterCheckEnhancedJumpButtonEnhanced:
 
 
           ;; For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
@@ -1054,9 +1054,9 @@ HUIEB_StandardEnhancedCheck .proc
           ;; Returns: Far (return otherbank)
 
           ;; Cross-bank call to CheckEnhancedJumpButton in bank 10
-          lda # >(return_point-1)
+          lda # >(AfterCheckEnhancedJumpButtonCheck-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckEnhancedJumpButtonCheck-1)
           pha
           lda # >(CheckEnhancedJumpButton-1)
           pha
@@ -1064,7 +1064,7 @@ HUIEB_StandardEnhancedCheck .proc
           pha
                     ldx # 9
           jmp BS_jsr
-return_point:
+AfterCheckEnhancedJumpButtonCheck:
 
 
           jsr BS_return
@@ -1343,9 +1343,9 @@ HSHM_AfterLeftSet .proc
                     if (playerState[temp1] & 8) then goto HSHM_SPF_Yes1
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerAnimationStateAfterLeftSet-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerAnimationStateAfterLeftSet-1)
           pha
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
@@ -1353,7 +1353,7 @@ HSHM_AfterLeftSet .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterGetPlayerAnimationStateAfterLeftSet:
 
 
           ;; if temp2 < 5 then goto HSHM_SPF_No1          lda temp2          cmp 5          bcs .skip_1803          jmp
@@ -1561,9 +1561,9 @@ HSHM_AfterRightSet .proc
                     if (playerState[temp1] & 8) then goto HSHM_SPF_Yes2
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerAnimationStateAfterRightSet-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerAnimationStateAfterRightSet-1)
           pha
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
@@ -1571,7 +1571,7 @@ HSHM_AfterRightSet .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterGetPlayerAnimationStateAfterRightSet:
 
 
           ;; if temp2 < 5 then goto HSHM_SPF_No2          lda temp2          cmp 5          bcs .skip_6914          jmp

@@ -432,6 +432,8 @@ Hide2PlayerWinScreen:
 
           jmp Hide2PlayerWinScreenDone
 
+.pend
+
 Position3PlayersWinScreen:
           ;; 3+ players: Winner centered high, 2nd left, 3rd right
           ;; Returns: Far (return otherbank)
@@ -613,8 +615,6 @@ Hide3Player3WinScreenDone:
           lda # 0
           sta playerX,x
           jsr BS_return
-
-.pend
 
 HidePlayers123WinScreen .proc
           ;; Helper: Hide players 1, 2, 3 (saves bytes by consolidating repeated code)

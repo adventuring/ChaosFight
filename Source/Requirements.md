@@ -177,7 +177,7 @@ simply jumps back to Publisher Prelude screen.
 
 ### Overview
 
-Players select their fighters from 16 available characters (0-15).
+Players select their fighters from 15 available characters (0-14).
 Supports 2-player (standard ports) and 4-player (Quadtari adapter)
 modes.
 Once all active players have locked in their selections, proceed to

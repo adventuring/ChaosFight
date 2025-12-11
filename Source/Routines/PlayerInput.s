@@ -2783,9 +2783,9 @@ HGI_CheckRadishGoblinRelease1 .proc
           ;; Returns: Far (return otherbank)
 
           ;; Cross-bank call to RadishGoblinHandleStickDownRelease in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterRadishGoblinHandleStickDownReleaseLeftPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRadishGoblinHandleStickDownReleaseLeftPort-1)
           pha
           lda # >(RadishGoblinHandleStickDownRelease-1)
           pha
@@ -2793,7 +2793,7 @@ HGI_CheckRadishGoblinRelease1 .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterRadishGoblinHandleStickDownReleaseLeftPort:
 
 
 HGI_Done1
@@ -2904,9 +2904,9 @@ InputHandleRightPortPlayerFunction
           ;; block movement during attack animations (states 13-15)
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerAnimationStateRightPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerAnimationStateRightPort-1)
           pha
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
@@ -2914,7 +2914,7 @@ InputHandleRightPortPlayerFunction
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterGetPlayerAnimationStateRightPort:
 
 
           ;; Use goto to avoid branch out of range (target is 327+ bytes away)
@@ -3007,9 +3007,9 @@ DoneRightPortMovement
 IHRP_RadishGoblinMovement .proc
 
           ;; Cross-bank call to RadishGoblinHandleInput in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterRadishGoblinHandleInputRightPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRadishGoblinHandleInputRightPort-1)
           pha
           lda # >(RadishGoblinHandleInput-1)
           pha
@@ -3017,7 +3017,7 @@ IHRP_RadishGoblinMovement .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterRadishGoblinHandleInputRightPort:
 
 
           jmp DoneRightPortMovement

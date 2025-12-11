@@ -64,7 +64,7 @@ AfterCopyGlyphToPlayerBank16:
           ldx # 15
           jmp BS_jsr
 
-SL_AfterCopyGlyphToPlayerBank16Second:
+AfterCopyGlyphToPlayerBank16Second:
 
           ;; Normal character sprite loading
           lda currentPlayer
@@ -236,9 +236,9 @@ LoadPlayerSprite_Bank2Dispatch
           lda temp4
           sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank2 in bank 2
-          lda # >(return_point-1)
+          lda # >(SL_AfterSetPlayerCharacterArtBank2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(SL_AfterSetPlayerCharacterArtBank2-1)
           pha
           lda # >(SetPlayerCharacterArtBank2-1)
           pha
@@ -246,7 +246,7 @@ LoadPlayerSprite_Bank2Dispatch
           pha
                     ldx # 1
           jmp BS_jsr
-return_point:
+SL_AfterSetPlayerCharacterArtBank2:
 
           jsr BS_return
 
@@ -298,9 +298,9 @@ LoadPlayerSprite_Bank4Dispatch
           lda temp4
           sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank4 in bank 4
-          lda # >(return_point-1)
+          lda # >(SL_AfterSetPlayerCharacterArtBank4-1)
           pha
-          lda # <(return_point-1)
+          lda # <(SL_AfterSetPlayerCharacterArtBank4-1)
           pha
           lda # >(SetPlayerCharacterArtBank4-1)
           pha
@@ -308,7 +308,7 @@ LoadPlayerSprite_Bank4Dispatch
           pha
                     ldx # 3
           jmp BS_jsr
-return_point:
+SL_AfterSetPlayerCharacterArtBank4:
 
           jsr BS_return
 

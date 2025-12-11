@@ -49,11 +49,11 @@ CheckDragonOfStorms:
 
           lda temp5
           cmp # 2
-          bne ProcessStandardMovement
+          bne IHLPF_ProcessStandardMovementLabel
 
           jmp IHLP_FlyingMovement
 
-ProcessStandardMovement:
+IHLPF_ProcessStandardMovementLabel:
 
           ;; Standard horizontal movement (uses shared routine)
           ;; Cross-bank call to ProcessStandardMovement in bank 13

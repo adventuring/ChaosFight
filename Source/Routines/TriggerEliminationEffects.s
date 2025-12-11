@@ -34,7 +34,7 @@ TriggerEliminationEffects:
           ldx # 14
           jmp BS_jsr
 
-AfterPlaySoundEffect:
+AfterPlaySoundEffectElimination:
 
           ;; Set elimination visual effect timer
           ;; This could trigger particle effects, etc.

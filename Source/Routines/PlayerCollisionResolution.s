@@ -39,7 +39,12 @@ SkipElseCollisionCheck .proc
 OuterLoopCollisionCheck .proc
           rts
 
-          if temp1 >= 2 then CheckP1ActiveCollision
+          ;; If temp1 >= 2, then jmp CheckP1ActiveCollision
+          lda temp1
+          cmp # 2
+          bcc SkipCheckP1Active
+          jmp CheckP1ActiveCollision
+SkipCheckP1Active:
 
           jmp InnerLoopCollisionCheck
 
@@ -633,7 +638,7 @@ ClampPlayer2VelocityMax:
           lda # 252
           sta playerVelocityX,x
 ImpulseDoneCollisionLeft:
-          jmp ImpulseDoneCollisionLeft
+          jmp NextInnerCollisionCheck
 
 .pend
 
@@ -851,7 +856,7 @@ Div128ImpulseStrength2 .proc
             sta impulseStrength
 
 
-ImpulseDoneSecond
+ImpulseDoneSecond:
 
           lda # 0
           sta temp5
@@ -891,5 +896,9 @@ NextOuterCollisionCheckDone:
           
 
           rts
+.pend
+
+          jmp BS_return
+
 .pend
 

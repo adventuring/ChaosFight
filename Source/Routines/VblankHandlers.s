@@ -1152,8 +1152,12 @@ AfterUpdateAllMissiles:
 
 
           ;; Check if game should end and transition to winner screen
-                    if systemFlags & SystemFlagGameStateEnding then VblankCheckGameEndTransition
-          jmp VblankGameEndCheckDone
+          ;; if systemFlags & SystemFlagGameStateEnding then VblankCheckGameEndTransition
+          lda systemFlags
+          and # SystemFlagGameStateEnding
+          beq VblankGameEndCheckDone
+          jmp VblankCheckGameEndTransition
+VblankGameEndCheckDone:
 
 VblankCheckGameEndTransition
           ;; Check if game end timer should transition to winner screen

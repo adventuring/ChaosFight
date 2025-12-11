@@ -213,7 +213,10 @@ Player2TargetDone
 return_point:
 
 
-                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq DonePlayer1Move
+          ;; if temp4 then let fallComplete = fallComplete + 1
+          lda temp4
+          beq DonePlayer1Move
+          inc fallComplete
 DonePlayer1Move:
           jmp DonePlayer1Move
 
@@ -262,7 +265,10 @@ MovePlayer3:
 return_point:
 
 
-                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq DonePlayer1Move
+          ;; if temp4 then let fallComplete = fallComplete + 1
+          lda temp4
+          beq DonePlayer1Move
+          inc fallComplete
 DonePlayer1Move:
           jmp DonePlayer1Move
 
@@ -312,7 +318,10 @@ MovePlayer4:
 return_point:
 
 
-                    if temp4 then let fallComplete = fallComplete + 1          lda temp4          beq DonePlayer1Move
+          ;; if temp4 then let fallComplete = fallComplete + 1
+          lda temp4
+          beq DonePlayer1Move
+          inc fallComplete
 DonePlayer1Move:
           jmp DonePlayer1Move
 

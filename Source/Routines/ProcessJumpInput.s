@@ -9,7 +9,7 @@
 
 ProcessJumpInput .proc
           ;;
-          ;; Returns: Far (return otherbank)
+          ;; Returns: Near (return thisbank) - changed from Far to save stack depth
           ;; Shared Jump Input Handler
           ;; Handles jump input from enhanced buttons (Genesis Button C, Joy2B+ Button II)
           ;; UP = Button C = Button II (no exceptions)
@@ -44,12 +44,15 @@ ProcessJumpInput .proc
 return_point:
 
           ;; If enhanced button not pressed, return (no action)
-          jsr BS_return
+          lda temp3
+          beq ProcessJumpInputDone
+          rts
+ProcessJumpInputDone:
 
           ;; Execute character-specific UP action (UP = Button C = Button II)
           jsr ProcessUpAction
 
-          jsr BS_return
+          rts
 
 .pend
 

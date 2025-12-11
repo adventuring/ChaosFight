@@ -85,18 +85,8 @@ IHLP_DoneFlyingLeftRight:
 
           ;; Process jump input from enhanced buttons (must be identical
           ;; effect to HandleUpInput for all characters)
-          ;; Cross-bank call to ProcessJumpInput in bank 8
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(ProcessJumpInput-1)
-          pha
-          lda # <(ProcessJumpInput-1)
-          pha
-                    ldx # 7
-          jmp BS_jsr
-return_point:
+          ;; Same-bank call to ProcessJumpInput (Bank 7) - saves 2 bytes vs cross-bank
+          jsr ProcessJumpInput
 
 InputDoneLeftPortJump
 

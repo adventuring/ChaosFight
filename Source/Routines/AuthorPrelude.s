@@ -55,7 +55,7 @@ AuthorPrelude .proc
           ;; Check for button press on any controller to skip
           ;; Returns: Far (return otherbank)
           ;; Use skip-over pattern to avoid complex || operator issues
-          if joy0fire then AuthorPreludeComplete
+          ;; If joy0fire, then AuthorPreludeComplete
           lda joy0fire
           beq CheckJoy1Fire
 
@@ -63,7 +63,7 @@ AuthorPrelude .proc
 
 CheckJoy1Fire:
 
-          if joy1fire then AuthorPreludeComplete
+          ;; If joy1fire, then AuthorPreludeComplete
           lda joy1fire
           beq CheckEnhancedControllers
 
@@ -75,7 +75,7 @@ CheckEnhancedControllers:
           ;; Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0) or Joy2b+ Button III (INPT1)
           ;; OR flags together and check for nonzero match
           ;; Set temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
-          if temp1 then if !INPT0{7} then AuthorPreludeComplete
+          ;; If temp1 is non-zero and !INPT0{7}, then AuthorPreludeComplete
           lda temp1
           beq CheckRightPortControllers
           bit INPT0
@@ -85,7 +85,12 @@ CheckRightPortControllers:
           lda controllerStatus
           and SetLeftPortJoy2bPlus
           sta temp1
-                    if temp1 then if !INPT1{7} then AuthorPreludeComplete          lda temp1          beq CheckRightPortControllersLabel
+          ;; If temp1 is non-zero and !INPT1{7}, then AuthorPreludeComplete
+          lda temp1
+          beq CheckRightPortControllersLabel
+          bit INPT1
+          bmi CheckRightPortControllersLabel
+          jmp AuthorPreludeComplete
 CheckRightPortControllersLabel:
 
           ;; Player 2: Genesis Button C (INPT2) or Joy2b+ Button C/II (INPT2) or Joy2b+ Button III (INPT3)
@@ -93,7 +98,7 @@ CheckRightPortControllersLabel:
           lda controllerStatus
           and # 96
           sta temp1
-                    if temp1 then if !INPT2{7} then AuthorPreludeComplete
+          ;; If temp1 is non-zero and !INPT2{7}, then AuthorPreludeComplete
           lda temp1
           beq CheckAutoAdvance
           bit INPT2
@@ -103,9 +108,13 @@ CheckAutoAdvance:
           lda controllerStatus
           and SetRightPortJoy2bPlus
           sta temp1
-                    if temp1 then if !INPT3{7} then AuthorPreludeComplete          lda temp1          beq CheckAutoAdvanceLabel
+          ;; If temp1 is non-zero and !INPT3{7}, then AuthorPreludeComplete
+          lda temp1
+          beq CheckAutoAdvanceLabel
+          bit INPT3
+          bmi CheckAutoAdvanceLabel
+          jmp AuthorPreludeComplete
 CheckAutoAdvanceLabel:
-          jmp CheckAutoAdvanceLabel
 
 
           ;; Auto-advance after music completes + 0.5s

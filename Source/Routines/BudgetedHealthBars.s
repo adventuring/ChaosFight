@@ -80,7 +80,13 @@ BudgetedHealthBarPlayer0 .proc
           lsr
           lsr
           sta temp6
-          if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
+          ;; If temp6 > HealthBarMaxLength, then set temp6 = HealthBarMaxLength
+          lda temp6
+          cmp # HealthBarMaxLength
+          bcc BudgetedHealthBarPlayer0Done
+          lda # HealthBarMaxLength
+          sta temp6
+BudgetedHealthBarPlayer0Done:
           rts
 
 .pend
@@ -139,7 +145,13 @@ CheckPlayer2Character:
 
 
           ;; Update Player 3 health bar (inlined from UpdateHealthBarPlayer2)
-                    if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
+          ;; If playerCharacter[2] = NoCharacter, then DonePlayer2HealthUpdate
+          lda # 2
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq DonePlayer2HealthUpdate
 
           ;; Input: playerHealth[] (global array) = player health values
           ;; HealthBarMaxLength (constant) = maximum health bar length

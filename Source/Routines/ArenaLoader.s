@@ -183,7 +183,12 @@ LoadArenaRandom .proc
           and # 31
           sta temp1
 
-                    if temp1 > MaxArenaID then LoadArenaRandom
+          ;; If temp1 > MaxArenaID, then LoadArenaRandom
+          lda temp1
+          cmp # MaxArenaID
+          bcc LoadArenaDispatch
+          jmp LoadArenaRandom
+LoadArenaDispatch:
           ;; Fall through to LoadArenaDispatch logic (inline to avoid goto)
           ;; Cross-bank call to DWS_GetBWMode in bank 15
           lda # >(AfterDWS_GetBWModeRandom-1)

@@ -23,22 +23,21 @@ CheckAllPlayerCollisions .proc
           cmp # 0
           bne Use4PlayerMode
 
-          ;; Set temp6 = 2 jmp SkipElseCollisionCheck
+          ;; Set temp6 = 2 for 2-player mode
+          lda # 2
+          sta temp6
+          jmp SkipElseCollisionCheck
 
 Use4PlayerMode:
 
           lda # 4
           sta temp6
 
-.pend
-
-SkipElseCollisionCheck .proc
+SkipElseCollisionCheck:
           lda # 0
           sta temp1
 
-.pend
-
-OuterLoopCollisionCheck .proc
+OuterLoopCollisionCheck:
           ;; If temp1 >= 2, then jmp CheckP1ActiveCollision
           lda temp1
           cmp # 2

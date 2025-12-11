@@ -28,9 +28,13 @@ SkipRandomSelection:
           ;; Check switchbw and colorBWOverride
           lda switchbw
           sta temp2
-          if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
+          ;; If systemFlags & SystemFlagColorBWOverride, then set temp2 = 1
           lda systemFlags
           and # SystemFlagColorBWOverride
+          beq CheckBWModeDone
+          lda # 1
+          sta temp2
+CheckBWModeDone:
           beq SkipBWOverride
 
           lda # 1

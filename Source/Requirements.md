@@ -1,5 +1,7 @@
 # ChaosFight 26 - Minimum Viable Product Requirements
 
+**Note**: This project uses **64tass** (Turbo Assembler for 65xx processors) for assembly code. All syntax and examples in this document reflect 64tass syntax requirements. Some legacy `.bas` files may still exist, but all new code should use `.s` assembly files.
+
 ## Cold Start Initialization
 
 Upon cold start:

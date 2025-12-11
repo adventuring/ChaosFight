@@ -16,7 +16,6 @@ Winner_asm_1:
 
 WinnerScreenPlayfield:
 data_end_1:
-WinnerScreenPlayfield
 Winner_playfield_1:
 
             .byte 0, 0

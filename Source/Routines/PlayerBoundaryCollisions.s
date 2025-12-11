@@ -181,7 +181,7 @@ SkipBernieWrap:
           sta currentPlayer
           lda # >(return_point-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckPlayerEliminationBoundary-1)
           pha
           lda # >(CheckPlayerElimination-1)
           pha
@@ -190,7 +190,7 @@ SkipBernieWrap:
           ldx # 13
           jmp BS_jsr
 
-return_point:
+AfterCheckPlayerEliminationBoundary:
 
           rts
 

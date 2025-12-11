@@ -20,7 +20,7 @@ UpdateCharacterAnimations:
           ;; Constraints: None
           ;; CRITICAL: Skip sprite loading in Publisher Prelude and Author Prelude modes (no characters)
           jsr BS_return
-          ;; TODO: #1300 dim UCA_quadtariActive = temp5
+          ;; UCA_quadtariActive uses temp5 directly (no dim needed)
           lda controllerStatus
           and # SetQuadtariDetected
           sta UCA_quadtariActive

@@ -96,6 +96,8 @@ Player1Target4P .proc
           lda # 32
           sta temp2
 
+.pend
+
 Player1TargetDone:
           ;; Player 1 target calculation complete
           ;; Returns: Far (return otherbank)
@@ -163,6 +165,23 @@ SetPlayer2Target:
           jmp Player2TargetDone
 
 .pend
+
+Player2TargetDone:
+          ;; Player 2 target calculation complete
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: None (label only, no execution)
+          ;;
+          ;; Output: None (label only)
+          ;;
+          ;; Mutates: None
+          ;;
+          ;; Called Routines: None
+          ;;
+          ;; Constraints: Must be colocated with FallingAnimation1
+          ;; 4-player mode: target × = 128
+          lda # 128
+          sta temp2
 
 Player2Target4P .proc
           ;; Set Player 2 target × for 4-player mode

@@ -58,7 +58,13 @@ ShamoneAttack:
 
           ;; Light character, good jump
 
-          let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
+          ;; playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # PlayerStateBitJumping
+          sta playerState,x
 
           ;; Set jumping flag
 
@@ -78,7 +84,14 @@ ShamoneAttack:
 
 return_point_1_L88:
 
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          ;; playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # MaskPlayerStateFlags
+          ora # ActionAttackExecuteShifted
+          sta playerState,x
           jsr BS_return
 
 

@@ -76,13 +76,7 @@ PBC_ProcessPlayer .proc
 .pend
 
 PBC_NextPlayer .proc
-
-.pend
-
-next_label_1_L78:
-.proc
           rts
-
 .pend
 
 CheckPlayerBoundary .proc
@@ -105,12 +99,23 @@ CheckPlayerBoundary .proc
           ;; Called Routines: CheckPlayerElimination (bank14)
           ;;
           ;; Constraints: Uses temp1 as player index, temp2 as scratch.
-          if playerX[temp1] < PlayerLeftWrapThreshold then let playerX[temp1] = PlayerRightEdge : let playerSubpixelX_W[temp1] = PlayerRightEdge : let playerSubpixelX_WL[temp1] = 0
-
-          if playerX[temp1] > PlayerRightWrapThreshold then let playerX[temp1] = PlayerLeftEdge : let playerSubpixelX_W[temp1] = PlayerLeftEdge
+          ;; Check left wrap threshold
           lda temp1
           asl
           tax
+          lda playerX,x
+          cmp # PlayerLeftWrapThreshold
+          bcs CheckRightWrap
+
+          ;; Left wrap: set to PlayerRightEdge
+          lda # PlayerRightEdge
+          sta playerX,x
+          sta playerSubpixelX_W,x
+          lda # 0
+          sta playerSubpixelX_WL,x
+          jmp CheckTopClamp
+
+CheckRightWrap:
           lda playerX,x
           sec
           sbc # PlayerRightWrapThreshold
@@ -124,9 +129,11 @@ CheckPlayerBoundary .proc
           sta playerSubpixelX_W,x
 
 SkipRightWrap:
-          let playerSubpixelX_WL[temp1] = 0
+          lda # 0
+          sta playerSubpixelX_WL,x
 
-          if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY_W[temp1] = 20 : let playerSubpixelY_WL[temp1] = 0
+CheckTopClamp:
+          ;; Check top clamp (Y < 20)
           lda temp1
           asl
           tax
@@ -142,7 +149,13 @@ SkipRightWrap:
           sta playerSubpixelY_WL,x
 
 SkipTopClamp:
-          let playerVelocityY[temp1] = 0 : let playerVelocityYL[temp1] = 0
+          ;; Zero vertical velocity at boundaries
+          lda temp1
+          asl
+          tax
+          lda # 0
+          sta playerVelocityY,x
+          sta playerVelocityYL,x
 
           rts
 
@@ -158,7 +171,7 @@ SkipTopClamp:
 
 SkipBernieWrap:
 
-          let playerHealth[temp1] = 0 : let currentPlayer = temp1 : gosub CheckPlayerElimination bank14
+          ;; Set player health to 0 and eliminate
           lda temp1
           asl
           tax

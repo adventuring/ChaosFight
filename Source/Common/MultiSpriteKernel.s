@@ -393,7 +393,7 @@ KernelRoutine:
                     .SLEEP 6
           .fi
           tsx
-          stx sta
+          stx temp6  ;;; Save stack pointer (sta conflicts with 6502 instruction)
 
           ldx # ENABL
           txs                         ;;;;+9   9
@@ -764,7 +764,7 @@ DoneWithKernel:
 BottomOfKernelLoop:
 
           sta WSYNC
-          ldx sta
+          ldx temp6  ;;; Use temp6 instead of sta (sta conflicts with 6502 instruction)
 
           txs
           jsr sixdigscore             ;;;; set up score
@@ -859,7 +859,7 @@ beginscore:
                     and #$FB          ;;;; Clear bit 2 (score mode)
                     sta CTRLPF
           .fi
-          ldx sta
+          ldx temp6  ;;; Use temp6 instead of sta (sta conflicts with 6502 instruction)
 
           txs
 

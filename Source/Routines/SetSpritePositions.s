@@ -332,9 +332,10 @@ SSP_WriteMissileRegisters .proc
 
           rts
 
-SSP_WriteMissileRegistersUnified
+.pend
+
+SSP_WriteMissileRegistersUnified .proc
           ;; Returns: Near (return thisbank)
-SSP_WriteMissileRegistersUnified
           ;; Unified helper to write missile registers for either missile0 or missile1
           ;; Returns: Near (return thisbank)
           ;; Input: temp5 = missile select (0=missile0, 1=missile1)
@@ -356,7 +357,7 @@ SSP_CheckMissile0:
           sta missile1height
           rts
 
-SSP_WriteUnified0
+SSP_WriteUnified0:
           lda temp6
           sta missile0x
           lda temp2
@@ -366,9 +367,11 @@ SSP_WriteUnified0
           lda temp4
           sta missile0height
           rts
-RenderRoboTitoStretchMissile
+
+.pend
+
+RenderRoboTitoStretchMissile .proc
           ;; Returns: Far (return otherbank)
-RenderRoboTitoStretchMissile
 
           ;; Render RoboTito stretch visual missiles for whichever hardware slot
           ;; Returns: Far (return otherbank)

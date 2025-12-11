@@ -525,7 +525,11 @@ DWS_Hide3Player2 .proc
           lda 0
           sta playerX,x
 
-DWS_Hide3Player2Done
+          jsr BS_return
+
+.pend
+
+DWS_Hide3Player2Done:
           ;; Hide Player 2 complete (label only)
           ;; Returns: Far (return otherbank)
           ;;
@@ -591,7 +595,11 @@ DWS_Hide3Player3 .proc
           lda 0
           sta playerX,x
 
-DWS_Hide3Player3Done
+          jsr BS_return
+
+.pend
+
+DWS_Hide3Player3Done:
           ;; Hide Player 3 complete (label only)
           ;; Returns: Far (return otherbank)
           ;;

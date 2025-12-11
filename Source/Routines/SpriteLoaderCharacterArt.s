@@ -299,7 +299,7 @@ Bank3Dispatch
           pha
                     ldx # 2
           jmp BS_jsr
-return_point:
+SLCAB3_return_point:
 
 
           jsr BS_return
@@ -366,9 +366,9 @@ Bank4Dispatch
           ;; temp3=action, temp5=player
 
           ;; Cross-bank call to SetPlayerCharacterArtBank4 in bank 4
-          lda # >(return_point-1)
+          lda # >(SLCAB4_return_point-1)
           pha
-          lda # <(return_point-1)
+          lda # <(SLCAB4_return_point-1)
           pha
           lda # >(SetPlayerCharacterArtBank4-1)
           pha
@@ -376,14 +376,14 @@ Bank4Dispatch
           pha
                     ldx # 3
           jmp BS_jsr
-return_point:
+SLCAB4_return_point:
 
 
           jsr BS_return
 
 
 
-Bank5Dispatch
+SLCAB5_Bank5Dispatch:
 
           ;; Load character art from Bank 5
           ;; Returns: Far (return otherbank)
@@ -443,9 +443,9 @@ Bank5Dispatch
           ;; temp3=action, temp5=player
 
           ;; Cross-bank call to SetPlayerCharacterArtBank5 in bank 5
-          lda # >(return_point-1)
+          lda # >(SLCAB5_return_point-1)
           pha
-          lda # <(return_point-1)
+          lda # <(SLCAB5_return_point-1)
           pha
           lda # >(SetPlayerCharacterArtBank5-1)
           pha
@@ -453,7 +453,7 @@ Bank5Dispatch
           pha
                     ldx # 4
           jmp BS_jsr
-return_point:
+SLCAB5_return_point:
 
 
           jsr BS_return

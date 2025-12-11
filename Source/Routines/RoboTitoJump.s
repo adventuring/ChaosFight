@@ -11,19 +11,32 @@ RoboTitoJump .proc
           ;; Output: Moves up 3px/frame, latches on ceiling contact
           jsr BS_return
 
-          if (playerState[temp1] & 4) then goto RoboTitoCannotStretch
+          ;; if (playerState[temp1] & 4) then goto RoboTitoCannotStretch
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # 4
+          bne RTJ_CheckSpecialAbility
+          jmp RTJ_CannotStretch
+
+RTJ_CheckSpecialAbility:
           ;; if characterSpecialAbility_R[temp1] = 0 then goto RoboTitoCannotStretch
           lda temp1
           asl
           tax
           lda characterSpecialAbility_R,x
-          bne RoboTitoCanStretch
+          bne RTJ_CanStretch
+          jmp RTJ_CannotStretch
 
-          jmp RoboTitoCannotStretch
-
-RoboTitoCanStretch:
-
+RTJ_CanStretch:
           jmp RoboTitoStretching
+
+.pend
+
+RTJ_CannotStretch .proc
+          ;; Alias for RoboTitoCannotStretch
+          jmp RoboTitoCannotStretch
 
 .pend
 
@@ -37,11 +50,27 @@ RoboTitoCannotStretch .proc
 
 .pend
 
+RTJ_CanStretchProc .proc
+          ;; Alias for RoboTitoCanStretch
+          jmp RoboTitoCanStretch
+
+.pend
+
 RoboTitoCanStretch .proc
+          ;; Stretch enabled - proceed with stretching
+          jmp RoboTitoStretching
+
 .pend
 
 RoboTitoStretching .proc
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
+          ;; playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # MaskPlayerStateFlags
+          ora # ActionJumpingShifted
+          sta playerState,x
           ;; Inlined CCJ_ConvertPlayerXToPlayfieldColumn (FIXME #1250)
           ;; Convert player X to playfield column: (playerX[temp1] - ScreenInsetX) / 4
           lda temp1
@@ -101,9 +130,12 @@ CheckPlayfieldPixel:
           jmp BS_jsr
 return_point:
 
-                    if temp1 then let temp6 = 1          lda temp1          beq CheckGroundFound
+          ;; if temp1 then temp6 = 1
+          lda temp1
+          beq CheckGroundFound
+          lda # 1
+          sta temp6
 CheckGroundFound:
-          jmp CheckGroundFound
           lda temp3
           sta temp1
           lda temp6
@@ -118,8 +150,14 @@ ContinueGroundSearch:
 .pend
 
 GroundFound .proc
-          ;; let temp2 = temp5 / 16
-          jmp GroundSearchDone
+          ;; temp2 = temp5 * 16 (row to pixel position)
+          lda temp5
+          asl
+          asl
+          asl
+          asl
+          sta temp2
+          jmp RTJ_GroundSearchDone
 
 .pend
 
@@ -127,7 +165,9 @@ GroundSearchBottom .proc
           lda ScreenBottom
           sta temp2
 
-GroundSearchDone
+RTJ_GroundSearchDone:
+          ;; Common exit point for GroundFound and GroundSearchBottom
+          ;; Continue with rest of routine
           ;; let temp3 = playerY[temp1]         
           lda temp1
           asl
@@ -152,18 +192,13 @@ GroundSearchDone
           sta temp3
 CheckMinimumHeight:
 
-          ;; if temp3 < 1 then let temp3 = 1
+          ;; if temp3 < 1 then temp3 = 1
           lda temp3
           cmp # 1
           bcs SetStretchHeight
-          jmp let_label
+          lda # 1
+          sta temp3
 SetStretchHeight:
-
-          lda temp3
-          cmp # 1
-          bcs SetStretchHeightLabel
-          jmp let_label
-SetStretchHeightLabel:
 
 
           lda temp1
@@ -177,15 +212,14 @@ SetStretchHeightLabel:
           lda 0
           sta characterSpecialAbility_W,x
           ;; if playerY[temp1] <= 5 then goto RoboTitoCheckCeiling
-                    let playerY[temp1] = playerY[temp1]
           lda temp1
           asl
           tax
           lda playerY,x
-          lda temp1
-          asl
-          tax
-          sta playerY,x - 3
+          cmp # 5
+          bcs RTJ_Continue
+          jmp RoboTitoCheckCeiling
+RTJ_Continue:
           jsr BS_return
 .pend
 
@@ -254,24 +288,33 @@ return_point:
 ContinueStretching:
           lda temp5
           sta temp1
-                    let playerY[temp1] = playerY[temp1] - 3
+          ;; playerY[temp1] = playerY[temp1] - 3
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sec
+          sbc # 3
+          sta playerY,x
           jsr BS_return
 .pend
 
 RoboTitoLatch .proc
-          dim RTL_stateFlags = temp5 (dim removed - variable definitions handled elsewhere)
-                    let RTL_stateFlags = characterStateFlags_R[temp1] | 1         
+          ;; RTL_stateFlags = characterStateFlags_R[temp1] | 1
           lda temp1
           asl
           tax
           lda characterStateFlags_R,x
-          sta RTL_stateFlags
+          ora # 1
+          sta characterStateFlags_W,x
+          ;; playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
           lda temp1
           asl
           tax
-          lda RTL_stateFlags
-          sta characterStateFlags_W,x
-                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
+          lda playerState,x
+          and # MaskPlayerStateFlags
+          ora # ActionJumpingShifted
+          sta playerState,x
           ;; let temp2 = missileStretchHeight_R[temp1]         
           lda temp1
           asl
@@ -291,18 +334,12 @@ RTL_ReduceHeight:
           lda 0
           sta missileStretchHeight_W,x
           jmp RTL_HeightCleared
-.pend (no matching .proc)
 
-RTL_ReduceHeight .proc
-          ;; let temp2 = temp2 - 25          lda temp2          sec          sbc 25          sta temp2
+RTL_ReduceHeight:
+          ;; temp2 = temp2 - 25
           lda temp2
           sec
-          sbc 25
-          sta temp2
-
-          lda temp2
-          sec
-          sbc 25
+          sbc # 25
           sta temp2
 
           lda temp1
@@ -310,11 +347,9 @@ RTL_ReduceHeight .proc
           tax
           lda temp2
           sta missileStretchHeight_W,x
-.pend
 
-;; RTL_HeightCleared .proc (no matching .pend)
+RTL_HeightCleared:
           jsr BS_return
 
-
-.pend (extra - no matching .proc)
+.pend
 

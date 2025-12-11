@@ -8,11 +8,6 @@
 
 ;; CRITICAL: Define memory address variables FIRST to allow DASM to resolve forward references
 ;; These must be defined before any code that uses them
-;; NOTE: .weak protection needed because Preamble.s (which includes this file)
-;; is included multiple times: once by platform files (NTSC.s/PAL.s/SECAM.s)
-;; and once by titlescreen.s. 64tass doesn't support .ifndef include guards,
-;; so .weak/.endweak is the standard way to allow duplicate symbol definitions.
-.weak
 missile1height = $A4
 missile0height = $A5
 ;; playfieldRow is defined via dim in Variables.s
@@ -217,9 +212,7 @@ stack4 = $f9
 
 ;; Define compiler constants if not already defined by batariBASIC
 ;; These are forward declarations that may be redefined by batariBASIC’s generated constants
-          .if !pfres
-pfres = 8
-          .fi
+;; Note: pfres is already defined in AssemblyConfig.s, so we don't redefine it here
 multisprite = 2
 superchip = 1
 bankswitch_hotspot = $ffe0

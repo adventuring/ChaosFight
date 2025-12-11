@@ -1,6 +1,11 @@
 ;;; ChaosFight - Source/Banks/Banks.s
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
+;; CRITICAL: Include Preamble.s FIRST - it must be included only once
+;; This provides all symbol definitions (TIA registers, variables, constants, etc.)
+;; that are needed by all banks
+.include "Source/Common/Preamble.s"
+
 ;;; Bank 0: Sounds & Music 1
 
 .include "Bank0.s"

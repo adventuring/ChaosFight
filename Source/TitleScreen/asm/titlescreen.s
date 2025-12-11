@@ -1,6 +1,7 @@
 
-
-.include "../../Source/Common/Preamble.s"
+;; CRITICAL: Preamble.s is already included by platform files (NTSC.s/PAL.s/SECAM.s)
+;; Do NOT include it here to prevent duplicate definitions
+;; .include "../../Source/Common/Preamble.s"
 
 .include "TitleScreen/asm/layoutmacros.s"
 
@@ -193,16 +194,16 @@ playerheightfixloop:
 	;; Bitmap image data is included from generated Art.*.s files in Bank8
 	;; The TitleScreen/48x2_N_image.s files are NOT included here to avoid duplicate definitions
 	;; .if  mk_48x2_1_on
-	.include "TitleScreen/48x2_1_image.s"
+	;; .include "TitleScreen/48x2_1_image.s"
 	;; .fi
 	;; .if  mk_48x2_2_on
-	.include "TitleScreen/48x2_2_image.s"
+	;; .include "TitleScreen/48x2_2_image.s"
 	;; .fi
 	;; .if  mk_48x2_3_on
-	.include "TitleScreen/48x2_3_image.s"
+	;; .include "TitleScreen/48x2_3_image.s"
 	;; .fi
 	;; .if  mk_48x2_4_on
-	.include "TitleScreen/48x2_4_image.s"
+	;; .include "TitleScreen/48x2_4_image.s"
 	;; .fi
 
 

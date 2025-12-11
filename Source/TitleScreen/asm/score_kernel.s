@@ -22,7 +22,7 @@ draw_score_display:
 
           sta HMCLR
           tsx
-          stx sta
+          stx temp6  ;;; Save stack pointer (sta conflicts with 6502 instruction)
 
  ;;ldx #$20
           ldx #$60
@@ -79,7 +79,7 @@ draw_score_display:
 
 scoreloop2:
           .if  scorefade
-          lda sta
+          lda temp6  ;;; Use temp6 instead of sta (sta conflicts with 6502 instruction)
 
           sta COLUP0
           sta COLUP1
@@ -99,7 +99,7 @@ beginscoreloop:
           lax  (scorepointers+$4),y  ;;;+5  36  108
 
           .if  scorefade
-          dec sta
+          dec temp6  ;;; Use temp6 instead of sta (sta conflicts with 6502 instruction)
 
           .else
           .SLEEP 5
@@ -120,7 +120,7 @@ scoreloop2end:
  ;;.error "critical size: ",(scoreloop2end-scoreloop2)
 
 
-          ldx sta
+          ldx temp6  ;;; Use temp6 instead of sta (sta conflicts with 6502 instruction)
 
           txs
 

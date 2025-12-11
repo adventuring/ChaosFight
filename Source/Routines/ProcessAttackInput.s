@@ -69,8 +69,13 @@ ProcessAttackInput .proc
           ;; Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
 
           ;; Players 1,3 use joy1
+          ;; if temp1 & 2 = 0 then PAI_UseJoy0
+          lda temp1
+          and # 2
+          bne PAI_UseJoy1
+          jmp PAI_UseJoy0
 
-                    if temp1 & 2 = 0 then PAI_UseJoy0
+PAI_UseJoy1:
           jsr BS_return
 
           jmp PAI_ExecuteAttack

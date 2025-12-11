@@ -419,6 +419,8 @@ CMVE_GetVoice0Vars .proc
           lda musicVoice0TargetAUDV_R
           sta temp5
 
+          jmp CMVE_CalcElapsed
+
 .pend
 
 CMVE_CalcElapsed .proc

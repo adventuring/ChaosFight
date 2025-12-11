@@ -309,16 +309,11 @@ CheckCooldownExpired:
           lda 0
           sta playerVelocityYL,x
                     let playerState[temp1] = playerState[temp1] | 4
-                    let HJ_stateFlags = characterStateFlags_R[temp1] | 2         
           lda temp1
           asl
           tax
           lda characterStateFlags_R,x
-          sta HJ_stateFlags
-          lda temp1
-          asl
-          tax
-          lda HJ_stateFlags
+          ora # 2  ;;; Set bit 1 (HJ_stateFlags equivalent)
           sta characterStateFlags_W,x
 
 .pend

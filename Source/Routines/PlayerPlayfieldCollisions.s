@@ -45,66 +45,68 @@ CheckPlayfieldCollisionAllDirections:
           ;;
           ;; Constraints: Checks collisions at head, middle, and feet positions.
 
-          let ;; TODO: #1298 Convert assignment: temp2 = playerX[currentPlayer]
+          ;; temp2 = playerX[currentPlayer]
           lda currentPlayer
           asl
           tax
           lda playerX,x
           sta temp2
 
-          let ;; TODO: #1298 Convert assignment: temp3 = playerY[currentPlayer]
-
+          ;; temp3 = playerY[currentPlayer]
           lda currentPlayer
           asl
           tax
           lda playerY,x
           sta temp3
 
-          let ;; TODO: #1298 Convert assignment: temp4 = playerCharacter[currentPlayer]
-
+          ;; temp4 = playerCharacter[currentPlayer]
           lda currentPlayer
           asl
           tax
           lda playerCharacter,x
           sta temp4
 
-          let ;; TODO: #1298 Convert assignment: temp5 = CharacterHeights[temp4]
-
+          ;; temp5 = CharacterHeights[temp4]
           lda temp4
           asl
           tax
           lda CharacterHeights,x
           sta temp5
 
-          ;; let ;; TODO: #1298 Convert assignment: temp6 = temp2 - ScreenInsetX
+          ;; temp6 = temp2 - ScreenInsetX
           lda temp2
           sec
           sbc # ScreenInsetX
           sta temp6
 
-          ;; let ;; TODO: #1298 Convert assignment: temp6 = temp6 / 4
+          ;; temp6 = temp6 / 4
           lda temp6
           lsr
           lsr
           sta temp6
 
-          if temp6 & $80 then let ;; TODO: #1298 Convert assignment: temp6 = 0
-
+          ;; if temp6 >= 32 then temp6 = 31
           lda temp6
           cmp # 32
-          bcc ColumnInRange
+          bcc PFCD_ColumnInRange
 
           lda # 31
           sta temp6
 
-ColumnInRange:
+PFCD_ColumnInRange:
 
-          let ;; TODO: #1298 Convert assignment: playfieldRow = temp3 / 16
+          ;; playfieldRow = temp3 / 16
+          lda temp3
+          lsr
+          lsr
+          lsr
+          lsr
+          sta playfieldRow
 
-          ;; if playfieldRow >= pfrows then let
+          ;; if playfieldRow >= pfrows then playfieldRow = pfrows - 1
           lda playfieldRow
           cmp pfrows
-          bcc skip_7030
+          bcc RowInRange
 
           lda pfrows
           sec
@@ -113,8 +115,7 @@ ColumnInRange:
 
 RowInRange:
 
-          if playfieldRow & $80 then let ;; TODO: #1298 Convert assignment: playfieldRow = 0
-
+          ;; if playfieldRow & $80 then playfieldRow = 0
           lda playfieldRow
           and #$80
           beq CheckLeftCollision
@@ -240,8 +241,14 @@ PFBlockUp .proc
           ;; Returns: Far (return otherbank)
 
           ;; if playerCharacter[currentPlayer] = CharacterRadishGoblin then goto PFBlockUpClamp
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CharacterRadishGoblin
+          beq PFBlockUpClamp
 
-                    if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
+          ;; if playerVelocityY[currentPlayer] & $80 then playerVelocityY[currentPlayer] = 0 : playerVelocityYL[currentPlayer] = 0
           lda currentPlayer
           asl
           tax
@@ -265,10 +272,15 @@ PFBlockUpClamp .proc
           adc # 1
           sta rowYPosition
 
-                    let ;; TODO: #1298 Convert assignment: rowYPosition = rowYPosition * 16
+          ;; rowYPosition = rowYPosition * 16
+          lda rowYPosition
+          asl
+          asl
+          asl
+          asl
+          sta rowYPosition
 
-
-                    if playerY[currentPlayer] < rowYPosition then let playerY[currentPlayer] = rowYPosition
+          ;; if playerY[currentPlayer] < rowYPosition then playerY[currentPlayer] = rowYPosition
           lda currentPlayer
           asl
           tax
@@ -279,7 +291,7 @@ PFBlockUpClamp .proc
           sta playerY,x
 ClampSubpixelY:
 
-                    if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_W[currentPlayer] = rowYPosition
+          ;; if playerY[currentPlayer] < rowYPosition then playerSubpixelY_W[currentPlayer] = rowYPosition
           lda currentPlayer
           asl
           tax
@@ -290,7 +302,7 @@ ClampSubpixelY:
           sta playerSubpixelY_W,x
 ClampSubpixelYL:
 
-                    if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_WL[currentPlayer] = 0
+          ;; if playerY[currentPlayer] < rowYPosition then playerSubpixelY_WL[currentPlayer] = 0
           lda currentPlayer
           asl
           tax
@@ -307,9 +319,28 @@ PFBlockDown .proc
 
           ;; Skip zeroing velocity for Radish Goblin (bounce system handles it)
           ;; Returns: Far (return otherbank)
-          jsr BS_return
+          ;; if playerCharacter[currentPlayer] = CharacterRadishGoblin then skip velocity zeroing
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CharacterRadishGoblin
+          beq PFBlockDownDone
 
-                    if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
+          ;; if playerVelocityY[currentPlayer] > 0 then playerVelocityY[currentPlayer] = 0 : playerVelocityYL[currentPlayer] = 0
+          lda currentPlayer
+          asl
+          tax
+          lda playerVelocityY,x
+          bpl PFBlockDownDone
+          lda # 0
+          sta playerVelocityY,x
+          lda currentPlayer
+          asl
+          tax
+          lda # 0
+          sta playerVelocityYL,x
+PFBlockDownDone:
           jsr BS_return
 
 .pend
@@ -329,11 +360,9 @@ PF_CheckColumnSpan .proc
           ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PCC_rowSpan = temp3
 
 
-          ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PCC_result = temp4
-
-
+          ;; PCC_result = 0 (initialize, use temp5 to store it)
           lda # 0
-          sta PCC_result
+          sta temp5  ;;; Use temp5 to store PCC_result
 
           lda playfieldRow
           sta rowCounter
@@ -377,7 +406,12 @@ SamplePlayfieldPixel:
 return_point:
 
 
-                    if temp1 then let ;; TODO: #1298 Convert assignment: PCC_result = 1 : goto PFCS_Done          lda temp1          beq PFCS_AdvanceLabel
+          ;; if temp1 then PCC_result = 1 : goto PFCS_Done
+          lda temp1
+          beq PFCS_AdvanceLabel
+          lda # 1
+          sta temp5  ;;; PCC_result = 1
+          jmp PFCS_Done
 
 PFCS_AdvanceLabel:
           jmp PFCS_AdvanceLabel
@@ -405,7 +439,7 @@ PFCS_Advance .proc
 IncrementRowCounter:
 
 
-                    let ;; TODO: #1298 Convert assignment: rowCounter = rowCounter + PCC_rowSpan
+                    ;; TODO: #1298 Convert assignment: rowCounter = rowCounter + PCC_rowSpan
 
           jmp PFCS_SampleLoop
 
@@ -414,7 +448,7 @@ IncrementRowCounter:
 PFCS_Done
           ;; Returns: Far (return otherbank)
 
-          lda PCC_result
+          lda temp5  ;;; PCC_result
           sta temp4
 
           jsr BS_return
@@ -433,25 +467,18 @@ PF_CheckRowColumns .proc
           ;; Output: ;; TODO: #1298 Convert assignment: temp4 = 1 if any column collides
 
 
-          dim ;; TODO: #1298 Convert assignment: PRC_rowIndex = temp2 (dim removed - variable definitions handled elsewhere)
+          ;; PRC_rowIndex = temp2
+          lda temp2
+          sta temp3  ;;; Use temp3 to store PRC_rowIndex
 
-
-          ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PRC_result = temp4
-
-
+          ;; PRC_result = 0 (initialize)
           lda # 0
-          sta PRC_result
-
-          jsr BS_return
-
-          jsr BS_return
-
-
+          sta temp4  ;;; Use temp4 to store PRC_result
 
           lda temp6
           sta temp1
 
-          lda PRC_rowIndex
+          lda temp3  ;;; PRC_rowIndex
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
@@ -468,122 +495,113 @@ PF_CheckRowColumns .proc
 return_point:
 
 
-                    if temp1 then let ;; TODO: #1298 Convert assignment: PRC_result = 1 : goto PRC_Done          lda temp1          beq CheckRightColumnCenter
+          ;; if temp1 then PRC_result = 1 : goto PRC_Done
+          lda temp1
+          beq CheckRightColumnCenter
+          lda # 1
+          sta temp4  ;;; PRC_result = 1
+          jmp PRC_Done
 
 CheckRightColumnCenter:
-          jmp CheckRightColumnCenter
           lda temp6
           cmp # 1
           bcc PRC_CheckRight
-PRC_CheckRight:
+          jmp PRC_Done
 
+.pend
 
-          jmp PRC_CheckRight
+PRC_CheckRight .proc
+          ;; Check right column for collision
+          lda temp6
+          clc
+          adc # 1
+          sta temp1
+          lda temp3  ;;; PRC_rowIndex
+          sta temp2
+          ;; Cross-bank call to PlayfieldRead in bank 16
+          lda # >(PRC_CheckRight_return-1)
+          pha
+          lda # <(PRC_CheckRight_return-1)
+          pha
+          lda # >(PlayfieldRead-1)
+          pha
+          lda # <(PlayfieldRead-1)
+          pha
+          ldx # 15
+          jmp BS_jsr
+PRC_CheckRight_return:
+          ;; if temp1 then PRC_result = 1
+          lda temp1
+          beq PRC_CheckRightDone
+          lda # 1
+          sta temp4  ;;; PRC_result = 1
+PRC_CheckRightDone:
+          jmp PRC_Done
+
+.pend
+
+PRC_Done .proc
+          lda temp4  ;;; PRC_result
+          sta temp4
+          jsr BS_return
 
 .pend
 
 PRC_CheckLeft .proc
-
           lda temp6
           sec
           sbc # 1
           sta temp1
 
-          lda PRC_rowIndex
+          lda temp3  ;;; PRC_rowIndex
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(PRC_CheckLeft_return-1)
           pha
-          lda # <(return_point-1)
+          lda # <(PRC_CheckLeft_return-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ldx # 15
           jmp BS_jsr
-return_point:
+PRC_CheckLeft_return:
 
-
-                    if temp1 then let ;; TODO: #1298 Convert assignment: PRC_result = 1 : goto PRC_Done          lda temp1          beq PRC_DoneLabel
-
-PRC_DoneLabel:
-          jmp PRC_DoneLabel
+          ;; if temp1 then PRC_result = 1 : goto PRC_Done
+          lda temp1
+          beq PRC_CheckLeftDone
+          lda # 1
+          sta temp4  ;;; PRC_result = 1
+PRC_CheckLeftDone:
+          jmp PRC_Done
 
 .pend
 
-PRC_CheckRight .proc
-
-          ;; if temp6 >= 31 then goto PRC_Done
-          lda temp6
-          cmp 31
-
-          bcc CheckRightColumnCollision
-
-          jmp CheckRightColumnCollision
-
-          CheckRightColumnCollision:
-
-          lda temp6
-          clc
-          adc # 1
-          sta temp1
-
-          lda PRC_rowIndex
-          sta temp2
-
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(PlayfieldRead-1)
-          pha
-          lda # <(PlayfieldRead-1)
-          pha
-                    ldx # 15
-          jmp BS_jsr
-return_point:
-
-
-                    if temp1 then let ;; TODO: #1298 Convert assignment: PRC_result = 1          lda temp1          beq PRC_DoneLabel2
-
-PRC_DoneLabel2:
-          jmp PRC_DoneLabel2
-
-PRC_Done
-          lda PRC_result
+PRC_Done .proc
+          lda temp4  ;;; PRC_result
           sta temp4
-
           jsr BS_return
 
-PF_ProcessHorizontalCollision
+.pend
+
+PF_ProcessHorizontalCollision .proc
           ;; Returns: Far (return otherbank)
-
-
-PF_ProcessHorizontalCollision
 
 
           ;; Helper: evaluate horizontal collision for given column and clamp
           ;; Returns: Far (return otherbank)
 
-          ;; Input: ;; TODO: #1298 Convert assignment: temp1 = column index, temp3 = direction (0=left, 1=right)
+          ;; Input: temp1 = column index, temp3 = direction (0=left, 1=right)
+          ;; PHC_column = temp1 (use temp2 to store it)
+          ;; PHC_direction = temp3 (use temp4 to store it)
+          lda temp1
+          sta temp2  ;;; PHC_column
+          lda temp3
+          sta temp4  ;;; PHC_direction
 
-
-          ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PHC_column = temp1
-
-
-          ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PHC_direction = temp3
-
-
-          jsr BS_return
-
-          jsr BS_return
-
-
-
-          lda PHC_column
+          lda temp2  ;;; PHC_column
           sta playfieldColumn
 
           lda temp5
@@ -613,43 +631,70 @@ return_point:
           ;; if playerCharacter[temp1] = CharacterRadishGoblin then goto PHC_ClampOnly
 
           ;; if PHC_direction then goto PHC_CheckRightVelocity
-          lda PHC_direction
+          lda temp4  ;;; PHC_direction
           beq CheckLeftVelocity
           jmp PHC_CheckRightVelocity
 CheckLeftVelocity:
 
-                    if playerVelocityX[temp1] & $80 then let playerVelocityX[temp1] = 0 : let playerVelocityXL[temp1] = 0
+          ;; if playerVelocityX[temp1] & $80 then playerVelocityX[temp1] = 0 : playerVelocityXL[temp1] = 0
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          and #$80
+          beq PHC_CheckRightVelocity
+          lda # 0
+          sta playerVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda # 0
+          sta playerVelocityXL,x
           jmp PHC_ClampOnly
 
 .pend
 
 PHC_CheckRightVelocity .proc
 
-                    if playerVelocityX[temp1] > 0 then let playerVelocityX[temp1] = 0 : let playerVelocityXL[temp1] = 0
+          ;; if playerVelocityX[temp1] > 0 then playerVelocityX[temp1] = 0 : playerVelocityXL[temp1] = 0
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          bpl PHC_ClampOnly
+          lda # 0
+          sta playerVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda # 0
+          sta playerVelocityXL,x
 
-PHC_ClampOnly
+PHC_ClampOnly:
           lda temp6
           sta rowYPosition
 
           ;; if PHC_direction then goto PHC_ClampRight
-          lda PHC_direction
+          lda temp4  ;;; PHC_direction
           beq ClampLeftPosition
           jmp PHC_ClampRight
 ClampLeftPosition:
 
           inc rowYPosition
 
-                    let ;; TODO: #1298 Convert assignment: rowYPosition = rowYPosition * 4
-
-
-                    let ;; TODO: #1298 Convert assignment: rowYPosition = rowYPosition + ScreenInsetX
-
+          ;; rowYPosition = rowYPosition * 4
           lda rowYPosition
-          clc
-          adc ScreenInsetX
+          asl
+          asl
           sta rowYPosition
 
-                    if playerX[temp1] < rowYPosition then let playerX[temp1] = rowYPosition
+          ;; rowYPosition = rowYPosition + ScreenInsetX
+          lda rowYPosition
+          clc
+          adc # ScreenInsetX
+          sta rowYPosition
+
+          ;; if playerX[temp1] < rowYPosition then playerX[temp1] = rowYPosition
           lda temp1
           asl
           tax
@@ -660,7 +705,7 @@ ClampLeftPosition:
           sta playerX,x
 ClampSubpixelXLeft:
 
-                    if playerX[temp1] < rowYPosition then let playerSubpixelX_W[temp1] = rowYPosition
+          ;; if playerX[temp1] < rowYPosition then playerSubpixelX_W[temp1] = rowYPosition
           lda temp1
           asl
           tax
@@ -671,7 +716,7 @@ ClampSubpixelXLeft:
           sta playerSubpixelX_W,x
 ClampSubpixelXLLeft:
 
-                    if playerX[temp1] < rowYPosition then let playerSubpixelX_WL[temp1] = 0
+          ;; if playerX[temp1] < rowYPosition then playerSubpixelX_WL[temp1] = 0
           lda temp1
           asl
           tax
@@ -689,17 +734,19 @@ PHC_ClampRight .proc
 
           dec rowYPosition
 
-                    let ;; TODO: #1298 Convert assignment: rowYPosition = rowYPosition * 4
-
-
-                    let ;; TODO: #1298 Convert assignment: rowYPosition = rowYPosition + ScreenInsetX
-
+          ;; rowYPosition = rowYPosition * 4
           lda rowYPosition
-          clc
-          adc ScreenInsetX
+          asl
+          asl
           sta rowYPosition
 
-                    if playerX[temp1] > rowYPosition then let playerX[temp1] = rowYPosition
+          ;; rowYPosition = rowYPosition + ScreenInsetX
+          lda rowYPosition
+          clc
+          adc # ScreenInsetX
+          sta rowYPosition
+
+          ;; if playerX[temp1] > rowYPosition then playerX[temp1] = rowYPosition
           lda temp1
           asl
           tax
@@ -712,7 +759,7 @@ PHC_ClampRight .proc
           sta playerX,x
 ClampSubpixelXRight:
 
-                    if playerX[temp1] > rowYPosition then let playerSubpixelX_W[temp1] = rowYPosition
+          ;; if playerX[temp1] > rowYPosition then playerSubpixelX_W[temp1] = rowYPosition
           lda temp1
           asl
           tax
@@ -725,7 +772,7 @@ ClampSubpixelXRight:
           sta playerSubpixelX_W,x
 ClampSubpixelXLRight:
 
-                    if playerX[temp1] > rowYPosition then let playerSubpixelX_WL[temp1] = 0
+          ;; if playerX[temp1] > rowYPosition then playerSubpixelX_WL[temp1] = 0
           lda temp1
           asl
           tax
@@ -746,7 +793,7 @@ PHC_ClampRightDone:
 
 PFCheckDown_Body .proc
 
-                    let ;; TODO: #1298 Convert assignment: rowCounter = playfieldRow + temp5
+                    ;; TODO: #1298 Convert assignment: rowCounter = playfieldRow + temp5
 
           jsr BS_return
 

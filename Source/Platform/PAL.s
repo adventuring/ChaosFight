@@ -5,5 +5,7 @@
 
 TVStandard = 1  ;;; PAL
 
-.include "Source/Common/Preamble.s"
+;; CRITICAL: Preamble.s is now included at the top of Banks.s
+;; Do NOT include it here to prevent duplicate definitions
+;; .include "Source/Common/Preamble.s"
 .include "Source/Banks/Banks.s"

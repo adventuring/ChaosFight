@@ -18,7 +18,16 @@ CheckRoboTitoStretchMissileCollisions:
 
 CRTSMC_PlayerLoop .proc
           ;; Check if player is RoboTito and stretching
-          if playerCharacter[temp1] = CharacterRoboTito then CRTSMC_IsRoboTito
+          ;; if playerCharacter[temp1] = CharacterRoboTito then CRTSMC_IsRoboTito
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CharacterRoboTito
+          beq CRTSMC_IsRoboTito
+          jmp CRTSMC_NextPlayer
+
+CRTSMC_IsRoboTito:
 
           jmp CRTSMC_NextPlayer
 
@@ -116,8 +125,12 @@ CheckPlayerHealth:
 
 
           ;; Skip eliminated players
-
-                    if !playerHealth[temp6] then CRTSMC_DoneSelf
+          ;; if !playerHealth[temp6] then CRTSMC_DoneSelf
+          lda temp6
+          asl
+          tax
+          lda playerHealth,x
+          beq CRTSMC_DoneSelf
 
           ;; AABB collision check
           ;; Missile left/right: missileX to missileX+1 (missile width
@@ -127,77 +140,69 @@ CheckPlayerHealth:
           ;; playerX+PlayerSpriteHalfWidth*2
           ;; Player top/bottom: playerY to playerY+PlayerSpriteHeight
           ;; Missile left edge >= player right edge, no collision
-          if temp3 >= playerX[temp6] + PlayerSpriteHalfWidth then CRTSMC_DoneSelf
+          ;; if temp3 >= playerX[temp6] + PlayerSpriteHalfWidth then CRTSMC_DoneSelf
           lda temp6
           asl
           tax
           lda playerX,x
           clc
           adc # PlayerSpriteHalfWidth
-          sta temp6
+          sta temp4  ;;; Store player right edge
           lda temp3
           sec
-          sbc temp6
+          sbc temp4
           bcc CheckMissileRightEdge
-
           jmp CRTSMC_DoneSelf
 
 CheckMissileRightEdge:
           ;; Missile right edge <= player left edge, no collision
-          if temp3 + 1 <= playerX[temp6] then CRTSMC_DoneSelf
+          ;; if temp3 + 1 <= playerX[temp6] then CRTSMC_DoneSelf
           lda temp3
           clc
           adc # 1
-          sta temp6
+          sta temp4  ;;; Missile right edge
           lda temp6
           asl
           tax
           lda playerX,x
           sec
-          sbc temp6
+          sbc temp4
           bcc CheckMissileTopEdge
-          beq CheckMissileTopEdge
-
           jmp CRTSMC_DoneSelf
 
-CRTSMC_DoneSelf:
 CheckMissileTopEdge:
           ;; Missile top edge >= player bottom edge, no collision
-          if temp4 >= playerY[temp6] + PlayerSpriteHeight then CRTSMC_DoneSelf
+          ;; if temp4 >= playerY[temp6] + PlayerSpriteHeight then CRTSMC_DoneSelf
           lda temp6
           asl
           tax
           lda playerY,x
           clc
           adc # PlayerSpriteHeight
-          sta temp6
+          sta temp5  ;;; Player bottom edge
           lda temp4
           sec
-          sbc temp6
+          sbc temp5
           bcc CheckMissileBottomEdge
-
           jmp CRTSMC_DoneSelf
 
 CheckMissileBottomEdge:
           ;; Missile bottom edge <= player top edge, no collision
-          if temp4 + temp2 <= playerY[temp6] then CRTSMC_DoneSelf
+          ;; if temp4 + temp2 <= playerY[temp6] then CRTSMC_DoneSelf
           lda temp4
           clc
           adc temp2
-          sta temp6
+          sta temp5  ;;; Missile bottom edge
           lda temp6
           asl
           tax
           lda playerY,x
           sec
-          sbc temp6
-          bcc HandleStretchMissileHit
-          beq HandleStretchMissileHit
-
+          sbc temp5
+          bcc CRTSMC_CollisionDetected
           jmp CRTSMC_DoneSelf
 
-HandleStretchMissileHit:
-
+CRTSMC_CollisionDetected:
           ;; Collision detected! Handle stretch missile hit
           lda temp6
           sta temp5
@@ -205,7 +210,6 @@ HandleStretchMissileHit:
 
           jmp CRTSMC_NextPlayer
 
-          ;; After handling hit, skip remaining players for this RoboTito
 CRTSMC_DoneSelf:
           inc temp6
           ;; if temp6 < 4 then CRTSMC_CheckOtherPlayer

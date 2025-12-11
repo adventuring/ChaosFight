@@ -84,7 +84,9 @@ DrawAuthorScreen .proc
           sta titlescreenWindow4
           jmp DrawTitleScreenCommon
 
-DrawTitleScreenOnly
+.pend
+
+DrawTitleScreenOnly .proc
           ;; Title Screen: Show ChaosFight title only
           ;; let titlescreenWindow1 = 0   ; AtariAge logo hidden
           ;; let titlescreenWindow2 = 0  ; AtariAgeText hidden
@@ -96,9 +98,11 @@ DrawTitleScreenOnly
           ;; let titlescreenWindow4 = 0  ; BRP hidden
           lda # 0
           sta titlescreenWindow4
+          jmp DrawTitleScreenCommon
 
-DrawTitleScreenCommon
-DrawTitleScreenCommon
+.pend
+
+DrawTitleScreenCommon .proc
           ;; Draw character parade if active (Title screen only)
           ;; Cross-bank call to DrawParadeCharacter in bank 14
           lda # >(return_point-1)

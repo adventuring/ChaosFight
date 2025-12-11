@@ -87,8 +87,14 @@ BernieAttack .proc
           sta temp3
 
           ;; Attack in facing direction (inline former PerformMeleeAttack)
-
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          ;; playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # MaskPlayerStateFlags
+          ora # ActionAttackExecuteShifted
+          sta playerState,x
 
           ;; Attack facing direction
           ;; Cross-bank call to PerformGenericAttack in bank 7
@@ -102,11 +108,17 @@ BernieAttack .proc
           pha
                     ldx # 6
           jmp BS_jsr
-return_point:
+BA_return_point_1:
 
 
           ;; Attack opposite direction (toggle facing)
-                    let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
+          ;; playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          eor # PlayerStateBitFacing
+          sta playerState,x
 
           ;; Cross-bank call to PerformGenericAttack in bank 7
           lda # >(return_point-1)
@@ -119,11 +131,18 @@ return_point:
           pha
                     ldx # 6
           jmp BS_jsr
-return_point:
+BA_return_point_2:
 
 
           ;; Restore original facing direction
-                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | temp3
+          ;; playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | temp3
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # MaskPlayerStateFlags
+          ora temp3
+          sta playerState,x
           jsr BS_return
 
 .pend

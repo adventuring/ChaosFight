@@ -23,11 +23,11 @@ InputHandleRightPortPlayerFunction:
           lda temp2
           cmp # 13
 
-          bcc CheckGuardStatus
+          bcc IHRP_CheckGuardStatus
 
           jmp DoneRightPortMovement
 
-CheckGuardStatus:
+IHRP_CheckGuardStatus:
 
           ;; Process left/right movement (with playfield collision for
           ;; flying characters)
@@ -41,11 +41,11 @@ CheckGuardStatus:
           ;; Guarding - block movement
           ;; if temp6 then goto DoneRightPortMovement
           lda temp6
-          beq CheckFlyingCharacter
+          beq IHRP_CheckFlyingCharacter
 
           jmp DoneRightPortMovement
 
-CheckFlyingCharacter:
+IHRP_CheckFlyingCharacter:
 
           ;; Frooty (8) and Dragon of Storms (2) need collision checks
           ;; for horizontal movement
@@ -57,19 +57,19 @@ CheckFlyingCharacter:
           sta temp5
           lda temp5
           cmp # 8
-          bne CheckDragonOfStorms
+          bne IHRP_CheckDragonOfStorms
 
           jmp IHRP_FlyingMovement
 
-CheckDragonOfStorms:
+IHRP_CheckDragonOfStorms:
 
           lda temp5
           cmp # 2
-          bne ProcessStandardMovement
+          bne IHRP_ProcessStandardMovement
 
           jmp IHRP_FlyingMovement
 
-ProcessStandardMovement:
+IHRP_ProcessStandardMovement:
 
           ;; Standard horizontal movement (uses shared routine)
           ;; Cross-bank call to ProcessStandardMovement in bank 13
@@ -130,34 +130,34 @@ IHRP_HandleDownPressed .proc
           lda temp4
           cmp 32
 
-          bcc CheckCharacterDown
+          bcc IHRP_CheckCharacterDown
 
-          jmp CheckCharacterDown
+          jmp IHRP_CheckCharacterDown
 
-          CheckCharacterDown:
+IHRP_CheckCharacterDown:
           lda temp4
           cmp # 2
-          bne CheckHarpyDown
+          bne IHRP_CheckHarpyDown
           jmp DragonOfStormsDown
-CheckHarpyDown:
+IHRP_CheckHarpyDown:
 
           lda temp4
           cmp # 6
-          bne CheckFrootyDown
+          bne IHRP_CheckFrootyDown
           jmp HarpyDown
-CheckFrootyDown:
+IHRP_CheckFrootyDown:
 
           lda temp4
           cmp # 8
-          bne CheckRoboTitoDown
+          bne IHRP_CheckRoboTitoDown
           jmp FrootyDown
-CheckRoboTitoDown:
+IHRP_CheckRoboTitoDown:
 
           lda temp4
           cmp # 13
-          bne UseStandardGuard
+          bne IHRP_UseStandardGuard
           jmp IHRP_HandleRoboTitoDown
-UseStandardGuard:
+IHRP_UseStandardGuard:
 
           ;; Same-bank call (both in Bank 12) - saves 2 bytes vs cross-bank
           jmp StandardGuard
@@ -179,7 +179,7 @@ IHRP_HandleRoboTitoDown .proc
 
           lda temp2
           cmp # 1
-          bne UseStandardGuard
+          bne IHRP_UseStandardGuard
           jmp IHRP_ProcessAttack
 
           jmp StandardGuard

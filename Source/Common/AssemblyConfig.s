@@ -17,10 +17,4 @@
           ;; Kernel configuration
           ;; Note: Most of these are automatically defined by batariBASIC based on
           ;; set kernel and set romsize commands, but pfres must be defined manually
-          ;; NOTE: .weak protection needed because Preamble.s (which includes this file)
-          ;; is included multiple times: once by platform files (NTSC.s/PAL.s/SECAM.s)
-          ;; and once by titlescreen.s. 64tass doesn't support .ifndef include guards,
-          ;; so .weak/.endweak is the standard way to allow duplicate definitions.
-.weak
 pfres = 8
-.endweak

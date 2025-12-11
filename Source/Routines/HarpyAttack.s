@@ -41,7 +41,14 @@ HarpyAttack .proc
           ;; Use temp1 directly for indexed addressing (batariBASIC
           ;; does not resolve dim aliases)
           ;; Set animation state 14 (attack execution)
-                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          ;; playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # MaskPlayerStateFlags
+          ora # ActionAttackExecuteShifted
+          sta playerState,x
 
           ;; Get facing direction (bit 0: 0=left, 1=right)
           ;; let temp2 = playerState[temp1] & PlayerStateBitFacing         
@@ -58,8 +65,12 @@ HarpyAttack .proc
           ;; When temp2=0 (left): want 252 (-4), when temp2≠ 0 (right): want 4
           lda # 252
           sta temp4
-          if temp2 then let temp4 = 4
+          ;; if temp2 then temp4 = 4
           lda temp2
+          beq HarpyAttackDone
+          lda # 4
+          sta temp4
+HarpyAttackDone:
           beq HarpySetVerticalVelocity
 
           lda # 4

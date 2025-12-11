@@ -41,7 +41,7 @@ ProcessJumpInput .proc
           beq PJI_CheckPlayer0Enhanced
           cmp # 1
           beq PJI_CheckPlayer1Enhanced
-          jmp ProcessJumpInputDone
+          jmp ProcessJumpInputReturn
 PJI_CheckPlayer0Enhanced:
           ;; Player 0: Check Genesis controller first
           lda controllerStatus
@@ -51,17 +51,17 @@ PJI_CheckPlayer0Enhanced:
           bmi PJI_CheckPlayer0Joy2bPlus
           lda # 1
           sta temp3
-          jmp ProcessJumpInputDone
+          jmp ProcessJumpInputContinue
 PJI_CheckPlayer0Joy2bPlus:
           ;; Player 0: Check Joy2b+ controller (fallback)
           lda controllerStatus
           and # SetLeftPortJoy2bPlus
-          beq ProcessJumpInputDone
+          beq ProcessJumpInputReturn
           bit INPT0
-          bmi ProcessJumpInputDone
+          bmi ProcessJumpInputReturn
           lda # 1
           sta temp3
-          jmp ProcessJumpInputDone
+          jmp ProcessJumpInputContinue
 PJI_CheckPlayer1Enhanced:
           ;; Player 1: Check Genesis controller first
           lda controllerStatus
@@ -71,21 +71,21 @@ PJI_CheckPlayer1Enhanced:
           bmi PJI_CheckPlayer1Joy2bPlus
           lda # 1
           sta temp3
-          jmp ProcessJumpInputDone
+          jmp ProcessJumpInputContinue
 PJI_CheckPlayer1Joy2bPlus:
           ;; Player 1: Check Joy2b+ controller (fallback)
           lda controllerStatus
           and # SetRightPortJoy2bPlus
-          beq ProcessJumpInputDone
+          beq ProcessJumpInputReturn
           bit INPT2
-          bmi ProcessJumpInputDone
+          bmi ProcessJumpInputReturn
           lda # 1
           sta temp3
-ProcessJumpInputDone:
+          jmp ProcessJumpInputContinue
+ProcessJumpInputReturn:
           ;; If enhanced button not pressed, return (no action)
-          lda temp3
-          beq ProcessJumpInputReturn
-          ;; Button pressed - continue to ProcessUpAction
+          rts
+ProcessJumpInputContinue:
 
           ;; Execute character-specific UP action (UP = Button C = Button II)
           jsr ProcessUpAction

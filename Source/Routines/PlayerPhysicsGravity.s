@@ -94,9 +94,10 @@ GravityLoop .proc
 GravityPlayerCheck .proc
           ;; Players 0-1 always active
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne CheckPlayer2Character
+
           jmp GravityNextPlayer
 CheckPlayer2Character:
 

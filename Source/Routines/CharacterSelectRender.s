@@ -327,7 +327,7 @@ SelectSetPlayerColorHandicap .proc
           sta temp6
           ;; if controllerStatus & SetQuadtariDetected then let temp6 = 4
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           beq SetPlayerCount
           lda # 4
           sta temp6

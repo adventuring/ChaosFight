@@ -853,9 +853,10 @@ ArenaSelectDoneDrawP2
           ;; Draw Player 4 character (bottom right) if Quadtari and
           ;; selected
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne CheckPlayer3Character
+
           jmp ArenaSelectDoneDrawP23
 CheckPlayer3Character:
 

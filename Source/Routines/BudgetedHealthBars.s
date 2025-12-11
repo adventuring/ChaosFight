@@ -130,9 +130,10 @@ CheckPlayer2HealthUpdate .proc
           ;; Called Routines: (inlined UpdateHealthBarPlayer2)
           ;; Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne CheckPlayer2Character
+
           jmp DonePlayer2HealthUpdate
 CheckPlayer2Character:
 
@@ -195,9 +196,10 @@ CheckPlayer3HealthUpdate .proc
           ;; Called Routines: (inlined UpdateHealthBarPlayer3)
           ;; Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne CheckPlayer3Character
+
           jmp DonePlayer3HealthUpdate
 CheckPlayer3Character:
 

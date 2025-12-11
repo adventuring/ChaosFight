@@ -225,9 +225,10 @@ DonePlayer2Move
 
           ;; Move Player 3 from quadrant to target (if active)
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne MovePlayer3
+
 MovePlayer3:
 
 
@@ -274,9 +275,10 @@ DonePlayer3Move
 
           ;; Move Player 4 from quadrant to target (if active)
           lda controllerStatus
-          and SetQuadtariDetected
+          and # SetQuadtariDetected
           cmp # 0
           bne MovePlayer4
+
 MovePlayer4:
 
 

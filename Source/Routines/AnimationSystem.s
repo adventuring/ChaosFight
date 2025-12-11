@@ -46,7 +46,7 @@ UCA_CheckQuadtari:
           lda playerHealth,x
           bne UCA_CheckCharacter
 
-          jmp AnimationNextPlayer
+          jmp AnimationNextPlayerLabel
 
 UCA_CheckCharacter:
 

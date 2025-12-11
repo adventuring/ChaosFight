@@ -2007,9 +2007,9 @@ SPF_InlineNo1 .proc
 SPF_InlineDone1
 
           lda temp3
-          bne HSHM_AfterLeftSetDone
+          bne HSHM_AfterLeftSetDoneHFCM
                     let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
-HSHM_AfterLeftSetDone:
+HSHM_AfterLeftSetDoneHFCM:
 
 
 .pend
@@ -2655,23 +2655,23 @@ HGI_HandleDownPressed1 .proc
 
           lda temp4
           cmp CharacterDragonOfStorms
-          bne CheckHarpy
+          bne CheckHarpyDown1
           jmp DragonOfStormsDown
-CheckHarpy:
+CheckHarpyDown1:
 
 
           lda temp4
           cmp CharacterHarpy
-          bne CheckFrooty
+          bne CheckFrootyDown1
           jmp HarpyDown
-CheckFrooty:
+CheckFrootyDown1:
 
 
           lda temp4
           cmp CharacterFrooty
-          bne CheckRoboTito
+          bne CheckRoboTitoDown1
           jmp FrootyDown
-CheckRoboTito:
+CheckRoboTitoDown1:
 
 
           lda temp4
@@ -2733,9 +2733,9 @@ AfterRoboTitoDownInput1:
 
           lda temp2
           cmp # 1
-          bne UseStandardGuard1
+          bne UseStandardGuard1Label
           jmp HGI_Done1
-UseStandardGuard1:
+UseStandardGuard1Label:
 
 
           jmp StandardGuard
@@ -3089,9 +3089,9 @@ HGI_CheckJoy0_2 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0down
-          bne HGI_HandleDownPressed2
+          bne HGI_HandleDownPressed2Joy0
           jmp HGI_CheckGuardRelease2
-HGI_HandleDownPressed2:
+HGI_HandleDownPressed2Joy0:
 
 
 .pend
@@ -3120,23 +3120,23 @@ HGI_HandleDownPressed2 .proc
 
           lda temp4
           cmp CharacterDragonOfStorms
-          bne CheckHarpy
+          bne CheckHarpyDown2
           jmp DragonOfStormsDown
-CheckHarpy:
+CheckHarpyDown2:
 
 
           lda temp4
           cmp CharacterHarpy
-          bne CheckFrooty
+          bne CheckFrootyDown2
           jmp HarpyDown
-CheckFrooty:
+CheckFrootyDown2:
 
 
           lda temp4
           cmp CharacterFrooty
-          bne CheckRoboTito
+          bne CheckRoboTitoDown2
           jmp FrootyDown
-CheckRoboTito:
+CheckRoboTitoDown2:
 
 
           lda temp4
@@ -3198,9 +3198,9 @@ AfterRoboTitoDownInput2:
 
           lda temp2
           cmp # 1
-          bne UseStandardGuard2
+          bne UseStandardGuard2Label
           jmp HGI_Done2
-UseStandardGuard2:
+UseStandardGuard2Label:
 
 
           jmp StandardGuard

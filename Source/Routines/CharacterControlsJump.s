@@ -36,7 +36,13 @@ StandardJump .proc
           tax
           lda # 0
           sta playerVelocityYL,x
-          let playerState[temp1] = playerState[temp1] | 4
+          ;; let playerState[temp1] = playerState[temp1] | 4
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 4
+          sta playerState,x
           jmp BS_return
 
 .pend
@@ -218,8 +224,12 @@ CCJ_FreeFlightUp .proc
           lda playerY,x
           sta temp3
           ;; Set temp4 = temp3 / 16
-          rts
-
+          lda temp3
+          lsr
+          lsr
+          lsr
+          lsr
+          sta temp4
           dec temp4
           lda # 0
           sta temp5
@@ -242,7 +252,6 @@ CCJ_FreeFlightUp .proc
           jmp BS_jsr
 AfterPlayfieldReadFreeFlightUp2:
 
-
           ;; If temp1, set temp5 = 1
           lda temp1
           beq BernieCheckBottomWrapFreeFlight2
@@ -251,12 +260,10 @@ AfterPlayfieldReadFreeFlightUp2:
 BernieCheckBottomWrapFreeFlight2:
           lda temp6
           sta temp1
-          rts
-
           lda temp1
           asl
           tax
-          lda 254
+          lda # 254
           sta playerVelocityY,x
           lda temp1
           asl
@@ -271,6 +278,8 @@ BernieCheckBottomWrapFreeFlight2:
           ora # 4
           sta playerState,x
           rts
+
+.pend
 
 DragonOfStormsJump .proc
           ;; Returns: Far (return otherbank)

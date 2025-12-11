@@ -22,7 +22,7 @@ DragonOfStormsDown:
           ;;
           ;; Output: Downward velocity applied if clear below, guard
 
-          bit cleared
+          ;; cleared flag checked via playfield read
 
           ;;
           ;; Mutates: temp1-temp4 (used for calculations),
@@ -315,7 +315,7 @@ HarpyNormalDown .proc
           ;;
           ;; Output: Downward velocity applied if clear below, guard
 
-          bit cleared
+          ;; cleared flag checked via playfield read
 
           ;;
           ;; Mutates: temp1-temp4 (used for calculations),
@@ -494,7 +494,7 @@ FrootyDown .proc
           ;;
           ;; Output: Downward velocity applied if clear below, guard
 
-          bit cleared
+          ;; cleared flag checked via playfield read
 
           ;;
           ;; Mutates: temp1-temp4 (used for calculations),

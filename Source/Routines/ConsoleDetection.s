@@ -83,8 +83,7 @@ Not7800D1:
 
 .pend
 
-CheckFlashed:
-.proc
+CheckFlashed .proc
           ;; Check if game was flashed to Harmony/Melody (both $D0 and
           ;; $D1 are $00)
           ;;

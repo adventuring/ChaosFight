@@ -156,7 +156,8 @@ AfterLoadCharacterSpriteP0:
           jmp BS_jsr
 AfterLoadCharacterColorsP1:
 
-          _COLUP1 = temp6
+          lda temp6
+          sta _COLUP1
 
 Player2ColorDone
 

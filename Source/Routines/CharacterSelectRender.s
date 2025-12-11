@@ -294,7 +294,9 @@ SelectApplyPlayerColorP0 .proc
 .pend
 
 SelectApplyPlayerColorP1 .proc
-          _COLUP1 = temp2
+          lda temp2
+          sta _COLUP1
+          rts
 .pend
 
 SelectApplyPlayerColorP2 .proc

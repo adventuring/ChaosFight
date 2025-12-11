@@ -237,7 +237,7 @@ LoadMusicNote0 .proc
 
           ;; TODO: ; Load 4 bytes from stream[pointer]
 
-          ;; TODO: ldy #0
+          ;; TODO: #1296 ldy #0
 
             lda (musicVoice0Pointer),y  ; Load AUDCV
 
@@ -385,7 +385,7 @@ LoadMusicNote1 .proc
 
           ;; TODO: ; Load 4 bytes from stream[pointer]
 
-          ;; TODO: ldy #0
+          ;; TODO: #1296 ldy #0
 
             lda (musicVoice1Pointer),y  ; Load AUDCV
 

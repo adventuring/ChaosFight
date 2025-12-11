@@ -15,7 +15,7 @@ CheckPlayfieldCollisionAllDirections:
           ;; Uses CharacterHeights table for proper hitbox detection.
 
           ;;
-          ;; Input: ;; TODO: Convert assignment: currentPlayer = player index (0-3)
+          ;; Input: ;; TODO: #1298 Convert assignment: currentPlayer = player index (0-3)
 
           ;; playerX[], playerY[], playerCharacter[]
 
@@ -326,10 +326,10 @@ PF_CheckColumnSpan .proc
           ;; Output: ;; TODO: Convert assignment: temp4 = 1 if any solid pixel encountered
 
 
-          ;; TODO: dim ;; TODO: Convert assignment: PCC_rowSpan = temp3
+          ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PCC_rowSpan = temp3
 
 
-          ;; TODO: dim ;; TODO: Convert assignment: PCC_result = temp4
+          ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PCC_result = temp4
 
 
           lda # 0
@@ -436,7 +436,7 @@ PF_CheckRowColumns .proc
           dim ;; TODO: Convert assignment: PRC_rowIndex = temp2 (dim removed - variable definitions handled elsewhere)
 
 
-          ;; TODO: dim ;; TODO: Convert assignment: PRC_result = temp4
+          ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PRC_result = temp4
 
 
           lda # 0
@@ -571,10 +571,10 @@ PF_ProcessHorizontalCollision
           ;; Input: ;; TODO: Convert assignment: temp1 = column index, temp3 = direction (0=left, 1=right)
 
 
-          ;; TODO: dim ;; TODO: Convert assignment: PHC_column = temp1
+          ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PHC_column = temp1
 
 
-          ;; TODO: dim ;; TODO: Convert assignment: PHC_direction = temp3
+          ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PHC_direction = temp3
 
 
           jsr BS_return

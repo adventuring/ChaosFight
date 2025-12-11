@@ -239,7 +239,7 @@ CheckPlayer1Enhanced:
           lda currentPlayer
           cmp # 1
           bne CEJB_Done
-          ;; TODO: CEJB_CheckPlayer2
+          ;; TODO: #1308 CEJB_CheckPlayer2
 CEJB_Done:
 
 

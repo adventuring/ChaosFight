@@ -894,7 +894,7 @@
           ;; characterSelectPlayerAnimationTimer[3]
           characterSelectPlayerAnimationTimer_R  = $F0D0
 
-          ;; TODO / FUTURE EXPANSION
+          ;; TODO: #1311 / FUTURE EXPANSION
 
           ;; NOTE: var0-3 used by playerX (core gameplay, cannot redim)
           ;; NOTE: var4-7 used by playerY (core gameplay, cannot redim)

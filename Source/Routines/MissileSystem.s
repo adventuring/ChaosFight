@@ -476,7 +476,7 @@ ApplyFriction:
           lda missileVelocityXCalc
           sta velocityCalculation
             lda velocityCalculation
-          ;; TODO: bpl FrictionPositive
+          ;; TODO: #1301 bpl FrictionPositive
             eor #$FF
             adc # 0
 FrictionPositive

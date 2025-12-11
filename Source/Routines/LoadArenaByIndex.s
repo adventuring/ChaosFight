@@ -13,13 +13,13 @@ LoadArenaByIndex .proc
           ;; Arena playfield data stored sequentially: PF1|PF2 (8 bytes each)
           ;; Calculate arena data pointer: Arena0Playfield + (arena_index × 24)
           ;; Each arena stores 16 bytes of playfield data followed by 8 bytes of row colors (16 + 8 = 24)
-          ;; TODO: ; Optimized: Multiply by 24 = multiply by 8, then multiply by 3
+          ;; TODO: #1305 ; Optimized: Multiply by 24 = multiply by 8, then multiply by 3
           lda temp1
           sta temp2
           lda # 0
           sta temp3
 
-          ;; TODO: ; Multiply by 8 (3 shifts)
+          ;; TODO: #1305 ; Multiply by 8 (3 shifts)
           ldx # 3
 
 MultiplyBy8:
@@ -28,8 +28,8 @@ MultiplyBy8:
           dex
           bne MultiplyBy8
 
-          ;; TODO: ; Now multiply by 3: temp2/temp3 * 3 = temp2/temp3 + (temp2/temp3 * 2)
-          ;; TODO: ; Store original value for addition
+          ;; TODO: #1305 ; Now multiply by 3: temp2/temp3 * 3 = temp2/temp3 + (temp2/temp3 * 2)
+          ;; TODO: #1305 ; Store original value for addition
           lda temp2
           sta temp4
           lda temp3
@@ -39,7 +39,7 @@ MultiplyBy8:
           asl temp2
           rol temp3
 
-          ;; TODO: ; Add original to get * 3
+          ;; TODO: #1305 ; Add original to get * 3
           clc
           lda temp2
           adc temp4
@@ -48,7 +48,7 @@ MultiplyBy8:
           adc temp5
           sta temp3
 
-          ;; TODO: ; Add base address
+          ;; TODO: #1305 ; Add base address
           lda # <.Arena0Playfield
           clc
           adc temp2

@@ -763,12 +763,12 @@ ProcessAttackerAttacks .proc
           ;; Hitbox values are already written into cachedHitbox*_W via aliasing
 
           ;; Attack each defender
-          ;; TODO: for defenderID = 0 to 3
+          ;; TODO: #1310 for defenderID = 0 to 3
           ;; Skip if defender is attacker
           lda defenderID
           cmp attackerID
           bne CheckDefenderHealth
-          ;; TODO: NextDefender
+          ;; TODO: #1310 NextDefender
 CheckDefenderHealth:
 
 
@@ -829,7 +829,7 @@ ProcessAllAttacks .proc
           ;;
           ;; Constraints: Must be colocated with NextAttacker (called
           ;; via next). Skips dead attackers
-          ;; TODO: for attackerID = 0 to 3
+          ;; TODO: #1310 for attackerID = 0 to 3
           ;; Skip if attacker is dead
           ;; if playerHealth[attackerID] <= 0 then NextAttacker
           lda attackerID

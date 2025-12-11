@@ -127,7 +127,7 @@ DWS_RankLoop .proc
           lda temp1
           cmp temp2
           bne GetEliminationOrder
-          ;; TODO: DWS_RankNext
+          ;; TODO: #1309 DWS_RankNext
 GetEliminationOrder:
 
 
@@ -665,15 +665,15 @@ DWS_GetBWModeDone:
 
 DWS_LoadColorColors .proc
 
-          ;; TODO: ; rem Load color colors (gold gradient)
-          ;; TODO: ; rem Input: WinnerScreenColorsColor table
-          ;; TODO: ; rem Output: pfcolortable pointer set to WinnerScreenColorsColor
-          ;; TODO: ; rem Mutates: pfcolortable (via inline assembly)
-          ;; TODO: ; rem Called Routines: None (uses inline assembly)
-          ;; TODO: ; rem Constraints: Must be colocated with DisplayWinScreen
+          ;; TODO: #1309 ; rem Load color colors (gold gradient)
+          ;; TODO: #1309 ; rem Input: WinnerScreenColorsColor table
+          ;; TODO: #1309 ; rem Output: pfcolortable pointer set to WinnerScreenColorsColor
+          ;; TODO: #1309 ; rem Mutates: pfcolortable (via inline assembly)
+          ;; TODO: #1309 ; rem Called Routines: None (uses inline assembly)
+          ;; TODO: #1309 ; rem Constraints: Must be colocated with DisplayWinScreen
 
 
-          ;; TODO: ; rem Set pfcolortable pointer to WinnerScreenColorsColor
+          ;; TODO: #1309 ; rem Set pfcolortable pointer to WinnerScreenColorsColor
             lda # <WinnerScreenColorsColor
             sta pfcolortable
             lda # >WinnerScreenColorsColor

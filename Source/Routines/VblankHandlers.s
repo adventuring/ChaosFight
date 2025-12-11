@@ -1160,7 +1160,7 @@ VblankCheckGameEndTransition
           lda gameEndTimer_R
           cmp # 0
           bne DecrementGameEndTimer
-          ;; TODO: VblankTransitionToWinner
+          ;; TODO: #1302 VblankTransitionToWinner
 DecrementGameEndTimer:
 
 

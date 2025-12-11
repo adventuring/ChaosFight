@@ -190,7 +190,7 @@ HarpyDown .proc
           jsr BS_return
 
 
-          ;; TODO: HarpyDown = .HarpyDown
+          ;; TODO: #1311 HarpyDown = .HarpyDown
 
 
           ;; HARPY (6) - FLY DOWN (no guard action)
@@ -507,7 +507,7 @@ FrootyDown .proc
           jsr BS_return
 
 
-          ;; TODO: FrootyDown = .FrootyDown
+          ;; TODO: #1311 FrootyDown = .FrootyDown
 
 
           ;; FROOTY (8) - FLY DOWN (no guard action)

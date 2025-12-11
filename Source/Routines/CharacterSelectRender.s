@@ -14,7 +14,7 @@ SelectPlayerColorNormal:
           .byte 12, 12, 12, 12
 
 SelectPlayerColorHandicap_data:
-          ;; TODO: ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
+          ;; TODO: #1311 ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
 SelectPlayerColorHandicap_end:
 SelectPlayerColorHandicap = SelectPlayerColorHandicap_data
 

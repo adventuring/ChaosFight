@@ -233,11 +233,11 @@ RenderMissileForParticipant:
           ;;
           ;; Mutates: temp1-temp5 (used for calculations), missile registers
           ;;
-          ;; TODO: dim RMF_participant = temp1
-          ;; TODO: dim RMF_select = temp2
-          ;; TODO: dim RMF_mask = temp3
-          ;; TODO: dim RMF_character = temp4
-          ;; TODO: dim RMF_active = temp5
+          ;; TODO: #1297 dim RMF_participant = temp1
+          ;; TODO: #1297 dim RMF_select = temp2
+          ;; TODO: #1297 dim RMF_mask = temp3
+          ;; TODO: #1297 dim RMF_character = temp4
+          ;; TODO: #1297 dim RMF_active = temp5
           ;; let RMF_select = RMF_participant & 1
           lda RMF_participant
           and # 1
@@ -353,12 +353,12 @@ SSP_CheckMissile0:
           ;; TODO: missile1y = temp2
           ENAM1 = 1
           NUSIZ1 = temp3
-          ;; TODO: missile1height = temp4
+          ;; TODO: #1297 missile1height = temp4
           rts
 
 SSP_WriteUnified0
-          ;; TODO: missile0x = temp6
-          ;; TODO: missile0y = temp2
+          ;; TODO: #1297 missile0x = temp6
+          ;; TODO: #1297 missile0y = temp2
           ENAM0 = 1
           NUSIZ0 = temp3
           ;; TODO: missile0height = temp4
@@ -408,7 +408,7 @@ RRTM_CheckStretch .proc
           lda temp3
           cmp # 10
           bne RRTM_CheckStretchActive
-          ;; TODO: RRTM_ReadStretchHeight
+          ;; TODO: #1297 RRTM_ReadStretchHeight
 RRTM_CheckStretchActive:
 
           jsr BS_return

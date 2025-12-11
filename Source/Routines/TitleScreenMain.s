@@ -60,7 +60,7 @@ TitleScreenMain .proc
           .if  rand16_W
           ;; CRITICAL:
 
-          ;; TODO: ; Must read from read port, perform operation in register, write to write port
+          ;; TODO: #1311 ; Must read from read port, perform operation in register, write to write port
           lda rand16_R
           rol
           sta rand16_W

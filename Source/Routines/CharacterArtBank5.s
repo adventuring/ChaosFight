@@ -326,7 +326,7 @@ action:
 
           ;;; Copy 16 bytes from ROM (temp4/temp5) to playerFrameBuffer_W[offset to offset+15]
           ;;; Use X as base offset,y as loop counter (countdown from 15 to 0)
-          ;; TODO: ldy #$0f            ;;;;; Start at 15 ($0F)
+          ;; TODO: #1295 ldy #$0f            ;;;;; Start at 15 ($0F)
 CopyLoopBank5:
           lda (temp4),y       ;;;;; Read from ROM (indirect addressing via temp4/temp5)
           sta w000,x
@@ -334,7 +334,7 @@ CopyLoopBank5:
           inx
           ;;;;; Increment destination offset
           dey
-          ;; TODO: bpl CopyLoopBank5
+          ;; TODO: #1295 bpl CopyLoopBank5
 
 SetHeightBank5:
           ;;; Set sprite height (all sprites are 16 bytes = 16 scanlines)

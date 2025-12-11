@@ -129,7 +129,7 @@ LoadMusicNote0Bank15
           ;; marked by Duration = 0. Chaotica loop handled in
           ;; PlayMusic when both voices end
           ;; TODO: ; Load 4 bytes from stream[pointer]
-          ;; TODO: ldy #0
+          ;; TODO: #1296 ldy #0
             lda (musicVoice0Pointer),y  ; Load AUDCV
             sta temp2
             iny
@@ -216,7 +216,7 @@ LoadMusicNote1Bank15
           ;; marked by Duration = 0. Chaotica loop handled in
           ;; PlayMusic when both voices end
           ;; TODO: ; Load 4 bytes from stream[pointer]
-          ;; TODO: ldy #0
+          ;; TODO: #1296 ldy #0
             lda (musicVoice1Pointer),y  ; Load AUDCV
             sta temp2
             iny

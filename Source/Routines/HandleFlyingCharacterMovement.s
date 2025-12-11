@@ -109,7 +109,7 @@ HFCM_CheckRight .proc
           lda temp6
           cmp # 0
           bne HFCM_CheckRightJoy1
-          ;; TODO: HFCM_CheckRightJoy0
+          ;; TODO: #1307 HFCM_CheckRightJoy0
 HFCM_CheckRightJoy1:
 
 

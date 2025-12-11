@@ -44,7 +44,7 @@ BudgetedCollisionCheck:
           cmp # 0
           bne BPC_CheckPhase0
 
-          ;; TODO: BPC_Phase0
+          ;; TODO: #1306 BPC_Phase0
 
 BPC_CheckPhase0:
 
@@ -60,7 +60,7 @@ BPC_CheckPhase1:
           cmp # 2
           bne BPC_CheckPhase2
 
-          ;; TODO: BPC_Phase2
+          ;; TODO: #1306 BPC_Phase2
 
 BPC_CheckPhase2:
 

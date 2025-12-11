@@ -20,7 +20,7 @@ SLEEP .macro duration
           ;; Calculate: (\duration - 3) / 2
           ;; But we can only use .rept with a constant, so we check duration >= 3 separately
           ;; For now, generate code for common cases
-          ;; TODO: This may need restructuring if duration calculation is complex
+          ;; Note: This may need restructuring if duration calculation becomes complex
 .fi
 
           ;; Handle even duration - just nop pairs

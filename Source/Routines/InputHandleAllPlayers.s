@@ -130,7 +130,7 @@ return_point:
           lda temp2
           cmp # 0
           bne CheckPlayer1State
-          ;; TODO: InputDonePlayer1Input
+          ;; TODO: #1310 InputDonePlayer1Input
 CheckPlayer1State:
 
 

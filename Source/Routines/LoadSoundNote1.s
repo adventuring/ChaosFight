@@ -26,7 +26,7 @@ LoadSoundNote1 .proc
           ;; marked by Duration = 0 (sets soundEffectPointer1 = 0 and
           ;; AUDV1 = 0). Uses Voice 1 for sound effects
           ;; TODO: ; Load 4 bytes from stream[pointer]
-          ;; TODO: ldy #0
+          ;; TODO: #1296 ldy #0
           lda (soundEffectPointer1),y  ; Load AUDCV
           sta temp2
           iny

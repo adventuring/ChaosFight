@@ -206,7 +206,7 @@ CalculateYPosition:
           lda temp6
           cmp # 14
           bne DeactivateMissile
-          ;; TODO: MegaxMissileActive
+          ;; TODO: #1311 MegaxMissileActive
 DeactivateMissile:
 
 
@@ -292,7 +292,7 @@ HandleKnightGuyMissile .proc
           lda temp6
           cmp # 14
           bne DeactivateMissile
-          ;; TODO: KnightGuyAttackActive
+          ;; TODO: #1311 KnightGuyAttackActive
 DeactivateMissile:
 
 
@@ -373,7 +373,7 @@ KnightGuySetPosition
           lda temp4
           cmp # 0
           bne KnightGuySwingRight
-          ;; TODO: KnightGuySwingLeft
+          ;; TODO: #1311 KnightGuySwingLeft
 KnightGuySwingRight:
 
 

@@ -111,7 +111,7 @@ CRTSMC_CheckOtherPlayer .proc
           lda temp6
           cmp temp1
           bne CheckPlayerHealth
-          ;; TODO: CRTSMC_DoneSelf
+          ;; TODO: #1310 CRTSMC_DoneSelf
 CheckPlayerHealth:
 
 

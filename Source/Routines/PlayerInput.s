@@ -3316,9 +3316,9 @@ DispatchAttack2:
           sta temp4
 
           ;; Cross-bank call to DispatchCharacterAttack in bank 10
-          lda # >(return_point-1)
+          lda # >(AfterDispatchCharacterAttackRightPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDispatchCharacterAttackRightPort-1)
           pha
           lda # >(DispatchCharacterAttack-1)
           pha
@@ -3326,7 +3326,7 @@ DispatchAttack2:
           pha
                     ldx # 9
           jmp BS_jsr
-return_point:
+AfterDispatchCharacterAttackRightPort:
 
 
 InputDoneRightPortAttack

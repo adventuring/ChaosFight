@@ -182,9 +182,36 @@ AfterChangeGameModeTitle:
 
           jmp BS_return
 
-.pend (no matching .proc)
-
-.endif
-.endif
-
 .pend
+
+TitleScreenComplete:
+          ;; Transition to character select
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: None (called from TitleScreenMain)
+          ;;
+          ;; Output: gameMode set to ModeCharacterSelect,
+          ;; ChangeGameMode called
+          ;;
+          ;; Mutates: gameMode (global)
+          ;;
+          ;; Called Routines: ChangeGameMode (bank14) - accesses game
+          ;; mode sta
+
+          ;; Constraints: Must be colocated with TitleScreenMain
+          lda ModeCharacterSelect
+          sta gameMode
+          ;; Cross-bank call to ChangeGameMode in bank 14
+          lda # >(AfterChangeGameModeTitle-1)
+          pha
+          lda # <(AfterChangeGameModeTitle-1)
+          pha
+          lda # >(ChangeGameMode-1)
+          pha
+          lda # <(ChangeGameMode-1)
+          pha
+                    ldx # 13
+          jmp BS_jsr
+AfterChangeGameModeTitle:
+
+          jmp BS_return

@@ -1318,7 +1318,7 @@ VblankWinnerAnnouncementSkipMusic .proc
           ;; CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on sta
 
 
-VblankHandlerDone
+VblankHandlerDone:
           ;; Vblank handler complete
           ;; Returns: Far (return otherbank)
           ;; Called via cross-bank call from VblankHandlerTrampoline, so must use return otherbank

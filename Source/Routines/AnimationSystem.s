@@ -33,7 +33,7 @@ UpdateCharacterAnimations:
           lda UCA_quadtariActive
           bne UCA_CheckQuadtari
 
-          jmp AnimationNextPlayerLabel
+          jmp AnimationNextPlayer
 
 UCA_CheckQuadtari:
 
@@ -46,7 +46,7 @@ UCA_CheckQuadtari:
           lda playerHealth,x
           bne UCA_CheckCharacter
 
-          jmp AnimationNextPlayerLabel
+          jmp AnimationNextPlayer
 
 UCA_CheckCharacter:
 
@@ -831,12 +831,19 @@ UpdateSprite_Bank5Dispatch
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank5:
 
-          jmp AnimationNextPlayerLabel
+          jmp AnimationNextPlayer
 DoneAdvanceInlinedLabel:
           ;; End of inlined UpdatePlayerAnimation - skip to next player
-          jmp AnimationNextPlayerLabel
-AnimationNextPlayerLabel:
+          jmp AnimationNextPlayer
+AnimationNextPlayer:
 .pend
+
+          ;; Increment currentPlayer and loop if not done
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcc UpdateCharacterAnimations
+          jmp BS_return
 
 Anim_next_label_1:.proc
           jmp BS_return

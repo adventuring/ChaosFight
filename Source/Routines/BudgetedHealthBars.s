@@ -119,7 +119,13 @@ BudgetedHealthBarPlayer1 .proc
             lsr
             lsr
             sta temp6
-                    if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
+          ;; If temp6 > HealthBarMaxLength, then set temp6 = HealthBarMaxLength
+          lda temp6
+          cmp # HealthBarMaxLength
+          bcc BudgetedHealthBarPlayer1DoneSecond
+          lda # HealthBarMaxLength
+          sta temp6
+BudgetedHealthBarPlayer1DoneSecond:
           rts
 
 .pend

@@ -178,7 +178,13 @@ CheckPlayer2Character:
             lsr
             lsr
             sta temp6
-                    if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
+          ;; If temp6 > HealthBarMaxLength, then set temp6 = HealthBarMaxLength
+          lda temp6
+          cmp # HealthBarMaxLength
+          bcc BudgetedHealthBarPlayer2Done
+          lda # HealthBarMaxLength
+          sta temp6
+BudgetedHealthBarPlayer2Done:
           rts
 
 DonePlayer2HealthUpdate
@@ -244,13 +250,11 @@ CheckPlayer3Character:
             lsr
             lsr
             sta temp6
-                    if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
+          ;; If temp6 > HealthBarMaxLength, then set temp6 = HealthBarMaxLength
           lda temp6
-          sec
-          sbc HealthBarMaxLength
+          cmp # HealthBarMaxLength
           bcc BudgetedHealthBarUpdateDone
-          beq BudgetedHealthBarUpdateDone
-          lda HealthBarMaxLength
+          lda # HealthBarMaxLength
           sta temp6
 BudgetedHealthBarUpdateDone:
           rts

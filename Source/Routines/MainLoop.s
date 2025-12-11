@@ -102,9 +102,9 @@ MainLoopModeAuthorPrelude .proc
           ;; Returns: Near (return thisbank)
           ;; Must use return thisbank (RTS) to match the near call
           ;; Cross-bank call to AuthorPrelude in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterAuthorPrelude-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterAuthorPrelude-1)
           pha
           lda # >(AuthorPrelude-1)
           pha
@@ -112,7 +112,7 @@ MainLoopModeAuthorPrelude .proc
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterAuthorPrelude:
 
 
           rts
@@ -146,9 +146,9 @@ MainLoopModeCharacterSelect .proc
           ;; Returns: Near (return thisbank)
           ;; Must use return thisbank (RTS) to match the near call
           ;; Cross-bank call to CharacterSelectInputEntry in bank 9
-          lda # >(return_point-1)
+          lda # >(AfterCharacterSelectInputEntry-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCharacterSelectInputEntry-1)
           pha
           lda # >(CharacterSelectInputEntry-1)
           pha
@@ -156,7 +156,7 @@ MainLoopModeCharacterSelect .proc
           pha
                     ldx # 8
           jmp BS_jsr
-return_point:
+AfterCharacterSelectInputEntry:
 
 
           rts
@@ -166,9 +166,9 @@ MainLoopModeFallingAnimation
           ;; Returns: Near (return thisbank)
           ;; Must use return thisbank (RTS) to match the near call
           ;; Cross-bank call to FallingAnimation1 in bank 11
-          lda # >(return_point-1)
+          lda # >(AfterFallingAnimation1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterFallingAnimation1-1)
           pha
           lda # >(FallingAnimation1-1)
           pha
@@ -176,7 +176,7 @@ MainLoopModeFallingAnimation
           pha
                     ldx # 10
           jmp BS_jsr
-return_point:
+AfterFallingAnimation1:
 
 
           rts
@@ -188,9 +188,9 @@ MainLoopModeArenaSelect .proc
           ;; Returns: Near (return thisbank)
           ;; Must use return thisbank (RTS) to match the near call
           ;; Cross-bank call to ArenaSelect1 in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterArenaSelect1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterArenaSelect1-1)
           pha
           lda # >(ArenaSelect1-1)
           pha
@@ -198,7 +198,7 @@ MainLoopModeArenaSelect .proc
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterArenaSelect1:
 
 
           rts
@@ -224,9 +224,9 @@ MainLoopModeGameMainContinue
           ;; Returns: Near (return thisbank)
           ;; Must use return thisbank (RTS) to match the near call
           ;; Cross-bank call to GameMainLoop in bank 11
-          lda # >(return_point-1)
+          lda # >(AfterGameMainLoop-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGameMainLoop-1)
           pha
           lda # >(GameMainLoop-1)
           pha
@@ -234,7 +234,7 @@ MainLoopModeGameMainContinue
           pha
                     ldx # 10
           jmp BS_jsr
-return_point:
+AfterGameMainLoop:
 
 
           rts
@@ -246,9 +246,9 @@ MainLoopModeWinnerAnnouncement .proc
           ;; Returns: Near (return thisbank)
           ;; Must use return thisbank (RTS) to match the near call
           ;; Cross-bank call to WinnerAnnouncementLoop in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterWinnerAnnouncementLoop-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterWinnerAnnouncementLoop-1)
           pha
           lda # >(WinnerAnnouncementLoop-1)
           pha
@@ -256,7 +256,7 @@ MainLoopModeWinnerAnnouncement .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterWinnerAnnouncementLoop:
 
 
           rts
@@ -278,9 +278,9 @@ MainLoopDrawScreen .proc
 
           ;; Titlescreen graphics and kernel reside in bank9
           ;; Cross-bank call to DrawTitleScreen in bank 9
-          lda # >(return_point-1)
+          lda # >(AfterDrawTitleScreen-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDrawTitleScreen-1)
           pha
           lda # >(DrawTitleScreen-1)
           pha
@@ -288,7 +288,7 @@ MainLoopDrawScreen .proc
           pha
                     ldx # 8
           jmp BS_jsr
-return_point:
+AfterDrawTitleScreen:
 
           ;; CRITICAL: drawscreen must be called every frame
           ;; After DrawTitleScreen bank9 returns via BS_return, we’re back in bank 16

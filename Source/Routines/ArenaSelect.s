@@ -663,9 +663,9 @@ DrawPlayer0Character:
           lda # 0
           sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterPlayerPreviewSetPositionP0-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayerPreviewSetPositionP0-1)
           pha
           lda # >(PlayerPreviewSetPosition-1)
           pha
@@ -673,13 +673,13 @@ DrawPlayer0Character:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterPlayerPreviewSetPositionP0:
 
 
           ;; Cross-bank call to RenderPlayerPreview in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterRenderPlayerPreviewP0-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRenderPlayerPreviewP0-1)
           pha
           lda # >(RenderPlayerPreview-1)
           pha
@@ -687,7 +687,7 @@ return_point:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterRenderPlayerPreviewP0:
 
 
 ArenaSelectDoneDrawP0
@@ -728,9 +728,9 @@ DrawPlayer1Character:
           lda # 1
           sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterPlayerPreviewSetPositionP1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayerPreviewSetPositionP1-1)
           pha
           lda # >(PlayerPreviewSetPosition-1)
           pha
@@ -738,13 +738,13 @@ DrawPlayer1Character:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterPlayerPreviewSetPositionP1:
 
 
           ;; Cross-bank call to RenderPlayerPreview in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterRenderPlayerPreviewP1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRenderPlayerPreviewP1-1)
           pha
           lda # >(RenderPlayerPreview-1)
           pha
@@ -752,7 +752,7 @@ return_point:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterRenderPlayerPreviewP1:
 
 
 ArenaSelectDoneDrawP1

@@ -172,9 +172,9 @@ BernieCheckBottomWrap .proc
           lda temp4
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadJump1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadJump1-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -182,7 +182,7 @@ BernieCheckBottomWrap .proc
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadJump1:
 
 
                     if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrap
@@ -226,9 +226,9 @@ CCJ_FreeFlightUp .proc
           lda temp4
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadJump1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadJump1-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -236,7 +236,7 @@ CCJ_FreeFlightUp .proc
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadJump1:
 
 
                     if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrap

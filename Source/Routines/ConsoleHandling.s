@@ -142,9 +142,9 @@ CheckSelectPressedP2:
 
           ;; Re-detect controllers when Select is pressed
           ;; Cross-bank call to DetectPads in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterDetectPadsSelectP2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDetectPadsSelectP2-1)
           pha
           lda # >(DetectPads-1)
           pha

@@ -284,10 +284,10 @@ RadishGoblinCheckGroundBounce .proc
           asl
           tax
           lda playerVelocityY,x
-          beq RGBGB_ClearCheck
-          bmi RGBGB_ClearCheck
+          beq ClearCheckRadishGoblinBounce
+          bmi ClearCheckRadishGoblinBounce
           jmp goto_label
-RGBGB_ClearCheck:
+ClearCheckRadishGoblinBounce:
 
           lda temp1
           asl
@@ -343,13 +343,13 @@ CalculateFeetRow:
             lsr temp2
 
 
-          ;; if temp2 >= pfrows then goto RGBGB_ClearCheck
+          ;; if temp2 >= pfrows then goto ClearCheckRadishGoblinBounce
           lda temp2
           cmp pfrows
 
           bcc CheckRowBelow
 
-          jmp CheckRowBelow
+          jmp ClearCheckRadishGoblinBounce
 
           CheckRowBelow:
 
@@ -360,13 +360,13 @@ CalculateFeetRow:
 
           ;; Check ground pixel
 
-          ;; if temp5 >= pfrows then goto RGBGB_ClearCheck
+          ;; if temp5 >= pfrows then goto ClearCheckRadishGoblinBounce
           lda temp5
           cmp pfrows
 
           bcc CheckGroundPixel
 
-          jmp CheckGroundPixel
+          jmp ClearCheckRadishGoblinBounce
 
           CheckGroundPixel:
 
@@ -398,13 +398,13 @@ AfterPlayfieldReadRadishGoblin:
 
           lda temp1
           bne CheckBounceState
-          jmp RGBGB_ClearCheck
+          jmp ClearCheckRadishGoblinBounce
 CheckBounceState:
 
 
           ;; Check if moved away from contact
 
-          ;; if radishGoblinBounceState_R[temp1] = 1 then goto RGBGB_ClearCheck
+          ;; if radishGoblinBounceState_R[temp1] = 1 then goto ClearCheckRadishGoblinBounce
 
           ;; let temp2 = playerY[temp1]
           lda temp1
@@ -425,11 +425,11 @@ CheckBounceState:
           lda radishGoblinLastContactY_R,x
           sta temp3
 
-          ;; if temp2 < temp3 then goto RGBGB_ClearState
+          ;; if temp2 < temp3 then goto ClearStateRadishGoblinBounce
           lda temp2
           cmp temp3
           bcs CalculateDistanceFromContact
-          jmp RGBGB_ClearState
+          jmp ClearStateRadishGoblinBounce
 CalculateDistanceFromContact:
           
 
@@ -451,25 +451,25 @@ CalculateDistanceFromContact:
 
           lda temp4
           cmp # 9
-          bcc RGBGB_CalcBounce
-RGBGB_CalcBounce:
+          bcc CalcBounceRadishGoblin
+CalcBounceRadishGoblin:
 
 
-          jmp RGBGB_CalcBounce
+          jmp CalcBounceRadishGoblin
 
 .pend
 
-RGBGB_ClearState .proc
+ClearStateRadishGoblinBounce .proc
 
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta radishGoblinBounceState_W,x
 
 .pend
 
-RGBGB_CalcBounce .proc
+CalcBounceRadishGoblin .proc
 
           ;; Calculate bounce height
           ;; Returns: Far (return otherbank)
@@ -483,64 +483,66 @@ RGBGB_CalcBounce .proc
           lda # 0
           sta temp3
 
-          ;; if temp1 >= 2 then goto RGBGB_CheckStick
+          ;; if temp1 >= 2 then goto CheckStickRadishGoblin
           lda temp1
-          cmp 2
+          cmp # 2
 
           bcc CheckPlayerIndex
 
-          jmp CheckPlayerIndex
+          jmp CheckStickRadishGoblin
 
           CheckPlayerIndex:
 
           lda temp1
           cmp # 0
-          bne RGBGB_CheckStick
-          jmp RGBGB_CheckEnhanced0
-RGBGB_CheckStick:
+          bne CheckStickRadishGoblin
+          jmp CheckEnhanced0RadishGoblin
+CheckStickRadishGoblin:
 
 
                     if (enhancedButtonStates_R & 2) then let temp3 = 1
-          jmp RGBGB_CheckStick
+          jmp ApplyBounceRadishGoblin
 
 .pend
 
-RGBGB_CheckEnhanced0 .proc
+CheckEnhanced0RadishGoblin .proc
 
                     if (enhancedButtonStates_R & 1) then let temp3 = 1
 
 .pend
 
-RGBGB_CheckStick .proc
+CheckStickRadishGoblin .proc
 
-                    if temp1 & 2 = 0 then RGBGB_StickJoy0
+                    if temp1 & 2 = 0 then StickJoy0RadishGoblin
           lda temp1
           and # 2
           bne CheckJoy1Up
-          jmp RGBGB_StickJoy0
+          jmp StickJoy0RadishGoblin
 CheckJoy1Up:
 
                     if joy1up then let temp3 = 1
           lda joy1up
-          beq RGBGB_Apply
-          lda 1
+          beq ApplyBounceRadishGoblin
+          lda # 1
           sta temp3
-RGBGB_Apply:
-          jmp RGBGB_Apply
+ApplyBounceRadishGoblin:
+          jmp ApplyBounceRadishGoblin
 
 .pend
 
-RGBGB_StickJoy0 .proc
+StickJoy0RadishGoblin .proc
 
           if joy0up then let temp3 = 1
           lda joy0up
-          beq RGBGB_Apply
-RGBGB_Apply:
-          jmp RGBGB_Apply
+          beq ApplyBounceRadishGoblin
+          lda # 1
+          sta temp3
+ApplyBounceRadishGoblin:
+          jmp ApplyBounceRadishGoblin
 
 .pend
 
-RGBGB_Apply .proc
+ApplyBounceRadishGoblin .proc
           lda temp3
           bne DoubleBounceHeight
 DoubleBounceHeight:
@@ -572,7 +574,7 @@ RGBGB_DoneApply
 
 .pend
 
-RGBGB_ClearCheck .proc
+ClearCheckRadishGoblinBounce .proc
 
           rts
 
@@ -595,11 +597,11 @@ RGBGB_ClearCheck .proc
           lda radishGoblinLastContactY_R,x
           sta temp3
 
-          ;; if temp2 < temp3 then goto RGBGB_ClearState2
+          ;; if temp2 < temp3 then goto ClearState2RadishGoblinBounce
           lda temp2
           cmp temp3
           bcs CalculateDistanceFromContact2
-          jmp RGBGB_ClearState2
+          jmp ClearState2RadishGoblinBounce
 CalculateDistanceFromContact2:
           
 
@@ -621,20 +623,20 @@ CalculateDistanceFromContact2:
 
           lda temp4
           cmp # 9
-          bcc RGBGB_ClearCheckDone
-RGBGB_ClearCheckDone:
+          bcc ClearCheckRadishGoblinBounceDone
+ClearCheckRadishGoblinBounceDone:
 
 
           rts
 
 .pend
 
-RGBGB_ClearState2 .proc
+ClearState2RadishGoblinBounce .proc
 
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta radishGoblinBounceState_W,x
 
           rts

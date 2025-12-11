@@ -285,9 +285,9 @@ ColumnInRangeRight:
           lda temp7
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadMoveRight1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadMoveRight1-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -295,7 +295,7 @@ ColumnInRangeRight:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point_fmh4:
+AfterPlayfieldReadMoveRight1:
 
           jsr BS_return
           lda temp4

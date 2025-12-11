@@ -135,9 +135,9 @@ CheckRowBelow:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadDownFirst-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadDownFirst-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -145,7 +145,7 @@ CheckRowBelow:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadDownFirst:
 
 
                     if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown

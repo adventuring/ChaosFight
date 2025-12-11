@@ -436,14 +436,14 @@ SkipPlayer4 .proc
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterInitializeHealthBars:
 
 
           ;; Load arena data
           ;; Cross-bank call to LoadArena in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterLoadArena-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadArena-1)
           pha
           lda # >(LoadArena-1)
           pha
@@ -451,7 +451,7 @@ return_point:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterLoadArena:
 
 
           jsr BS_return

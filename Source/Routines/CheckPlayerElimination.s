@@ -66,20 +66,6 @@ CheckPlayerElimination:
           ;; not selected
           ;; Use skip-over pattern to avoid complex || operator
           ;; Cross-bank call to UpdatePlayers34ActiveFlag in bank 14
-          lda # >(CPE_UpdatePlayers34ActiveFlagReturn-1)
-          pha
-          lda # <(CPE_UpdatePlayers34ActiveFlagReturn-1)
-          pha
-          lda # >(UpdatePlayers34ActiveFlag-1)
-          pha
-          lda # <(UpdatePlayers34ActiveFlag-1)
-          pha
-          ldx # 13
-          jmp BS_jsr
-
-CPE_UpdatePlayers34ActiveFlagReturn:
-
-          ;; Cross-bank call to UpdatePlayers34ActiveFlag in bank 14
           lda # >(AfterUpdatePlayers34ActiveFlag-1)
           pha
           lda # <(AfterUpdatePlayers34ActiveFlag-1)

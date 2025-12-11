@@ -8,7 +8,9 @@
 
 ;; CRITICAL: Define memory address variables FIRST to allow DASM to resolve forward references
 ;; These must be defined before any code that uses them
-.weak
+.ifndef MULTISPRITE_SUPERCHIP_DEFINED
+MULTISPRITE_SUPERCHIP_DEFINED = 1
+
 missile1height = $A4
 missile0height = $A5
 ;; playfieldRow is defined via dim in Variables.s

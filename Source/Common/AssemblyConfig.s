@@ -16,7 +16,8 @@
 
           ;; Kernel configuration
           ;; Note: Most of these are automatically defined by batariBASIC based on
-.weak
-pfres = 8
           ;; set kernel and set romsize commands, but pfres must be defined manually
-.endweak
+.ifndef PFRES_DEFINED
+PFRES_DEFINED = 1
+pfres = 8
+.fi

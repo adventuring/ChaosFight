@@ -1244,9 +1244,9 @@ AfterSetPlayerSprites:
 
           ;; Update P1/P2 health bars using pfscore system
           ;; Cross-bank call to UpdatePlayer12HealthBars in bank 11
-          lda # >(return_point-1)
+          lda # >(AfterUpdatePlayer12HealthBars-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterUpdatePlayer12HealthBars-1)
           pha
           lda # >(UpdatePlayer12HealthBars-1)
           pha
@@ -1254,14 +1254,14 @@ AfterSetPlayerSprites:
           pha
                     ldx # 10
           jmp BS_jsr
-return_point:
+AfterUpdatePlayer12HealthBars:
 
 
           ;; Update P3/P4 health bars using playfield system
           ;; Cross-bank call to UpdatePlayer34HealthBars in bank 11
-          lda # >(return_point-1)
+          lda # >(AfterUpdatePlayer34HealthBars-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterUpdatePlayer34HealthBars-1)
           pha
           lda # >(UpdatePlayer34HealthBars-1)
           pha
@@ -1269,7 +1269,7 @@ return_point:
           pha
                     ldx # 10
           jmp BS_jsr
-return_point:
+AfterUpdatePlayer34HealthBars:
 
 
           rts

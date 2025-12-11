@@ -212,9 +212,9 @@ Bank2Dispatch
           ;; temp3=action, temp5=player
 
           ;; Cross-bank call to SetPlayerCharacterArtBank2 in bank 2
-          lda # >(return_point-1)
+          lda # >(AfterSetPlayerCharacterArtBank2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetPlayerCharacterArtBank2-1)
           pha
           lda # >(SetPlayerCharacterArtBank2-1)
           pha
@@ -222,7 +222,7 @@ Bank2Dispatch
           pha
                     ldx # 1
           jmp BS_jsr
-return_point:
+AfterSetPlayerCharacterArtBank2:
 
 
           jsr BS_return

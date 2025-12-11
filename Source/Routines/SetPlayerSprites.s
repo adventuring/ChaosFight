@@ -66,9 +66,9 @@ SetPlayerSprites .proc
           lda playerState,x
           sta temp3
           ;; Cross-bank call to LoadCharacterColors in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterLoadCharacterColorsP0-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadCharacterColorsP0-1)
           pha
           lda # >(LoadCharacterColors-1)
           pha
@@ -77,7 +77,7 @@ SetPlayerSprites .proc
           ldx # 13
           jmp BS_jsr
 
-return_point:
+AfterLoadCharacterColorsP0:
 
           COLUP0 = temp6
 
@@ -103,9 +103,9 @@ Player1ColorDone:
           lda # 0
           sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(return_point2-1)
+          lda # >(AfterLoadCharacterSpriteP0-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterLoadCharacterSpriteP0-1)
           pha
           lda # >(LoadCharacterSprite-1)
           pha
@@ -114,7 +114,7 @@ Player1ColorDone:
           ldx # 15
           jmp BS_jsr
 
-return_point2:
+AfterLoadCharacterSpriteP0:
 
           ;; Set Player 2 color and sprite
           ;; Use LoadCharacterColors for consistent color handling
@@ -144,9 +144,9 @@ return_point2:
           lda playerState,x
           sta temp3
           ;; Cross-bank call to LoadCharacterColors in bank 14
-          lda # >(return_point3-1)
+          lda # >(AfterLoadCharacterColorsP1-1)
           pha
-          lda # <(return_point3-1)
+          lda # <(AfterLoadCharacterColorsP1-1)
           pha
           lda # >(LoadCharacterColors-1)
           pha
@@ -154,7 +154,7 @@ return_point2:
           pha
           ldx # 13
           jmp BS_jsr
-return_point:
+AfterLoadCharacterColorsP1:
 
           _COLUP1 = temp6
 
@@ -202,7 +202,7 @@ Player2ReflectionDone:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterLoadCharacterSpriteP1:
 
 
           ;; Set colors for Players 3 & 4 (multisprite kernel)
@@ -269,7 +269,7 @@ SetPlayer3Color:
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterLoadCharacterColorsP3:
 
           ;; fall through to Player3ColorDone
           COLUP2 = temp6
@@ -316,7 +316,7 @@ Player3ReflectionDone:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterLoadCharacterSpriteP3:
 
 
 DonePlayer3Sprite
@@ -381,7 +381,7 @@ SetPlayer4Color:
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterLoadCharacterColorsP4:
 
           COLUP3 = temp6
 
@@ -427,7 +427,7 @@ Player4ReflectionDone:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterLoadCharacterSpriteP4:
 
 
 DonePlayer4Sprite

@@ -34,9 +34,9 @@ MainLoop .proc
           ;; Bit 0 = 1 means reset not pressed, skip
           ;; Reset switch pressed - call WarmStart
           ;; Cross-bank call to WarmStart in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterWarmStart-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterWarmStart-1)
           pha
           lda # >(WarmStart-1)
           pha
@@ -45,7 +45,7 @@ MainLoop .proc
           ldx # 12
           jmp BS_jsr
 
-return_point:
+AfterWarmStart:
 
 skip_reset_check:
 
@@ -80,9 +80,9 @@ MainLoopModePublisherPrelude .proc
 
           ;; So we must use return thisbank (RTS) to pop that 2-byte normal address
           ;; Cross-bank call to PublisherPreludeMain in bank 14
-          lda # >(return_point2-1)
+          lda # >(AfterPublisherPreludeMain-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterPublisherPreludeMain-1)
           pha
           lda # >(PublisherPreludeMain-1)
           pha
@@ -90,7 +90,7 @@ MainLoopModePublisherPrelude .proc
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterPublisherPreludeMain:
 
 
           rts

@@ -120,9 +120,9 @@ LoadSongFromBank1:
           ;; Song in Bank 1
 
           ;; Cross-bank call to LoadSongPointer in bank 1
-          lda # >(return_point-1)
+          lda # >(MS_AfterLoadSongPointer-1)
           pha
-          lda # <(return_point-1)
+          lda # <(MS_AfterLoadSongPointer-1)
           pha
           lda # >(LoadSongPointer-1)
           pha
@@ -130,13 +130,13 @@ LoadSongFromBank1:
           pha
                     ldx # 0
           jmp BS_jsr
-return_point:
+MS_AfterLoadSongPointer:
 
 
           ;; Cross-bank call to LoadSongVoice1PointerBank1 in bank 1
-          lda # >(return_point-1)
+          lda # >(MS_AfterLoadSongVoice1Pointer-1)
           pha
-          lda # <(return_point-1)
+          lda # <(MS_AfterLoadSongVoice1Pointer-1)
           pha
           lda # >(LoadSongVoice1PointerBank1-1)
           pha
@@ -144,7 +144,7 @@ return_point:
           pha
                     ldx # 0
           jmp BS_jsr
-return_point:
+MS_AfterLoadSongVoice1Pointer:
 
 
           jmp LoadSongPointersDone

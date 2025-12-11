@@ -59,6 +59,8 @@ Not7800D0:
 
           jmp Is2600
 
+.pend
+
 CheckD1 .proc
           ;; Check $D1 value for 7800 confirmation
           lda $D1
@@ -94,7 +96,7 @@ CheckFlashed .proc
           ;; Check if $D1 is also $00 (flashed game)
           lda $D1
           sta temp1
-          ;; if temp1 then jmp Is2600
+          ;; If temp1 is non-zero, jmp Is2600
           lda temp1
           beq CheckCDFJDriver
 
@@ -138,8 +140,9 @@ Is7800 .proc
 
 Is2600 .proc
           ;; 2600 console detected
-
-ConsoleDetected:
+          ;; Fall through to ConsoleDetected
 
 .pend
+
+ConsoleDetected:
 

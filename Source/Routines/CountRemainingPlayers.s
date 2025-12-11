@@ -13,8 +13,18 @@ CountRemainingPlayers:
           sta temp1
 
           ;; Check each player
-          if playerHealth[0] > 0 then let temp1 = 1
-          if playerHealth[1] > 0 then let temp1 = 1 + temp1
+          ;; If playerHealth[0] > 0, increment temp1
+          lda # 0
+          asl
+          tax
+          lda playerHealth,x
+          beq SkipIncrementPlayer0
+          lda temp1
+          clc
+          adc # 1
+          sta temp1
+SkipIncrementPlayer0:
+          ;; If playerHealth[1] > 0, increment temp1
           lda # 1
           asl
           tax
@@ -42,7 +52,7 @@ SkipIncrementPlayer1:
 
 SkipIncrementPlayer2:
 
-          if playerHealth[3] > 0 then let temp1 = 1 + temp1
+          ;; If playerHealth[3] > 0, increment temp1
           lda # 3
           asl
           tax

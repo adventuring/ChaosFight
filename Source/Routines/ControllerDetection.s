@@ -34,11 +34,11 @@ DetectPads .proc
           sta systemFlags
           .fi
           ;; Check for Quadtari
-          ;; if INPT0{7} then CDP_CheckRightSide
+          ;; If INPT0{7} is set, check right side
           bit INPT0
           bpl CDP_CheckRightSide
 
-          ;; if !INPT1{7} then CDP_CheckRightSide
+          ;; If !INPT1{7}, check right side
           bit INPT1
           bmi CheckLeftSideQuadtari
 
@@ -50,17 +50,19 @@ CheckLeftSideQuadtari:
 
 .pend
 
+CDP_QuadtariFound:
+          ;; Returns: Far (return otherbank)
+          lda temp2
+          ora # SetQuadtariDetected
+          sta temp2
+          jmp CDP_MergeStatus
+
 CDP_CheckRightSide .proc
-          ;; if INPT2{7} then jmp CDP_CheckGenesis
+          ;; If INPT2{7} is set, check Genesis
           bit INPT2
           bpl CDP_CheckGenesis
 
-          ;; fall through to CDP_QuadtariFound
-          ;; if !INPT3{7} then jmp CDP_CheckGenesis
-          bit INPT3
-          bmi CheckRightSideQuadtari
-
-          jmp CDP_CheckGenesis
+          ;; If !INPT3{7}, check Genesis
           bit INPT3
           bmi CheckRightSideQuadtari
 
@@ -68,12 +70,7 @@ CDP_CheckRightSide .proc
 
 CheckRightSideQuadtari:
 
-CDP_QuadtariFound:
-          ;; Returns: Far (return otherbank)
-          lda temp2
-          ora # SetQuadtariDetected
-          sta temp2
-          jmp CDP_MergeStatus
+          jmp CDP_QuadtariFound
 
 .pend
 
@@ -83,7 +80,7 @@ CDP_CheckGenesis .proc
           ;; detected)
           ;; If Quadtari was previously detected, skip all other
           ;; detection
-          ;; if temp1 & SetQuadtariDetected then jmp CDP_MergeStatus
+          ;; If temp1 & SetQuadtariDetected, then jmp CDP_MergeStatus
 
           ;; Genesis controllers pull INPT0 and INPT1 HIGH when idle
           ;; Method: Ground paddle ports via VBLANK, wait a frame,

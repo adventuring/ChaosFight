@@ -13,14 +13,14 @@ UpdatePlayers34ActiveFlag .proc
           sta controllerStatus
 
           ;; Check if Player 3 is active (selected and not eliminated)
-          ;; if playerCharacter[2] = NoCharacter then CheckPlayer4ActiveFlag
+          ;; If playerCharacter[2] = NoCharacter, then CheckPlayer4ActiveFlag
           lda # 2
           asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
           beq CheckPlayer4ActiveFlag
-          ;; if playerHealth[2] = 0 then CheckPlayer4ActiveFlag
+          ;; If playerHealth[2] = 0, then CheckPlayer4ActiveFlag
           lda # 2
           asl
           tax
@@ -45,8 +45,14 @@ SetPlayer3Active:
 CheckPlayer4ActiveFlag .proc
           ;; Check if Player 4 is active (selected and not eliminated)
           ;; Returns: Far (return otherbank)
-          if playerCharacter[3] = NoCharacter then UpdatePlayers34ActiveDone
-          if playerHealth[3] = 0 then UpdatePlayers34ActiveDone
+          ;; If playerCharacter[3] = NoCharacter, then UpdatePlayers34ActiveDone
+          lda # 3
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq UpdatePlayers34ActiveDone
+          ;; If playerHealth[3] = 0, then UpdatePlayers34ActiveDone
           lda # 3
           asl
           tax

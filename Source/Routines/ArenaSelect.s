@@ -86,7 +86,7 @@ SkipReturnToCharacterSelect:
           sta temp1
           ;; Check Player 1 fire button
           ;; Check Player 2 fire button
-          if joy0fire then let temp1 = 1
+          ;; If joy0fire, then set temp1 = 1
           lda joy0fire
           beq CheckJoy1Fire
 
@@ -96,7 +96,7 @@ SkipReturnToCharacterSelect:
 CheckJoy1Fire:
 
           ;; Check Quadtari players (3 & 4) if active
-          if joy1fire then let temp1 = 1
+          ;; If joy1fire, then set temp1 = 1
           lda joy1fire
           beq CheckQuadtariFire
 

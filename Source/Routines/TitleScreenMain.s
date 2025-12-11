@@ -74,25 +74,22 @@ TitleScreenRandomizeNoEor:
           sta rand
           .if  rand16_W
           ;; CRITICAL:
-
-
-rand16:
-
-
-          eor rand16_R
-fi:
+          lda rand16_R
+          rol
+          sta rand16_W
+          .fi
 
           ;; Handle input - any button press goes to character select
           ;; Check standard controllers (Player 1 & 2)
           ;; Use skip-over pattern to avoid complex || operator issues
-          if joy0fire then TitleScreenComplete
+          ;; If joy0fire, then TitleScreenComplete
           lda joy0fire
           beq CheckJoy1Fire
           jmp TitleScreenComplete
 CheckJoy1Fire:
           
 
-          if joy1fire then TitleScreenComplete
+          ;; If joy1fire, then TitleScreenComplete
           lda joy1fire
           beq CheckQuadtariControllers
           jmp TitleScreenComplete
@@ -100,21 +97,22 @@ CheckQuadtariControllers:
           
 
           ;; Check Quadtari controllers (Players 3 & 4 if active)
-                    if 0 = (controllerStatus & SetQuadtariDetected) then TitleDoneQuad
+          ;; If controllerStatus & SetQuadtariDetected is 0, skip Quadtari check
+          lda controllerStatus
+          and # SetQuadtariDetected
+          beq TitleDoneQuad
 
-                    if !INPT0{7} then TitleScreenComplete
+          ;; If !INPT0{7}, then TitleScreenComplete
           bit INPT0
           bmi CheckINPT2
           jmp TitleScreenComplete
 CheckINPT2:
 
-                    if !INPT2{7} then TitleScreenComplete
+          ;; If !INPT2{7}, then TitleScreenComplete
           bit INPT2
           bmi TitleDoneQuad
           jmp TitleScreenComplete
 TitleDoneQuad:
-
-TitleDoneQuad
           ;; Skip Quadtari controller check (not in 4-player mode)
           ;; Returns: Far (return otherbank)
           ;;
@@ -182,9 +180,7 @@ AfterChangeGameModeTitle:
 
           jmp BS_return
 
-.pend
-
-TitleScreenComplete:
+TitleScreenComplete .proc
           ;; Transition to character select
           ;; Returns: Far (return otherbank)
           ;;

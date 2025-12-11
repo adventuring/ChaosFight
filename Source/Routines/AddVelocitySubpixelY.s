@@ -59,7 +59,7 @@ VelocityYCarry .proc
           tax
           lda temp2
           sta playerVelocityYL,x
-          let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
+          ;; Set playerVelocityY[temp1] = playerVelocityY[temp1] + 1
           lda temp1
           asl
           tax

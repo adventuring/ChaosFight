@@ -40,10 +40,10 @@ WarmStart .proc
           lda # $0E
           sta COLUPF
           ;; Player 0: bright blue
-          lda # ColBlue(14)
+          lda # $8E
           sta COLUP0
           ;; Player 1: bright red (multisprite kernel requires NewCOLUP1)
-          lda # ColRed(14)
+          lda # $4E
           sta NewCOLUP1
 
           ;; Step 3: Initialize audio channels (silent on reset)
@@ -85,6 +85,8 @@ AfterChangeGameModeReset:
 
           ;; Reset complete - return to MainLoop which will dispatch to
           ;; new mode
+
+.pend
 
 HandleConsoleSwitches .proc
 

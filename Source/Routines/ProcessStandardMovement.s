@@ -22,15 +22,29 @@ ProcessStandardMovement .proc
           ;; Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
           ;; Players 1,3 use joy1
           ;; if temp1 & 2 = 0 then jmp PSM_UseJoy0
-          ;; Left movement: set negative velocity
-          lda joy1left
-          bne PSM_ApplyLeftJoy1
-
+          lda temp1
+          and # 2
+          beq PSM_UseJoy0Label
+          jmp PSM_CheckJoy1
+PSM_UseJoy0Label:
+          jmp PSM_UseJoy0
+PSM_CheckJoy1:
+          ;; Left movement: set negative velocity (joy1)
+          lda SWCHA
+          and # $08
+          beq PSM_ApplyLeftJoy1Label
           jmp PSM_CheckRightJoy1
+PSM_ApplyLeftJoy1Label:
+          jmp PSM_ApplyLeftJoy1
 
 PSM_ApplyLeftJoy1:
-
-          if playerCharacter[temp1] = CharacterFrooty then PSM_LeftMomentum1
+          ;; Check if playerCharacter[temp1] = CharacterFrooty
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CharacterFrooty
+          beq PSM_LeftMomentum1
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
           asl
@@ -83,7 +97,14 @@ PSM_LeftMomentum1 .proc
           tax
           lda CharacterMovementSpeed,x
           sta temp6
-          let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          sec
+          sbc temp6
+          sta playerVelocityX,x
           lda temp1
           asl
           tax
@@ -95,7 +116,14 @@ PSM_LeftMomentum1 .proc
 PSM_AfterLeftSet1 .proc
           ;; Inline ShouldPreserveFacing logic
           ;; Returns: Far (return otherbank)
-                    if (playerState[temp1] & 8) then PSM_InlineYesLeft
+          ;; Check if (playerState[temp1] & 8) then PSM_InlineYesLeft
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq PSM_InlineNoLeft
+          jmp PSM_InlineYesLeft
           ;; Set temp2 = playerState[temp1] / 16
           lda temp1
           asl
@@ -118,11 +146,14 @@ CheckAnimationState10LeftLabel:
 
           lda temp2
           cmp # 10
-          bcc PSM_InlineDoneLeft
-PSM_InlineDoneLeft:
-
+          bcc PSM_InlineDoneLeftSkip
+          jmp PSM_InlineDoneLeft
+PSM_InlineDoneLeftSkip:
+          jmp PSM_InlineDoneLeft
 
 .pend
+
+PSM_InlineDoneLeft:
 
 PSM_InlineYesLeft .proc
           lda # 1
@@ -140,7 +171,13 @@ PSM_InlineDoneLeftCheck
           bne PSM_InlineDoneLeftApply
           jmp PSM_InlineDoneLeftApply
 PSM_InlineDoneLeftApply:
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # (255 - PlayerStateBitFacing)
+          sta playerState,x
 
 
 .pend
@@ -148,10 +185,19 @@ PSM_InlineDoneLeftApply:
 PSM_CheckRightJoy1 .proc
           ;; Right movement: set positive velocity
           ;; Returns: Far (return otherbank)
-          jmp BS_return
-                    if playerCharacter[temp1] = CharacterFrooty then PSM_RightMomentum1
-                    ;; Set temp6 = playerCharacter[temp1]
-                    lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+          ;; Check if playerCharacter[temp1] = CharacterFrooty
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CharacterFrooty
+          beq PSM_RightMomentum1
+          ;; Set temp6 = playerCharacter[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
@@ -166,7 +212,7 @@ PSM_CheckRightJoy1 .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
           jmp PSM_AfterRightSet1
 
@@ -190,11 +236,18 @@ PSM_RightMomentum1 .proc
           tax
           lda CharacterMovementSpeed,x
           sta temp6
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
           lda temp1
           asl
           tax
-          lda 0
+          lda playerVelocityX,x
+          clc
+          adc temp6
+          sta playerVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda # 0
           sta playerVelocityXL,x
 
 .pend
@@ -202,7 +255,14 @@ PSM_RightMomentum1 .proc
 PSM_AfterRightSet1 .proc
           ;; Inline ShouldPreserveFacing logic
           ;; Returns: Far (return otherbank)
-                    if (playerState[temp1] & 8) then PSM_InlineYesRight1
+          ;; Check if (playerState[temp1] & 8) then PSM_InlineYesRight1
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq PSM_InlineNoRight1
+          jmp PSM_InlineYesRight1
           ;; Set temp2 = playerState[temp1] / 16
           lda temp1
           asl
@@ -226,10 +286,11 @@ CheckAnimationState10Right1Label:
           lda temp2
           cmp # 10
           bcc PSM_InlineDoneRight1
-PSM_InlineDoneRight1:
-
+          jmp PSM_InlineDoneRight1
 
 .pend
+
+PSM_InlineDoneRight1:
 
 PSM_InlineYesRight1 .proc
           lda # 1
@@ -247,7 +308,13 @@ PSM_InlineDoneRight1Check
           bne PSM_InlineDoneRight1Apply
           jmp PSM_InlineDoneRight1Apply
 PSM_InlineDoneRight1Apply:
-                    let playerState[temp1] = playerState[temp1] | 1
+          ;; Set playerState[temp1] = playerState[temp1] | 1
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 1
+          sta playerState,x
 
           jmp BS_return
 
@@ -256,15 +323,27 @@ PSM_InlineDoneRight1Apply:
 PSM_UseJoy0 .proc
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
-          ;; Left movement: set negative velocity
-          lda joy0left
-          bne PSM_ApplyLeftJoy0
+          ;; Left movement: set negative velocity (joy0)
+          lda SWCHA
+          and # $80
+          beq PSM_ApplyLeftJoy0
+          jmp PSM_CheckRightJoy0
           jmp PSM_CheckRightJoy0
 PSM_ApplyLeftJoy0:
 
-                    if playerCharacter[temp1] = CharacterFrooty then PSM_LeftMomentum0
-                    ;; Set temp6 = playerCharacter[temp1]
-                    lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+          ;; Check if playerCharacter[temp1] = CharacterFrooty
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CharacterFrooty
+          beq PSM_LeftMomentum0
+          ;; Set temp6 = playerCharacter[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
@@ -273,7 +352,11 @@ PSM_ApplyLeftJoy0:
           sta temp6
           lda # 0
           sta temp2
-          ;; Set temp2 = temp2 - temp6          lda temp2          sec          sbc temp6          sta temp2
+          ;; Set temp2 = temp2 - temp6
+          lda temp2
+          sec
+          sbc temp6
+          sta temp2
           lda temp2
           sec
           sbc temp6
@@ -292,7 +375,7 @@ PSM_ApplyLeftJoy0:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
           jmp PSM_AfterLeftSet0
 
@@ -316,11 +399,18 @@ PSM_LeftMomentum0 .proc
           tax
           lda CharacterMovementSpeed,x
           sta temp6
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
           lda temp1
           asl
           tax
-          lda 0
+          lda playerVelocityX,x
+          sec
+          sbc temp6
+          sta playerVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda # 0
           sta playerVelocityXL,x
 
 .pend
@@ -328,7 +418,14 @@ PSM_LeftMomentum0 .proc
 PSM_AfterLeftSet0 .proc
           ;; Inline ShouldPreserveFacing logic
           ;; Returns: Far (return otherbank)
-                    if (playerState[temp1] & 8) then PSM_InlineYesLeft0
+          ;; Check if (playerState[temp1] & 8) then PSM_InlineYesLeft0
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq PSM_InlineNoLeft0
+          jmp PSM_InlineYesLeft0
           ;; Set temp2 = playerState[temp1] / 16
           lda temp1
           asl
@@ -352,10 +449,11 @@ CheckAnimationState10Left0Label:
           lda temp2
           cmp # 10
           bcc PSM_InlineDoneLeft0
-PSM_InlineDoneLeft0:
-
+          jmp PSM_InlineDoneLeft0
 
 .pend
+
+PSM_InlineDoneLeft0:
 
 PSM_InlineYesLeft0 .proc
           lda # 1
@@ -373,7 +471,13 @@ PSM_InlineDoneLeft0Check
           bne PSM_InlineDoneLeft0Apply
           jmp PSM_InlineDoneLeft0Apply
 PSM_InlineDoneLeft0Apply:
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # (255 - PlayerStateBitFacing)
+          sta playerState,x
 
 
 .pend
@@ -381,10 +485,19 @@ PSM_InlineDoneLeft0Apply:
 PSM_CheckRightJoy0 .proc
           ;; Right movement: set positive velocity
           ;; Returns: Far (return otherbank)
-          jmp BS_return
-                    if playerCharacter[temp1] = CharacterFrooty then PSM_RightMomentum0
-                    ;; Set temp6 = playerCharacter[temp1]
-                    lda temp1          asl          tax          lda playerCharacter,x          sta temp6
+          ;; Check if playerCharacter[temp1] = CharacterFrooty
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CharacterFrooty
+          beq PSM_RightMomentum0
+          ;; Set temp6 = playerCharacter[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
@@ -399,7 +512,7 @@ PSM_CheckRightJoy0 .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
           jmp PSM_AfterRightSet0
 
@@ -423,11 +536,18 @@ PSM_RightMomentum0 .proc
           tax
           lda CharacterMovementSpeed,x
           sta temp6
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
           lda temp1
           asl
           tax
-          lda 0
+          lda playerVelocityX,x
+          clc
+          adc temp6
+          sta playerVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda # 0
           sta playerVelocityXL,x
 
 .pend
@@ -435,7 +555,14 @@ PSM_RightMomentum0 .proc
 PSM_AfterRightSet0 .proc
           ;; Inline ShouldPreserveFacing logic
           ;; Returns: Far (return otherbank)
-                    if (playerState[temp1] & 8) then PSM_InlineYesRight0
+          ;; Check if (playerState[temp1] & 8) then PSM_InlineYesRight0
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq PSM_InlineNoRight0
+          jmp PSM_InlineYesRight0
           ;; Set temp2 = playerState[temp1] / 16
           lda temp1
           asl
@@ -459,10 +586,11 @@ CheckAnimationState10Right0Label:
           lda temp2
           cmp # 10
           bcc PSM_InlineDoneRight0
-PSM_InlineDoneRight0:
-
+          jmp PSM_InlineDoneRight0
 
 .pend
+
+PSM_InlineDoneRight0:
 
 PSM_InlineYesRight0 .proc
           lda # 1
@@ -480,7 +608,13 @@ PSM_InlineDoneRight0Check
           bne PSM_InlineDoneRight0Apply
           jmp PSM_InlineDoneRight0Apply
 PSM_InlineDoneRight0Apply:
-                    let playerState[temp1] = playerState[temp1] | 1
+          ;; Set playerState[temp1] = playerState[temp1] | 1
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 1
+          sta playerState,x
 
           jmp BS_return
 

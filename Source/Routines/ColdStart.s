@@ -59,7 +59,7 @@ ColdStart .proc
           ;; Must be done before any sprite loading to ensure pointers
           ;; point to SCRAM buffers instead of ROM
           ;; CRITICAL: InitializeSpritePointers is called both same-bank (from ColdStart)
-          and cross-bank (from BeginGameLoop). Since it’s called cross-bank, it must
+          ;; and cross-bank (from BeginGameLoop). Since it’s called cross-bank, it must
           ;; always use return otherbank. When called same-bank, specifying bank14 still
           ;; uses cross-bank mechanism, so the return otherbank matches.
           ;; Cross-bank call to InitializeSpritePointers in bank 14
@@ -85,16 +85,16 @@ sprite_init_return:
           ;; Player 1 (P0): indigo
           lda # $0E
           sta COLUPF
-          ;; Player 2: bright red (multisprite kernel requires _COLUP1)
-          lda # ColIndigo(12)
+          ;; Player 2: bright red (multisprite kernel requires NewCOLUP1)
+          lda # $7C
           sta COLUP0
           ;; Player 3: yellow
-          lda # ColRed(12)
-          sta _COLUP1
+          lda # $4C
+          sta NewCOLUP1
           ;; Player 4: green
-          lda # ColYellow(12)
+          lda # $1C
           sta COLUP2
-          lda # ColGreen(12)
+          lda # $DC
           sta COLUP3
 
           ;; Step 4: Initialize game state and transition to first mode

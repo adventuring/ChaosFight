@@ -49,7 +49,7 @@ SongIDInRange:
           asl
           tax
           lda SongPointers2H,x
-          sta var40
+          sta songPointerH
           ;; Set songPointer = SongPointers2L[temp2]
           lda temp2
           asl
@@ -66,8 +66,7 @@ LSP15_InvalidSong:
           ;; LoadSongPointerBank15 is called from StartMusic which is called cross-bank
           ;; Therefore it must always use return thisbank, even when called same-bank
           rts
-LoadSongVoice1PointerBank15
-LoadSongVoice1PointerBank15
+LoadSongVoice1PointerBank15:
 
           ;; Lookup Voice 1 song pointer from tables (Bank 15 songs)
           ;;
@@ -90,8 +89,12 @@ LoadSongVoice1PointerBank15
           lda temp1
           sta temp2
           ;; Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
-                    ;; Set var40 = SongPointers2SecondH[temp2]
-                    lda temp2          asl          tax          lda SongPointers2SecondH,x          sta var40
+          ;; Set songPointerH = SongPointers2SecondH[temp2]
+          lda temp2
+          asl
+          tax
+          lda SongPointers2SecondH,x
+          sta songPointerH
           ;; Set songPointer = SongPointers2SecondL[temp2]
           lda temp2
           asl
@@ -106,8 +109,7 @@ LoadSongVoice1PointerBank15
           ;; LoadSongVoice1PointerBank15 is called from StartMusic which is called cross-bank
           ;; Therefore it must always use return thisbank, even when called same-bank
           rts
-LoadMusicNote0Bank15
-LoadMusicNote0Bank15
+LoadMusicNote0Bank15:
 
           ;; Load next note from Voice 0 stream (Bank 15, assembly pointer access).
           ;; Input: musicVoice0Pointer (global 16-bit) = current Song_Voice0 pointer
@@ -188,8 +190,7 @@ LoadMusicNote0Bank15
           ;; LoadMusicNote0Bank15 is called from UpdateMusicVoice0 which is reached via cross-bank call
           ;; (PlayMusic is called cross-bank from MainLoop). Therefore it must always use return thisbank.
           rts
-LoadMusicNote1Bank15
-LoadMusicNote1Bank15
+LoadMusicNote1Bank15:
 
           ;; Load next note from Voice 1 stream using assembly for pointer access (Bank 15)
           ;;

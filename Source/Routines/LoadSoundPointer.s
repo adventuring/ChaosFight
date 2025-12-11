@@ -62,8 +62,6 @@ SoundIDInRange:
 
           jmp LoadSoundPointerReturn
 
-.pend
-
 LoadSoundPointerOutOfRange .proc
           ;; Set pointer to 0 (soundEffectPointer = 0.0)
           ;; Returns: Far (return otherbank)
@@ -78,6 +76,8 @@ LoadSoundPointerOutOfRange .proc
 
 LoadSoundPointerReturn:
           rts
+
+.pend
 
 .pend
 

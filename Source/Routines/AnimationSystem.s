@@ -1174,21 +1174,14 @@ HandleAttackTransition
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-          jmp BS_return
-          ;; Set temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
-          lda temp1
-          sec
-          sbc ActionAttackWindup
-          sta temp1
-
+          ;; Set temp1 = temp1 - ActionAttackWindup
           lda temp1
           sec
           sbc ActionAttackWindup
           sta temp1
 
           jmp HandleWindupEnd
-          jmp BS_return
-HandleWindupEnd
+HandleWindupEnd:
           ;; Set temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
           asl

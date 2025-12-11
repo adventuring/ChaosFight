@@ -895,9 +895,6 @@ NextOuterCollisionCheckDone:
 
           
 
-          rts
-.pend
-
           jmp BS_return
 
 .pend

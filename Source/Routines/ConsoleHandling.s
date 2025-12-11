@@ -253,7 +253,7 @@ CheckPlayer2Pause:
           lda temp2
           cmp # 1
           bne CheckEnhancedPauseDone
-          jmp CEP_CheckPlayer2
+          jmp CheckPlayer2EnhancedPause
 CheckEnhancedPauseDone:
 
           rts
@@ -295,7 +295,7 @@ CEP_CheckPlayer1Done:
 
 .pend
 
-CEP_CheckPlayer2 .proc
+CheckPlayer2EnhancedPause .proc
           ;; Player 2: Check Genesis Button C (INPT2) or Joy2B+ Button III (INPT3)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from CheckEnhancedPause, so use return thisbank
@@ -310,10 +310,10 @@ CheckINPT3:
           lda INPT3
           and # 128
           cmp # 0
-          bne CEP_CheckPlayer2Done
+          bne CheckPlayer2EnhancedPauseDone
           lda # 1
           sta temp1
-CEP_CheckPlayer2Done:
+CheckPlayer2EnhancedPauseDone:
 
           rts
           ;;

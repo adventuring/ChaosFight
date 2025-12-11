@@ -105,9 +105,9 @@ DrawTitleScreenOnly .proc
 DrawTitleScreenCommon .proc
           ;; Draw character parade if active (Title screen only)
           ;; Cross-bank call to DrawParadeCharacter in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterDrawParadeCharacter-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDrawParadeCharacter-1)
           pha
           lda # >(DrawParadeCharacter-1)
           pha
@@ -115,7 +115,7 @@ DrawTitleScreenCommon .proc
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterDrawParadeCharacter:
 
 
           ;; Call titlescreen kernel to render the bitmap(s)

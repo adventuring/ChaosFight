@@ -217,16 +217,16 @@ LoadMusicNote1Bank15
           ;; PlayMusic when both voices end
           ;; Load 4 bytes from stream[pointer]
           ldy # 0
-            lda (musicVoice1Pointer),y  ; Load AUDCV
-            sta temp2
-            iny
-            lda (musicVoice1Pointer),y  ; Load AUDF
-            sta temp3
-            iny
-            lda (musicVoice1Pointer),y  ; Load Duration
-            sta temp4
-            iny
-            lda (musicVoice1Pointer),y  ; Load Delay
+          lda (musicVoice1Pointer),y      ; Load AUDCV
+          sta temp2
+          iny
+          lda (musicVoice1Pointer),y      ; Load AUDF
+          sta temp3
+          iny
+          lda (musicVoice1Pointer),y      ; Load Duration
+          sta temp4
+          iny
+          lda (musicVoice1Pointer),y      ; Load Delay
             sta temp5
 
           ;; Check for end of track (Duration = 0)

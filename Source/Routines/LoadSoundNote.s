@@ -23,16 +23,16 @@ LoadSoundNote .proc
           ;; AUDV0 = 0). Uses Voice 0 for sound effects
           ;; Load 4 bytes from stream[pointer]
           ldy # 0
-          lda (soundEffectPointer),y  ; Load AUDCV
+          lda (soundEffectPointer),y      ; Load AUDCV
           sta temp2
           iny
-          lda (soundEffectPointer),y  ; Load AUDF
+          lda (soundEffectPointer),y      ; Load AUDF
           sta temp3
           iny
-          lda (soundEffectPointer),y  ; Load Duration
+          lda (soundEffectPointer),y      ; Load Duration
           sta temp4
           iny
-          lda (soundEffectPointer),y  ; Load Delay
+          lda (soundEffectPointer),y      ; Load Delay
           sta temp5
 
           ;; Check for end of sound (Duration = 0)

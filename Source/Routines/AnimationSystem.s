@@ -834,13 +834,14 @@ UpdateSprite_Bank5Dispatch
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank5:
 
-          jmp AnimationNextPlayer
-DoneAdvanceInlinedLabel:
-          ;; End of inlined UpdatePlayerAnimation - skip to next player
-          jmp AnimationNextPlayer
-AnimationNextPlayer:
+          jmp AnimationNextPlayerLabel
+
 .pend
 
+DoneAdvanceInlinedLabel:
+          ;; End of inlined UpdatePlayerAnimation - skip to next player
+          jmp AnimationNextPlayerLabel
+AnimationNextPlayerLabel:
           ;; Increment currentPlayer and loop if not done
           inc currentPlayer
           lda currentPlayer
@@ -1173,16 +1174,10 @@ HandleAttackTransition
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-          jmp BS_return
-          ;; Set temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
+          ;; Set temp1 = temp1 - ActionAttackWindup
           lda temp1
           sec
-          sbc ActionAttackWindup
-          sta temp1
-
-          lda temp1
-          sec
-          sbc ActionAttackWindup
+          sbc # ActionAttackWindup
           sta temp1
 
           jmp HandleWindupEnd

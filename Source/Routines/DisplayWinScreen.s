@@ -53,10 +53,6 @@ DisplayWinScreen .proc
           ;; gosub)
           ;; Called from WinnerAnnouncementLoop per-frame loop
 
-          ;; Forward declarations for jump targets
-Position2PlayersWinScreen = *
-Position3PlayersWinScreen = *
-
           ;; Set screen layout (32×8 for character display) - inlined
           lda # ScreenPfRowHeight
           sta pfrowheight
@@ -246,13 +242,13 @@ PositionCharacters:
           bne CheckTwoPlayers
           jmp Position1PlayerWinScreen
 CheckTwoPlayers:
-
-
           lda temp1
           cmp # 2
           bne PositionThreePlayers
+          ;; Forward jump - label defined later in file
           jmp Position2PlayersWinScreen
 PositionThreePlayers:
+          ;; Forward jump - label defined later in file
           jmp Position3PlayersWinScreen
 
 LoadIdleSpriteWinScreen .proc

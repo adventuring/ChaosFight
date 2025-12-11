@@ -2700,9 +2700,9 @@ HGI_HandleRadishGoblinDown1 .proc
           ;; Returns: Far (return otherbank)
 
           ;; Cross-bank call to RadishGoblinHandleStickDown in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterRadishGoblinHandleStickDownLeftPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRadishGoblinHandleStickDownLeftPort-1)
           pha
           lda # >(RadishGoblinHandleStickDown-1)
           pha
@@ -2710,7 +2710,7 @@ HGI_HandleRadishGoblinDown1 .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterRadishGoblinHandleStickDownLeftPort:
 
 
           jmp StandardGuard
@@ -2720,9 +2720,9 @@ return_point:
 DCD_HandleRoboTitoDown1 .proc
 
           ;; Cross-bank call to RoboTitoDown in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterRoboTitoDownInput1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRoboTitoDownInput1-1)
           pha
           lda # >(RoboTitoDown-1)
           pha
@@ -2730,7 +2730,7 @@ DCD_HandleRoboTitoDown1 .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterRoboTitoDownInput1:
 
 
           lda temp2

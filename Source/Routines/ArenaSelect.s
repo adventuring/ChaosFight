@@ -885,9 +885,9 @@ DrawPlayer3Character:
           lda # 3
           sta temp1
           ;; Cross-bank call to PlayerPreviewSetPosition in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterPlayerPreviewSetPositionP3-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayerPreviewSetPositionP3-1)
           pha
           lda # >(PlayerPreviewSetPosition-1)
           pha
@@ -895,13 +895,13 @@ DrawPlayer3Character:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterPlayerPreviewSetPositionP3:
 
 
           ;; Cross-bank call to RenderPlayerPreview in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterRenderPlayerPreviewP3-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRenderPlayerPreviewP3-1)
           pha
           lda # >(RenderPlayerPreview-1)
           pha
@@ -909,7 +909,7 @@ return_point:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterRenderPlayerPreviewP3:
 
 
 ArenaSelectDoneDrawP23

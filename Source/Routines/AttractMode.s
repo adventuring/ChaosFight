@@ -36,9 +36,9 @@ AttractMode .proc
           ;; let gameMode = ModePublisherPrelude : gosub ChangeGameMode bank14
           lda # ModePublisherPrelude
           sta gameMode
-          lda # >(return_point-1)
+          lda # >(AfterChangeGameModeAttract-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterChangeGameModeAttract-1)
           pha
           lda # >(ChangeGameMode-1)
           pha
@@ -47,7 +47,7 @@ AttractMode .proc
           ldx # 13
           jmp BS_jsr
 
-return_point:
+AfterChangeGameModeAttract:
 
           rts
 

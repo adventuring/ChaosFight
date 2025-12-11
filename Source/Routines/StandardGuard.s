@@ -46,9 +46,9 @@ StandardGuard .proc
           ;; Check if guard is allowed (not in cooldown)
 
           ;; Cross-bank call to CheckGuardCooldown in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterCheckGuardCooldown-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCheckGuardCooldown-1)
           pha
           lda # >(CheckGuardCooldown-1)
           pha
@@ -57,7 +57,7 @@ StandardGuard .proc
           ldx # 5
           jmp BS_jsr
 
-return_point:
+AfterCheckGuardCooldown:
 
           ;; Guard blocked by cooldown
           lda temp2

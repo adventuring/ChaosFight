@@ -34,9 +34,9 @@ UpdateSoundEffectVoice1 .proc
 
           ;; Frame counter reached 0 - load next note from Sounds bank
           ;; Cross-bank call to LoadSoundNote1 in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterLoadSoundNoteVoice1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadSoundNoteVoice1-1)
           pha
           lda # >(LoadSoundNote1-1)
           pha
@@ -45,7 +45,7 @@ UpdateSoundEffectVoice1 .proc
           ldx # 14
           jmp BS_jsr
 
-return_point:
+AfterLoadSoundNoteVoice1:
 
           ;; LoadSoundNote1 will:
           ;; - Load 4-byte note from Sound_Voice0[pointer]: AUDCV,

@@ -81,9 +81,9 @@ DCD_HandleRoboTitoDown_HGI .proc
 
           ;; Note: RoboTitoDown may return early, so we need to handle that case
           ;; Cross-bank call to RoboTitoDown in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterRoboTitoDownGuard-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRoboTitoDownGuard-1)
           pha
           lda # >(RoboTitoDown-1)
           pha
@@ -92,7 +92,7 @@ DCD_HandleRoboTitoDown_HGI .proc
           ldx # 12
           jmp BS_jsr
 
-return_point:
+AfterRoboTitoDownGuard:
 
           jsr BS_return
 

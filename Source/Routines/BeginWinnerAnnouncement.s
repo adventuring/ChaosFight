@@ -126,9 +126,9 @@ LookupThemeSong:
 
           ;; Start winner’s character theme song
           ;; Cross-bank call to StartMusic in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterStartMusicWinner-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterStartMusicWinner-1)
           pha
           lda # >(StartMusic-1)
           pha
@@ -136,7 +136,7 @@ LookupThemeSong:
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterStartMusicWinner:
 
 
           jsr BS_return

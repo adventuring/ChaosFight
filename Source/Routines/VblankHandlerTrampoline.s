@@ -12,9 +12,9 @@ VblankHandlerTrampoline .proc
           ;; Uses batariBASIC’s cross-bank gosub mechanism
           ;; Note: VblankHandlerDispatcher is defined in VblankHandlers.bas in Bank 11
           ;; Cross-bank call to VblankHandlerDispatcher in bank 11
-          lda # >(return_point-1)
+          lda # >(AfterVblankHandlerDispatcher-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterVblankHandlerDispatcher-1)
           pha
           lda # >(VblankHandlerDispatcher-1)
           pha
@@ -22,7 +22,7 @@ VblankHandlerTrampoline .proc
           pha
                     ldx # 10
           jmp BS_jsr
-return_point:
+AfterVblankHandlerDispatcher:
 
 
           rts

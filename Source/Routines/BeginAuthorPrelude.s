@@ -36,9 +36,9 @@ BeginAuthorPrelude .proc
           lda # MusicInterworldly
           sta temp1
           ;; Cross-bank call to StartMusic in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterStartMusicAuthorPrelude-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterStartMusicAuthorPrelude-1)
           pha
           lda # >(StartMusic-1)
           pha
@@ -47,7 +47,7 @@ BeginAuthorPrelude .proc
           ldx # 14
           jmp BS_jsr
 
-return_point:
+AfterStartMusicAuthorPrelude:
 
 
           ;; Set window values for Author screen (Interworldly only)

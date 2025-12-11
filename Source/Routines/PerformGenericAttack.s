@@ -29,9 +29,9 @@ PerformGenericAttack .proc
           ;; Constraints: None
           ;; Spawn missile visual for this attack
           ;; Cross-bank call to SpawnMissile in bank 7
-          lda # >(return_point-1)
+          lda # >(AfterSpawnMissileGeneric-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSpawnMissileGeneric-1)
           pha
           lda # >(SpawnMissile-1)
           pha
@@ -40,7 +40,7 @@ PerformGenericAttack .proc
           ldx # 6
           jmp BS_jsr
 
-return_point:
+AfterSpawnMissileGeneric:
 
           ;; Set animation state to attacking
           ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted

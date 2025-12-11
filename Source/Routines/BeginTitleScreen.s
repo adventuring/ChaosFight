@@ -38,9 +38,9 @@ BeginTitleScreen .proc
           lda # MusicChaotica
           sta temp1
           ;; Cross-bank call to StartMusic in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterStartMusicTitle-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterStartMusicTitle-1)
           pha
           lda # >(StartMusic-1)
           pha
@@ -49,7 +49,7 @@ BeginTitleScreen .proc
           ldx # 14
           jmp BS_jsr
 
-return_point:
+AfterStartMusicTitle:
 
           ;; Set window values for Title screen (ChaosFight only)
           ;; OPTIMIZATION: Inlined to save call overhead (only used once)

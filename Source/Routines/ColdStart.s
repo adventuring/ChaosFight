@@ -100,9 +100,9 @@ sprite_init_return:
           ;; OPTIMIZATION: Call BeginPublisherPrelude directly to save 4 bytes
           ;; (skip ChangeGameMode dispatcher overhead)
           ;; Cross-bank call to BeginPublisherPrelude in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterBeginPublisherPrelude-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterBeginPublisherPrelude-1)
           pha
           lda # >(BeginPublisherPrelude-1)
           pha
@@ -111,7 +111,7 @@ sprite_init_return:
           ldx # 13
           jmp BS_jsr
 
-return_point:
+AfterBeginPublisherPrelude:
 
           ;; Step 5: Tail call to MainLoop
           jmp MainLoop

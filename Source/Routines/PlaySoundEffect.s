@@ -52,9 +52,9 @@ PlaySoundEffect .proc
 
           ;; Lookup sound pointer from Sounds bank (Bank15)
           ;; Cross-bank call to LoadSoundPointer in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterLoadSoundPointer-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadSoundPointer-1)
           pha
           lda # >(LoadSoundPointer-1)
           pha
@@ -63,7 +63,7 @@ PlaySoundEffect .proc
           ldx # 14
           jmp BS_jsr
 
-return_point:
+AfterLoadSoundPointer:
 
           ;; Try Voice 0 first
 

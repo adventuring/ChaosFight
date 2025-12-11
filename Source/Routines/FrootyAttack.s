@@ -257,9 +257,9 @@ SpawnProjectile:
           ;; Override missile lifetime with charge time (in frames)
 
           ;; Cross-bank call to SpawnMissile in bank 7
-          lda # >(return_point-1)
+          lda # >(AfterSpawnMissileFrooty-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSpawnMissileFrooty-1)
           pha
           lda # >(SpawnMissile-1)
           pha
@@ -267,7 +267,7 @@ SpawnProjectile:
           pha
                     ldx # 6
           jmp BS_jsr
-return_point:
+AfterSpawnMissileFrooty:
 
 
           ;; Charge is in 10 Hz ticks, convert to frames: charge × 6

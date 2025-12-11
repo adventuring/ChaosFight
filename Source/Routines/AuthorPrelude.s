@@ -138,9 +138,9 @@ AuthorPreludeComplete
           lda ModeTitle
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterChangeGameModeAuthorPrelude-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterChangeGameModeAuthorPrelude-1)
           pha
           lda # >(ChangeGameMode-1)
           pha
@@ -148,7 +148,7 @@ AuthorPreludeComplete
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterChangeGameModeAuthorPrelude:
 
 
           jsr BS_return

@@ -51,9 +51,9 @@ BeginPublisherPrelude .proc
           lda # MusicAtariToday
           sta temp1
           ;; Cross-bank call to StartMusic in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterStartMusicPublisher-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterStartMusicPublisher-1)
           pha
           lda # >(StartMusic-1)
           pha
@@ -62,7 +62,7 @@ BeginPublisherPrelude .proc
           ldx # 14
           jmp BS_jsr
 
-return_point:
+AfterStartMusicPublisher:
 
           ;; Set window values for Publisher screen (AtariAge logo + AtariAge text)
           ;; Window values are set once during setup, not every frame

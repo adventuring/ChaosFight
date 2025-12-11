@@ -1076,7 +1076,7 @@ CharacterSelectSkipFacing .proc
 
 .pend
 
-UpdateSoundEffects .proc
+UpdateSoundEffectsCharacterSelect .proc
 
           ;; Update sound effects (active sound effects need per-frame updates)
           ;; Cross-bank call to UpdateSoundEffect in bank 15

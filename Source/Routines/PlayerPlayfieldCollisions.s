@@ -440,7 +440,7 @@ IncrementRowCounter:
 
           jmp PFCS_SampleLoop
 
-
+.pend
 
 PFCS_Done:
           ;; Returns: Far (return otherbank)
@@ -449,8 +449,6 @@ PFCS_Done:
           sta temp4
 
           jmp BS_return
-
-.pend
 
 PF_CheckRowColumns .proc
 
@@ -479,9 +477,9 @@ PF_CheckRowColumns .proc
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadCenter-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadCenter-1)
           pha
           lda # >(PlayfieldRead-1)
           pha

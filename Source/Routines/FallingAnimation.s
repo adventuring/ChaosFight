@@ -52,6 +52,9 @@ FallingAnimation1:
           lda # 0
           sta fallFrame
 
+DonePlayer1MoveForward:
+          jmp DonePlayer1Move
+
 MovePlayer1:
 
 
@@ -63,7 +66,7 @@ MovePlayer1:
           tax
           lda playerCharacter,x
           cmp # NoCharacter
-          beq DonePlayer1Move
+          beq DonePlayer1MoveForward
           ;; targetY = target Y (24)
           lda # 0
           sta temp1
@@ -75,7 +78,7 @@ MovePlayer1:
           ;; 2-player mode: target × = 53
           lda # 53
           sta temp2
-          jmp Player1Target4P.Player1TargetDone
+          jmp Player1TargetDone
 
 
 Player1Target4P .proc
@@ -201,18 +204,8 @@ Player2Target4P .proc
           lda # 128
           sta temp2
 
-Player2TargetDone:
-          ;; Player 2 target calculation complete
-          ;; Returns: Far (return otherbank)
-          ;;
-          ;; Input: None (label only, no execution)
-          ;;
-          ;; Output: None (label only)
-          ;;
-          ;; Mutates: None
-          ;;
-          ;; Called Routines: None
-          ;; Constraints: Must be colocated with FallingAnimation1
+.pend
+
           lda # 24
           sta temp3
           ;; Cross-bank call to MovePlayerToTarget in bank 6

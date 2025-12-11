@@ -441,12 +441,15 @@ CalcElapsedFrames .proc
 
 
           ;; Check if in attack phase (first NoteAttackFrames frames)
-
-                    if temp4 < NoteAttackFrames then ApplyAttackEnvelope
+          ;; if temp4 < NoteAttackFrames then ApplyAttackEnvelope
+          lda temp4
+          cmp # NoteAttackFrames
+          bcs CheckDecayPhase
+          jmp ApplyAttackEnvelope
+CheckDecayPhase:
 
           ;; Check if in decay phase (last NoteDecayFrames frames)
-
-                    if temp3 <= NoteDecayFrames then ApplyDecayEnvelope
+          ;; if temp3 <= NoteDecayFrames then ApplyDecayEnvelope
           lda temp3
           sec
           sbc NoteDecayFrames
@@ -532,11 +535,6 @@ SetAUDV:
 
           rts
 
-          lda temp6
-          sta AUDV1
-
-          rts
-
 .pend
 
 ApplyDecayEnvelope .proc
@@ -610,12 +608,7 @@ SetAUDV:
 
           rts
 
-          lda temp6
-          sta AUDV1
-
-          rts
-
-.pend (no matching .proc)
+.pend
 
 UpdateMusicVoice0 .proc
 

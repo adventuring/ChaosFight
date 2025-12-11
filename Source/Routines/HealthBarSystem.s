@@ -27,13 +27,13 @@
 
           ;; count
 
-          bit patterns: 0-8 pixels filled from right to left
+          ;; Bit patterns: 0-8 pixels filled from right to left
 
           ;; Uses hardcoded thresholds
 
 
 
-          bit pattern table for 0-8 pixels (right-aligned fill)
+          ;; Bit pattern table for 0-8 pixels (right-aligned fill)
 
           ;; 0 pixels = %00000000, 1 pixel = %00000001, ..., 8 pixels =
 

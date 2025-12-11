@@ -63,7 +63,7 @@ MovePlayer1:
           tax
           lda playerCharacter,x
           cmp # NoCharacter
-          beq DonePlayer1MoveLabel
+          beq DonePlayer1Move
           ;; targetY = target Y (24)
           lda # 0
           sta temp1
@@ -124,9 +124,9 @@ Player1TargetDone:
 FallingAnimationPlayer1Return:
           ;; Increment fallComplete if player reached target
           lda temp4
-          beq DonePlayer1MoveLabel
+          beq DonePlayer1Move
           inc fallComplete
-DonePlayer1MoveLabel:
+DonePlayer1Move:
           ;; reached = 1 if reached target
           ;; Returns: Far (return otherbank)
           ;; Player 1 movement complete (skipped if not active)
@@ -160,7 +160,7 @@ SetPlayer2Target:
           ;; 2-player mode: target × = 107
           lda # 107
           sta temp2
-          jmp Player2TargetDone
+          jmp Player2TargetDone:
 
 .pend
 
@@ -210,9 +210,9 @@ Player2TargetDone
 AfterMovePlayerToTargetP1:
           ;; Increment fallComplete if player reached target
           lda temp4
-          beq DonePlayer1MoveLabel
+          beq DonePlayer1Move
           inc fallComplete
-DonePlayer1MoveLabel:
+DonePlayer1Move:
           jmp BS_return
 
 DonePlayer2Move:

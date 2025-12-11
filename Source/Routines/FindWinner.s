@@ -42,7 +42,7 @@ FindWinnerNextPlayer:
 
 .pend
 
-FW_next_label_1 .proc
+FindWinnerNoWinnerFound .proc
 
           ;; If no winner found (all eliminated), pick last eliminated
           lda winnerPlayerIndex_R

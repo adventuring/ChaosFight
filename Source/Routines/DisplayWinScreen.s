@@ -569,9 +569,9 @@ PositionThirdPlace:
           sta currentPlayer
           jsr LoadIdleSpriteWinScreen
 
-          jmp DWS_Hide3Player3Done
+          jmp Hide3Player3WinScreenDone
 
-DWS_Hide3Player3:
+Hide3Player3WinScreen:
           ;; Hide Player 3 (no 3rd place)
           ;; Returns: Far (return otherbank)
           ;;
@@ -593,7 +593,7 @@ DWS_Hide3Player3:
 
           jsr BS_return
 
-DWS_Hide3Player3Done:
+Hide3Player3WinScreenDone:
           ;; Hide Player 3 complete (label only)
           ;; Returns: Far (return otherbank)
           ;;
@@ -616,7 +616,7 @@ DWS_Hide3Player3Done:
 
 .pend
 
-DWS_HidePlayers123 .proc
+HidePlayers123WinScreen .proc
           ;; Helper: Hide players 1, 2, 3 (saves bytes by consolidating repeated code)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from DisplayWinScreen, so use return thisbank

@@ -167,9 +167,9 @@ TitleScreenComplete
           lda ModeCharacterSelect
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterChangeGameModeTitle-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterChangeGameModeTitle-1)
           pha
           lda # >(ChangeGameMode-1)
           pha
@@ -177,7 +177,7 @@ TitleScreenComplete
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterChangeGameModeTitle:
 
 
           jsr BS_return

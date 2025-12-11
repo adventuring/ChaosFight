@@ -59,7 +59,7 @@ PlayPublisherPreludeMusic:
           ldx # 14
           jmp BS_jsr
 
-return_point:
+AfterPlayMusicPublisherPrelude:
 
 
 .pend
@@ -457,7 +457,7 @@ VblankTransitionHandleFallBack
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadVblankTransition:
 
 
           lda temp3
@@ -847,7 +847,7 @@ VblankUpdateSprite_Bank2Dispatch
           pha
                     ldx # 1
           jmp BS_jsr
-return_point:
+AfterSetPlayerCharacterArtBank2Vblank:
 
 
           jmp VblankAnimationNextPlayer

@@ -777,7 +777,7 @@ CheckPlayfieldCollision:
           pha
                     ldx # 7
           jmp BS_jsr
-return_point:
+AfterMissileCollPF:
 
           ;; Issue #1188: Collision detected - check if should bounce or deactivate
           lda temp4
@@ -804,7 +804,7 @@ PlayfieldCollisionDone
           pha
                     ldx # 7
           jmp BS_jsr
-return_point:
+AfterCheckAllMissileCollisions:
 
           ;; Check if hit was found (temp4 ≠ MissileHitNotFound)
           lda temp4
@@ -842,11 +842,11 @@ HandleGuardBounce:
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterPlaySoundEffectBounce:
 
           ;; Invert X velocity (bounce back)
           ;; let temp6 = 0 - missileVelocityX[temp1]
-          lda 0
+          lda # 0
           sec
           sbc missileVelocityX
           sta temp6
@@ -1033,10 +1033,9 @@ ColumnInRange:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadMissile:
 
           ;; Default: no collision detected
-          jsr BS_return
           jsr BS_return
 CheckMissilePlayerCollision
           ;;
@@ -1454,7 +1453,7 @@ KnockbackDone
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterPlaySoundEffectHit:
 
 
           ;; Spawn damage indicator visual (handled inline)

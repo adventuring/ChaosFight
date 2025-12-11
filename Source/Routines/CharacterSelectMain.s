@@ -690,13 +690,13 @@ return_point:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSetPlayerLockedJoy1Done:
 
 
           ;; Cross-bank call to HandleCharacterSelectFire in bank 7
-          lda # >(return_point-1)
+          lda # >(AfterHandleCharacterSelectFireJoy1Done-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterHandleCharacterSelectFireJoy1Done-1)
           pha
           lda # >(HandleCharacterSelectFire-1)
           pha
@@ -704,7 +704,7 @@ return_point:
           pha
                     ldx # 6
           jmp BS_jsr
-return_point:
+AfterHandleCharacterSelectFireJoy1Done:
 
 
           rts

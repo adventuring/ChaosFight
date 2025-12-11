@@ -320,7 +320,7 @@ AnimationTransitionHandleFallBack
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadAnimationTransition:
 
           lda temp3
           sta temp2
@@ -742,7 +742,7 @@ UpdateSprite_Bank2Dispatch
           pha
                     ldx # 1
           jmp BS_jsr
-return_point:
+AfterSetPlayerCharacterArtBank2:
 
           jmp AnimationNextPlayer
 
@@ -771,7 +771,7 @@ UpdateSprite_Bank3Dispatch
           pha
                     ldx # 2
           jmp BS_jsr
-return_point:
+AfterSetPlayerCharacterArtBank3:
 
           jmp AnimationNextPlayer
 
@@ -800,7 +800,7 @@ UpdateSprite_Bank4Dispatch
           pha
                     ldx # 3
           jmp BS_jsr
-return_point:
+AfterSetPlayerCharacterArtBank4:
 
           jmp AnimationNextPlayer
 
@@ -829,7 +829,7 @@ UpdateSprite_Bank5Dispatch
           pha
                     ldx # 4
           jmp BS_jsr
-return_point:
+AfterSetPlayerCharacterArtBank5:
 
           jmp AnimationNextPlayer
 DoneAdvanceInlined
@@ -938,7 +938,7 @@ SetPlayerAnimation
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterLoadPlayerSprite:
 
 
           jsr BS_return
@@ -971,7 +971,7 @@ InitializeAnimationSystem
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterSetPlayerAnimationTransition:
 
 .pend
 
@@ -1128,7 +1128,7 @@ TransitionHandleFallBack
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadTransition:
 
           lda temp3
           sta temp2

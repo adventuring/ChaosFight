@@ -14,7 +14,7 @@ UpdatePlayerMovementSingle .proc
           ;; Notes: temp2-temp4 are clobbered; caller must not reuse them afterward.
           ;; 16-bit accumulator for proper carry detection
           ;; Skip if player is eliminated
-          jsr BS_return
+          jmp BS_return
           ;; Apply X Velocity To X Position (8.8 fixed-point)
           ;; Use batariBASIC’s built-in 16-bit addition for carry detection
           ;; let subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]         
@@ -111,7 +111,7 @@ NoYCarry:
           asl
           tax
           sta playerY,x
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

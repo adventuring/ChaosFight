@@ -53,7 +53,7 @@ SetPlayer4Active:
 
 UpdatePlayers34ActiveDone:
           ;; Returns: Far (return otherbank)
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

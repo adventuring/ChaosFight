@@ -167,7 +167,7 @@ SSP_NextParticipant .proc
           sta missile1height
           jsr SetSpritePositionsRenderMissiles
 
-          jsr BS_return
+          jmp BS_return
 
 SetSpritePositionsRenderMissiles:
           ;; Returns: Near (return thisbank)
@@ -277,7 +277,7 @@ RMF_CheckMissileActive:
 
 RMF_ReturnPoint:
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -292,7 +292,7 @@ RMF_MissileActive .proc
           lda temp2
           sta temp5
           jsr SSP_WriteMissileRegisters
-          jsr BS_return
+          jmp BS_return
 .pend
 
 SSP_WriteMissileRegisters .proc
@@ -388,13 +388,13 @@ RenderRoboTitoStretchMissile .proc
           ;; Constraints: Caller supplies participant/missile pairing so this
           ;; routine does not perform frame-parity dispatch.
                     if playerCharacter[temp1] = CharacterRoboTito then RRTM_CheckStretch
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
 RRTM_CheckStretch .proc
           ;; Returns: Far (return otherbank)
-          jsr BS_return
+          jmp BS_return
           ;; let temp3 = playerState[temp1]         
           lda temp1
           asl
@@ -417,7 +417,7 @@ RRTM_CheckStretch .proc
           jsr RRTM_ReadStretchHeight
 RRTM_CheckStretchActive:
 
-          jsr BS_return
+          jmp BS_return
 .pend
 
 RRTM_ReadStretchHeight .proc
@@ -427,11 +427,11 @@ RRTM_ReadStretchHeight .proc
           tax
           lda missileStretchHeight_R,x
           sta temp4
-          jsr BS_return
+          jmp BS_return
           lda temp2
           sta temp5
           jsr SSP_WriteStretchMissile
-          jsr BS_return
+          jmp BS_return
 .pend
 
 SSP_WriteStretchMissile .proc

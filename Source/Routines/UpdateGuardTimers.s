@@ -31,7 +31,7 @@ UpdateGuardTimersReturn:
 .pend
 
 UpdateGuardTimersDone .proc
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

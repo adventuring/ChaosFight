@@ -32,7 +32,7 @@ CheckFallDamage .proc
 CheckFallDamageImmunity:
 
           ;; Check for fall damage immunity (Frooty, DragonOfStorms)
-          jsr BS_return
+          jmp BS_return
 
           ;; Calculate safe fall velocity threshold
           ;; Formula: safe_velocity = 120 ÷ weight
@@ -49,7 +49,7 @@ CheckFallDamageImmunity:
           ;; Check if fall velocity exceeds safe threshold
 
           ;; Safe landing, no damage
-          jsr BS_return
+          jmp BS_return
 
           ;; Check if player is guarding - guard does NOT block fall
           ;; damage
@@ -283,7 +283,7 @@ StoreRecoveryFrames:
 AfterPlaySoundEffectFallDamage:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -314,7 +314,7 @@ CheckBernieStun .proc
           lda SafeFallVelocityThresholds,x
           sta temp3
           ;; Safe landing, no stun needed
-          jsr BS_return
+          jmp BS_return
 
           ;; Fall velocity exceeds threshold - trigger stun
           ;; Set stun timer to 1 second (frame-rate independent: 60fps NTSC, 50fps PAL/SECAM)
@@ -334,7 +334,7 @@ CheckBernieStun .proc
           sta temp3
           ;; Animation state 8 (Fallen down) << 4 = 128
                     let playerState[currentPlayer] = temp3 | ActionFallenDownShifted
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -375,9 +375,9 @@ FallDamageApplyGravity .proc
           sta currentCharacter
 
           ;; Check for no-gravity characters (Frooty, DragonOfStorms)
-          jsr BS_return
+          jmp BS_return
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Apply gravity (default 2, Harpy 1)
           lda # 2
@@ -402,7 +402,7 @@ ApplyGravityAcceleration:
           lda TerminalVelocity
           sta temp2
 FallDamageApplyGravityDone:
-          jsr BS_return
+          jmp BS_return
 
 CheckGroundCollision
           ;;
@@ -456,14 +456,14 @@ CheckGroundCollision
           lda playerY,x
           sta temp3
 
-          jsr BS_return
+          jmp BS_return
 
           lda currentPlayer
           asl
           tax
           lda 176
           sta playerY,x
-          jsr BS_return
+          jmp BS_return
 
           jmp CheckFallDamage
 
@@ -497,7 +497,7 @@ HandleFrootyVertical .proc
 HandleFrootyVerticalDone:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -541,7 +541,7 @@ FrootyFallDamage .proc
           lda 176
           sta playerY,x
 FrootyFallDamageDone:
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -574,7 +574,7 @@ HandleHarpySwoopAttack .proc
 HandleHarpySwoopAttackDone:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -664,7 +664,7 @@ SetVerticalMomentum .proc
 AfterSpawnMissileHarpy:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -702,7 +702,7 @@ DivideBy20 .proc
             lsr
             lsr
             sta temp2
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -714,13 +714,13 @@ DivideBy100 .proc
           ;;
           ;; OUTPUT: temp2 = quotient (0, 1, or 2)
           ;; Fast approximation for values 0-255
-          jsr BS_return
+          jmp BS_return
 
-          jsr BS_return
+          jmp BS_return
 
           lda # 0
           sta temp2
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -789,7 +789,7 @@ SetInfiniteFallDistance .proc
           lda InfiniteFallDista
 
           sta temp2
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -819,7 +819,7 @@ CalculateFallDistanceNormal .proc
           ;; let temp2 = temp2 * 2
 CalculateFallDistanceNormalDone:
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

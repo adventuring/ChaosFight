@@ -90,7 +90,7 @@ ShamoneAttackSpawnMissileReturn:
           and # MaskPlayerStateFlags
           ora # ActionAttackExecuteShifted
           sta playerState,x
-          jsr BS_return
+          jmp BS_return
 
 
 

@@ -226,7 +226,7 @@ RankNextWinScreen .proc
           jmp DWS_RankLoop
 PositionCharacters:
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -320,7 +320,7 @@ Position1PlayerWinScreen .proc
 
           jsr HidePlayers123WinScreen
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -408,7 +408,7 @@ Hide2PlayerWinScreenDone:
           ;; Constraints: Must be colocated with DisplayWinScreen
           jsr HidePlayers123WinScreen
 
-          jsr BS_return
+          jmp BS_return
 
 Hide2PlayerWinScreen:
           ;; Hide Player 2 (no runner-up)
@@ -525,7 +525,7 @@ Hide3Player2WinScreen:
           lda # 0
           sta playerX,x
 
-          jsr BS_return
+          jmp BS_return
 
 Hide3Player2WinScreenDone:
           ;; Hide Player 2 complete (label only)
@@ -591,7 +591,7 @@ Hide3Player3WinScreen:
           lda # 0
           sta playerX,x
 
-          jsr BS_return
+          jmp BS_return
 
 Hide3Player3WinScreenDone:
           ;; Hide Player 3 complete (label only)
@@ -612,7 +612,7 @@ Hide3Player3WinScreenDone:
           tax
           lda # 0
           sta playerX,x
-          jsr BS_return
+          jmp BS_return
 
 HidePlayers123WinScreen .proc
           ;; Helper: Hide players 1, 2, 3 (saves bytes by consolidating repeated code)
@@ -660,7 +660,7 @@ GetBWModeWinScreen .proc
           lda # 1
           sta temp2
 GetBWModeWinScreenDone:
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

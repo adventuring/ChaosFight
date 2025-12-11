@@ -119,7 +119,7 @@ CheckAutoAdvanceLabel:
 IncrementTimer:
 
           inc preambleTimer
-          jsr BS_return
+          jmp BS_return
 
 AuthorPreludeComplete
           ;; Transition to Title Screen mode
@@ -151,7 +151,7 @@ AuthorPreludeComplete
 AfterChangeGameModeAuthorPrelude:
 
 
-          jsr BS_return
+          jmp BS_return
           ;;
           ;; Bitmap Loading
           ;; Bitmap data is loaded automatically by titlescreen kernel

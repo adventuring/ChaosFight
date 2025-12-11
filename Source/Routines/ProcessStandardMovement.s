@@ -147,7 +147,7 @@ PSM_InlineDoneLeft:
 PSM_CheckRightJoy1 .proc
           ;; Right movement: set positive velocity
           ;; Returns: Far (return otherbank)
-          jsr BS_return
+          jmp BS_return
                     if playerCharacter[temp1] = CharacterFrooty then PSM_RightMomentum1
                     ;; let temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
@@ -247,7 +247,7 @@ PSM_InlineDoneRight1
                     let playerState[temp1] = playerState[temp1] | 1
 PSM_InlineDoneRight1:
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -378,7 +378,7 @@ PSM_InlineDoneLeft:
 PSM_CheckRightJoy0 .proc
           ;; Right movement: set positive velocity
           ;; Returns: Far (return otherbank)
-          jsr BS_return
+          jmp BS_return
                     if playerCharacter[temp1] = CharacterFrooty then PSM_RightMomentum0
                     ;; let temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
@@ -478,7 +478,7 @@ PSM_InlineDoneRight0
                     let playerState[temp1] = playerState[temp1] | 1
 PSM_InlineDoneRight1:
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

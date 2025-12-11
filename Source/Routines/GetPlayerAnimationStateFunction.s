@@ -18,5 +18,5 @@ GetPlayerAnimationStateFunction:
           lda playerState,x
           sta temp2
           ;; (0-15)
-          jsr BS_return
+          jmp BS_return
 

@@ -71,7 +71,7 @@ WarmStart .proc
 
 AfterChangeGameModeReset:
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Reset complete - return to MainLoop which will dispatch to
           ;; new mode
@@ -128,7 +128,7 @@ Player1PauseDone
           ;; Returns: Far (return otherbank)
           ;; HandleConsoleSwitches is called cross-bank, so must use return otherbank
           ;; MainLoop)
-          jsr BS_return
+          jmp BS_return
 
 DonePlayer1Pause
           lda # 1
@@ -171,7 +171,7 @@ Player2PauseDone
           ;; Returns: Far (return otherbank)
           ;; HandleConsoleSwitches is called cross-bank, so must use return otherbank
           ;; MainLoop)
-          jsr BS_return
+          jmp BS_return
 
 DonePlayer2Pause
           ;; Color/B&W switch - re-detect controllers when toggled
@@ -208,7 +208,7 @@ Check7800Pause .proc
           ;; This function is a placeholder for future 7800-specific pause handling.
           ;;
           ;; Constraints: NTSC/PAL only (not SECAM)
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -406,7 +406,7 @@ CheckColorBWToggleDone:
           ;; (NTSC/PAL only, not SECAM)
           ;; CRITICAL: CheckColorBWToggle is called from HandleConsoleSwitches which is
           ;; called cross-bank, so this return must be return otherbank
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -429,7 +429,7 @@ ReloadArenaColorsNow .proc
 AfterReloadArenaColors:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

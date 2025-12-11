@@ -30,7 +30,7 @@ UpdateSoundEffectVoice1 .proc
           sta temp5
           lda temp5
           sta soundEffectFrame1_W
-          jsr BS_return
+          jmp BS_return
 
           ;; Frame counter reached 0 - load next note from Sounds bank
           ;; Cross-bank call to LoadSoundNote1 in bank 15
@@ -56,7 +56,7 @@ AfterLoadSoundNoteVoice1:
           ;; - Advance SoundEffectPointer1 by 4 bytes
           ;; - Handle end-of-sound: set soundEffectPointer1 = 0, AUDV1
           ;; = 0, free voice
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

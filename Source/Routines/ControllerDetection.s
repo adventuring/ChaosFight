@@ -91,7 +91,7 @@ CDP_MergeStatus .proc
           lda controllerStatus
           ora temp2
           sta controllerStatus
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

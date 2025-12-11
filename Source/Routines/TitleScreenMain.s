@@ -147,7 +147,7 @@ AfterUpdateCharacterParade:
           ;; CRITICAL: Do NOT call DrawTitleScreen here - MainLoopDrawScreen (MainLoop.bas line 139)
           ;; handles per-frame drawing. Calling it here would cause stack overflow (16-byte limit).
           ;; TitleScreenMain is always called via MainLoop, so MainLoopDrawScreen will handle drawing.
-          jsr BS_return
+          jmp BS_return
 
 TitleScreenComplete
           ;; Transition to character select
@@ -180,7 +180,7 @@ TitleScreenComplete
 AfterChangeGameModeTitle:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend (no matching .proc)
 

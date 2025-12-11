@@ -37,7 +37,7 @@ BudgetedCollisionCheck:
           jsr CheckCollisionP1vsP2
 
           ;; Skip other checks if not Quadtari
-          jsr BS_return
+          jmp BS_return
 
           ;; Check additional pairs based on frame phase
           lda framePhase
@@ -64,38 +64,38 @@ BPC_CheckPhase1:
 
 BPC_CheckPhase2:
 
-          jsr BS_return
+          jmp BS_return
 
 BPC_Phase0 .proc
-          jsr BS_return
+          jmp BS_return
 
           jsr CheckCollisionP1vsP3
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
 BPC_Phase1 .proc
           jsr CheckCollisionP1vsP4
 
-          jsr BS_return
+          jmp BS_return
 
           jsr CheckCollisionP2vsP3
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
 BPC_Phase2 .proc
           jsr CheckCollisionP2vsP4
 
-          jsr BS_return
+          jmp BS_return
 
-          jsr BS_return
+          jmp BS_return
 
           jsr CheckCollisionP3vsP4
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Input: temp3 = player 1 index, temp4 = player 2 index
           ;; Output: separates players if collision detected

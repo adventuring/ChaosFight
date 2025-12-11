@@ -47,7 +47,7 @@ ProcessAttackInput .proc
 
           ;; Block attack input during attack windup/execute/recovery
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Check if player is guarding - guard blocks attacks
 
@@ -60,7 +60,7 @@ ProcessAttackInput .proc
 
           ;; Guarding - block attack input
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Determine which joy port to use based on player index
 
@@ -76,7 +76,7 @@ ProcessAttackInput .proc
           jmp PAI_UseJoy0
 
 PAI_UseJoy1:
-          jsr BS_return
+          jmp BS_return
 
           jmp PAI_ExecuteAttack
 
@@ -89,7 +89,7 @@ PAI_UseJoy0 .proc
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -98,7 +98,7 @@ PAI_UseJoy0 .proc
 PAI_ExecuteAttack .proc
           ;; Returns: Far (return otherbank)
 
-          jsr BS_return
+          jmp BS_return
 
           ;; let temp4 = playerCharacter[temp1]         
           lda temp1
@@ -121,7 +121,7 @@ PAI_ExecuteAttack .proc
 AfterDispatchCharacterAttack:
 
 
-          jsr BS_return
+          jmp BS_return
 
 
 

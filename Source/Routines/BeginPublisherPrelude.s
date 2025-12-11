@@ -77,7 +77,7 @@ AfterStartMusicPublisher:
           ;; let titlescreenWindow4 = 0  ; BRP hidden
           lda # 0
           sta titlescreenWindow4
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

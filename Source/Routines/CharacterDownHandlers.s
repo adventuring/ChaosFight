@@ -108,7 +108,7 @@ CheckRowBelow:
           ;; Check if at or beyond bottom row
 
           ;; At bottom, cannot move down
-          jsr BS_return
+          jmp BS_return
 
           ;; Check if playfield pixel is clear
 
@@ -148,7 +148,7 @@ BlockedCannotMoveDown:
 
           ;; Blocked, cannot move down
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -171,7 +171,7 @@ BlockedCannotMoveDown:
           ;; Ensure guard bit clear
 
                     let playerState[temp1] = playerState[temp1] & !2
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -397,7 +397,7 @@ CheckRowBelowHarpy:
           ;; Check if at or beyond bottom row
 
           ;; At bottom, cannot move down
-          jsr BS_return
+          jmp BS_return
 
           ;; Check if playfield pixel is clear
 
@@ -440,7 +440,7 @@ AfterPlayfieldReadHarpy:
 
           ;; Blocked, cannot move down
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Clear below - apply downward velocity impulse
 
@@ -461,7 +461,7 @@ AfterPlayfieldReadHarpy:
           ;; Ensure guard bit clear
 
           let playerState[temp1] = playerState[temp1] & !2
-          jsr BS_return
+          jmp BS_return
 
 BlockedCannotMoveDownHarpy:
           lda temp6
@@ -469,7 +469,7 @@ BlockedCannotMoveDownHarpy:
 
           ;; Blocked, cannot move down
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -580,7 +580,7 @@ CheckRowBelowFrooty:
           ;; Check if at or beyond bottom row
 
           ;; At bottom, cannot move down
-          jsr BS_return
+          jmp BS_return
 
           ;; Check if playfield pixel is clear
 
@@ -620,7 +620,7 @@ BlockedCannotMoveDown:
 
           ;; Blocked, cannot move down
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -643,7 +643,7 @@ BlockedCannotMoveDown:
           ;; Ensure guard bit clear
 
                     let playerState[temp1] = playerState[temp1] & !2
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -681,7 +681,7 @@ RoboTitoDown .proc
 RoboTitoInitiateDrop:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -728,7 +728,7 @@ RoboTitoVoluntaryDrop .proc
           lda 0
           sta missileStretchHeight_W,x
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -756,7 +756,7 @@ RoboTitoVoluntaryDrop .proc
           ;; Set jumping bit
 
                     let playerState[temp1] = playerState[temp1] | 4
-          jsr BS_return
+          jmp BS_return
 
           ;; StandardGuard is in Bank 12 (same bank as HandleGuardInput)
 

@@ -263,9 +263,9 @@ SetPlayer3Color:
           lda playerState,x
           sta temp3
           ;; Cross-bank call to LoadCharacterColors in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterLoadCharacterColorsP3-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadCharacterColorsP3-1)
           pha
           lda # >(LoadCharacterColors-1)
           pha
@@ -310,9 +310,9 @@ Player3ReflectionDone:
           lda # 0
           sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterLoadCharacterSpriteP3-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadCharacterSpriteP3-1)
           pha
           lda # >(LoadCharacterSprite-1)
           pha
@@ -379,9 +379,9 @@ SetPlayer4Color:
           lda playerState,x
           sta temp3
           ;; Cross-bank call to LoadCharacterColors in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterLoadCharacterColorsP4-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadCharacterColorsP4-1)
           pha
           lda # >(LoadCharacterColors-1)
           pha
@@ -425,9 +425,9 @@ Player4ReflectionDone:
           lda # 0
           sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterLoadCharacterSpriteP4-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadCharacterSpriteP4-1)
           pha
           lda # >(LoadCharacterSprite-1)
           pha
@@ -440,7 +440,7 @@ AfterLoadCharacterSpriteP4:
 
 DonePlayer4Sprite
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

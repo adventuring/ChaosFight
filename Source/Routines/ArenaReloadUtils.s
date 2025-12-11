@@ -94,7 +94,7 @@ LoadColorColors:
           jmp BS_jsr
 AfterLoadArenaColorsColor:
 
-          jsr BS_return
+          jmp BS_return
 .pend
 
 LoadBWColorsArenaReload .proc
@@ -104,7 +104,7 @@ LoadBWColorsArenaReload .proc
             sta pfcolortable
             lda # >ArenaColorsBW
             sta pfcolortable + 1
-          jsr BS_return
+          jmp BS_return
 
 
 

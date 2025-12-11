@@ -69,7 +69,7 @@ CheckPlayer2Joy:
 CheckJoy1:
 
 
-          jsr BS_return
+          jmp BS_return
 
           lda # 1
           sta temp2
@@ -116,7 +116,7 @@ HCSF_CheckJoy0 .proc
 
           ;; Players 0,2 use joy0
 
-          jsr BS_return
+          jmp BS_return
 
           lda # 1
           sta temp2
@@ -228,7 +228,7 @@ AfterSetPlayerLockedNormal:
 AfterPlaySoundEffectNormal:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -295,7 +295,7 @@ AfterSetPlayerLockedHandicap:
 AfterPlaySoundEffectHandicap:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -374,7 +374,7 @@ AfterPlaySoundEffectRandom:
 
           ;; until roll succeeds
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

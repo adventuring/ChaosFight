@@ -64,7 +64,7 @@ AfterCheckGuardCooldown:
           cmp # 0
           bne ActivateGuard
 
-          jsr BS_return
+          jmp BS_return
 
 ActivateGuard:
 
@@ -81,7 +81,7 @@ ActivateGuard:
           lda # GuardTimerMaxFrames
           sta playerTimers_W,x
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

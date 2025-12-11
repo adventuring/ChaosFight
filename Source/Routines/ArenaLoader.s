@@ -96,7 +96,7 @@ LA_LoadBWColors .proc
           ;; Load B&W color table (shared routine)
           ;; Returns: Far (return otherbank)
           jsr LoadArenaColorsBW
-          jsr BS_return
+          jmp BS_return
 .pend
 
 LA_LoadColorColors .proc
@@ -129,7 +129,7 @@ AdvanceArenaColorPointer:
 
 SetArenaColorPointerDone:
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -232,13 +232,13 @@ LoadArenaColorsColor:
           jmp BS_jsr
 AfterLoadArenaColorsColorRandom:
 
-          jsr BS_return
+          jmp BS_return
 .pend
 
 LAR_LoadBWColors .proc
           ;; Load B&W color table (shared routine)
           ;; Returns: Far (return otherbank)
           jsr LoadArenaColorsBW
-          jsr BS_return
+          jmp BS_return
 .pend
 

@@ -55,7 +55,7 @@ BeginArenaSelect .proc
           ;; Background: black (COLUBK starts black, no need to set)
 
           ;; Playfield layout is static; ArenaSelect renders via playfield data
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

@@ -377,7 +377,7 @@ AfterSetPlayerSpritesFalling:
 
 
           ;; drawscreen called by MainLoop
-          jsr BS_return
+          jmp BS_return
 
 FallingComplete1
           ;; All players have reached row 2 positions
@@ -433,7 +433,7 @@ AfterBeginGameLoop:
 AfterChangeGameModeFalling:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

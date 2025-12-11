@@ -55,7 +55,7 @@ PlayfieldRead .proc
 ReadZero:
           sta temp1
           ; Store result
-          jsr BS_return
+          jmp BS_return
 
           ;; Bit mask lookup table for playfield column bits
           ;; TODO: #1311 ifndef BitMask

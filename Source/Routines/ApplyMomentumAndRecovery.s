@@ -311,7 +311,7 @@ ApplyMomentumAndRecoveryComplete:
           
           ;; Re-enable smart branching optimization
           ;; smartbranching on
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

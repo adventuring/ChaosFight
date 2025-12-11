@@ -30,7 +30,7 @@ PlayerNotEliminated:
           sta temp2
 
 IsEliminatedDone:
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

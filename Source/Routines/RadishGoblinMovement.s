@@ -21,7 +21,7 @@ RadishGoblinHandleInput .proc
 
           ;; Determine joy port (temp1 & 2 = 0 for players 0,2 use joy0)
 
-          jsr BS_return
+          jmp BS_return
 
           ;; if temp1 & 2 = 0 then goto CheckJoy0RadishGoblin
           lda joy1left
@@ -258,7 +258,7 @@ RadishGoblinHandleStickDown .proc
           lda 0
           sta playerVelocityYL,x
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -275,7 +275,7 @@ RadishGoblinCheckGroundBounce .proc
           lda currentPlayer
           sta temp1
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Convert × to playfield column
 
@@ -653,9 +653,9 @@ RadishGoblinCheckWallBounce .proc
 
           ;; Input: currentPlayer = player index (0-3) (global)
 
-          jsr BS_return
+          jmp BS_return
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -669,7 +669,7 @@ RadishGoblinHandleStickDownRelease .proc
 
           ;; Input: temp1 = player index (0-3)
 
-          jsr BS_return
+          jmp BS_return
 
                     let playerVelocityY[temp1] = 0 - RadishGoblinBounceShort
           lda temp1
@@ -685,7 +685,7 @@ RadishGoblinHandleStickDownRelease .proc
           lda 0
           sta radishGoblinBounceState_W,x
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

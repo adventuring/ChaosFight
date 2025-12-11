@@ -97,7 +97,7 @@ UpdateCharacterParade .proc
 
           ;; Start parade after ~4 seconds (TitleParadeDelayFrames frames)
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -167,7 +167,7 @@ Roll .proc
           lda # 1
           sta titleParadeActive
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -210,7 +210,7 @@ MoveParadeCharacter .proc
 UpdateCharacterParadeDone:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -256,7 +256,7 @@ ParadeCharacterLeft .proc
           sta titleParadeTimer
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -369,7 +369,7 @@ DrawParadeCharacterSprite .proc
 AfterLoadCharacterSpriteParade:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

@@ -205,6 +205,6 @@ DonePlayer4Init
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with BeginFallingAnimation
-          jsr BS_return
+          jmp BS_return
 
 

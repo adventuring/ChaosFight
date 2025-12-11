@@ -196,7 +196,7 @@ ColumnInRange:
           cmp # 0
           bne CheckCeilingPixel
 
-          jmp RoboTitoLatchUpAction
+          jmp PUA_RoboTitoLatch
 
 CheckCeilingPixel:
 

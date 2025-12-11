@@ -68,7 +68,7 @@ AfterStartMusicAuthorPrelude:
           ;; BeginAuthorPrelude is called cross-bank from SetupAuthorPrelude
           ;; (gosub BeginAuthorPrelude bank14 forces BS_jsr even though same bank)
           ;; so it must return with return otherbank to match
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

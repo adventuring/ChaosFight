@@ -92,9 +92,9 @@ LocateCharacterArt .proc
 
           ;; CRITICAL: Guard against calling bank 2 when no characters on screen
           ;; Handle special sprite cases first (these are safe and don’t need bank dispatch)
-          jsr BS_return
-          jsr BS_return
-          jsr BS_return
+          jmp BS_return
+          jmp BS_return
+          jmp BS_return
           ;; Save original character index in temp6
 
           lda temp1
@@ -225,7 +225,7 @@ Bank2Dispatch
 AfterSetPlayerCharacterArtBank2:
 
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -302,7 +302,7 @@ Bank3Dispatch
 SLCAB3_return_point:
 
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -379,7 +379,7 @@ Bank4Dispatch
 SLCAB4_return_point:
 
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -456,7 +456,7 @@ SLCAB5_Bank5Dispatch:
 SLCAB5_return_point:
 
 
-          jsr BS_return
+          jmp BS_return
 
 
 

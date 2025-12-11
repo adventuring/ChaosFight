@@ -35,7 +35,7 @@ HandleDownPressedGuardInput .proc
           tax
           lda playerCharacter,x
           sta temp4
-          jsr BS_return
+          jmp BS_return
 
           lda temp4
           cmp # 2
@@ -94,7 +94,7 @@ HandleRoboTitoDownGuardInput .proc
 
 AfterRoboTitoDownGuard:
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Same-bank call (both in Bank 12) - saves 2 bytes vs cross-bank
           jmp StandardGuard
@@ -111,7 +111,7 @@ CheckGuardReleaseGuardInput .proc
           lda playerState,x
           sta temp2
           ;; Not guarding, nothing to do
-          jsr BS_return
+          jmp BS_return
 
           ;; Stop guard early and start cooldown
           let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
@@ -121,7 +121,7 @@ CheckGuardReleaseGuardInput .proc
           tax
           lda # GuardTimerMaxFrames
           sta playerTimers_W,x
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

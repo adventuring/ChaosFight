@@ -75,7 +75,7 @@ UpdateCooldownTimer:
           sta playerTimers_W,x
 
 NoCooldownActive:
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -123,7 +123,7 @@ SkipExpiredCheck:
           jmp GuardTimerExpired
 GuardTimerStillActive:
 
-          jsr BS_return
+          jmp BS_return
 .pend
 
 GuardTimerExpired .proc
@@ -152,7 +152,7 @@ GuardTimerExpired .proc
           tax
           lda GuardTimerMaxFrames
           sta playerTimers_W,x
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

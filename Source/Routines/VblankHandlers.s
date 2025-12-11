@@ -26,7 +26,7 @@ VblankHandlerDispatcher .proc
           ;; Execution continues at ongosub0 label
           jmp VblankHandlerDone
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -1322,7 +1322,7 @@ VblankHandlerDone
           ;; Vblank handler complete
           ;; Returns: Far (return otherbank)
           ;; Called via cross-bank call from VblankHandlerTrampoline, so must use return otherbank
-          jsr BS_return
+          jmp BS_return
           ;; Note: vblank_bB_code constant is defined in Bank15.s pointing to VblankHandlerTrampoline
           ;; The trampoline calls this dispatcher via cross-bank call
 

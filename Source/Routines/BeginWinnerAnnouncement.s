@@ -139,7 +139,7 @@ LookupThemeSong:
 AfterStartMusicWinner:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

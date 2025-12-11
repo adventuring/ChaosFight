@@ -11,7 +11,7 @@ DispatchCharacterAttack .proc
 
           ;; Direct cross-bank gotos route to character-specific logic
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -187,7 +187,7 @@ DispatchCharacterAttackDone:
 
 
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -327,6 +327,6 @@ CEJB_Done
           ;; Enhanced jump button check complete
           ;; Returns: Far (return otherbank)
 
-          jsr BS_return
+          jmp BS_return
 .pend
 

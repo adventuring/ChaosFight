@@ -40,7 +40,7 @@ LoadSoundNote1 .proc
           sta temp5
 
           ;; Check for end of sound (Duration = 0)
-          jsr BS_return
+          jmp BS_return
 
           ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           ;; AUDCV
@@ -75,7 +75,7 @@ LoadSoundNote1 .proc
           adc # 4
           sta soundEffectPointer1
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

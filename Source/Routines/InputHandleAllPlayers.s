@@ -170,7 +170,7 @@ InputDonePlayer1Input
           ;; Player 1 uses Joy1
           ;; Returns: Far (return otherbank)
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -350,7 +350,7 @@ InputDonePlayer4Input
           ;; Switch back to even frame
 
           qtcontroller = 0
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

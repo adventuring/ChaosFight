@@ -320,7 +320,7 @@ SetMissileLifetime:
 
 FrootyChargeDone
           ;; Returns: Far (return otherbank)
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

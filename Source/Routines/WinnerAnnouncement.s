@@ -58,7 +58,7 @@ DisplayWinScreen:
 
 AfterDisplayWinScreen:
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -92,7 +92,7 @@ WinnerAdvanceToCharacterSelect .proc
 AfterChangeGameModeWinner:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

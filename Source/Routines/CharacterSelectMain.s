@@ -153,7 +153,7 @@ CheckJoy0CharacterSelect .proc
 HandleCharacterSelectCycle:
 
 
-          jsr BS_return
+          jmp BS_return
 
           jmp HandleCharacterSelectCycle
 
@@ -181,7 +181,7 @@ CheckJoy0LeftCharacterSelect .proc
 
           ;; Constraints: Must be colocated with HandleCharacterSelectCycle
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -207,7 +207,7 @@ CheckJoy1LeftCharacterSelect .proc
 
           ;; Constraints: Must be colocated with HandleCharacterSelectCycle
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -525,7 +525,7 @@ AfterSetPlayerLocked:
 AfterPlaySoundEffectNav:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -762,7 +762,7 @@ AfterGetPlayerLockedRender:
 AfterSelectDrawScreen:
 
 
-          jsr BS_return
+          jmp BS_return
 
           ;;
           ;; Random Character Roll Handler
@@ -841,7 +841,7 @@ CharacterSelectRollRandomPlayerReroll .proc
 
           ;; Valid roll - character ID updated, but not locked
 
-          jsr BS_return
+          jmp BS_return
 
           lda currentPlayer
           asl
@@ -849,7 +849,7 @@ CharacterSelectRollRandomPlayerReroll .proc
           lda temp2
           sta playerCharacter,x
 
-          jsr BS_return
+          jmp BS_return
 
 CharacterSelectRollsDone
 
@@ -1031,7 +1031,7 @@ CharacterSelectReadyDone
 AfterUpdateSoundEffect:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

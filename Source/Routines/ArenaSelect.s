@@ -503,7 +503,7 @@ AfterUpdateSoundEffect:
 
 
           ;; drawscreen called by MainLoop
-          jsr BS_return
+          jmp BS_return
 
 CheckQuadtariFireHold
           ;; Check Player 3 and 4 fire buttons (Quadtari)
@@ -531,7 +531,7 @@ CheckQuadtariFireHold
           lda 1
           sta temp1
 CheckQuadtariFireHoldDone:
-          jsr BS_return
+          jmp BS_return
 
 ReturnToCharacterSelect
           Return to Character Select screen
@@ -565,7 +565,7 @@ ReturnToCharacterSelect
 AfterChangeGameModeReturnToCharacterSelect:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -598,7 +598,7 @@ StartGame1 .proc
 AfterChangeGameModeStartGame:
 
 
-          jsr BS_return
+          jmp BS_return
           ;;
           ;; Character Display and Animation
 
@@ -915,7 +915,7 @@ AfterRenderPlayerPreviewP3:
 ArenaSelectDoneDrawP23
           ;; Skip Player 3/4 character drawing (not in 4-player mode or
           ;; not selected)
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

@@ -19,7 +19,7 @@ UpdateCharacterAnimations:
           ;; Calls: UpdatePlayerAnimation (bank10), LoadPlayerSprite (bank16)
           ;; Constraints: None
           ;; CRITICAL: Skip sprite loading in Publisher Prelude and Author Prelude modes (no characters)
-          jsr BS_return
+          jmp BS_return
           ;; UCA_quadtariActive uses temp5 directly (no dim needed)
           lda controllerStatus
           and # SetQuadtariDetected
@@ -839,7 +839,7 @@ AnimationNextPlayer:
 .pend
 
 Anim_next_label_1:.proc
-          jsr BS_return
+          jmp BS_return
 SetPlayerAnimation
           ;; Returns: Far (return otherbank)
 SetPlayerAnimation
@@ -877,7 +877,7 @@ SetPlayerAnimation
           ;; Called Routines: LoadPlayerSprite (bank16) - loads
           ;; character sprite graphics
           ;; Constraints: None
-          jsr BS_return
+          jmp BS_return
 
           ;; SCRAM write to currentAnimationFrame_W
           lda currentPlayer
@@ -911,9 +911,9 @@ SetPlayerAnimation
           tax
           lda playerCharacter,x
           sta temp1
-          jsr BS_return
-          jsr BS_return
-          jsr BS_return
+          jmp BS_return
+          jmp BS_return
+          jmp BS_return
           ;; Set up parameters for LoadPlayerSprite
           ;; SCRAM read: Read from r081 (we just wrote 0, so this is 0)
           lda # 0
@@ -941,7 +941,7 @@ SetPlayerAnimation
 AfterLoadPlayerSprite:
 
 
-          jsr BS_return
+          jmp BS_return
 
 InitializeAnimationSystem
           ;; Initialize animation system for all players
@@ -976,7 +976,7 @@ AfterSetPlayerAnimationTransition:
 .pend
 
 HandleAnimationTransition .proc
-          jsr BS_return
+          jmp BS_return
           ;; Returns: Far (return thisbank)
           ;; let temp1 = currentAnimationSeq_R[currentPlayer]
          
@@ -1004,7 +1004,7 @@ TransitionLoopAnimation
           tax
           lda 0
           sta currentAnimationFrame_W,x
-          jsr BS_return
+          jmp BS_return
 TransitionToIdle
           lda ActionIdle
           sta temp2
@@ -1163,7 +1163,7 @@ HandleAttackTransition
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-          jsr BS_return
+          jmp BS_return
           ;; let temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
           lda temp1
           sec
@@ -1176,7 +1176,7 @@ HandleAttackTransition
           sta temp1
 
           jmp HandleWindupEnd
-          jsr BS_return
+          jmp BS_return
 HandleWindupEnd
           ;; let temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
@@ -1220,7 +1220,7 @@ HandleExecuteEnd
           tax
           lda playerCharacter,x
           sta temp1
-          jsr BS_return
+          jmp BS_return
           lda temp1
           cmp # 6
           bne GetExecuteNextActionHandle
@@ -1244,7 +1244,7 @@ GetExecuteNextActionHandle:
           tax
           lda CharacterExecuteNextAction,x
           sta temp2
-          jsr BS_return
+          jmp BS_return
           jmp SetPlayerAnimation
 
 .pend

@@ -50,7 +50,7 @@ LoadCharacterColors .proc
           ;; Guard state takes priority over hurt sta
 
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -77,7 +77,7 @@ ApplyHurtColor:
           sta temp6
           .fi
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -96,7 +96,7 @@ NormalColorState .proc
           lda PlayerColors12,x
           sta temp6
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

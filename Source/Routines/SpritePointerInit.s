@@ -78,7 +78,7 @@ InitializeSpritePointers .proc
           ;; InitializeSpritePointers is called both same-bank (from ColdStart bank14)
           and cross-bank (from BeginGameLoop bank11). Since it’s called cross-bank,
           ;; it must always use return otherbank per the fundamental rule.
-          jsr BS_return
+          jmp BS_return
 
 
 .pend

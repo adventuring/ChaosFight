@@ -56,7 +56,7 @@ AfterUpdateSoundEffectVoice0:
 
 AfterUpdateSoundEffectVoice1:
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

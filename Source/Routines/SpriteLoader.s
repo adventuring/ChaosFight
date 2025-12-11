@@ -85,7 +85,7 @@ AfterCopyGlyphToPlayerBank16Second:
 AfterLocateCharacterArt:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -248,7 +248,7 @@ LoadPlayerSprite_Bank2Dispatch
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank2:
 
-          jsr BS_return
+          jmp BS_return
 
 LoadPlayerSprite_Bank3Dispatch
           ;; Bank 3: Characters 8-15 (bank-relative 0-7)
@@ -279,7 +279,7 @@ LoadPlayerSprite_Bank3Dispatch
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank3:
 
-          jsr BS_return
+          jmp BS_return
 
 LoadPlayerSprite_Bank4Dispatch
           ;; Bank 4: Characters 16-23 (bank-relative 0-7)
@@ -310,7 +310,7 @@ LoadPlayerSprite_Bank4Dispatch
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank4:
 
-          jsr BS_return
+          jmp BS_return
 
 LoadPlayerSprite_Bank5Dispatch
           ;; Bank 5: Characters 24-31 (bank-relative 0-7)
@@ -341,7 +341,7 @@ LoadPlayerSprite_Bank5Dispatch
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank5:
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

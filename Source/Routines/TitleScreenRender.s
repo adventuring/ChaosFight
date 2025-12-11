@@ -122,7 +122,7 @@ AfterDrawParadeCharacter:
           ;; titledrawscreen is defined in Source/TitleScreen/asm/titlescreen.s
           ;; Kernel uses titlescreenWindow1-4 runtime variables to select bitmaps
             jsr titledrawscreen
-          jsr BS_return
+          jmp BS_return
           ;;
           ;; Load Title Bitmap
           ;; Loads the ChaosFight title bitmap data for titlescreen
@@ -135,7 +135,7 @@ AfterDrawParadeCharacter:
 .pend
 
 LoadTitleBitmap .proc
-          jsr BS_return
+          jmp BS_return
           ;; Configure titlescreen kernel to show Title (ChaosFight)
           ;; Returns: Far (return otherbank)
           ;; bitmap

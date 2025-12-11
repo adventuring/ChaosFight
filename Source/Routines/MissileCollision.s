@@ -82,7 +82,7 @@ CheckAllMissileCollisions:
 
           ;; No active missile
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -238,7 +238,7 @@ CheckVisibleMissileCollision
           ;; let cachedHitboxBottom_W = cachedHitboxTop_R + temp6
           jsr CheckPlayersAgainstCachedHitbox
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -371,7 +371,7 @@ CheckBernieAOE .proc
 
           jsr CheckPlayersAgainstCachedHitbox
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -379,7 +379,7 @@ CheckBernieAOE .proc
 
           jsr CheckPlayersAgainstCachedHitbox
 
-          jsr BS_return
+          jmp BS_return
 
 
 .pend
@@ -448,7 +448,7 @@ Right:
 
           jsr CheckPlayersAgainstCachedHitbox
 
-          jsr BS_return
+          jmp BS_return
 
 Left:
 
@@ -510,7 +510,7 @@ Left:
 
           jsr CheckPlayersAgainstCachedHitbox
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -690,7 +690,7 @@ CPB_NextPlayer:
 
 CheckPlayersAgainstCachedHitboxDone .proc
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -830,11 +830,11 @@ MissileCollisionPlayfieldReadReturn:
 
           ;; pfread(column, row) returns 0 if clear, non-zero if set
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Clear
 
-          jsr BS_return
+          jmp BS_return
 
 
 

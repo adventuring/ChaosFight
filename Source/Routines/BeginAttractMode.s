@@ -33,7 +33,7 @@ BeginAttractMode .proc
           ;; BeginAttractMode is called cross-bank from SetupAttract
           ;; (gosub BeginAttractMode bank14 forces BS_jsr even though same bank)
           ;; so it must return with return otherbank to match
-          jsr BS_return
+          jmp BS_return
           ;; Reset title screen timers for next cycle
           ;; titleParadeTimer will be reset when we return to title
           ;; screen

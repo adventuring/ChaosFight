@@ -9,7 +9,7 @@ RoboTitoJump .proc
           ;; ROBO TITO (13) - Stretch to ceiling
           ;; Input: temp1 = player index
           ;; Output: Moves up 3px/frame, latches on ceiling contact
-          jsr BS_return
+          jmp BS_return
 
           ;; if (playerState[temp1] & 4) then goto RoboTitoCannotStretch
           lda temp1
@@ -46,7 +46,7 @@ RoboTitoCannotStretch .proc
           tax
           lda # 0
           sta missileStretchHeight_W,x
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -219,7 +219,7 @@ SetStretchHeight:
           bcs RTJ_Continue
           jmp RoboTitoCheckCeiling
 RTJ_Continue:
-          jsr BS_return
+          jmp BS_return
 .pend
 
 RoboTitoCheckCeiling .proc
@@ -295,7 +295,7 @@ ContinueStretching:
           sec
           sbc # 3
           sta playerY,x
-          jsr BS_return
+          jmp BS_return
 .pend
 
 RoboTitoLatch .proc
@@ -348,7 +348,7 @@ RTL_ReduceHeight:
           sta missileStretchHeight_W,x
 
 RTL_HeightCleared:
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

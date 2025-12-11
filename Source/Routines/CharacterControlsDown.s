@@ -116,7 +116,7 @@ CheckRowBelow:
           ;; Check if at or beyond bottom row
 
           ;; At bottom, cannot move down
-          jsr BS_return
+          jmp BS_return
 
           ;; Check if playfield pixel is clear
 
@@ -156,7 +156,7 @@ BlockedCannotMoveDown:
 
           ;; Blocked, cannot move down
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -179,7 +179,7 @@ BlockedCannotMoveDown:
           ;; Ensure guard bit clear
 
                     let playerState[temp1] = playerState[temp1] & !2
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -187,7 +187,7 @@ BlockedCannotMoveDown:
 HarpyDown .proc
           ;; Returns: Far (return otherbank)
 
-          jsr BS_return
+          jmp BS_return
 
 
           ;; TODO: #1311 HarpyDown = .HarpyDown
@@ -435,7 +435,7 @@ CheckRowBelow:
           ;; Check if at or beyond bottom row
 
           ;; At bottom, cannot move down
-          jsr BS_return
+          jmp BS_return
 
           ;; Check if playfield pixel is clear
 
@@ -475,7 +475,7 @@ BlockedCannotMoveDown:
 
           ;; Blocked, cannot move down
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -498,13 +498,13 @@ BlockedCannotMoveDown:
           ;; Ensure guard bit clear
 
                     let playerState[temp1] = playerState[temp1] & !2
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
 FrootyDown .proc
 
-          jsr BS_return
+          jmp BS_return
 
 
           ;; TODO: #1311 FrootyDown = .FrootyDown
@@ -628,7 +628,7 @@ CheckRowBelow:
           ;; Check if at or beyond bottom row
 
           ;; At bottom, cannot move down
-          jsr BS_return
+          jmp BS_return
 
           ;; Check if playfield pixel is clear
 
@@ -668,7 +668,7 @@ BlockedCannotMoveDown:
 
           ;; Blocked, cannot move down
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -691,7 +691,7 @@ BlockedCannotMoveDown:
           ;; Ensure guard bit clear
 
                     let playerState[temp1] = playerState[temp1] & !2
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -729,7 +729,7 @@ RoboTitoDown .proc
 RoboTitoInitiateDrop:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -776,7 +776,7 @@ RoboTitoVoluntaryDrop .proc
           lda 0
           sta missileStretchHeight_W,x
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -804,13 +804,13 @@ RoboTitoVoluntaryDrop .proc
           ;; Set jumping bit
 
                     let playerState[temp1] = playerState[temp1] | 4
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
 StandardGuard .proc
 
-          jsr BS_return
+          jmp BS_return
 
 
 StandardGuard = .StandardGuard
@@ -883,11 +883,11 @@ StandardGuard = .StandardGuard
           lda playerCharacter,x
           sta temp4
 
-          jsr BS_return
+          jmp BS_return
 
-          jsr BS_return
+          jmp BS_return
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -909,7 +909,7 @@ AfterCheckGuardCooldownStandard:
 
           ;; Guard blocked by cooldown
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -926,7 +926,7 @@ AfterCheckGuardCooldownStandard:
           lda GuardTimerMaxFrames
           sta playerTimers_W,x
 
-          jsr BS_return
+          jmp BS_return
 
 
 

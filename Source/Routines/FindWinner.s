@@ -53,7 +53,7 @@ FindWinnerNoWinnerFound .proc
 
 FindWinnerDone:
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

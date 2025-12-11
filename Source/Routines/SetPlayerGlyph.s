@@ -117,7 +117,7 @@ SetPlayerGlyphP5 .proc
 
             sta player5height
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -136,7 +136,7 @@ SetPlayerGlyphP0 .proc
 
             sta player0height
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -155,7 +155,7 @@ SetPlayerGlyphP1 .proc
 
             sta player1height
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -174,7 +174,7 @@ SetPlayerGlyphP2 .proc
 
             sta player2height
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -193,7 +193,7 @@ SetPlayerGlyphP3 .proc
 
             sta player3height
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -212,7 +212,7 @@ SetPlayerGlyphP4 .proc
 
             sta player4height
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Backward compatibility wrappers
           ;; Returns: Far (return otherbank)

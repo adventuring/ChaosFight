@@ -15,7 +15,7 @@ DisplayHealth .proc
           ;; Called Routines: None
           ;;
           ;; Constraints: None
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

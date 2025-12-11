@@ -341,7 +341,7 @@ PFBlockDown .proc
           lda # 0
           sta playerVelocityYL,x
 PFBlockDownDone:
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -432,7 +432,7 @@ PFCS_Advance .proc
           lda temp3
           cmp # 0
           bne IncrementRowCounter
-          jmp PFCS_Done:
+          jmp PFCS_Done
 IncrementRowCounter:
 
 
@@ -448,7 +448,7 @@ PFCS_Done:
           lda temp5  ;;; PCC_result
           sta temp4
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -572,7 +572,7 @@ PRC_CheckLeftDone:
 PRC_Done .proc
           lda temp4  ;;; PRC_result
           sta temp4
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -611,7 +611,7 @@ PF_ProcessHorizontalCollision .proc
 AfterCheckColumnSpan:
 
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -731,7 +731,7 @@ ClampSubpixelXLLeft:
           lda 0
           sta playerSubpixelX_WL,x
 PHC_ClampOnlyDone:
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -792,7 +792,7 @@ ClampSubpixelXLRight:
           lda # 0
           sta playerSubpixelX_WL,x
 PHC_ClampRightDone:
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -800,7 +800,7 @@ PFCheckDown_Body .proc
 
                     ;; TODO: #1298 Convert assignment: rowCounter = playfieldRow + temp5
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -809,7 +809,7 @@ PFCheckDown_Body .proc
           adc # 1
           sta playfieldRow
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -836,7 +836,7 @@ AfterCheckRowColumns:
           jmp PFBlockDown
 PFCheckDownDone:
 
-          jsr BS_return
+          jmp BS_return
 
 
 

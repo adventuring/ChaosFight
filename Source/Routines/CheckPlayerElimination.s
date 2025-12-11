@@ -56,7 +56,7 @@ CheckPlayerElimination:
           sta temp2
 
           ;; Still alive
-          jsr BS_return
+          jmp BS_return
 
           ;; Player health reached 0 - trigger elimination effects
 

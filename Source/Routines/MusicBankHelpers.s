@@ -77,7 +77,7 @@ CalculateIndex:
           lda SongPointers1L,x
           sta songPointer
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -87,7 +87,7 @@ LSP_InvalidSong
           lda # 0
           sta songPointer
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -180,7 +180,7 @@ CalculateIndexVoice1:
           lda SongPointers1SecondL,x
           sta songPointer
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -190,7 +190,7 @@ LSV1P_InvalidSong
           lda # 0
           sta songPointer
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -255,7 +255,7 @@ LoadMusicNote0 .proc
 
           ;; Check for end of track (Duration = 0)
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -318,7 +318,7 @@ LoadMusicNote0 .proc
 
 
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -394,7 +394,7 @@ LoadMusicNote1 .proc
 
           ;; Check for end of track (Duration = 0)
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -457,7 +457,7 @@ LoadMusicNote1 .proc
 
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

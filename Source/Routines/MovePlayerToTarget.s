@@ -58,7 +58,7 @@ MovePlayerXRight:
 MovePlayerYDown:
           jsr NudgePlayerFromPlayfield
           jsr NudgePlayerFromPlayfield
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -117,6 +117,8 @@ NudgeLeftMovePlayer .proc
           tax
           lda originalPlayerX_R
           sta playerX,x
+NudgeLeftMovePlayerDone:
+          rts
 NudgeRightMovePlayerDone:
 
           rts

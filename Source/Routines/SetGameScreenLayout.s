@@ -16,7 +16,7 @@ SetGameScreenLayout .proc
           sta pfrowheight
           lda # ScreenPfRows
           sta pfrows
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

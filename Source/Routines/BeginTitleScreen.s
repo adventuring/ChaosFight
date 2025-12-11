@@ -69,7 +69,7 @@ AfterStartMusicTitle:
           ;; BeginTitleScreen is called cross-bank from SetupTitle
           ;; (gosub BeginTitleScreen bank14 forces BS_jsr even though same bank)
           ;; so it must return with return otherbank to match
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

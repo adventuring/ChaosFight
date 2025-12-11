@@ -97,7 +97,7 @@ GetPlayerAnimationStateFunction:
 
 
           ;; (0-15)
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -274,7 +274,7 @@ InputDonePlayer1Input
           ;; Player 1 uses Joy1
           ;; Returns: Far (return otherbank)
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -454,7 +454,7 @@ InputDonePlayer4Input
           ;; Switch back to even frame
 
           qtcontroller = 0
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -481,7 +481,7 @@ HandleGuardInput .proc
 
           ;; Players 0,2 use joy0; Players 1,3 use joy1
 
-          jsr BS_return
+          jmp BS_return
 
           lda temp1
           cmp # 0
@@ -534,7 +534,7 @@ HGI_HandleDownPressed .proc
           lda playerCharacter,x
           sta temp4
 
-          jsr BS_return
+          jmp BS_return
 
           lda temp4
           cmp CharacterDragonOfStorms
@@ -604,7 +604,7 @@ HGI_CheckGuardRelease .proc
 
           ;; Not guarding, nothing to do
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Stop guard early and start cooldown
 
@@ -617,7 +617,7 @@ HGI_CheckGuardRelease .proc
           lda GuardTimerMaxFrames
           sta playerTimers_W,x
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -693,11 +693,11 @@ HUIEB_HandleUp .proc
 
           ;; Switch Shamone -> MethHound
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Switch MethHound -> Shamone
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Robo Tito: Hold UP to ascend; auto-latch on ceiling contact
 
@@ -913,7 +913,7 @@ HUIEB_RoboTitoLatch .proc
           lda # 0
           sta temp3
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -939,7 +939,7 @@ AfterBernieJumpInput:
           lda # 0
           sta temp3
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -965,7 +965,7 @@ AfterHarpyJumpInput:
           lda # 0
           sta temp3
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -1038,11 +1038,11 @@ AfterCheckEnhancedJumpButtonEnhanced:
 
           ;; For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
 
-          jsr BS_return
+          jmp BS_return
 
-          jsr BS_return
+          jmp BS_return
 
-          jsr BS_return
+          jmp BS_return
 
           jmp HUIEB_ExecuteJump
 
@@ -1067,7 +1067,7 @@ HUIEB_StandardEnhancedCheck .proc
 AfterCheckEnhancedJumpButtonCheck:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -1081,7 +1081,7 @@ HUIEB_ExecuteJump .proc
           ;; if playerCharacter[temp1] = CharacterZoeRyen then goto HUIEB_ZoeJumpCheck
 
           ;; Already jumping, cannot jump again
-          jsr BS_return
+          jmp BS_return
 
           jmp HUIEB_JumpProceed
 
@@ -1106,7 +1106,7 @@ HUIEB_JumpProceed .proc
           ;; Returns: Far (return otherbank)
 
           ;; Block jump during attack windup/execute/recovery
-          jsr BS_return
+          jmp BS_return
 
           ;; Dispatch character jump via dispatcher (same-bank call)
 
@@ -1130,7 +1130,7 @@ HUIEB_JumpDone
                     let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
 HUIEB_JumpDone:
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -1426,7 +1426,7 @@ CheckPlayer2JoyPortRight:
 HSHM_HandleRight:
 
 
-          jsr BS_return
+          jmp BS_return
 
           jmp HSHM_HandleRight
 
@@ -1437,7 +1437,7 @@ HSHM_CheckRightJoy0 .proc
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -2036,7 +2036,7 @@ CheckPlayer2JoyPortRight:
 HFCM_DoRightMovement:
 
 
-          jsr BS_return
+          jmp BS_return
 
           jmp HFCM_DoRightMovement
 
@@ -2047,7 +2047,7 @@ HFCM_CheckRightJoy0 .proc
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -2094,7 +2094,7 @@ ColumnInRangeLeft:
 
 
           ;; Check column to the right
-          jsr BS_return
+          jmp BS_return
 
           ;; Already at right edge
 
@@ -2172,7 +2172,7 @@ CheckBottomRow:
 
           ;; Blocked, cannot move right
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Also check bottom row (feet)
 
@@ -2235,7 +2235,7 @@ CheckBottomRow:
           lda currentPlayer
           sta temp1
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -2392,7 +2392,7 @@ CheckJoy1Down:
           jmp HFCM_VertDown
 HandleFlyingCharacterMovementDone:
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

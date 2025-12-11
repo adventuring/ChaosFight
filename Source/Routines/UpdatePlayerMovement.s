@@ -86,7 +86,7 @@ AfterUpdatePlayerMovementSingleQuadtari:
 .pend
 
 UpdatePlayerMovementQuadtariSkip .proc
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

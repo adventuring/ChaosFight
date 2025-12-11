@@ -49,14 +49,14 @@ CheckCooldownTimer:
           ;; Cooldown still active, guard blocked
           lda # 0
           sta temp2
-          jsr BS_return
+          jmp BS_return
 
 CooldownExpired:
 
           ;; Cooldown expired, guard allowed
           lda # 1
           sta temp2
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -79,7 +79,7 @@ GuardCooldownBlocked .proc
           ;; new guard
           lda # 0
           sta temp2
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

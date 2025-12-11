@@ -52,7 +52,7 @@ SelectDrawScreenLoop .proc
 
 SelectDrawScreenDone:
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Cross-bank call to SelectHideLowerPlayerPreviews in bank 6
           lda # >(AfterSelectHideLowerPlayerPreviews-1)
@@ -161,15 +161,15 @@ SelectApplyPreviewPosition
 SelectApplyPreviewPositionP0
           player0x = temp2
           player0y = temp3
-          jsr BS_return
+          jmp BS_return
 SelectApplyPreviewPositionP1
           player1x = temp2
           player1y = temp3
-          jsr BS_return
+          jmp BS_return
 SelectApplyPreviewPositionP2
           player2x = temp2
           player2y = temp3
-          jsr BS_return
+          jmp BS_return
 SelectApplyPreviewPositionP3
           player3x = temp2
           player3y = temp3
@@ -421,7 +421,7 @@ CheckColorBWToggle:
           lda temp6
           cmp colorBWPrevious_R
           bne TriggerRescan
-          jsr BS_return
+          jmp BS_return
 TriggerRescan:
 
           ;; Cross-bank call to DetectPads in bank 13
@@ -439,7 +439,7 @@ AfterDetectPadsColorBW:
 
           lda switchbw
           sta colorBWPrevious_W
-          jsr BS_return
+          jmp BS_return
 .pend
 
 CharacterSelectDoRescan .proc

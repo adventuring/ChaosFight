@@ -26,7 +26,7 @@ StandardJump .proc
           tax
           lda CharacterJumpVelocities,x
           sta temp2
-          jsr BS_return
+          jmp BS_return
 
           lda temp1
           asl
@@ -39,7 +39,7 @@ StandardJump .proc
           lda # 0
           sta playerVelocityYL,x
           let playerState[temp1] = playerState[temp1] | 4
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -106,7 +106,7 @@ BernieCheckBottomWrap:
           jmp BernieCheckBottomWrap
           lda temp3
           sta temp1
-          jsr BS_return
+          jmp BS_return
 
           ;; if temp6 >= pfrows - 1 then goto BernieCheckBottomWrap
           lda temp6
@@ -140,7 +140,7 @@ BernieCheckBottomWrap:
           jmp BernieCheckBottomWrap
           lda temp3
           sta temp1
-          jsr BS_return
+          jmp BS_return
 
           ;; let playerY[temp1] = playerY[temp1] + 1
           lda temp1
@@ -153,7 +153,7 @@ BernieCheckBottomWrap:
           tax
           inc playerY,x
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -190,14 +190,14 @@ BernieCheckBottomWrap:
           jmp BernieCheckBottomWrap
           lda temp3
           sta temp1
-          jsr BS_return
+          jmp BS_return
 
           lda temp1
           asl
           tax
           lda 0
           sta playerY,x
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -275,7 +275,7 @@ HarpyJump .proc
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
           ;; Output: Upward velocity if energy available and cooldown expired
-          jsr BS_return
+          jmp BS_return
 
           ;; let temp2 = frame - harpyLastFlapFrame_R[temp1]
           lda frame
@@ -295,7 +295,7 @@ HarpyJump .proc
           sta temp2
 CheckCooldownExpired:
 
-          jsr BS_return
+          jmp BS_return
 
           ;; if playerY[temp1] <= 5 then goto HarpyFlapRecord
           lda temp1
@@ -326,7 +326,7 @@ HarpyFlapRecord .proc
           tax
           lda frame
           sta harpyLastFlapFrame_W,x
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -356,7 +356,7 @@ CCJ_FreeFlightCharacterJump .proc
 
           jsr CCJ_FreeFlightUp
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

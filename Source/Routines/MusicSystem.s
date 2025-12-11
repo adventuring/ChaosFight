@@ -210,7 +210,7 @@ LoadSongPointersDone
 
           ;; PlayMusic will be called every frame from MainLoop
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -295,11 +295,11 @@ PlayMusic .proc
 
           ;; Voice 0 still active, no reset needed
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Voice 1 still active, no reset needed
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Both voices inactive - check if Chaotica (song ID 26)
 
@@ -310,7 +310,7 @@ PlayMusic .proc
 PlayMusicDone:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -891,6 +891,6 @@ AfterLoadMusicNote1Bank1:
           lda # 0
           sta musicVoice1Frame_W
 
-          jsr BS_return
+          jmp BS_return
 .pend (extra - no matching .proc)
 

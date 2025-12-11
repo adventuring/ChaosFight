@@ -99,16 +99,18 @@ The CPU sees addresses in the range `$F000-$FFFF` (bank switching window). The a
 
 - **Near returns**: Use `rts` for routines that are *never* invoked
   cross-bank. Only routines called via same-bank `jsr` may use `rts`.
-- **Far returns**: Use `jsr BS_return` (or `jmp BS_return` for tail calls)
-  for cross-bank routines. This expects the four-byte encoded return sequence
-  pushed by `BS_jsr`. Any cross-bank routine must end with this form or we
-  will corrupt the stack.
+- **Far returns**: Use `jmp BS_return` for cross-bank routines. This expects
+  the four-byte encoded return sequence pushed by `BS_jsr`. Any cross-bank
+  routine must end with this form or we will corrupt the stack.
+- **CRITICAL**: `BS_return` must be called with `jmp`, NOT `jsr`. Using `jsr
+  BS_return` pushes another return address on the stack, corrupting the
+  encoded return address that `BS_return` expects to decode.
 - The stack-underflow probe previously showed `MainLoopModePublisherPrelude`,
   `MainLoopModeAuthorPrelude`, `MainLoopModeTitleScreen`, and cousins in
   `Source/Routines/MainLoop.s` returning with `rts` even though the dispatcher
   had just performed a cross-bank call. The resulting `RTS` at `$f:faaf` is
   exactly where the stack dropped to `$FF`.
-- Remediation completed 2025‑11‑26: all mode handlers now issue `jsr BS_return`,
+- Remediation completed 2025‑11‑26: all mode handlers now issue `jmp BS_return`,
   preventing the bare `RTS` that corrupted the encoded far-return sequence.
   Rebuilds must still re-check the far-call trampoline at `$f:fa5c` to confirm
   the stack returns to `$FD` after each trip through the mode table.
@@ -950,7 +952,7 @@ Different contexts require different quotation mark characters:
 
 ### The Fundamental Rule: Consistency is Mandatory
 
-**If a routine is EVER called cross-bank (via `BS_jsr`), it MUST ALWAYS use `jsr BS_return` (or `jmp BS_return` for tail calls) for ALL return paths. If a routine is ONLY called same-bank, it MUST use `rts` (near return) for efficiency.**
+**If a routine is EVER called cross-bank (via `BS_jsr`), it MUST ALWAYS use `jmp BS_return` for ALL return paths. If a routine is ONLY called same-bank, it MUST use `rts` (near return) for efficiency.**
 
 **Mixing calling conventions within a single routine is a critical bug that will cause stack corruption.**
 
@@ -959,12 +961,14 @@ Different contexts require different quotation mark characters:
 When you call a routine cross-bank using `BS_jsr`:
 1. Push the **encoded return address** onto the stack (4 bytes: high byte, low byte of return address, then high byte, low byte of target routine)
 2. Call `BS_jsr` which switches banks and does an `RTS` to the target routine
-3. The target routine **MUST** use `jsr BS_return` (or `jmp BS_return` for tail calls) which:
+3. The target routine **MUST** use `jmp BS_return` which:
    - Decodes the encoded return address
    - Switches back to the original bank
    - Does an `RTS` to return to the caller
 
-If the target routine uses plain `rts` instead of `jsr BS_return`:
+**CRITICAL**: `BS_return` must be called with `jmp`, NOT `jsr`. Using `jsr BS_return` pushes another return address on the stack, corrupting the encoded return address that `BS_return` expects to decode at stack offset 2.
+
+If the target routine uses plain `rts` instead of `jmp BS_return`:
 - An `RTS` instruction pops the encoded return address as a normal address
 - This causes a jump to uninitialized memory (typically $00 = BRK instruction)
 - The game crashes with a stack imbalance
@@ -973,8 +977,9 @@ If the target routine uses plain `rts` instead of `jsr BS_return`:
 
 - **Cross-bank calls**: 
   - **Call site**: MUST push return address (4 bytes) then use `jmp BS_jsr` with target bank in X register
-  - **Return site**: MUST use `jsr BS_return` (or `jmp BS_return` for tail calls) for **ALL** return paths in the routine
-  - **All return paths**: Every return in a cross-bank-called routine must be `jsr BS_return` or `jmp BS_return`, including early returns, error returns, and fall-through returns
+  - **Return site**: MUST use `jmp BS_return` for **ALL** return paths in the routine
+  - **All return paths**: Every return in a cross-bank-called routine must be `jmp BS_return`, including early returns, error returns, and fall-through returns
+  - **CRITICAL**: `BS_return` must be called with `jmp`, NOT `jsr`. Using `jsr BS_return` corrupts the stack.
   
 - **Same-bank calls**: 
   - **Call site**: Use `jsr RoutineName` (near call) - strongly preferred for efficiency
@@ -983,7 +988,7 @@ If the target routine uses plain `rts` instead of `jsr BS_return`:
 
 - **Routine Analysis**: 
   - Before writing or modifying a routine, determine if it will be called cross-bank
-  - If ANY call site uses `BS_jsr`, the routine MUST use `jsr BS_return` or `jmp BS_return`
+  - If ANY call site uses `BS_jsr`, the routine MUST use `jmp BS_return`
   - If ALL call sites use `jsr` (same-bank), the routine MUST use `rts`
 
 - **Variable verification**: Verify variable use of called routine (or routines that it calls) do not interfere with the caller's
@@ -997,7 +1002,7 @@ If the target routine uses plain `rts` instead of `jsr BS_return`:
 ProcessAllAttacks .proc
           ;; Called from GameLoopMain.s with: BS_jsr (cross-bank)
           ;; ... process attacks ...
-          jsr BS_return  ;; MUST use jsr BS_return - called cross-bank
+          jmp BS_return  ;; MUST use jmp BS_return - called cross-bank
 .pend
 ```
 
@@ -1017,17 +1022,26 @@ HandleConsoleSwitches .proc
           lda switchselect
           beq HandleOtherSwitches
           ;; handle pause
-          jsr BS_return  ;; Correct
+          jmp BS_return  ;; Correct
 HandleOtherSwitches:
           ;; handle other switches
-          rts  ;; WRONG! Must be jsr BS_return - routine is called cross-bank
+          rts  ;; WRONG! Must be jmp BS_return - routine is called cross-bank
+.pend
+```
+
+**WRONG - Using jsr instead of jmp (CRITICAL BUG):**
+```assembly
+SomeRoutine .proc
+          ;; Called from another bank with: BS_jsr (cross-bank)
+          ;; ... do work ...
+          jsr BS_return  ;; WRONG! jsr pushes another return address, corrupting stack
 .pend
 ```
 
 ### Verification
 
 All routines must be verified to ensure:
-1. If called cross-bank, ALL return statements use `jsr BS_return` or `jmp BS_return`
+1. If called cross-bank, ALL return statements use `jmp BS_return` (NOT `jsr BS_return`)
 2. If only called same-bank, ALL return statements use `rts`
 3. No routine mixes the two conventions
 

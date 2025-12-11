@@ -200,7 +200,7 @@ P1SetPattern .proc
 
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -363,7 +363,7 @@ P2SetPattern .proc
 
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -616,7 +616,7 @@ UpdatePlayer34Health:
 
           ;; Only update player health if players 3 or 4 are active
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -814,7 +814,7 @@ SetScoreBytes .proc
 
 
 
-          jsr BS_return
+          jmp BS_return
 
 
 
@@ -859,7 +859,7 @@ DisplayCF2026 .proc
 
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

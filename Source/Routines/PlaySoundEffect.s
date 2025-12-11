@@ -48,7 +48,7 @@ PlaySoundEffect .proc
           ;; active). No queuing - sound forgotten if both voices busy.
           ;; Voice 0 tried first, Voice 1 as fallback
           ;; Check if music is active (music takes priority)
-          jsr BS_return
+          jmp BS_return
 
           ;; Lookup sound pointer from Sounds bank (Bank15)
           ;; Cross-bank call to LoadSoundPointer in bank 15
@@ -102,7 +102,7 @@ TryVoice1 .proc
           ;; Constraints: Internal helper for PlaySoundEffect, only
           ;; called when Voice 0 is busy
           ;; Try Voice 1
-          jsr BS_return
+          jmp BS_return
 
           ;; Copy soundEffectPointer (var41.var42) to soundEffectPointer1 (var43.var44)
           lda var41

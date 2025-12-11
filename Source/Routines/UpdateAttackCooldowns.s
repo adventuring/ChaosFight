@@ -39,7 +39,7 @@ UpdateAttackCooldownSkip:
 .pend
 
 next_label_1_L39 .proc
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

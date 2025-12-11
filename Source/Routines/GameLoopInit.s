@@ -94,10 +94,13 @@ AfterInitializeSpritePointers:
           ;; All players start at second row from top (Y=24, center of
           ;; row 1)
           ;; Check if 4-player mode (Quadtari detected)
-                    if controllerStatus & SetQuadtariDetected then Init4PlayerPositions
+          lda controllerStatus
+          and # SetQuadtariDetected
+          beq Init2PlayerPositions
+          jmp Init4PlayerPositions
 
+Init2PlayerPositions:
           ;; 2-player mode positions
-                    let playerX[0] = 53 : playerY[0] = 24
           lda # 0
           asl
           tax
@@ -108,7 +111,6 @@ AfterInitializeSpritePointers:
           tax
           lda # 24
           sta playerY,x
-                    let playerX[1] = 107 : playerY[1] = 24
           lda # 1
           asl
           tax
@@ -120,7 +122,6 @@ AfterInitializeSpritePointers:
           lda # 24
           sta playerY,x
           ;; Players 3 & 4 use same as P1/P2 if not in 4-player mode
-                    let playerX[2] = 53 : playerY[2] = 24
           lda # 2
           asl
           tax
@@ -131,7 +132,6 @@ AfterInitializeSpritePointers:
           tax
           lda # 24
           sta playerY,x
-                    let playerX[3] = 107 : playerY[3] = 24
           lda # 3
           asl
           tax
@@ -159,9 +159,17 @@ Init4PlayerPositions
           ;; Constraints: Must be colocated with BeginGameLoop,
           ;; InitPositionsDone
           ;; 4-player mode positions
-                    let playerX[0] = 32 : playerY[0] = 24
+          lda # 0
+          asl
+          tax
+          lda # 32
+          sta playerX,x
+          lda # 0
+          asl
+          tax
+          lda # 24
+          sta playerY,x
           ;; Player 1: 1/5 width
-                    let playerX[2] = 64 : playerY[2] = 24
           lda # 2
           asl
           tax
@@ -173,7 +181,6 @@ Init4PlayerPositions
           lda # 24
           sta playerY,x
           ;; Player 3: 2/5 width
-                    let playerX[3] = 96 : playerY[3] = 24
           lda # 3
           asl
           tax
@@ -185,7 +192,6 @@ Init4PlayerPositions
           lda # 24
           sta playerY,x
           ;; Player 4: 3/5 width
-                    let playerX[1] = 128 : playerY[1] = 24
           lda # 1
           asl
           tax
@@ -260,7 +266,11 @@ AfterGetPlayerLockedInit:
           lda GPL_lockedState
           cmp PlayerHandicapped
           bne PlayerHealthInitDone
-                    let playerHealth[currentPlayer] = PlayerHealthHandicap : goto PlayerHealthInitDone
+          lda currentPlayer
+          asl
+          tax
+          lda PlayerHealthHandicap
+          sta playerHealth,x
 PlayerHealthInitDone:
 
           lda currentPlayer
@@ -269,7 +279,6 @@ PlayerHealthInitDone:
           lda PlayerHealthMax
           sta playerHealth,x
 
-PlayerHealthInitDone
 .pend
 
 InitializePlayerTimers .proc
@@ -454,7 +463,7 @@ AfterInitializeHealthBars:
 AfterLoadArena:
 
 
-          jsr BS_return
+          jmp BS_return
           ;; MainLoop will dispatch to GameMainLoop based on gameMode =
           ;; ModeGame
 

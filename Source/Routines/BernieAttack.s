@@ -143,7 +143,7 @@ AfterPerformGenericAttackOpposite:
           and # MaskPlayerStateFlags
           ora temp3
           sta playerState,x
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

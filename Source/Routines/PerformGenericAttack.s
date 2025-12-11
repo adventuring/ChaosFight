@@ -49,7 +49,7 @@ AfterSpawnMissileGeneric:
           ;; range
           ;; This is handled by the main collision detection system
           ;; For now, collision will be handled in UpdateAllMissiles
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

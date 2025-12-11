@@ -153,7 +153,7 @@ IncrementTimer:
           inc preambleTimer
 
           ;; Music and drawing handled by MainLoop (PlayMusic and DrawTitleScreen)
-          jsr BS_return
+          jmp BS_return
 
 PublisherPreludeComplete
           ;; Transition to Author Prelude mode
@@ -184,7 +184,7 @@ PublisherPreludeComplete
 AfterBeginAuthorPrelude:
 
 
-          jsr BS_return
+          jmp BS_return
           ;;
           ;; Bitmap Loading
           ;; Bitmap data is loaded automatically by titlescreen kernel

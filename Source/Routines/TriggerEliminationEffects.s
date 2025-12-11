@@ -123,6 +123,6 @@ ClearMissileBit3:
           sta missileActive
 TriggerEliminationEffectsDone:
 
-          jsr BS_return
+          jmp BS_return
 
 

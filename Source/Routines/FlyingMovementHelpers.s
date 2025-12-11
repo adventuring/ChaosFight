@@ -29,7 +29,7 @@ HFCM_AttemptMoveLeft .proc
 ColumnInRange:
 
           ;; if temp2 & $80 then let temp2 = 0
-          jsr BS_return
+          jmp BS_return
 
           lda temp2
           sec
@@ -67,7 +67,7 @@ ColumnInRange:
 
 AfterPlayfieldReadMoveLeft1:
 
-          jsr BS_return
+          jmp BS_return
 
           lda temp4
           clc
@@ -106,7 +106,7 @@ RowInRange:
 
 AfterPlayfieldReadMoveLeft2:
 
-          jsr BS_return
+          jmp BS_return
 .pend
 
 HFCM_ApplyLeft .proc
@@ -190,7 +190,7 @@ HFCM_LeftDirect .proc
 .pend
 
 HFCM_LeftFacing .proc
-          jsr BS_return
+          jmp BS_return
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateLeft-1)
           pha
@@ -223,12 +223,12 @@ CheckAnimationState10LeftLabel:
           bcc HFCM_LeftFacingDone
 HFCM_LeftFacingDone:
 
-          jsr BS_return
+          jmp BS_return
 .pend
 
 HFCM_SetFacingLeft .proc
           ;; let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
-          jsr BS_return
+          jmp BS_return
 .pend
 
 HFCM_AttemptMoveRight .proc
@@ -261,7 +261,7 @@ HFCM_AttemptMoveRight .proc
 ColumnInRangeRight:
 
           ;; if temp2 & $80 then let temp2 = 0
-          jsr BS_return
+          jmp BS_return
           lda temp2
           clc
           adc # 1
@@ -297,7 +297,7 @@ ColumnInRangeRight:
           jmp BS_jsr
 AfterPlayfieldReadMoveRight1:
 
-          jsr BS_return
+          jmp BS_return
           lda temp4
           clc
           adc # 16
@@ -334,7 +334,7 @@ AfterPlayfieldReadMoveRight1:
           jmp BS_jsr
 AfterPlayfieldReadMoveRight2:
 
-          jsr BS_return
+          jmp BS_return
 .pend
 
 HFCM_ApplyRight .proc
@@ -409,7 +409,7 @@ HFCM_RightDirect .proc
 .pend
 
 HFCM_RightFacing .proc
-          jsr BS_return
+          jmp BS_return
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateRight-1)
           pha
@@ -442,12 +442,12 @@ CheckAnimationState10RightLabel:
           bcc HFCM_RightFacingDone
 HFCM_RightFacingDone:
 
-          jsr BS_return
+          jmp BS_return
 .pend
 
 HFCM_SetFacingRight .proc
                     let playerState[temp1] = playerState[temp1] | 1
-          jsr BS_return
+          jmp BS_return
 
 
 .pend

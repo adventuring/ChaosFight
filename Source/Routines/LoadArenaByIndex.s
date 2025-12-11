@@ -63,7 +63,7 @@ MultiplyBy8:
           lda temp5
           sta PF1pointer+1
           sta PF2pointer+1
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

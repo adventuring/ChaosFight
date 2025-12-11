@@ -137,7 +137,7 @@ GameMainLoop .proc
 GameMainLoopPaused:
 
 
-          jsr BS_return
+          jmp BS_return
 
 GameMainLoopContinue
           ;; OVSCAN HANDLER: Input reading and sound updates only
@@ -281,7 +281,7 @@ UpdateSoundEffectsReturn:
           ;; kernel
           ;; Heavy game logic (physics, collisions, rendering) is handled
           ;; in vblank handler (VblankModeGameMain) for better time distribution
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -290,7 +290,7 @@ GameMainLoopPaused .proc
           ;; Returns: Far (return otherbank)
           ;; but still allow console switch handling for unpause
           ;; Vblank handler will also check pause state and skip logic
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

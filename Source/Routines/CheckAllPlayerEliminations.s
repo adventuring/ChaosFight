@@ -84,7 +84,7 @@ CAPE_next_label_1 .proc
 AfterCountRemainingPlayers:
 
           ;; If players still remain, no game end yet
-          jsr BS_return
+          jmp BS_return
 
           ;; Cross-bank call to FindWinner in bank 14
           lda # >(AfterFindWinner-1)
@@ -105,7 +105,7 @@ AfterFindWinner:
           lda systemFlags
           ora # SystemFlagGameStateEnding
           sta systemFlags
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

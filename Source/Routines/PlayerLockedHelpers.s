@@ -42,7 +42,7 @@ GetPlayerLocked .proc
 
           ;; if temp1 < 0 then let temp2 = 0 : return
 
-          jsr BS_return
+          jmp BS_return
 
           ;; Extract 2 bits for this player
 
@@ -184,17 +184,17 @@ SetPlayerLockedApply .proc
           ;; Clear the 2 bits for this player and set the new value
           ;; Returns: Far (return otherbank)
 
-          jsr BS_return
+          jmp BS_return
 
-          jsr BS_return
+          jmp BS_return
 
-          jsr BS_return
+          jmp BS_return
 
-          jsr BS_return
+          jmp BS_return
 
 
 
-          jsr BS_return
+          jmp BS_return
 
 
 

@@ -30,7 +30,7 @@ ChangeGameMode .proc
           jmp ThunkPublisherPrelude
 
           ;; Safety exit if gameMode is invalid
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -107,7 +107,7 @@ SetupCharacterSelect .proc
           ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           ;; Returns: Far (return otherbank)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
-          jsr BS_return
+          jmp BS_return
 
 SetupFallingAnimation
           ;; Character select uses its own internal flow
@@ -153,7 +153,7 @@ SetupFallingAnimation
 AfterBeginFallingAnimation:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -188,7 +188,7 @@ SetupArenaSelect .proc
 AfterBeginArenaSelect:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -225,7 +225,7 @@ SetupGame .proc
 AfterBeginGameLoop:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -260,7 +260,7 @@ SetupWinner .proc
 AfterBeginWinnerAnnouncement:
 
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 

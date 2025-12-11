@@ -58,7 +58,7 @@ SkipIncrementPlayer3:
 
           lda temp1
           sta playersRemaining_W
-          jsr BS_return
+          jmp BS_return
 
 
 

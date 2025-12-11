@@ -24,11 +24,11 @@ GetWeightBasedDamage .proc
           tax
           lda CharacterWeights,x
           sta temp3
-          jsr BS_return
+          jmp BS_return
 
           lda # 22
           sta temp2
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -611,7 +611,7 @@ FacingLeft .proc
           tax
           lda playerY,x
           sta cachedHitboxBottom_W
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -642,7 +642,7 @@ ProjectileHitbox .proc
           sta cachedHitboxTop_W
           lda # 0
           sta cachedHitboxBottom_W
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -713,7 +713,7 @@ AreaHitbox .proc
           clc
           adc # 24
           sta cachedHitboxBottom_W
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -805,7 +805,7 @@ NextDefender
 .pend
 
 ProcessAllAttacksDone .proc
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -879,7 +879,7 @@ NextAttacker .proc
 .pend
 
 ProcessAllAttacksDone2 .proc
-          jsr BS_return
+          jmp BS_return
           ;; Input: None (label only)
           ;;
           ;; Output: None (label only)
@@ -894,7 +894,7 @@ ProcessAllAttacksDone2 .proc
 ;; CombatShowDamageIndicator .proc (no matching .pend)
           ;; Damage indicator system (handled inline)
           ;; Returns: Far (return otherbank)
-          jsr BS_return
+          jmp BS_return
 
 ;; PlayDamageSound .proc (no matching .pend)
           ;; Damage sound effect handler
@@ -936,5 +936,5 @@ ProcessAllAttacksDone2 .proc
 AfterPlaySoundEffect:
 
 
-          jsr BS_return
+          jmp BS_return
 

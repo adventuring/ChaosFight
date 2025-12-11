@@ -258,7 +258,7 @@ VelocityDone:
           ;; VelocityDone label is in MissileCharacterHandlers.bas (same bank)
           jmp VelocityDone
 
-          jsr BS_return
+          jmp BS_return
 
 .pend
 
@@ -287,7 +287,7 @@ UpdateAllMissiles .proc
 .pend
 
 UpdateMissilesDone .proc
-          jsr BS_return
+          jmp BS_return
 
 UpdateOneMissile:
           ;; Returns: Near (return thisbank)
@@ -1036,7 +1036,7 @@ ColumnInRange:
 AfterPlayfieldReadMissile:
 
           ;; Default: no collision detected
-          jsr BS_return
+          jmp BS_return
 CheckMissilePlayerCollision
           ;;
           ;; Returns: Far (return otherbank)
@@ -1172,7 +1172,7 @@ MissileCheckNextPlayer .proc
 .pend
 
 MissileCollisionReturn:
-          jsr BS_return
+          jmp BS_return
 
 HandleMissileHit .proc
           ;;
@@ -1608,5 +1608,5 @@ BounceDone
           lda missileActive
           and temp6
           sta missileActive
-          jsr BS_return
+          jmp BS_return
 

@@ -21,7 +21,7 @@ noeor:
           ;;; CRITICAL: rand16 is in SCRAM, must use read port for eor (read-only)
           eor rand16_R
 .fi
-          ;;; CRITICAL: randomize is only called same-bank (via gosub randomize),
+          ;;; CRITICAL: randomize is only called same-bank (via cross-bank call to randomize),
           ;;; so it must use rts, not jmp BS_return. RETURN macro expands to
           ;;; jmp BS_return when bankswitch is defined, which is incorrect for
           ;;; same-bank calls.

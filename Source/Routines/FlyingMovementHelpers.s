@@ -5,13 +5,13 @@
 HFCM_AttemptMoveLeft .proc
           lda currentPlayer
           sta temp1
-          ;; let temp2 = playerX[temp1]         
+          ;; Set temp2 = playerX[temp1]
           lda temp1
           asl
           tax
           lda playerX,x
           sta temp2
-          ;; let temp2 = temp2 - ScreenInsetX
+          ;; Set temp2 = temp2 - ScreenInsetX
           lda temp2
           sec
           sbc # ScreenInsetX
@@ -28,14 +28,14 @@ HFCM_AttemptMoveLeft .proc
 
 ColumnInRange:
 
-          ;; if temp2 & $80 then let temp2 = 0
+          ;; If temp2 & $80, set temp2 = 0
           jmp BS_return
 
           lda temp2
           sec
           sbc # 1
           sta temp3
-          ;; let temp4 = playerY[temp1]         
+          ;; Set temp4 = playerY[temp1]
           lda temp1
           asl
           tax
@@ -79,7 +79,7 @@ AfterPlayfieldReadMoveLeft1:
             lsr temp2
           lda temp2
           sta temp7
-          ;; if temp7 >= pfrows then goto HFCM_ApplyLeft
+          ;; if temp7 >= pfrows then jmp HFCM_ApplyLeft
           lda temp7
           cmp # pfrows
 
@@ -112,7 +112,7 @@ AfterPlayfieldReadMoveLeft2:
 HFCM_ApplyLeft .proc
           lda currentPlayer
           sta temp1
-          ;; let temp5 = playerCharacter[temp1]         
+          ;; Set temp5 = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -140,7 +140,7 @@ HFCM_LeftStandard:
 .pend
 
 HFCM_LeftMomentum .proc
-          ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]         
+          ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
           asl
           tax
@@ -157,7 +157,7 @@ HFCM_LeftMomentum .proc
 
 HFCM_LeftDirect .proc
           ;; Dragon of Storms: direct velocity with subpixel accuracy
-          ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]         
+          ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
           asl
           tax
@@ -165,7 +165,7 @@ HFCM_LeftDirect .proc
           sta characterMovementSpeed
           lda # 0
           sta temp2
-          ;; let temp2 = temp2 - characterMovementSpeed          lda temp2          sec          sbc characterMovementSpeed          sta temp2
+          ;; Set temp2 = temp2 - characterMovementSpeed          lda temp2          sec          sbc characterMovementSpeed          sta temp2
           lda temp2
           sec
           sbc characterMovementSpeed
@@ -204,7 +204,7 @@ HFCM_LeftFacing .proc
           jmp BS_jsr
 AfterGetPlayerAnimationStateLeft:
 
-          ;; if temp2 < 5 then HFCM_SetFacingLeft
+          ;; If temp2 < 5, then HFCM_SetFacingLeft
           lda temp2
           cmp # 5
           bcs CheckAnimationState10Left
@@ -234,13 +234,13 @@ HFCM_SetFacingLeft .proc
 HFCM_AttemptMoveRight .proc
           lda currentPlayer
           sta temp1
-          ;; let temp2 = playerX[temp1]         
+          ;; Set temp2 = playerX[temp1]
           lda temp1
           asl
           tax
           lda playerX,x
           sta temp2
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
           lda temp2
           sec
           sbc ScreenInsetX
@@ -260,13 +260,13 @@ HFCM_AttemptMoveRight .proc
           sta temp2
 ColumnInRangeRight:
 
-          ;; if temp2 & $80 then let temp2 = 0
+          ;; If temp2 & $80, set temp2 = 0
           jmp BS_return
           lda temp2
           clc
           adc # 1
           sta temp3
-          ;; let temp4 = playerY[temp1]         
+          ;; Set temp4 = playerY[temp1]
           lda temp1
           asl
           tax
@@ -308,7 +308,7 @@ AfterPlayfieldReadMoveRight1:
             lsr temp2
           lda temp2
           sta temp7
-          ;; if temp7 >= pfrows then goto HFCM_ApplyRight
+          ;; if temp7 >= pfrows then jmp HFCM_ApplyRight
           lda temp7
           cmp pfrows
 
@@ -340,7 +340,7 @@ AfterPlayfieldReadMoveRight2:
 HFCM_ApplyRight .proc
           lda currentPlayer
           sta temp1
-          ;; let temp5 = playerCharacter[temp1]         
+          ;; Set temp5 = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -372,7 +372,7 @@ HFCM_RightStandard:
 .pend
 
 HFCM_RightMomentum .proc
-          ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]         
+          ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
           asl
           tax
@@ -389,7 +389,7 @@ HFCM_RightMomentum .proc
 
 HFCM_RightDirect .proc
           ;; Dragon of Storms: direct velocity with subpixel accuracy
-          ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]         
+          ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
           asl
           tax
@@ -423,7 +423,7 @@ HFCM_RightFacing .proc
           jmp BS_jsr
 AfterGetPlayerAnimationStateRight:
 
-          ;; if temp2 < 5 then HFCM_SetFacingRight
+          ;; If temp2 < 5, then HFCM_SetFacingRight
           lda temp2
           cmp # 5
           bcs CheckAnimationState10Right

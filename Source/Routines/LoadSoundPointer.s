@@ -53,7 +53,7 @@ SoundIDInRange:
           lda SoundPointersH,x
           sta soundEffectPointerH
 
-          ;; let soundEffectPointer = SoundPointersL[temp1]
+          ;; Set soundEffectPointer = SoundPointersL[temp1]
           lda temp1
           asl
           tax

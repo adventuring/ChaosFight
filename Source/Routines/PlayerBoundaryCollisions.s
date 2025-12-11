@@ -40,12 +40,12 @@ CheckBoundaryCollisions:
           cmp # RandomArena
           bne SkipRandomArena
 
-          ;; let temp3 = rand : temp3 = temp3 & 15
+          ;; Set temp3 = rand temp3 = temp3 & 15
 
 SkipRandomArena:
 
           ;; TODO: #1254 for temp1 = 0 to 3
-          ;; if temp1 < 2 then goto PBC_ProcessPlayer
+          ;; if temp1 < 2 then jmp PBC_ProcessPlayer
           lda temp1
           cmp # 2
           bcs CheckQuadtari
@@ -62,11 +62,11 @@ CheckQuadtari:
 
 Skip2PlayerCheck:
 
-          ;; if controllerStatus & SetQuadtariDetected then goto PBC_CheckActivePlayer
+          ;; if controllerStatus & SetQuadtariDetected then jmp PBC_CheckActivePlayer
           jmp PBC_NextPlayer
 
 PBC_CheckActivePlayer .proc
-          ;; if playerCharacter[temp1] = NoCharacter then goto PBC_NextPlayer
+          ;; if playerCharacter[temp1] = NoCharacter then jmp PBC_NextPlayer
 
 .pend
 
@@ -159,7 +159,7 @@ SkipTopClamp:
 
           rts
 
-          ;; if playerCharacter[temp1] = CharacterBernie then goto CheckPlayerBoundary_BernieWrap
+          ;; if playerCharacter[temp1] = CharacterBernie then jmp CheckPlayerBoundary_BernieWrap
           lda temp1
           asl
           tax

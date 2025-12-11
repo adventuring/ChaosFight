@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 ;;; Character-specific missile handlers extracted from MissileSystem.bas
 ;;; These handlers must be in the same bank as MissileSystem.bas
-;;; (Bank 10) due to goto calls to DeactivateMissile
+;;; (Bank 10) due to jmp calls to DeactivateMissile
 
 
 HarpyCheckDiveVelocity .proc
@@ -23,7 +23,7 @@ HarpyCheckDiveVelocity .proc
           ;;
           ;; Constraints: Internal helper for SpawnMissile, only called
           ;; for Harpy (character 6)
-          ;; If (characterStateFlags_R[temp1] & 4), then HarpyBoostDiveVelocity
+          ;; If (characterStateFlags_R[temp1] & 4),, then HarpyBoostDiveVelocity
           lda temp1
           asl
           tax
@@ -125,7 +125,7 @@ HandleMegaxMissile .proc
           ;; Lock missile position to player position (adjacent, no
           ;; movement)
           ;; Calculate X position based on player position and facing
-          ;; let temp2 = playerX[temp1]
+          ;; Set temp2 = playerX[temp1]
           lda temp1
           asl
           tax
@@ -140,7 +140,7 @@ HandleMegaxMissile .proc
           lda temp4
           cmp # 0
           bne CheckFacingRight
-          ;; let temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
+          ;; Set temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
 CheckFacingRight:
 
 
@@ -272,7 +272,7 @@ HandleKnightGuyMissile .proc
 
           ;; Check if attack animation is complete
           ;; Extract animation state (bits 4-7)
-          ;; let temp6 = playerState[temp1]
+          ;; Set temp6 = playerState[temp1]
           lda temp1
           asl
           tax
@@ -317,7 +317,7 @@ KnightGuyAttackActive .proc
           ;; Maximum swing distance: 4 pixels
           ;; Frames 4-7: Returning to sta
 
-          ;; If velocityCalculation < 4, then KnightGuySwingOut
+          ;; If velocityCalculation < 4,, then KnightGuySwingOut
           lda velocityCalculation
           cmp # 4
           bcs KnightGuySwingReturn

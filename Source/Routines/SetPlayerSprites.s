@@ -46,13 +46,13 @@ SetPlayerSprites .proc
           lda # 0
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-          ;; let temp2 = playerRecoveryFrames[0]
+          ;; Set temp2 = playerRecoveryFrames[0]
           lda # 0
           asl
           tax
           lda playerRecoveryFrames,x
           sta temp2
-          ;; let temp3 = playerState[0]
+          ;; Set temp3 = playerState[0]
           lda # 0
           asl
           tax
@@ -90,7 +90,7 @@ Player1ColorDone:
           sta REFP0
 
           ;; Load sprite data from character definition
-          ;; let currentCharacter = playerCharacter[0]         
+          ;; Set currentCharacter = playerCharacter[0]
           lda # 0
           asl
           tax
@@ -124,13 +124,13 @@ AfterLoadCharacterSpriteP0:
           lda # 1
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-          ;; let temp2 = playerRecoveryFrames[1]
+          ;; Set temp2 = playerRecoveryFrames[1]
           lda # 1
           asl
           tax
           lda playerRecoveryFrames,x
           sta temp2
-          ;; let temp3 = playerState[1]
+          ;; Set temp3 = playerState[1]
           lda # 1
           asl
           tax
@@ -180,7 +180,7 @@ Player2ReflectionDone:
 
 
           ;; Load sprite data from character definition
-          ;; let currentCharacter = playerCharacter[1]         
+          ;; Set currentCharacter = playerCharacter[1]
           lda 1
           asl
           tax
@@ -220,8 +220,8 @@ AfterLoadCharacterSpriteP1:
           jmp DonePlayer3Sprite
 CheckPlayer3Health:
 
-          ;; if playerCharacter[2] = NoCharacter then goto DonePlayer3Sprite
-          ;; if ! playerHealth[2] then goto DonePlayer3Sprite
+          ;; if playerCharacter[2] = NoCharacter then jmp DonePlayer3Sprite
+          ;; if ! playerHealth[2] then jmp DonePlayer3Sprite
           lda 2
           asl
           tax
@@ -246,13 +246,13 @@ SetPlayer3Color:
           lda # 2
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-          ;; let temp2 = playerRecoveryFrames[2]
+          ;; Set temp2 = playerRecoveryFrames[2]
           lda # 2
           asl
           tax
           lda playerRecoveryFrames,x
           sta temp2
-          ;; let temp3 = playerState[2]
+          ;; Set temp3 = playerState[2]
           lda 2
           asl
           tax
@@ -299,7 +299,7 @@ Player3ReflectionDone:
 
 
           ;; Load sprite data from character definition
-          ;; let currentCharacter = playerCharacter[2]         
+          ;; Set currentCharacter = playerCharacter[2]
           lda 2
           asl
           tax
@@ -336,8 +336,8 @@ DonePlayer3Sprite
           jmp DonePlayer4Sprite
 CheckPlayer4Health:
 
-          ;; if playerCharacter[3] = NoCharacter then goto DonePlayer4Sprite
-          ;; if ! playerHealth[3] then goto DonePlayer4Sprite
+          ;; if playerCharacter[3] = NoCharacter then jmp DonePlayer4Sprite
+          ;; if ! playerHealth[3] then jmp DonePlayer4Sprite
           lda 3
           asl
           tax
@@ -363,13 +363,13 @@ SetPlayer4Color:
           lda # 3
           sta currentPlayer
           ;; Guard flag (non-zero = guarding)
-          ;; let temp2 = playerRecoveryFrames[3]
+          ;; Set temp2 = playerRecoveryFrames[3]
           lda # 3
           asl
           tax
           lda playerRecoveryFrames,x
           sta temp2
-          ;; let temp3 = playerState[3]
+          ;; Set temp3 = playerState[3]
           lda 3
           asl
           tax
@@ -415,7 +415,7 @@ Player4ReflectionDone:
 
 
           ;; Load sprite data from character definition
-          ;; let currentCharacter = playerCharacter[3]         
+          ;; Set currentCharacter = playerCharacter[3]
           lda 3
           asl
           tax

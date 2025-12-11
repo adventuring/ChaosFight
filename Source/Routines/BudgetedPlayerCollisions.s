@@ -105,7 +105,7 @@ BPC_Phase2 .proc
           jmp BPC_CheckSep
 
 BPC_CalcDiff
-          ;; let temp2 = playerX[temp3]
+          ;; Set temp2 = playerX[temp3]
           lda temp3
           asl
           tax

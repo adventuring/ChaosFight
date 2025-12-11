@@ -31,10 +31,10 @@ ProcessUpAction:
           ;; TODO: #1249 Implement Shamone <-> MethHound form switching
 
           ;; Robo Tito: Stretch (ascend toward ceiling; auto-latch on contact)
-          ;; if playerCharacter[temp1] = CharacterRoboTito then goto RoboTitoAscendUpAction
+          ;; if playerCharacter[temp1] = CharacterRoboTito then jmp RoboTitoAscendUpAction
 
           ;; Bernie: Drop (fall through thin floors)
-          ;; if playerCharacter[temp1] = CharacterBernie then goto BernieFallThroughUpAction
+          ;; if playerCharacter[temp1] = CharacterBernie then jmp BernieFallThroughUpAction
           lda temp1
           asl
           tax
@@ -47,7 +47,7 @@ ProcessUpAction:
 CheckHarpy:
 
           ;; Harpy: Flap (fly)
-          ;; if playerCharacter[temp1] = CharacterHarpy then goto HarpyFlapUpAction
+          ;; if playerCharacter[temp1] = CharacterHarpy then jmp HarpyFlapUpAction
           lda temp1
           asl
           tax
@@ -61,7 +61,7 @@ CheckZoeRyen:
 
           ;; For all other characters, UP is jump
           ;; Check Zoe Ryen for double-jump capability
-          ;; if playerCharacter[temp1] = CharacterZoeRyen then goto ZoeJumpCheckUpAction
+          ;; if playerCharacter[temp1] = CharacterZoeRyen then jmp ZoeJumpCheckUpAction
           lda temp1
           asl
           tax
@@ -75,7 +75,7 @@ StandardJump:
 
           ;; Standard jump - block during attack animations (states 13-15)
           ;; Tail call to DispatchCharacterJump - it returns directly to our caller
-          ;; let temp4 = playerCharacter[temp1]         
+          ;; Set temp4 = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -130,13 +130,13 @@ AfterHarpyJump:
 
 RoboTitoAscendUpAction:
           ;; Ascend toward ceiling
-          ;; let temp6 = playerCharacter[temp1]
+          ;; Set temp6 = playerCharacter[temp1]
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta temp6
-          ;; let temp6 = CharacterMovementSpeed[temp6]
+          ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -149,13 +149,13 @@ RoboTitoAscendUpAction:
           sta temp6
           ;; Compute playfield column
           ;; let playerY[temp1] = playerY[temp1] - temp6
-          ;; let temp2 = playerX[temp1]         
+          ;; Set temp2 = playerX[temp1]
           lda temp1
           asl
           tax
           lda playerX,x
           sta temp2
-          ;; let temp2 = temp2 - ScreenInsetX
+          ;; Set temp2 = temp2 - ScreenInsetX
           lda temp2
           sec
           sbc # ScreenInsetX
@@ -177,12 +177,12 @@ RoboTitoAscendUpAction:
 
 ColumnInRange:
 
-          ;; if temp2 & $80 then let temp2 = 0
+          ;; If temp2 & $80, set temp2 = 0
           ;; Save playfield column (temp2 will be overwritten)
           lda temp2
           sta temp4
           ;; Compute head row and check ceiling contact
-          ;; let temp2 = playerY[temp1]         
+          ;; Set temp2 = playerY[temp1]
           lda temp1
           asl
           tax
@@ -224,7 +224,7 @@ CheckCeilingPixel:
 
 AfterPlayfieldReadRoboTitoAscend:
 
-          ;; if temp1 then goto PUA_RoboTitoLatch
+          ;; if temp1 then jmp PUA_RoboTitoLatch
           lda temp1
           beq CheckDownPressed
 
@@ -234,7 +234,7 @@ CheckDownPressed:
           ;; Clear latch if DOWN pressed (check appropriate port)
           lda currentPlayer
           sta temp1
-          ;; if temp1 & 2 = 0 then goto CheckJoy0DownUpAction
+          ;; if temp1 & 2 = 0 then jmp CheckJoy0DownUpAction
           ;; if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
           ;; lda joy1down (undefined - commented out)
           beq ProcessUpActionDone
@@ -277,14 +277,14 @@ ZoeJumpCheckUpAction .proc
           ;; Zoe Ryen: Allow single mid-air double-jump
           lda # 0
           sta temp6
-          ;; if (playerState[temp1] & 4) then let temp6 = 1
+          ;; If (playerState[temp1] & 4), set temp6 = 1
           ;; Block double-jump if already used (characterStateFlags bit 3)
           rts
 
           ;; Block jump during attack animations (states 13-15)
           rts
 
-          ;; let temp4 = playerCharacter[temp1]         
+          ;; Set temp4 = playerCharacter[temp1]
           lda temp1
           asl
           tax

@@ -78,7 +78,7 @@ PhysicsApplyGravity .proc
 GravityLoop .proc
           ;; Check if player is active (P1/P2 always active, P3/P4 need
           ;; Quadtari)
-          ;; if temp1 >= 2 then goto GravityPlayerCheck
+          ;; if temp1 >= 2 then jmp GravityPlayerCheck
           lda temp1
           cmp 2
 
@@ -101,7 +101,7 @@ GravityPlayerCheck .proc
           jmp GravityNextPlayer
 CheckPlayer2Character:
 
-          ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto GravityNextPlayer
+          ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then jmp GravityNextPlayer
           lda temp1
           cmp # 2
           bne CheckPlayer3Character
@@ -127,7 +127,7 @@ CheckPlayer3Character:
 CheckPlayer3Active:
 
 
-          ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto GravityNextPlayer
+          ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then jmp GravityNextPlayer
           lda temp1
           cmp # 3
           bne GravityCheckCharacter
@@ -157,7 +157,7 @@ CheckCharacterType:
 .pend
 
 GravityCheckCharacter .proc
-          ;; let temp6 = playerCharacter[temp1]         
+          ;; Set temp6 = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -180,7 +180,7 @@ CheckDragonOfStorms:
 CheckJumpingState:
 
           ;; RoboTito (13): Skip gravity when latched to ceiling
-          ;; if temp6 = CharacterRoboTito && (characterStateFlags_R[temp1] & 1) then goto GravityNextPlayer
+          ;; if temp6 = CharacterRoboTito && (characterStateFlags_R[temp1] & 1) then jmp GravityNextPlayer
           If NOT jumping, skip gravity (player is on ground)
           lda playerState[temp1]
           and # PlayerStateBitJumping
@@ -209,7 +209,7 @@ ApplyGravityToVelocity:
 
           ;; Apply gravity acceleration to velocity subpixel part
           ;; Use optimized inline addition instead of subroutine call
-          ;; let subpixelAccumulator = playerVelocityYL[temp1] + gravityRate         
+          ;; Set subpixelAccumulator = playerVelocityYL[temp1] + gravityRate
           lda temp1
           asl
           tax
@@ -245,9 +245,9 @@ CheckTerminalVelocity:
           ;; CRITICAL: Inlined CCJ_ConvertPlayerXToPlayfieldColumn to avoid cross-bank call and stack imbalance
           ;; Input: temp1 = player index
           ;; Output: temp2 = playfield column (saved to temp6)
-                    ;; let temp2 = playerX[temp1]
+                    ;; Set temp2 = playerX[temp1]
                     lda temp1          asl          tax          lda playerX,x          sta temp2
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
           lda temp2
           sec
           sbc ScreenInsetX
@@ -258,7 +258,7 @@ CheckTerminalVelocity:
           sbc ScreenInsetX
           sta temp2
 
-          ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          ;; Set temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
           lda temp2
           lsr
           lsr
@@ -274,7 +274,7 @@ CheckTerminalVelocity:
           sta temp6
           ;; Calculate row where player feet are (bottom of sprite)
           ;; Feet are at playerY + PlayerSpriteHeight (16 pixels)
-          ;; let temp3 = playerY[temp1]
+          ;; Set temp3 = playerY[temp1]
           lda temp1
           asl
           tax
@@ -299,7 +299,7 @@ CheckTerminalVelocity:
           ;; feet
           If feet are in row N, check row N+1 for ground
           ;; Feet are at or below bottom of playfield, continue falling
-          ;; if temp4 >= pfrows then goto GravityNextPlayer
+          ;; if temp4 >= pfrows then jmp GravityNextPlayer
           lda temp4
           cmp pfrows
 
@@ -314,7 +314,7 @@ CheckTerminalVelocity:
           adc # 1
           sta temp5
           ;; Beyond playfield bounds, check if at bottom
-          ;; if temp5 >= pfrows then goto GravityCheckBottom
+          ;; if temp5 >= pfrows then jmp GravityCheckBottom
           lda temp5
           cmp pfrows
 
@@ -394,7 +394,7 @@ GravityRowCalcLoop:
 .pend
 
 GravityRowCalcLoop .proc
-          ;; let rowYPosition = rowYPosition + pfrowheight
+          ;; Set rowYPosition = rowYPosition + pfrowheight
           dec rowCounter
           lda rowCounter
           cmp # 1
@@ -469,8 +469,8 @@ SetRoboTitoStretchPermission
           tax
           lda 0
           sta missileStretchHeight_W,x
-          ;; CRITICAL: Called via goto from PhysicsApplyGravity, must continue to GravityNextPlayer
-          ;; Do not return - use goto to continue the loop
+          ;; CRITICAL: Called via jmp from PhysicsApplyGravity, must continue to GravityNextPlayer
+          ;; Do not return - use jmp to continue the loop
           jmp GravityNextPlayer
 
 .pend
@@ -479,7 +479,7 @@ GravityCheckBottom .proc
           ;; At bottom of playfield - treat as ground if feet are at
           ;; bottom row
           ;; Not at bottom row yet
-          ;; if temp4 < pfrows - 1 then goto GravityNextPlayer
+          ;; if temp4 < pfrows - 1 then jmp GravityNextPlayer
           ;; Skip standard landing logic for Radish Goblin (bounce system handles it)
           ;; Radish Goblin uses bounce movement system, skip standard landing
           lda temp6
@@ -507,7 +507,7 @@ GravityBottomCalcLoopLabel:
 .pend
 
 GravityBottomCalcLoop .proc
-          ;; let rowYPosition = rowYPosition + pfrowheight
+          ;; Set rowYPosition = rowYPosition + pfrowheight
           dec rowCounter
           lda rowCounter
           cmp # 1
@@ -546,7 +546,7 @@ GravityNextPlayerLabel:
 GravityNextPlayer .proc
           ;; Move to next player
           inc temp1
-          ;; if temp1 < 4 then goto GravityLoop          lda temp1          cmp 4          bcs .skip_5570          jmp
+          ;; if temp1 < 4 then jmp GravityLoop          lda temp1          cmp 4          bcs .skip_5570          jmp
           lda temp1
           cmp # 4
           bcs GravityLoopDone

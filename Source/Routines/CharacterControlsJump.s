@@ -20,7 +20,7 @@ StandardJump .proc
           tax
           lda playerCharacter,x
           sta temp2
-          ;; let temp2 = CharacterJumpVelocities[temp2]
+          ;; Set temp2 = CharacterJumpVelocities[temp2]
           lda temp2
           asl
           tax
@@ -78,7 +78,7 @@ BernieJump .proc
           clc
           adc # 16
           sta temp5
-          ;; let temp6 = temp5 / 16
+          ;; Set temp6 = temp5 / 16
           lda # 0
           sta temp4
           lda temp1
@@ -101,14 +101,17 @@ BernieJump .proc
 AfterPlayfieldReadFirst:
 
 
-                    if temp1 then let temp4 = 1          lda temp1          beq BernieCheckBottomWrapFirst
+          ;; If temp1, set temp4 = 1
+          lda temp1
+          beq BernieCheckBottomWrapFirst
+          lda # 1
+          sta temp4
 BernieCheckBottomWrapFirst:
-          jmp BernieCheckBottomWrapFirst
           lda temp3
           sta temp1
           jmp BS_return
 
-          ;; If temp6 >= pfrows - 1, then goto BernieCheckBottomWrap
+          ;; If temp6 >= pfrows - 1, then jmp BernieCheckBottomWrap
           lda temp6
           clc
           adc # 1
@@ -135,9 +138,12 @@ BernieCheckBottomWrapFirst:
 AfterPlayfieldReadSecond:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrapSecond
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq BernieCheckBottomWrapSecond
+          lda # 1
+          sta temp5
 BernieCheckBottomWrapSecond:
-          jmp BernieCheckBottomWrapSecond
           lda temp3
           sta temp1
           jmp BS_return
@@ -213,7 +219,7 @@ CCJ_FreeFlightUp .proc
           tax
           lda playerY,x
           sta temp3
-          ;; let temp4 = temp3 / 16
+          ;; Set temp4 = temp3 / 16
           rts
 
           dec temp4
@@ -239,9 +245,12 @@ CCJ_FreeFlightUp .proc
 AfterPlayfieldReadFreeFlightUp2:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrapFreeFlight2
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq BernieCheckBottomWrapFreeFlight2
+          lda # 1
+          sta temp5
 BernieCheckBottomWrapFreeFlight2:
-          jmp BernieCheckBottomWrapFreeFlight2
           lda temp6
           sta temp1
           rts
@@ -254,12 +263,18 @@ BernieCheckBottomWrapFreeFlight2:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
-                    let playerState[temp1] = playerState[temp1] | 4
+          ;; let playerState[temp1] = playerState[temp1] | 4
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 4
+          sta playerState,x
           rts
 
-DragonOfStormsJump:
+DragonOfStormsJump .proc:
           ;; Returns: Far (return otherbank)
           jmp CCJ_FreeFlightCharacterJump
           ;; ZOE RYEN (3) - STANDARD JUMP (dispatched directly to StandardJump)
@@ -296,7 +311,7 @@ CheckCooldownExpired:
 
           jmp BS_return
 
-          ;; If playerY[temp1] <= 5, then goto HarpyFlapRecord
+          ;; If playerY[temp1] <= 5, then jmp HarpyFlapRecord
           lda temp1
           asl
           tax

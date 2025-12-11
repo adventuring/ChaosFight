@@ -44,15 +44,15 @@ LoadSoundNote1 .proc
 
           ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           ;; AUDCV
-          ;; let temp6 = temp2 & %11110000
-          ;; let temp6 = temp6 / 16
+          ;; Set temp6 = temp2 & %11110000
+          ;; Set temp6 = temp6 / 16
           lda temp6
           lsr
           lsr
           lsr
           lsr
           sta temp6
-          ;; let soundEffectID_W = temp2 & %00001111
+          ;; Set soundEffectID_W = temp2 & %00001111
           lda temp2
           and # 15
           sta soundEffectID_W
@@ -66,7 +66,7 @@ LoadSoundNote1 .proc
           sta AUDV1
 
           ;; Set frame counter = Duration + Delay
-          ;; let soundEffectFrame1_W = temp4 + temp5
+          ;; Set soundEffectFrame1_W = temp4 + temp5
           lda temp4
           clc
           adc temp5

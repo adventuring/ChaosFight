@@ -41,7 +41,7 @@ UpdateSingleGuardTimer .proc
           ;; clears guard and starts cooldown when expired
           ;; If not guarding: decrements cooldown timer (if active)
           ;; Check if player is guarding
-          ;; let temp2 = playerState[temp1] & 2         
+          ;; Set temp2 = playerState[temp1] & 2
           lda temp1
           asl
           tax
@@ -57,7 +57,7 @@ UpdateCooldownTimer:
 
           ;; Player not guarding - decrement cooldown timer
           ;; Fix RMW: Read from _R, modify, write to _W
-          ;; let temp3 = playerTimers_R[temp1]         
+          ;; Set temp3 = playerTimers_R[temp1]
           lda temp1
           asl
           tax
@@ -95,7 +95,7 @@ UpdateGuardTimerActive .proc
           ;; Called Routines: None
           ;; Constraints: Must be colocated with UpdateSingleGuardTimer, GuardTimerExpired
           ;; Player is guarding - decrement guard duration timer
-          ;; let temp3 = playerTimers_R[temp1]         
+          ;; Set temp3 = playerTimers_R[temp1]
           lda temp1
           asl
           tax

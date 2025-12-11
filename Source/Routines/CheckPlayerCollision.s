@@ -15,7 +15,7 @@ XDistanceDone:
           ;;
           ;; Constraints: None
           ;;
-          ;; If temp6 >= PlayerSpriteWidth, then NoCollision
+          ;; If temp6 >= PlayerSpriteWidth,, then NoCollision
           lda temp6
           cmp # PlayerSpriteWidth
           bcc XDistanceCheckCollision
@@ -29,7 +29,7 @@ XDistanceCheckCollision:
           sta temp3
           ;;
           ;; Check Y collision
-          ;; If temp3 == 0 then CPC_Done
+          ;; If temp3 == 0, then CPC_Done
           lda temp3
           cmp # 0
           beq CPC_Done
@@ -42,7 +42,7 @@ XDistanceCheckCollision:
           tax
           lda playerY,x
           sta temp4
-          ;; let temp5 = playerY[temp2]
+          ;; Set temp5 = playerY[temp2]
           lda temp2
           asl
           tax
@@ -102,7 +102,7 @@ YDistanceDone:
           ;;
           ;; Constraints: None
           ;;
-          ;; If temp6 >= CharacterHeights[playerCharacter[temp1]], then NoCollision
+          ;; If temp6 >= CharacterHeights[playerCharacter[temp1]],, then NoCollision
           lda temp1
           asl
           tax
@@ -170,7 +170,7 @@ CheckPlayerCollision:
           tax
           lda playerX,x
           sta temp4
-          ;; let temp5 = playerX[temp2]
+          ;; Set temp5 = playerX[temp2]
           lda temp2
           asl
           tax
@@ -178,12 +178,12 @@ CheckPlayerCollision:
           sta temp5
 
           ;; Calculate absolute × distance between players
-          ;; If temp4 >= temp5 then CalcXDistanceRight
+          ;; If temp4 >= temp5, then CalcXDistanceRight
           lda temp4
           cmp temp5
           bcc CalcXDistanceRight
 
-          ;; let temp6 = temp5 - temp4
+          ;; Set temp6 = temp5 - temp4
           lda temp5
           sec
           sbc temp4
@@ -192,7 +192,7 @@ CheckPlayerCollision:
           jmp XDistanceDone
 
 CalcXDistanceRight .proc
-          ;; let temp6 = temp4 - temp5
+          ;; Set temp6 = temp4 - temp5
           lda temp4
           sec
           sbc temp5
@@ -209,14 +209,14 @@ CalcXDistanceRight .proc
 
 CalcYDistanceDown .proc
           ;; Fetch character half-height values using shared SCRAM scratch variables
-          ;; let characterIndex = playerCharacter[temp1]
+          ;; Set characterIndex = playerCharacter[temp1]
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta characterIndex
           ;; Use bit shift instead of division (optimized for Atari 2600)
-          ;; let characterHeight = CharacterHeights[characterIndex]
+          ;; Set characterHeight = CharacterHeights[characterIndex]
           lda characterIndex
           asl
           tax
@@ -226,14 +226,14 @@ CalcYDistanceDown .proc
             lsr
             sta halfHeight1
 
-          ;; let characterIndex = playerCharacter[temp2]
+          ;; Set characterIndex = playerCharacter[temp2]
           lda temp2
           asl
           tax
           lda playerCharacter,x
           sta characterIndex
           ;; Use bit shift instead of division (optimized for Atari 2600)
-          ;; let characterHeight = CharacterHeights[characterIndex]
+          ;; Set characterHeight = CharacterHeights[characterIndex]
           lda characterIndex
           asl
           tax
@@ -249,12 +249,12 @@ CalcYDistanceDown .proc
             sta halfHeight2
 
           ;; Compute absolute Y distance between player centers
-          ;; if temp4 >= temp5, then CalcYDistanceDown
+          ;; If temp4 >= temp5,, then CalcYDistanceDown
           lda temp4
           cmp temp5
           bcc CalcYDistanceDown
 
-          ;; let temp6 = temp5 - temp4
+          ;; Set temp6 = temp5 - temp4
           lda temp5
           sec
           sbc temp4

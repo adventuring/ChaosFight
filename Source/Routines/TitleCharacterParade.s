@@ -244,7 +244,7 @@ ParadeCharacterLeft .proc
 
           ;; Reset timer for next character
 
-          ;; let titleParadeTimer = titleParadeTimer - FramesPerSecond          lda titleParadeTimer          sec          sbc FramesPerSecond          sta titleParadeTimer
+          ;; Set titleParadeTimer = titleParadeTimer - FramesPerSecond          lda titleParadeTimer          sec          sbc FramesPerSecond          sta titleParadeTimer
           lda titleParadeTimer
           sec
           sbc FramesPerSecond
@@ -338,7 +338,7 @@ DrawParadeCharacterSprite .proc
           lda # 0
           sta currentPlayer
 
-          ;; let temp2 = titleParadeTimer & 7
+          ;; Set temp2 = titleParadeTimer & 7
           lda titleParadeTimer
           and # 7
           sta temp2

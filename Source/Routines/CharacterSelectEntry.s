@@ -56,17 +56,17 @@ CharacterSelectEntry .proc
           lda # 0
           sta playerLocked
           ;; Lock Player 3 (NoCharacter)
-          ;; let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+          ;; Set temp1 = 1 let temp2 = PlayerLockedNormal : cross-bank call to SetPlayerLocked bank6
 
           ;; Lock Player 4 (NoCharacter)
-          ;; let temp1 = 2
+          ;; Set temp1 = 2
           lda # 2
-          sta temp1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+          sta temp1 : let temp2 = PlayerLockedNormal : cross-bank call to SetPlayerLocked bank6
 
           ;; NOTE: Do NOT clear controllerStatus flags here - monotonic
-          ;; let temp1 = 3
+          ;; Set temp1 = 3
           lda # 3
-          sta temp1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+          sta temp1 : let temp2 = PlayerLockedNormal : cross-bank call to SetPlayerLocked bank6
 
           ;; detection (upgrades only)
           ;; Controller detection is handled by DetectPads with
@@ -87,22 +87,22 @@ CharacterSelectEntry .proc
           ;; Check for Quadtari adapter (inlined for performance)
           ;; CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
           ;; Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) and Right (INPT2 LOW, INPT3 HIGH)
-          ;; if INPT0{7} then goto CharacterSelectQuadtariAbsent
+          ;; if INPT0{7} then jmp CharacterSelectQuadtariAbsent
 
-                    if !INPT1{7} then goto CharacterSelectQuadtariAbsent
+                    if !INPT1{7} then jmp CharacterSelectQuadtariAbsent
           bit INPT1
           bmi CheckINPT2
           jmp CharacterSelectQuadtariAbsent
 CheckINPT2:
 
-          ;; if INPT2{7} then goto CharacterSelectQuadtariAbsent
+          ;; if INPT2{7} then jmp CharacterSelectQuadtariAbsent
           bit INPT2
           bpl CheckINPT3
           jmp CharacterSelectQuadtariAbsent
 CheckINPT3:
 
           ;; All checks passed - Quadtari detected
-                    if !INPT3{7} then goto CharacterSelectQuadtariAbsent
+                    if !INPT3{7} then jmp CharacterSelectQuadtariAbsent
           bit INPT3
           bmi SetQuadtariDetected
           jmp CharacterSelectQuadtariAbsent

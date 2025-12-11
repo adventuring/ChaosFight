@@ -22,7 +22,7 @@ BudgetedHealthBarUpdate .proc
           ;;
           ;; Constraints: Must be colocated with CheckPlayer2HealthUpdate, DonePlayer2HealthUpdate,
           ;; CheckPlayer3HealthUpdate, DonePlayer3HealthUpdate,
-          ;; UpdateHealthBarPlayer0-3 (all called via goto or gosub)
+          ;; UpdateHealthBarPlayer0-3 (all called via jmp or gosub)
           ;; Determine which player to update based on frame phase
           lda framePhase
           cmp # 0
@@ -55,7 +55,7 @@ CheckPlayer3HealthUpdate:
 BudgetedHealthBarPlayer0 .proc
           ;; Local trampoline so branch stays in range; tail-calls target
           ;; Update Player 0 health bar (inline from UpdatePlayer1HealthBar pattern)
-          ;; let temp6 = playerHealth[0]         
+          ;; Set temp6 = playerHealth[0]
           lda # 0
           asl
           tax
@@ -88,7 +88,7 @@ BudgetedHealthBarPlayer0 .proc
 BudgetedHealthBarPlayer1 .proc
           ;; Local trampoline so branch stays in range; tail-calls target
           ;; Update Player 1 health bar (inline from UpdatePlayer1HealthBar pattern)
-          ;; let temp6 = playerHealth[1]         
+          ;; Set temp6 = playerHealth[1]
           lda 1
           asl
           tax

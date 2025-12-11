@@ -13,7 +13,7 @@ UpdateAttackCooldowns .proc
           ;; Constraints: Must be in same bank as GameLoopMain (Bank 11)
           ;; Optimized: Loop through all players instead of individual calls
           ;; TODO: #1254 for temp1 = 0 to 3
-          ;; let temp2 = playerAttackCooldown_R[temp1]         
+          ;; Set temp2 = playerAttackCooldown_R[temp1]
           lda temp1
           asl
           tax

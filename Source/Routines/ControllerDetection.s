@@ -49,10 +49,10 @@ CheckLeftSideQuadtari:
 .pend
 
 CDP_CheckRightSide .proc
-          ;; if INPT2{7} then goto CDP_CheckGenesis
+          ;; if INPT2{7} then jmp CDP_CheckGenesis
 
           ;; fall through to CDP_QuadtariFound
-          if !INPT3{7} then goto CDP_CheckGenesis
+          if !INPT3{7} then jmp CDP_CheckGenesis
           bit INPT3
           bmi CheckRightSideQuadtari
 
@@ -75,7 +75,7 @@ CDP_CheckGenesis .proc
           ;; detected)
           ;; If Quadtari was previously detected, skip all other
           ;; detection
-          ;; if temp1 & SetQuadtariDetected then goto CDP_MergeStatus
+          ;; if temp1 & SetQuadtariDetected then jmp CDP_MergeStatus
 
           ;; Genesis controllers pull INPT0 and INPT1 HIGH when idle
           ;; Method: Ground paddle ports via VBLANK, wait a frame,

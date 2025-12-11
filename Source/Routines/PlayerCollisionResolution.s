@@ -23,7 +23,7 @@ CheckAllPlayerCollisions .proc
           cmp # 0
           bne Use4PlayerMode
 
-          ;; let temp6 = 2 : goto SkipElseCollisionCheck
+          ;; Set temp6 = 2 jmp SkipElseCollisionCheck
 
 Use4PlayerMode:
 
@@ -55,7 +55,7 @@ CheckP1ActiveCollision .proc
 
 CheckPlayer2Character:
 
-          ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto NextOuterCollisionCheck
+          ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then jmp NextOuterCollisionCheck
           lda temp1
           cmp # 2
           bne CheckPlayer3Character
@@ -86,7 +86,7 @@ CheckPlayer3Active:
 
 
 
-          ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto NextOuterCollisionCheck
+          ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then jmp NextOuterCollisionCheck
           lda temp1
           cmp # 3
           bne InnerLoopCollisionCheck
@@ -126,7 +126,7 @@ InnerLoopCollisionCheck .proc
 
 CheckPairCollision .proc
 
-          ;; if temp2 >= temp6 then goto NextOuterCollisionCheck
+          ;; if temp2 >= temp6 then jmp NextOuterCollisionCheck
           lda temp2
           cmp temp6
 
@@ -155,7 +155,7 @@ CheckP2ActiveCollision .proc
 CheckP2Character:
 
 
-          ;; if temp2 = 2 && playerCharacter[2] = NoCharacter then goto NextInnerCollisionCheck
+          ;; if temp2 = 2 && playerCharacter[2] = NoCharacter then jmp NextInnerCollisionCheck
           lda temp2
           cmp # 2
           bne CheckP2Character3
@@ -182,7 +182,7 @@ CheckP2CharacterActive:
 
 
 
-          ;; if temp2 = 3 && playerCharacter[3] = NoCharacter then goto NextInnerCollisionCheck
+          ;; if temp2 = 3 && playerCharacter[3] = NoCharacter then jmp NextInnerCollisionCheck
           lda temp2
           cmp # 3
           bne CheckDistanceCollisionP2
@@ -213,7 +213,7 @@ CheckDistanceActive:
 
 CheckDistanceCollision .proc
 
-          ;; if playerHealth[temp1] = 0 then goto NextInnerCollisionCheck
+          ;; if playerHealth[temp1] = 0 then jmp NextInnerCollisionCheck
           lda temp1
           asl
           tax
@@ -222,7 +222,7 @@ CheckDistanceCollision .proc
           jmp NextInnerCollisionCheck
 CheckPlayer2Health:
 
-          ;; if playerHealth[temp2] = 0 then goto NextInnerCollisionCheck
+          ;; if playerHealth[temp2] = 0 then jmp NextInnerCollisionCheck
           lda temp2
           asl
           tax
@@ -231,14 +231,14 @@ CheckPlayer2Health:
           jmp NextInnerCollisionCheck
 CalculateXDistance:
 
-          ;; let temp3 = playerX[temp2] - playerX[temp1]         
+          ;; Set temp3 = playerX[temp2] - playerX[temp1]
           lda temp2
           asl
           tax
           lda playerX,x
           sta temp3
 
-          ;; ;; if temp3 < 0 then let temp3 = 0 - temp3          lda 0          sec          sbc temp3          sta temp3
+          ;; ;; If temp3 < 0, set temp3 = 0 - temp3          lda 0          sec          sbc temp3          sta temp3
           lda temp3
           cmp # 0
           bcs CheckCollisionDistance
@@ -268,7 +268,7 @@ CalculateYDistance:
 
 
 
-          ;; if temp3 >= PlayerCollisionDistance then goto NextInnerCollisionCheck
+          ;; if temp3 >= PlayerCollisionDistance then jmp NextInnerCollisionCheck
           lda temp3
           cmp # PlayerCollisionDistance
 
@@ -279,14 +279,14 @@ CalculateYDistance:
 
           CheckCollisionDistanceThreshold:
 
-          ;; let temp4 = playerY[temp2] - playerY[temp1]         
+          ;; Set temp4 = playerY[temp2] - playerY[temp1]
           lda temp2
           asl
           tax
           lda playerY,x
           sta temp4
 
-          ;; ;; if temp4 < 0 then let temp4 = 0 - temp4          lda 0          sec          sbc temp4          sta temp4
+          ;; ;; If temp4 < 0, set temp4 = 0 - temp4          lda 0          sec          sbc temp4          sta temp4
           lda temp4
           cmp # 0
           bcs CheckTotalHeight
@@ -318,7 +318,7 @@ CalculateWeights:
 
           ;; Use bit shift instead of division (optimized for Atari 2600)
 
-          ;; let characterHeight = CharacterHeights[temp1]
+          ;; Set characterHeight = CharacterHeights[temp1]
           lda temp1
           asl
           tax
@@ -335,7 +335,7 @@ CalculateWeights:
 
           ;; Use bit shift instead of division (optimized for Atari 2600)
 
-          ;; let characterHeight = CharacterHeights[temp2]
+          ;; Set characterHeight = CharacterHeights[temp2]
           lda temp2
           asl
           tax
@@ -355,7 +355,7 @@ CalculateWeights:
             sta halfHeight2
 
 
-          ;; let totalHeight = halfHeight1 + halfHeight2
+          ;; Set totalHeight = halfHeight1 + halfHeight2
           lda totalHeight
           cmp # 0
           bne CheckHeightCollision
@@ -363,7 +363,7 @@ CalculateWeights:
 CheckHeightCollision:
 
 
-          ;; if temp4 >= totalHeight then goto NextInnerCollisionCheck
+          ;; if temp4 >= totalHeight then jmp NextInnerCollisionCheck
           lda temp4
           cmp totalHeight
 
@@ -372,7 +372,7 @@ CheckHeightCollision:
           jmp CalculateWeightsLabel
 
 CalculateWeightsLabel:
-          ;; let characterWeight = CharacterWeights[temp1]
+          ;; Set characterWeight = CharacterWeights[temp1]
           lda temp1
           asl
           tax
@@ -382,7 +382,7 @@ CalculateWeightsLabel:
           lda characterWeight
           sta halfHeight1
 
-          ;; let characterWeight = CharacterWeights[temp2]
+          ;; Set characterWeight = CharacterWeights[temp2]
           lda temp2
           asl
           tax
@@ -397,7 +397,7 @@ CalculateWeightsLabel:
           lda characterWeight
           sta halfHeight2
 
-          ;; let totalWeight = halfHeight1 + halfHeight2
+          ;; Set totalWeight = halfHeight1 + halfHeight2
           lda totalWeight
           cmp # 0
           bne CalculateWeightDifference
@@ -405,9 +405,9 @@ CalculateWeightsLabel:
 CalculateWeightDifference:
 
 
-          ;; if playerX[temp1] < playerX[temp2] then goto SepLeftCollision
+          ;; If playerX[temp1] < playerX[temp2] then jmp SepLeftCollision
 
-          ;; let weightDifference = halfHeight1 - halfHeight2          lda halfHeight1          sec          sbc halfHeight2          sta weightDifference
+          ;; Set weightDifference = halfHeight1 - halfHeight2          lda halfHeight1          sec          sbc halfHeight2          sta weightDifference
           lda halfHeight1
           sec
           sbc halfHeight2
@@ -419,11 +419,11 @@ CalculateWeightDifference:
           sta weightDifference
 
 
-          ;; if halfHeight1 < halfHeight2 then let weightDifference = halfHeight2 - halfHeight1          lda halfHeight2          sec          sbc halfHeight1          sta weightDifference
+          ;; if halfHeight1 < halfHeight2, set weightDifference = halfHeight2 - halfHeight1          lda halfHeight2          sec          sbc halfHeight1          sta weightDifference
           lda weightDifference
           sta impulseStrength
 
-          ;; if halfHeight1 >= halfHeight2 then goto ApplyImpulseRightCollision
+          ;; if halfHeight1 >= halfHeight2 then jmp ApplyImpulseRightCollision
           lda halfHeight1
           cmp halfHeight2
 
@@ -441,7 +441,7 @@ CalculateWeightDifference:
             sta impulseStrength
 
 
-          ;; if totalWeight >= 128 then goto PCR_Div128_1
+          ;; if totalWeight >= 128 then jmp PCR_Div128_1
           lda totalWeight
           cmp 128
 
@@ -451,7 +451,7 @@ CalculateWeightDifference:
 
           CheckDiv64:
 
-          ;; if totalWeight >= 64 then goto PCR_Div64_1
+          ;; if totalWeight >= 64 then jmp PCR_Div64_1
           lda totalWeight
           cmp 64
 
@@ -461,7 +461,7 @@ CalculateWeightDifference:
 
           CheckDiv32:
 
-          ;; if totalWeight >= 32 then goto PCR_Div32_1
+          ;; if totalWeight >= 32 then jmp PCR_Div32_1
           lda totalWeight
           cmp 32
 
@@ -628,12 +628,12 @@ ClampPlayer2VelocityMax:
           lda playerVelocityX,x
           sec
           sbc # 252
-          bcc ImpulseDoneCollision
-          beq ImpulseDoneCollision
+          bcc ImpulseDoneCollisionLeft
+          beq ImpulseDoneCollisionLeft
           lda # 252
           sta playerVelocityX,x
-ImpulseDoneCollision:
-          jmp ImpulseDoneCollision
+ImpulseDoneCollisionLeft:
+          jmp ImpulseDoneCollisionLeft
 
 .pend
 
@@ -698,7 +698,7 @@ ImpulseDoneCollisionRight:
 
 SepLeftCollision .proc
 
-          ;; let weightDifference = halfHeight1 - halfHeight2          lda halfHeight1          sec          sbc halfHeight2          sta weightDifference
+          ;; Set weightDifference = halfHeight1 - halfHeight2          lda halfHeight1          sec          sbc halfHeight2          sta weightDifference
           lda halfHeight1
           sec
           sbc halfHeight2
@@ -710,11 +710,11 @@ SepLeftCollision .proc
           sta weightDifference
 
 
-          ;; if halfHeight1 < halfHeight2 then let weightDifference = halfHeight2 - halfHeight1          lda halfHeight2          sec          sbc halfHeight1          sta weightDifference
+          ;; If halfHeight1 < halfHeight2, set weightDifference = halfHeight2 - halfHeight1          lda halfHeight2          sec          sbc halfHeight1          sta weightDifference
           lda weightDifference
           sta impulseStrength
 
-          ;; if halfHeight1 >= halfHeight2 then goto ApplyImpulseLeftCollision
+          ;; if halfHeight1 >= halfHeight2 then jmp ApplyImpulseLeftCollision
           lda halfHeight1
           cmp halfHeight2
 
@@ -732,7 +732,7 @@ SepLeftCollision .proc
             sta impulseStrength
 
 
-          ;; if totalWeight >= 128 then goto PCR_Div128_2
+          ;; if totalWeight >= 128 then jmp PCR_Div128_2
           lda totalWeight
           cmp 128
 
@@ -742,7 +742,7 @@ SepLeftCollision .proc
 
           CheckDiv64Left:
 
-          ;; if totalWeight >= 64 then goto PCR_Div64_2
+          ;; if totalWeight >= 64 then jmp PCR_Div64_2
           lda totalWeight
           cmp 64
 
@@ -752,7 +752,7 @@ SepLeftCollision .proc
 
           CheckDiv32Left:
 
-          ;; if totalWeight >= 32 then goto PCR_Div32_2
+          ;; if totalWeight >= 32 then jmp PCR_Div32_2
           lda totalWeight
           cmp 32
 
@@ -881,7 +881,7 @@ NextOuterCollisionCheck .proc
 
           inc temp1
 
-          ;; if temp1 < temp6 then goto OuterLoopCollisionCheck
+          ;; if temp1 < temp6 then jmp OuterLoopCollisionCheck
           lda temp1
           cmp temp6
           bcs NextOuterCollisionCheckDone

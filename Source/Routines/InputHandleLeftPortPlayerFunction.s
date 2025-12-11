@@ -12,14 +12,14 @@ InputHandleLeftPortPlayerFunction:
           lda temp1
           sta currentPlayer
           ;; block movement during attack animations (states 13-15)
-          ;; let temp2 = playerState[temp1] / 16         
+          ;; Set temp2 = playerState[temp1] / 16
           lda temp1
           asl
           tax
           lda playerState,x
           sta temp2
           ;; Block movement during attack windup/execute/recovery
-          ;; if temp2 >= 13 then goto DoneLeftPortMovement
+          ;; if temp2 >= 13 then jmp DoneLeftPortMovement
           lda temp2
           cmp # 13
 
@@ -33,7 +33,7 @@ CheckGuardStatus:
           ;; flying characters)
           ;; Frooty (8) and Dragon of Storms (2) need collision checks
           ;; for horizontal movement
-          ;; let temp5 = playerCharacter[temp1]         
+          ;; Set temp5 = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -73,7 +73,7 @@ IHLPF_ProcessStandardMovementReturn:
 DoneLeftPortMovement:
 
 IHLP_FlyingMovement .proc
-          ;; Tail call: goto instead of gosub to save 2 bytes on sta
+          ;; Tail call: jmp instead of cross-bank call to to save 2 bytes on sta
 
           jmp HandleFlyingCharacterMovement
 

@@ -173,7 +173,7 @@ CheckMethHound:
 
           ;; Characters 16-30: Basic mêlée attacks
 
-          ;; if temp4 >= 16 && temp4 <= 30 then goto PerformGenericAttack bank7
+          ;; if temp4 >= 16 && temp4 <= 30 then jmp PerformGenericAttack bank7
 
 
 
@@ -252,7 +252,7 @@ CEJB_CheckPlayer0 .proc
           ;; Player 0: Check Genesis controller first
           ;; Returns: Far (return otherbank)
 
-                    if !controllerStatus{0} then goto CEJB_CheckPlayer0Joy2bPlus
+                    if !controllerStatus{0} then jmp CEJB_CheckPlayer0Joy2bPlus
 
 CEJB_ReadButton0
 

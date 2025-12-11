@@ -23,10 +23,10 @@ ChangeGameMode .proc
           ;;
           ;; Constraints: Must be colocated with all Setup* functions
           ;; (called via if...goto)
-          ;; Use on...goto with near thunks (on...goto is near-call-only)
+          ;; Use on...jmp with near thunks (on...jmp is near-call-only)
           ;; Thunks ensure labels resolve correctly within same bank
           ;; Thunks are placed at end of file to prevent fall-through
-          ;; Note: on...goto pushes 2 bytes then immediately pops them (net zero stack change)
+          ;; Note: on...jmp pushes 2 bytes then immediately pops them (net zero stack change)
           jmp ThunkPublisherPrelude
 
           ;; Safety exit if gameMode is invalid
@@ -49,7 +49,7 @@ SetupPublisherPrelude .proc
           ;; prelude sta
 
           ;; Constraints: Must be colocated with ChangeGameMode
-          ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
+          ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
 
@@ -72,7 +72,7 @@ SetupAuthorPrelude .proc
           ;; prelude sta
 
           ;; Constraints: Must be colocated with ChangeGameMode
-          ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
+          ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
 
@@ -95,7 +95,7 @@ SetupTitle .proc
           ;; screen sta
 
           ;; Constraints: Must be colocated with ChangeGameMode
-          ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
+          ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
 
@@ -104,7 +104,7 @@ SetupTitle .proc
 .pend
 
 SetupCharacterSelect .proc
-          ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
+          ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; Returns: Far (return otherbank)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           jmp BS_return
@@ -137,7 +137,7 @@ SetupFallingAnimation
           ;; animation sta
 
           ;; Constraints: Must be colocated with ChangeGameMode
-          ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
+          ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; Cross-bank call to BeginFallingAnimation in bank 14
           lda # >(AfterBeginFallingAnimation-1)
@@ -172,7 +172,7 @@ SetupArenaSelect .proc
           ;; arena select sta
 
           ;; Constraints: Must be colocated with ChangeGameMode
-          ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
+          ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; Cross-bank call to BeginArenaSelect in bank 14
           lda # >(AfterBeginArenaSelect-1)
@@ -209,7 +209,7 @@ SetupGame .proc
           ;; Constraints: Must be colocated with ChangeGameMode
           ;; BeginGameLoop resets gameplay state and returns
           ;; MainLoop will dispatch to GameMainLoop when gameMode = ModeGame
-          ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
+          ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; Cross-bank call to BeginGameLoop in bank 11
           lda # >(AfterBeginGameLoop-1)
@@ -244,7 +244,7 @@ SetupWinner .proc
           ;; accesses winner sta
 
           ;; Constraints: Must be colocated with ChangeGameMode
-          ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
+          ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; Cross-bank call to BeginWinnerAnnouncement in bank 14
           lda # >(AfterBeginWinnerAnnouncement-1)
@@ -279,13 +279,13 @@ SetupAttract .proc
           ;; attract mode sta
 
           ;; Constraints: Must be colocated with ChangeGameMode
-          ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
+          ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
 
           jmp BeginAttractMode
           ;; ============================================================
-          ;; Near thunks for on...goto jump table
+          ;; Near thunks for on...jmp jump table
           ;; Placed at end to prevent accidental fall-through
           ;; ============================================================
 

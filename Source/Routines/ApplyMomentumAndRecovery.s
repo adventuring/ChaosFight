@@ -43,7 +43,7 @@ MomentumRecoveryLoop .proc
           ;; Check if player is active (P1/P2 always active, P3/P4 need
           ;; Quadtari)
           ;; Players 0-1 always active
-          ;; if temp1 < 2 then MomentumRecoveryProcess
+          ;; If temp1 < 2, then MomentumRecoveryProcess
           lda temp1
           cmp # 2
           bcs CheckQuadtariActive
@@ -61,7 +61,7 @@ CheckQuadtariActive:
 
 CheckPlayer2NoCharacter:
 
-          ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then goto MomentumRecoveryNext
+          ;; if temp1 = 2 && playerCharacter[2] = NoCharacter then jmp MomentumRecoveryNext
           lda temp1
           cmp # 2
           bne CheckPlayer3Character
@@ -90,7 +90,7 @@ CheckPlayer3Character:
 CheckPlayer3NoCharacter:
 
 
-          ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then goto MomentumRecoveryNext
+          ;; if temp1 = 3 && playerCharacter[3] = NoCharacter then jmp MomentumRecoveryNext
           lda temp1
           cmp # 3
           bne MomentumRecoveryProcess
@@ -180,7 +180,7 @@ DecayVelocity:
 
           ;; Decay velocity if recovery frames active
           ;; Velocity decay during recovery (knockback slows down over
-          ;; if ! playerRecoveryFrames[temp1] then goto MomentumRecoveryNext
+          ;; if ! playerRecoveryFrames[temp1] then jmp MomentumRecoveryNext
           lda temp1
           asl
           tax
@@ -199,7 +199,7 @@ DecayPositiveVelocity:
 
 
           ;; time)
-          ;; if playerVelocityX[temp1] <= 0 then MomentumRecoveryDecayNegative
+          ;; If playerVelocityX[temp1] <= 0, then MomentumRecoveryDecayNegative
           lda temp1
           asl
           tax
@@ -246,7 +246,7 @@ MomentumRecoveryNextPositive:
 
 MomentumRecoveryDecayNegative .proc
           ;; Negative velocity: decay by 1 (add 1 to make less
-          ;; if playerVelocityX[temp1] >= 0 then goto MomentumRecoveryNext
+          ;; if playerVelocityX[temp1] >= 0 then jmp MomentumRecoveryNext
           lda temp1
           asl
           tax
@@ -292,7 +292,7 @@ MomentumRecoveryNextNegative:
 MomentumRecoveryNext .proc
           ;; Next player
           inc temp1
-          ;; if temp1 < 4 then goto MomentumRecoveryLoop          lda temp1          cmp 4          bcs .skip_9998          jmp
+          ;; if temp1 < 4 then jmp MomentumRecoveryLoop          lda temp1          cmp 4          bcs .skip_9998          jmp
           lda temp1
           cmp # 4
           bcs ApplyMomentumAndRecoveryDone

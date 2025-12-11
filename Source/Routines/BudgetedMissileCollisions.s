@@ -31,7 +31,7 @@ Use4PlayerMode:
           sta temp1
           ;; framePhase 0-3 maps to Game Players 0-3
           ;; Calculate bit flag using O(1) array lookup: BitMask[playerIndex] (1, 2, 4, 8)
-          ;; let temp6 = BitMask[temp1]         
+          ;; Set temp6 = BitMask[temp1]
           lda temp1
           asl
           tax
@@ -58,7 +58,7 @@ AfterCheckAllMissileCollisions4P:
 
 BudgetedMissileCollisionCheck2P:
           ;; Simple 2-player mode: alternate missiles
-          ;; let temp1 = frame & 1
+          ;; Set temp1 = frame & 1
           lda frame
           and # 1
           sta temp1
@@ -66,7 +66,7 @@ BudgetedMissileCollisionCheck2P:
           ;; Use frame bit to alternate: 0 = Player 0, 1 = Player 1
           ;; BitMask[playerIndex] (1, 2, 4, 8)
           ;; Calculate bit flag using O(1) array lookup:
-          ;; let temp6 = BitMask[temp1]         
+          ;; Set temp6 = BitMask[temp1]
           lda temp1
           asl
           tax

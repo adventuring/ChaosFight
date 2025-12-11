@@ -19,7 +19,7 @@ CheckGuardCooldown .proc
           ;; Called Routines: None
           ;; Constraints: Must be colocated with GuardCooldownBlocked (called via goto)
           ;; Check if player is currently guarding
-          ;; let temp3 = playerState[temp1] & 2         
+          ;; Set temp3 = playerState[temp1] & 2
           lda temp1
           asl
           tax
@@ -35,7 +35,7 @@ CheckCooldownTimer:
 
           ;; Check cooldown timer (stored in playerTimers array)
           ;; playerTimers stores frames remaining in cooldown
-          ;; let temp3 = playerTimers_R[temp1]         
+          ;; Set temp3 = playerTimers_R[temp1]
           lda temp1
           asl
           tax

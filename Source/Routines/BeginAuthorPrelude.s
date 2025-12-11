@@ -52,21 +52,21 @@ AfterStartMusicAuthorPrelude:
 
           ;; Set window values for Author screen (Interworldly only)
           ;; OPTIMIZATION: Inlined to save call overhead (only used once)
-          ;; let titlescreenWindow1 = 0   ; AtariAge logo hidden
-          ;; let titlescreenWindow2 = 0  ; AtariAgeText hidden
+          ;; Set titlescreenWindow1 = 0   ; AtariAge logo hidden
+          ;; Set titlescreenWindow2 = 0  ; AtariAgeText hidden
           lda # 0
           sta titlescreenWindow2
-          ;; let titlescreenWindow3 = 0  ; ChaosFight hidden
+          ;; Set titlescreenWindow3 = 0  ; ChaosFight hidden
           lda # 0
           sta titlescreenWindow3
-          ;; let titlescreenWindow4 = 42  ; BRP visible
+          ;; Set titlescreenWindow4 = 42  ; BRP visible
           lda # 42
           sta titlescreenWindow4
 
           ;; Note: Bitmap data is loaded automatically by titlescreen
           ;; kernel via includes
           ;; BeginAuthorPrelude is called cross-bank from SetupAuthorPrelude
-          ;; (gosub BeginAuthorPrelude bank14 forces BS_jsr even though same bank)
+          ;; (cross-bank call to BeginAuthorPrelude bank14 forces BS_jsr even though same bank)
           ;; so it must return with return otherbank to match
           jmp BS_return
 

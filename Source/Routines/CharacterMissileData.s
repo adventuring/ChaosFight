@@ -14,7 +14,7 @@ GetCharacterWeightValue .proc
           ;; Mutates: temp2 (return value)
           ;; Constraints: None
           ;; Use direct array access for O(1) lookup
-          ;; let temp2 = CharacterWeights[temp1]         
+          ;; Set temp2 = CharacterWeights[temp1]
           lda temp1
           asl
           tax
@@ -31,7 +31,7 @@ GetCharacterMissileHeight .proc
           ;; Mutates: temp2 (result register - missile height slot)
           ;; Constraints: None (table lookup - missile height)
           ;; Use direct array access for O(1) lookup
-          ;; let temp2 = CharacterMissileHeights[temp1]         
+          ;; Set temp2 = CharacterMissileHeights[temp1]
           lda temp1
           asl
           tax
@@ -48,7 +48,7 @@ GetCharacterMissileMaxX .proc
           ;; Mutates: temp2 (result register - missile max X)
           ;; Constraints: None (table lookup - missile max X)
           ;; Use direct array access for O(1) lookup
-          ;; let temp2 = CharacterMissileMaxX[temp1]         
+          ;; Set temp2 = CharacterMissileMaxX[temp1]
           lda temp1
           asl
           tax
@@ -64,7 +64,7 @@ GetCharacterMissileMaxY .proc
           ;; Mutates: temp2 (result register - missile max Y)
           ;; Constraints: None (table lookup - missile max Y)
           ;; Use direct array access for O(1) lookup
-          ;; let temp2 = CharacterMissileMaxY[temp1]         
+          ;; Set temp2 = CharacterMissileMaxY[temp1]
           lda temp1
           asl
           tax
@@ -81,7 +81,7 @@ GetMissileWidth .proc
           ;; Mutates: temp2 (return value)
           ;; Constraints: None (table lookup - missile width)
           ;; Use direct array access for O(1) lookup
-          ;; let temp2 = CharacterMissileWidths[temp1]         
+          ;; Set temp2 = CharacterMissileWidths[temp1]
           lda temp1
           asl
           tax
@@ -98,7 +98,7 @@ GetMissileHeight .proc
           ;; Mutates: temp2 (return value)
           ;; Constraints: None (table lookup - missile height)
           ;; Use direct array access for O(1) lookup
-          ;; let temp2 = CharacterMissileHeights[temp1]         
+          ;; Set temp2 = CharacterMissileHeights[temp1]
           lda temp1
           asl
           tax
@@ -115,7 +115,7 @@ GetMissileFlags .proc
           ;; Mutates: temp2 (return value)
           ;; Constraints: None (table lookup - missile flags)
           ;; Use direct array access for O(1) lookup
-          ;; let temp2 = CharacterMissileFlags[temp1]         
+          ;; Set temp2 = CharacterMissileFlags[temp1]
           lda temp1
           asl
           tax
@@ -131,7 +131,7 @@ GetMissileMomentumX .proc
           ;; Output: temp2 = missile momentum X
           ;; Mutates: temp2 (return value - missile momentum X)
           ;; Constraints: None (table lookup - missile momentum X)
-          ;; let temp2 = CharacterMissileMomentumX[temp1]         
+          ;; Set temp2 = CharacterMissileMomentumX[temp1]
           lda temp1
           asl
           tax
@@ -147,7 +147,7 @@ GetMissileMomentumY .proc
           ;; Output: temp2 = missile momentum Y
           ;; Mutates: temp2 (return value - missile momentum Y)
           ;; Constraints: None (table lookup - missile momentum Y)
-          ;; let temp2 = CharacterMissileMomentumY[temp1]         
+          ;; Set temp2 = CharacterMissileMomentumY[temp1]
           lda temp1
           asl
           tax

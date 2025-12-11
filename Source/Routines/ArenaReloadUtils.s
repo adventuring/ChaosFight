@@ -17,7 +17,7 @@ ReloadArenaColors .proc
           cmp # RandomArena
           bne SkipRandomSelection
 
-          ;; let temp1 = rand & 31
+          ;; Set temp1 = rand & 31
           lda rand
           and # 31
           sta temp1
@@ -44,7 +44,7 @@ ReloadArenaColorsDispatch .proc
           ;; Use existing LoadArena color functions (identical behavior)
           ;; Returns: Far (return otherbank)
           ;; Call LoadArenaDispatch to handle color/B&W selection
-          ;; (inline logic avoids cross-bank goto issues)
+          ;; (inline logic avoids cross-bank jmp issues)
           ;; Cross-bank call to DWS_GetBWMode in bank 15
           lda # >(AfterGetBWModeWinScreen-1)
           pha
@@ -76,7 +76,7 @@ AfterGetBWModeWinScreen:
 AfterLoadArenaByIndexReload:
 
           ;; Load color color table
-          ;; if temp6 then goto RAU_LoadBWColors
+          ;; if temp6 then jmp RAU_LoadBWColors
           lda temp6
           beq LoadColorColors
           jmp LoadBWColorsArenaReload

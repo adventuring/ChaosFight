@@ -9,7 +9,7 @@
 VblankHandlerTrampoline .proc
           ;; Returns: Near (return thisbank)
           ;; Cross-bank call to VblankHandlerDispatcher in Bank 11
-          ;; Uses batariBASIC’s cross-bank gosub mechanism
+          ;; Uses batariBASIC’s cross-bank cross-bank call to mechanism
           ;; Note: VblankHandlerDispatcher is defined in VblankHandlers.bas in Bank 11
           ;; Cross-bank call to VblankHandlerDispatcher in bank 11
           lda # >(AfterVblankHandlerDispatcher-1)

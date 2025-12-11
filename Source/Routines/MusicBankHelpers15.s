@@ -20,7 +20,7 @@ LoadSongPointerBank15:
           ;; Constraints: Only songs 0-Bank14MaxSongID live in Bank 15. Index mapping:
           ;; song ID maps directly (index = songID). Returns songPointer = 0 if song not in this bank.
           ;; Bounds check: only songs 0-Bank14MaxSongID reside in Bank 15
-          ;; if temp1 < 0 then goto LSP15_InvalidSong
+          ;; if temp1 < 0 then jmp LSP15_InvalidSong
           lda temp1
           cmp # 0
           bcs CheckMaxSongID
@@ -29,7 +29,7 @@ LoadSongPointerBank15:
 
 CheckMaxSongID:
 
-          ;; if temp1 > Bank14MaxSongID then goto LSP15_InvalidSong
+          ;; if temp1 > Bank14MaxSongID then jmp LSP15_InvalidSong
           lda temp1
           sec
           sbc # Bank14MaxSongID
@@ -44,13 +44,13 @@ SongIDInRange:
           lda temp1
           sta temp2
           ;; Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
-          ;; let var40 = SongPointers2H[temp2]
+          ;; Set var40 = SongPointers2H[temp2]
           lda temp2
           asl
           tax
           lda SongPointers2H,x
           sta var40
-          ;; let songPointer = SongPointers2L[temp2]
+          ;; Set songPointer = SongPointers2L[temp2]
           lda temp2
           asl
           tax
@@ -90,9 +90,9 @@ LoadSongVoice1PointerBank15
           lda temp1
           sta temp2
           ;; Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
-                    ;; let var40 = SongPointers2SecondH[temp2]
+                    ;; Set var40 = SongPointers2SecondH[temp2]
                     lda temp2          asl          tax          lda SongPointers2SecondH,x          sta var40
-          ;; let songPointer = SongPointers2SecondL[temp2]
+          ;; Set songPointer = SongPointers2SecondL[temp2]
           lda temp2
           asl
           tax
@@ -146,21 +146,21 @@ LoadMusicNote0Bank15
           rts
 
           ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
-          ;; let temp6 = temp2 & %11110000
-          ;; let temp6 = temp6 / 16
+          ;; Set temp6 = temp2 & %11110000
+          ;; Set temp6 = temp6 / 16
           lda temp6
           lsr
           lsr
           lsr
           lsr
           sta temp6
-          ;; let musicVoice0TargetAUDV_W = temp2 & %00001111
+          ;; Set musicVoice0TargetAUDV_W = temp2 & %00001111
           lda temp2
           and # 15
           sta musicVoice0TargetAUDV_W
 
           ;; Store target AUDV and total frames for envelope
-          ;; let musicVoice0TotalFrames_W = temp4 + temp5
+          ;; Set musicVoice0TotalFrames_W = temp4 + temp5
           lda temp4
           clc
           adc temp5
@@ -172,7 +172,7 @@ LoadMusicNote0Bank15
           AUDF0_1:= temp3
           AUDV0_1:= musicVoice0TargetAUDV_R
 
-          ;; let musicVoice0Frame_W = temp4 + temp5
+          ;; Set musicVoice0Frame_W = temp4 + temp5
           lda temp4
           clc
           adc temp5
@@ -232,22 +232,22 @@ LoadMusicNote1Bank15
           ;; Check for end of track (Duration = 0)
           rts
 
-          ;; let temp6 = temp2 & %11110000
+          ;; Set temp6 = temp2 & %11110000
           ;; Extract AUDC and AUDV
-          ;; let temp6 = temp6 / 16
+          ;; Set temp6 = temp6 / 16
           lda temp6
           lsr
           lsr
           lsr
           lsr
           sta temp6
-          ;; let musicVoice1TargetAUDV_W = temp2 & %00001111
+          ;; Set musicVoice1TargetAUDV_W = temp2 & %00001111
           lda temp2
           and # 15
           sta musicVoice1TargetAUDV_W
 
           ;; Store target AUDV and total frames for envelope
-          ;; let musicVoice1TotalFrames_W = temp4 + temp5
+          ;; Set musicVoice1TotalFrames_W = temp4 + temp5
           lda temp4
           clc
           adc temp5
@@ -259,7 +259,7 @@ LoadMusicNote1Bank15
           AUDF1_1:= temp3
           AUDV1_1:= musicVoice1TargetAUDV_R
 
-          ;; let musicVoice1Frame_W = temp4 + temp5
+          ;; Set musicVoice1Frame_W = temp4 + temp5
           lda temp4
           clc
           adc temp5

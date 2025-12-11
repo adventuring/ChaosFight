@@ -121,7 +121,7 @@ AfterDetectPadsSelect:
           and SystemFlagGameStatePaused
           cmp # 0
           bne SetPausedFlag
-          ;; let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
+          ;; Set systemFlags = systemFlags | SystemFlagGameStatePausedjmp Player1PauseDone
 SetPausedFlag:
 
           lda systemFlags
@@ -269,7 +269,7 @@ CheckPlayer1EnhancedPause .proc
           ;; Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from CheckEnhancedPause, so use return thisbank
-          ;; if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = 1
+          ;; If controllerStatus & SetLeftPortGenesis then if !INPT0{7}, set temp1 = 1
           lda controllerStatus
           and # SetLeftPortGenesis
           beq CheckJoy2bPlus
@@ -340,11 +340,11 @@ CheckColorBWToggle .proc
           ;; Called Routines: DetectPads (bank13) - accesses
           ;; controller detection sta
 
-          ;; Constraints: Must be colocated with DoneSwitchChange (called via goto)
+          ;; Constraints: Must be colocated with DoneSwitchChange (called via jmp)
           ;; Optimized: Check Color/B&W switch state change directly
           lda # 0
           sta temp6
-          ;; if switchbw then let temp6 = 1
+          ;; If switchbw, set temp6 = 1
           lda switchbw
           beq CheckSwitchChangedLabel
           lda # 1
@@ -400,7 +400,7 @@ DoneSwitchChange
           ;; variable.
           ;; Reload arena colors if switch or override changed
           ;; Note: colorBWOverride check handled in
-          ;; if temp1 then ReloadArenaColorsNow
+          ;; If temp1 is non-zero, reload arena colors now
           lda temp1
           beq CheckColorBWToggleDone
           jmp ReloadArenaColorsNow

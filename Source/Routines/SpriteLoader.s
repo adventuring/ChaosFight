@@ -123,7 +123,7 @@ temp4 = player number (0-3)
           ;; TODO: #1304 ; LoadPlayerSpriteDispatch (called via goto)
 ; Get character index for this player from playerCharacter array
           ;; TODO: #1304 ; Use currentPlayer global variable (set by caller)
-          ;; let currentCharacter = playerCharacter[currentPlayer]         
+          ;; Set currentCharacter = playerCharacter[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -187,15 +187,15 @@ AfterCopyGlyphToPlayerBank16Third:
           ;; Inline LocateCharacterArt to reduce call chain depth (stack overflow fix)
           ;; Returns: Far (return otherbank)
           ;; CRITICAL: Inlined to reduce stack depth from 19 to 15 bytes (within 16-byte limit)
-          ;; Original: gosub LocateCharacterArt bank9 (4 bytes saved by inlining)
+          ;; Original: cross-bank call to LocateCharacterArt bank9 (4 bytes saved by inlining)
           lda currentCharacter
           sta temp1
           ;; Save original character index in temp6 for bank-relative calculation
           lda temp1
           sta temp6
           ;; Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
-          ;; Use goto instead of gosub to avoid stack push
-          ;; if temp1 < 8 then goto LoadPlayerSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_4485          jmp
+          ;; Use jmp instead of cross-bank call to to avoid stack push
+          ;; if temp1 < 8 then jmp LoadPlayerSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_4485          jmp
           lda temp1
           cmp # 8
           bcs CheckBank3
@@ -211,7 +211,7 @@ CheckBank3:
 CheckBank3Label:
 
           
-          ;; if temp1 < 16 then goto LoadPlayerSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_8460          jmp
+          ;; if temp1 < 16 then jmp LoadPlayerSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_8460          jmp
           lda temp1
           cmp # 16
           bcs CheckBank4
@@ -225,7 +225,7 @@ CheckBank4:
 CheckBank4Label:
 
           
-          ;; if temp1 < 24 then goto LoadPlayerSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_2409          jmp
+          ;; if temp1 < 24 then jmp LoadPlayerSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_2409          jmp
           lda temp1
           cmp # 24
           bcs LoadPlayerSprite_Bank5Dispatch
@@ -266,7 +266,7 @@ AfterSetPlayerCharacterArtBank2:
 LoadPlayerSprite_Bank3Dispatch
           ;; Bank 3: Characters 8-15 (bank-relative 0-7)
           ;; CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank3 uses BS_return which requires return address
-          ;; let temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
+          ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
           lda temp1
           sec
           sbc 8
@@ -297,7 +297,7 @@ AfterSetPlayerCharacterArtBank3:
 LoadPlayerSprite_Bank4Dispatch
           ;; Bank 4: Characters 16-23 (bank-relative 0-7)
           ;; CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank4 uses BS_return which requires return address
-          ;; let temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
+          ;; Set temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
           lda temp1
           sec
           sbc 16
@@ -328,7 +328,7 @@ AfterSetPlayerCharacterArtBank4:
 LoadPlayerSprite_Bank5Dispatch
           ;; Bank 5: Characters 24-31 (bank-relative 0-7)
           ;; CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank5 uses BS_return which requires return address
-          ;; let temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
+          ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
           lda temp1
           sec
           sbc 24

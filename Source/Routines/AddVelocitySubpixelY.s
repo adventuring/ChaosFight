@@ -13,7 +13,7 @@ AddVelocitySubpixelY .proc
           lda temp2
           sta temp4
           ;; Use saved amount in accumulator
-          ;; let subpixelAccumulator = playerVelocityYL[temp1] + temp4
+          ;; Set subpixelAccumulator = playerVelocityYL[temp1] + temp4
           lda temp1
           asl
           tax

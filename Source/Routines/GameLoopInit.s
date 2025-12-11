@@ -323,13 +323,13 @@ SetPlayers34ActiveFlag .proc
           lda controllerStatus
           and ClearPlayers34Active
           sta controllerStatus
-          ;; if playerCharacter[2] = NoCharacter then goto skip_activation2
+          ;; if playerCharacter[2] = NoCharacter then jmp skip_activation2
           lda controllerStatus
           ora SetPlayers34Active
           sta controllerStatus
 
 skip_activation2:
-          ;; if playerCharacter[3] = NoCharacter then goto skip_activation3
+          ;; if playerCharacter[3] = NoCharacter then jmp skip_activation3
           lda controllerStatus
           ora SetPlayers34Active
           sta controllerStatus
@@ -387,7 +387,7 @@ skip_activation3:
           ;; Reset win screen timer
 
           ;; Count additional human/CPU players beyond Player 1
-          ;; if playerCharacter[1] = NoCharacter then goto GLI_SkipPlayer2
+          ;; if playerCharacter[1] = NoCharacter then jmp GLI_SkipPlayer2
           lda playersRemaining_R
           clc
           adc # 1
@@ -396,7 +396,7 @@ skip_activation3:
 .pend
 
 GLI_SkipPlayer2 .proc
-          ;; if playerCharacter[2] = NoCharacter then goto GLI_SkipPlayer3
+          ;; if playerCharacter[2] = NoCharacter then jmp GLI_SkipPlayer3
           lda playersRemaining_R
           clc
           adc # 1
@@ -405,7 +405,7 @@ GLI_SkipPlayer2 .proc
 .pend
 
 GLI_SkipPlayer3 .proc
-          ;; if playerCharacter[3] = NoCharacter then goto SkipPlayer4
+          ;; if playerCharacter[3] = NoCharacter then jmp SkipPlayer4
           lda playersRemaining_R
           clc
           adc # 1

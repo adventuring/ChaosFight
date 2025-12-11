@@ -18,7 +18,7 @@ GetWeightBasedDamage .proc
           ;;
           ;; Constraints: Must be colocated with ApplyDamage
           ;; Weight tiers: <=15 = 12 damage, <=25 = 18 damage, >25 = 22 damage
-          ;; let temp3 = CharacterWeights[temp1]         
+          ;; Set temp3 = CharacterWeights[temp1]
           lda temp1
           asl
           tax
@@ -70,7 +70,7 @@ ApplyDamage .proc
           ;; PlayDamageSound, GetWeightBasedDamage (called via goto/gosub)
 
           ;; Issue #1149: Use shared helper instead of duplicated logic
-          ;; let temp1 = playerCharacter[attackerID]
+          ;; Set temp1 = playerCharacter[attackerID]
           lda attackerID
           asl
           tax
@@ -80,7 +80,7 @@ ApplyDamage .proc
 
           lda temp2
           sta temp4
-          ;; let temp1 = playerCharacter[defenderID]
+          ;; Set temp1 = playerCharacter[defenderID]
           lda defenderID
           asl
           tax
@@ -91,13 +91,13 @@ ApplyDamage .proc
           jsr GetWeightBasedDamage
 
           ;; Minimum damage
-          ;; let temp1 = temp4 - temp2
+          ;; Set temp1 = temp4 - temp2
           lda temp4
           sec
           sbc temp2
           sta temp1
 
-          ;; if temp1 < 1 then let temp1 = 1
+          ;; If temp1 < 1, set temp1 = 1
           lda temp1
           cmp # 1
           bcs CheckPlayerWillDie
@@ -108,7 +108,7 @@ ApplyDamage .proc
 CheckPlayerWillDie:
 
           ;; Check if player will die from this damage
-          ;; let temp2 = playerHealth[defenderID]         
+          ;; Set temp2 = playerHealth[defenderID]
           lda defenderID
           asl
           tax
@@ -119,7 +119,7 @@ CheckPlayerWillDie:
           sta temp3
           if temp2 < temp1 then let temp3 = 1
           ;; If player will die, instantly vanish (eliminate)
-          ;; if temp3 then goto PlayerDies
+          ;; if temp3 then jmp PlayerDies
           lda temp3
           beq ApplyDamageToPlayer
 
@@ -151,12 +151,12 @@ ApplyDamageToPlayer:
 AfterSetPlayerAnimation:
 
           ;; Calculate recovery frames (damage / 2, clamped 10-30)
-          ;; let temp4 = temp1 / 2
+          ;; Set temp4 = temp1 / 2
           lda temp1
           lsr
           sta temp4
 
-          ;; if temp4 < 10 then let temp4 = 10
+          ;; If temp4 < 10, set temp4 = 10
           lda temp4
           cmp # 10
           bcs CheckMaximumRecovery
@@ -187,7 +187,7 @@ StoreRecoveryFrames:
           ;; Issue #1180: Ursulo uppercut knock-up scaling with target weight
           ;; Ursulo’s punches toss opponents upward with launch height proportional to target weight
           ;; Lighter characters travel higher than heavyweights
-          ;; let temp1 = playerCharacter[attackerID]         
+          ;; Set temp1 = playerCharacter[attackerID]
           lda attackerID
           asl
           tax
@@ -224,7 +224,7 @@ ApplyUrsuloKnockUp .proc
           ;; Constraints: Must be colocated with ApplyDamage
           ;; Get defender’s weight
           ;; Weight values range 5-100 (lightest to heaviest)
-          ;; let temp1 = playerCharacter[defenderID]         
+          ;; Set temp1 = playerCharacter[defenderID]
           lda defenderID
           asl
           tax
@@ -237,7 +237,7 @@ ApplyUrsuloKnockUp .proc
           ;; Weight scale: divide weight by 12 to get velocity reduction (0-8 range)
           ;; Use precomputed lookup table (avoids expensive division on Atari 2600)
           ;; Values already clamped to 0-8 range in lookup table
-          ;; let temp3 = CharacterWeightDiv12[temp1]         
+          ;; Set temp3 = CharacterWeightDiv12[temp1]
           lda temp1
           asl
           tax
@@ -246,7 +246,7 @@ ApplyUrsuloKnockUp .proc
           ;; Calculate upward velocity: max_launch - reduction
           ;; 244 = -12 (highest), 245 = -11, ..., 252 = -4 (lowest)
           ;; Clamp to valid range (244-252)
-          ;; let temp4 = 244 + temp3
+          ;; Set temp4 = 244 + temp3
           ;; Apply upward velocity to defender (negative value = upward)
           lda temp4
           cmp # 253
@@ -457,7 +457,7 @@ CalculateAttackHitbox .proc
           ;; indexing
           ;; in on sta
 
-          ;; let temp1 = playerAttackType_R[attackerID]         
+          ;; Set temp1 = playerAttackType_R[attackerID]
           lda attackerID
           asl
           tax
@@ -504,14 +504,14 @@ MeleeHitbox .proc
           ;;
           ;; Constraints: Must be colocated with CalculateAttackHitbox,
           ;; FacingRight, FacingLeft
-          ;; Extract facing from playerState bit 3: 1=right (goto FacingRight), 0=left (goto FacingLeft)
-          ;; let temp2 = playerState[attackerID] & PlayerStateBitFacing         
+          ;; Extract facing from playerState bit 3: 1=right (jmp FacingRight), 0=left (jmp FacingLeft)
+          ;; Set temp2 = playerState[attackerID] & PlayerStateBitFacing
           lda attackerID
           asl
           tax
           lda playerState,x
           sta temp2
-          ;; if temp2 then goto FacingRight
+          ;; if temp2 then jmp FacingRight
           lda temp2
           beq FacingLeft
           jmp FacingRight
@@ -541,19 +541,19 @@ FacingRight .proc
           ;; playerY+16]
           ;; Hitbox: [playerX+16, playerX+32] × [playerY, playerY+16]
                     let cachedHitboxLeft_W = playerX[attackerID] + PlayerSpriteWidth          lda attackerID          asl          tax          lda playerX,x          sta cachedHitboxLeft_W
-          ;; let cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth + PlayerSpriteWidth
+          ;; Set cachedHitboxRight_W = playerX[attackerID] + PlayerSpriteWidth + PlayerSpriteWidth
           lda attackerID
           asl
           tax
           lda playerX,x
           sta cachedHitboxRight_W
-          ;; let cachedHitboxTop_W = playerY[attackerID]
+          ;; Set cachedHitboxTop_W = playerY[attackerID]
           lda attackerID
           asl
           tax
           lda playerY,x
           sta cachedHitboxTop_W
-          ;; let cachedHitboxBottom_W = playerY[attackerID]
+          ;; Set cachedHitboxBottom_W = playerY[attackerID]
           lda attackerID
           asl
           tax
@@ -588,19 +588,19 @@ FacingLeft .proc
           ;; playerY+16]
           ;; Hitbox: [playerX-16, playerX] × [playerY, playerY+16]
                     let cachedHitboxLeft_W = playerX[attackerID] - PlayerSpriteWidth          lda attackerID          asl          tax          lda playerX,x          sta cachedHitboxLeft_W
-          ;; let cachedHitboxRight_W = playerX[attackerID]
+          ;; Set cachedHitboxRight_W = playerX[attackerID]
           lda attackerID
           asl
           tax
           lda playerX,x
           sta cachedHitboxRight_W
-          ;; let cachedHitboxTop_W = playerY[attackerID]
+          ;; Set cachedHitboxTop_W = playerY[attackerID]
           lda attackerID
           asl
           tax
           lda playerY,x
           sta cachedHitboxTop_W
-          ;; let cachedHitboxBottom_W = playerY[attackerID]
+          ;; Set cachedHitboxBottom_W = playerY[attackerID]
           lda attackerID
           asl
           tax
@@ -666,14 +666,14 @@ AreaHitbox .proc
           ;; Area radius: 24 pixels (1.5× sprite width) centered on attacker
           ;; Calculate attacker center (sprite midpoint)
           ;; Center × = playerX + half sprite width
-          ;; let temp2 = playerX[attackerID] + 8         
+          ;; Set temp2 = playerX[attackerID] + 8
           lda attackerID
           asl
           tax
           lda playerX,x
           sta temp2
           ;; Left edge: center - radius
-          ;; let cachedHitboxLeft_W = temp2 - 24          lda temp2          sec          sbc 24          sta cachedHitboxLeft_W
+          ;; Set cachedHitboxLeft_W = temp2 - 24          lda temp2          sec          sbc 24          sta cachedHitboxLeft_W
           lda temp2
           sec
           sbc 24
@@ -690,14 +690,14 @@ AreaHitbox .proc
           adc # 24
           sta cachedHitboxRight_W
           ;; Center Y = playerY + half sprite height
-          ;; let temp2 = playerY[attackerID] + 8         
+          ;; Set temp2 = playerY[attackerID] + 8
           lda attackerID
           asl
           tax
           lda playerY,x
           sta temp2
           ;; Top edge: center - radius
-          ;; let cachedHitboxTop_W = temp2 - 24          lda temp2          sec          sbc 24          sta cachedHitboxTop_W
+          ;; Set cachedHitboxTop_W = temp2 - 24          lda temp2          sec          sbc 24          sta cachedHitboxTop_W
           lda temp2
           sec
           sbc 24
@@ -747,7 +747,7 @@ ProcessAttackerAttacks .proc
           ;; recalculating for each defender. Skips attacker as
           ;; defender and dead players
           ;; Issue #1148: Skip ranged attackers (handled by missile system)
-          ;; let temp1 = playerAttackType_R[attackerID]         
+          ;; Set temp1 = playerAttackType_R[attackerID]
           lda attackerID
           asl
           tax
@@ -774,7 +774,7 @@ CheckDefenderHealth:
 
           ;; Skip if defender is dead
 
-          ;; if playerHealth[defenderID] <= 0 then NextDefender
+          ;; If playerHealth[defenderID] <= 0, then NextDefender
           lda defenderID
           asl
           tax
@@ -831,7 +831,7 @@ ProcessAllAttacks .proc
           ;; via next). Skips dead attackers
           ;; TODO: #1310 for attackerID = 0 to 3
           ;; Skip if attacker is dead
-          ;; if playerHealth[attackerID] <= 0 then NextAttacker
+          ;; If playerHealth[attackerID] <= 0, then NextAttacker
           lda attackerID
           asl
           tax
@@ -853,7 +853,7 @@ CheckAttackWindow:
 
 
           ;; Issue #1147: Only evaluate live attacks (windup-through-recovery window)
-          ;; let temp1 = playerState[attackerID] & MaskPlayerStateAnimation         
+          ;; Set temp1 = playerState[attackerID] & MaskPlayerStateAnimation
           lda attackerID
           asl
           tax

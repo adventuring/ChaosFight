@@ -25,7 +25,7 @@ UpdateCharacterAnimations:
           and # SetQuadtariDetected
           sta UCA_quadtariActive
           ;; TODO: #1254 for currentPlayer = 0 to 3
-          ;; If currentPlayer >= 2 && !UCA_quadtariActive, then goto AnimationNextPlayer
+          ;; If currentPlayer >= 2 && !UCA_quadtariActive, then jmp AnimationNextPlayer
           lda currentPlayer
           cmp # 3
           bcc UCA_CheckQuadtari
@@ -39,7 +39,7 @@ UCA_CheckQuadtari:
 
           ;; CRITICAL: Inlined UpdatePlayerAnimation to reduce stack depth from 19 to 17 bytes
           ;; Skip if player is eliminated (health = 0)
-          ;; If playerHealth[currentPlayer] = 0, then goto AnimationNextPlayer
+          ;; If playerHealth[currentPlayer] = 0, then jmp AnimationNextPlayer
           lda currentPlayer
           asl
           tax
@@ -77,7 +77,7 @@ UCA_CheckCharacter:
           sta animationCounter_W,x
 
           ;; Check if time to advance animation frame (every AnimationFrameDelay frames)
-          ;; If temp4 < AnimationFrameDelay, then goto DoneAdvanceInlined
+          ;; If temp4 < AnimationFrameDelay, then jmp DoneAdvanceInlined
           lda temp4
           cmp AnimationFrameDelay
           bcs UPA_CheckAnimationSpeed
@@ -125,7 +125,7 @@ AdvanceFrame .proc
           tax
           lda currentAnimationFrame_R,x
           sta temp4
-          ;; let temp4 = 1 + temp4
+          ;; Set temp4 = 1 + temp4
           lda temp4
           clc
           adc # 1
@@ -144,7 +144,7 @@ AdvanceFrame .proc
           ;; per action)
           ;; Use temp variable from previous increment
           ;; (temp4)
-          ;; If temp4 >= FramesPerSequence, then goto HandleFrame7Transition
+          ;; If temp4 >= FramesPerSequence, then jmp HandleFrame7Transition
           lda temp4
           cmp FramesPerSequence
 
@@ -183,7 +183,7 @@ HandleFrame7Transition
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-          ;; If ActionAttackRecovery < temp1, then goto AnimationTransitionLoopAnimation
+          ;; If ActionAttackRecovery < temp1, then jmp AnimationTransitionLoopAnimation
           lda ActionAttackRecovery
           cmp temp1
           bcs AnimationTransitionLoopAnimation
@@ -255,7 +255,7 @@ AnimationTransitionHandleFallBack
           tax
           lda playerX,x
           sta temp5
-          ;; let temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc ScreenInsetX          sta temp5
+          ;; Set temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc ScreenInsetX          sta temp5
           lda temp5
           sec
           sbc ScreenInsetX
@@ -266,7 +266,7 @@ AnimationTransitionHandleFallBack
           sbc ScreenInsetX
           sta temp5
 
-          ;; let temp5 = temp5 / 4          lda temp5          lsr          lsr          sta temp5
+          ;; Set temp5 = temp5 / 4          lda temp5          lsr          lsr          sta temp5
           lda temp5
           lsr
           lsr
@@ -278,7 +278,7 @@ AnimationTransitionHandleFallBack
           sta temp5
 
           ;; Convert player Y position to playfield row (0-7)
-          ;; let temp6 = playerY[currentPlayer]
+          ;; Set temp6 = playerY[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -290,7 +290,7 @@ AnimationTransitionHandleFallBack
           tax
           lda playerY,x
           sta temp6
-          ;; let temp6 = temp6 / 8          lda temp6          lsr          lsr          lsr          sta temp6
+          ;; Set temp6 = temp6 / 8          lda temp6          lsr          lsr          lsr          sta temp6
           lda temp6
           lsr
           lsr
@@ -352,7 +352,7 @@ AnimationHandleAttackTransition
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-          ;; If temp1 < ActionAttackWindup, then goto UpdateSprite
+          ;; If temp1 < ActionAttackWindup, then jmp UpdateSprite
           lda temp1
           cmp ActionAttackWindup
           bcs HandleWindupEnd
@@ -376,7 +376,7 @@ AnimationHandleWindupEnd
           tax
           lda playerCharacter,x
           sta temp1
-          ;; If temp1 >= 32, then goto UpdateSprite
+          ;; If temp1 >= 32, then jmp UpdateSprite
           lda temp1
           cmp 32
 
@@ -420,7 +420,7 @@ AnimationHandleExecuteEnd
           tax
           lda playerCharacter,x
           sta temp1
-          ;; If temp1 >= 32, then goto UpdateSprite
+          ;; If temp1 >= 32, then jmp UpdateSprite
           lda temp1
           cmp 32
 
@@ -521,7 +521,7 @@ AnimationSetPlayerAnimationInlined
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
           ;; Set animation action for a player (inlined from AnimationSystem.bas)
-          ;; If temp2 >= AnimationSequenceCount, then goto UpdateSprite
+          ;; If temp2 >= AnimationSequenceCount, then jmp UpdateSprite
           lda temp2
           cmp AnimationSequenceCount
 
@@ -613,7 +613,7 @@ UpdateSprite .proc
           tax
           lda currentAnimationFrame_R,x
           sta temp2
-          ;; let temp3 = currentAnimationSeq_R[currentPlayer]
+          ;; Set temp3 = currentAnimationSeq_R[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -657,7 +657,7 @@ ValidateCharacterRangeSprite:
 
           ;; CRITICAL: Validate character index is within valid range (0-MaxCharacter)
           ;; Uninitialized playerCharacter (0) is valid (Bernie), but values > MaxCharacter are invalid
-          ;; If currentCharacter > MaxCharacter, then goto AnimationNextPlayer
+          ;; If currentCharacter > MaxCharacter, then jmp AnimationNextPlayer
           lda currentCharacter
           sec
           sbc MaxCharacter
@@ -680,7 +680,7 @@ CheckBank2:
           lda temp1
           sta temp6
           ;; Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
-          ;; If temp1 < 8, then goto UpdateSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_5345          jmp
+          ;; If temp1 < 8, then jmp UpdateSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_5345          jmp
           lda temp1
           cmp # 8
           bcs CheckBank3
@@ -696,7 +696,7 @@ CheckBank3:
 CheckBank3Dispatch:
 
           
-          ;; If temp1 < 16, then goto UpdateSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_8905          jmp
+          ;; If temp1 < 16, then jmp UpdateSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_8905          jmp
           lda temp1
           cmp # 16
           bcs CheckBank4
@@ -710,7 +710,7 @@ CheckBank4:
 CheckBank4Dispatch:
 
           
-          ;; If temp1 < 24, then goto UpdateSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_205          jmp
+          ;; If temp1 < 24, then jmp UpdateSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_205          jmp
           lda temp1
           cmp # 24
           bcs UseBank5
@@ -985,7 +985,7 @@ HandleAnimationTransition .proc
           tax
           lda currentAnimationSeq_R,x
           sta temp1
-          ;; If ActionAttackRecovery < temp1, then goto TransitionLoopAnimation
+          ;; If ActionAttackRecovery < temp1, then jmp TransitionLoopAnimation
           lda ActionAttackRecovery
           cmp temp1
           bcs TransitionLoopAnimation
@@ -1054,7 +1054,7 @@ TransitionHandleJump_TransitionToFalling
 TransitionHandleFallBack
           ;; Check wall collision using pfread
           ;; Returns: Far (return otherbank)
-          If hit wall: goto idle, else: goto fallen
+          If hit wall: jmp idle, else: jmp fallen
           ;; Convert player X position to playfield column (0-31)
           ;; Set temp5 = playerX[currentPlayer]
           lda currentPlayer
@@ -1062,7 +1062,7 @@ TransitionHandleFallBack
           tax
           lda playerX,x
           sta temp5
-          ;; let temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc ScreenInsetX          sta temp5
+          ;; Set temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc ScreenInsetX          sta temp5
           lda temp5
           sec
           sbc ScreenInsetX
@@ -1073,7 +1073,7 @@ TransitionHandleFallBack
           sbc ScreenInsetX
           sta temp5
 
-          ;; let temp5 = temp5 / 4          lda temp5          lsr          lsr          sta temp5
+          ;; Set temp5 = temp5 / 4          lda temp5          lsr          lsr          sta temp5
           lda temp5
           lsr
           lsr
@@ -1085,7 +1085,7 @@ TransitionHandleFallBack
           sta temp5
 
           ;; Convert player Y position to playfield row (0-7)
-          ;; let temp6 = playerY[currentPlayer]
+          ;; Set temp6 = playerY[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -1098,7 +1098,7 @@ TransitionHandleFallBack
           lda playerY,x
           sta temp6
           ;; Check if player hit a wall (playfield pixel is set)
-          ;; let temp6 = temp6 / 8          lda temp6          lsr          lsr          lsr          sta temp6
+          ;; Set temp6 = temp6 / 8          lda temp6          lsr          lsr          lsr          sta temp6
           lda temp6
           lsr
           lsr
@@ -1164,7 +1164,7 @@ HandleAttackTransition
           lda currentAnimationSeq_R,x
           sta temp1
           jmp BS_return
-          ;; let temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
+          ;; Set temp1 = temp1 - ActionAttackWindup          lda temp1          sec          sbc ActionAttackWindup          sta temp1
           lda temp1
           sec
           sbc ActionAttackWindup
@@ -1178,7 +1178,7 @@ HandleAttackTransition
           jmp HandleWindupEnd
           jmp BS_return
 HandleWindupEnd
-          ;; let temp1 = playerCharacter[currentPlayer]
+          ;; Set temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
           asl
           tax

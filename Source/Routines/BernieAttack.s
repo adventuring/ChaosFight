@@ -78,7 +78,7 @@ BernieAttack .proc
 
           ;; we need it set first)
 
-          ;; let temp3 = playerState[temp1] & PlayerStateBitFacing         
+          ;; Set temp3 = playerState[temp1] & PlayerStateBitFacing
           lda temp1
           asl
           tax

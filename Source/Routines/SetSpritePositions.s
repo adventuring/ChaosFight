@@ -182,7 +182,7 @@ SetSpritePositionsRenderMissiles:
 
 SSP_CheckTwoPlayer:
 
-          ;; let temp6 = frame & 1
+          ;; Set temp6 = frame & 1
           lda frame
           and # 1
           sta temp6
@@ -191,7 +191,7 @@ SSP_CheckTwoPlayer:
           and # 1
           sta temp6
 
-          ;; if temp6 then goto RenderMissilesOddFrame
+          ;; if temp6 then jmp RenderMissilesOddFrame
           lda temp6
           beq SSP_CheckEvenFrame
 
@@ -242,12 +242,12 @@ RenderMissileForParticipant:
           ;; RMF_mask = temp3 (calculated)
           ;; RMF_character = temp4 (calculated)
           ;; RMF_active = temp5 (calculated)
-          ;; let RMF_select = RMF_participant & 1
+          ;; Set RMF_select = RMF_participant & 1
           lda temp1
           and # 1
           sta temp2
 
-          ;; let RMF_mask = SetSpriteMissileMask[RMF_participant]         
+          ;; Set RMF_mask = SetSpriteMissileMask[RMF_participant]
           lda temp1
           asl
           tax
@@ -256,7 +256,7 @@ RenderMissileForParticipant:
           lda missileActive
           and temp3
           sta temp5
-          ;; if RMF_active then goto RMF_MissileActive
+          ;; if RMF_active then jmp RMF_MissileActive
           lda temp5
           beq RMF_CheckMissileActive
 
@@ -285,7 +285,7 @@ RMF_ReturnPoint:
 
 RMF_MissileActive .proc
           ;; Returns: Far (return otherbank)
-          ;; let RMF_character = playerCharacter[RMF_participant]         
+          ;; Set RMF_character = playerCharacter[RMF_participant]
           lda temp1
           asl
           tax
@@ -304,27 +304,27 @@ SSP_WriteMissileRegisters .proc
           ;; Use unified helper to write missile registers
           ;; Save values to temp variables for unified helper (temp2-temp4 already used by caller, use temp6)
           ;; temp2 = Y position
-          ;; let temp6 = missileX[temp1]
+          ;; Set temp6 = missileX[temp1]
           lda temp1
           asl
           tax
           lda missileX,x
           sta temp6
           ;; temp3 = NUSIZ value
-          ;; let temp2 = missileY_R[temp1]
+          ;; Set temp2 = missileY_R[temp1]
           lda temp1
           asl
           tax
           lda missileY_R,x
           sta temp2
           ;; temp4 = height (overwrite character after reading it)
-          ;; let temp3 = missileNUSIZ_R[temp1]
+          ;; Set temp3 = missileNUSIZ_R[temp1]
           lda temp1
           asl
           tax
           lda missileNUSIZ_R,x
           sta temp3
-          ;; let temp4 = CharacterMissileHeights[temp4]
+          ;; Set temp4 = CharacterMissileHeights[temp4]
           lda temp4
           asl
           tax
@@ -401,13 +401,13 @@ RenderRoboTitoStretchMissile .proc
 RRTM_CheckStretch .proc
           ;; Returns: Far (return otherbank)
           jmp BS_return
-          ;; let temp3 = playerState[temp1]         
+          ;; Set temp3 = playerState[temp1]
           lda temp1
           asl
           tax
           lda playerState,x
           sta temp3
-          ;; let temp3 = temp3 & 240
+          ;; Set temp3 = temp3 & 240
           lda temp3
           and # 240
           sta temp3
@@ -416,7 +416,7 @@ RRTM_CheckStretch .proc
           and # 240
           sta temp3
 
-          ;; let temp3 = temp3 / 16
+          ;; Set temp3 = temp3 / 16
           lda temp3
           cmp # 10
           bne RRTM_CheckStretchActive
@@ -427,7 +427,7 @@ RRTM_CheckStretchActive:
 .pend
 
 RRTM_ReadStretchHeight .proc
-          ;; let temp4 = missileStretchHeight_R[temp1]         
+          ;; Set temp4 = missileStretchHeight_R[temp1]
           lda temp1
           asl
           tax
@@ -445,9 +445,9 @@ SSP_WriteStretchMissile .proc
           ;; Returns: Near (return thisbank)
           ;; Input: temp5 = missile select (0=missile0, 1=missile1), temp1 = participant, temp4 = height
           ;; Use unified helper with stretch-specific parameters (NUSIZ=0, position from player)
-                    ;; let temp6 = playerX[temp1]
+                    ;; Set temp6 = playerX[temp1]
                     lda temp1          asl          tax          lda playerX,x          sta temp6
-          ;; let temp2 = playerY[temp1]
+          ;; Set temp2 = playerY[temp1]
           lda temp1
           asl
           tax

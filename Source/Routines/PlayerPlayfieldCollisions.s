@@ -156,7 +156,7 @@ PFCheckRightReturn:
 PFCheckRight .proc
           ;; Returns: Far (return otherbank)
 
-          ;; if temp6 >= 31 then goto PFCheckUp
+          ;; if temp6 >= 31 then jmp PFCheckUp
           lda temp6
           cmp # 31
 
@@ -223,7 +223,7 @@ CheckUpCollision:
 
 PFCheckRowColumnsReturn:
 
-          ;; if temp4 then goto PFBlockUp
+          ;; if temp4 then jmp PFBlockUp
           lda temp4
           beq PFCheckDown_Body
 
@@ -240,7 +240,7 @@ PFBlockUp .proc
           ;; Skip zeroing velocity for Radish Goblin (bounce system handles it)
           ;; Returns: Far (return otherbank)
 
-          ;; if playerCharacter[currentPlayer] = CharacterRadishGoblin then goto PFBlockUpClamp
+          ;; if playerCharacter[currentPlayer] = CharacterRadishGoblin then jmp PFBlockUpClamp
           lda currentPlayer
           asl
           tax
@@ -374,9 +374,9 @@ PF_CheckColumnSpan .proc
 
 PFCS_SampleLoop .proc
 
-          ;; if rowCounter & $80 then goto PFCS_Advance
+          ;; if rowCounter & $80 then jmp PFCS_Advance
 
-          ;; if rowCounter >= pfrows then goto PFCS_Advance
+          ;; if rowCounter >= pfrows then jmp PFCS_Advance
           lda rowCounter
           cmp pfrows
           bcc PFCS_ReadPlayfieldPixel
@@ -403,7 +403,7 @@ PFCS_ReadPlayfieldPixel:
 AfterPlayfieldReadColumnSpan:
 
 
-          ;; if temp1 then PCC_result = 1 : goto PFCS_Done
+          ;; if temp1 then PCC_result = 1 : jmp PFCS_Done
           lda temp1
           beq PFCS_AdvanceLabel
           lda # 1
@@ -419,7 +419,7 @@ PFCS_Advance .proc
 
           inc temp3
 
-          ;; if temp3 >= 3 then goto PFCS_Done
+          ;; if temp3 >= 3 then jmp PFCS_Done
           lda temp3
           cmp 3
 
@@ -490,7 +490,7 @@ PF_CheckRowColumns .proc
 AfterPlayfieldReadCenter:
 
 
-          ;; if temp1 then PRC_result = 1 : goto PRC_Done
+          ;; if temp1 then PRC_result = 1 : jmp PRC_Done
           lda temp1
           beq CheckRightColumnCenter
           lda # 1
@@ -557,7 +557,7 @@ PRC_CheckLeft .proc
           jmp BS_jsr
 PRC_CheckLeft_return:
 
-          ;; if temp1 then PRC_result = 1 : goto PRC_Done
+          ;; if temp1 then PRC_result = 1 : jmp PRC_Done
           lda temp1
           beq PRC_CheckLeftDone
           lda # 1
@@ -616,7 +616,7 @@ AfterCheckColumnSpan:
           lda currentPlayer
           sta temp1
 
-          ;; if playerCharacter[temp1] = CharacterRadishGoblin then goto PHC_ClampOnly
+          ;; if playerCharacter[temp1] = CharacterRadishGoblin then jmp PHC_ClampOnly
           lda temp1
           asl
           tax
@@ -624,7 +624,7 @@ AfterCheckColumnSpan:
           cmp # CharacterRadishGoblin
           beq PHC_ClampOnly
 
-          ;; if PHC_direction then goto PHC_CheckRightVelocity
+          ;; if PHC_direction then jmp PHC_CheckRightVelocity
           lda temp4  ;;; PHC_direction
           beq CheckLeftVelocity
           jmp PHC_CheckRightVelocity
@@ -649,7 +649,7 @@ PHC_ClampOnly:
           lda temp6
           sta rowYPosition
 
-          ;; if PHC_direction then goto PHC_ClampRight
+          ;; if PHC_direction then jmp PHC_ClampRight
           lda temp4  ;;; PHC_direction
           beq ClampLeftPositionFirst
           jmp PHC_ClampRight
@@ -677,7 +677,7 @@ PHC_ClampOnly:
           lda temp6
           sta rowYPosition
 
-          ;; if PHC_direction then goto PHC_ClampRight
+          ;; if PHC_direction then jmp PHC_ClampRight
           lda temp4  ;;; PHC_direction
           beq ClampLeftPositionSecond
           jmp PHC_ClampRight
@@ -828,7 +828,7 @@ PFCheckDown_Body .proc
 AfterCheckRowColumns:
 
 
-          ;; if temp4 then goto PFBlockDown
+          ;; if temp4 then jmp PFBlockDown
           lda temp4
           beq PFCheckDownDone
           jmp PFBlockDown

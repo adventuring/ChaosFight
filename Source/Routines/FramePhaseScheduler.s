@@ -17,7 +17,7 @@ UpdateFramePhase .proc
           ;; Called Routines: None
           ;; Constraints: Called once per frame at the start of game loop
           ;; Cycle 0, 1, 2, 3, 0, 1, 2, 3...
-          ;; let framePhase = frame & 3
+          ;; Set framePhase = frame & 3
           lda frame
           and # 3
           sta framePhase

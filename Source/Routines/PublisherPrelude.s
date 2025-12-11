@@ -54,7 +54,7 @@
 
 PublisherPreludeMain .proc
           ;; Check for button press on any controller to skip
-          ;; if joy0fire then goto PublisherPreludeComplete
+          ;; if joy0fire then jmp PublisherPreludeComplete
           lda joy0fire
           beq CheckJoy1Fire
 
@@ -62,7 +62,7 @@ PublisherPreludeMain .proc
 
 CheckJoy1Fire:
 
-          ;; if joy1fire then goto PublisherPreludeComplete
+          ;; if joy1fire then jmp PublisherPreludeComplete
           lda joy1fire
           beq CheckEnhancedControllers
 
@@ -73,7 +73,7 @@ CheckEnhancedControllers:
           ;; Check MegaDrive/Joy2b+ controllers if detected
           ;; Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0) or Joy2b+ Button III (INPT1)
           ;; OR flags together and check for nonzero match
-          ;; let temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
+          ;; Set temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
           lda controllerStatus
           and # SetLeftPortGenesis
           sta temp1
@@ -81,7 +81,7 @@ CheckEnhancedControllers:
           and # SetLeftPortJoy2bPlus
           ora temp1
           sta temp1
-          ;; if temp1 then if !INPT0{7} then goto PublisherPreludeComplete
+          ;; if temp1 then if !INPT0{7} then jmp PublisherPreludeComplete
           lda temp1
           beq CheckPlayer1Joy2bPlusButton3
 
@@ -105,7 +105,7 @@ CheckPlayer1Joy2bPlusButton3:
 CheckPlayer2Enhanced:
 
           ;; Player 2: Genesis Button C (INPT2) or Joy2b+ Button C/II (INPT2) or Joy2b+ Button III (INPT3)
-          ;; let temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
+          ;; Set temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
           lda controllerStatus
           and # SetRightPortGenesis
           sta temp1
@@ -113,7 +113,7 @@ CheckPlayer2Enhanced:
           and # SetRightPortJoy2bPlus
           ora temp1
           sta temp1
-          ;; if temp1 then if !INPT2{7} then goto PublisherPreludeComplete
+          ;; if temp1 then if !INPT2{7} then jmp PublisherPreludeComplete
           lda temp1
           beq CheckPlayer2Joy2bPlusButton3
 
@@ -138,8 +138,7 @@ CheckAutoAdvance:
 
           ;; Auto-advance after music completes + 0.5s
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
-          ;; if preambleTimer > 30 && musicPlaying = 0 then goto
-          lda preambleTimer
+          ;; If preambleTimer > 30 && musicPlaying = 0, then jmp lda preambleTimer
           cmp # 31
           bcc IncrementTimer
           lda musicPlaying

@@ -1,4 +1,4 @@
-;;; DOWN BUTTON HANDLERS (Called via on goto from PlayerInput)
+;;; DOWN BUTTON HANDLERS (Called via on jmp from PlayerInput)
 
 DragonOfStormsDown:
           ;; Returns: Far (return otherbank)
@@ -47,14 +47,14 @@ DragonOfStormsDown:
 
           ;; Check collision before moving
 
-          ;; let temp2 = playerX[temp1]         
+          ;; Set temp2 = playerX[temp1]
           lda temp1
           asl
           tax
           lda playerX,x
           sta temp2
 
-          ;; let temp2 = temp2 - ScreenInsetX
+          ;; Set temp2 = temp2 - ScreenInsetX
           lda temp2
           sec
           sbc # ScreenInsetX
@@ -62,7 +62,7 @@ DragonOfStormsDown:
 
           ;; pfColumn = playfield column (0-31)
 
-          ;; let temp2 = temp2 / 4
+          ;; Set temp2 = temp2 / 4
           lda temp2
           lsr
           lsr
@@ -93,7 +93,7 @@ CheckRowBelowStandard:
 
           ;; Check row below player (feet at bottom of sprite)
 
-          ;; let temp3 = playerY[temp1]         
+          ;; Set temp3 = playerY[temp1]
           lda temp1
           asl
           tax
@@ -109,8 +109,7 @@ CheckRowBelowStandard:
 
           ;; feetY = feet Y position
 
-          ;; let temp4 = temp3 / 16
-
+          ;; Set temp4 = temp3 / 16
           ;; feetRow = row below feet
 
           ;; Check if at or beyond bottom row
@@ -254,14 +253,14 @@ HarpyDown .proc
 
           ;; Jumping bit set, airborne
 
-          ;; let temp2 = playerY[temp1]         
+          ;; Set temp2 = playerY[temp1]
           lda temp1
           asl
           tax
           lda playerY,x
           sta temp2
 
-          ;; if temp2 < 60 then HarpySetDive
+          ;; If temp2 < 60, then HarpySetDive
           lda temp2
           cmp # 60
           bcs HarpyNormalDown
@@ -364,14 +363,14 @@ HarpyNormalDown .proc
 
           ;; Check collision before moving
 
-          ;; let temp2 = playerX[temp1]         
+          ;; Set temp2 = playerX[temp1]
           lda temp1
           asl
           tax
           lda playerX,x
           sta temp2
 
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
           lda temp2
           sec
           sbc ScreenInsetX
@@ -385,7 +384,7 @@ HarpyNormalDown .proc
 
           ;; pfColumn = playfield column (0-31)
 
-          ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          ;; Set temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
           lda temp2
           lsr
           lsr
@@ -412,7 +411,7 @@ CheckRowBelow:
 
           ;; Check row below player (feet at bottom of sprite)
 
-          ;; let temp3 = playerY[temp1]         
+          ;; Set temp3 = playerY[temp1]
           lda temp1
           asl
           tax
@@ -428,8 +427,7 @@ CheckRowBelow:
 
           ;; feetY = feet Y position
 
-          ;; let temp4 = temp3 / 16
-
+          ;; Set temp4 = temp3 / 16
           ;; feetRow = row below feet
 
           ;; Check if at or beyond bottom row
@@ -558,14 +556,14 @@ FrootyDown .proc
 
           ;; Check collision before moving
 
-          ;; let temp2 = playerX[temp1]         
+          ;; Set temp2 = playerX[temp1]
           lda temp1
           asl
           tax
           lda playerX,x
           sta temp2
 
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
           lda temp2
           sec
           sbc ScreenInsetX
@@ -579,7 +577,7 @@ FrootyDown .proc
 
           ;; pfColumn = playfield column (0-31)
 
-          ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          ;; Set temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
           lda temp2
           lsr
           lsr
@@ -608,7 +606,7 @@ CheckRowBelowFrooty:
 
           ;; Check row below player (feet at bottom of sprite)
 
-          ;; let temp3 = playerY[temp1]         
+          ;; Set temp3 = playerY[temp1]
           lda temp1
           asl
           tax
@@ -617,8 +615,7 @@ CheckRowBelowFrooty:
 
           ;; pfrowheight is always 16, so divide by 16
 
-          ;; let temp4 = temp3 / 16
-
+          ;; Set temp4 = temp3 / 16
           ;; feetY = feet Y position
 
           dec temp4
@@ -876,7 +873,7 @@ StandardGuard = .StandardGuard
 
           ;; Harpy (6): DOWN = fly down (reduced gravity)
 
-          ;; let temp4 = playerCharacter[temp1]         
+          ;; Set temp4 = playerCharacter[temp1]
           lda temp1
           asl
           tax

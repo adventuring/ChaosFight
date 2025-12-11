@@ -101,7 +101,7 @@ CheckFlashed:
           ;; Check if $D1 is also $00 (flashed game)
           lda $D1
           sta temp1
-          ;; if temp1 then goto Is2600
+          ;; if temp1 then jmp Is2600
           lda temp1
           beq CheckCDFJDriver
 

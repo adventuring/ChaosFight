@@ -254,7 +254,7 @@ HandleCharacterSelectCycle .proc
 
           ;; Load current character selection
 
-          ;; let temp1 = playerCharacter[temp4]         
+          ;; Set temp1 = playerCharacter[temp4]
           lda temp4
           asl
           tax
@@ -321,7 +321,7 @@ LeftFromRandomCharacterSelect .proc
           lda temp3
           cmp # 0
           bne SetNoCharacterLeft
-          ;; let temp1 = MaxCharacter : goto CycleDoneCharacterSelect
+          ;; Set temp1 = MaxCharacter jmp CycleDoneCharacterSelect
 SetNoCharacterLeft:
 
           jsr GetPlayer2TailCharacterSelect
@@ -413,7 +413,7 @@ RightFromMaxCharacterSelect .proc
           lda temp3
           cmp # 0
           bne SetNoCharacterRight
-          ;; let temp1 = RandomCharacter : goto CycleDoneCharacterSelect
+          ;; Set temp1 = RandomCharacter jmp CycleDoneCharacterSelect
 SetNoCharacterRight:
 
           jsr GetPlayer2TailCharacterSelect
@@ -434,7 +434,7 @@ GetPlayer2TailCharacterSelect .proc
           lda CPUCharacter
           sta temp6
 
-          ;; if playerCharacter[2] = NoCharacter then goto P2TailCheckP4CharacterSelect
+          ;; if playerCharacter[2] = NoCharacter then jmp P2TailCheckP4CharacterSelect
           lda NoCharacter
           sta temp6
 
@@ -444,7 +444,7 @@ GetPlayer2TailCharacterSelect .proc
 
 P2TailCheckP4CharacterSelect .proc
 
-          ;; if playerCharacter[3] = NoCharacter then goto P2TailDoneCharacterSelect
+          ;; if playerCharacter[3] = NoCharacter then jmp P2TailDoneCharacterSelect
           lda NoCharacter
           sta temp6
 
@@ -595,7 +595,7 @@ CharacterSelectHandleTwoPlayers
           lda # 255
           sta temp4
 CheckQuadtariActive:
-          ;; if controllerStatus & SetQuadtariDetected then let temp4 = 255
+          ;; If controllerStatus & SetQuadtariDetected, set temp4 = 255
           lda controllerStatus
           and # SetQuadtariDetected
           beq NoQuadtariActive
@@ -613,7 +613,7 @@ ProcessPlayerInput:
 
 
 
-          ;; if temp3 < 2 then goto ProcessPlayerInput          lda temp3          cmp 2          bcs .skip_8959          jmp
+          ;; if temp3 < 2 then jmp ProcessPlayerInput          lda temp3          cmp 2          bcs .skip_8959          jmp
           lda temp3
           cmp # 2
           bcs ProcessPlayerInputDone
@@ -630,7 +630,7 @@ CharacterSelectHandleTwoPlayersDone:
 
           
 
-          ;; if controllerStatus & SetQuadtariDetected then goto ProcessPlayerInput
+          ;; if controllerStatus & SetQuadtariDetected then jmp ProcessPlayerInput
 
           rts
 
@@ -781,7 +781,7 @@ CharacterSelectHandleRandomRolls .proc
 
           lda # 1
           sta temp1
-          ;; if controllerStatus & SetQuadtariDetected then let temp1 = 3
+          ;; If controllerStatus & SetQuadtariDetected, set temp1 = 3
           lda controllerStatus
           and # SetQuadtariDetected
           beq NoQuadtariForRandom
@@ -868,11 +868,11 @@ CharacterSelectCheckReady .proc
 
           ;; CPU)
 
-          ;; if controllerStatus & SetQuadtariDetected then goto CharacterSelectQuadtariReady
+          ;; if controllerStatus & SetQuadtariDetected then jmp CharacterSelectQuadtariReady
 
           ;; P1 is locked, check P2
 
-          ;; let temp1 = 0 : gosub GetPlayerLocked bank6
+          ;; Set temp1 = 0 cross-bank call to GetPlayerLocked bank6
           lda 0
           sta temp1
           lda # >(return_point-1)
@@ -885,11 +885,11 @@ CharacterSelectCheckReady .proc
           pha
           ldx # 5
           jmp BS_jsr
-AfterGetPlayerLockedP0: : if !temp2 then goto CharacterSelectReadyDone
+AfterGetPlayerLockedP0: : if !temp2 then jmp CharacterSelectReadyDone
 
           ;; P2 not locked, check if on CPU
 
-          ;; ;;           ;; let temp1 = 1 : gosub GetPlayerLocked bank6
+          ;; ;;           ;; Set temp1 = 1 cross-bank call to GetPlayerLocked bank6
           lda # 1
           sta temp1
           lda # >(AfterGetPlayerLockedP1-1)
@@ -902,7 +902,7 @@ AfterGetPlayerLockedP0: : if !temp2 then goto CharacterSelectReadyDone
           pha
           ldx # 5
           jmp BS_jsr
-AfterGetPlayerLockedP1: : if temp2 then goto CharacterSelectFinish
+AfterGetPlayerLockedP1: : if temp2 then jmp CharacterSelectFinish
 
 lda temp2
 
@@ -923,7 +923,7 @@ CheckPlayer2Locked:
 
           jmp CharacterSelectReadyDone:
 
-          ;; if playerCharacter[1] = CPUCharacter then goto CharacterSelectFinish
+          ;; if playerCharacter[1] = CPUCharacter then jmp CharacterSelectFinish
           jmp CharacterSelectReadyDone
 
 
@@ -959,14 +959,13 @@ CharacterSelectQuadtariReady .proc
 AfterGetPlayerLockedQuadtariReady:
 
 
-          ;; if temp2 then goto CharacterSelectQuadtariReadyIncrement
+          ;; if temp2 then jmp CharacterSelectQuadtariReadyIncrement
           lda temp2
           beq CheckCPUCharacterQuadtari
           jmp CharacterSelectQuadtariReadyIncrement
 CheckCPUCharacterQuadtari:
 
-          ;; let temp4 = playerCharacter[currentPlayer]
-         
+          ;; Set temp4 = playerCharacter[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -1001,7 +1000,7 @@ CharacterSelectQuadtariReadyNext .proc
 
 CharacterSelectReadyCheck .proc
 
-          ;; if readyCount >= 2 then goto CharacterSelectFinish
+          ;; if readyCount >= 2 then jmp CharacterSelectFinish
           lda readyCount
           cmp # 2
 
@@ -1059,7 +1058,7 @@ CharacterSelectFinish .proc
 
           ;; TODO: #1254 for currentPlayer = 0 to 3
 
-          ;; if playerCharacter[currentPlayer] = NoCharacter then goto CharacterSelectSkipFacing
+          ;; if playerCharacter[currentPlayer] = NoCharacter then jmp CharacterSelectSkipFacing
           ;; let playerState[currentPlayer] = playerState[currentPlayer] (no-op, removed)
           lda currentPlayer
           asl

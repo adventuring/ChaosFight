@@ -34,7 +34,7 @@ HandleFlyingCharacterMovement .proc
 
           ;; for players 1,3
 
-          ;; let temp5 = playerCharacter[temp1]         
+          ;; Set temp5 = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -52,7 +52,7 @@ HandleFlyingCharacterMovement .proc
 
           ;; temp6 = 0 for players 0,2 (joy0), 2 for players 1,3 (joy1)
 
-          ;; let temp6 = temp1 & 2
+          ;; Set temp6 = temp1 & 2
           lda temp1
           and # 2
           sta temp6
@@ -148,14 +148,14 @@ HFCM_CheckVertical .proc
           lda currentPlayer
           sta temp1
 
-          ;; let temp5 = playerCharacter[temp1]
+          ;; Set temp5 = playerCharacter[temp1]
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta temp5
 
-          ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]
+          ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
           asl
           tax
@@ -174,14 +174,14 @@ HFCM_CheckVertical .proc
 HFCM_VertJoy1:
 
 
-          ;; if joy1up then goto HFCM_VertUp
+          ;; if joy1up then jmp HFCM_VertUp
           lda SWCHA
           and # $01
           bne CheckJoy1Down
           jmp HFCM_VertUp
 CheckJoy1Down:
 
-          ;; if joy1down then goto HFCM_VertDown
+          ;; if joy1down then jmp HFCM_VertDown
           lda SWCHA
           and # $02
           bne HandleFlyingCharacterMovementDoneJoy1
@@ -194,13 +194,13 @@ HandleFlyingCharacterMovementDoneJoy1:
 
 HFCM_VertJoy0 .proc
 
-          ;; if joy0up then goto HFCM_VertUp
+          ;; if joy0up then jmp HFCM_VertUp
           lda joy0up
           beq CheckJoy0Down
           jmp HFCM_VertUp
 CheckJoy0Down:
 
-          ;; if joy0down then goto HFCM_VertDown
+          ;; if joy0down then jmp HFCM_VertDown
           lda joy0down
           beq HandleFlyingCharacterMovementDoneJoy0
           jmp HFCM_VertDown

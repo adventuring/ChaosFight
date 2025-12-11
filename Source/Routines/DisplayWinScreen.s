@@ -49,7 +49,7 @@ DisplayWinScreen .proc
           ;; DWS_Hide3Player2, DWS_Hide3Player2Done,
           ;; DWS_Hide3Player3, DWS_Hide3Player3Done,
           ;; DWS_GetBWMode, DWS_LoadBWColors,
-          ;; DWS_LoadColorColors (all called via goto or
+          ;; DWS_LoadColorColors (all called via jmp or
           ;; gosub)
           ;; Called from WinnerAnnouncementLoop per-frame loop
 
@@ -132,7 +132,7 @@ GetEliminationOrder:
 
 
           ;; Get this player’s elimination order (SCRAM read)
-          ;; let winScreenCandidateOrder = eliminationOrder_R[temp1]         
+          ;; Set winScreenCandidateOrder = eliminationOrder_R[temp1]
           lda temp1
           asl
           tax
@@ -140,7 +140,7 @@ GetEliminationOrder:
           sta winScreenCandidateOrder
 
           ;; Check if this is 2nd place (higher order than current 2nd)
-          ;; if winScreenCandidateOrder > temp5 then UpdateSecondPlace
+          ;; If winScreenCandidateOrder > temp5, then UpdateSecondPlace
           lda winScreenCandidateOrder
           cmp temp5
           bcc CheckThirdPlace
@@ -191,7 +191,7 @@ CheckThirdPlace .proc
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; RankLoopWinScreen, RankNextWinScreen
-          ;; if winScreenCandidateOrder > winScreenThirdPlaceOrder then let winScreenThirdPlaceOrder = winScreenCandidateOrder : let temp4 = temp1
+          ;; If winScreenCandidateOrder > winScreenThirdPlaceOrder, set winScreenThirdPlaceOrder = winScreenCandidateOrder let temp4 = temp1
           lda winScreenCandidateOrder
           cmp winScreenThirdPlaceOrder
           bcc CheckThirdPlaceDone
@@ -219,7 +219,7 @@ RankNextWinScreen .proc
           ;; Called Routines: None
           ;; Constraints: Must be colocated with DisplayWinScreen, RankLoopWinScreen
           inc temp1
-          ;; if temp1 < 4 then goto RankLoopWinScreen
+          ;; if temp1 < 4 then jmp RankLoopWinScreen
           lda temp1
           cmp # 4
           bcs PositionCharacters
@@ -307,7 +307,7 @@ Position1PlayerWinScreen .proc
           lda # 192
           sta playerY,x
           ;; Load winner sprite
-          ;; let currentCharacter = playerCharacter[temp2]         
+          ;; Set currentCharacter = playerCharacter[temp2]
           lda temp2
           asl
           tax
@@ -355,7 +355,7 @@ Position2PlayersWinScreen:
           tax
           lda # 192
           sta playerY,x
-          ;; let currentCharacter = playerCharacter[temp2]         
+          ;; Set currentCharacter = playerCharacter[temp2]
           lda temp2
           asl
           tax
@@ -383,7 +383,7 @@ PositionRunnerUp:
           tax
           lda # 192
           sta playerY,x
-          ;; let currentCharacter = playerCharacter[temp3]         
+          ;; Set currentCharacter = playerCharacter[temp3]
           lda temp3
           asl
           tax
@@ -465,7 +465,7 @@ Position3PlayersWinScreen:
           tax
           lda # 128
           sta playerY,x
-          ;; let currentCharacter = playerCharacter[temp2]         
+          ;; Set currentCharacter = playerCharacter[temp2]
           lda temp2
           asl
           tax
@@ -493,7 +493,7 @@ PositionSecondPlace:
           tax
           lda # 192
           sta playerY,x
-          ;; let currentCharacter = playerCharacter[temp3]         
+          ;; Set currentCharacter = playerCharacter[temp3]
           lda temp3
           asl
           tax
@@ -559,7 +559,7 @@ PositionThirdPlace:
           tax
           lda # 192
           sta playerY,x
-          ;; let currentCharacter = playerCharacter[temp4]         
+          ;; Set currentCharacter = playerCharacter[temp4]
           lda temp4
           asl
           tax
@@ -654,7 +654,7 @@ GetBWModeWinScreen .proc
           lda systemFlags
           and # SystemFlagColorBWOverride
           sta temp2
-          ;; if temp2 then let temp2 = 1
+          ;; If temp2, set temp2 = 1
           lda temp2
           beq GetBWModeWinScreenDone
           lda # 1

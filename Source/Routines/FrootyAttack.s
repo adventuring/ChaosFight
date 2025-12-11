@@ -60,7 +60,7 @@ FrootyAttack .proc
 
           ;; temp2 = 0 for players 0,2 (joy0fire); 1 for players 1,3 (joy1fire)
 
-          ;; let temp2 = temp1 & 1
+          ;; Set temp2 = temp1 & 1
           lda temp1
           and # 1
           sta temp2
@@ -110,7 +110,7 @@ FrootyCheckJoy0 .proc
 
           ;; Get current state (bit 7 = charging flag, bits 0-2 = frame counter 0-5)
 
-          ;; let temp3 = frootyChargeState_R[temp1]         
+          ;; Set temp3 = frootyChargeState_R[temp1]
           lda temp1
           asl
           tax
@@ -121,7 +121,7 @@ FrootyCheckJoy0 .proc
 
           ;; Increment frame counter
 
-          ;; let temp4 = temp3 & 7
+          ;; Set temp4 = temp3 & 7
           lda temp3
           and # 7
           sta temp4
@@ -137,7 +137,7 @@ FrootyCheckJoy0 .proc
 
           ;; Frame counter reached 6 - increment charge timer and reset counter
 
-          ;; if temp4 < 6 then goto FrootyUpdateFrameCounter          lda temp4          cmp 6          bcs .skip_7916          jmp
+          ;; if temp4 < 6 then jmp FrootyUpdateFrameCounter          lda temp4          cmp 6          bcs .skip_7916          jmp
           lda temp4
           cmp # 6
           bcs IncrementChargeTimer
@@ -161,7 +161,7 @@ IncrementChargeTimerDone:
 
           ;; At max charge, don’t increment further, but still update frame counter
 
-          ;; if frootyChargeTimer_R[temp1] >= 30 then goto FrootyUpdateFrameCounter
+          ;; if frootyChargeTimer_R[temp1] >= 30 then jmp FrootyUpdateFrameCounter
 
           ;; let frootyChargeTimer_W[temp1] = frootyChargeTimer_R[temp1]
           lda temp1
@@ -200,7 +200,7 @@ FrootyUpdateFrameCounter .proc
 
           ;; Returns: Far (return otherbank)
 
-          ;; let temp3 = frootyChargeState_R[temp1]         
+          ;; Set temp3 = frootyChargeState_R[temp1]
           lda temp1
           asl
           tax
@@ -209,7 +209,7 @@ FrootyUpdateFrameCounter .proc
 
           ;; Extract charging flag (bit 7)
 
-          ;; let temp4 = temp3 & 128
+          ;; Set temp4 = temp3 & 128
           lda temp3
           and # 128
           sta temp4
@@ -231,7 +231,7 @@ SpawnProjectile:
 
           ;; Reset charge state and timer
 
-          ;; let temp2 = frootyChargeTimer_R[temp1]         
+          ;; Set temp2 = frootyChargeTimer_R[temp1]
           lda temp1
           asl
           tax
@@ -276,9 +276,8 @@ AfterSpawnMissileFrooty:
 
           ;; Clamp to reasonable range (minimum 6 frames, maximum 180 frames = 3 seconds)
 
-          ;; let temp3 = temp2 * 6
-
-          ;; if temp3 < 6 then let temp3 = 6
+          ;; Set temp3 = temp2 * 6
+          ;; If temp3 < 6, set temp3 = 6
           lda temp3
           cmp # 6
           bcs CheckMaximumLifetime

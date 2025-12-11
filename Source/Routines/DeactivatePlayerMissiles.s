@@ -10,7 +10,7 @@ DeactivatePlayerMissiles:
           ;; Output: Clears this player’s missile bit
           ;; Mutates: missileActive
           ;; Clear missile active bit for this player
-          ;; let missileActive = missileActive & PlayerANDMask[currentPlayer]
+          ;; Set missileActive = missileActive & PlayerANDMask[currentPlayer]
           lda currentPlayer
           asl
           tax

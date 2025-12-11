@@ -91,8 +91,7 @@ GetPlayerAnimationStateFunction:
 
           ;; Mask bits 4-7 (value 240 = %11110000)
 
-          ;; let temp2 = temp2 / 16
-
+          ;; Set temp2 = temp2 / 16
           ;; Shift right by 4 (divide by 16) to get animation sta
 
 
@@ -164,7 +163,7 @@ InputHandleAllPlayers .proc
 
           ;; InputSkipPlayer4Input (all called via jmp or gosub)
 
-          ;; If qtcontroller, then goto InputHandleQuadtariPlayers
+          ;; If qtcontroller, then jmp InputHandleQuadtariPlayers
           lda qtcontroller
           beq HandlePlayers12
           jmp InputHandleQuadtariPlayers
@@ -187,7 +186,7 @@ HandlePlayers12:
 CheckPlayer0State:
 
 
-                    if (playerState[0] & 8) then goto InputDonePlayer0Input
+                    if (playerState[0] & 8) then jmp InputDonePlayer0Input
 
           ;; Set temp1 = 0
           lda # 0
@@ -230,7 +229,7 @@ InputDonePlayer0Input
 CheckPlayer1State:
 
 
-                    if (playerState[1] & 8) then goto InputDonePlayer1Input
+                    if (playerState[1] & 8) then jmp InputDonePlayer1Input
           jmp InputHandlePlayer1
 
 
@@ -351,7 +350,7 @@ InputHandleQuadtariPlayers .proc
 CheckPlayer3Character:
 
 
-          ;; If playerCharacter[2] = NoCharacter, then goto InputDonePlayer3Input
+          ;; If playerCharacter[2] = NoCharacter, then jmp InputDonePlayer3Input
 
           ;; Inlined IsPlayerAlive check for player 2
           lda # 2
@@ -366,7 +365,7 @@ CheckPlayer3Character:
 CheckPlayer3State:
 
 
-                    if (playerState[2] & 8) then goto InputDonePlayer3Input
+                    if (playerState[2] & 8) then jmp InputDonePlayer3Input
 
           ;; Set temp1 = 2
           lda # 2
@@ -402,7 +401,7 @@ InputDonePlayer3Input
 CheckPlayer4Character:
 
 
-          ;; If playerCharacter[3] = NoCharacter, then goto InputDonePlayer4Input
+          ;; If playerCharacter[3] = NoCharacter, then jmp InputDonePlayer4Input
 
           ;; Inlined IsPlayerAlive check for player 3
           lda # 3
@@ -417,7 +416,7 @@ CheckPlayer4Character:
 CheckPlayer4State:
 
 
-                    if (playerState[3] & 8) then goto InputDonePlayer4Input
+                    if (playerState[3] & 8) then jmp InputDonePlayer4Input
 
           ;; Set temp1 = 3
           lda # 3
@@ -703,11 +702,11 @@ HUIEB_HandleUp .proc
 
           ;; Check Bernie fall-through
 
-          ;; If playerCharacter[temp1] = CharacterRoboTito then goto HUIEB_RoboTitoAscend
+          ;; If playerCharacter[temp1] = CharacterRoboTito then jmp HUIEB_RoboTitoAscend
 
           ;; Check Harpy flap
 
-          ;; if playerCharacter[temp1] = CharacterBernie, then goto HUIEB_BernieFallThrough
+          ;; if playerCharacter[temp1] = CharacterBernie, then jmp HUIEB_BernieFallThrough
           lda temp1
           asl
           tax
@@ -719,7 +718,7 @@ CheckHarpyFlap:
 
           ;; For all other characters, UP is jump
 
-          ;; If playerCharacter[temp1] = CharacterHarpy, then goto HUIEB_HarpyFlap
+          ;; If playerCharacter[temp1] = CharacterHarpy, then jmp HUIEB_HarpyFlap
           lda temp1
           asl
           tax
@@ -746,7 +745,7 @@ HUIEB_RoboTitoAscend
                     ;; Set temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-          ;; let temp6 = CharacterMovementSpeed[temp6]
+          ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -762,14 +761,14 @@ HUIEB_RoboTitoAscend
 
                     let playerY[temp1] = playerY[temp1] - temp6
 
-          ;; let temp4 = playerX[temp1]         
+          ;; Set temp4 = playerX[temp1]
           lda temp1
           asl
           tax
           lda playerX,x
           sta temp4
 
-          ;; let temp4 = temp4 - ScreenInsetX          lda temp4          sec          sbc ScreenInsetX          sta temp4
+          ;; Set temp4 = temp4 - ScreenInsetX          lda temp4          sec          sbc ScreenInsetX          sta temp4
           lda temp4
           sec
           sbc ScreenInsetX
@@ -859,7 +858,7 @@ AfterPlayfieldReadRestoreAnimation:
 
           ;; Clear latch if DOWN pressed (check appropriate joy port)
 
-          ;; If temp1, then goto HUIEB_RoboTitoLatch
+          ;; If temp1, then jmp HUIEB_RoboTitoLatch
           lda temp1
           beq HUIEB_RoboTitoLatch
           jmp HUIEB_RoboTitoLatch
@@ -980,9 +979,9 @@ HUIEB_CheckEnhanced .proc
 
           ;; Note: For Harpy, UP is flap, so jump via enhanced buttons only
 
-          ;; If playerCharacter[temp1] = CharacterShamone then goto HUIEB_EnhancedCheck
+          ;; If playerCharacter[temp1] = CharacterShamone then jmp HUIEB_EnhancedCheck
 
-          ;; if playerCharacter[temp1] = CharacterMethHound, then goto HUIEB_EnhancedCheck
+          ;; if playerCharacter[temp1] = CharacterMethHound, then jmp HUIEB_EnhancedCheck
           lda temp1
           asl
           tax
@@ -992,7 +991,7 @@ HUIEB_CheckEnhanced .proc
           jmp HUIEB_EnhancedCheck
 CheckBernie:
 
-          ;; If playerCharacter[temp1] = CharacterBernie, then goto HUIEB_EnhancedCheck
+          ;; If playerCharacter[temp1] = CharacterBernie, then jmp HUIEB_EnhancedCheck
           lda temp1
           asl
           tax
@@ -1004,7 +1003,7 @@ CheckHarpyEnhanced:
 
           ;; Bernie and Harpy also use enhanced buttons for jump
 
-          ;; If playerCharacter[temp1] = CharacterHarpy, then goto HUIEB_EnhancedCheck
+          ;; If playerCharacter[temp1] = CharacterHarpy, then jmp HUIEB_EnhancedCheck
           lda temp1
           asl
           tax
@@ -1078,7 +1077,7 @@ HUIEB_ExecuteJump .proc
 
           ;; Allow Zoe Ryen a single mid-air double-jump
 
-          ;; If playerCharacter[temp1] = CharacterZoeRyen, then goto HUIEB_ZoeJumpCheck
+          ;; If playerCharacter[temp1] = CharacterZoeRyen, then jmp HUIEB_ZoeJumpCheck
 
           ;; Already jumping, cannot jump again
           jmp BS_return
@@ -1199,9 +1198,9 @@ HSHM_HandleLeft .proc
           ;; Left movement: set negative velocity
           ;; Returns: Far (return otherbank)
 
-          ;; If playerCharacter[temp1] = CharacterFrooty then goto HSHM_LeftMomentum
+          ;; If playerCharacter[temp1] = CharacterFrooty then jmp HSHM_LeftMomentum
 
-          ;; if playerCharacter[temp1] = CharacterDragonOfStorms, then goto HSHM_LeftDirectSubpixel
+          ;; if playerCharacter[temp1] = CharacterDragonOfStorms, then jmp HSHM_LeftDirectSubpixel
           lda temp1
           asl
           tax
@@ -1214,7 +1213,7 @@ HSHM_LeftStandard:
                     ;; Set temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-          ;; let temp6 = CharacterMovementSpeed[temp6]
+          ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1229,7 +1228,7 @@ HSHM_LeftStandard:
           lda # 0
           sta temp2
 
-          ;; let temp2 = temp2 - temp6          lda temp2          sec          sbc temp6          sta temp2
+          ;; Set temp2 = temp2 - temp6          lda temp2          sec          sbc temp6          sta temp2
           lda temp2
           sec
           sbc temp6
@@ -1265,7 +1264,7 @@ HSHM_LeftDirectSubpixel .proc
                     ;; Set temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-          ;; let temp6 = CharacterMovementSpeed[temp6]
+          ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1280,7 +1279,7 @@ HSHM_LeftDirectSubpixel .proc
           lda # 0
           sta temp2
 
-          ;; let temp2 = temp2 - temp6          lda temp2          sec          sbc temp6          sta temp2
+          ;; Set temp2 = temp2 - temp6          lda temp2          sec          sbc temp6          sta temp2
           lda temp2
           sec
           sbc temp6
@@ -1315,7 +1314,7 @@ HSHM_LeftMomentum .proc
                     ;; Set temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-          ;; let temp6 = CharacterMovementSpeed[temp6]
+          ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1341,7 +1340,7 @@ HSHM_AfterLeftSet .proc
           ;; Inline ShouldPreserveFacing logic
           ;; Returns: Far (return otherbank)
 
-                    if (playerState[temp1] & 8) then goto HSHM_SPF_Yes1
+                    if (playerState[temp1] & 8) then jmp HSHM_SPF_Yes1
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateAfterLeftSet-1)
@@ -1357,7 +1356,7 @@ HSHM_AfterLeftSet .proc
 AfterGetPlayerAnimationStateAfterLeftSet:
 
 
-          ;; If temp2 < 5, then goto HSHM_SPF_No1          lda temp2          cmp 5          bcs .skip_1803          jmp
+          ;; If temp2 < 5, then jmp HSHM_SPF_No1          lda temp2          cmp 5          bcs .skip_1803          jmp
           lda temp2
           cmp # 5
           bcs CheckAnimationState10
@@ -1447,9 +1446,9 @@ HSHM_HandleRight .proc
           ;; Right movement: set positive velocity
           ;; Returns: Far (return otherbank)
 
-          ;; If playerCharacter[temp1] = CharacterFrooty then goto HSHM_RightMomentum
+          ;; If playerCharacter[temp1] = CharacterFrooty then jmp HSHM_RightMomentum
 
-          ;; if playerCharacter[temp1] = CharacterDragonOfStorms, then goto HSHM_RightDirectSubpixel
+          ;; if playerCharacter[temp1] = CharacterDragonOfStorms, then jmp HSHM_RightDirectSubpixel
           lda temp1
           asl
           tax
@@ -1462,7 +1461,7 @@ HSHM_RightStandard:
                     ;; Set temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-          ;; let temp6 = CharacterMovementSpeed[temp6]
+          ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1498,7 +1497,7 @@ HSHM_RightDirectSubpixel .proc
                     ;; Set temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-          ;; let temp6 = CharacterMovementSpeed[temp6]
+          ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1533,7 +1532,7 @@ HSHM_RightMomentum .proc
                     ;; Set temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
 
-          ;; let temp6 = CharacterMovementSpeed[temp6]
+          ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
           asl
           tax
@@ -1559,7 +1558,7 @@ HSHM_AfterRightSet .proc
           ;; Inline ShouldPreserveFacing logic
           ;; Returns: Far (return otherbank)
 
-                    if (playerState[temp1] & 8) then goto HSHM_SPF_Yes2
+                    if (playerState[temp1] & 8) then jmp HSHM_SPF_Yes2
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateAfterRightSet-1)
@@ -1575,7 +1574,7 @@ HSHM_AfterRightSet .proc
 AfterGetPlayerAnimationStateAfterRightSet:
 
 
-          ;; If temp2 < 5, then goto HSHM_SPF_No2          lda temp2          cmp 5          bcs .skip_6914          jmp
+          ;; If temp2 < 5, then jmp HSHM_SPF_No2          lda temp2          cmp 5          bcs .skip_6914          jmp
           lda temp2
           cmp # 5
           bcs CheckAnimationState10Right
@@ -1661,9 +1660,9 @@ HandleFlyingCharacterMovement .proc
 
           ;; Players 1,3 use joy1
 
-          ;; If temp1 & 2 = 0 then goto HFCM_UseJoy0
+          ;; If temp1 & 2 = 0 then jmp HFCM_UseJoy0
 
-          ;; if joy1left, then goto HFCM_CheckLeftCollision
+          ;; if joy1left, then jmp HFCM_CheckLeftCollision
           lda joy1left
           beq HFCM_CheckRightMovement
           jmp HFCM_CheckLeftCollision
@@ -1678,7 +1677,7 @@ HFCM_UseJoy0 .proc
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
-          ;; If joy0left, then goto HFCM_CheckLeftCollision
+          ;; If joy0left, then jmp HFCM_CheckLeftCollision
           lda joy0left
           beq HFCM_CheckRightMovement
           jmp HFCM_CheckLeftCollision
@@ -1698,7 +1697,7 @@ HFCM_CheckLeftCollision
           lda playerX,x
           sta temp2
 
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
           lda temp2
           sec
           sbc ScreenInsetX
@@ -1732,7 +1731,7 @@ ColumnInRangeLeft:
 
 
 
-          ;; If temp2 <= 0, then goto HFCM_CheckRightMovement
+          ;; If temp2 <= 0, then jmp HFCM_CheckRightMovement
           lda temp2
           beq HFCM_CheckRightMovement
           bmi HFCM_CheckRightMovement
@@ -1844,7 +1843,7 @@ HFCM_MoveLeftOK:
 
           ;; Do not check if beyond screen
 
-          ;; If temp6 >= pfrows, then goto HFCM_MoveLeftOK
+          ;; If temp6 >= pfrows, then jmp HFCM_MoveLeftOK
           lda temp6
           cmp pfrows
 
@@ -1945,7 +1944,7 @@ HFCM_LeftApplyDone
 
           ;; Inline ShouldPreserveFacing logic
 
-                    if (playerState[temp1] & 8) then goto SPF_InlineYes1
+                    if (playerState[temp1] & 8) then jmp SPF_InlineYes1
           lda temp1
           asl
           tax
@@ -1969,7 +1968,7 @@ GetAnimationState:
 AfterGetPlayerAnimationStateInline1:
 
 
-          ;; If temp2 < 5, then goto SPF_InlineNo1          lda temp2          cmp 5          bcs .skip_6997          jmp
+          ;; If temp2 < 5, then jmp SPF_InlineNo1          lda temp2          cmp 5          bcs .skip_6997          jmp
           lda temp2
           cmp # 5
           bcs CheckAnimationState10Left
@@ -2064,7 +2063,7 @@ HFCM_DoRightMovement .proc
           lda playerX,x
           sta temp2
 
-          ;; let temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
           lda temp2
           sec
           sbc ScreenInsetX
@@ -2200,7 +2199,7 @@ CheckBottomRow:
 
           ;; Do not check if beyond screen
 
-          ;; If temp6 >= pfrows, then goto HFCM_MoveRightOK
+          ;; If temp6 >= pfrows, then jmp HFCM_MoveRightOK
           lda temp6
           cmp pfrows
 
@@ -2301,7 +2300,7 @@ HFCM_RightApplyDone
 
           ;; Inline ShouldPreserveFacing logic
 
-                    if (playerState[temp1] & 8) then goto SPF_InlineYes2
+                    if (playerState[temp1] & 8) then jmp SPF_InlineYes2
           lda temp1
           asl
           tax
@@ -2325,7 +2324,7 @@ GetAnimationStateRight:
 AfterGetPlayerAnimationStateInline2:
 
 
-          ;; If temp2 < 5, then goto SPF_InlineNo2          lda temp2          cmp 5          bcs .skip_5155          jmp
+          ;; If temp2 < 5, then jmp SPF_InlineNo2          lda temp2          cmp 5          bcs .skip_5155          jmp
           lda temp2
           cmp # 5
           bcs CheckAnimationState10Right
@@ -2374,20 +2373,20 @@ SPF_InlineDone2
 HSHM_AfterRightSetDone:
 
 
-          ;; If temp1 & 2 = 0, then goto HFCM_VertJoy0
+          ;; If temp1 & 2 = 0, then jmp HFCM_VertJoy0
           lda temp1
           and # 2
           bne CheckJoy1Up
           jmp HFCM_VertJoy0
 CheckJoy1Up:
 
-          ;; If joy1up, then goto HFCM_VertUp
+          ;; If joy1up, then jmp HFCM_VertUp
           lda joy1up
           beq CheckJoy1Down
           jmp HFCM_VertUp
 CheckJoy1Down:
 
-          ;; If joy1down, then goto HFCM_VertDown
+          ;; If joy1down, then jmp HFCM_VertDown
           lda joy1down
           beq HandleFlyingCharacterMovementDoneJoy1
           jmp HFCM_VertDown
@@ -2399,13 +2398,13 @@ HandleFlyingCharacterMovementDoneJoy1:
 
 HFCM_VertJoy0 .proc
 
-          ;; If joy0up, then goto HFCM_VertUp
+          ;; If joy0up, then jmp HFCM_VertUp
           lda joy0up
           beq CheckJoy0Down
           jmp HFCM_VertUp
 CheckJoy0Down:
 
-          ;; If joy0down, then goto HFCM_VertDown
+          ;; If joy0down, then jmp HFCM_VertDown
           lda joy0down
           beq HandleFlyingCharacterMovementDoneJoy0
           jmp HFCM_VertDown
@@ -2474,11 +2473,11 @@ InputHandleLeftPortPlayerFunction
 AfterGetPlayerAnimationStateLeftPort:
 
 
-          ;; Use goto to avoid branch out of range (target is 310+ bytes away)
+          ;; Use jmp to avoid branch out of range (target is 310+ bytes away)
 
           ;; Block movement during attack windup/execute/recovery
 
-          ;; If temp2 >= 13, then goto DoneLeftPortMovement
+          ;; If temp2 >= 13, then jmp DoneLeftPortMovement
           lda temp2
           cmp 13
 
@@ -2505,7 +2504,7 @@ AfterGetPlayerAnimationStateLeftPort:
           lda playerCharacter,x
           sta temp5
 
-          ;; Use goto to avoid branch out of range (target is 298+ bytes away)
+          ;; Use jmp to avoid branch out of range (target is 298+ bytes away)
 
           lda temp5
           cmp # 8
@@ -2594,7 +2593,7 @@ IHLP_DoneFlyingLeftRight
 
           ;; Players 0,2 use joy0; Players 1,3 use joy1
 
-          ;; If playerCharacter[temp1] = CharacterFrooty, then goto HGI_Done1
+          ;; If playerCharacter[temp1] = CharacterFrooty, then jmp HGI_Done1
           lda temp1
           cmp # 0
           bne CheckPlayer2JoyPort1
@@ -2646,7 +2645,7 @@ HGI_HandleDownPressed1 .proc
           lda playerCharacter,x
           sta temp4
 
-          ;; If temp4 >= 32, then goto HGI_Done1
+          ;; If temp4 >= 32, then jmp HGI_Done1
           lda temp4
           cmp 32
 
@@ -2813,7 +2812,7 @@ HGI_Done1
 
           ;; Block attack input during attack windup/execute/recovery
 
-          ;; If temp2 >= 13, then goto InputDoneLeftPortAttack
+          ;; If temp2 >= 13, then jmp InputDoneLeftPortAttack
           lda temp2
           cmp 13
 
@@ -2834,7 +2833,7 @@ HGI_Done1
 
           ;; Guarding - block attack input
 
-          ;; If temp2, then goto InputDoneLeftPortAttack
+          ;; If temp2, then jmp InputDoneLeftPortAttack
           lda temp2
           beq CheckJoy0Fire
           jmp InputDoneLeftPortAttack
@@ -2846,7 +2845,7 @@ CheckJoy0Fire:
 DispatchAttack:
 
 
-                    if (playerState[temp1] & PlayerStateBitFacing) then goto InputDoneLeftPortAttack
+                    if (playerState[temp1] & PlayerStateBitFacing) then jmp InputDoneLeftPortAttack
 
           ;; Set temp4 = playerCharacter[temp1]         
           lda temp1
@@ -2918,11 +2917,11 @@ InputHandleRightPortPlayerFunction
 AfterGetPlayerAnimationStateRightPort:
 
 
-          ;; Use goto to avoid branch out of range (target is 327+ bytes away)
+          ;; Use jmp to avoid branch out of range (target is 327+ bytes away)
 
           ;; Block movement during attack windup/execute/recovery
 
-          ;; If temp2 >= 13, then goto DoneRightPortMovement
+          ;; If temp2 >= 13, then jmp DoneRightPortMovement
           lda temp2
           cmp 13
 
@@ -2947,11 +2946,11 @@ AfterGetPlayerAnimationStateRightPort:
           lda playerState,x
           sta temp6
 
-          ;; Use goto to avoid branch out of range (target is 314+ bytes away)
+          ;; Use jmp to avoid branch out of range (target is 314+ bytes away)
 
           ;; Guarding - block movement
 
-          ;; If temp6, then goto DoneRightPortMovement
+          ;; If temp6, then jmp DoneRightPortMovement
           lda temp6
           beq CheckFlyingCharacter2
           jmp DoneRightPortMovement
@@ -2970,7 +2969,7 @@ CheckFlyingCharacter2:
           lda playerCharacter,x
           sta temp5
 
-          ;; Use goto to avoid branch out of range (target is 302+ bytes away)
+          ;; Use jmp to avoid branch out of range (target is 302+ bytes away)
 
           lda temp5
           cmp CharacterFrooty
@@ -3059,7 +3058,7 @@ IHRP_DoneFlyingLeftRight
 
           ;; Players 0,2 use joy0; Players 1,3 use joy1
 
-          ;; If playerCharacter[temp1] = CharacterFrooty, then goto HGI_Done2
+          ;; If playerCharacter[temp1] = CharacterFrooty, then jmp HGI_Done2
           lda temp1
           cmp # 0
           bne CheckPlayer2JoyPort2
@@ -3111,7 +3110,7 @@ HGI_HandleDownPressed2 .proc
           lda playerCharacter,x
           sta temp4
 
-          ;; If temp4 >= 32, then goto HGI_Done2
+          ;; If temp4 >= 32, then jmp HGI_Done2
           lda temp4
           cmp 32
 
@@ -3276,7 +3275,7 @@ HGI_Done2
 
           ;; Block attack input during attack windup/execute/recovery
 
-          ;; If temp2 >= 13, then goto InputDoneRightPortAttack
+          ;; If temp2 >= 13, then jmp InputDoneRightPortAttack
           lda temp2
           cmp 13
 
@@ -3295,7 +3294,7 @@ HGI_Done2
 
           ;; Guarding - block attack input
 
-          ;; If temp2, then goto InputDoneRightPortAttack
+          ;; If temp2, then jmp InputDoneRightPortAttack
           lda temp2
           beq CheckJoy1Fire
           jmp InputDoneRightPortAttack
@@ -3307,7 +3306,7 @@ CheckJoy1Fire:
 DispatchAttack2:
 
 
-                    if (playerState[temp1] & PlayerStateBitFacing) then goto InputDoneRightPortAttack
+                    if (playerState[temp1] & PlayerStateBitFacing) then jmp InputDoneRightPortAttack
 
           ;; Set temp4 = playerCharacter[temp1]         
           lda temp1
@@ -3400,7 +3399,7 @@ CheckPauseButtonPrev:
 
           ;; Toggle pause flag in systemFlags
 
-          ;; If systemFlags & SystemFlagPauseButtonPrev, then goto DonePauseToggle
+          ;; If systemFlags & SystemFlagPauseButtonPrev, then jmp DonePauseToggle
           lda systemFlags
           and # SystemFlagPauseButtonPrev
           beq TogglePauseFlag

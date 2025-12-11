@@ -29,7 +29,7 @@ HandleDownPressed:
 HandleDownPressedGuardInput .proc
           ;; DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           ;; Returns: Far (return otherbank)
-          ;; let temp4 = playerCharacter[temp1]         
+          ;; Set temp4 = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -69,7 +69,7 @@ CheckRoboTito:
 
 UseStandardGuard:
 
-          ;; Tail call: goto instead of gosub to save 2 bytes on sta
+          ;; Tail call: jmp instead of cross-bank call to to save 2 bytes on sta
 
           ;; Same-bank call (both in Bank 12) - saves 2 bytes vs cross-bank
           jmp StandardGuard
@@ -77,7 +77,7 @@ UseStandardGuard:
 .pend
 
 HandleRoboTitoDownGuardInput .proc
-          ;; Tail call optimization: goto instead of gosub to save 2 bytes on sta
+          ;; Tail call optimization: jmp instead of cross-bank call to to save 2 bytes on sta
 
           ;; Note: RoboTitoDown may return early, so we need to handle that case
           ;; Cross-bank call to RoboTitoDown in bank 13
@@ -104,7 +104,7 @@ AfterRoboTitoDownGuard:
 CheckGuardReleaseGuardInput .proc
           ;; DOWN released - check for early guard release
           ;; Returns: Far (return otherbank)
-          ;; let temp2 = playerState[temp1] & 2         
+          ;; Set temp2 = playerState[temp1] & 2
           lda temp1
           asl
           tax

@@ -36,7 +36,7 @@ StandardGuard .proc
           ;; Frooty (8): DOWN = fly down (no gravity)
           ;; Dragon of Storms (2): DOWN = fly down (no gravity)
           ;; Harpy (6): DOWN = fly down (reduced gravity)
-          ;; let temp4 = playerCharacter[temp1]         
+          ;; Set temp4 = playerCharacter[temp1]
           lda temp1
           asl
           tax

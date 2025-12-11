@@ -18,8 +18,7 @@ FindLastEliminated .proc
 
           ;; Check each player elimination order using FOR loop
           ;; TODO: #1254 for currentPlayer = 0 to 3
-          ;; let temp4 = eliminationOrder_R[currentPlayer]
-         
+          ;; Set temp4 = eliminationOrder_R[currentPlayer]
           lda currentPlayer
           asl
           tax

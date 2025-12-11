@@ -69,7 +69,7 @@ ApplyHurtColor:
           lda ColMagenta(12)
           sta temp6
           .else
-          ;; let temp6 = PlayerColors6[currentPlayer]         
+          ;; Set temp6 = PlayerColors6[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -89,7 +89,7 @@ NormalColorState .proc
 
           ;; Returns: Far (return otherbank)
 
-          ;; let temp6 = PlayerColors12[currentPlayer]         
+          ;; Set temp6 = PlayerColors12[currentPlayer]
           lda currentPlayer
           asl
           tax

@@ -115,14 +115,14 @@ GetCharacterAttackTypeSub
           let temp4 = CharacterAttackTypes[temp3]
           let temp5 = temp2
 GetCharacterAttackTypeSubShiftLoop
-          .if temp5 = 0 then goto GetCharacterAttackTypeSubShiftDone
+          .if temp5 = 0 then jmp GetCharacterAttackTypeSubShiftDone
           ;; Use bit shift instead of division (optimized for Atari 2600)
 asm:
 
             lsr temp4
 end:
           let temp5 = temp5 - 1
-          goto GetCharacterAttackTypeSubShiftLoop
+          jmp GetCharacterAttackTypeSubShiftLoop
 GetCharacterAttackTypeSubShiftDone
           let temp4 = temp4 & 1
           return thisbank

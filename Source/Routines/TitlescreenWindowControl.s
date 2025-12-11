@@ -39,16 +39,16 @@ SetPublisherWindowValues .proc
           ;;
           ;; Called Routines: None
           ;; Constraints: None
-          ;; let titlescreenWindow1 = 42  ; AtariAge logo visible
+          ;; Set titlescreenWindow1 = 42  ; AtariAge logo visible
           lda # 42
           sta titlescreenWindow1
-          ;; let titlescreenWindow2 = 42  ; AtariAgeText visible
+          ;; Set titlescreenWindow2 = 42  ; AtariAgeText visible
           lda # 42
           sta titlescreenWindow2
-          ;; let titlescreenWindow3 = 0  ; ChaosFight hidden
+          ;; Set titlescreenWindow3 = 0  ; ChaosFight hidden
           lda # 0
           sta titlescreenWindow3
-          ;; let titlescreenWindow4 = 0  ; BRP hidden
+          ;; Set titlescreenWindow4 = 0  ; BRP hidden
           lda # 0
           sta titlescreenWindow4
           rts
@@ -73,16 +73,16 @@ SetAuthorWindowValues .proc
           ;;
           ;; Called Routines: None
           ;; Constraints: None
-          ;; let titlescreenWindow1 = 0  ; AtariAge logo hidden
+          ;; Set titlescreenWindow1 = 0  ; AtariAge logo hidden
           lda # 0
           sta titlescreenWindow1
-          ;; let titlescreenWindow2 = 0  ; AtariAgeText hidden
+          ;; Set titlescreenWindow2 = 0  ; AtariAgeText hidden
           lda # 0
           sta titlescreenWindow2
-          ;; let titlescreenWindow3 = 0  ; ChaosFight hidden
+          ;; Set titlescreenWindow3 = 0  ; ChaosFight hidden
           lda # 0
           sta titlescreenWindow3
-          ;; let titlescreenWindow4 = 42  ; BRP visible
+          ;; Set titlescreenWindow4 = 42  ; BRP visible
           lda # 42
           sta titlescreenWindow4
           rts
@@ -107,16 +107,16 @@ SetTitleWindowValues .proc
           ;;
           ;; Called Routines: None
           ;; Constraints: None
-          ;; let titlescreenWindow1 = 0  ; AtariAge logo hidden
+          ;; Set titlescreenWindow1 = 0  ; AtariAge logo hidden
           lda # 0
           sta titlescreenWindow1
-          ;; let titlescreenWindow2 = 0  ; AtariAgeText hidden
+          ;; Set titlescreenWindow2 = 0  ; AtariAgeText hidden
           lda # 0
           sta titlescreenWindow2
-          ;; let titlescreenWindow3 = 42  ; ChaosFight visible
+          ;; Set titlescreenWindow3 = 42  ; ChaosFight visible
           lda # 42
           sta titlescreenWindow3
-          ;; let titlescreenWindow4 = 0  ; Interworldly hidden
+          ;; Set titlescreenWindow4 = 0  ; Interworldly hidden
           lda # 0
           sta titlescreenWindow4
           rts

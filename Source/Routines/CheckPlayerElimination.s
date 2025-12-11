@@ -48,7 +48,7 @@ CheckPlayerElimination:
           ;; execution. Do not use these temp variables after calling
           ;; this subroutine.
           ;; Check if health has reached 0
-          ;; let temp2 = playerHealth[currentPlayer]         
+          ;; Set temp2 = playerHealth[currentPlayer]
           lda currentPlayer
           asl
           tax

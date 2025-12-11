@@ -38,7 +38,7 @@ UpdatePlayerMovement .proc
           ;; Output: Player positions updated for every active player
           ;; Mutates: currentPlayer, player positions (via UpdatePlayerMovementSingle)
           ;; Called Routines: UpdatePlayerMovementSingle
-          ;; Constraints: Must be colocated with UpdatePlayerMovementQuadtariSkip (goto target)
+          ;; Constraints: Must be colocated with UpdatePlayerMovementQuadtariSkip (jmp target)
           ;; TODO: #1254 for currentPlayer = 0 to 1
           ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
           lda # >(AfterUpdatePlayerMovementSingle-1)

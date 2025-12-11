@@ -82,7 +82,7 @@ AfterDWS_GetBWModeDispatch:
           jmp BS_jsr
 AfterLoadArenaByIndexDispatch:
 
-          ;; if temp6 then goto LA_LoadBWColors
+          ;; if temp6 then jmp LA_LoadBWColors
           lda temp6
           beq LA_LoadColorColors
           jmp LA_LoadBWColors
@@ -174,7 +174,7 @@ LoadArenaRandom .proc
           ;; Get random value (0-255)
           lda rand
           sta temp1
-          ;; let temp1 = temp1 & 31
+          ;; Set temp1 = temp1 & 31
           lda temp1
           and # 31
           sta temp1
@@ -213,12 +213,12 @@ AfterDWS_GetBWModeRandom:
           jmp BS_jsr
 AfterLoadArenaByIndexRandom:
 
-          ;; if temp6 then goto LAR_LoadBWColors
+          ;; if temp6 then jmp LAR_LoadBWColors
           lda temp6
           beq LoadArenaColorsColorLabel
           jmp LAR_LoadBWColors
 LoadArenaColorsColorLabel:
-          ;; Load color color table (use gosub to avoid goto)
+          ;; Load color color table (use cross-bank call to to avoid goto)
           ;; Cross-bank call to LoadArenaColorsColor in bank 16
           lda # >(AfterLoadArenaColorsColorRandom-1)
           pha

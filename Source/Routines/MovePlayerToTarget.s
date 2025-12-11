@@ -22,7 +22,7 @@ MovePlayerToTarget .proc
           sta temp4
           ;; If temp4 < temp2 then let playerX[temp1] = temp4 + 1
           ;; Update Y axis (one pixel per frame)
-          ;; if temp4 > temp2, then let
+          ;; if temp4 > temp2,, then let
           lda temp4
           sec
           sbc temp2
@@ -43,7 +43,7 @@ MovePlayerXRight:
           sta temp4
           ;; If temp4 < temp3 then let playerY[temp1] = temp4 + 1
           ;; Check if at target and nudge if needed
-          ;; if temp4 > temp3, then let
+          ;; if temp4 > temp3,, then let
           lda temp4
           sec
           sbc temp3
@@ -73,7 +73,7 @@ NudgePlayerFromPlayfield .proc
           tax
           lda playerX,x
           sta originalPlayerX_W
-          ;; let originalPlayerY_W = playerY[temp1]
+          ;; Set originalPlayerY_W = playerY[temp1]
           lda temp1
           asl
           tax
@@ -135,7 +135,7 @@ CheckCollisionMovePlayer:
           sec
           sbc # ScreenInsetX
           sta temp2
-          ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          ;; Set temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
           lda temp2
           lsr
           lsr

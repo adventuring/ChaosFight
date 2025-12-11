@@ -10,13 +10,13 @@ GetPlayerVelocity:
           ;; Output: temp2 = X velocity, temp3 = Y velocity
           ;; Mutates: temp2, temp3
           ;; Constraints: Callers should use the values immediately; temps are volatile.
-          ;; let temp2 = playerVelocityX[currentPlayer]
+          ;; Set temp2 = playerVelocityX[currentPlayer]
           lda currentPlayer
           asl
           tax
           lda playerVelocityX,x
           sta temp2
-          ;; let temp3 = playerVelocityY[currentPlayer]
+          ;; Set temp3 = playerVelocityY[currentPlayer]
           lda currentPlayer
           asl
           tax

@@ -66,7 +66,7 @@ PlaySoundEffect .proc
 AfterLoadSoundPointer:
 
           ;; Try Voice 0 first
-          ;; if soundEffectPointer then TryVoice1
+          ;; If soundEffectPointer, then TryVoice1
           lda soundEffectPointer
           beq UseVoice0
 

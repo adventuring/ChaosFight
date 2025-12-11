@@ -16,7 +16,7 @@ ApplyGuardColor .proc
           ;;
           ;; Constraints: Must remain colocated with GuardColor0-GuardColor3 jump table
           ;; Check if player is guarding
-          ;; let temp2 = playerState[temp1] & 2         
+          ;; Set temp2 = playerState[temp1] & 2
           lda temp1
           asl
           tax

@@ -40,13 +40,13 @@ GetPlayerLocked .proc
 
           ;; Invalid index check (temp1 should be 0-3)
 
-          ;; if temp1 < 0 then let temp2 = 0 : return
+          ;; If temp1 < 0, set temp2 = 0 return
 
           jmp BS_return
 
           ;; Extract 2 bits for this player
 
-          ;; Optimized: Use on...goto jump table for O(1) dispatch
+          ;; Optimized: Use on...jmp jump table for O(1) dispatch
 
           ;; Use division and masking operations compatible with batariBASIC
 
@@ -55,7 +55,7 @@ GetPlayerLocked .proc
 .pend
 
 GetPlayerLockedP0 .proc
-          ;; let temp2 = playerLocked & 3
+          ;; Set temp2 = playerLocked & 3
           lda playerLocked
           and # 3
           sta temp2
@@ -68,8 +68,7 @@ GetPlayerLockedP0 .proc
 
 GetPlayerLockedP1 .proc
 
-          ;; let temp2 = (playerLocked / 4) & 3
-
+          ;; Set temp2 = (playerLocked / 4) & 3
           ;; TODO: #1291 GPL_lockedState = temp2
 
           rts
@@ -78,7 +77,7 @@ GetPlayerLockedP1 .proc
 
 GetPlayerLockedP2 .proc
 
-          ;; let temp2 = (temp2 / 16) & 3
+          ;; Set temp2 = (temp2 / 16) & 3
           lda temp2
           lsr
           lsr
@@ -95,7 +94,7 @@ GetPlayerLockedP2 .proc
 
 GetPlayerLockedP3 .proc
 
-          ;; let temp2 = (temp2 / 64) & 3
+          ;; Set temp2 = (temp2 / 64) & 3
           lda temp2
           lsr
           lsr
@@ -151,7 +150,7 @@ SetPlayerLocked .proc
 
           ;; Determine player index from currentPlayer when valid
 
-          ;; if temp3 > 3 then goto SetPlayerLockedUseTemp
+          ;; if temp3 > 3 then jmp SetPlayerLockedUseTemp
           lda currentPlayer
           sta temp3
 

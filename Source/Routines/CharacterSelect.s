@@ -70,9 +70,9 @@ CharacterSelectEntry .proc
           ;; Check for Quadtari adapter (inlined for performance)
           ;; CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
           ;; Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) and Right (INPT2 LOW, INPT3 HIGH)
-          ;; if INPT0{7} then goto CharacterSelectQuadtariAbsent
+          ;; if INPT0{7} then jmp CharacterSelectQuadtariAbsent
 
-          if !INPT1{7} then goto CharacterSelectQuadtariAbsent
+          if !INPT1{7} then jmp CharacterSelectQuadtariAbsent
           bit INPT1
           bmi CheckINPT2
 
@@ -80,14 +80,14 @@ CharacterSelectEntry .proc
 
 CheckINPT2:
 
-          ;; if INPT2{7} then goto CharacterSelectQuadtariAbsent
+          ;; if INPT2{7} then jmp CharacterSelectQuadtariAbsent
           bit INPT2
           bpl CheckINPT3
           jmp CharacterSelectQuadtariAbsent
 CheckINPT3:
 
           ;; All checks passed - Quadtari detected
-                    if !INPT3{7} then goto CharacterSelectQuadtariAbsent
+                    if !INPT3{7} then jmp CharacterSelectQuadtariAbsent
           bit INPT3
           bmi SetQuadtariDetected
           jmp CharacterSelectQuadtariAbsent
@@ -134,7 +134,7 @@ CharacterSelectLoop .proc
           ;; 1
           ;; On odd frames (qtcontroller=1): handle controllers 2 and 3
           ;; (if Quadtari detected)
-          ;; if qtcontroller then goto CharacterSelectHandleQuadtari
+          ;; if qtcontroller then jmp CharacterSelectHandleQuadtari
           lda qtcontroller
           beq HandleEvenFrameInput
           jmp CharacterSelectHandleQuadtari
@@ -294,7 +294,7 @@ CharacterSelectDoneQuadtariPlayersInline
                     if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline
 
           ;; Need at least 1 player ready for 2-player mode
-          ;; ;;           ;; let temp1 = 0 : gosub GetPlayerLocked bank6
+          ;; ;;           ;; Set temp1 = 0 cross-bank call to GetPlayerLocked bank6
           lda 0
           sta temp1
           lda # >(AfterGetPlayerLockedCheckReady-1)
@@ -307,7 +307,7 @@ CharacterSelectDoneQuadtariPlayersInline
           pha
           ldx # 5
           jmp BS_jsr
-AfterGetPlayerLockedCheckReady: : if temp2 then goto CharacterSelectCompleted
+AfterGetPlayerLockedCheckReady: : if temp2 then jmp CharacterSelectCompleted
 
 lda temp2
 
@@ -328,7 +328,7 @@ CheckPlayer2Locked:
 
           jmp CheckPlayer2LockedLabel2:
 
-          ;; ;;           ;; let temp1 = 1 : gosub GetPlayerLocked bank6 : if temp2 then goto CharacterSelectCompleted          lda temp2          beq CheckPlayer2LockedLabel3
+          ;; ;;           ;; Set temp1 = 1 cross-bank call to GetPlayerLocked bank6 : if temp2 then jmp CharacterSelectCompleted          lda temp2          beq CheckPlayer2LockedLabel3
 CheckPlayer2LockedLabel3:
           jmp CheckPlayer2LockedLabel3
           lda temp2
@@ -349,7 +349,7 @@ CheckPlayer2LockedLabel3:
 
 CharacterSelectQuadtariReadyInline .proc
           ;; Need at least 2 players ready for 4-player mode
-          ;; if readyCount>= 2 then goto CharacterSelectCompleted
+          ;; if readyCount>= 2 then jmp CharacterSelectCompleted
           lda readyCount
           cmp 2
 

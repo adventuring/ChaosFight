@@ -57,7 +57,7 @@ Joy2bPauseDone:
 CheckPauseButtonPrev:
 
           ;; Toggle pause flag in systemFlags
-          ;; if systemFlags & SystemFlagPauseButtonPrev then goto DonePauseToggle
+          ;; if systemFlags & SystemFlagPauseButtonPrev then jmp DonePauseToggle
           lda systemFlags
           and # SystemFlagPauseButtonPrev
           beq TogglePauseState

@@ -69,7 +69,7 @@ CheckAllMissileCollisions:
           lda # MissileHitNotFound
           sta temp4
 
-          ;; let temp6 = BitMask[temp1]
+          ;; Set temp6 = BitMask[temp1]
           lda temp1
           asl
           tax
@@ -88,7 +88,7 @@ CheckAllMissileCollisions:
 
           ;; Cache character index for downstream routines
 
-          ;; let characterIndex = playerCharacter[temp1]
+          ;; Set characterIndex = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -99,7 +99,7 @@ CheckAllMissileCollisions:
 
           ;; Visible missile when width > 0, otherwise treat as AOE
 
-          ;; let temp6 = CharacterMissileWidths[characterIndex]
+          ;; Set temp6 = CharacterMissileWidths[characterIndex]
           lda characterIndex
           asl
           tax
@@ -186,8 +186,8 @@ CheckVisibleMissileCollision
 
           ;; Ensure character index matches current attacker
 
-                    ;; let characterIndex = playerCharacter[temp1]
-          ;; let characterIndex = playerCharacter[temp1]
+                    ;; Set characterIndex = playerCharacter[temp1]
+          ;; Set characterIndex = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -196,14 +196,14 @@ CheckVisibleMissileCollision
 
 
 
-          ;; let cachedHitboxLeft_W = missileX[temp1]
+          ;; Set cachedHitboxLeft_W = missileX[temp1]
           lda temp1
           asl
           tax
           lda missileX,x
           sta cachedHitboxLeft_W
 
-          ;; let cachedHitboxTop_W = missileY_R[temp1]
+          ;; Set cachedHitboxTop_W = missileY_R[temp1]
           lda temp1
           asl
           tax
@@ -214,7 +214,7 @@ CheckVisibleMissileCollision
 
           ;; Derive hitbox bounds from missile dimensions
 
-          ;; let temp6 = CharacterMissileWidths[characterIndex]
+          ;; Set temp6 = CharacterMissileWidths[characterIndex]
           lda characterIndex
           asl
           tax
@@ -226,16 +226,15 @@ CheckVisibleMissileCollision
           lda CharacterMissileWidths,x
           sta temp6
 
-          ;; let cachedHitboxRight_W = cachedHitboxLeft_R + temp6
-
-          ;; let temp6 = CharacterMissileHeights[characterIndex]         
+          ;; Set cachedHitboxRight_W = cachedHitboxLeft_R + temp6
+          ;; Set temp6 = CharacterMissileHeights[characterIndex]
           lda characterIndex
           asl
           tax
           lda CharacterMissileHeights,x
           sta temp6
 
-          ;; let cachedHitboxBottom_W = cachedHitboxTop_R + temp6
+          ;; Set cachedHitboxBottom_W = cachedHitboxTop_R + temp6
           jsr CheckPlayersAgainstCachedHitbox
 
           jmp BS_return
@@ -313,7 +312,7 @@ CheckAOECollision
 
           ;; Constraints: Bernie (character 0) hits both left and right simultaneously
 
-          ;; let characterIndex = playerCharacter[temp1]         
+          ;; Set characterIndex = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -344,7 +343,7 @@ CheckFacingDirection:
 
           ;; Normal character: Check only facing direction
 
-          ;; let temp6 = playerState[temp1] & PlayerStateBitFacing         
+          ;; Set temp6 = playerState[temp1] & PlayerStateBitFacing
           lda temp1
           asl
           tax
@@ -525,14 +524,14 @@ CacheAOERightHitbox .proc
 
           ;; Output: cachedHitboxLeft/Right/Top/Bottom populated
 
-                    ;; let aoeOffset = CharacterAOEOffsets[characterIndex]
+                    ;; Set aoeOffset = CharacterAOEOffsets[characterIndex]
           lda characterIndex
           asl
           tax
           lda CharacterAOEOffsets,x
           sta aoeOffset
 
-          ;; let cachedHitboxLeft_W = playerX[temp1]
+          ;; Set cachedHitboxLeft_W = playerX[temp1]
           lda temp1
           asl
           tax
@@ -541,17 +540,15 @@ CacheAOERightHitbox .proc
           adc aoeOffset
           sta cachedHitboxLeft_W
 
-          ;; let cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
-
-          ;; let cachedHitboxTop_W = playerY[temp1]         
+          ;; Set cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
+          ;; Set cachedHitboxTop_W = playerY[temp1]
           lda temp1
           asl
           tax
           lda playerY,x
           sta cachedHitboxTop_W
 
-          ;; let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
-
+          ;; Set cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
           rts
 
 
@@ -567,35 +564,34 @@ CacheAOELeftHitbox .proc
 
           ;; Output: cachedHitboxLeft/Right/Top/Bottom populated
 
-                    ;; let aoeOffset = CharacterAOEOffsets[characterIndex]
+                    ;; Set aoeOffset = CharacterAOEOffsets[characterIndex]
           lda characterIndex
           asl
           tax
           lda CharacterAOEOffsets,x
           sta aoeOffset
 
-          ;; let cachedHitboxRight_W = playerX[temp1] + PlayerSpriteWidth - 1 - aoeOffset
+          ;; Set cachedHitboxRight_W = playerX[temp1] + PlayerSpriteWidth - 1 - aoeOffset
           lda temp1
           asl
           tax
           lda playerX,x
           sta cachedHitboxRight_W
 
-          ;; let cachedHitboxLeft_W = cachedHitboxRight_R - PlayerSpriteHalfWidth
+          ;; Set cachedHitboxLeft_W = cachedHitboxRight_R - PlayerSpriteHalfWidth
           lda cachedHitboxRight_R
           sec
           sbc # PlayerSpriteHalfWidth
           sta cachedHitboxLeft_W
 
-          ;; let cachedHitboxTop_W = playerY[temp1]
+          ;; Set cachedHitboxTop_W = playerY[temp1]
           lda temp1
           asl
           tax
           lda playerY,x
           sta cachedHitboxTop_W
 
-          ;; let cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
-
+          ;; Set cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
           rts
 
 .pend
@@ -621,9 +617,8 @@ CheckPlayersAgainstCachedHitbox .proc
 CheckPlayerHealth:
 
 
-          ;; if playerHealth[temp2] = 0 then CPB_NextPlayer
-
-          ;; if playerX[temp2] + PlayerSpriteWidth <= cachedHitboxLeft_R then CPB_NextPlayer
+          ;; If playerHealth[temp2] = 0, then CPB_NextPlayer
+          ;; If playerX[temp2] + PlayerSpriteWidth <= cachedHitboxLeft_R, then CPB_NextPlayer
           lda temp2
           asl
           tax
@@ -640,7 +635,7 @@ CheckPlayerHealth:
 CPB_NextPlayerLeft:
 CheckRightEdge:
 
-          ;; if playerX[temp2] >= cachedHitboxRight_R then CPB_NextPlayer
+          ;; If playerX[temp2] >= cachedHitboxRight_R, then CPB_NextPlayer
           lda temp2
           asl
           tax
@@ -651,7 +646,7 @@ CheckRightEdge:
           jmp CPB_NextPlayerBottom
 CheckVerticalOverlap:
 
-          ;; if playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R then CPB_NextPlayer
+          ;; If playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R, then CPB_NextPlayer
           lda temp2
           asl
           tax
@@ -668,7 +663,7 @@ CheckVerticalOverlap:
 CPB_NextPlayerTop:
 CheckBottomEdge:
 
-          ;; if playerY[temp2] >= cachedHitboxBottom_R then CPB_NextPlayer
+          ;; If playerY[temp2] >= cachedHitboxBottom_R, then CPB_NextPlayer
           lda temp2
           asl
           tax
@@ -746,14 +741,14 @@ CheckPlayersAgainstCachedHitboxDone .proc
 
           ;; Get missile X/Y position
 
-                    ;; let temp2 = missileX[temp1]
+                    ;; Set temp2 = missileX[temp1]
                     lda temp1
                     asl
                     tax
                     lda missileX,x
                     sta temp2
 
-          ;; let temp3 = missileY_R[temp1]
+          ;; Set temp3 = missileY_R[temp1]
           lda temp1
           asl
           tax
@@ -775,7 +770,7 @@ CheckPlayersAgainstCachedHitboxDone .proc
 
           ;; Convert × pixel to playfield column
 
-          ;; let temp6 = temp2 - 16          lda temp2          sec          sbc 16          sta temp6
+          ;; Set temp6 = temp2 - 16          lda temp2          sec          sbc 16          sta temp6
           lda temp2
           sec
           sbc 16
@@ -787,7 +782,7 @@ CheckPlayersAgainstCachedHitboxDone .proc
           sta temp6
 
 
-          ;; let temp6 = temp6 / 4          lda temp6          lsr          lsr          sta temp6
+          ;; Set temp6 = temp6 / 4          lda temp6          lsr          lsr          sta temp6
           lda temp6
           lsr
           lsr

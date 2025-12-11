@@ -12,14 +12,14 @@ InputHandleRightPortPlayerFunction:
           lda temp1
           sta currentPlayer
           ;; block movement during attack animations (states 13-15)
-          ;; let temp2 = playerState[temp1] / 16         
+          ;; Set temp2 = playerState[temp1] / 16
           lda temp1
           asl
           tax
           lda playerState,x
           sta temp2
           ;; Block movement during attack windup/execute/recovery
-          ;; if temp2 >= 13 then goto DoneRightPortMovement
+          ;; if temp2 >= 13 then jmp DoneRightPortMovement
           lda temp2
           cmp # 13
 
@@ -32,14 +32,14 @@ IHRP_CheckGuardStatus:
           ;; Process left/right movement (with playfield collision for
           ;; flying characters)
           ;; Check if player is guarding - guard blocks movement
-          ;; let temp6 = playerState[temp1] & 2         
+          ;; Set temp6 = playerState[temp1] & 2
           lda temp1
           asl
           tax
           lda playerState,x
           sta temp6
           ;; Guarding - block movement
-          ;; if temp6 then goto DoneRightPortMovement
+          ;; if temp6 then jmp DoneRightPortMovement
           lda temp6
           beq IHRP_CheckFlyingCharacter
 
@@ -49,7 +49,7 @@ IHRP_CheckFlyingCharacter:
 
           ;; Frooty (8) and Dragon of Storms (2) need collision checks
           ;; for horizontal movement
-          ;; let temp5 = playerCharacter[temp1]         
+          ;; Set temp5 = playerCharacter[temp1]
           lda temp1
           asl
           tax
@@ -89,7 +89,7 @@ IHRPF_ProcessStandardMovementReturn:
 DoneRightPortMovement
 
 IHRP_FlyingMovement .proc
-          ;; Tail call: goto instead of gosub to save 2 bytes on sta
+          ;; Tail call: jmp instead of cross-bank call to to save 2 bytes on sta
           ;; Note: HandleFlyingCharacterMovement is in Bank 11, but we use jmp (tail call)
           ;; so it doesn't add to stack depth
           jmp HandleFlyingCharacterMovement
@@ -120,13 +120,13 @@ IHRP_HandleDownPressed:
 
 IHRP_HandleDownPressed .proc
           ;; DOWN pressed - dispatch to character-specific down handler
-          ;; let temp4 = playerCharacter[temp1]         
+          ;; Set temp4 = playerCharacter[temp1]
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta temp4
-          ;; if temp4 >= 32 then goto IHRP_ProcessAttack
+          ;; if temp4 >= 32 then jmp IHRP_ProcessAttack
           lda temp4
           cmp 32
 
@@ -188,7 +188,7 @@ IHRP_HandleRoboTitoDown .proc
 
 IHRP_CheckGuardRelease .proc
           ;; DOWN released - check for early guard release (inlined to save 2 bytes)
-          ;; let temp6 = playerState[temp1] & PlayerStateBitGuarding         
+          ;; Set temp6 = playerState[temp1] & PlayerStateBitGuarding
           lda temp1
           asl
           tax

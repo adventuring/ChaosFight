@@ -110,7 +110,7 @@ LocateCharacterArt .proc
 
           ;; 24-31=Bank5
 
-          ;; if temp1 < 8 then goto Bank2Dispatch          lda temp1          cmp 8          bcs .skip_8740          jmp
+          ;; if temp1 < 8 then jmp Bank2Dispatch          lda temp1          cmp 8          bcs .skip_8740          jmp
           lda temp1
           cmp # 8
           bcs CheckBank3
@@ -127,7 +127,7 @@ CheckBank3Label:
 
           
 
-          ;; if temp1 < 16 then goto Bank3Dispatch          lda temp1          cmp 16          bcs .skip_4567          jmp
+          ;; if temp1 < 16 then jmp Bank3Dispatch          lda temp1          cmp 16          bcs .skip_4567          jmp
           lda temp1
           cmp # 16
           bcs CheckBank4
@@ -142,7 +142,7 @@ CheckBank4Label:
 
           
 
-          ;; if temp1 < 24 then goto Bank4Dispatch          lda temp1          cmp 24          bcs .skip_5602          jmp
+          ;; if temp1 < 24 then jmp Bank4Dispatch          lda temp1          cmp 24          bcs .skip_5602          jmp
           lda temp1
           cmp # 24
           bcs Bank5Dispatch
@@ -263,7 +263,7 @@ Bank3Dispatch
 
           ;; Calculate bank-relative index: character index - 8
 
-          ;; let temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
+          ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
           lda temp1
           sec
           sbc 8
@@ -340,7 +340,7 @@ Bank4Dispatch
 
           ;; Calculate bank-relative index: character index - 16
 
-          ;; let temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
+          ;; Set temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
           lda temp1
           sec
           sbc 16
@@ -417,7 +417,7 @@ SLCAB5_Bank5Dispatch:
 
           ;; Calculate bank-relative index: character index - 24
 
-          ;; let temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
+          ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
           lda temp1
           sec
           sbc 24

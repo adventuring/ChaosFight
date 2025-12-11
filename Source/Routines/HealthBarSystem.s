@@ -100,7 +100,7 @@ UpdatePlayer1HealthBar .proc
           lda temp1
           cmp # 84
           bcc CheckHealth72
-          ;; let temp2 = 8 : goto P1SetPattern
+          ;; Set temp2 = 8 jmp P1SetPattern
 CheckHealth72:
 
 
@@ -108,7 +108,7 @@ CheckHealth72:
           lda temp1
           cmp # 72
           bcc CheckHealth60
-          ;; let temp2 = 7 : goto P1SetPattern
+          ;; Set temp2 = 7 jmp P1SetPattern
 CheckHealth60:
 
 
@@ -116,7 +116,7 @@ CheckHealth60:
           lda temp1
           cmp # 60
           bcc CheckHealth48
-          ;; let temp2 = 6 : goto P1SetPattern
+          ;; Set temp2 = 6 jmp P1SetPattern
 CheckHealth48:
 
 
@@ -124,7 +124,7 @@ CheckHealth48:
           lda temp1
           cmp # 48
           bcc CheckHealth36
-          ;; let temp2 = 5 : goto P1SetPattern
+          ;; Set temp2 = 5 jmp P1SetPattern
 CheckHealth36:
 
 
@@ -132,7 +132,7 @@ CheckHealth36:
           lda temp1
           cmp # 36
           bcc CheckHealth24
-          ;; let temp2 = 4 : goto P1SetPattern
+          ;; Set temp2 = 4 jmp P1SetPattern
 CheckHealth24:
 
 
@@ -140,7 +140,7 @@ CheckHealth24:
           lda temp1
           cmp # 24
           bcc CheckHealth12
-          ;; let temp2 = 3 : goto P1SetPattern
+          ;; Set temp2 = 3 jmp P1SetPattern
 CheckHealth12:
 
 
@@ -148,7 +148,7 @@ CheckHealth12:
           lda temp1
           cmp # 12
           bcc P1SetPattern
-          ;; let temp2 = 2 : goto P1SetPattern
+          ;; Set temp2 = 2 jmp P1SetPattern
 P1SetPattern:
 
 
@@ -184,7 +184,7 @@ P1SetPattern .proc
 
           ;; function, so no bank prefix needed
 
-          ;; let temp3 = HealthBarPatterns[temp2]         
+          ;; Set temp3 = HealthBarPatterns[temp2]
           lda temp2
           asl
           tax
@@ -263,7 +263,7 @@ UpdatePlayer2HealthBar .proc
           lda temp1
           cmp # 84
           bcc CheckHealth72P2
-          ;; let temp2 = 8 : goto P2SetPattern
+          ;; Set temp2 = 8 jmp P2SetPattern
 CheckHealth72P2:
 
 
@@ -271,7 +271,7 @@ CheckHealth72P2:
           lda temp1
           cmp # 72
           bcc CheckHealth60P2
-          ;; let temp2 = 7 : goto P2SetPattern
+          ;; Set temp2 = 7 jmp P2SetPattern
 CheckHealth60P2:
 
 
@@ -279,7 +279,7 @@ CheckHealth60P2:
           lda temp1
           cmp # 60
           bcc CheckHealth48P2
-          ;; let temp2 = 6 : goto P2SetPattern
+          ;; Set temp2 = 6 jmp P2SetPattern
 CheckHealth48P2:
 
 
@@ -287,7 +287,7 @@ CheckHealth48P2:
           lda temp1
           cmp # 48
           bcc CheckHealth36P2
-          ;; let temp2 = 5 : goto P2SetPattern
+          ;; Set temp2 = 5 jmp P2SetPattern
 CheckHealth36P2:
 
 
@@ -295,7 +295,7 @@ CheckHealth36P2:
           lda temp1
           cmp # 36
           bcc CheckHealth24P2
-          ;; let temp2 = 4 : goto P2SetPattern
+          ;; Set temp2 = 4 jmp P2SetPattern
 CheckHealth24P2:
 
 
@@ -303,7 +303,7 @@ CheckHealth24P2:
           lda temp1
           cmp # 24
           bcc CheckHealth12P2
-          ;; let temp2 = 3 : goto P2SetPattern
+          ;; Set temp2 = 3 jmp P2SetPattern
 CheckHealth12P2:
 
 
@@ -311,7 +311,7 @@ CheckHealth12P2:
           lda temp1
           cmp # 12
           bcc P2SetPattern
-          ;; let temp2 = 2 : goto P2SetPattern
+          ;; Set temp2 = 2 jmp P2SetPattern
 P2SetPattern:
 
 
@@ -347,7 +347,7 @@ P2SetPattern .proc
 
           ;; function, so no bank prefix needed
 
-          ;; let temp3 = HealthBarPatterns[temp2]         
+          ;; Set temp3 = HealthBarPatterns[temp2]
           lda temp2
           asl
           tax
@@ -410,7 +410,7 @@ UpdatePlayer12HealthBars .proc
 
           ;; Update P1 health bar
 
-                    ;; let temp1 = playerHealth[0]
+                    ;; Set temp1 = playerHealth[0]
                     lda 0          asl          tax          lda playerHealth,x          sta temp1
 
           jsr UpdatePlayer1HealthBar
@@ -419,7 +419,7 @@ UpdatePlayer12HealthBars .proc
 
           ;; Update P2 health bar
 
-          ;; let temp1 = playerHealth[1]
+          ;; Set temp1 = playerHealth[1]
           lda 1
           asl
           tax
@@ -626,7 +626,7 @@ UpdatePlayer34Health:
 
           ;; (playerCharacter = NoCharacter) or eliminated
 
-          ;; let temp1 = playerHealth[2]         
+          ;; Set temp1 = playerHealth[2]
           lda 2
           asl
           tax
@@ -635,7 +635,7 @@ UpdatePlayer34Health:
 
           ;; Check if Player 3 is eliminated (health = 0)
 
-          ;; if playerCharacter[2] = NoCharacter then goto P3UseAA
+          ;; if playerCharacter[2] = NoCharacter then jmp P3UseAA
           lda temp1
           cmp # 0
           bne P3ConvertHealth
@@ -645,7 +645,7 @@ P3ConvertHealth:
 
           ;; Clamp health to valid range
 
-          ;; if PlayerHealthMax - 1 < temp1 then let temp1 = PlayerHealthMax - 1          lda PlayerHealthMax          sec          sbc 1          sta temp1
+          ;; If PlayerHealthMax - 1 < temp1, set temp1 = PlayerHealthMax - 1          lda PlayerHealthMax          sec          sbc 1          sta temp1
           jmp P3ConvertHealth
 
 
@@ -689,7 +689,7 @@ P4GetHealth .proc
 
           ;; (playerCharacter = NoCharacter) or eliminated
 
-          ;; let temp2 = playerHealth[3]         
+          ;; Set temp2 = playerHealth[3]
           lda 3
           asl
           tax
@@ -698,7 +698,7 @@ P4GetHealth .proc
 
           ;; Check if Player 4 is eliminated (health = 0)
 
-          ;; if playerCharacter[3] = NoCharacter then goto P4UseAA
+          ;; if playerCharacter[3] = NoCharacter then jmp P4UseAA
           lda temp2
           cmp # 0
           bne ClampPlayer4Health

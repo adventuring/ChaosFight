@@ -65,7 +65,7 @@ InputHandleAllPlayers .proc
 
           ;; InputSkipPlayer4Input (all called via jmp or gosub)
 
-          ;; If qtcontroller, then goto InputHandleQuadtariPlayers
+          ;; If qtcontroller, then jmp InputHandleQuadtariPlayers
           lda qtcontroller
           beq HandlePlayers12
           jmp InputHandleQuadtariPlayers

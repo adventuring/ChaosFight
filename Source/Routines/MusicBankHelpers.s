@@ -36,7 +36,7 @@ CheckBank0MinSongID:
 
           ;; Check if songs handled by other banks (0-Bank14MaxSongID)
 
-          ;; if temp1 < Bank0MinSongID then goto LSP_InvalidSong
+          ;; if temp1 < Bank0MinSongID then jmp LSP_InvalidSong
           lda temp1
           cmp # Bank0MinSongID
           bcs CalculateIndex
@@ -47,7 +47,7 @@ CalculateIndex:
 
           ;; Calculate compact index: songID - Bank0MinSongID (song Bank0MinSongID → 0)
 
-          ;; let temp2 = temp1 - Bank0MinSongID
+          ;; Set temp2 = temp1 - Bank0MinSongID
           lda temp1
           sec
           sbc # Bank0MinSongID
@@ -58,14 +58,14 @@ CalculateIndex:
 
           ;; Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
 
-          ;; let var40 = SongPointers1H[temp2]
+          ;; Set var40 = SongPointers1H[temp2]
           lda temp2
           asl
           tax
           lda SongPointers1H,x
           sta songPointer+1
 
-          ;; let songPointer = SongPointers1L[temp2]
+          ;; Set songPointer = SongPointers1L[temp2]
           lda temp2
           asl
           tax
@@ -135,7 +135,7 @@ CheckBank0MinSongIDVoice1:
 
           ;; Check if songs handled by other banks (0-Bank14MaxSongID)
 
-          ;; if temp1 < Bank0MinSongID then goto LSV1P_InvalidSong
+          ;; if temp1 < Bank0MinSongID then jmp LSV1P_InvalidSong
           lda temp1
           cmp # Bank0MinSongID
           bcs CalculateIndexVoice1
@@ -145,7 +145,7 @@ CalculateIndexVoice1:
 
           ;; Calculate compact index: songID - Bank0MinSongID (song Bank0MinSongID → 0)
 
-          ;; let temp2 = temp1 - Bank0MinSongID          lda temp1          sec          sbc Bank0MinSongID          sta temp2
+          ;; Set temp2 = temp1 - Bank0MinSongID          lda temp1          sec          sbc Bank0MinSongID          sta temp2
           lda temp1
           sec
           sbc Bank0MinSongID
@@ -161,14 +161,14 @@ CalculateIndexVoice1:
 
           ;; Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
 
-          ;; let var40 = SongPointers1SecondH[temp2]
+          ;; Set var40 = SongPointers1SecondH[temp2]
           lda temp2
           asl
           tax
           lda SongPointers1SecondH,x
           sta songPointer+1
 
-          ;; let songPointer = SongPointers1SecondL[temp2]
+          ;; Set songPointer = SongPointers1SecondL[temp2]
           lda temp2
           asl
           tax
@@ -261,9 +261,8 @@ LoadMusicNote0 .proc
 
           ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
 
-          ;; let temp6 = temp2 & %11110000
-
-          ;; let temp6 = temp6 / 16
+          ;; Set temp6 = temp2 & %11110000
+          ;; Set temp6 = temp6 / 16
           lda temp6
           lsr
           lsr
@@ -271,7 +270,7 @@ LoadMusicNote0 .proc
           lsr
           sta temp6
 
-          ;; let musicVoice0TargetAUDV_W = temp2 & %00001111
+          ;; Set musicVoice0TargetAUDV_W = temp2 & %00001111
           lda temp2
           and # 15
           sta musicVoice0TargetAUDV_W
@@ -280,7 +279,7 @@ LoadMusicNote0 .proc
 
           ;; Store target AUDV and total frames for envelope
 
-          ;; let musicVoice0TotalFrames_W = temp4 + temp5
+          ;; Set musicVoice0TotalFrames_W = temp4 + temp5
           lda temp4
           clc
           adc temp5
@@ -300,7 +299,7 @@ LoadMusicNote0 .proc
 
 
 
-          ;; let musicVoice0Frame_W = temp4 + temp5
+          ;; Set musicVoice0Frame_W = temp4 + temp5
           lda temp4
           clc
           adc temp5
@@ -400,9 +399,8 @@ LoadMusicNote1 .proc
 
           ;; Extract AUDC and AUDV
 
-          ;; let temp6 = temp2 & %11110000
-
-          ;; let temp6 = temp6 / 16
+          ;; Set temp6 = temp2 & %11110000
+          ;; Set temp6 = temp6 / 16
           lda temp6
           lsr
           lsr
@@ -410,7 +408,7 @@ LoadMusicNote1 .proc
           lsr
           sta temp6
 
-          ;; let musicVoice1TargetAUDV_W = temp2 & %00001111
+          ;; Set musicVoice1TargetAUDV_W = temp2 & %00001111
           lda temp2
           and # 15
           sta musicVoice1TargetAUDV_W
@@ -419,7 +417,7 @@ LoadMusicNote1 .proc
 
           ;; Store target AUDV and total frames for envelope
 
-          ;; let musicVoice1TotalFrames_W = temp4 + temp5
+          ;; Set musicVoice1TotalFrames_W = temp4 + temp5
           lda temp4
           clc
           adc temp5
@@ -439,7 +437,7 @@ LoadMusicNote1 .proc
 
 
 
-          ;; let musicVoice1Frame_W = temp4 + temp5
+          ;; Set musicVoice1Frame_W = temp4 + temp5
           lda temp4
           clc
           adc temp5

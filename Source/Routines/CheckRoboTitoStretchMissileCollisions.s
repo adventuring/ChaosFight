@@ -18,7 +18,7 @@ CheckRoboTitoStretchMissileCollisions:
 
 PlayerLoopStretchMissileCheck .proc
           ;; Check if player is RoboTito and stretching
-          ;; if playerCharacter[temp1] = CharacterRoboTito then IsRoboTitoStretchCheck
+          ;; If playerCharacter[temp1] = CharacterRoboTito, then IsRoboTitoStretchCheck
           lda temp1
           asl
           tax
@@ -39,13 +39,13 @@ IsRoboTitoStretchCheck .proc
           ;; Check if stretching (not latched, ActionJumping animation
           ;; = 10)
           ;; Latched to ceiling, no stretch missile
-          ;; let temp5 = characterStateFlags_R[temp1] & 1         
+          ;; Set temp5 = characterStateFlags_R[temp1] & 1
           lda temp1
           asl
           tax
           lda characterStateFlags_R,x
           sta temp5
-          ;; if temp5 then goto NextPlayerStretchCheck
+          ;; if temp5 then jmp NextPlayerStretchCheck
           lda temp5
           beq CheckStretchingAnimation
 
@@ -54,7 +54,7 @@ IsRoboTitoStretchCheck .proc
 CheckStretchingAnimation:
           ;; Mask bits 4-7 (animation sta
 
-          ;; let playerStateTemp = playerState[temp1]         
+          ;; Set playerStateTemp = playerState[temp1]
           lda temp1
           asl
           tax
@@ -65,7 +65,7 @@ CheckStretchingAnimation:
           lda playerStateTemp
           and # MaskPlayerStateAnimation
           sta playerStateTemp
-          ;; let playerStateTemp = playerStateTemp / 16
+          ;; Set playerStateTemp = playerStateTemp / 16
           lda playerStateTemp
           cmp # 10
           bne NextPlayerStretchCheck
@@ -78,7 +78,7 @@ IsStretchingAnimation .proc
           ;; In stretching animation, check for stretch missile
 
           ;; Check if stretch missile has height > 0
-          ;; let temp2 = missileStretchHeight_R[temp1]         
+          ;; Set temp2 = missileStretchHeight_R[temp1]
           lda temp1
           asl
           tax
@@ -98,7 +98,7 @@ CalculateMissilePosition:
           tax
           lda playerX,x
           sta temp3
-          ;; let temp4 = playerY[temp1] + 16
+          ;; Set temp4 = playerY[temp1] + 16
           lda temp1
           asl
           tax
@@ -125,7 +125,7 @@ CheckPlayerHealth:
 
 
           ;; Skip eliminated players
-          ;; if !playerHealth[temp6] then CRTSMC_DoneSelf
+          ;; If !playerHealth[temp6], then CRTSMC_DoneSelf
           lda temp6
           asl
           tax
@@ -140,7 +140,7 @@ CheckPlayerHealth:
           ;; playerX+PlayerSpriteHalfWidth*2
           ;; Player top/bottom: playerY to playerY+PlayerSpriteHeight
           ;; Missile left edge >= player right edge, no collision
-          ;; if temp3 >= playerX[temp6] + PlayerSpriteHalfWidth then DoneSelfStretchCheck
+          ;; If temp3 >= playerX[temp6] + PlayerSpriteHalfWidth, then DoneSelfStretchCheck
           lda temp6
           asl
           tax
@@ -156,7 +156,7 @@ CheckPlayerHealth:
 
 CheckMissileRightEdge:
           ;; Missile right edge <= player left edge, no collision
-          ;; if temp3 + 1 <= playerX[temp6] then DoneSelfStretchCheck
+          ;; If temp3 + 1 <= playerX[temp6], then DoneSelfStretchCheck
           lda temp3
           clc
           adc # 1
@@ -172,7 +172,7 @@ CheckMissileRightEdge:
 
 CheckMissileTopEdge:
           ;; Missile top edge >= player bottom edge, no collision
-          ;; if temp4 >= playerY[temp6] + PlayerSpriteHeight then DoneSelfStretchCheck
+          ;; If temp4 >= playerY[temp6] + PlayerSpriteHeight, then DoneSelfStretchCheck
           lda temp6
           asl
           tax
@@ -188,7 +188,7 @@ CheckMissileTopEdge:
 
 CheckMissileBottomEdge:
           ;; Missile bottom edge <= player top edge, no collision
-          ;; if temp4 + temp2 <= playerY[temp6] then DoneSelfStretchCheck
+          ;; If temp4 + temp2 <= playerY[temp6], then DoneSelfStretchCheck
           lda temp4
           clc
           adc temp2
@@ -212,7 +212,7 @@ CollisionDetectedStretchMissile:
 
 DoneSelfStretchCheck:
           inc temp6
-          ;; if temp6 < 4 then CheckOtherPlayerStretchMissile
+          ;; If temp6 < 4, then CheckOtherPlayerStretchMissile
           lda temp6
           cmp # 4
           bcs NextPlayerLoopStretchCheck
@@ -235,7 +235,7 @@ NextPlayerLoopStretchCheckDone:
 
 NextPlayerStretchCheck .proc
           inc temp1
-          ;; if temp1 < 4 then goto PlayerLoopStretchMissileCheck
+          ;; if temp1 < 4 then jmp PlayerLoopStretchMissileCheck
           lda temp1
           cmp # 4
           bcs CheckRoboTitoStretchMissileCollisionsDone
@@ -303,13 +303,13 @@ HandleRoboTitoStretchMissileHit .proc
           sta characterSpecialAbility_W,x
 
           ;; Clear latched flag if set (falling from ceiling)
-          ;; let temp3 = characterStateFlags_R[temp1]         
+          ;; Set temp3 = characterStateFlags_R[temp1]
           lda temp1
           asl
           tax
           lda characterStateFlags_R,x
           sta temp3
-          ;; let temp3 = temp3 & 254
+          ;; Set temp3 = temp3 & 254
           lda temp3
           and # 254
           sta temp3

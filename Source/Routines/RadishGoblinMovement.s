@@ -23,7 +23,7 @@ RadishGoblinHandleInput .proc
 
           jmp BS_return
 
-          ;; if temp1 & 2 = 0 then goto CheckJoy0RadishGoblin
+          ;; if temp1 & 2 = 0 then jmp CheckJoy0RadishGoblin
           lda joy1left
           bne MoveLeftRadishGoblin
 
@@ -46,14 +46,14 @@ MoveLeftRadishGoblinLabel:
 .pend
 
 MoveLeftRadishGoblin .proc
-          ;; let temp4 = playerCharacter[temp1]
+          ;; Set temp4 = playerCharacter[temp1]
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta temp4
 
-          ;; let temp6 = CharacterMovementSpeed[temp4]
+          ;; Set temp6 = CharacterMovementSpeed[temp4]
           lda temp4
           asl
           tax
@@ -67,7 +67,7 @@ MoveLeftRadishGoblin .proc
           lda # 0
           sta playerVelocityXL,x
 
-                    if (playerState[temp1] & 8) then goto AfterLeftRadishGoblin
+                    if (playerState[temp1] & 8) then jmp AfterLeftRadishGoblin
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateLeft-1)
@@ -83,7 +83,7 @@ MoveLeftRadishGoblin .proc
 AfterGetPlayerAnimationStateLeft:
 
 
-          ;; if temp2 < 5 then goto SkipSetFacingLeftRadishGoblin
+          ;; if temp2 < 5 then jmp SkipSetFacingLeftRadishGoblin
           lda temp2
           cmp # 5
           bcs .skip_7968
@@ -126,7 +126,7 @@ AfterLeftRadishGoblin .proc
 
 CheckRightRadishGoblin .proc
 
-          ;; if temp1 & 2 = 0 then goto CheckRightJoy0RadishGoblin
+          ;; if temp1 & 2 = 0 then jmp CheckRightJoy0RadishGoblin
           lda temp1
           and # 2
           bne MoveRightRadishGoblin
@@ -146,14 +146,14 @@ CheckRightJoy0RadishGoblin .proc
 
 MoveRightRadishGoblin .proc
 
-          ;; let temp4 = playerCharacter[temp1]
+          ;; Set temp4 = playerCharacter[temp1]
           lda temp1
           asl
           tax
           lda playerCharacter,x
           sta temp4
 
-          ;; let temp6 = CharacterMovementSpeed[temp4]
+          ;; Set temp6 = CharacterMovementSpeed[temp4]
           lda temp4
           asl
           tax
@@ -188,7 +188,7 @@ MoveRightRadishGoblin .proc
 AfterGetPlayerAnimationStateLeft:
 
 
-          ;; if temp2 < 5 then goto SkipSetFacingRightRadishGoblin
+          ;; if temp2 < 5 then jmp SkipSetFacingRightRadishGoblin
           lda temp2
           cmp # 5
           bcs .CheckAnimationFrame10Right
@@ -279,7 +279,7 @@ RadishGoblinCheckGroundBounce .proc
 
           ;; Convert × to playfield column
 
-          ;; if playerVelocityY[temp1] <= 0 then goto RGBGB_ClearCheck
+          ;; if playerVelocityY[temp1] <= 0 then jmp RGBGB_ClearCheck
           lda temp1
           asl
           tax
@@ -300,7 +300,7 @@ ConvertXToColumn:
 
 
 
-          ;; let temp2 = playerX[temp1] - ScreenInsetX         
+          ;; Set temp2 = playerX[temp1] - ScreenInsetX
           lda temp1
           asl
           tax
@@ -326,7 +326,7 @@ CalculateFeetRow:
           lda temp2
           sta temp6
 
-          ;; let temp2 = playerY[temp1] + PlayerSpriteHeight         
+          ;; Set temp2 = playerY[temp1] + PlayerSpriteHeight
           lda temp1
           asl
           tax
@@ -343,7 +343,7 @@ CalculateFeetRow:
             lsr temp2
 
 
-          ;; if temp2 >= pfrows then goto ClearCheckRadishGoblinBounce
+          ;; if temp2 >= pfrows then jmp ClearCheckRadishGoblinBounce
           lda temp2
           cmp pfrows
 
@@ -360,7 +360,7 @@ CalculateFeetRow:
 
           ;; Check ground pixel
 
-          ;; if temp5 >= pfrows then goto ClearCheckRadishGoblinBounce
+          ;; if temp5 >= pfrows then jmp ClearCheckRadishGoblinBounce
           lda temp5
           cmp pfrows
 
@@ -404,16 +404,16 @@ CheckBounceState:
 
           ;; Check if moved away from contact
 
-          ;; if radishGoblinBounceState_R[temp1] = 1 then goto ClearCheckRadishGoblinBounce
+          ;; if radishGoblinBounceState_R[temp1] = 1 then jmp ClearCheckRadishGoblinBounce
 
-          ;; let temp2 = playerY[temp1]
+          ;; Set temp2 = playerY[temp1]
           lda temp1
           asl
           tax
           lda playerY,x
           sta temp2
 
-          ;; let temp3 = radishGoblinLastContactY_R[temp1]
+          ;; Set temp3 = radishGoblinLastContactY_R[temp1]
           lda temp1
           asl
           tax
@@ -425,7 +425,7 @@ CheckBounceState:
           lda radishGoblinLastContactY_R,x
           sta temp3
 
-          ;; if temp2 < temp3 then goto ClearStateRadishGoblinBounce
+          ;; if temp2 < temp3 then jmp ClearStateRadishGoblinBounce
           lda temp2
           cmp temp3
           bcs CalculateDistanceFromContact
@@ -433,7 +433,7 @@ CheckBounceState:
 CalculateDistanceFromContact:
           
 
-          ;; let temp4 = temp2 - temp3
+          ;; Set temp4 = temp2 - temp3
           lda temp2
           sec
           sbc temp3
@@ -483,7 +483,7 @@ CalcBounceRadishGoblin .proc
           lda # 0
           sta temp3
 
-          ;; if temp1 >= 2 then goto CheckStickRadishGoblin
+          ;; if temp1 >= 2 then jmp CheckStickRadishGoblin
           lda temp1
           cmp # 2
 
@@ -578,14 +578,14 @@ ClearCheckRadishGoblinBounce .proc
 
           rts
 
-          ;; let temp2 = playerY[temp1]
+          ;; Set temp2 = playerY[temp1]
           lda temp1
           asl
           tax
           lda playerY,x
           sta temp2
 
-          ;; let temp3 = radishGoblinLastContactY_R[temp1]
+          ;; Set temp3 = radishGoblinLastContactY_R[temp1]
           lda temp1
           asl
           tax
@@ -597,7 +597,7 @@ ClearCheckRadishGoblinBounce .proc
           lda radishGoblinLastContactY_R,x
           sta temp3
 
-          ;; if temp2 < temp3 then goto ClearState2RadishGoblinBounce
+          ;; if temp2 < temp3 then jmp ClearState2RadishGoblinBounce
           lda temp2
           cmp temp3
           bcs CalculateDistanceFromContact2
@@ -605,7 +605,7 @@ ClearCheckRadishGoblinBounce .proc
 CalculateDistanceFromContact2:
           
 
-          ;; let temp4 = temp2 - temp3
+          ;; Set temp4 = temp2 - temp3
           lda temp2
           sec
           sbc temp3

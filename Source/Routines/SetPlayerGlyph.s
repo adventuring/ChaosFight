@@ -63,7 +63,7 @@ SetPlayerGlyph .proc
 UseLookupMode:
 
           ;; Look up glyph index from table (overwrites temp1)
-          ;; let temp1 = GlyphLookupTable[temp4]         
+          ;; Set temp1 = GlyphLookupTable[temp4]
           lda temp4
           asl
           tax
@@ -76,8 +76,7 @@ SetPlayerGlyphDirectMode .proc
 
           ;; Calculate offset into SetFontNumbers (16 bytes per glyph)
           ;; Returns: Far (return otherbank)
-          ;; let temp2 = temp1 * 16
-
+          ;; Set temp2 = temp1 * 16
           ;; Set player pointer and height based on player index
 
           ;; Calculate base address: SetFontNumbers + temp2 (shared calculation)
@@ -95,7 +94,7 @@ SetPlayerGlyphDirectMode .proc
 
             sta temp5
 
-          ;; Store to appropriate player pointer based on temp3 (using on...goto for efficiency)
+          ;; Store to appropriate player pointer based on temp3 (using on...jmp for efficiency)
 
           ;; Fall through to P5 if temp3 > 4
           jmp SetPlayerGlyphP0

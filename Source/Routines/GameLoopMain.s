@@ -58,7 +58,7 @@ CheckPlayer2Enhanced:
           cmp # 0
           bne ReadEnhancedButtonsDone
 
-          ;; let temp1 = temp1 | 2
+          ;; Set temp1 = temp1 | 2
           lda temp1
           ora # 2
           sta temp1
@@ -210,7 +210,7 @@ AfterAttackCooldownsUpdated:
 
           ;; Issue #1177: Update Frooty charge system every frame
           ;; TODO: #1254 for currentPlayer = 0 to 3
-          ;; if currentPlayer >= 2 then goto FrootyChargeQuadtariCheck
+          ;; if currentPlayer >= 2 then jmp FrootyChargeQuadtariCheck
           lda currentPlayer
           cmp 2
 

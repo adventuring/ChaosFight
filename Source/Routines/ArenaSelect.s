@@ -106,7 +106,7 @@ CheckJoy1Fire:
 CheckQuadtariFire:
 
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
-          if (controllerStatus & SetQuadtariDetected) <> 0 then goto CheckQuadtariFireHold
+          if (controllerStatus & SetQuadtariDetected) <> 0 then jmp CheckQuadtariFireHold
           lda controllerStatus
           and # SetQuadtariDetected
           beq CheckFireHoldTimer
@@ -116,7 +116,7 @@ CheckQuadtariFire:
 CheckFireHoldTimer:
 
           ;; If fire button held, increment timer
-          ;; if temp1 then goto IncrementFireHold
+          ;; if temp1 then jmp IncrementFireHold
           lda temp1
           beq FireHoldCheckDone
 
@@ -137,7 +137,7 @@ IncrementFireHold:
 
           lda temp2
           sta fireHoldTimer_W
-          ;; if temp2 >= FramesPerSecond then goto ReturnToCharacterSelect
+          ;; if temp2 >= FramesPerSecond then jmp ReturnToCharacterSelect
           lda temp2
           cmp # FramesPerSecond
 
@@ -148,7 +148,7 @@ IncrementFireHold:
 ArenaSelectNavigation:
 
           ;; Handle LEFT/RIGHT navigation for arena selection
-          ;; if joy0left then goto ArenaSelectLeft
+          ;; if joy0left then jmp ArenaSelectLeft
           lda joy0left
           beq ArenaSelectDoneLeft
 
@@ -163,14 +163,14 @@ ArenaSelectLeft .proc
           lda selectedArena_R
           cmp # 0
           bne CheckRandomArenaLeft
-          ;; let selectedArena_W = RandomArena : goto ArenaSelectLeftSound
+          ;; Set selectedArena_W = RandomArena jmp ArenaSelectLeftSound
 CheckRandomArenaLeft:
 
           lda selectedArena_R
           cmp # RandomArena
           bne DecrementArena
 
-          ;; let selectedArena_W = MaxArenaID : goto ArenaSelectLeftSound
+          ;; Set selectedArena_W = MaxArenaID jmp ArenaSelectLeftSound
           lda # MaxArenaID
           sta selectedArena_W
           jmp ArenaSelectLeftSound
@@ -203,7 +203,7 @@ ArenaSelectLeftSound .proc
 
 AfterPlaySoundEffectLeft:
 
-          ;; if joy0right then goto ArenaSelectRight
+          ;; if joy0right then jmp ArenaSelectRight
           lda joy0right
           beq ArenaSelectDoneLeftSecond
 
@@ -220,7 +220,7 @@ ArenaSelectRight .proc
           cmp # MaxArenaID
           bne CheckRandomArenaRight
 
-          ;; let selectedArena_W = RandomArena : goto ArenaSelectRightSound
+          ;; Set selectedArena_W = RandomArena jmp ArenaSelectRightSound
           lda # RandomArena
           sta selectedArena_W
           jmp ArenaSelectRightSound
@@ -231,7 +231,7 @@ CheckRandomArenaRight:
           cmp # RandomArena
           bne IncrementArena
 
-          ;; let selectedArena_W = 0 : goto ArenaSelectRightSound
+          ;; Set selectedArena_W = 0 jmp ArenaSelectRightSound
           lda # 0
           sta selectedArena_W
           jmp ArenaSelectRightSound
@@ -457,7 +457,7 @@ AfterSetGlyphRandom2:
 
 DisplayDone
           ;; Handle fire button press (confirm selection, start game)
-          ;; if joy0fire then goto ArenaSelectConfirm
+          ;; if joy0fire then jmp ArenaSelectConfirm
           lda joy0fire
           beq ArenaSelectDoneConfirm
           jmp ArenaSelectConfirm
@@ -639,9 +639,9 @@ ArenaSelectDrawCharacters .proc
 
           ;; Playfield defined by ArenaSelect data; no per-frame register writes
           ;; Draw Player 1 character (top left) if selected
-          ;; if playerCharacter[0] = NoCharacter then goto ArenaSelectDoneDrawP0
+          ;; if playerCharacter[0] = NoCharacter then jmp ArenaSelectDoneDrawP0
 
-          ;; if playerCharacter[0] = CPUCharacter then goto ArenaSelectDoneDrawP0
+          ;; if playerCharacter[0] = CPUCharacter then jmp ArenaSelectDoneDrawP0
           lda # 0
           asl
           tax
@@ -651,7 +651,7 @@ ArenaSelectDrawCharacters .proc
           jmp ArenaSelectDoneDrawP0
 CheckRandomCharacterP0:
 
-          ;; if playerCharacter[0] = RandomCharacter then goto ArenaSelectDoneDrawP0
+          ;; if playerCharacter[0] = RandomCharacter then jmp ArenaSelectDoneDrawP0
           lda # 0
           asl
           tax
@@ -704,9 +704,9 @@ ArenaSelectDoneDrawP0
           ;; Constraints: Must be colocated with
           ;; ArenaSelectDrawCharacters
           ;; Draw Player 2 character (top right) if selected
-          ;; if playerCharacter[1] = NoCharacter then goto ArenaSelectDoneDrawP1
+          ;; if playerCharacter[1] = NoCharacter then jmp ArenaSelectDoneDrawP1
 
-          ;; if playerCharacter[1] = CPUCharacter then goto ArenaSelectDoneDrawP1
+          ;; if playerCharacter[1] = CPUCharacter then jmp ArenaSelectDoneDrawP1
           lda # 1
           asl
           tax
@@ -716,7 +716,7 @@ ArenaSelectDoneDrawP0
           jmp ArenaSelectDoneDrawP1
 CheckRandomCharacterP1:
 
-          ;; if playerCharacter[1] = RandomCharacter then goto ArenaSelectDoneDrawP1
+          ;; if playerCharacter[1] = RandomCharacter then jmp ArenaSelectDoneDrawP1
           lda # 1
           asl
           tax
@@ -785,9 +785,9 @@ ArenaSelectDoneDrawP1
 AfterSelectHideLowerPlayerPreviews:
 
 
-          ;; if playerCharacter[2] = NoCharacter then goto ArenaSelectDoneDrawP2
+          ;; if playerCharacter[2] = NoCharacter then jmp ArenaSelectDoneDrawP2
 
-          ;; if playerCharacter[2] = CPUCharacter then goto ArenaSelectDoneDrawP2
+          ;; if playerCharacter[2] = CPUCharacter then jmp ArenaSelectDoneDrawP2
           lda # 2
           asl
           tax
@@ -797,7 +797,7 @@ AfterSelectHideLowerPlayerPreviews:
           jmp ArenaSelectDoneDrawP2
 CheckRandomCharacterP2:
 
-          ;; if playerCharacter[2] = RandomCharacter then goto ArenaSelectDoneDrawP2
+          ;; if playerCharacter[2] = RandomCharacter then jmp ArenaSelectDoneDrawP2
           lda # 2
           asl
           tax
@@ -861,9 +861,9 @@ ArenaSelectDoneDrawP2
 CheckPlayer3Character:
 
 
-          ;; if playerCharacter[3] = NoCharacter then goto ArenaSelectDoneDrawP23
+          ;; if playerCharacter[3] = NoCharacter then jmp ArenaSelectDoneDrawP23
 
-          ;; if playerCharacter[3] = CPUCharacter then goto ArenaSelectDoneDrawP23
+          ;; if playerCharacter[3] = CPUCharacter then jmp ArenaSelectDoneDrawP23
           lda # 3
           asl
           tax
@@ -873,7 +873,7 @@ CheckPlayer3Character:
           jmp ArenaSelectDoneDrawP23
 CheckRandomCharacterP3:
 
-          ;; if playerCharacter[3] = RandomCharacter then goto ArenaSelectDoneDrawP23
+          ;; if playerCharacter[3] = RandomCharacter then jmp ArenaSelectDoneDrawP23
           lda # 3
           asl
           tax

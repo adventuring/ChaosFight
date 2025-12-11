@@ -63,7 +63,7 @@ BeginWinnerAnnouncement .proc
           lda temp1
           cmp # 0
           bne CheckPlayer1Character
-          ;; let temp2 = playerCharacter[0]         
+          ;; Set temp2 = playerCharacter[0]
           lda # 0
           asl
           tax
@@ -77,7 +77,7 @@ CheckPlayer1Character:
           cmp # 1
           bne CheckPlayer2Character
 
-          ;; let temp2 = playerCharacter[1]         
+          ;; Set temp2 = playerCharacter[1]
           lda # 1
           asl
           tax
@@ -91,7 +91,7 @@ CheckPlayer2Character:
           cmp # 2
           bne CheckPlayer3Character
 
-          ;; let temp2 = playerCharacter[2]         
+          ;; Set temp2 = playerCharacter[2]
           lda # 2
           asl
           tax
@@ -105,7 +105,7 @@ CheckPlayer3Character:
           cmp # 3
           bne LookupThemeSong
 
-          ;; let temp2 = playerCharacter[3]         
+          ;; Set temp2 = playerCharacter[3]
           lda # 3
           asl
           tax
@@ -117,7 +117,7 @@ LookupThemeSong:
           ;; Look up full song ID from mapping table (table contains
           ;; song ID consta
 
-          ;; let temp1 = CharacterThemeSongIndices[temp2]         
+          ;; Set temp1 = CharacterThemeSongIndices[temp2]
           lda temp2
           asl
           tax

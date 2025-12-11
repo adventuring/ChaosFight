@@ -106,7 +106,7 @@ StartMusic .proc
 
           ;; Route to correct bank based on song ID
 
-          ;; If temp1 < Bank0MinSongID, then goto LoadSongFromBank15
+          ;; If temp1 < Bank0MinSongID, then jmp LoadSongFromBank15
           lda temp1
           cmp Bank0MinSongID
           bcs LoadSongFromBank1
@@ -439,7 +439,7 @@ CalcElapsedFrames .proc
 
 
           ;; Check if in attack phase (first NoteAttackFrames frames)
-          ;; If temp4 < NoteAttackFrames, then ApplyAttackEnvelope
+          ;; If temp4 < NoteAttackFrames,, then ApplyAttackEnvelope
           lda temp4
           cmp # NoteAttackFrames
           bcs CheckDecayPhase
@@ -447,7 +447,7 @@ CalcElapsedFrames .proc
 CheckDecayPhase:
 
           ;; Check if in decay phase (last NoteDecayFrames frames)
-          ;; If temp3 <= NoteDecayFrames, then ApplyDecayEnvelope
+          ;; If temp3 <= NoteDecayFrames,, then ApplyDecayEnvelope
           lda temp3
           sec
           sbc NoteDecayFrames
@@ -580,8 +580,7 @@ ApplyDecayEnvelope .proc
           sta temp6
 
 
-          ;; let temp6 = temp6 + temp3
-
+          ;; Set temp6 = temp6 + temp3
           ;; Check for wraparound: clamp to 0 if negative
 
           dec temp6

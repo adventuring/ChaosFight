@@ -43,7 +43,7 @@ SetPlayerCount:
 SelectDrawScreenLoop .proc
           jsr SelectRenderPlayerPreview
           inc temp1
-          ;; if temp1 < temp6 then goto SelectDrawScreenLoop
+          ;; if temp1 < temp6 then jmp SelectDrawScreenLoop
           lda temp1
           cmp temp6
           bcs SelectDrawScreenDone
@@ -132,13 +132,13 @@ AfterGetPlayerLockedRender:
 PlayerPreviewSetPosition
           ;; Returns: Far (return otherbank)
           ;; Position player preview sprites in the four select quadrants
-          ;; let temp2 = SelectPreviewX[temp1]
+          ;; Set temp2 = SelectPreviewX[temp1]
           lda temp1
           asl
           tax
           lda SelectPreviewX,x
           sta temp2
-          ;; let temp3 = SelectPreviewY[temp1]
+          ;; Set temp3 = SelectPreviewY[temp1]
           lda temp1
           asl
           tax
@@ -156,7 +156,7 @@ SelectApplyPreviewPosition
           ;; Input: temp1 = player index, temp2 = X position, temp3 = y position
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from SelectRenderPlayerPreview, so use return thisbank
-          ;; Optimized: Use on...goto jump table for O(1) dispatch
+          ;; Optimized: Use on...jmp jump table for O(1) dispatch
           jmp SelectApplyPreviewPositionP0
 SelectApplyPreviewPositionP0
           lda temp2
@@ -198,13 +198,13 @@ RenderPlayerPreview .proc
           ;; Returns: Far (return otherbank)
           lda temp1
           sta currentPlayer
-          ;; let currentCharacter = playerCharacter[currentPlayer]
+          ;; Set currentCharacter = playerCharacter[currentPlayer]
           lda currentPlayer
           asl
           tax
           lda playerCharacter,x
           sta currentCharacter
-          ;; if currentCharacter >= RandomCharacter then goto RenderPlayerPreviewDefault
+          ;; if currentCharacter >= RandomCharacter then jmp RenderPlayerPreviewDefault
           lda currentCharacter
           cmp RandomCharacter
 
@@ -213,7 +213,7 @@ RenderPlayerPreview .proc
           jmp RenderPlayerPreviewDefault
 
 GetAnimationFrame:
-          ;; let temp4 = characterSelectPlayerAnimationFrame_R[currentPlayer]
+          ;; Set temp4 = characterSelectPlayerAnimationFrame_R[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -265,7 +265,7 @@ RenderPlayerPreviewDefault
           jmp BS_jsr
 AfterLoadCharacterSpritePreview:
 
-          ;; let temp2 = SelectPlayerColorNormal[currentPlayer]         
+          ;; Set temp2 = SelectPlayerColorNormal[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -283,7 +283,7 @@ SelectApplyPlayerColor .proc
           ;; Input: currentPlayer selects target register, temp2 = color value
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from SelectSetPlayerColorUnlocked/Handicap, so use return thisbank
-          ;; Optimized: Use on...goto jump table for O(1) dispatch
+          ;; Optimized: Use on...jmp jump table for O(1) dispatch
           jmp SelectApplyPlayerColorP0
 .pend
 
@@ -326,7 +326,7 @@ SelectSetPlayerColorHandicap .proc
           ;; Override sprite color to indicate handicap lock (dim player color)
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from SelectRenderPlayerPreview, so use return thisbank
-          ;; let temp2 = SelectPlayerColorHandicap[currentPlayer]         
+          ;; Set temp2 = SelectPlayerColorHandicap[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -340,7 +340,7 @@ SelectSetPlayerColorHandicap .proc
           ;; Optimized: Compact inline version to reduce code size
           lda # 2
           sta temp6
-          ;; if controllerStatus & SetQuadtariDetected then let temp6 = 4
+          ;; If controllerStatus & SetQuadtariDetected, set temp6 = 4
           lda controllerStatus
           and # SetQuadtariDetected
           beq SetPlayerCountCheck
@@ -363,15 +363,15 @@ SelectUpdateAnimationLoop
           jmp BS_jsr
 AfterGetPlayerLockedAnimation:
 
-          ;; if temp2 then goto SelectUpdateAnimationNext
+          ;; if temp2 then jmp SelectUpdateAnimationNext
           lda temp2
           beq UpdatePlayerAnimation
           jmp SelectUpdateAnimationNext
 UpdatePlayerAnimation:
-          ;; if playerCharacter[temp1] >= RandomCharacter then goto SelectUpdateAnimationNext
+          ;; if playerCharacter[temp1] >= RandomCharacter then jmp SelectUpdateAnimationNext
           jsr SelectUpdatePlayerAnimation
 SelectUpdateAnimationNext
-          ;; if temp1 < temp6 then goto SelectUpdateAnimationLoop
+          ;; if temp1 < temp6 then jmp SelectUpdateAnimationLoop
           lda temp1
           cmp temp6
           bcs SelectUpdateAnimationsDone
@@ -399,7 +399,7 @@ SelectUpdatePlayerAnimation
           ;;
           ;; Called Routines: None
           ;; Constraints: Admin-only usage sharing SCRAM with game mode
-          ;; let temp2 = characterSelectPlayerAnimationTimer_R[temp1] + 1
+          ;; Set temp2 = characterSelectPlayerAnimationTimer_R[temp1] + 1
           lda temp1
           asl
           tax
@@ -416,7 +416,7 @@ SelectUpdatePlayerAnimation
           tax
           lda 0
           sta characterSelectPlayerAnimationTimer_W,x
-          ;; let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
+          ;; Set temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
           lda temp1
           asl
           tax
@@ -426,7 +426,7 @@ SelectUpdatePlayerAnimation
           ;; Returns: Far (return otherbank)
           ;; Re-detect controllers on Select/Pause/ColorB&W toggle
           ;; Returns: Far (return otherbank)
-          ;; if switchselect then goto CharacterSelectDoRescan
+          ;; if switchselect then jmp CharacterSelectDoRescan
           lda INPT4
           beq CheckColorBWToggle
           jmp CharacterSelectDoRescan

@@ -195,9 +195,9 @@ AfterGuardTimersUpdated:
 
           ;; Update attack cooldown timers (in Bank 12)
           ;; Cross-bank call to UpdateAttackCooldowns in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterAttackCooldownsUpdated-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterAttackCooldownsUpdated-1)
           pha
           lda # >(UpdateAttackCooldowns-1)
           pha
@@ -205,7 +205,7 @@ AfterGuardTimersUpdated:
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterAttackCooldownsUpdated:
 
 
           ;; Issue #1177: Update Frooty charge system every frame

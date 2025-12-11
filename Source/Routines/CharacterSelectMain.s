@@ -503,18 +503,18 @@ HCSC_CycleDone
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSetPlayerLocked:
 
 
           ;; Play navigation sound
 
-          lda SoundMenuNavigate
+          lda # SoundMenuNavigate
           sta temp1
 
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterPlaySoundEffectNav-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlaySoundEffectNav-1)
           pha
           lda # >(PlaySoundEffect-1)
           pha
@@ -522,7 +522,7 @@ return_point:
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterPlaySoundEffectNav:
 
 
           jsr BS_return
@@ -535,9 +535,9 @@ CharacterSelectInputEntry .proc
 
 
           ;; Cross-bank call to CharacterSelectCheckControllerRescan in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterControllerRescan-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterControllerRescan-1)
           pha
           lda # >(CharacterSelectCheckControllerRescan-1)
           pha
@@ -545,7 +545,7 @@ CharacterSelectInputEntry .proc
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterControllerRescan:
 
 
 
@@ -735,7 +735,7 @@ CharacterSelectInputComplete
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterGetPlayerLockedRender:
 
 
           ;; Draw selection screen
@@ -743,9 +743,9 @@ return_point:
           ;; Draw character selection screen
 
           ;; Cross-bank call to SelectDrawScreen in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSelectDrawScreen-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSelectDrawScreen-1)
           pha
           lda # >(SelectDrawScreen-1)
           pha
@@ -753,7 +753,7 @@ return_point:
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterSelectDrawScreen:
 
 
           jsr BS_return
@@ -876,16 +876,16 @@ CharacterSelectCheckReady .proc
           pha
           ldx # 5
           jmp BS_jsr
-return_point: : if !temp2 then goto CharacterSelectReadyDone
+AfterGetPlayerLockedP0: : if !temp2 then goto CharacterSelectReadyDone
 
           ;; P2 not locked, check if on CPU
 
           ;; ;;           ;; let temp1 = 1 : gosub GetPlayerLocked bank6
-          lda 1
+          lda # 1
           sta temp1
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerLockedP1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerLockedP1-1)
           pha
           lda # >(GetPlayerLocked-1)
           pha
@@ -893,7 +893,7 @@ return_point: : if !temp2 then goto CharacterSelectReadyDone
           pha
           ldx # 5
           jmp BS_jsr
-return_point: : if temp2 then goto CharacterSelectFinish
+AfterGetPlayerLockedP1: : if temp2 then goto CharacterSelectFinish
 
 lda temp2
 
@@ -1019,7 +1019,7 @@ CharacterSelectReadyDone
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterUpdateSoundEffect:
 
 
           jsr BS_return
@@ -1101,7 +1101,7 @@ UpdateSoundEffectsReturn:
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterChangeGameMode:
 
 
           rts

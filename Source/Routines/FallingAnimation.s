@@ -63,7 +63,7 @@ MovePlayer1:
           tax
           lda playerCharacter,x
           cmp # NoCharacter
-          beq DonePlayer1Move
+          beq DonePlayer1MoveLabel
           ;; targetY = target Y (24)
           lda # 0
           sta temp1

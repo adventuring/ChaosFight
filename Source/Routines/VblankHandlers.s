@@ -1301,7 +1301,7 @@ PlayWinnerAnnouncementMusic:
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterPlayMusicWinnerAnnouncement:
 
 
 .pend

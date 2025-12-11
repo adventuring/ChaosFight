@@ -947,7 +947,7 @@ CharacterSelectQuadtariReady .proc
           pha
                     ldx # 5
           jmp BS_jsr
-return_point:
+AfterGetPlayerLockedQuadtariReady:
 
 
           ;; if temp2 then goto CharacterSelectQuadtariReadyIncrement

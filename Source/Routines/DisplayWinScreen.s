@@ -69,14 +69,14 @@ DisplayWinScreen .proc
           sta PF2pointer+1
 
           ;; Winner screen always uses color mode
-          jsr DWS_LoadColorColors
+          jsr LoadColorColorsWinScreen
 
           ;; Get players remaining count (SCRAM read)
           lda playersRemaining_R
           sta temp1
 
           ;; Get winner index (already set by FindWinner, SCRAM read)
-          ;; Read after DWS_GetBWMode to avoid temp2 conflict
+          ;; Read after GetBWModeWinScreen to avoid temp2 conflict
           lda winnerPlayerIndex_R
           sta temp2
 
@@ -122,12 +122,12 @@ DWS_RankLoop .proc
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
-          ;; DWS_UpdateSecond, DWS_CheckThird, DWS_RankNext
+          ;; UpdateSecondPlace, CheckThirdPlace, RankNextWinScreen
           ;; Skip if this is the winner
           lda temp1
           cmp temp2
           bne GetEliminationOrder
-          ;; TODO: #1309 DWS_RankNext
+          jmp RankNextWinScreen
 GetEliminationOrder:
 
 
@@ -147,7 +147,7 @@ GetEliminationOrder:
           beq DWS_CheckThird
           jmp DWS_UpdateSecond
 
-DWS_UpdateSecond
+DWS_UpdateSecond:
           ;; Move current 2nd to 3rd, then update 2nd
           ;; Returns: Far (return otherbank)
           ;;
@@ -170,34 +170,7 @@ DWS_UpdateSecond
           sta temp5
           lda temp1
           sta temp3
-          jmp DWS_RankNext
-
-DWS_UpdateSecond .proc
-          ;; Move current 2nd to 3rd, then update 2nd
-          ;; Returns: Far (return otherbank)
-          ;;
-          ;; Input: temp3, temp5, winScreenCandidateOrder,
-          ;; temp1 (from DWS_RankLoop)
-          ;;
-          ;; Output: temp4, winScreenThirdPlaceOrder updated,
-          ;; temp3, temp5 updated
-          ;;
-          ;; Mutates: temp4, winScreenThirdPlaceOrder,
-          ;; temp3, temp5
-          ;;
-          ;; Called Routines: None
-          ;; Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
-          lda temp5
-          sta winScreenThirdPlaceOrder
-          lda temp3
-          sta temp4
-          lda winScreenCandidateOrder
-          sta temp5
-          lda temp1
-          sta temp3
-          jmp DWS_RankNext
-
-.pend
+          jmp RankNextWinScreen
 
 DWS_CheckThird .proc
           ;; Check if this is 3rd place (higher order than current 3rd,
@@ -226,9 +199,7 @@ DWS_CheckThird .proc
           lda temp1
           sta temp4
 DWS_CheckThirdDone:
-          rts
-
-.pend
+          jmp RankNextWinScreen
 
 DWS_RankNext .proc
           ;; Ranking loop continuation
@@ -263,7 +234,7 @@ PositionCharacters:
           lda temp1
           cmp # 1
           bne CheckTwoPlayers
-          jmp DWS_Position1Player
+          jmp Position1PlayerWinScreen
 CheckTwoPlayers:
 
 
@@ -274,13 +245,13 @@ CheckTwoPlayers:
 PositionThreePlayers:
 
 
-          jmp DWS_Position3Players
+          jmp Position3PlayersWinScreen
 
           jsr BS_return
 
 .pend
 
-DWS_LoadIdleSprite .proc
+LoadIdleSpriteWinScreen .proc
 
           ;; Helper: Set temp2=0, temp3=0 and load sprite (saves bytes by eliminating repeated assignments)
           ;; Returns: Near (return thisbank)
@@ -290,9 +261,9 @@ DWS_LoadIdleSprite .proc
           lda # 0
           sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterLoadCharacterSpriteWinScreen-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadCharacterSpriteWinScreen-1)
           pha
           lda # >(LoadCharacterSprite-1)
           pha
@@ -307,7 +278,7 @@ AfterLoadCharacterSpriteWinScreen:
 
 .pend
 
-DWS_Position1Player .proc
+Position1PlayerWinScreen .proc
           ;; 1 player: Winner centered on podium
           ;; Returns: Far (return otherbank)
           ;;
@@ -345,13 +316,13 @@ DWS_Position1Player .proc
           lda # 0
           sta currentPlayer
           ;; Player 0
-          jsr DWS_LoadIdleSprite
+          jsr LoadIdleSpriteWinScreen
 
-          jsr DWS_HidePlayers123
+          jsr HidePlayers123WinScreen
 
           jsr BS_return
 
-DWS_Position2Players
+Position2PlayersWinScreen
           ;; 2 players: Winner centered, runner-up left
           ;; Returns: Far (return otherbank)
           ;;
@@ -390,13 +361,13 @@ DWS_Position2Players
           sta currentCharacter
           lda # 0
           sta currentPlayer
-          jsr DWS_LoadIdleSprite
+          jsr LoadIdleSpriteWinScreen
 
           ;; Runner-up (P1) - only if valid
           lda temp3
           cmp # 255
           bne PositionRunnerUp
-          jmp DWS_Hide2Player
+          jmp Hide2PlayerWinScreen
 PositionRunnerUp:
 
 
@@ -418,17 +389,17 @@ PositionRunnerUp:
           sta currentCharacter
           lda # 1
           sta currentPlayer
-          jsr DWS_LoadIdleSprite
+          jsr LoadIdleSpriteWinScreen
 
-          jmp DWS_Hide2PlayerDone
+          jmp Hide2PlayerWinScreenDone
 
 .pend
 
-DWS_Hide2Player .proc
+Hide2PlayerWinScreen .proc
           ;; Hide Player 2 (no runner-up)
           ;; Returns: Far (return otherbank)
           ;;
-          ;; Input: None (called from DWS_Position2Players)
+          ;; Input: None (called from Position2PlayersWinScreen)
           ;;
           ;; Output: playerX[1] set to 0
           ;;
@@ -437,14 +408,14 @@ DWS_Hide2Player .proc
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
-          ;; DWS_Position2Players, DWS_Hide2PlayerDone
+          ;; Position2PlayersWinScreen, Hide2PlayerWinScreenDone
           lda 1
           asl
           tax
           lda 0
           sta playerX,x
 
-DWS_Hide2PlayerDone
+Hide2PlayerWinScreenDone
           ;; Hide Player 2 complete (label only)
           ;; Returns: Far (return otherbank)
           ;;
@@ -457,11 +428,11 @@ DWS_Hide2PlayerDone
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen
-          jsr DWS_HidePlayers123
+          jsr HidePlayers123WinScreen
 
           jsr BS_return
 
-DWS_Position3Players
+Position3PlayersWinScreen
           ;; 3+ players: Winner centered high, 2nd left, 3rd right
           ;; Returns: Far (return otherbank)
           ;;
@@ -480,8 +451,8 @@ DWS_Position3Players
           ;; character sprites
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
-          ;; DWS_Hide3Player2, DWS_Hide3Player2Done,
-          ;; DWS_Hide3Player3, DWS_Hide3Player3Done
+          ;; Hide3Player2WinScreen, Hide3Player2WinScreenDone,
+          ;; Hide3Player3WinScreen, Hide3Player3WinScreenDone
           ;; Winner (P0) - higher platform
           lda # 0
           asl
@@ -502,7 +473,7 @@ DWS_Position3Players
           sta currentCharacter
           lda # 0
           sta currentPlayer
-          jsr DWS_LoadIdleSprite
+          jsr LoadIdleSpriteWinScreen
 
           ;; 2nd place (P1) - left platform
           lda temp3
@@ -530,15 +501,15 @@ PositionSecondPlace:
           sta currentCharacter
           lda # 1
           sta currentPlayer
-          jsr DWS_LoadIdleSprite
+          jsr LoadIdleSpriteWinScreen
 
-          jmp DWS_Hide3Player2Done
+          jmp Hide3Player2WinScreenDone
 
-DWS_Hide3Player2:
+Hide3Player2WinScreen:
           ;; Hide Player 2 (no 2nd place)
           ;; Returns: Far (return otherbank)
           ;;
-          ;; Input: None (called from DWS_Position3Players)
+          ;; Input: None (called from Position3PlayersWinScreen)
           ;;
           ;; Output: playerX[1] set to 0
           ;;
@@ -547,7 +518,7 @@ DWS_Hide3Player2:
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
-          ;; DWS_Position3Players, DWS_Hide3Player2Done
+          ;; Position3PlayersWinScreen, Hide3Player2WinScreenDone
           lda # 1
           asl
           tax
@@ -556,7 +527,7 @@ DWS_Hide3Player2:
 
           jsr BS_return
 
-DWS_Hide3Player2Done:
+Hide3Player2WinScreenDone:
           ;; Hide Player 2 complete (label only)
           ;; Returns: Far (return otherbank)
           ;;
@@ -574,7 +545,7 @@ DWS_Hide3Player2Done:
           lda temp4
           cmp # 255
           bne PositionThirdPlace
-          jmp DWS_Hide3Player3
+          jmp Hide3Player3WinScreen
 PositionThirdPlace:
 
 
@@ -596,7 +567,7 @@ PositionThirdPlace:
           sta currentCharacter
           lda # 2
           sta currentPlayer
-          jsr DWS_LoadIdleSprite
+          jsr LoadIdleSpriteWinScreen
 
           jmp DWS_Hide3Player3Done
 
@@ -604,7 +575,7 @@ DWS_Hide3Player3:
           ;; Hide Player 3 (no 3rd place)
           ;; Returns: Far (return otherbank)
           ;;
-          ;; Input: None (called from DWS_Position3Players)
+          ;; Input: None (called from Position3PlayersWinScreen)
           ;;
           ;; Output: playerX[2] set to 0
           ;;
@@ -613,7 +584,7 @@ DWS_Hide3Player3:
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
-          ;; DWS_Position3Players, DWS_Hide3Player3Done
+          ;; Position3PlayersWinScreen, Hide3Player3WinScreenDone
           lda # 2
           asl
           tax
@@ -668,7 +639,7 @@ DWS_HidePlayers123 .proc
 
 .pend
 
-DWS_GetBWMode .proc
+GetBWModeWinScreen .proc
 
           ;; Get Color/BW mode state for arena loading
           ;; Returns: Far (return otherbank)
@@ -687,15 +658,15 @@ DWS_GetBWMode .proc
           sta temp2
           ;; if temp2 then let temp2 = 1
           lda temp2
-          beq DWS_GetBWModeDone
+          beq GetBWModeWinScreenDone
           lda # 1
           sta temp2
-DWS_GetBWModeDone:
+GetBWModeWinScreenDone:
           jsr BS_return
 
 .pend
 
-DWS_LoadColorColors .proc
+LoadColorColorsWinScreen .proc
 
           ;; TODO: #1309 ; rem Load color colors (gold gradient)
           ;; TODO: #1309 ; rem Input: WinnerScreenColorsColor table

@@ -140,7 +140,7 @@ CheckPlayerHealth:
           ;; playerX+PlayerSpriteHalfWidth*2
           ;; Player top/bottom: playerY to playerY+PlayerSpriteHeight
           ;; Missile left edge >= player right edge, no collision
-          ;; if temp3 >= playerX[temp6] + PlayerSpriteHalfWidth then CRTSMC_DoneSelf
+          ;; if temp3 >= playerX[temp6] + PlayerSpriteHalfWidth then DoneSelfStretchCheck
           lda temp6
           asl
           tax
@@ -152,11 +152,11 @@ CheckPlayerHealth:
           sec
           sbc temp4
           bcc CheckMissileRightEdge
-          jmp CRTSMC_DoneSelf
+          jmp DoneSelfStretchCheck
 
 CheckMissileRightEdge:
           ;; Missile right edge <= player left edge, no collision
-          ;; if temp3 + 1 <= playerX[temp6] then CRTSMC_DoneSelf
+          ;; if temp3 + 1 <= playerX[temp6] then DoneSelfStretchCheck
           lda temp3
           clc
           adc # 1
@@ -168,11 +168,11 @@ CheckMissileRightEdge:
           sec
           sbc temp4
           bcc CheckMissileTopEdge
-          jmp CRTSMC_DoneSelf
+          jmp DoneSelfStretchCheck
 
 CheckMissileTopEdge:
           ;; Missile top edge >= player bottom edge, no collision
-          ;; if temp4 >= playerY[temp6] + PlayerSpriteHeight then CRTSMC_DoneSelf
+          ;; if temp4 >= playerY[temp6] + PlayerSpriteHeight then DoneSelfStretchCheck
           lda temp6
           asl
           tax
@@ -184,11 +184,11 @@ CheckMissileTopEdge:
           sec
           sbc temp5
           bcc CheckMissileBottomEdge
-          jmp CRTSMC_DoneSelf
+          jmp DoneSelfStretchCheck
 
 CheckMissileBottomEdge:
           ;; Missile bottom edge <= player top edge, no collision
-          ;; if temp4 + temp2 <= playerY[temp6] then CRTSMC_DoneSelf
+          ;; if temp4 + temp2 <= playerY[temp6] then DoneSelfStretchCheck
           lda temp4
           clc
           adc temp2
@@ -199,48 +199,48 @@ CheckMissileBottomEdge:
           lda playerY,x
           sec
           sbc temp5
-          bcc CRTSMC_CollisionDetected
-          jmp CRTSMC_DoneSelf
+          bcc CollisionDetectedStretchMissile
+          jmp DoneSelfStretchCheck
 
-CRTSMC_CollisionDetected:
+CollisionDetectedStretchMissile:
           ;; Collision detected! Handle stretch missile hit
           lda temp6
           sta temp5
           jsr HandleRoboTitoStretchMissileHit
 
-          jmp CRTSMC_NextPlayer
+          jmp NextPlayerStretchCheck
 
-CRTSMC_DoneSelf:
+DoneSelfStretchCheck:
           inc temp6
-          ;; if temp6 < 4 then CRTSMC_CheckOtherPlayer
+          ;; if temp6 < 4 then CheckOtherPlayerStretchMissile
           lda temp6
           cmp # 4
-          bcs CRTSMC_NextPlayerLoop
+          bcs NextPlayerLoopStretchCheck
 
-          jmp CRTSMC_CheckOtherPlayer
+          jmp CheckOtherPlayerStretchMissile
 
-CRTSMC_NextPlayerLoop:
+NextPlayerLoopStretchCheck:
 
           lda temp6
           cmp # 4
-          bcs CRTSMC_NextPlayerLoopDone
+          bcs NextPlayerLoopStretchCheckDone
 
-          jmp CRTSMC_CheckOtherPlayer
+          jmp CheckOtherPlayerStretchMissile
 
-CRTSMC_NextPlayerLoopDone:
+NextPlayerLoopStretchCheckDone:
 
 
 
 .pend
 
-CRTSMC_NextPlayer .proc
+NextPlayerStretchCheck .proc
           inc temp1
-          ;; if temp1 < 4 then goto CRTSMC_PlayerLoop
+          ;; if temp1 < 4 then goto PlayerLoopStretchMissileCheck
           lda temp1
           cmp # 4
           bcs CheckRoboTitoStretchMissileCollisionsDone
 
-          jmp CRTSMC_PlayerLoop
+          jmp PlayerLoopStretchMissileCheck
 
 CheckRoboTitoStretchMissileCollisionsDone:
 

@@ -31,10 +31,10 @@ ProcessUpAction:
           ;; TODO: #1249 Implement Shamone <-> MethHound form switching
 
           ;; Robo Tito: Stretch (ascend toward ceiling; auto-latch on contact)
-          ;; if playerCharacter[temp1] = CharacterRoboTito then goto PUA_RoboTitoAscend
+          ;; if playerCharacter[temp1] = CharacterRoboTito then goto RoboTitoAscendUpAction
 
           ;; Bernie: Drop (fall through thin floors)
-          ;; if playerCharacter[temp1] = CharacterBernie then goto PUA_BernieFallThrough
+          ;; if playerCharacter[temp1] = CharacterBernie then goto BernieFallThroughUpAction
           lda temp1
           asl
           tax
@@ -42,12 +42,12 @@ ProcessUpAction:
           cmp # CharacterBernie
           bne CheckHarpy
 
-          jmp PUA_BernieFallThrough
+          jmp BernieFallThroughUpAction
 
 CheckHarpy:
 
           ;; Harpy: Flap (fly)
-          ;; if playerCharacter[temp1] = CharacterHarpy then goto PUA_HarpyFlap
+          ;; if playerCharacter[temp1] = CharacterHarpy then goto HarpyFlapUpAction
           lda temp1
           asl
           tax
@@ -55,13 +55,13 @@ CheckHarpy:
           cmp # CharacterHarpy
           bne CheckZoeRyen
 
-          jmp PUA_HarpyFlap
+          jmp HarpyFlapUpAction
 
 CheckZoeRyen:
 
           ;; For all other characters, UP is jump
           ;; Check Zoe Ryen for double-jump capability
-          ;; if playerCharacter[temp1] = CharacterZoeRyen then goto PUA_ZoeJumpCheck
+          ;; if playerCharacter[temp1] = CharacterZoeRyen then goto ZoeJumpCheckUpAction
           lda temp1
           asl
           tax
@@ -69,7 +69,7 @@ CheckZoeRyen:
           cmp # CharacterZoeRyen
           bne StandardJump
 
-          jmp PUA_ZoeJumpCheck
+          jmp ZoeJumpCheckUpAction
 
 StandardJump:
 
@@ -224,7 +224,7 @@ CheckCeilingPixel:
 
 AfterPlayfieldReadRoboTitoAscend:
 
-          ;; if temp1 then goto PUA_RoboTitoLatch
+          ;; if temp1 then goto RoboTitoLatchUpAction
           lda temp1
           beq CheckDownPressed
 

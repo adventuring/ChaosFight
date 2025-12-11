@@ -247,9 +247,9 @@ CheckTwoPlayers:
           lda temp1
           cmp # 2
           bne PositionThreePlayers
-          jmp Position2PlayersWinScreen:
+          jmp Position2PlayersWinScreen
 PositionThreePlayers:
-          jmp Position3PlayersWinScreen:
+          jmp Position3PlayersWinScreen
 
 LoadIdleSpriteWinScreen .proc
 
@@ -322,7 +322,7 @@ Position1PlayerWinScreen .proc
 
           jsr BS_return
 
-Position2PlayersWinScreen::
+Position2PlayersWinScreen:
           ;; 2 players: Winner centered, runner-up left
           ;; Returns: Far (return otherbank)
           ;;
@@ -430,7 +430,9 @@ Hide2PlayerWinScreen:
 
           jmp Hide2PlayerWinScreenDone
 
-Position3PlayersWinScreen:
+.pend
+
+Position3PlayersWinScreen .proc
           ;; 3+ players: Winner centered high, 2nd left, 3rd right
           ;; Returns: Far (return otherbank)
           ;;

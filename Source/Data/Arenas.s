@@ -41,16 +41,13 @@ rem_label_5:
           ;; score/kernel%0
 
 BlankPlayfieldStart
-BlankPlayfield
-
-BlankPlayfield
+BlankPlayfield:
 Arenas_playfield_1:
 data_end_6:
 
 BlankPlayfieldEnd
 
 BlankPlayfieldColorsStart
-BlankPlayfieldColors
 BlankPlayfieldColors:
           .byte 14, 14, 14, 14, 14, 14, 14, 14
 BlankPlayfieldColors_end:
@@ -65,21 +62,18 @@ rem_label_6:
 Arena0Playfield
 Arena0Playfield_playfield:
 data_end_11:
-Arena0Colors
 Arena0Colors:
           .byte $22, $24, $26, $28, $2A, $2C, $2E, $20
 Arena0Colors_end:
 Arena1Playfield
 Arena1Playfield_playfield:
 data_end_13:
-Arena1Colors
 Arena1Colors:
           .byte $94, $94, $96, $94, $96, $94, $94, $92
 Arena1Colors_end:
 Arena2Playfield
 Arena2Playfield_playfield:
 data_end_15:
-Arena2Colors
 Arena2Colors:
           .byte $94, $94, $96, $94, $96, $94, $94, $92
 Arena2Colors_end:
@@ -93,7 +87,6 @@ Arena3Colors_end:
 Arena4Playfield
 Arena4Playfield_playfield:
 data_end_19:
-Arena4Colors
 Arena4Colors:
           .byte $1C, $1C, $1C, $1E, $1E, $1C, $1C, $1C
 Arena4Colors_end:
@@ -108,7 +101,6 @@ Arena6Playfield
           ;; Arena 6: Multi-Platform (multiple small platforms)
 Arena6Playfield_playfield:
 data_end_23:
-Arena6Colors
 Arena6Colors:
           .byte 142, 144, 142, 146, 142, 144, 142, 148
 Arena6Colors_end:
@@ -116,7 +108,6 @@ Arena7Playfield
           ;; Arena 7: The Gauntlet (maze-like walls)
 Arena7Playfield_playfield:
 data_end_25:
-Arena7Colors
 Arena7Colors:
           .byte $F2, $F2, $F2, $F4, $F2, $F4, $F2, $F6
 Arena7Colors_end:
@@ -130,7 +121,6 @@ Arena8Colors_end:
 Arena9Playfield
 Arena9Playfield_playfield:
 data_end_29:
-Arena9Colors
 Arena9Colors:
           .byte 142, 144, 146, 144, 144, 146, 144, 142
 Arena9Colors_end:

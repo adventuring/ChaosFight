@@ -95,26 +95,26 @@ The CPU sees addresses in the range `$F000-$FFFF` (bank switching window). The a
 
 ## Bankswitch Return Semantics (Investigations 2025‑11‑26)
 
-- `return thisbank` compiles to a bare `RTS`. Only routines that are *never*
-  invoked through `gosub ... bankN` may use it. Treat it as a near return.
-- `return otherbank` expands to `JMP BS_return`, which expects the four-byte
-  encoded return sequence pushed by `BS_jsr`. Any cross-bank routine must end
-  with this form or we will corrupt the stack.
+- **Near returns**: Use `rts` for routines that are *never* invoked
+  cross-bank. Only routines called via same-bank `jsr` may use `rts`.
+- **Far returns**: Use `jsr BS_return` (or `jmp BS_return` for tail calls)
+  for cross-bank routines. This expects the four-byte encoded return sequence
+  pushed by `BS_jsr`. Any cross-bank routine must end with this form or we
+  will corrupt the stack.
 - The stack-underflow probe previously showed `MainLoopModePublisherPrelude`,
   `MainLoopModeAuthorPrelude`, `MainLoopModeTitleScreen`, and cousins in
-  `Source/Routines/MainLoop.bas` returning with `return thisbank` even though
-  the dispatcher had just performed `gosub ... bank14`. The resulting `RTS`
-  at `$f:faaf` is exactly where the stack dropped to `$FF`.
-- Remediation completed 2025‑11‑26: all mode handlers now issue
-  `return otherbank`, preventing the bare `RTS` that corrupted the encoded
-  far-return sequence. Rebuilds must still re-check the far-call trampoline at
-  `$f:fa5c` to confirm the stack returns to `$FD` after each trip through the
-  mode table.
-- `PlayMusic` is often tail-called (StartMusic uses `goto PlayMusic bank15`), so
-  any other caller MUST use `gosub ... bankN` to keep the encoded far-return
-  bytes on the stack. `MainLoop` previously used `goto PlayMusic bank1`, which
+  `Source/Routines/MainLoop.s` returning with `rts` even though the dispatcher
+  had just performed a cross-bank call. The resulting `RTS` at `$f:faaf` is
+  exactly where the stack dropped to `$FF`.
+- Remediation completed 2025‑11‑26: all mode handlers now issue `jsr BS_return`,
+  preventing the bare `RTS` that corrupted the encoded far-return sequence.
+  Rebuilds must still re-check the far-call trampoline at `$f:fa5c` to confirm
+  the stack returns to `$FD` after each trip through the mode table.
+- `PlayMusic` is often tail-called (StartMusic uses `jmp PlayMusic` with bank
+  switch), so any other caller MUST use `BS_jsr` to keep the encoded
+  far-return bytes on the stack. `MainLoop` previously used a tail call which
   meant `BS_return` tried to decode garbage and wrapped SP to `$FF`. The
-  dispatcher now uses `gosub` so the stack depth stays balanced regardless of
+  dispatcher now uses `BS_jsr` so the stack depth stays balanced regardless of
   how many nested music helpers fire inside bank 15.
 
 ---
@@ -248,7 +248,7 @@ Player 2: ? or 0 ↔ MaxCharacterID and
 
 ### Font and Special Sprites
 
-- Special UI glyphs ("?", "CPU", "No", blank, "C", "F") are sourced from the unified font `Source/Generated/Numbers.bas` (`FontData`):
+- Special UI glyphs ("?", "CPU", "No", blank, "C", "F") are sourced from the unified font `Source/Generated/Numbers.s` (`FontData`):
   - Indices 0–9: digits "0"–"9"
   - Indices 10–15: A="?", B="No", C="C", D="CPU", E=" " (blank), F="F"
 - Sprite loader and font renderer access these via bank 16 helpers (`ComputeFontOffset`, `SetPlayerGlyphFromFont`). No separate special-sprite data files are included.
@@ -470,7 +470,7 @@ brick" logic when he falls off the screen and resets at the top.
 ### Missile Spawn Offsets
 
 Per-character missile spawn offsets are defined in
-`CharacterDefinitions.bas`:
+`Source/Common/CharacterDefinitions.s`:
 
 - `CharacterMissileSpawnOffsetRight[]` – pixels added to `playerX` when
   the character faces right
@@ -934,11 +934,13 @@ Different contexts require different quotation mark characters:
 
 - **`echo` statements**: **MUST** use U+0022 (straight double quotation mark `"`) for all string delimiters. U+2019, U+2018, U+201C, U+201D (typographic quotes) are **NEVER** allowed. Example: `echo "// Bank 14: ", [size]d, " bytes"`
 
-- **`#include` statements**: **MUST** use U+0022 (straight double quotation mark `"`) for all file paths. Example: `#include "Source/Routines/File.bas"`
+- **`#include` statements** (for `.bas` files): **MUST** use U+0022 (straight double quotation mark `"`) for all file paths. Example: `#include "Source/Common/Constants.bas"`
 
-- **`asm` block comments (`;;`)**: **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes, same as `rem` statements. The C preprocessor processes these comments, but U+2019 prevents it from misinterpreting apostrophes as string delimiters. Example: `;; They don't need EQU definitions - they're resolved by DASM`
+- **`.include` statements** (for `.s` files): **MUST** use U+0022 (straight double quotation mark `"`) for all file paths. Example: `.include "Source/Common/Preamble.s"`
 
-**Rationale**: The C preprocessor (used by batariBASIC) interprets straight apostrophes (`'`) as string delimiters, causing "missing terminating ' character" errors. Using U+2019 in `rem` statements and `asm` block comments prevents these errors while maintaining readability. `echo` and `#include` statements are processed differently and require straight double quotes.
+- **Assembly comments (`;;`)**: **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes. Example: `;; They don't need EQU definitions - they're resolved by 64tass`
+
+**Rationale**: The C preprocessor (used for `.bas` files) interprets straight apostrophes (`'`) as string delimiters, causing "missing terminating ' character" errors. Using U+2019 in comments prevents these errors while maintaining readability. `echo`, `#include`, and `.include` statements are processed differently and require straight double quotes.
 
 ## Calling Conventions
 
@@ -946,21 +948,21 @@ Different contexts require different quotation mark characters:
 
 ### The Fundamental Rule: Consistency is Mandatory
 
-**If a routine is EVER called cross-bank (via `gosub routine bankN`), it MUST ALWAYS use `return otherbank` for ALL return paths. If a routine is ONLY called same-bank, it MUST use `return` (near return) for efficiency.**
+**If a routine is EVER called cross-bank (via `BS_jsr`), it MUST ALWAYS use `jsr BS_return` (or `jmp BS_return` for tail calls) for ALL return paths. If a routine is ONLY called same-bank, it MUST use `rts` (near return) for efficiency.**
 
 **Mixing calling conventions within a single routine is a critical bug that will cause stack corruption.**
 
 ### How Cross-Bank Calls Work
 
-When you call a routine cross-bank using `gosub routine bankN`:
-1. batariBASIC pushes an **encoded return address** onto the stack (high byte contains bank number in low nibble)
-2. batariBASIC calls `BS_jsr` which switches banks and does an `RTS` to the target routine
-3. The target routine **MUST** use `return otherbank` which:
-   - Calls `BS_return` to decode the encoded return address
+When you call a routine cross-bank using `BS_jsr`:
+1. Push the **encoded return address** onto the stack (4 bytes: high byte, low byte of return address, then high byte, low byte of target routine)
+2. Call `BS_jsr` which switches banks and does an `RTS` to the target routine
+3. The target routine **MUST** use `jsr BS_return` (or `jmp BS_return` for tail calls) which:
+   - Decodes the encoded return address
    - Switches back to the original bank
    - Does an `RTS` to return to the caller
 
-If the target routine uses plain `return` instead of `return otherbank`:
+If the target routine uses plain `rts` instead of `jsr BS_return`:
 - An `RTS` instruction pops the encoded return address as a normal address
 - This causes a jump to uninitialized memory (typically $00 = BRK instruction)
 - The game crashes with a stack imbalance

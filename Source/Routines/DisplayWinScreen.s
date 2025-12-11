@@ -432,8 +432,6 @@ Hide2PlayerWinScreen:
 
           jmp Hide2PlayerWinScreenDone
 
-.pend
-
 Position3PlayersWinScreen:
           ;; 3+ players: Winner centered high, 2nd left, 3rd right
           ;; Returns: Far (return otherbank)

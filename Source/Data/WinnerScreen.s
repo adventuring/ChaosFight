@@ -31,7 +31,6 @@ Winner_playfield_1:
 data_end_2:
 
 WinnerScreenColorsColor:
-WinnerScreenColorsColor:
 
           .byte $FE, $FC, $FA, $F8, $F6, $F4, $F2, $F2
 

@@ -587,7 +587,7 @@ RepoKernel:                          ;;;;    22      crosses page boundary
           tax
           dex                         ;+2     30
           dec pfpixelheight
-          stx Temp                    ;+3     35
+          stx temp1                   ;+3     35 (use temp1 instead of undefined Temp)
           ;;      .SLEEP 3
 
           cpy P0Top                   ;;;;+3   42

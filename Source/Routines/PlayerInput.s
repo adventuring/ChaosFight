@@ -2460,9 +2460,9 @@ InputHandleLeftPortPlayerFunction
           ;; block movement during attack animations (states 13-15)
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerAnimationStateLeftPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerAnimationStateLeftPort-1)
           pha
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
@@ -2470,7 +2470,7 @@ InputHandleLeftPortPlayerFunction
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterGetPlayerAnimationStateLeftPort:
 
 
           ;; Use goto to avoid branch out of range (target is 310+ bytes away)
@@ -2855,9 +2855,9 @@ DispatchAttack:
           sta temp4
 
           ;; Cross-bank call to DispatchCharacterAttack in bank 10
-          lda # >(return_point-1)
+          lda # >(AfterDispatchCharacterAttackLeftPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDispatchCharacterAttackLeftPort-1)
           pha
           lda # >(DispatchCharacterAttack-1)
           pha
@@ -2865,7 +2865,7 @@ DispatchAttack:
           pha
                     ldx # 9
           jmp BS_jsr
-return_point:
+AfterDispatchCharacterAttackLeftPort:
 
 
 InputDoneLeftPortAttack

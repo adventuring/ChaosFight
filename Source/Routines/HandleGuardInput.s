@@ -14,19 +14,19 @@ HandleGuardInput .proc
 
 .pend
 
-HGI_CheckJoy0 .proc
+CheckJoy0GuardInput .proc
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
           lda joy0down
           bne HandleDownPressed
 
-          jmp HGI_CheckGuardRelease
+          jmp CheckGuardReleaseGuardInput
 
 HandleDownPressed:
 
 .pend
 
-HGI_HandleDownPressed .proc
+HandleDownPressedGuardInput .proc
           ;; DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           ;; Returns: Far (return otherbank)
           ;; let temp4 = playerCharacter[temp1]         
@@ -65,7 +65,7 @@ CheckRoboTito:
           cmp # 13
           bne UseStandardGuard
 
-          jmp DCD_HandleRoboTitoDown_HGI
+          jmp HandleRoboTitoDownGuardInput
 
 UseStandardGuard:
 
@@ -76,7 +76,7 @@ UseStandardGuard:
 
 .pend
 
-DCD_HandleRoboTitoDown_HGI .proc
+HandleRoboTitoDownGuardInput .proc
           ;; Tail call optimization: goto instead of gosub to save 2 bytes on sta
 
           ;; Note: RoboTitoDown may return early, so we need to handle that case
@@ -101,7 +101,7 @@ AfterRoboTitoDownGuard:
 
 .pend
 
-HGI_CheckGuardRelease .proc
+CheckGuardReleaseGuardInput .proc
           ;; DOWN released - check for early guard release
           ;; Returns: Far (return otherbank)
           ;; let temp2 = playerState[temp1] & 2         

@@ -140,19 +140,19 @@ GetEliminationOrder:
           sta winScreenCandidateOrder
 
           ;; Check if this is 2nd place (higher order than current 2nd)
-          ;; if winScreenCandidateOrder > temp5 then DWS_UpdateSecond
+          ;; if winScreenCandidateOrder > temp5 then UpdateSecondPlace
           lda winScreenCandidateOrder
           cmp temp5
-          bcc DWS_CheckThird
-          beq DWS_CheckThird
-          jmp DWS_UpdateSecond
+          bcc CheckThirdPlace
+          beq CheckThirdPlace
+          jmp UpdateSecondPlace
 
-DWS_UpdateSecond:
+UpdateSecondPlace:
           ;; Move current 2nd to 3rd, then update 2nd
           ;; Returns: Far (return otherbank)
           ;;
           ;; Input: temp3, temp5, winScreenCandidateOrder,
-          ;; temp1 (from DWS_RankLoop)
+          ;; temp1 (from RankLoopWinScreen)
           ;;
           ;; Output: temp4, winScreenThirdPlaceOrder updated,
           ;; temp3, temp5 updated
@@ -161,7 +161,7 @@ DWS_UpdateSecond:
           ;; temp3, temp5
           ;;
           ;; Called Routines: None
-          ;; Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
+          ;; Constraints: Must be colocated with DisplayWinScreen, RankLoopWinScreen
           lda temp5
           sta winScreenThirdPlaceOrder
           lda temp3
@@ -172,14 +172,14 @@ DWS_UpdateSecond:
           sta temp3
           jmp RankNextWinScreen
 
-DWS_CheckThird .proc
+CheckThirdPlace .proc
           ;; Check if this is 3rd place (higher order than current 3rd,
           ;; Returns: Far (return otherbank)
           ;; but lower than 2nd)
           ;;
           ;; Input: winScreenCandidateOrder,
           ;; winScreenThirdPlaceOrder, temp1 (from
-          ;; DWS_RankLoop)
+          ;; RankLoopWinScreen)
           ;;
           ;; Output: temp4, winScreenThirdPlaceOrder updated if higher
           ;;
@@ -188,38 +188,38 @@ DWS_CheckThird .proc
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen,
-          ;; DWS_RankLoop, DWS_RankNext
+          ;; RankLoopWinScreen, RankNextWinScreen
           ;; if winScreenCandidateOrder > winScreenThirdPlaceOrder then let winScreenThirdPlaceOrder = winScreenCandidateOrder : let temp4 = temp1
           lda winScreenCandidateOrder
           cmp winScreenThirdPlaceOrder
-          bcc DWS_CheckThirdDone
-          beq DWS_CheckThirdDone
+          bcc CheckThirdPlaceDone
+          beq CheckThirdPlaceDone
           lda winScreenCandidateOrder
           sta winScreenThirdPlaceOrder
           lda temp1
           sta temp4
-DWS_CheckThirdDone:
+CheckThirdPlaceDone:
           jmp RankNextWinScreen
 
-DWS_RankNext .proc
+RankNextWinScreen .proc
           ;; Ranking loop continuation
           ;; Returns: Far (return otherbank)
           ;;
-          ;; Input: temp1 (player index, from DWS_RankLoop)
+          ;; Input: temp1 (player index, from RankLoopWinScreen)
           ;;
-          ;; Output: temp1 incremented, loops back to DWS_RankLoop if <
+          ;; Output: temp1 incremented, loops back to RankLoopWinScreen if <
           ;; 4
           ;;
           ;; Mutates: temp1 (incremented)
           ;;
           ;; Called Routines: None
-          ;; Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
+          ;; Constraints: Must be colocated with DisplayWinScreen, RankLoopWinScreen
           inc temp1
-          ;; if temp1 < 4 then goto DWS_RankLoop
+          ;; if temp1 < 4 then goto RankLoopWinScreen
           lda temp1
           cmp # 4
           bcs PositionCharacters
-          jmp DWS_RankLoop
+          jmp RankLoopWinScreen
 PositionCharacters:
 
           
@@ -241,7 +241,7 @@ CheckTwoPlayers:
           lda temp1
           cmp # 2
           bne PositionThreePlayers
-          jmp DWS_Position2Players
+          jmp Position2PlayersWinScreen
 PositionThreePlayers:
 
 

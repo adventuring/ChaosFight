@@ -46,9 +46,9 @@ ReloadArenaColorsDispatch .proc
           ;; Call LoadArenaDispatch to handle color/B&W selection
           ;; (inline logic avoids cross-bank goto issues)
           ;; Cross-bank call to DWS_GetBWMode in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterDWS_GetBWMode-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDWS_GetBWMode-1)
           pha
           lda # >(DWS_GetBWMode-1)
           pha
@@ -57,14 +57,14 @@ ReloadArenaColorsDispatch .proc
           ldx # 14
           jmp BS_jsr
 
-return_point:
+AfterDWS_GetBWMode:
 
           lda temp2
           sta temp6
           ;; Cross-bank call to LoadArenaByIndex in bank 16
-          lda # >(return_point2-1)
+          lda # >(AfterLoadArenaByIndexReload-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterLoadArenaByIndexReload-1)
           pha
           lda # >(LoadArenaByIndex-1)
           pha
@@ -73,7 +73,7 @@ return_point:
           ldx # 15
           jmp BS_jsr
 
-return_point2:
+AfterLoadArenaByIndexReload:
 
           ;; Load color color table
           ;; if temp6 then goto RAU_LoadBWColors
@@ -82,9 +82,9 @@ return_point2:
           jmp RAU_LoadBWColors
 LoadColorColors:
           ;; Cross-bank call to LoadArenaColorsColor in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterLoadArenaColorsColor-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterLoadArenaColorsColor-1)
           pha
           lda # >(LoadArenaColorsColor-1)
           pha
@@ -92,7 +92,7 @@ LoadColorColors:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterLoadArenaColorsColor:
 
           jsr BS_return
 .pend

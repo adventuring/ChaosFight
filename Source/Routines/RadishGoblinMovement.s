@@ -70,9 +70,9 @@ RGHI_Left .proc
                     if (playerState[temp1] & 8) then goto RGHI_AfterLeft
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerAnimationStateLeft-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerAnimationStateLeft-1)
           pha
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
@@ -80,7 +80,7 @@ RGHI_Left .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterGetPlayerAnimationStateLeft:
 
 
           ;; if temp2 < 5 then goto RGHI_SPF_No1
@@ -175,9 +175,9 @@ RGHI_Right .proc
           rts
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerAnimationStateLeft-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerAnimationStateLeft-1)
           pha
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
@@ -185,7 +185,7 @@ RGHI_Right .proc
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterGetPlayerAnimationStateLeft:
 
 
           ;; if temp2 < 5 then goto RGHI_SPF_No2
@@ -377,9 +377,9 @@ CalculateFeetRow:
           sta temp1
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadRadishGoblin-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadRadishGoblin-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -387,7 +387,7 @@ CalculateFeetRow:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadRadishGoblin:
 
 
           lda temp4

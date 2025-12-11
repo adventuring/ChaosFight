@@ -79,7 +79,7 @@ NudgePlayerFromPlayfield .proc
           tax
           lda playerY,x
           sta originalPlayerY_W
-          jsr MPT_NudgeRight
+          jsr NudgeRightMovePlayer
 
           jsr MPT_NudgeLeft
 
@@ -87,37 +87,37 @@ NudgePlayerFromPlayfield .proc
 
 .pend
 
-MPT_NudgeRight .proc
+NudgeRightMovePlayer .proc
           ;; let playerX[temp1] = originalPlayerX_R + 1
-          jsr MPT_CheckCollision
+          jsr CheckCollisionMovePlayer
 
           lda temp6
           cmp # 1
-          bne MPT_NudgeRightDone
+          bne NudgeRightMovePlayerDone
           lda temp1
           asl
           tax
           lda originalPlayerX_R
           sta playerX,x
-MPT_NudgeRightDone:
+NudgeRightMovePlayerDone:
 
           rts
 
 .pend
 
-MPT_NudgeLeft .proc
+NudgeLeftMovePlayer .proc
           ;; let playerX[temp1] = originalPlayerX_R - 1
-          jsr MPT_CheckCollision
+          jsr CheckCollisionMovePlayer
 
           lda temp6
           cmp # 1
-          bne MPT_NudgeRightDone
+          bne NudgeLeftMovePlayerDone
           lda temp1
           asl
           tax
           lda originalPlayerX_R
           sta playerX,x
-MPT_NudgeRightDone:
+NudgeRightMovePlayerDone:
 
           rts
 .pend

@@ -1,10 +1,6 @@
 ;;; ChaosFight - Source/Common/Preamble.s
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-;; Include guard: ensure this file is only processed once per compilation
-.if !defined(PREAMBLE_INCLUDED)
-PREAMBLE_INCLUDED = 1
-
 ;; CRITICAL: Include AssemblyConfig.s FIRST to set processor directive
 ;; This must be before MultiSpriteSuperChip.s (which includes vcs.h and macro.h)
 .include "Source/Common/AssemblyConfig.s"

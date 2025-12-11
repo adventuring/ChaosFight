@@ -153,7 +153,7 @@ DonePlayer1Move:
           tax
           lda playerCharacter,x
           cmp # NoCharacter
-          beq DonePlayer2Move
+          beq DonePlayer2MoveForward
 SetPlayer2Target:
           ;; Check if 4-player mode for target X
           lda # 1
@@ -165,26 +165,18 @@ SetPlayer2Target:
           ;; 2-player mode: target × = 107
           lda # 107
           sta temp2
-          jmp Player2TargetDone
+          jmp Player2TargetDoneLabel
 
 .pend
 
-Player2TargetDone:
-          ;; Player 2 target calculation complete
-          ;; Returns: Far (return otherbank)
-          ;;
-          ;; Input: None (label only, no execution)
-          ;;
-          ;; Output: None (label only)
-          ;;
-          ;; Mutates: None
-          ;;
-          ;; Called Routines: None
-          ;;
-          ;; Constraints: Must be colocated with FallingAnimation1
-          ;; 4-player mode: target × = 128
-          lda # 128
-          sta temp2
+Player2TargetDoneLabel:
+          jmp Player2Target4P.Player2TargetDone
+
+DonePlayer2MoveForward:
+          jmp DonePlayer2Move
+
+DonePlayer2Move:
+          jmp BS_return
 
 Player2Target4P .proc
           ;; Set Player 2 target × for 4-player mode
@@ -222,10 +214,10 @@ Player2Target4P .proc
 AfterMovePlayerToTargetP2:
           ;; Increment fallComplete if player reached target
           lda temp4
-          beq DonePlayer2Move
+          beq DonePlayer2MoveLabel
           inc fallComplete
-DonePlayer2Move:
-          jmp BS_return
+DonePlayer2MoveLabel:
+          jmp DonePlayer2Move
           ;; Player 2 movement complete (skipped if not active)
           ;; Returns: Far (return otherbank)
           ;;

@@ -5,13 +5,6 @@
 ;;; Based on DetectConsole.s assembly implementation
           ;; DETECTION LOGIC:
           ;; Check if $D0 contains $2C and $D1 contains $A9 (7800 console)
-          lda $D0
-          cmp # $2C
-          bne CheckFlashed
-          lda $D1
-          cmp # $A9
-          bne CheckFlashed
-          jmp Is7800
           ;; Check if both contain $00 (flashed to Harmony/Melody)
           ;; else
           ;; system = 2600 // game was loaded from Harmony menu on a

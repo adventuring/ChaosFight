@@ -55,16 +55,16 @@
 PublisherPreludeMain .proc
           ;; Check for button press on any controller to skip
           ;; if joy0fire then jmp PublisherPreludeComplete
-          lda joy0fire
-          beq CheckJoy1Fire
+          bit INPT0
+          bmi CheckJoy1Fire
 
           jmp PublisherPreludeComplete
 
 CheckJoy1Fire:
 
           ;; if joy1fire then jmp PublisherPreludeComplete
-          lda joy1fire
-          beq CheckEnhancedControllers
+          bit INPT1
+          bmi CheckEnhancedControllers
 
           jmp PublisherPreludeComplete
 

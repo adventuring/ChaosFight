@@ -111,9 +111,9 @@ Player1TargetDone:
           lda # 24
           sta temp3
           ;; Cross-bank call to MovePlayerToTarget in bank 6
-          lda # >(return_point-1)
+          lda # >(FallingAnimationPlayer1Return-1)
           pha
-          lda # <(return_point-1)
+          lda # <(FallingAnimationPlayer1Return-1)
           pha
           lda # >(MovePlayerToTarget-1)
           pha
@@ -210,12 +210,12 @@ Player2TargetDone
 AfterMovePlayerToTargetP1:
           ;; Increment fallComplete if player reached target
           lda temp4
-          beq DonePlayer1Move
+          beq DonePlayer1MoveLabel
           inc fallComplete
-DonePlayer1Move:
-          jmp DonePlayer1Move
+DonePlayer1MoveLabel:
+          jmp BS_return
 
-DonePlayer2Move
+DonePlayer2Move:
           ;; Player 2 movement complete (skipped if not active)
           ;; Returns: Far (return otherbank)
           ;;
@@ -266,12 +266,12 @@ AfterMovePlayerToTargetP3:
 
           ;; if temp4 then let fallComplete = fallComplete + 1
           lda temp4
-          beq DonePlayer1Move
+          beq DonePlayer3MoveLabel
           inc fallComplete
-DonePlayer1Move:
-          jmp DonePlayer1Move
+DonePlayer3MoveLabel:
+          jmp BS_return
 
-DonePlayer3Move
+DonePlayer3Move:
           ;; Player 3 movement complete (skipped if not in 4-player
           ;; Returns: Far (return otherbank)
           ;; mode or not active)
@@ -295,7 +295,12 @@ DonePlayer3Move
 MovePlayer4:
 
 
-                    if playerCharacter[3] = NoCharacter then DonePlayer4Move
+          lda # 3
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq DonePlayer4Move
           lda # 3
           sta temp1
           ;; 4-player mode: target × = 96

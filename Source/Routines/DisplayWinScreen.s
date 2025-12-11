@@ -53,6 +53,10 @@ DisplayWinScreen .proc
           ;; gosub)
           ;; Called from WinnerAnnouncementLoop per-frame loop
 
+          ;; Forward declarations for jump targets
+Position2PlayersWinScreen = *
+Position3PlayersWinScreen = *
+
           ;; Set screen layout (32×8 for character display) - inlined
           lda # ScreenPfRowHeight
           sta pfrowheight
@@ -322,6 +326,8 @@ Position1PlayerWinScreen .proc
 
           jsr BS_return
 
+.pend
+
 Position2PlayersWinScreen:
           ;; 2 players: Winner centered, runner-up left
           ;; Returns: Far (return otherbank)
@@ -430,9 +436,7 @@ Hide2PlayerWinScreen:
 
           jmp Hide2PlayerWinScreenDone
 
-.pend
-
-Position3PlayersWinScreen .proc
+Position3PlayersWinScreen:
           ;; 3+ players: Winner centered high, 2nd left, 3rd right
           ;; Returns: Far (return otherbank)
           ;;

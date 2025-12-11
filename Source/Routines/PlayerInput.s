@@ -1860,9 +1860,9 @@ HFCM_MoveLeftOK:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadMoveLeftCurrentRow-1)
+          lda # >(AfterPlayfieldReadMoveLeftBottomRow-1)
           pha
-          lda # <(AfterPlayfieldReadMoveLeftCurrentRow-1)
+          lda # <(AfterPlayfieldReadMoveLeftBottomRow-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -1870,7 +1870,7 @@ HFCM_MoveLeftOK:
           pha
                     ldx # 15
           jmp BS_jsr
-AfterPlayfieldReadMoveLeftCurrentRow:
+AfterPlayfieldReadMoveLeftBottomRow:
 
 
                     if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow
@@ -1955,9 +1955,9 @@ HFCM_LeftApplyDone
 GetAnimationState:
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerAnimationStateInline1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerAnimationStateInline1-1)
           pha
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
@@ -1965,7 +1965,7 @@ GetAnimationState:
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterGetPlayerAnimationStateInline1:
 
 
           ;; if temp2 < 5 then goto SPF_InlineNo1          lda temp2          cmp 5          bcs .skip_6997          jmp
@@ -2151,9 +2151,9 @@ ColumnInRangeLeft:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadMoveRightCurrentRow-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadMoveRightCurrentRow-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -2161,7 +2161,7 @@ ColumnInRangeLeft:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadMoveRightCurrentRow:
 
 
                     if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow
@@ -2216,9 +2216,9 @@ CheckBottomRow:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadMoveRightBottomRow-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadMoveRightBottomRow-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -2226,7 +2226,7 @@ CheckBottomRow:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadMoveRightBottomRow:
 
 
                     if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow
@@ -2311,9 +2311,9 @@ HFCM_RightApplyDone
 GetAnimationStateRight:
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(return_point-1)
+          lda # >(AfterGetPlayerAnimationStateInline2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterGetPlayerAnimationStateInline2-1)
           pha
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
@@ -2321,7 +2321,7 @@ GetAnimationStateRight:
           pha
                     ldx # 12
           jmp BS_jsr
-return_point:
+AfterGetPlayerAnimationStateInline2:
 
 
           ;; if temp2 < 5 then goto SPF_InlineNo2          lda temp2          cmp 5          bcs .skip_5155          jmp
@@ -2542,9 +2542,9 @@ DoneLeftPortMovement
 IHLP_RadishGoblinMovement .proc
 
           ;; Cross-bank call to RadishGoblinHandleInput in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterRadishGoblinHandleInputLeftPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterRadishGoblinHandleInputLeftPort-1)
           pha
           lda # >(RadishGoblinHandleInput-1)
           pha
@@ -2552,7 +2552,7 @@ IHLP_RadishGoblinMovement .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterRadishGoblinHandleInputLeftPort:
 
 
           jmp DoneLeftPortMovement
@@ -2562,9 +2562,9 @@ return_point:
 IHLP_FlyingMovement .proc
 
           ;; Cross-bank call to HandleFlyingCharacterMovement in bank 12
-          lda # >(return_point-1)
+          lda # >(AfterHandleFlyingCharacterMovementLeftPort-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterHandleFlyingCharacterMovementLeftPort-1)
           pha
           lda # >(HandleFlyingCharacterMovement-1)
           pha
@@ -2572,7 +2572,7 @@ IHLP_FlyingMovement .proc
           pha
                     ldx # 11
           jmp BS_jsr
-return_point:
+AfterHandleFlyingCharacterMovementLeftPort:
 
 
 IHLP_DoneFlyingLeftRight

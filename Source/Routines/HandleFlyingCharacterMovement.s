@@ -67,22 +67,18 @@ HandleFlyingCharacterMovement .proc
 
 HFCM_CheckLeftJoy1:
 
-          lda joy1left
-          bne HFCM_DoLeft
-
-          jmp HFCM_CheckRight
+          lda SWCHA
+          and # $08
+          bne HFCM_CheckRight
 
 HFCM_DoLeft:
-
-          jmp HFCM_DoLeft
 
 .pend
 
 HFCM_CheckLeftJoy0 .proc
-          lda joy0left
-          bne HFCM_DoLeft
-
-          jmp HFCM_CheckRight
+          lda SWCHA
+          and # $80
+          bne HFCM_CheckRight
 
 HFCM_DoLeft:
 
@@ -112,23 +108,21 @@ HFCM_CheckRight .proc
           ;; TODO: #1307 HFCM_CheckRightJoy0
 HFCM_CheckRightJoy1:
 
+          lda SWCHA
+          and # $04
+          bne HFCM_CheckVertical
 
-          lda joy1right
-          bne HFCM_DoRight
-          jmp HFCM_CheckVertical
 HFCM_DoRight:
-
-
-          jmp HFCM_DoRight
 
 .pend
 
 HFCM_CheckRightJoy0 .proc
           ;; Returns: Far (return otherbank)
 
-          lda joy0right
-          bne HFCM_DoRight
-          jmp HFCM_CheckVertical
+          lda SWCHA
+          and # $40
+          bne HFCM_CheckVertical
+
 HFCM_DoRight:
 
 
@@ -154,8 +148,12 @@ HFCM_CheckVertical .proc
           lda currentPlayer
           sta temp1
 
-                    ;; let temp5 = playerCharacter[temp1]
-                    lda temp1          asl          tax          lda playerCharacter,x          sta temp5
+          ;; let temp5 = playerCharacter[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp5
 
           ;; let characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
@@ -177,14 +175,16 @@ HFCM_VertJoy1:
 
 
           ;; if joy1up then goto HFCM_VertUp
-          lda joy1up
-          beq CheckJoy1Down
+          lda SWCHA
+          and # $01
+          bne CheckJoy1Down
           jmp HFCM_VertUp
 CheckJoy1Down:
 
           ;; if joy1down then goto HFCM_VertDown
-          lda joy1down
-          beq HandleFlyingCharacterMovementDone
+          lda SWCHA
+          and # $02
+          bne HandleFlyingCharacterMovementDone
           jmp HFCM_VertDown
 HandleFlyingCharacterMovementDone:
 

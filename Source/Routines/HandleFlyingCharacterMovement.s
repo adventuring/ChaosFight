@@ -6,7 +6,7 @@
 
 
 HandleFlyingCharacterMovement .proc
-          ;; Returns: Far (return otherbank)
+          ;; Returns: Near (return thisbank) - changed from Far to save stack depth (FIXME #1241)
           ;;
           ;; Input: temp1 = player index, temp2 = (document other inputs)
           ;;
@@ -188,7 +188,7 @@ CheckJoy1Down:
           jmp HFCM_VertDown
 HandleFlyingCharacterMovementDone:
 
-          jsr BS_return
+          rts
 
 .pend
 
@@ -206,27 +206,27 @@ CheckJoy0Down:
           jmp HFCM_VertDown
 HandleFlyingCharacterMovementDone:
 
-          jsr BS_return
+          rts
 
 .pend
 
 HFCM_VertUp .proc
 
-          jsr BS_return
+          rts
 
-          jsr BS_return
+          rts
 
-          jsr BS_return
+          rts
 
 .pend
 
 HFCM_VertDown .proc
 
-          jsr BS_return
+          rts
 
-          jsr BS_return
+          rts
 
-          jsr BS_return
+          rts
 
 
 

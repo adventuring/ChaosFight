@@ -124,9 +124,9 @@ Player1TargetDone:
 FallingAnimationPlayer1Return:
           ;; Increment fallComplete if player reached target
           lda temp4
-          beq DonePlayer1Move
+          beq DonePlayer1MoveLabel
           inc fallComplete
-DonePlayer1Move:
+DonePlayer1MoveLabel:
           ;; reached = 1 if reached target
           ;; Returns: Far (return otherbank)
           ;; Player 1 movement complete (skipped if not active)
@@ -322,12 +322,12 @@ MovePlayer4:
 AfterMovePlayerToTargetP4:
           ;; Increment fallComplete if player reached target
           lda temp4
-          beq DonePlayer1Move
+          beq DonePlayer4MoveLabel
           inc fallComplete
-DonePlayer1Move:
-          jmp DonePlayer1Move
+DonePlayer4MoveLabel:
+          jmp BS_return
 
-DonePlayer4Move
+DonePlayer4Move:
           ;; Player 4 movement complete (skipped if not in 4-player
           ;; Returns: Far (return otherbank)
           ;; mode or not active)

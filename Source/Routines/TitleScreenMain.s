@@ -130,9 +130,9 @@ TitleDoneQuad
 
           ;; Update character parade animation
           ;; Cross-bank call to UpdateCharacterParade in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterUpdateCharacterParade-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterUpdateCharacterParade-1)
           pha
           lda # >(UpdateCharacterParade-1)
           pha
@@ -140,7 +140,7 @@ TitleDoneQuad
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterUpdateCharacterParade:
 
 
           ;; Draw title screen

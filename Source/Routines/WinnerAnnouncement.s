@@ -45,9 +45,9 @@ DisplayWinScreen:
           ;; Display win screen and continue loop
           ;; drawscreen called by MainLoop
           ;; Cross-bank call to DisplayWinScreen in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterDisplayWinScreen-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterDisplayWinScreen-1)
           pha
           lda # >(DisplayWinScreen-1)
           pha
@@ -56,7 +56,7 @@ DisplayWinScreen:
           ldx # 13
           jmp BS_jsr
 
-return_point:
+AfterDisplayWinScreen:
 
           jsr BS_return
 
@@ -79,9 +79,9 @@ WinnerAdvanceToCharacterSelect .proc
           lda # ModeTitle
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(return_point2-1)
+          lda # >(AfterChangeGameModeWinner-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterChangeGameModeWinner-1)
           pha
           lda # >(ChangeGameMode-1)
           pha
@@ -89,7 +89,7 @@ WinnerAdvanceToCharacterSelect .proc
           pha
           ldx # 13
           jmp BS_jsr
-return_point:
+AfterChangeGameModeWinner:
 
 
           jsr BS_return

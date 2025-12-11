@@ -165,9 +165,9 @@ CheckPlayfieldPixel:
           lda temp5
           sta temp2
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadNudge1-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadNudge1-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -175,7 +175,7 @@ CheckPlayfieldPixel:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterPlayfieldReadNudge1:
 
           ;; if temp1 then let temp6 = 1          lda temp1          beq MPT_CheckCollisionDone
 MPT_CheckCollisionDone:
@@ -189,9 +189,9 @@ MPT_CheckCollisionDone:
           ;; let temp5 = temp3 / 16
           ;; MPT_CheckCollision is called same-bank, so use return thisbank
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterPlayfieldReadNudge2-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlayfieldReadNudge2-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -199,7 +199,7 @@ MPT_CheckCollisionDone:
           pha
                     ldx # 15
           jmp BS_jsr
-return_point_move_outer:
+AfterPlayfieldReadNudge2:
 
           rts
 

@@ -270,9 +270,9 @@ StoreRecoveryFrames:
           lda SoundLandingDamage
           sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterPlaySoundEffectFallDamage-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlaySoundEffectFallDamage-1)
           pha
           lda # >(PlaySoundEffect-1)
           pha
@@ -280,7 +280,7 @@ StoreRecoveryFrames:
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterPlaySoundEffectFallDamage:
 
 
           jsr BS_return
@@ -651,9 +651,9 @@ SetVerticalMomentum .proc
           lda currentPlayer
           sta temp1
           ;; Cross-bank call to SpawnMissile in bank 7
-          lda # >(return_point-1)
+          lda # >(AfterSpawnMissileHarpy-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSpawnMissileHarpy-1)
           pha
           lda # >(SpawnMissile-1)
           pha
@@ -661,7 +661,7 @@ SetVerticalMomentum .proc
           pha
                     ldx # 6
           jmp BS_jsr
-return_point:
+AfterSpawnMissileHarpy:
 
 
           jsr BS_return

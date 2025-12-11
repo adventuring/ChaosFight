@@ -28,9 +28,9 @@ UpdateSoundEffect .proc
           ;; 6. Only updates voices if active (high byte ≠ 0)
           ;; Update Voice 0
           ;; Cross-bank call to UpdateSoundEffectVoice0 in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterUpdateSoundEffectVoice0-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterUpdateSoundEffectVoice0-1)
           pha
           lda # >(UpdateSoundEffectVoice0-1)
           pha
@@ -39,13 +39,13 @@ UpdateSoundEffect .proc
           ldx # 14
           jmp BS_jsr
 
-return_point:
+AfterUpdateSoundEffectVoice0:
 
           ;; Update Voice 1
           ;; Cross-bank call to UpdateSoundEffectVoice1 in bank 15
-          lda # >(return_point2-1)
+          lda # >(AfterUpdateSoundEffectVoice1-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterUpdateSoundEffectVoice1-1)
           pha
           lda # >(UpdateSoundEffectVoice1-1)
           pha
@@ -54,7 +54,7 @@ return_point:
           ldx # 14
           jmp BS_jsr
 
-return_point2:
+AfterUpdateSoundEffectVoice1:
 
           jsr BS_return
 

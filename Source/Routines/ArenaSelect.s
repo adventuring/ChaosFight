@@ -55,9 +55,9 @@ ArenaSelect1Loop .proc
           ;; from MainLoop)
           ;; Update character idle animations
           ;; Cross-bank call to SelectUpdateAnimations in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSelectUpdateAnimations-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSelectUpdateAnimations-1)
           pha
           lda # >(SelectUpdateAnimations-1)
           pha
@@ -66,7 +66,7 @@ ArenaSelect1Loop .proc
           ldx # 5
           jmp BS_jsr
 
-return_point:
+AfterSelectUpdateAnimations:
 
           ;; Draw locked-in player characters
           jsr ArenaSelectDrawCharacters
@@ -190,9 +190,9 @@ ArenaSelectLeftSound .proc
           lda SoundMenuNavigate
           sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterPlaySoundEffectLeft-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlaySoundEffectLeft-1)
           pha
           lda # >(PlaySoundEffect-1)
           pha
@@ -201,7 +201,7 @@ ArenaSelectLeftSound .proc
           ldx # 14
           jmp BS_jsr
 
-return_point:
+AfterPlaySoundEffectLeft:
 
           ;; if joy0right then goto ArenaSelectRight
           lda joy0right
@@ -351,9 +351,9 @@ DrawTensDigit .proc
           lda # 4
           sta temp3
           ;; Cross-bank call to SetGlyph in bank 16
-          lda # >(return_point3-1)
+          lda # >(AfterSetGlyphTens-1)
           pha
-          lda # <(return_point3-1)
+          lda # <(AfterSetGlyphTens-1)
           pha
           lda # >(SetGlyph-1)
           pha
@@ -362,7 +362,7 @@ DrawTensDigit .proc
           ldx # 15
           jmp BS_jsr
 
-return_point3:
+AfterSetGlyphTens:
 
 
 .pend
@@ -382,9 +382,9 @@ SkipTens .proc
           lda # 5
           sta temp3
           ;; Cross-bank call to SetGlyph in bank 16
-          lda # >(return_point-1)
+          lda # >(AfterSetGlyphOnes-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetGlyphOnes-1)
           pha
           lda # >(SetGlyph-1)
           pha
@@ -392,7 +392,7 @@ SkipTens .proc
           pha
                     ldx # 15
           jmp BS_jsr
-return_point:
+AfterSetGlyphOnes:
 
 
           jmp DisplayDone
@@ -417,9 +417,9 @@ DisplayRandomArena .proc
           sta temp3
           ;; Use player4
           ;; Cross-bank call to SetGlyph in bank 16
-          lda # >(return_point5-1)
+          lda # >(AfterSetGlyphRandom1-1)
           pha
-          lda # <(return_point5-1)
+          lda # <(AfterSetGlyphRandom1-1)
           pha
           lda # >(SetGlyph-1)
           pha
@@ -428,7 +428,7 @@ DisplayRandomArena .proc
           ldx # 15
           jmp BS_jsr
 
-return_point5:
+AfterSetGlyphRandom1:
 
           ;; Second question mark: set P5 fixed position/color
           lda # 88
@@ -441,9 +441,9 @@ return_point5:
           lda # 5
           sta temp3
           ;; Cross-bank call to SetGlyph in bank 16
-          lda # >(return_point6-1)
+          lda # >(AfterSetGlyphRandom2-1)
           pha
-          lda # <(return_point6-1)
+          lda # <(AfterSetGlyphRandom2-1)
           pha
           lda # >(SetGlyph-1)
           pha
@@ -452,7 +452,7 @@ return_point5:
           ldx # 15
           jmp BS_jsr
 
-return_point6:
+AfterSetGlyphRandom2:
 
 
 DisplayDone
@@ -470,9 +470,9 @@ ArenaSelectConfirm
           lda SoundMenuSelect
           sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterPlaySoundEffectConfirm-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterPlaySoundEffectConfirm-1)
           pha
           lda # >(PlaySoundEffect-1)
           pha
@@ -480,7 +480,7 @@ ArenaSelectConfirm
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterPlaySoundEffectConfirm:
 
 
           ;; tail call
@@ -489,9 +489,9 @@ return_point:
 ArenaSelectDoneConfirm
           ;; Update sound effects (active sound effects need per-frame updates)
           ;; Cross-bank call to UpdateSoundEffect in bank 15
-          lda # >(return_point-1)
+          lda # >(AfterUpdateSoundEffect-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterUpdateSoundEffect-1)
           pha
           lda # >(UpdateSoundEffect-1)
           pha
@@ -499,7 +499,7 @@ ArenaSelectDoneConfirm
           pha
                     ldx # 14
           jmp BS_jsr
-return_point:
+AfterUpdateSoundEffect:
 
 
           ;; drawscreen called by MainLoop

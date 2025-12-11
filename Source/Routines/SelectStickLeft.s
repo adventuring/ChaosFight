@@ -22,9 +22,9 @@ SelectStickLeft .proc
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          lda # >(AfterSetPlayerLockedLeft-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterSetPlayerLockedLeft-1)
           pha
           lda # >(SetPlayerLocked-1)
           pha
@@ -33,7 +33,7 @@ SelectStickLeft .proc
           ldx # 5
           jmp BS_jsr
 
-return_point:
+AfterSetPlayerLockedLeft:
 
           rts
 
@@ -59,9 +59,9 @@ SelectStickRight .proc
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
 
           ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(return_point2-1)
+          lda # >(AfterSetPlayerLockedRight-1)
           pha
-          lda # <(return_point2-1)
+          lda # <(AfterSetPlayerLockedRight-1)
           pha
           lda # >(SetPlayerLocked-1)
           pha
@@ -70,7 +70,7 @@ SelectStickRight .proc
           ldx # 5
           jmp BS_jsr
 
-return_point2:
+AfterSetPlayerLockedRight:
 
           rts
 

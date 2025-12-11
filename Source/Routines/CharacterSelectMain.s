@@ -598,14 +598,14 @@ CheckQuadtariActive:
           ;; if controllerStatus & SetQuadtariDetected then let temp4 = 255
           lda controllerStatus
           and # SetQuadtariDetected
-          beq CSM_NoQuadtari2
+          beq NoQuadtariActive
           lda # 255
           sta temp4
-          jmp CSM_QuadtariDone2
-CSM_NoQuadtari2:
+          jmp QuadtariCheckDone
+NoQuadtariActive:
           lda # 0
           sta temp4
-CSM_QuadtariDone2:
+QuadtariCheckDone:
           beq ProcessPlayerInput
           lda # 255
           sta temp4
@@ -784,10 +784,10 @@ CharacterSelectHandleRandomRolls .proc
           ;; if controllerStatus & SetQuadtariDetected then let temp1 = 3
           lda controllerStatus
           and # SetQuadtariDetected
-          beq CSM_NoQuadtari3
+          beq NoQuadtariForRandom
           lda # 3
           sta temp1
-CSM_NoQuadtari3:
+NoQuadtariForRandom:
           beq CharacterSelectRollRandomPlayer
           lda # 3
           sta temp1

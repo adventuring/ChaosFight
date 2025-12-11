@@ -140,9 +140,9 @@ SetupFallingAnimation
           ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; Cross-bank call to BeginFallingAnimation in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterBeginFallingAnimation-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterBeginFallingAnimation-1)
           pha
           lda # >(BeginFallingAnimation-1)
           pha
@@ -150,7 +150,7 @@ SetupFallingAnimation
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterBeginFallingAnimation:
 
 
           jsr BS_return
@@ -175,9 +175,9 @@ SetupArenaSelect .proc
           ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; Cross-bank call to BeginArenaSelect in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterBeginArenaSelect-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterBeginArenaSelect-1)
           pha
           lda # >(BeginArenaSelect-1)
           pha
@@ -185,7 +185,7 @@ SetupArenaSelect .proc
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterBeginArenaSelect:
 
 
           jsr BS_return
@@ -212,9 +212,9 @@ SetupGame .proc
           ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; Cross-bank call to BeginGameLoop in bank 11
-          lda # >(return_point-1)
+          lda # >(AfterBeginGameLoop-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterBeginGameLoop-1)
           pha
           lda # >(BeginGameLoop-1)
           pha
@@ -222,7 +222,7 @@ SetupGame .proc
           pha
                     ldx # 10
           jmp BS_jsr
-return_point:
+AfterBeginGameLoop:
 
 
           jsr BS_return
@@ -247,9 +247,9 @@ SetupWinner .proc
           ;; CRITICAL: on gameMode goto pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; Cross-bank call to BeginWinnerAnnouncement in bank 14
-          lda # >(return_point-1)
+          lda # >(AfterBeginWinnerAnnouncement-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterBeginWinnerAnnouncement-1)
           pha
           lda # >(BeginWinnerAnnouncement-1)
           pha
@@ -257,7 +257,7 @@ SetupWinner .proc
           pha
                     ldx # 13
           jmp BS_jsr
-return_point:
+AfterBeginWinnerAnnouncement:
 
 
           jsr BS_return
@@ -291,61 +291,61 @@ SetupAttract .proc
 
 .pend
 
-CGM_ThunkPublisherPrelude .proc
+ThunkPublisherPrelude .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
           jmp SetupPublisherPrelude
 
 .pend
 
-CGM_ThunkAuthorPrelude .proc
+ThunkAuthorPrelude .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
           jmp SetupAuthorPrelude
 
 .pend
 
-CGM_ThunkTitle .proc
+ThunkTitle .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
           jmp SetupTitle
 
 .pend
 
-CGM_ThunkCharacterSelect .proc
+ThunkCharacterSelect .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
           jmp SetupCharacterSelect
 
-CGM_ThunkFallingAnimation
+ThunkFallingAnimation
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
           jmp SetupFallingAnimation
 
 .pend
 
-CGM_ThunkArenaSelect .proc
+ThunkArenaSelect .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
           jmp SetupArenaSelect
 
 .pend
 
-CGM_ThunkGame .proc
+ThunkGame .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
           jmp SetupGame
 
 .pend
 
-CGM_ThunkWinner .proc
+ThunkWinner .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
           jmp SetupWinner
 
 .pend
 
-CGM_ThunkAttract .proc
+ThunkAttract .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
           jmp SetupAttract

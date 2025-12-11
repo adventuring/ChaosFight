@@ -91,7 +91,7 @@ CheckKnightGuy:
           ;; Knight Guy: sword mêlée swing
 
           lda temp4
-          cmp CharacterKnightGuy
+          cmp # CharacterKnightGuy
           bne CheckFrooty
           jmp PerformGenericAttack
 CheckFrooty:
@@ -109,7 +109,7 @@ CheckNefertem:
           ;; Nefertem: mêlée paw strike
 
           lda temp4
-          cmp CharacterNefertem
+          cmp # CharacterNefertem
           bne CheckNinjishGuy
           jmp PerformGenericAttack
 CheckNinjishGuy:
@@ -118,7 +118,7 @@ CheckNinjishGuy:
           ;; Ninjish Guy: ranged shuriken
 
           lda temp4
-          cmp CharacterNinjishGuy
+          cmp # CharacterNinjishGuy
           bne CheckPorkChop
           jmp PerformGenericAttack
 CheckPorkChop:
@@ -136,7 +136,7 @@ CheckRadishGoblin:
           ;; Radish Goblin: mêlée bite lunge
 
           lda temp4
-          cmp CharacterRadishGoblin
+          cmp # CharacterRadishGoblin
           bne CheckRoboTito
           jmp PerformGenericAttack
 CheckRoboTito:

@@ -3401,22 +3401,22 @@ CheckPauseButtonPrev:
 
           ;; if systemFlags & SystemFlagPauseButtonPrev then goto DonePauseToggle
           lda systemFlags
-          and SystemFlagPauseButtonPrev
+          and # SystemFlagPauseButtonPrev
           beq TogglePauseFlag
           jmp DonePauseToggle
 TogglePauseFlag:
 
                     if systemFlags & SystemFlagGameStatePaused then let systemFlags = systemFlags & ClearSystemFlagGameStatePaused else systemFlags = systemFlags | SystemFlagGameStatePaused
           lda systemFlags
-          and SystemFlagGameStatePaused
+          and # SystemFlagGameStatePaused
           beq SetPausedFlag
           lda systemFlags
-          and ClearSystemFlagGameStatePaused
+          and # ClearSystemFlagGameStatePaused
           sta systemFlags
           jmp end_179
 SetPausedFlag:
           lda systemFlags
-          ora SystemFlagGameStatePaused
+          ora # SystemFlagGameStatePaused
           sta systemFlags
 end_179:
 
@@ -3436,7 +3436,7 @@ DonePauseToggle
           lda temp1
           beq ClearPauseButtonPrev
           lda systemFlags
-          ora SystemFlagPauseButtonPrev
+          ora # SystemFlagPauseButtonPrev
           sta systemFlags
           jmp end_9698
 ClearPauseButtonPrev:

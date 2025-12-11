@@ -137,7 +137,7 @@ CheckBank0MinSongIDVoice1:
 
           ;; if temp1 < Bank0MinSongID then goto LSV1P_InvalidSong
           lda temp1
-          cmp Bank0MinSongID
+          cmp # Bank0MinSongID
           bcs CalculateIndexVoice1
           jmp LSV1P_InvalidSong
 CalculateIndexVoice1:

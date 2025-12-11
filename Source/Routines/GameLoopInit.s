@@ -410,7 +410,7 @@ SkipPlayer4 .proc
 
           ;; Clear paused flag in systemFlags (initialize to normal play)
           lda systemFlags
-          and ClearSystemFlagGameStatePaused
+          and # ClearSystemFlagGameStatePaused
           sta systemFlags
 
           ;; Initialize player sprite NUSIZ registers (double width)

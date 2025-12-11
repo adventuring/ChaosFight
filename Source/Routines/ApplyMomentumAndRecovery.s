@@ -149,7 +149,7 @@ SetRecoveryFlag:
           lda playerRecoveryFrames,x
           beq ClearRecoveryFlag
           lda playerState,x
-          ora PlayerStateBitRecovery
+          ora # PlayerStateBitRecovery
           sta playerState,x
 ClearRecoveryFlag:
           ;; Clear bit 3 (recovery flag) when recovery frames = 0

@@ -183,7 +183,7 @@ CheckJumpingState:
           ;; if temp6 = CharacterRoboTito && (characterStateFlags_R[temp1] & 1) then goto GravityNextPlayer
           If NOT jumping, skip gravity (player is on ground)
           lda playerState[temp1]
-          and PlayerStateBitJumping
+          and # PlayerStateBitJumping
           cmp # 0
           bne ApplyGravityAcceleration
           jmp GravityNextPlayer

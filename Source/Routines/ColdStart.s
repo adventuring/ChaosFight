@@ -2,8 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-ColdStart:
-.proc
+ColdStart .proc
           ;; Cold Start Initialization
           ;; Returns: Far (return otherbank)
           ;;

@@ -167,8 +167,6 @@ SetPlayer2Target:
           sta temp2
           jmp Player2TargetDoneLabel
 
-.pend
-
 Player2TargetDoneLabel:
           jmp Player2Target4P.Player2TargetDone
 
@@ -196,8 +194,19 @@ Player2Target4P .proc
           lda # 128
           sta temp2
 
-.pend
-
+Player2TargetDone:
+          ;; Player 2 target calculation complete
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: None (label only, no execution)
+          ;;
+          ;; Output: None (label only)
+          ;;
+          ;; Mutates: None
+          ;;
+          ;; Called Routines: None
+          ;;
+          ;; Constraints: Must be colocated with FallingAnimation1
           lda # 24
           sta temp3
           ;; Cross-bank call to MovePlayerToTarget in bank 6
@@ -230,6 +239,8 @@ DonePlayer2MoveLabel:
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with FallingAnimation1
+
+.pend
 
           ;; Move Player 3 from quadrant to target (if active)
           lda controllerStatus

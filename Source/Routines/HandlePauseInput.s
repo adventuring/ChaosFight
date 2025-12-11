@@ -2,8 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-HandlePauseInput:
-.proc
+HandlePauseInput .proc
           ;;
           ;; Pause Button Handling With Debouncing
           ;; Handles SELECT switch and Joy2b+ Button III with proper

@@ -171,8 +171,13 @@ BlockedCannotMoveDownStandard:
           sta playerVelocityYL,x
 
           ;; Ensure guard bit clear
-
-                    let playerState[temp1] = playerState[temp1] & !2
+          ;; let playerState[temp1] = playerState[temp1] & !2
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # $FD
+          sta playerState,x
           jmp BS_return
 
 
@@ -461,7 +466,13 @@ AfterPlayfieldReadHarpy:
 
           ;; Ensure guard bit clear
 
-          let playerState[temp1] = playerState[temp1] & !2
+          ;; let playerState[temp1] = playerState[temp1] & !2
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # $FD
+          sta playerState,x
           jmp BS_return
 
 BlockedCannotMoveDownHarpy:
@@ -641,8 +652,13 @@ BlockedCannotMoveDown:
           sta playerVelocityYL,x
 
           ;; Ensure guard bit clear
-
-                    let playerState[temp1] = playerState[temp1] & !2
+          ;; let playerState[temp1] = playerState[temp1] & !2
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # $FD
+          sta playerState,x
           jmp BS_return
 
 
@@ -710,7 +726,14 @@ RoboTitoVoluntaryDrop .proc
 
           ;; Clear latched bit (bit 0)
 
-                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
+          ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # MaskPlayerStateFlags
+          ora # ActionFallingShifted
+          sta playerState,x
           lda temp1
           asl
           tax
@@ -755,7 +778,13 @@ RoboTitoVoluntaryDrop .proc
 
           ;; Set jumping bit
 
-                    let playerState[temp1] = playerState[temp1] | 4
+          ;; let playerState[temp1] = playerState[temp1] | 4
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 4
+          sta playerState,x
           jmp BS_return
 
           ;; StandardGuard is in Bank 12 (same bank as HandleGuardInput)

@@ -327,9 +327,15 @@ CheckCooldownExpired:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
-                    let playerState[temp1] = playerState[temp1] | 4
+          ;; let playerState[temp1] = playerState[temp1] | 4
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 4
+          sta playerState,x
           lda temp1
           asl
           tax

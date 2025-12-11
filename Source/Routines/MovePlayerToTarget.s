@@ -81,7 +81,7 @@ NudgePlayerFromPlayfield .proc
           sta originalPlayerY_W
           jsr NudgeRightMovePlayer
 
-          jsr MPT_NudgeLeft
+          jsr NudgeLeftMovePlayer
 
           rts
 
@@ -122,10 +122,10 @@ NudgeRightMovePlayerDone:
           rts
 .pend
 
-MPT_CheckCollision:
+CheckCollisionMovePlayer:
           ;; Returns: Near (return thisbank)
           ;; Check collision at current position
-          ;; Returns: Near (return thisbank) - called same-bank from MPT_NudgeRight/Left
+          ;; Returns: Near (return thisbank) - called same-bank from NudgeRightMovePlayer/NudgeLeftMovePlayer
           ;; Input: temp1 = player index, playerX[temp1] = test position, originalPlayerY_R = Y
           ;; Output: temp6 = 1 if collision, 0 if clear
           ;; let temp2 = playerX[temp1] - ScreenInsetX         
@@ -133,6 +133,8 @@ MPT_CheckCollision:
           asl
           tax
           lda playerX,x
+          sec
+          sbc # ScreenInsetX
           sta temp2
           ;; let temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
           lda temp2
@@ -177,9 +179,9 @@ CheckPlayfieldPixel:
           jmp BS_jsr
 AfterPlayfieldReadNudge1:
 
-          ;; if temp1 then let temp6 = 1          lda temp1          beq MPT_CheckCollisionDone
-MPT_CheckCollisionDone:
-          jmp MPT_CheckCollisionDone
+          ;; if temp1 then let temp6 = 1          lda temp1          beq CheckCollisionMovePlayerDone
+CheckCollisionMovePlayerDone:
+          jmp CheckCollisionMovePlayerDone
           lda temp4
           sta temp1
           lda temp3
@@ -187,7 +189,7 @@ MPT_CheckCollisionDone:
           adc # 16
           sta temp3
           ;; let temp5 = temp3 / 16
-          ;; MPT_CheckCollision is called same-bank, so use return thisbank
+          ;; CheckCollisionMovePlayer is called same-bank, so use return thisbank
           ;; Cross-bank call to PlayfieldRead in bank 16
           lda # >(AfterPlayfieldReadNudge2-1)
           pha

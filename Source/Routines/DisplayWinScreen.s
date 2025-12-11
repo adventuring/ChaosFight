@@ -201,6 +201,8 @@ CheckThirdPlace .proc
 CheckThirdPlaceDone:
           jmp RankNextWinScreen
 
+.pend
+
 RankNextWinScreen .proc
           ;; Ranking loop continuation
           ;; Returns: Far (return otherbank)
@@ -219,10 +221,12 @@ RankNextWinScreen .proc
           lda temp1
           cmp # 4
           bcs PositionCharacters
-          jmp RankLoopWinScreen
+          jmp DWS_RankLoop
 PositionCharacters:
 
-          
+          jsr BS_return
+
+.pend
 
           ;; Position characters based on playersRemaining
           ;; 1 player: Winner centered (X=80,y=row 24 = 192 pixels)
@@ -246,10 +250,6 @@ PositionThreePlayers:
 
 
           jmp Position3PlayersWinScreen
-
-          jsr BS_return
-
-.pend
 
 LoadIdleSpriteWinScreen .proc
 
@@ -371,15 +371,15 @@ Position2PlayersWinScreen
 PositionRunnerUp:
 
 
-          lda 1
+          lda # 1
           asl
           tax
-          lda 40
+          lda # 40
           sta playerX,x
-          lda 1
+          lda # 1
           asl
           tax
-          lda 192
+          lda # 192
           sta playerY,x
           ;; let currentCharacter = playerCharacter[temp3]         
           lda temp3
@@ -479,7 +479,7 @@ Position3PlayersWinScreen
           lda temp3
           cmp # 255
           bne PositionSecondPlace
-          jmp DWS_Hide3Player2
+          jmp Hide3Player2WinScreen
 PositionSecondPlace:
 
 

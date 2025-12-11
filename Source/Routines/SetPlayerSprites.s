@@ -167,13 +167,13 @@ Player2ColorDone
           ;; etc.)
           lda NewNUSIZ
           and # NUSIZMaskReflection
-          sta _NUSIZ1
+          sta NewNUSIZ
           lda playerState+1
           and # PlayerStateBitFacing
           beq Player2ReflectionDone
-          lda _NUSIZ1
+          lda NewNUSIZ
           ora # PlayerStateBitFacingNUSIZ
-          sta _NUSIZ1
+          sta NewNUSIZ
 Player2ReflectionDone:
 
 

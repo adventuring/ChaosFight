@@ -5,6 +5,7 @@
 
 start = ColdStart          ;;; Alias for bankswitch return mechanism
 
+StartupInit .block
           ;; CRITICAL: This code executes inline when included - clears stack and RAM
           ;; before any stack operations (pha, jsr, etc.)
           cld              ;;; Clear decimal mode
@@ -25,3 +26,4 @@ clearmem:
 
           ;;; NOTE: Do NOT jump to MainLoop here - ColdStart handles the
           ;;; transition to MainLoop using proper bank switching.
+.bend

@@ -23,22 +23,25 @@ WarmStart .proc
           ;; SCRAM write ports are at $F000-$F07F (w000-w127)
           ;; SCRAM read ports are at $F080-$F0FF (r000-r127)
           ;; Must write to write ports, not read ports
-          ;; Iterate from $7E down to $00, writing to both $80,x (ZPRAM $FE-$81) and $F000,x (SCRAM $F07E-$F001)
-          ;; When X = 0, write only to SCRAM ($F000), preserving $80 (console7800Detected)
-          ;; Exit when dex causes X to wrap from $00 to $FF (bne fails)
+          ;; Iterate from $7F down to $01, writing to both $80,x (ZPRAM $FF-$81) and $F000,x (SCRAM $F07F-$F001)
+          ;; Then iterate from $7F down to $00 for SCRAM only (clearing $F07F-$F000)
+          ;; Never write to $80 (console7800Detected at $80 must be preserved)
           lda # 0
-          ldx # $7E                        ;;; Start at $7E, iterate down to $00
+          ldx # $7F                        ;;; Start at $7F, iterate down to $01
 WarmStartClearMemory:
-          ;; Clear zero-page RAM at $80,x (which is $FE down to $81 when X = $7E down to $01)
-          ;; Skip $80 when X = 0 to preserve console7800Detected
-          cpx # 0                          ;;; Check if X == 0
-          beq WarmStartSkipZPRAM          ;;; If X == 0, skip zero-page RAM clear (preserve $80)
-          sta $80,x                        ;;; Clear zero-page RAM ($80+$7E=$FE down to $80+$01=$81)
-WarmStartSkipZPRAM:
-          ;; Always clear SCRAM at $F000,x
-          sta $F000,x                      ;;; Clear SCRAM write ports ($F000+$7E=$F07E down to $F000+$00=$F000)
+          ;; Clear zero-page RAM at $80,x (which is $FF down to $81 when X = $7F down to $01)
+          ;; X never reaches 0 in this loop, so we never write to $80+0=$80
+          sta $80,x                        ;;; Clear zero-page RAM ($80+$7F=$FF down to $80+$01=$81)
+          ;; Clear SCRAM at $F000,x
+          sta $F000,x                      ;;; Clear SCRAM write ports ($F000+$7F=$F07F down to $F000+$01=$F001)
           dex                              ;;; Decrement X
-          bne WarmStartClearMemory         ;;; Continue until X wraps from $00 to $FF (bne fails when X becomes $FF)
+          bne WarmStartClearMemory         ;;; Continue until X wraps from $01 to $00 (bne fails when X becomes $00)
+          ;; X is now $00, clear remaining SCRAM from $7F down to $00 (never write to $80)
+          ldx # $7F                        ;;; Start at $7F, iterate down to $00
+WarmStartClearSCRAM:
+          sta $F000,x                      ;;; Clear SCRAM write ports ($F000+$7F=$F07F down to $F000+$00=$F000)
+          dex                              ;;; Decrement X
+          bpl WarmStartClearSCRAM          ;;; Continue until X wraps from $00 to $FF (bpl fails when X becomes $FF)
           ;; X is now $FF (wrapped), loop complete
           
           ;; Step 3: Clear TIA registers

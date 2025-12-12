@@ -1762,7 +1762,7 @@ HandleFlyingCharacterMovement .proc
 
           ;; Players 1,3 use joy1
 
-          ;; If temp1 & 2 = 0 then jmp HFCM_UseJoy0
+          ;; If temp1 & 2 = 0 then jmp HandleFlyingCharacterMovementUseJoy0
 
           ;; if joy1left, then jmp HandleFlyingCharacterMovementCheckLeftCollision
           lda joy1left
@@ -2075,22 +2075,22 @@ HandleFlyingCharacterMovementLeftApplyDone:
           ;; Returns: Far (return otherbank)
 
           ;; Inline ShouldPreserveFacing logic
-          ;; If (playerState[temp1] & 8), then jmp SPF_InlineYes1
+          ;; If (playerState[temp1] & 8), then jmp ShouldPreserveFacingInlineYes1
           lda temp1
           asl
           tax
           lda playerState,x
           and # 8
-          beq SPF_InlineNo1
-          jmp SPF_InlineYes1
-SPF_InlineNo1:
+          beq ShouldPreserveFacingInlineNo1
+          jmp ShouldPreserveFacingInlineYes1
+ShouldPreserveFacingInlineNo1:
           lda temp1
           asl
           tax
           lda playerState,x
           and # 8
           beq GetAnimationState
-          jmp SPF_InlineYes1
+          jmp ShouldPreserveFacingInlineYes1
 GetAnimationState:
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
@@ -2107,45 +2107,45 @@ GetAnimationState:
 AfterGetPlayerAnimationStateInline1:
 
 
-          ;; If temp2 < 5, then jmp SPF_InlineNo1          lda temp2          cmp 5          bcs .skip_6997          jmp
+          ;; If temp2 < 5, then jmp ShouldPreserveFacingInlineNo1          lda temp2          cmp 5          bcs .skip_6997          jmp
           lda temp2
           cmp # 5
           bcs CheckAnimationState10Left
-          jmp SPF_InlineNo1
+          jmp ShouldPreserveFacingInlineNo1
 CheckAnimationState10Left:
 
           lda temp2
           cmp # 5
           bcs CheckAnimationState10LeftLabel
-          jmp SPF_InlineNo1
+          jmp ShouldPreserveFacingInlineNo1
 CheckAnimationState10LeftLabel:
 
           
 
           lda temp2
           cmp # 10
-          bcc SPF_InlineNo1
-          jmp SPF_InlineYes1
-SPF_InlineNo1:
+          bcc ShouldPreserveFacingInlineNo1
+          jmp ShouldPreserveFacingInlineYes1
+ShouldPreserveFacingInlineNo1:
 
 
 .pend
 
-SPF_InlineYes1 .proc
+ShouldPreserveFacingInlineYes1 .proc
 
           lda # 1
           sta temp3
 
-          jmp SPF_InlineDone1
+          jmp ShouldPreserveFacingInlineDone1
 
 .pend
 
-SPF_InlineNo1 .proc
+ShouldPreserveFacingInlineNo1 .proc
 
           lda # 0
           sta temp3
 
-SPF_InlineDone1
+ShouldPreserveFacingInlineDone1
 
           lda temp3
           bne HandleStandardHorizontalMovementAfterLeftSetDoneHandleFlyingCharacterMovement
@@ -2476,22 +2476,22 @@ HandleFlyingCharacterMovementRightApplyDone
           ;; Returns: Far (return otherbank)
 
           ;; Inline ShouldPreserveFacing logic
-          ;; If (playerState[temp1] & 8), then jmp SPF_InlineYes2
+          ;; If (playerState[temp1] & 8), then jmp ShouldPreserveFacingInlineYes2
           lda temp1
           asl
           tax
           lda playerState,x
           and # 8
-          beq SPF_InlineNo2
-          jmp SPF_InlineYes2
-SPF_InlineNo2:
+          beq ShouldPreserveFacingInlineNo2
+          jmp ShouldPreserveFacingInlineYes2
+ShouldPreserveFacingInlineNo2:
           lda temp1
           asl
           tax
           lda playerState,x
           and # 8
           beq GetAnimationStateRight
-          jmp SPF_InlineYes2
+          jmp ShouldPreserveFacingInlineYes2
 GetAnimationStateRight:
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
@@ -2508,45 +2508,45 @@ GetAnimationStateRight:
 AfterGetPlayerAnimationStateInline2:
 
 
-          ;; If temp2 < 5, then jmp SPF_InlineNo2          lda temp2          cmp 5          bcs .skip_5155          jmp
+          ;; If temp2 < 5, then jmp ShouldPreserveFacingInlineNo2          lda temp2          cmp 5          bcs .skip_5155          jmp
           lda temp2
           cmp # 5
           bcs CheckAnimationState10RightSPF
-          jmp SPF_InlineNo2
+          jmp ShouldPreserveFacingInlineNo2
 CheckAnimationState10RightSPF:
 
           lda temp2
           cmp # 5
           bcs CheckAnimationState10RightLabelSPF
-          jmp SPF_InlineNo2
+          jmp ShouldPreserveFacingInlineNo2
 CheckAnimationState10RightLabelSPF:
 
           
 
           lda temp2
           cmp # 10
-          bcc SPF_InlineNo2
-          jmp SPF_InlineYes2
-SPF_InlineNo2:
+          bcc ShouldPreserveFacingInlineNo2
+          jmp ShouldPreserveFacingInlineYes2
+ShouldPreserveFacingInlineNo2:
 
 
 .pend
 
-SPF_InlineYes2 .proc
+ShouldPreserveFacingInlineYes2 .proc
 
           lda # 1
           sta temp3
 
-          jmp SPF_InlineDone2
+          jmp ShouldPreserveFacingInlineDone2
 
 .pend
 
-SPF_InlineNo2 .proc
+ShouldPreserveFacingInlineNo2 .proc
 
           lda # 0
           sta temp3
 
-SPF_InlineDone2
+ShouldPreserveFacingInlineDone2
 
           ;; Vertical control for flying characters: UP/DOWN
           ;; Returns: Far (return otherbank)

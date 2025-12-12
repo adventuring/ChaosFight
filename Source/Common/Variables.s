@@ -141,13 +141,13 @@
           ;; Game state and system flags (consolidated to save RAM)
           ;; Game mode index (0-8): ModePublisherPrelude, ModeAuthorPrelude, etc.
           ;; System flags (packed byte):
-          ;; bit 7: 7800 console detected (SystemFlag7800 = $80) - mirrors console7800Detected
           ;; bit 6: Color/B&W override active
           ;; (SystemFlagColorBWOverride = $40, 7800 only)
           ;; bit 5: Pause button previous state (SystemFlagPauseButtonPrev = $20)
           ;; bit 4: Game state paused (SystemFlagGameStatePaused = $10, 0=normal, 1=paused)
           ;; bit 3: Game state ending (SystemFlagGameStateEnding = $08, 0=normal, 1=ending)
-          ;; Bits 0-2: Reserved for future use
+          ;; Bits 0-2, 7: Reserved for future use
+          ;; NOTE: 7800 console detection is in console7800Detected ($80), not systemFlags
           gameMode  = $eb
           systemFlags  = $e1
           ;; Packed controller status bits (controller hardware detection):
@@ -157,7 +157,6 @@
           ;; bit 2: Genesis/MegaDrive controller on right port ($04)
           ;; bit 3: Joy2b+ controller on right port ($08)
           ;; Bits 4-6: Reserved for future use
-          ;; NOTE: 7800 console detection is in systemFlags (bit 7), not controllerStatus
           controllerStatus  = $e3
 
           ;; Frame phase counter (cycles 0-3 each frame for multi-frame operations)

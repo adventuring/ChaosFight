@@ -432,9 +432,15 @@ CheckPlayer4Character:
           jmp InputDonePlayer4Input
 CheckPlayer4State:
 
-
-                    if (playerState[3] & 8) then jmp InputDonePlayer4Input
-
+          ;; If (playerState[3] & 8), then jmp InputDonePlayer4Input
+          lda # 3
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq InputDonePlayer4InputSkipSecond
+          jmp InputDonePlayer4Input
+InputDonePlayer4InputSkipSecond:
           ;; Set temp1 = 3
           lda # 3
           sta temp1 : cross-bank call to InputHandleRightPortPlayerFunction
@@ -823,8 +829,13 @@ ColumnInRange:
 
 
           ;; Compute head row and check ceiling contact
-
-                    if temp4 & $80 then let temp4 = 0
+          ;; If temp4 & $80, set temp4 = 0
+          lda temp4
+          and # $80
+          beq CheckTemp4RangeSecond
+          lda # 0
+          sta temp4
+CheckTemp4RangeSecond:
 
           ;; Set temp3 = playerY[temp1]         
           lda temp1
@@ -905,19 +916,33 @@ CheckPlayer2JoyPortRoboTito:
           jmp HandleUpInputEnhancedButtonRoboTitoCheckJoy0
 CheckJoy1Down:
 
-
-                    if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy1down          beq HandleUpInputEnhancedButtonRoboTitoDoneJoy1
+          ;; If joy1down, set characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
+          lda joy1down
+          beq HandleUpInputEnhancedButtonRoboTitoDoneJoy1
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          and # (255 - 1)
+          sta characterStateFlags_W,x
 HandleUpInputEnhancedButtonRoboTitoDoneJoy1:
-          jmp HandleUpInputEnhancedButtonRoboTitoDoneJoy1
-          jmp HandleUpInputEnhancedButtonRoboTitoDoneJoy1
+          jmp BS_return
 
 .pend
 
 HandleUpInputEnhancedButtonRoboTitoCheckJoy0 .proc
 
-                    if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq HandleUpInputEnhancedButtonRoboTitoDoneJoy0
+          ;; If joy0down, set characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
+          lda joy0down
+          beq HandleUpInputEnhancedButtonRoboTitoDoneJoy0
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          and # (255 - 1)
+          sta characterStateFlags_W,x
 HandleUpInputEnhancedButtonRoboTitoDoneJoy0:
-          jmp HandleUpInputEnhancedButtonRoboTitoDoneJoy0
+          jmp BS_return
 
 HandleUpInputEnhancedButtonRoboTitoDoneJoy0Label:
           lda # 0
@@ -1364,7 +1389,14 @@ HSHM_LeftMomentum .proc
           lda CharacterMovementSpeed,x
           sta temp6
 
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          sec
+          sbc temp6
+          sta playerVelocityX,x
           lda temp1
           asl
           tax
@@ -1445,7 +1477,13 @@ HSHM_SPF_Done1
 
           lda temp3
           bne HSHM_AfterLeftSetDone
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # (255 - PlayerStateBitFacing)
+          sta playerState,x
 HSHM_AfterLeftSetDone:
 
 
@@ -1609,8 +1647,15 @@ HSHM_AfterRightSet .proc
 
           ;; Inline ShouldPreserveFacing logic
           ;; Returns: Far (return otherbank)
-
-                    if (playerState[temp1] & 8) then jmp HSHM_SPF_Yes2
+          ;; If (playerState[temp1] & 8), then jmp HSHM_SPF_Yes2
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq HSHM_SPF_No2
+          jmp HSHM_SPF_Yes2
+HSHM_SPF_No2:
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateAfterRightSet-1)

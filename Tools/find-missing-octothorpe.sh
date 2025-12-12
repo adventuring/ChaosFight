@@ -26,6 +26,14 @@ while IFS=: read file line_num line; do
             continue  # Skip 4-digit hex addresses
         fi
         
+        # Known valid zero-page addresses (hardware registers, temp variables)
+        # $d0, $D0, $d1, $D1 are console detection hardware registers
+        # $ee is a zero-page address used for display
+        # $0282 is switchbw (batariBASIC constant)
+        if echo "$operand" | grep -qiE '^\$[dD][01]$|^\$ee$|^\$0282$|^\$0[eE][eE]$'; then
+            continue  # Skip known valid zero-page addresses
+        fi
+        
         # Check if it's followed by a comma (indexed addressing) - these are valid
         if echo "$line" | grep -qE "\b($IMMEDIATE_INSTRUCTIONS)\s+([0-9]+|[$][0-9a-fA-F]+),"; then
             continue  # Skip indexed addressing

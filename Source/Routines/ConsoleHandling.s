@@ -19,25 +19,33 @@ WarmStart .proc
           ;; Constraints: Entry point for warm start (called from cold start procedure)
           ;; Must clear memory before any stack operations
           
-          ;; Step 1: Clear all memory from $81 to $FF
-          lda # 0
-          ldx # $FF
-WarmStartClearMemory:
-          sta $00,x                        ;;; Clear zero-page RAM ($81-$FF)
-          dex
-          cpx # $80                        ;;; Stop at $80 (console7800Detected must be preserved)
-          bne WarmStartClearMemory
-          
-          ;; Step 2: Clear SCRAM w000-w127
+          ;; Step 1: Clear all memory from $81 to $FF (zero-page RAM) and SCRAM w000-w127 together
           ;; SCRAM write ports are at $F000-$F07F (w000-w127)
           ;; SCRAM read ports are at $F080-$F0FF (r000-r127)
           ;; Must write to write ports, not read ports
+          ;; Iterate from $FF down, clearing both zero-page RAM ($81-$FF) and SCRAM ($F000-$F07F)
+          ;; Exit when dex causes X to wrap from $00 to $FF (bne fails when X becomes $00, but we check for wrap)
           lda # 0
-          ldx # $7F                        ;;; 128 bytes ($00-$7F)
-WarmStartClearSCRAM:
+          ldx # $FF                        ;;; Start at $FF, iterate down
+WarmStartClearMemory:
+          ;; Clear zero-page RAM if X >= $81
+          cpx # $81                        ;;; Check if X >= $81
+          bcc WarmStartSkipZPRAM          ;;; If X < $81, skip zero-page RAM clear
+          sta $00,x                        ;;; Clear zero-page RAM ($81-$FF)
+WarmStartSkipZPRAM:
+          ;; Clear SCRAM if X <= $7F (SCRAM addresses $F000-$F07F = offsets $00-$7F)
+          cpx # $80                        ;;; Check if X < $80 (i.e., X <= $7F)
+          bcs WarmStartSkipSCRAM          ;;; If X >= $80, skip SCRAM clear
           sta $F000,x                      ;;; Clear SCRAM write ports ($F000-$F07F = w000-w127)
-          dex
-          bpl WarmStartClearSCRAM
+WarmStartSkipSCRAM:
+          dex                              ;;; Decrement X
+          ;; Exit when X wraps from $00 to $FF (after clearing $00, dex makes X = $FF)
+          ;; Check if X == $FF (wrapped) and we've already cleared $81-$FF
+          cpx # $FF                        ;;; Check if X wrapped to $FF
+          beq WarmStartClearMemoryDone    ;;; If X == $FF (wrapped), exit
+          ;; Continue loop
+          bne WarmStartClearMemory        ;;; If X != $FF, continue (bne always succeeds until X wraps)
+WarmStartClearMemoryDone:
           
           ;; Step 3: Clear TIA registers
           ;; Clear all TIA registers to safe defaults

@@ -752,12 +752,17 @@ RoboTitoVoluntaryDrop .proc
           ;; Returns: Far (return otherbank)
 
           ;; Fix RMW: Read from _R, modify, write to _W
-
-                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & ($ff ^ PlayerStateBitFacing)
+          ;; Set characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & ($ff ^ PlayerStateBitFacing)
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          and # ($ff ^ PlayerStateBitFacing)
+          sta characterStateFlags_W,x
 
           ;; Clear latched bit (bit 0)
 
-          ;; let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
+          ;; Set playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
           lda temp1
           asl
           tax

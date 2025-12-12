@@ -70,24 +70,27 @@ CharacterSelectEntry .proc
           ;; Check for Quadtari adapter (inlined for performance)
           ;; CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
           ;; Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) and Right (INPT2 LOW, INPT3 HIGH)
-          ;; if INPT0{7} then jmp CharacterSelectQuadtariAbsent
+          ;; If INPT0{7} is set, Quadtari absent
+          bit INPT0
+          bpl CheckINPT1
+          jmp CharacterSelectQuadtariAbsent
+CheckINPT1:
 
-          if !INPT1{7} then jmp CharacterSelectQuadtariAbsent
+          ;; If !INPT1{7}, Quadtari absent
           bit INPT1
           bmi CheckINPT2
-
           jmp CharacterSelectQuadtariAbsent
 
 CheckINPT2:
 
-          ;; if INPT2{7} then jmp CharacterSelectQuadtariAbsent
+          ;; If INPT2{7} is set, Quadtari absent
           bit INPT2
           bpl CheckINPT3
           jmp CharacterSelectQuadtariAbsent
 CheckINPT3:
 
           ;; All checks passed - Quadtari detected
-                    if !INPT3{7} then jmp CharacterSelectQuadtariAbsent
+          ;; If !INPT3{7}, Quadtari absent
           bit INPT3
           bmi SetQuadtariDetected
           jmp CharacterSelectQuadtariAbsent

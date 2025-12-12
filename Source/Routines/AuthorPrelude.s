@@ -118,7 +118,7 @@ CheckAutoAdvanceLabel:
 
 
           ;; Auto-advance after music completes + 0.5s
-                    if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete
+          ;; If preambleTimer > 30 && musicPlaying = 0, then AuthorPreludeComplete
           lda preambleTimer
           cmp # 31
           bcc IncrementTimer

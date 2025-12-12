@@ -229,7 +229,13 @@ CheckPlayer3Character:
 
 
           ;; Update Player 4 health bar (inlined from UpdateHealthBarPlayer3)
-                    if playerCharacter[3] = NoCharacter then DonePlayer3HealthUpdate
+          ;; If playerCharacter[3] = NoCharacter, then DonePlayer3HealthUpdate
+          lda # 3
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq DonePlayer3HealthUpdate
 
           ;; Input: playerHealth[] (global array) = player health values
           ;; HealthBarMaxLength (constant) = maximum health bar length

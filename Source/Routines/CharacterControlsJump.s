@@ -194,10 +194,12 @@ BernieCheckBottomWrap .proc
           jmp BS_jsr
 AfterPlayfieldReadFreeFlightUp1:
 
-
-                    if temp1 then let temp5 = 1          lda temp1          beq BernieCheckBottomWrapFreeFlight1
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq BernieCheckBottomWrapFreeFlight1
+          lda # 1
+          sta temp5
 BernieCheckBottomWrapFreeFlight1:
-          jmp BernieCheckBottomWrapFreeFlight1
           lda temp3
           sta temp1
           jmp BS_return
@@ -347,7 +349,17 @@ CheckCooldownExpired:
 
 HarpyFlapRecord .proc
           ;; Returns: Far (return otherbank)
-                    if characterSpecialAbility_R[temp1] > 0 then let characterSpecialAbility_W[temp1] = characterSpecialAbility_R[temp1] - 1
+          ;; If characterSpecialAbility_R[temp1] > 0, then set characterSpecialAbility_W[temp1] = characterSpecialAbility_R[temp1] - 1
+          lda temp1
+          asl
+          tax
+          lda characterSpecialAbility_R,x
+          beq HarpyFlapRecordDone
+          lda characterSpecialAbility_R,x
+          sec
+          sbc # 1
+          sta characterSpecialAbility_W,x
+HarpyFlapRecordDone:
           lda temp1
           asl
           tax

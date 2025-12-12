@@ -99,9 +99,26 @@ BPC_Phase2 .proc
 
           ;; Input: temp3 = player 1 index, temp4 = player 2 index
           ;; Output: separates players if collision detected
-                    if playerX[temp3] >= playerX[temp4] then BPC_CalcDiff
-
-                    let temp2 = playerX[temp4] - playerX[temp3]          lda temp4          asl          tax          lda playerX,x          sta temp2
+          ;; If playerX[temp3] >= playerX[temp4], then BPC_CalcDiff
+          lda temp3
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+          lda temp4
+          asl
+          tax
+          lda playerX,x
+          cmp temp2
+          bcc BPC_CalcDiff
+          ;; Set temp2 = playerX[temp4] - playerX[temp3]
+          lda temp4
+          asl
+          tax
+          lda playerX,x
+          sec
+          sbc temp2
+          sta temp2
           jmp BPC_CheckSep
 
 BPC_CalcDiff

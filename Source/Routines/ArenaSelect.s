@@ -106,9 +106,12 @@ CheckJoy1Fire:
 CheckQuadtariFire:
 
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
-          if (controllerStatus & SetQuadtariDetected) <> 0 then jmp CheckQuadtariFireHold
+          ;; If (controllerStatus & SetQuadtariDetected) <> 0, then jmp CheckQuadtariFireHold
           lda controllerStatus
           and # SetQuadtariDetected
+          beq CheckQuadtariFireHoldSkip
+          jmp CheckQuadtariFireHold
+CheckQuadtariFireHoldSkip:
           beq CheckFireHoldTimer
 
           jmp CheckQuadtariFireHold
@@ -522,10 +525,15 @@ CheckQuadtariFireHold
           ;; Constraints: Must be colocated with ArenaSelect1 (called via goto)
           ;; Check Player 3 and 4 fire buttons (Quadtari)
           ;; Player 3 fire button (left port, odd frame)
-                    if !INPT0{7} then let temp1 = 1
+          ;; If !INPT0{7}, then set temp1 = 1
+          bit INPT0
+          bmi CheckINPT2Fire
+          lda # 1
+          sta temp1
+CheckINPT2Fire:
 
           ;; Player 4 fire button (right port, odd frame)
-                    if !INPT2{7} then let temp1 = 1
+          ;; If !INPT2{7}, then set temp1 = 1
           bit INPT2
           bmi CheckQuadtariFireHoldDone
           lda 1

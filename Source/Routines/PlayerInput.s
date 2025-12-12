@@ -1712,10 +1712,15 @@ HSHM_SPF_No2 .proc
 HSHM_SPF_Done2
 
           lda temp3
-          bne HSHM_AfterRightSetDone
-                    let playerState[temp1] = playerState[temp1] | 1
-HSHM_AfterRightSetDone:
-
+          bne HSHM_AfterRightSetDoneFirst
+          ;; Set playerState[temp1] = playerState[temp1] | 1
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 1
+          sta playerState,x
+HSHM_AfterRightSetDoneFirst:
 
           rts
 
@@ -2144,7 +2149,13 @@ SPF_InlineDone1
 
           lda temp3
           bne HSHM_AfterLeftSetDoneHFCM
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # (255 - PlayerStateBitFacing)
+          sta playerState,x
 HSHM_AfterLeftSetDoneHFCM:
 
 
@@ -2217,13 +2228,18 @@ HFCM_DoRightMovement .proc
 
           lda temp2
           cmp # 32
-          bcc ColumnInRangeLeft
+          bcc ColumnInRangeLeftSecond
           lda # 31
           sta temp2
-ColumnInRangeLeft:
+ColumnInRangeLeftSecond:
 
-
-                    if temp2 & $80 then let temp2 = 0
+          ;; If temp2 & $80, set temp2 = 0
+          lda temp2
+          and # $80
+          beq CheckTemp2RangeLeftThird
+          lda # 0
+          sta temp2
+CheckTemp2RangeLeftThird:
 
 
 
@@ -2365,10 +2381,12 @@ CheckBottomRow:
           jmp BS_jsr
 AfterPlayfieldReadMoveRightBottomRow:
 
-
-                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRowMoveRightBottom
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq CheckBottomRowMoveRightBottom
+          lda # 1
+          sta temp5
 CheckBottomRowMoveRightBottom:
-          jmp CheckBottomRowMoveRightBottom
           lda currentPlayer
           sta temp1
 
@@ -2534,9 +2552,15 @@ SPF_InlineDone2
           ;; Returns: Far (return otherbank)
 
           lda temp3
-          bne HSHM_AfterRightSetDone
-                    let playerState[temp1] = playerState[temp1] | 1
-HSHM_AfterRightSetDone:
+          bne HSHM_AfterRightSetDoneSecond
+          ;; Set playerState[temp1] = playerState[temp1] | 1
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 1
+          sta playerState,x
+HSHM_AfterRightSetDoneSecond:
 
 
           ;; If temp1 & 2 = 0, then jmp HFCM_VertJoy0
@@ -3015,8 +3039,15 @@ CheckJoy0Fire:
           jmp InputDoneLeftPortAttack
 DispatchAttack:
 
-
-                    if (playerState[temp1] & PlayerStateBitFacing) then jmp InputDoneLeftPortAttack
+          ;; If (playerState[temp1] & PlayerStateBitFacing), then jmp InputDoneLeftPortAttack
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # PlayerStateBitFacing
+          beq InputDoneLeftPortAttackSkipSecond
+          jmp InputDoneLeftPortAttack
+InputDoneLeftPortAttackSkipSecond:
 
           ;; Set temp4 = playerCharacter[temp1]         
           lda temp1

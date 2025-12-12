@@ -153,9 +153,10 @@ AdvanceFrame .proc
 
           UPA_CheckAnimationLength:
           jmp UpdateSprite
-DoneAdvance
+DoneAdvance:
           rts
-HandleFrame7Transition
+
+HandleFrame7Transition:
           ;; Frame 7 completed, handle action-specific transitions
           ;; Returns: Far (return otherbank)
           ;;
@@ -193,7 +194,7 @@ AnimationTransitionLoopAnimation:
 
           jmp AnimationTransitionLoopAnimation
 
-AnimationTransitionLoopAnimation
+AnimationTransitionLoopAnimation:
           lda currentPlayer
           asl
           tax
@@ -208,14 +209,14 @@ AnimationTransitionToIdle
 
           jmp AnimationSetPlayerAnimationInlined
 
-AnimationTransitionToFallen
+AnimationTransitionToFallen:
           lda ActionFallen
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
           jmp AnimationSetPlayerAnimationInlined
 
-AnimationTransitionHandleJump
+AnimationTransitionHandleJump:
           ;; Stay on frame 7 until Y velocity goes negative
           ;; If 0 < playerVelocityY[currentPlayer], then AnimationTransitionHandleJump_TransitionToFalling
           lda currentPlayer
@@ -251,7 +252,7 @@ AnimationTransitionHandleJump_TransitionToFalling
 
           jmp AnimationSetPlayerAnimationInlined
 
-AnimationTransitionHandleFallBack
+AnimationTransitionHandleFallBack:
           ;; Check wall collision using pfread
           ;; Convert player X position to playfield column (0-31)
           ;; Set temp5 = playerX[currentPlayer]
@@ -353,7 +354,7 @@ AnimationTransitionHandleFallBack_HitWall
 
           jmp AnimationSetPlayerAnimationInlined
 
-AnimationHandleAttackTransition
+AnimationHandleAttackTransition:
           ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
@@ -859,7 +860,7 @@ AnimationNextPlayerLabel:
           bcc UpdateCharacterAnimations
           jmp BS_return
 
-Anim_next_label_1:.proc
+AnimationNextLabel1 .proc
           jmp BS_return
 SetPlayerAnimation
           ;; Returns: Far (return otherbank)

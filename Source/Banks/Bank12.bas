@@ -57,6 +57,12 @@ end
           asm
 ProcessStandardMovementEnd
             echo "// Bank 12: ", [ProcessStandardMovementEnd - ProcessStandardMovementStart]d, " bytes = ProcessStandardMovement"
+ColdStartStart
+end
+#include "Source/Routines/ColdStart.bas"
+          asm
+ColdStartEnd
+            echo "// Bank 12: ", [ColdStartEnd - ColdStartStart]d, " bytes = ColdStart"
 ConsoleHandlingStart
 end
 #include "Source/Routines/ConsoleHandling.bas"

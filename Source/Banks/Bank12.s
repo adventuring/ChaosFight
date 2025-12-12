@@ -44,6 +44,10 @@ ProcessStandardMovementStart:
 .include "Source/Routines/ProcessStandardMovement.s"
 ProcessStandardMovementEnd:
             .warn format("// Bank 12: %d bytes = ProcessStandardMovement", [ProcessStandardMovementEnd - ProcessStandardMovementStart])
+ColdStartStart:
+.include "Source/Routines/ColdStart.s"
+ColdStartEnd:
+            .warn format("// Bank 12: %d bytes = ColdStart", [ColdStartEnd - ColdStartStart])
 ConsoleHandlingStart:
 .include "Source/Routines/ConsoleHandling.s"
 ConsoleHandlingEnd:

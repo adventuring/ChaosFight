@@ -25,8 +25,8 @@ ConsoleDetHW .proc
           ;;
           ;; Called Routines: None (reads hardware registers directly)
           ;;
-          ;; Constraints: Must be colocated with CheckFlashed, Is7800,
-          ;; Is2600 (all called via goto)
+          ;; Constraints: Must be colocated with CheckFlashed, Is7800Console,
+          ;; Is2600Console (all called via goto)
           ;; MUST run before any code modifies $D0/$D1
           ;; registers
           ;; Entry point for console detection (called
@@ -49,13 +49,13 @@ CheckD0For7800:
 
           lda temp1
           cmp # ConsoleDetectD0
-          bne Not7800D0
+          bne Not7800ConsoleD0
 
           jmp CheckD1
 
-Not7800D0:
+Not7800ConsoleD0:
 
-          jmp Is2600
+          jmp Is2600Console
 
 .pend
 
@@ -65,14 +65,14 @@ CheckD1 .proc
           sta temp1
           lda temp1
           cmp # ConsoleDetectD1
-          bne Not7800D1
+          bne Not7800ConsoleD1
 
-          jmp Is7800
+          jmp Is7800Console
 
-Not7800D1:
+Not7800ConsoleD1:
 
           ;; 7800 detected: $D0=$2C and #$D1=$A9
-          jmp Is2600
+          jmp Is2600Console
 
 .pend
 
@@ -83,22 +83,22 @@ CheckFlashed .proc
           ;; Input: $D1 (hardware register) = console detection value
           ;; $80 (zero-page RAM) = CDFJ driver detection result
           ;;
-          ;; Output: Dispatches to Is7800 or Is2600
+          ;; Output: Dispatches to Is7800Console or Is2600Console
           ;;
           ;; Mutates: temp1 (used for hardware register reads)
           ;;
           ;; Called Routines: None
           ;;
-          ;; Constraints: Must be colocated with ConsoleDetHW, Is7800,
-          ;; Is2600
+          ;; Constraints: Must be colocated with ConsoleDetHW, Is7800Console,
+          ;; Is2600Console
           ;; Check if $D1 is also $00 (flashed game)
           lda $D1
           sta temp1
-          ;; If temp1 is non-zero, jmp Is2600
+          ;; If temp1 is non-zero, jmp Is2600Console
           lda temp1
           beq CheckCDFJDriver
 
-          jmp Is2600
+          jmp Is2600Console
 
 CheckCDFJDriver:
 
@@ -114,20 +114,20 @@ CheckCDFJDriver:
           beq CDFJDriverDetected2600
 
           ;; $80 is not $00 or $80, treat as 2600
-          jmp Is2600
+          jmp Is2600Console
 
 CDFJDriverDetected2600:
           ;; $80 was $00, confirmed 2600
-          jmp Is2600
+          jmp Is2600Console
 
 CDFJDriverDetected7800:
 
-          ;; fall through to Is7800
+          ;; fall through to Is7800Console
           ;; $80 was $80, confirmed 7800
 
 .pend
 
-Is7800 .proc
+Is7800Console .proc
           ;; 7800 console detected
           ;;
           ;; Input: None
@@ -144,7 +144,7 @@ Is7800 .proc
 
 .pend
 
-Is2600 .proc
+Is2600Console .proc
           ;; 2600 console detected
           ;;
           ;; Input: None

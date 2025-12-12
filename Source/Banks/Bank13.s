@@ -29,8 +29,6 @@ Bank13AfterChangeGameMode:
 Bank13AfterBeginAuthorPrelude:
 .include "Source/Routines/BeginAttractMode.s"
 Bank13AfterBeginAttractMode:
-.include "Source/Routines/ColdStart.s"
-Bank13AfterColdStart:
 .include "Source/Routines/InitializeSpritePointers.s"
 Bank13AfterSpritePointerInit:
 .include "Source/Routines/TitleScreenMain.s"
@@ -78,8 +76,7 @@ Bank13CodeEnds:
            .warn format("// Bank 13: %d bytes = ChangeGameMode", [Bank13AfterChangeGameMode - Bank13AfterPublisherPrelude])
            .warn format("// Bank 13: %d bytes = BeginAuthorPrelude", [Bank13AfterBeginAuthorPrelude - Bank13AfterChangeGameMode])
            .warn format("// Bank 13: %d bytes = BeginAttractMode", [Bank13AfterBeginAttractMode - Bank13AfterBeginAuthorPrelude])
-           .warn format("// Bank 13: %d bytes = ColdStart", [Bank13AfterColdStart - Bank13AfterBeginAttractMode])
-           .warn format("// Bank 13: %d bytes = SpritePointerInit", [Bank13AfterSpritePointerInit - Bank13AfterColdStart])
+           .warn format("// Bank 13: %d bytes = SpritePointerInit", [Bank13AfterSpritePointerInit - Bank13AfterBeginAttractMode])
            .warn format("// Bank 13: %d bytes = TitleScreenMain", [Bank13AfterTitleScreenMain - Bank13AfterSpritePointerInit])
            .warn format("// Bank 13: %d bytes = TitleCharacterParade", [Bank13AfterTitleCharacterParade - Bank13AfterTitleScreenMain])
            .warn format("// Bank 13: %d bytes = AttractMode", [Bank13AfterAttractMode - Bank13AfterTitleCharacterParade])

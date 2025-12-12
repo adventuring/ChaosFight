@@ -39,10 +39,6 @@ end
           asm
 Bank14AfterBeginAttractMode
 end
-#include "Source/Routines/ColdStart.bas"
-          asm
-Bank14AfterColdStart
-end
 #include "Source/Routines/InitializeSpritePointers.bas"
           asm
 Bank14AfterSpritePointerInit
@@ -129,8 +125,7 @@ Bank14CodeEnds
            echo "// Bank 13: ", [Bank14AfterChangeGameMode - Bank14AfterPublisherPrelude]d, " bytes = ChangeGameMode"
            echo "// Bank 13: ", [Bank14AfterBeginAuthorPrelude - Bank14AfterChangeGameMode]d, " bytes = BeginAuthorPrelude"
            echo "// Bank 13: ", [Bank14AfterBeginAttractMode - Bank14AfterBeginAuthorPrelude]d, " bytes = BeginAttractMode"
-           echo "// Bank 13: ", [Bank14AfterColdStart - Bank14AfterBeginAttractMode]d, " bytes = ColdStart"
-           echo "// Bank 13: ", [Bank14AfterSpritePointerInit - Bank14AfterColdStart]d, " bytes = SpritePointerInit"
+           echo "// Bank 13: ", [Bank14AfterSpritePointerInit - Bank14AfterBeginAttractMode]d, " bytes = SpritePointerInit"
            echo "// Bank 13: ", [Bank14AfterTitleScreenMain - Bank14AfterSpritePointerInit]d, " bytes = TitleScreenMain"
            echo "// Bank 13: ", [Bank14AfterTitleCharacterParade - Bank14AfterTitleScreenMain]d, " bytes = TitleCharacterParade"
            echo "// Bank 13: ", [Bank14AfterAttractMode - Bank14AfterTitleCharacterParade]d, " bytes = AttractMode"

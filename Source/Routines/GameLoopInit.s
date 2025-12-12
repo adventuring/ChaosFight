@@ -144,7 +144,7 @@ Init2PlayerPositions:
           sta playerY,x
           jmp InitPositionsDone
 
-Init4PlayerPositions
+Init4PlayerPositions:
           ;; Initialize player positions for 4-player mode
           ;; Returns: Far (return otherbank)
           ;;
@@ -204,7 +204,7 @@ Init4PlayerPositions
           sta playerY,x
           ;; Player 2: 4/5 width
 
-InitPositionsDone
+InitPositionsDone:
           ;; Player positions initialization complete
           ;; Returns: Far (return otherbank)
           ;;
@@ -323,18 +323,18 @@ SetPlayers34ActiveFlag .proc
           lda controllerStatus
           and ClearPlayers34Active
           sta controllerStatus
-          ;; if playerCharacter[2] = NoCharacter then jmp skip_activation2
+          ;; if playerCharacter[2] = NoCharacter then jmp SkipPlayer3Activation
           lda controllerStatus
           ora SetPlayers34Active
           sta controllerStatus
 
-skip_activation2:
-          ;; if playerCharacter[3] = NoCharacter then jmp skip_activation3
+SkipPlayer3Activation:
+          ;; if playerCharacter[3] = NoCharacter then jmp SkipPlayer4Activation
           lda controllerStatus
           ora SetPlayers34Active
           sta controllerStatus
 
-skip_activation3:
+SkipPlayer4Activation:
           ;; Initialize missiles
           ;; missileActive uses bit flags: bit 0 = Player 0, bit 1 =
           ;; Player 1, bit 2 = Player 2, bit 3 = Player 3

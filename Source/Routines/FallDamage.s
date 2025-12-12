@@ -104,22 +104,22 @@ ApplyWeightMultiplier:
                     ldx temp2
             dex
             dex
-            beq mult2
+            beq MultiplyBy2
             dex
-            beq mult3
+            beq MultiplyBy3
             dex
-            beq mult4
+            beq MultiplyBy4
             dex
-            beq mult5
+            beq MultiplyBy5
             sta temp4
-            jmp multdone
-mult2:
+            jmp MultiplyDone
+MultiplyBy2:
 
           asl
 
             sta temp4
-            jmp multdone
-mult3:
+            jmp MultiplyDone
+MultiplyBy3:
 
           sta
 
@@ -127,15 +127,15 @@ mult3:
             clc
             adc temp3
             sta temp4
-            jmp multdone
-mult4:
+            jmp MultiplyDone
+MultiplyBy4:
 
           asl
 
             asl
             sta temp4
-            jmp multdone
-mult5:
+            jmp MultiplyDone
+MultiplyBy5:
 
           sta
 
@@ -144,9 +144,9 @@ mult5:
             clc
             adc temp3
             sta temp4
-multdone:
+MultiplyDone:
 
-WeightMultDone
+WeightMultDone:
           ;; temp4 = damage × (weight / 20) (weight-based multiplier applied)
           ;; Returns: Far (return otherbank)
 
@@ -402,7 +402,7 @@ ApplyGravityAcceleration:
 FallDamageApplyGravityDone:
           jmp BS_return
 
-CheckGroundCollision
+CheckGroundCollision:
           ;;
           ;; Returns: Far (return otherbank)
           ;; Check Ground Collision
@@ -607,7 +607,7 @@ SetHorizontalMomentumRight:
           sta playerVelocityX,x
           jmp SetVerticalMomentum
 
-SetHorizontalMomentumRight
+SetHorizontalMomentumRight:
           ;; Facing right: set positive momentum
           ;; Returns: Far (return otherbank)
           lda currentPlayer

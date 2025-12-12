@@ -177,14 +177,14 @@ SetPausedFlag:
           and ClearSystemFlagGameStatePaused
           sta systemFlags
 
-Player1PauseDone
+Player1PauseDone:
           ;; Debounce - wait for button release (drawscreen called by
           ;; Returns: Far (return otherbank)
           ;; HandleConsoleSwitches is called cross-bank, so must use return otherbank
           ;; MainLoop)
           jmp BS_return
 
-DonePlayer1Pause
+DonePlayer1Pause:
           lda # 1
           sta temp2
           ;; Check Player 2 buttons
@@ -220,14 +220,14 @@ SetPausedFlagP2:
           and ClearSystemFlagGameStatePaused
           sta systemFlags
 
-Player2PauseDone
+Player2PauseDone:
           ;; Debounce - wait for button release (drawscreen called by
           ;; Returns: Far (return otherbank)
           ;; HandleConsoleSwitches is called cross-bank, so must use return otherbank
           ;; MainLoop)
           jmp BS_return
 
-DonePlayer2Pause
+DonePlayer2Pause:
           ;; Color/B&W switch - re-detect controllers when toggled
           ;; CRITICAL: Use bank13 even though same-bank to match return otherbank
           ;; Cross-bank call to CheckColorBWToggle in bank 13

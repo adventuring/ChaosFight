@@ -2026,7 +2026,19 @@ HFCM_LeftStandard:
 
 HFCM_LeftMomentumApply .proc
 
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] - CharacterMovementSpeed[temp5]
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - CharacterMovementSpeed[temp5]
+          lda temp5
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta temp6
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          sec
+          sbc temp6
+          sta playerVelocityX,x
           lda temp1
           asl
           tax
@@ -2286,9 +2298,12 @@ ColumnInRangeLeft:
 AfterPlayfieldReadMoveRightCurrentRow:
 
 
-                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRow
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq CheckBottomRow
+          lda # 1
+          sta temp5
 CheckBottomRow:
-          jmp CheckBottomRow
           lda currentPlayer
           sta temp1
 
@@ -2398,7 +2413,19 @@ HFCM_RightStandard:
 
 HFCM_RightMomentumApply .proc
 
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] + CharacterMovementSpeed[temp5]
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + CharacterMovementSpeed[temp5]
+          lda temp5
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta temp6
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          clc
+          adc temp6
+          sta playerVelocityX,x
           lda temp1
           asl
           tax
@@ -2411,7 +2438,19 @@ HFCM_RightMomentumApply .proc
 
 HFCM_RightDirectApply .proc
 
-                    let playerX[temp1] = playerX[temp1] + CharacterMovementSpeed[temp5]
+          ;; Set playerX[temp1] = playerX[temp1] + CharacterMovementSpeed[temp5]
+          lda temp5
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta temp6
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          clc
+          adc temp6
+          sta playerX,x
 
 HFCM_RightApplyDone
 
@@ -3548,7 +3587,7 @@ CheckPauseButtonPrev:
           jmp DonePauseToggle
 TogglePauseFlag:
 
-                    if systemFlags & SystemFlagGameStatePaused then let systemFlags = systemFlags & ClearSystemFlagGameStatePaused else systemFlags = systemFlags | SystemFlagGameStatePaused
+          ;; If systemFlags & SystemFlagGameStatePaused, then set systemFlags = systemFlags & ClearSystemFlagGameStatePaused, else set systemFlags = systemFlags | SystemFlagGameStatePaused
           lda systemFlags
           and # SystemFlagGameStatePaused
           beq SetPausedFlag
@@ -3573,8 +3612,7 @@ DonePauseToggle
           ;; Update pause button previous state in systemFlags
 
           ;; Update previous button state for next frame
-
-                    if temp1 then let systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
+          ;; If temp1, then set systemFlags = systemFlags | SystemFlagPauseButtonPrev, else set systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
           lda temp1
           beq ClearPauseButtonPrev
           lda systemFlags

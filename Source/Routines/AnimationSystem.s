@@ -1233,12 +1233,10 @@ HandleWindupEndAttack:
           lda CharacterWindupNextAction,x
           sta temp2
           rts
-          jmp SetPlayerAnimation
 
 HandleExecuteEnd
           ;; Returns: Far (return otherbank)
           ;; Set temp1 = playerCharacter[currentPlayer]
-         
           lda currentPlayer
           asl
           tax

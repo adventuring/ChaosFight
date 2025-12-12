@@ -51,6 +51,12 @@ EFSC_Header:
 
           * = $fff0
 Reset:
+          ;; CRITICAL: Initialize stack pointer before any code uses it
+          ;; On 6502 reset, stack pointer is undefined/random
+          ;; Must be initialized before jumping to ColdStart
+          ldx #$ff
+          txs              ;;; Initialize stack pointer to $FF (top of stack at $01FF)
+          
           ;; Switch to Bank 13 where ColdStart is located
           ;; Bank 13 = $ffe0 + 13
           nop $ffed

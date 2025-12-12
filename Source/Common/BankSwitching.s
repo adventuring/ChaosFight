@@ -13,16 +13,17 @@ BS_return:
           ;; This routine has been verified and must remain unchanged.
           ;; Any bugs should be fixed at their source, not by modifying this routine.
           ;;
-          ;; STACK PICTURE: [SP+0: encoded ret hi] [SP+1: encoded ret lo]
+          ;; STACK PICTURE: [SP+1: encoded ret lo] [SP+2: encoded ret hi]
           ;; Expected: 2 bytes on stack (encoded return address with bank info in high nybble of high byte)
           ;; After BS_jsr's RTS consumed the target address, only the encoded return address remains
-          ;; On little-endian 6502: if X = SP (from tsx), top of stack is at $0100+X (offset 0)
-          ;; For a word on stack: high byte is at offset 0, low byte is at offset 1
+          ;; On little-endian 6502: if X = SP (from tsx), SP points to next byte to be pushed
+          ;; Top of stack (most recently pushed byte) is at offset 1 = low byte
+          ;; High byte is at offset 2 (pushed before low byte)
           ;; Use temp7 (zero-page) instead of stack to avoid overflow
           tsx
-          ;; Encoded return address (offset 0 = high byte contains bank info in high nybble)
-          ;; Top of stack is at $0100+X, which is the high byte of the word
-          lda 0, x
+          ;; Encoded return address (offset 2 = high byte contains bank info in high nybble)
+          ;; High byte is at $0100+X+2 (offset 2 relative to X)
+          lda 2, x
           tay
           lsr a
           lsr a
@@ -33,14 +34,14 @@ BS_return:
           tya
           ;; Restore to $fx format (address in CPU space)
           ora #$f0
-          sta 0, x
+          sta 2, x
           ;; DO NOT pop the encoded return address - leave it on stack for RTS
           ;; RTS will pop the decoded return address and jump to it
           ldx temp7
-          ;; STACK PICTURE: [SP+0: decoded ret hi] [SP+1: decoded ret lo] (encoded return decoded in place)
+          ;; STACK PICTURE: [SP+1: decoded ret lo] [SP+2: decoded ret hi] (encoded return decoded in place)
           ;; Bankswitch: $ffe0 + X where X is 0-based bank number
           nop $ffe0, x
-          ;; STACK PICTURE: [SP+1: decoded ret hi] [SP+0: decoded ret lo] (bankswitch doesn't affect stack)
+          ;; STACK PICTURE: [SP+1: decoded ret lo] [SP+2: decoded ret hi] (bankswitch doesn't affect stack)
           ;; RTS will pop 2 bytes (decoded return address) and jump to caller
           rts
 

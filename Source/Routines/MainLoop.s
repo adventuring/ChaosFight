@@ -254,6 +254,7 @@ AfterArenaSelect1:
 MainLoopModeGameMain .proc
           ;; CRITICAL: Guard against being called when not in game mode
           ;; Returns: Near (return thisbank)
+          ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (from jsr MainLoopModeGameMain)
           ;; This prevents crashes when gameMode is corrupted or incorrectly set
           ;; Only call GameMainLoop when actually in game mode (ModeGame = 6)
           lda gameMode
@@ -261,28 +262,34 @@ MainLoopModeGameMain .proc
           bne MainLoopModeDispatch
           jmp MainLoopModeGameMainContinue
 MainLoopModeDispatch:
-
-
+          ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (early return, RTS will pop 2 bytes)
           rts
 
 MainLoopModeGameMainContinue
           ;; CRITICAL: on gameMode cross-bank call to is a NEAR call (pushes normal 2-byte return address)
           ;; Returns: Near (return thisbank)
+          ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (from jsr MainLoopModeGameMain)
           ;; Must use return thisbank (RTS) to match the near call
           ;; Cross-bank call to GameMainLoop in bank 11
           lda # >(AfterGameMainLoop-1)
           pha
+          ;; STACK PICTURE: [SP+2: MainLoop ret hi] [SP+1: MainLoop ret lo] [SP+0: AfterGameMainLoop hi]
           lda # <(AfterGameMainLoop-1)
           pha
+          ;; STACK PICTURE: [SP+3: MainLoop ret hi] [SP+2: MainLoop ret lo] [SP+1: AfterGameMainLoop hi] [SP+0: AfterGameMainLoop lo]
           lda # >(GameMainLoop-1)
           pha
+          ;; STACK PICTURE: [SP+4: MainLoop ret hi] [SP+3: MainLoop ret lo] [SP+2: AfterGameMainLoop hi] [SP+1: AfterGameMainLoop lo] [SP+0: GameMainLoop hi]
           lda # <(GameMainLoop-1)
           pha
+          ;; STACK PICTURE: [SP+5: MainLoop ret hi] [SP+4: MainLoop ret lo] [SP+3: AfterGameMainLoop hi] [SP+2: AfterGameMainLoop lo] [SP+1: GameMainLoop hi] [SP+0: GameMainLoop lo]
                     ldx # 10
           jmp BS_jsr
 AfterGameMainLoop:
+          ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (BS_return consumed 4 bytes, left 2-byte near return)
 
 
+          ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (RTS will pop 2 bytes)
           rts
 
 .pend

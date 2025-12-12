@@ -356,7 +356,7 @@ CharacterSelectQuadtariReadyInline .proc
           ;; Need at least 2 players ready for 4-player mode
           ;; if readyCount>= 2 then jmp CharacterSelectCompleted
           lda readyCount
-          cmp 2
+          cmp # 2
 
           bcc CharacterSelectDoneQuadtariReadyInline
 
@@ -574,11 +574,11 @@ DoneCharacter2FacingSel
 SetPlayer3Facing:
 
                     let playerState[2] = playerState[2]
-          lda 2
+          lda # 2
           asl
           tax
           lda playerState,x
-          lda 2
+          lda # 2
           asl
           tax
           sta playerState,x | 1
@@ -595,11 +595,11 @@ DoneCharacter3FacingSel
 SetPlayer4Facing:
 
                     let playerState[3] = playerState[3]
-          lda 3
+          lda # 3
           asl
           tax
           lda playerState,x
-          lda 3
+          lda # 3
           asl
           tax
           sta playerState,x | 1

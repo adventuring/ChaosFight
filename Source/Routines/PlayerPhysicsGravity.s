@@ -80,7 +80,7 @@ GravityLoop .proc
           ;; Quadtari)
           ;; if temp1 >= 2 then jmp GravityPlayerCheck
           lda temp1
-          cmp 2
+          cmp # 2
 
           bcc GravityCheckCharacter
 
@@ -105,7 +105,7 @@ CheckPlayer2Character:
           lda temp1
           cmp # 2
           bne CheckPlayer3Character
-          lda 2
+          lda # 2
           asl
           tax
           lda playerCharacter,x
@@ -117,7 +117,7 @@ CheckPlayer3Character:
           lda temp1
           cmp # 2
           bne CheckPlayer3Active
-          lda 2
+          lda # 2
           asl
           tax
           lda playerCharacter,x
@@ -131,7 +131,7 @@ CheckPlayer3Active:
           lda temp1
           cmp # 3
           bne GravityCheckCharacter
-          lda 3
+          lda # 3
           asl
           tax
           lda playerCharacter,x
@@ -143,7 +143,7 @@ GravityCheckCharacter:
           lda temp1
           cmp # 3
           bne CheckCharacterType
-          lda 3
+          lda # 3
           asl
           tax
           lda playerCharacter,x
@@ -370,12 +370,12 @@ StandardLandingLogic:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityY,x
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
           ;; Calculate Y position for top of ground row using repeated
           ;; addition
@@ -420,7 +420,7 @@ GravityRowCalcDone
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelY_WL,x
           ;; Clear jumping flag (bit 2, not bit 4 - fix bit number)
                     let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitJumping)
@@ -461,13 +461,13 @@ SetRoboTitoStretchPermission
           lda temp1
           asl
           tax
-          lda 1
+          lda # 1
           sta characterSpecialAbility_W,x
           ;; Clear stretch missile height on landing (not stretching)
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta missileStretchHeight_W,x
           ;; CRITICAL: Called via jmp from PhysicsApplyGravity, must continue to GravityNextPlayer
           ;; Do not return - use jmp to continue the loop

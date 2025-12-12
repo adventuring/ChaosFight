@@ -212,7 +212,7 @@ AfterAttackCooldownsUpdated:
           ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; if currentPlayer >= 2 then jmp FrootyChargeQuadtariCheck
           lda currentPlayer
-          cmp 2
+          cmp # 2
 
           bcc FrootyChargeUpdate
 

@@ -219,28 +219,28 @@ InitPositionsDone:
           ;; Constraints: Must be colocated with BeginGameLoop
           ;; Initialize player states (facing direction)
           ;; Player 1 facing right
-          lda 0
+          lda # 0
           asl
           tax
-          lda 0
+          lda # 0
           sta playerState,x
           ;; Player 2 facing left
-          lda 1
+          lda # 1
           asl
           tax
-          lda 1
+          lda # 1
           sta playerState,x
           ;; Player 3 facing right
-          lda 2
+          lda # 2
           asl
           tax
-          lda 0
+          lda # 0
           sta playerState,x
           ;; Player 4 facing left
-          lda 3
+          lda # 3
           asl
           tax
-          lda 1
+          lda # 1
           sta playerState,x
 
           ;; Initialize player health (apply handicap if selected)
@@ -288,32 +288,32 @@ InitializePlayerTimers .proc
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta playerTimers_W,x
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityX,x
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelX_W,x
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelY_W,x
 .pend
 
@@ -354,25 +354,25 @@ SkipPlayer4Activation:
           ;; Reset elimination order counter
 
           ;; Initialize elimination order tracking
-          lda 0
+          lda # 0
           asl
           tax
-          lda 0
+          lda # 0
           sta eliminationOrder_W,x
-          lda 1
+          lda # 1
           asl
           tax
-          lda 0
+          lda # 0
           sta eliminationOrder_W,x
-          lda 2
+          lda # 2
           asl
           tax
-          lda 0
+          lda # 0
           sta eliminationOrder_W,x
-          lda 3
+          lda # 3
           asl
           tax
-          lda 0
+          lda # 0
           sta eliminationOrder_W,x
 
           ;; Initialize win screen variables

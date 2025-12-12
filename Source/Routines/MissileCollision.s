@@ -770,15 +770,15 @@ CheckPlayersAgainstCachedHitboxDone .proc
 
           ;; Convert × pixel to playfield column
 
-          ;; Set temp6 = temp2 - 16          lda temp2          sec          sbc 16          sta temp6
+          ;; Set temp6 = temp2 - 16          lda temp2          sec          sbc # 16          sta temp6
           lda temp2
           sec
-          sbc 16
+          sbc # 16
           sta temp6
 
           lda temp2
           sec
-          sbc 16
+          sbc # 16
           sta temp6
 
 

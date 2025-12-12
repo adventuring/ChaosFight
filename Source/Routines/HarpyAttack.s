@@ -119,7 +119,7 @@ HarpySetVerticalVelocity .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
           lda temp1
           asl
@@ -129,7 +129,7 @@ HarpySetVerticalVelocity .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
 
           ;; Set jumping state so character can move vertically during

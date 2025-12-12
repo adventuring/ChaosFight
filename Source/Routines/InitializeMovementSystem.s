@@ -101,147 +101,147 @@ InitializeMovementSystem .proc
           tax
           lda temp2
           sta playerX,x
-          lda 2
+          lda # 2
           asl
           tax
           lda temp2
           sta playerSubpixelX_W,x
-          lda 2
+          lda # 2
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelX_WL,x
-          lda 2
+          lda # 2
           asl
           tax
           lda temp3
           sta playerY,x
-          lda 2
+          lda # 2
           asl
           tax
           lda temp3
           sta playerSubpixelY_W,x
-          lda 2
+          lda # 2
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelY_WL,x
           ;; Player 3
-          lda 3
+          lda # 3
           asl
           tax
           lda temp2
           sta playerX,x
-          lda 3
+          lda # 3
           asl
           tax
           lda temp2
           sta playerSubpixelX_W,x
-          lda 3
+          lda # 3
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelX_WL,x
-          lda 3
+          lda # 3
           asl
           tax
           lda temp3
           sta playerY,x
-          lda 3
+          lda # 3
           asl
           tax
           lda temp3
           sta playerSubpixelY_W,x
-          lda 3
+          lda # 3
           asl
           tax
-          lda 0
+          lda # 0
           sta playerSubpixelY_WL,x
 
           ;; Initialize velocities to zero - inlined for performance
           ;; Player 0
-          lda 0
+          lda # 0
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityX,x
-          lda 0
+          lda # 0
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
-          lda 0
+          lda # 0
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityY,x
-          lda 0
+          lda # 0
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
           ;; Player 1
-          lda 1
+          lda # 1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityX,x
-          lda 1
+          lda # 1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
-          lda 1
+          lda # 1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityY,x
-          lda 1
+          lda # 1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
           ;; Player 2
-          lda 2
+          lda # 2
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityX,x
-          lda 2
+          lda # 2
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
-          lda 2
+          lda # 2
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityY,x
-          lda 2
+          lda # 2
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
           ;; Player 3
-          lda 3
+          lda # 3
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityX,x
-          lda 3
+          lda # 3
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
-          lda 3
+          lda # 3
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityY,x
-          lda 3
+          lda # 3
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
           rts
 

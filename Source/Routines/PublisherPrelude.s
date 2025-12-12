@@ -142,13 +142,17 @@ CheckAutoAdvance:
 
           ;; Auto-advance after music completes + 0.5s
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
-          ;; If preambleTimer > 30 && musicPlaying = 0, then jmp lda preambleTimer
+          ;; If preambleTimer > 30 && musicPlaying = 0, then jmp PublisherPreludeComplete
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          lda preambleTimer
           cmp # 31
           bcc IncrementTimer
           lda musicPlaying
           bne IncrementTimer
           goto_label:
 
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (jmp PublisherPreludeComplete preserves stack)
           jmp PublisherPreludeComplete
 IncrementTimer:
           ;; PublisherPreludeComplete

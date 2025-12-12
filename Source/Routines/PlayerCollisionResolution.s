@@ -94,7 +94,7 @@ CheckPlayer3Active:
           lda temp1
           cmp # 3
           bne InnerLoopCollisionCheck
-          lda 3
+          lda # 3
           asl
           tax
           lda playerCharacter,x
@@ -106,7 +106,7 @@ InnerLoopCollisionCheck:
           lda temp1
           cmp # 3
           bne CheckPairCollision
-          lda 3
+          lda # 3
           asl
           tax
           lda playerCharacter,x
@@ -163,7 +163,7 @@ CheckP2Character:
           lda temp2
           cmp # 2
           bne CheckP2Character3
-          lda 2
+          lda # 2
           asl
           tax
           lda playerCharacter,x
@@ -175,7 +175,7 @@ CheckP2Character3:
           lda temp2
           cmp # 2
           bne CheckP2CharacterActive
-          lda 2
+          lda # 2
           asl
           tax
           lda playerCharacter,x
@@ -190,7 +190,7 @@ CheckP2CharacterActive:
           lda temp2
           cmp # 3
           bne CheckDistanceCollisionP2
-          lda 3
+          lda # 3
           asl
           tax
           lda playerCharacter,x
@@ -202,7 +202,7 @@ CheckDistanceCollisionP2:
           lda temp2
           cmp # 3
           bne CheckDistanceActive
-          lda 3
+          lda # 3
           asl
           tax
           lda playerCharacter,x
@@ -447,7 +447,7 @@ CalculateWeightDifference:
 
           ;; if totalWeight >= 128 then jmp PCR_Div128_1
           lda totalWeight
-          cmp 128
+          cmp # 128
 
           bcc CheckDiv64
 
@@ -457,7 +457,7 @@ CalculateWeightDifference:
 
           ;; if totalWeight >= 64 then jmp PCR_Div64_1
           lda totalWeight
-          cmp 64
+          cmp # 64
 
           bcc CheckDiv32
 
@@ -467,7 +467,7 @@ CalculateWeightDifference:
 
           ;; if totalWeight >= 32 then jmp PCR_Div32_1
           lda totalWeight
-          cmp 32
+          cmp # 32
 
           bcc DivBy16
 
@@ -613,7 +613,7 @@ ClampPlayer1VelocityMin:
           tax
           lda playerVelocityX,x
           sec
-          sbc 4
+          sbc # 4
           bcc skip_4706
           beq ImpulseDoneCollision
           lda # 4
@@ -755,7 +755,7 @@ SepLeftCollision .proc
 
           ;; if totalWeight >= 128 then jmp PCR_Div128_2
           lda totalWeight
-          cmp 128
+          cmp # 128
 
           bcc CheckDiv64Left
 
@@ -765,7 +765,7 @@ SepLeftCollision .proc
 
           ;; if totalWeight >= 64 then jmp PCR_Div64_2
           lda totalWeight
-          cmp 64
+          cmp # 64
 
           bcc CheckDiv32Left
 
@@ -775,7 +775,7 @@ SepLeftCollision .proc
 
           ;; if totalWeight >= 32 then jmp PCR_Div32_2
           lda totalWeight
-          cmp 32
+          cmp # 32
 
           bcc DivBy16Left
 

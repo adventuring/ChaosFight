@@ -216,13 +216,13 @@ SpawnOffsetDone:
           cmp # 0
           bne ApplyFacingDirectionDone
           ;; Set temp6 = 0 - temp6
-          lda 0
+          lda # 0
           sec
           sbc temp6
           sta temp6
 ApplyFacingDirectionDone:
 
-          lda 0
+          lda # 0
           sec
           sbc temp6
           sta temp6
@@ -733,7 +733,7 @@ FrootyRicochetTop .proc
           lda temp1
           asl
           tax
-          lda 20
+          lda # 20
           sta missileY_W,x
           ;; let missileVelocityY[temp1] = 0 - missileVelocityY[temp1]
           jmp BoundsCheckDone
@@ -851,7 +851,7 @@ AfterPlaySoundEffectBounce:
           sbc missileVelocityX
           sta temp6
 
-          lda 0
+          lda # 0
           sec
           sbc missileVelocityX
           sta temp6
@@ -1274,7 +1274,7 @@ HarpyCheckDive .proc
           ;; Returns: Far (return otherbank)
           ;; Not diving, skip bonus
           lda characterStateFlags_R[temp1]
-          and 4
+          and # 4
           cmp # 0
           bne ApplyDiveBonus
           jmp DiveCheckDone
@@ -1345,7 +1345,7 @@ ApplyKnockback:
           sta characterWeight
           ;; if characterWeight >= 50 then jmp WeightBasedKnockbackScale
           lda characterWeight
-          cmp 50
+          cmp # 50
 
           bcc LightCharacterKnockback
 
@@ -1360,13 +1360,17 @@ ApplyKnockback:
 WeightBasedKnockbackScale .proc
           ;; Heavy characters: reduced knockback (4 × (100-weight) / 100)
           ;; Returns: Far (return otherbank)
-          ;; Set velocityCalculation = 100 - characterWeight          lda 100          sec          sbc characterWeight          sta velocityCalculation
-          lda 100
+          ;; Set velocityCalculation = 100 - characterWeight
+          lda # 100
+          sec
+          sbc characterWeight
+          sta velocityCalculation
+          lda # 100
           sec
           sbc characterWeight
           sta velocityCalculation
 
-          lda 100
+          lda # 100
           sec
           sbc characterWeight
           sta velocityCalculation
@@ -1424,7 +1428,7 @@ KnockbackDone
           lda temp4
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
           ;; Set recovery/hitstun frames

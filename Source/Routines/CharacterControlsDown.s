@@ -171,7 +171,7 @@ BlockedCannotMoveDownStandard:
           lda temp1
           asl
           tax
-          lda 2
+          lda # 2
           sta playerVelocityY,x
 
           ;; +2 pixels/frame downward
@@ -491,7 +491,7 @@ BlockedCannotMoveDown:
           lda temp1
           asl
           tax
-          lda 2
+          lda # 2
           sta playerVelocityY,x
 
           ;; +2 pixels/frame downward
@@ -685,7 +685,7 @@ BlockedCannotMoveDownFrooty:
           lda temp1
           asl
           tax
-          lda 2
+          lda # 2
           sta playerVelocityY,x
 
           ;; +2 pixels/frame downward
@@ -802,7 +802,7 @@ RoboTitoVoluntaryDrop .proc
           lda temp1
           asl
           tax
-          lda 246
+          lda # 246
           sta playerVelocityY,x
 
           ;; -10 in 8-bit two’s complement: 256 - 10 = 246

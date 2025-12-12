@@ -264,25 +264,25 @@ RadishGoblinHandleStickDown .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityX,x
 
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityY,x
 
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
 
           jmp BS_return
@@ -614,14 +614,14 @@ DoneApplyBounceRadishGoblin
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
 
                     let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           lda temp1
           asl
           tax
-          lda 1
+          lda # 1
           sta radishGoblinBounceState_W,x
 
                     let radishGoblinLastContactY_W[temp1] = playerY[temp1]
@@ -731,7 +731,7 @@ RadishGoblinHandleStickDownRelease .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
 
           ;; Set playerState[temp1] = playerState[temp1] | PlayerStateBitJumping

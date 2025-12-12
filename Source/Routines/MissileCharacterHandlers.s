@@ -171,12 +171,12 @@ CalculateYPosition:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta missileVelocityX,x
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta missileVelocityY,x
 
           ;; Check if attack animation is complete
@@ -335,13 +335,13 @@ KnightGuySwingReturnLabel:
           ;; Calculate return offset: (7 - frame) pixels
           ;; Frame 4: 3 pixels away, Frame 5: 2 pixels, Frame 6: 1
           ;; pixel, Frame 7: 0 pixels
-          ;; Set velocityCalculation = 7 - velocityCalculation          lda 7          sec          sbc velocityCalculation          sta velocityCalculation
-          lda 7
+          ;; Set velocityCalculation = 7 - velocityCalculation          lda # 7          sec          sbc velocityCalculation          sta velocityCalculation
+          lda # 7
           sec
           sbc velocityCalculation
           sta velocityCalculation
 
-          lda 7
+          lda # 7
           sec
           sbc velocityCalculation
           sta velocityCalculation
@@ -421,12 +421,12 @@ KnightGuySetY .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta missileVelocityX,x
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta missileVelocityY,x
 
           ;; Skip normal movement and collision checks

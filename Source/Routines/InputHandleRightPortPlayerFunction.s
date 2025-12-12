@@ -128,7 +128,7 @@ IHRP_HandleDownPressed .proc
           sta temp4
           ;; if temp4 >= 32 then jmp IHRP_ProcessAttack
           lda temp4
-          cmp 32
+          cmp # 32
 
           bcc IHRP_CheckCharacterDown
 

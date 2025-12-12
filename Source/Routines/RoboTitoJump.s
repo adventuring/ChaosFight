@@ -207,7 +207,7 @@ SetStretchHeight:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta characterSpecialAbility_W,x
           ;; if playerY[temp1] <= 5 then jmp RoboTitoCheckCeiling
           lda temp1
@@ -329,7 +329,7 @@ RTL_ReduceHeightZero:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta missileStretchHeight_W,x
           jmp RTL_HeightCleared
 

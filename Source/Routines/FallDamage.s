@@ -459,7 +459,7 @@ CheckGroundCollision:
           lda currentPlayer
           asl
           tax
-          lda 176
+          lda # 176
           sta playerY,x
           jmp BS_return
 
@@ -533,10 +533,10 @@ FrootyFallDamage .proc
           tax
           lda playerY,x
           sec
-          sbc 176
+          sbc # 176
           bcc FrootyFallDamageDone
           beq FrootyFallDamageDone
-          lda 176
+          lda # 176
           sta playerY,x
 FrootyFallDamageDone:
           jmp BS_return
@@ -603,7 +603,7 @@ SetHorizontalMomentumRight:
           lda currentPlayer
           asl
           tax
-          lda 252
+          lda # 252
           sta playerVelocityX,x
           jmp SetVerticalMomentum
 
@@ -613,7 +613,7 @@ SetHorizontalMomentumRight:
           lda currentPlayer
           asl
           tax
-          lda 4
+          lda # 4
           sta playerVelocityX,x
 
 .pend

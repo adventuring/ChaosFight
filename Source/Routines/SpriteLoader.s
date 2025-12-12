@@ -266,15 +266,15 @@ AfterSetPlayerCharacterArtBank2:
 LoadPlayerSprite_Bank3Dispatch
           ;; Bank 3: Characters 8-15 (bank-relative 0-7)
           ;; CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank3 uses BS_return which requires return address
-          ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
+          ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc # 8          sta temp6
           lda temp1
           sec
-          sbc 8
+          sbc # 8
           sta temp6
 
           lda temp1
           sec
-          sbc 8
+          sbc # 8
           sta temp6
 
           lda temp4
@@ -297,15 +297,15 @@ AfterSetPlayerCharacterArtBank3:
 LoadPlayerSprite_Bank4Dispatch
           ;; Bank 4: Characters 16-23 (bank-relative 0-7)
           ;; CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank4 uses BS_return which requires return address
-          ;; Set temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
+          ;; Set temp6 = temp1 - 16          lda temp1          sec          sbc # 16          sta temp6
           lda temp1
           sec
-          sbc 16
+          sbc # 16
           sta temp6
 
           lda temp1
           sec
-          sbc 16
+          sbc # 16
           sta temp6
 
           lda temp4
@@ -328,15 +328,15 @@ AfterSetPlayerCharacterArtBank4:
 LoadPlayerSprite_Bank5Dispatch
           ;; Bank 5: Characters 24-31 (bank-relative 0-7)
           ;; CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank5 uses BS_return which requires return address
-          ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
+          ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc # 24          sta temp6
           lda temp1
           sec
-          sbc 24
+          sbc # 24
           sta temp6
 
           lda temp1
           sec
-          sbc 24
+          sbc # 24
           sta temp6
 
           lda temp4

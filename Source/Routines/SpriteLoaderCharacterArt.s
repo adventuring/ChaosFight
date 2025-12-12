@@ -263,15 +263,15 @@ Bank3Dispatch
 
           ;; Calculate bank-relative index: character index - 8
 
-          ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
+          ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc # 8          sta temp6
           lda temp1
           sec
-          sbc 8
+          sbc # 8
           sta temp6
 
           lda temp1
           sec
-          sbc 8
+          sbc # 8
           sta temp6
 
 
@@ -340,15 +340,15 @@ Bank4Dispatch
 
           ;; Calculate bank-relative index: character index - 16
 
-          ;; Set temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
+          ;; Set temp6 = temp1 - 16          lda temp1          sec          sbc # 16          sta temp6
           lda temp1
           sec
-          sbc 16
+          sbc # 16
           sta temp6
 
           lda temp1
           sec
-          sbc 16
+          sbc # 16
           sta temp6
 
 
@@ -417,15 +417,15 @@ SLCAB5_Bank5Dispatch:
 
           ;; Calculate bank-relative index: character index - 24
 
-          ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
+          ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc # 24          sta temp6
           lda temp1
           sec
-          sbc 24
+          sbc # 24
           sta temp6
 
           lda temp1
           sec
-          sbc 24
+          sbc # 24
           sta temp6
 
 

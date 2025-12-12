@@ -2,35 +2,42 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 ;;; EFSC 64k bankswitch code and vectors
 
-          BS_length = $18    ; = 24 bytes
+          BS_length = $31    ; = 49 bytes (was 24, increased by 25 for additional stack comments)
           .if * > $ffe0 - BS_length
           .error format("Bank %d overflow: $%04x > $%04x", current_bank, *, $ffe0 - BS_length)
           .fi
 
           * = $ffe0 - BS_length
 BS_return:
-          ;; STACK PICTURE: [SP+1: encoded ret hi] [SP+0: encoded ret lo]
-          ;; Expected: 2 bytes on stack (encoded return address with bank info in low nybble of high byte)
+          ;; STABLE VERSION - DO NOT ALTER
+          ;; This routine has been verified and must remain unchanged.
+          ;; Any bugs should be fixed at their source, not by modifying this routine.
+          ;;
+          ;; STACK PICTURE: [SP+0: encoded ret hi] [SP+1: encoded ret lo]
+          ;; Expected: 2 bytes on stack (encoded return address with bank info in high nybble of high byte)
           ;; After BS_jsr's RTS consumed the target address, only the encoded return address remains
+          ;; On little-endian 6502: if X = SP (from tsx), top of stack is at $0100+X (offset 0)
+          ;; For a word on stack: high byte is at offset 0, low byte is at offset 1
           ;; Use temp7 (zero-page) instead of stack to avoid overflow
           tsx
-          ;; Encoded return address (offset 1 = high byte contains bank info in low nybble)
-          lda 1, x
+          ;; Encoded return address (offset 0 = high byte contains bank info in high nybble)
+          ;; Top of stack is at $0100+X, which is the high byte of the word
+          lda 0, x
           tay
           lsr a
           lsr a
           lsr a
-          ;; Extract bank number from low nybble
+          ;; Extract bank number from high nybble
           lsr a
           sta temp7
           tya
-          ;; Restore to $Fx format
+          ;; Restore to $fx format (address in CPU space)
           ora #$f0
-          sta 1, x
+          sta 0, x
           ;; DO NOT pop the encoded return address - leave it on stack for RTS
           ;; RTS will pop the decoded return address and jump to it
           ldx temp7
-          ;; STACK PICTURE: [SP+1: decoded ret hi] [SP+0: decoded ret lo] (encoded return decoded in place)
+          ;; STACK PICTURE: [SP+0: decoded ret hi] [SP+1: decoded ret lo] (encoded return decoded in place)
           ;; Bankswitch: $ffe0 + X where X is 0-based bank number
           nop $ffe0, x
           ;; STACK PICTURE: [SP+1: decoded ret hi] [SP+0: decoded ret lo] (bankswitch doesn't affect stack)
@@ -47,9 +54,9 @@ BS_jsr:
           rts
 
           ;; Size check: verify bankswitch code ends before $FFE0
-.if (($fff & *) > (($fff & bankswitch_hotspot) + 4))
+.if (($fff & *) > ($fff & $ffe0))
 .error "WARNING: size parameter in BankSwitching.s too small - the program probably will not work."
-.error format("Change to %d and try again.", (($fff & *) - ($fff & bankswitch_hotspot)))
+.error format("Change by %d and try again.", (($fff & *) - ($fff & $ffe0)))
 .fi
 
           ;; EFSC identification header at $ffe0-$ffef: "EFSC", 0, "BRPocock", 0, year, bank

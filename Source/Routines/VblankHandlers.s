@@ -275,7 +275,7 @@ VblankAdvanceFrame .proc
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta animationCounter_W,x
           ;; Advance to next frame in current animation action
           ;; SCRAM read-modify-write: currentAnimationFrame_R → currentAnimationFrame_W
@@ -337,7 +337,7 @@ VblankTransitionLoopAnimation
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta currentAnimationFrame_W,x
           jmp VblankUpdateSprite
 
@@ -504,14 +504,14 @@ VblankSetPlayerAnimationInlined
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta currentAnimationFrame_W,x
           ;; SCRAM write to animationCounter_W
           ;; Reset animation counter
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta animationCounter_W,x
           ;; Update character sprite immediately using inlined LoadPlayerSprite logic
           ;; Set up parameters for sprite loading (frame=0, action=temp2, player=currentPlayer)
@@ -564,7 +564,7 @@ VblankHandleWindupEnd
           sta temp1
           ;; if temp1 >= 32 then jmp VblankUpdateSprite
           lda temp1
-          cmp 32
+          cmp # 32
 
           bcc CheckWindupNextAction
 
@@ -610,7 +610,7 @@ VblankHandleExecuteEnd
           sta temp1
           ;; if temp1 >= 32 then jmp VblankUpdateSprite
           lda temp1
-          cmp 32
+          cmp # 32
 
           bcc CheckExecuteNextAction
 
@@ -677,23 +677,23 @@ VblankHarpyExecute .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityX,x
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
           ;; Apply upward wing flap momentum after swoop attack
           lda temp1
           asl
           tax
-          lda 254
+          lda # 254
           sta playerVelocityY,x
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
           ;; Transition to Idle
           lda ActionIdle
@@ -813,7 +813,7 @@ CheckBank4Dispatch:
 
           
 
-          ;; if temp1 < 24 then jmp VblankUpdateSpriteBank4Dispatch          lda temp1          cmp 24          bcs .skip_5055          jmp
+          ;; if temp1 < 24 then jmp VblankUpdateSpriteBank4Dispatch          lda temp1          cmp # 24          bcs .skip_5055          jmp
           lda temp1
           cmp # 24
           bcs UseBank5
@@ -852,15 +852,15 @@ AfterSetPlayerCharacterArtBank2Vblank:
           jmp VblankAnimationNextPlayer
 
 VblankUpdateSpriteBank3Dispatch
-          ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
+          ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc # 8          sta temp6
           lda temp1
           sec
-          sbc 8
+          sbc # 8
           sta temp6
 
           lda temp1
           sec
-          sbc 8
+          sbc # 8
           sta temp6
 
           lda temp4
@@ -885,12 +885,12 @@ VblankUpdateSpriteBank4Dispatch
           ;; Set temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
           lda temp1
           sec
-          sbc 16
+          sbc # 16
           sta temp6
 
           lda temp1
           sec
-          sbc 16
+          sbc # 16
           sta temp6
 
           lda temp4
@@ -912,15 +912,15 @@ AfterSetPlayerCharacterArtBank4Vblank:
           jmp VblankAnimationNextPlayer
 
 VblankUpdateSpriteBank5Dispatch
-          ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
+          ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc # 24          sta temp6
           lda temp1
           sec
-          sbc 24
+          sbc # 24
           sta temp6
 
           lda temp1
           sec
-          sbc 24
+          sbc # 24
           sta temp6
 
           lda temp4
@@ -1023,7 +1023,7 @@ AfterCheckBoundaryCollisions:
           ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; if currentPlayer >= 2 then jmp VblankCheckQuadtariSkip
           lda currentPlayer
-          cmp 2
+          cmp # 2
 
           bcc ProcessCollision
 

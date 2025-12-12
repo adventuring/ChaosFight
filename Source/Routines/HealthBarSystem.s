@@ -416,7 +416,11 @@ UpdatePlayer12HealthBars .proc
           ;; Update P1 health bar
 
                     ;; Set temp1 = playerHealth[0]
-                    lda 0          asl          tax          lda playerHealth,x          sta temp1
+                    lda # 0
+                    asl
+                    tax
+                    lda playerHealth,x
+                    sta temp1
 
           jsr UpdatePlayer1HealthBar
 
@@ -425,12 +429,12 @@ UpdatePlayer12HealthBars .proc
           ;; Update P2 health bar
 
           ;; Set temp1 = playerHealth[1]
-          lda 1
+          lda # 1
           asl
           tax
           lda playerHealth,x
           sta temp1
-          lda 1
+          lda # 1
           asl
           tax
           lda playerHealth,x
@@ -632,7 +636,7 @@ UpdatePlayer34Health:
           ;; (playerCharacter = NoCharacter) or eliminated
 
           ;; Set temp1 = playerHealth[2]
-          lda 2
+          lda # 2
           asl
           tax
           lda playerHealth,x
@@ -650,7 +654,11 @@ P3ConvertHealth:
 
           ;; Clamp health to valid range
 
-          ;; If PlayerHealthMax - 1 < temp1, set temp1 = PlayerHealthMax - 1          lda PlayerHealthMax          sec          sbc 1          sta temp1
+          ;; If PlayerHealthMax - 1 < temp1, set temp1 = PlayerHealthMax - 1
+          lda PlayerHealthMax
+          sec
+          sbc # 1
+          sta temp1
           jmp P3ConvertHealth
 
 
@@ -695,7 +703,7 @@ P4GetHealth .proc
           ;; (playerCharacter = NoCharacter) or eliminated
 
           ;; Set temp2 = playerHealth[3]
-          lda 3
+          lda # 3
           asl
           tax
           lda playerHealth,x

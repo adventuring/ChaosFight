@@ -309,7 +309,7 @@ ClampSubpixelYL:
           lda playerY,x
           cmp rowYPosition
           bcs PFBlockUpClampDone
-          lda 0
+          lda # 0
           sta playerSubpixelY_WL,x
 PFBlockUpClampDone:
 
@@ -421,7 +421,7 @@ PFCS_Advance .proc
 
           ;; if temp3 >= 3 then jmp PFCS_Done
           lda temp3
-          cmp 3
+          cmp # 3
 
           bcc AdvanceRowCounter
 
@@ -726,7 +726,7 @@ ClampSubpixelXLLeft:
           lda playerX,x
           cmp rowYPosition
           bcs PHC_ClampOnlyDone
-          lda 0
+          lda # 0
           sta playerSubpixelX_WL,x
 PHC_ClampOnlyDone:
           jmp BS_return

@@ -283,7 +283,7 @@ ApplyUpwardVelocity:
           lda defenderID
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
           ;; Set playerState[defenderID] = playerState[defenderID] | PlayerStateBitJumping
           lda defenderID
@@ -320,7 +320,7 @@ PlayerDies .proc
           lda defenderID
           asl
           tax
-          lda 0
+          lda # 0
           sta playerHealth,x
 
           ;; Trigger elimination immediately (instantly vanish)
@@ -705,15 +705,15 @@ AreaHitbox .proc
           lda playerX,x
           sta temp2
           ;; Left edge: center - radius
-          ;; Set cachedHitboxLeft_W = temp2 - 24          lda temp2          sec          sbc 24          sta cachedHitboxLeft_W
+          ;; Set cachedHitboxLeft_W = temp2 - 24          lda temp2          sec          sbc # 24          sta cachedHitboxLeft_W
           lda temp2
           sec
-          sbc 24
+          sbc # 24
           sta cachedHitboxLeft_W
 
           lda temp2
           sec
-          sbc 24
+          sbc # 24
           sta cachedHitboxLeft_W
 
           ;; Right edge: center + radius
@@ -729,15 +729,15 @@ AreaHitbox .proc
           lda playerY,x
           sta temp2
           ;; Top edge: center - radius
-          ;; Set cachedHitboxTop_W = temp2 - 24          lda temp2          sec          sbc 24          sta cachedHitboxTop_W
+          ;; Set cachedHitboxTop_W = temp2 - 24          lda temp2          sec          sbc # 24          sta cachedHitboxTop_W
           lda temp2
           sec
-          sbc 24
+          sbc # 24
           sta cachedHitboxTop_W
 
           lda temp2
           sec
-          sbc 24
+          sbc # 24
           sta cachedHitboxTop_W
 
           ;; Bottom edge: center + radius

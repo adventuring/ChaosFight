@@ -1315,7 +1315,7 @@ HandleStandardHorizontalMovementLeftStandard:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
           jmp HandleStandardHorizontalMovementAfterLeftSet
@@ -1366,7 +1366,7 @@ HandleStandardHorizontalMovementLeftDirectSubpixel .proc
           lda temp1
           asl
           tax
-          lda 1
+          lda # 1
           sta playerVelocityXL,x
 
           ;; Subpixel: 1 = 1/256 pixel for subpixel accuracy
@@ -1403,7 +1403,7 @@ HandleStandardHorizontalMovementLeftMomentum .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
 .pend
@@ -1568,7 +1568,7 @@ HandleStandardHorizontalMovementRightStandard:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
           jmp HSHM_AfterRightSet
@@ -1604,7 +1604,7 @@ HandleStandardHorizontalMovementRightDirectSubpixel .proc
           lda temp1
           asl
           tax
-          lda 1
+          lda # 1
           sta playerVelocityXL,x
 
           ;; Subpixel: 1 = 1/256 pixel for subpixel accuracy
@@ -2050,7 +2050,7 @@ HandleFlyingCharacterMovementLeftMomentumApply .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
           jmp HandleFlyingCharacterMovementLeftApplyDone
@@ -2450,7 +2450,7 @@ HandleFlyingCharacterMovementRightMomentumApply .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
           jmp HandleFlyingCharacterMovementRightApplyDone
@@ -2661,7 +2661,7 @@ AfterGetPlayerAnimationStateLeftPort:
 
           ;; If temp2 >= 13, then jmp DoneLeftPortMovement
           lda temp2
-          cmp 13
+          cmp # 13
 
           bcc CheckFlyingCharacter
 
@@ -2829,7 +2829,7 @@ HandleGuardInputHandleDownPressedLeftPort .proc
 
           ;; If temp4 >= 32, then jmp HandleGuardInputDoneLeftPort
           lda temp4
-          cmp 32
+          cmp # 32
 
           bcc CheckDragonOfStormsDown1
 
@@ -3001,7 +3001,7 @@ HandleGuardInputDoneLeftPort:
 
           ;; If temp2 >= 13, then jmp InputDoneLeftPortAttack
           lda temp2
-          cmp 13
+          cmp # 13
 
           bcc CheckGuardStatus1
 
@@ -3114,7 +3114,7 @@ AfterGetPlayerAnimationStateRightPort:
 
           ;; If temp2 >= 13, then jmp DoneRightPortMovement
           lda temp2
-          cmp 13
+          cmp # 13
 
           bcc CheckGuardStatus2
 
@@ -3303,7 +3303,7 @@ HandleGuardInputHandleDownPressedRightPort .proc
 
           ;; If temp4 >= 32, then jmp HGI_Done2
           lda temp4
-          cmp 32
+          cmp # 32
 
           bcc CheckDragonOfStormsDown2
 
@@ -3473,7 +3473,7 @@ HandleGuardInputDoneRightPort:
 
           ;; If temp2 >= 13, then jmp InputDoneRightPortAttack
           lda temp2
-          cmp 13
+          cmp # 13
 
           bcc CheckGuardStatus3
 

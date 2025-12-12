@@ -181,7 +181,7 @@ Player2ReflectionDone:
 
           ;; Load sprite data from character definition
           ;; Set currentCharacter = playerCharacter[1]
-          lda 1
+          lda # 1
           asl
           tax
           lda playerCharacter,x
@@ -222,7 +222,7 @@ CheckPlayer3Health:
 
           ;; if playerCharacter[2] = NoCharacter then jmp DonePlayer3Sprite
           ;; if ! playerHealth[2] then jmp DonePlayer3Sprite
-          lda 2
+          lda # 2
           asl
           tax
           lda playerHealth,x
@@ -230,7 +230,7 @@ CheckPlayer3Health:
           jmp DonePlayer3Sprite
 CheckPlayer3HealthThreshold:
 
-          lda 2
+          lda # 2
           asl
           tax
           lda playerHealth,x
@@ -253,12 +253,12 @@ SetPlayer3Color:
           lda playerRecoveryFrames,x
           sta temp2
           ;; Set temp3 = playerState[2]
-          lda 2
+          lda # 2
           asl
           tax
           lda playerState,x
           sta temp3 & PlayerStateBitGuarding
-          lda 2
+          lda # 2
           asl
           tax
           lda playerState,x
@@ -300,7 +300,7 @@ Player3ReflectionDone:
 
           ;; Load sprite data from character definition
           ;; Set currentCharacter = playerCharacter[2]
-          lda 2
+          lda # 2
           asl
           tax
           lda playerCharacter,x
@@ -338,7 +338,7 @@ CheckPlayer4Health:
 
           ;; if playerCharacter[3] = NoCharacter then jmp DonePlayer4Sprite
           ;; if ! playerHealth[3] then jmp DonePlayer4Sprite
-          lda 3
+          lda # 3
           asl
           tax
           lda playerHealth,x
@@ -346,7 +346,7 @@ CheckPlayer4Health:
           jmp DonePlayer4Sprite
 CheckPlayer4HealthThreshold:
 
-          lda 3
+          lda # 3
           asl
           tax
           lda playerHealth,x
@@ -370,12 +370,12 @@ SetPlayer4Color:
           lda playerRecoveryFrames,x
           sta temp2
           ;; Set temp3 = playerState[3]
-          lda 3
+          lda # 3
           asl
           tax
           lda playerState,x
           sta temp3 & PlayerStateBitGuarding
-          lda 3
+          lda # 3
           asl
           tax
           lda playerState,x
@@ -416,7 +416,7 @@ Player4ReflectionDone:
 
           ;; Load sprite data from character definition
           ;; Set currentCharacter = playerCharacter[3]
-          lda 3
+          lda # 3
           asl
           tax
           lda playerCharacter,x

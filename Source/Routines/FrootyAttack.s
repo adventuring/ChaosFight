@@ -181,7 +181,7 @@ FrootyUpdateFrameCounter .proc
           ;; Returns: Far (return otherbank)
 
           ;; bit 7 = 1 (charging), bits 0-2 = frame counter
-          lda 128
+          lda # 128
           ora temp4
           sta temp3
 
@@ -241,7 +241,7 @@ SpawnProjectile:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta frootyChargeState_W,x
 
           ;; Spawn projectile with ricochet physics
@@ -249,7 +249,7 @@ SpawnProjectile:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta frootyChargeTimer_W,x
 
           ;; Use SpawnMissile but override lifetime

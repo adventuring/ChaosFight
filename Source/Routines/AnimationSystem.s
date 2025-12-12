@@ -392,7 +392,7 @@ AnimationHandleWindupEnd
           sta temp1
           ;; If temp1 >= 32, then jmp UpdateSprite
           lda temp1
-          cmp 32
+          cmp # 32
 
           bcc ClampCharacterIndex
 
@@ -433,7 +433,7 @@ AnimationHandleExecuteEnd:
           sta temp1
           ;; If temp1 >= 32, then jmp UpdateSprite
           lda temp1
-          cmp 32
+          cmp # 32
 
           bcc ClampCharacterIndexExecute
 
@@ -793,12 +793,12 @@ UpdateSprite_Bank4Dispatch
           ;; Set temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
           lda temp1
           sec
-          sbc 16
+          sbc # 16
           sta temp6
 
           lda temp1
           sec
-          sbc 16
+          sbc # 16
           sta temp6
 
           lda temp4

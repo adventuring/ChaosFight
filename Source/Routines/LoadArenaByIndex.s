@@ -49,11 +49,11 @@ MultiplyBy8:
           sta temp3
 
           ;; TODO: #1305 ; Add base address
-          lda # <.Arena0Playfield
+          lda # <Arena0Playfield
           clc
           adc temp2
           sta temp4
-          lda # >.Arena0Playfield
+          lda # >Arena0Playfield
           adc temp3
           sta temp5
 

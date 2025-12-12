@@ -8,7 +8,7 @@ MovementApplyGravity .proc
           ;; Output: playerVelocityY[] incremented by gravity strength
           ;; Mutates: playerVelocityY[]
           ;; Constraints: For subpixel gravity, call AddVelocitySubpixelY separately
-          let playerVelocityY[temp1] = playerVelocityY[temp1] + temp2
+          ;; Set playerVelocityY[temp1] = playerVelocityY[temp1] + temp2
           lda temp1
           asl
           tax

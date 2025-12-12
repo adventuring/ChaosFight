@@ -114,7 +114,13 @@ CheckGuardReleaseGuardInput .proc
           jmp BS_return
 
           ;; Stop guard early and start cooldown
-          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # (255 - PlayerStateBitGuarding)
+          sta playerState,x
           ;; Start cooldown timer
           lda temp1
           asl

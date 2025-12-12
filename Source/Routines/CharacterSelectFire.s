@@ -74,7 +74,7 @@ CheckJoy1:
           lda # 1
           sta temp2
 
-          if joy1down then let temp4 = 1 : jmp HCSF_HandleFire
+          ;; If joy1down, set temp4 = 1 and jmp HCSF_HandleFire
           lda joy1down
           beq SetNormalLock
 
@@ -121,7 +121,7 @@ HCSF_CheckJoy0 .proc
           lda # 1
           sta temp2
 
-          if joy0down then let temp4 = 1 : jmp HCSF_HandleFire
+          ;; If joy0down, set temp4 = 1 and jmp HCSF_HandleFire
           lda joy0down
           beq SetNormalLockJoy0
 
@@ -179,7 +179,7 @@ HCSF_HandleFire .proc
 
           ;; If playerCharacter[temp1] = RandomCharacter then jmp HCSF_HandleRandom
 
-          if temp4, then HCSF_HandleHandicap
+          ;; If temp4, then HCSF_HandleHandicap
           lda temp4
           beq SetNormalLockHandleFire
           jmp HCSF_HandleHandicap
@@ -336,8 +336,14 @@ HCSF_HandleRandom .proc
           ;; CharacterSelectHandleRandomRolls
 
           ;; Store handicap flag if down was held
-
-                    if temp4 then let randomSelectFlags_W[temp1] = TRUE : jmp HCSF_HandleRandomSound          lda temp4          beq HCSF_HandleRandomSound
+          ;; If temp4, set randomSelectFlags_W[temp1] = TRUE and jmp HCSF_HandleRandomSound
+          lda temp4
+          beq HCSF_HandleRandomSound
+          lda temp1
+          asl
+          tax
+          lda # TRUE
+          sta randomSelectFlags_W,x
 HCSF_HandleRandomSound:
           jmp HCSF_HandleRandomSound
           lda temp1

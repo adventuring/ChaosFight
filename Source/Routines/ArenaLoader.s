@@ -53,14 +53,14 @@ LoadArenaDispatch:
 
 LoadArenaDispatch .proc
           ;; Returns: Far (return otherbank)
-          ;; Cross-bank call to DWS_GetBWMode in bank 15
+          ;; Cross-bank call to GetBWModeWinScreen in bank 15
           lda # >(AfterDWS_GetBWModeDispatch-1)
           pha
           lda # <(AfterDWS_GetBWModeDispatch-1)
           pha
-          lda # >(DWS_GetBWMode-1)
+          lda # >(GetBWModeWinScreen-1)
           pha
-          lda # <(DWS_GetBWMode-1)
+          lda # <(GetBWModeWinScreen-1)
           pha
           ldx # 14
           jmp BS_jsr
@@ -190,14 +190,14 @@ LoadArenaRandom .proc
           jmp LoadArenaRandom
 LoadArenaDispatch:
           ;; Fall through to LoadArenaDispatch logic (inline to avoid goto)
-          ;; Cross-bank call to DWS_GetBWMode in bank 15
+          ;; Cross-bank call to GetBWModeWinScreen in bank 15
           lda # >(AfterDWS_GetBWModeRandom-1)
           pha
           lda # <(AfterDWS_GetBWModeRandom-1)
           pha
-          lda # >(DWS_GetBWMode-1)
+          lda # >(GetBWModeWinScreen-1)
           pha
-          lda # <(DWS_GetBWMode-1)
+          lda # <(GetBWModeWinScreen-1)
           pha
                     ldx # 14
           jmp BS_jsr

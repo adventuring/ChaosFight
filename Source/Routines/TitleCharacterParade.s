@@ -157,8 +157,12 @@ Roll .proc
 
           ;; Random character 0-MaxCharacter
           ;; Returns: Far (return otherbank)
-
-                    if titleParadeCharacter > MaxCharacter then Roll
+          ;; If titleParadeCharacter > MaxCharacter, then Roll
+          lda titleParadeCharacter
+          cmp # MaxCharacter
+          bcc CheckRollDone
+          jmp Roll
+CheckRollDone:
 
           ;; Start off-screen left
           lda # 246

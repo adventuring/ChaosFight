@@ -245,9 +245,13 @@ InputHandleQuadtariPlayers .proc
           jmp InputDonePlayer3InputDone
 
 CheckPlayer3Character:
-
-
-                    if playerCharacter[2] = NoCharacter then InputDonePlayer3Input
+          ;; If playerCharacter[2] = NoCharacter, then InputDonePlayer3Input
+          lda # 2
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq InputDonePlayer3Input
 
           ;; Inlined IsPlayerAlive check for player 2
           lda # 2
@@ -296,9 +300,13 @@ InputDonePlayer3Input
           jmp InputDonePlayer4Input
 
 CheckPlayer4Character:
-
-
-                    if playerCharacter[3] = NoCharacter then InputDonePlayer4Input
+          ;; If playerCharacter[3] = NoCharacter, then InputDonePlayer4Input
+          lda # 3
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # NoCharacter
+          beq InputDonePlayer4Input
 
           ;; Inlined IsPlayerAlive check for player 3
           lda # 3

@@ -595,11 +595,19 @@ CheckImpulseDirection:
           bne ApplyImpulseLeft
           jmp ImpulseRightDirection
 ApplyImpulseLeft:
-
-
-                    if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength
-
-                    if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
+          ;; If playerVelocityX[temp1] < 4, then set playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          cmp # 4
+          bcs ClampPlayer1VelocityMin
+          lda playerVelocityX,x
+          clc
+          adc impulseStrength
+          sta playerVelocityX,x
+ClampPlayer1VelocityMin:
+          ;; If playerVelocityX[temp1] > 4, then set playerVelocityX[temp1] = 4
           lda temp1
           asl
           tax
@@ -625,7 +633,7 @@ ImpulseDoneCollision:
           sta playerVelocityX,x
 ClampPlayer2VelocityMax:
 
-                    if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252
+          ;; If playerVelocityX[temp2] > 252, then set playerVelocityX[temp2] = 252
           lda temp2
           asl
           tax
@@ -642,10 +650,19 @@ ImpulseDoneCollisionLeft:
 .pend
 
 ImpulseRightDirection .proc
-
-                    if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
-
-                    if playerVelocityX[temp1] > 252 then let playerVelocityX[temp1] = 252
+          ;; If playerVelocityX[temp1] <= 252, then set playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          cmp # 253
+          bcs ClampPlayer1VelocityMaxRight
+          lda playerVelocityX,x
+          sec
+          sbc impulseStrength
+          sta playerVelocityX,x
+ClampPlayer1VelocityMaxRight:
+          ;; If playerVelocityX[temp1] > 252, then set playerVelocityX[temp1] = 252
           lda temp1
           asl
           tax
@@ -658,7 +675,7 @@ ImpulseRightDirection .proc
           sta playerVelocityX,x
 ClampPlayer1VelocityMax:
 
-                    if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
+          ;; If playerVelocityX[temp2] < 4, then set playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
           lda temp2
           asl
           tax
@@ -671,7 +688,7 @@ ClampPlayer1VelocityMax:
           sta playerVelocityX,x
 ClampPlayer2Velocity:
 
-                    if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
+          ;; If playerVelocityX[temp2] > 4, then set playerVelocityX[temp2] = 4
           lda temp2
           asl
           tax

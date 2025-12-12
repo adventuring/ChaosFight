@@ -138,7 +138,13 @@ HarpySetVerticalVelocity .proc
           ;; Use temp1 directly for indexed addressing (batariBASIC
           ;; does not resolve dim aliases)
           ;; Set bit 2 (jumping flag)
-                    let playerState[temp1] = playerState[temp1] | 4
+          ;; Set playerState[temp1] = playerState[temp1] | 4
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 4
+          sta playerState,x
 
           ;; Set swoop attack flag for collision detection
           bit 2 = swoop active (used to extend hitbox below

@@ -170,9 +170,12 @@ LoadMusicNote0Bank15:
 
           ;; Write to TIA registers (will be adjusted by envelope in
           ;; UpdateMusicVoice0)
-          AUDC0_1:= temp6
-          AUDF0_1:= temp3
-          AUDV0_1:= musicVoice0TargetAUDV_R
+          lda temp6
+          sta AUDC0
+          lda temp3
+          sta AUDF0
+          lda musicVoice0TargetAUDV_R
+          sta AUDV0
 
           ;; Set musicVoice0Frame_W = temp4 + temp5
           lda temp4
@@ -256,9 +259,12 @@ LoadMusicNote1Bank15:
 
           ;; Write to TIA registers (will be adjusted by envelope in
           ;; UpdateMusicVoice1)
-          AUDC1_1:= temp6
-          AUDF1_1:= temp3
-          AUDV1_1:= musicVoice1TargetAUDV_R
+          lda temp6
+          sta AUDC1
+          lda temp3
+          sta AUDF1
+          lda musicVoice1TargetAUDV_R
+          sta AUDV1
 
           ;; Set musicVoice1Frame_W = temp4 + temp5
           lda temp4

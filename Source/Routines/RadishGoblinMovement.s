@@ -60,14 +60,29 @@ MoveLeftRadishGoblin .proc
           lda CharacterMovementSpeed,x
           sta temp6
 
-          let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          sec
+          sbc temp6
+          sta playerVelocityX,x
           lda temp1
           asl
           tax
           lda # 0
           sta playerVelocityXL,x
 
-                    if (playerState[temp1] & 8) then jmp AfterLeftRadishGoblin
+          ;; If (playerState[temp1] & 8), then jmp AfterLeftRadishGoblin
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq AfterLeftRadishGoblinSkip
+          jmp AfterLeftRadishGoblin
+AfterLeftRadishGoblinSkip:
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateLeft-1)
@@ -115,8 +130,13 @@ AfterLeftRadishGoblin:
 .pend
 
 SkipSetFacingLeftRadishGoblin .proc
-
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # (255 - PlayerStateBitFacing)
+          sta playerState,x
 
 .pend
 
@@ -165,7 +185,14 @@ MoveRightRadishGoblin .proc
           lda CharacterMovementSpeed,x
           sta temp6
 
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
+          lda temp1
+          asl
+          tax
+          lda playerVelocityX,x
+          clc
+          adc temp6
+          sta playerVelocityX,x
           lda temp1
           asl
           tax
@@ -307,8 +334,13 @@ ConvertXToColumn:
           lda playerX,x
           sta temp2
 
-                    if temp2 & $80 then let temp2 = 0
-
+          ;; If temp2 & $80, set temp2 = 0
+          lda temp2
+          and # $80
+          beq CheckTemp2RangeRadishGoblin
+          lda # 0
+          sta temp2
+CheckTemp2RangeRadishGoblin:
 
             lsr temp2
 
@@ -478,8 +510,16 @@ CalcBounceRadishGoblin .proc
           sta temp2
 
           ;; Check jump button (enhanced button or stick up)
-
-                    if playerVelocityY[temp1] >= TerminalVelocity then let temp2 = RadishGoblinBounceHighSpeed
+          ;; If playerVelocityY[temp1] >= TerminalVelocity, set temp2 = RadishGoblinBounceHighSpeed
+          lda temp1
+          asl
+          tax
+          lda playerVelocityY,x
+          cmp # TerminalVelocity
+          bcc CheckTerminalVelocityDone
+          lda # RadishGoblinBounceHighSpeed
+          sta temp2
+CheckTerminalVelocityDone:
           lda # 0
           sta temp3
 
@@ -495,32 +535,44 @@ CalcBounceRadishGoblin .proc
 
           lda temp1
           cmp # 0
-          bne CheckStickRadishGoblin
+          bne CheckStickRadishGoblinProc
           jmp CheckEnhanced0RadishGoblin
-CheckStickRadishGoblin:
-
-
-                    if (enhancedButtonStates_R & 2) then let temp3 = 1
+CheckStickRadishGoblinProc .proc:
+          ;; If (enhancedButtonStates_R & 2), set temp3 = 1
+          lda enhancedButtonStates_R
+          and # 2
+          beq CheckEnhancedButtonStatesDone
+          lda # 1
+          sta temp3
+CheckEnhancedButtonStatesDone:
           jmp ApplyBounceRadishGoblin
 
 .pend
 
 CheckEnhanced0RadishGoblin .proc
-
-                    if (enhancedButtonStates_R & 1) then let temp3 = 1
+          ;; If (enhancedButtonStates_R & 1), set temp3 = 1
+          lda enhancedButtonStates_R
+          and # 1
+          beq CheckEnhancedButtonStates0Done
+          lda # 1
+          sta temp3
+CheckEnhancedButtonStates0Done:
 
 .pend
 
-CheckStickRadishGoblin .proc
-
-                    if temp1 & 2 = 0 then StickJoy0RadishGoblin
+CheckStickRadishGoblinLabel .proc
+          ;; If temp1 & 2 = 0, then StickJoy0RadishGoblin
           lda temp1
           and # 2
           bne CheckJoy1Up
           jmp StickJoy0RadishGoblin
 CheckJoy1Up:
-
-                    if joy1up then let temp3 = 1
+          ;; If joy1up, set temp3 = 1
+          lda joy1up
+          beq CheckJoy1UpDone
+          lda # 1
+          sta temp3
+CheckJoy1UpDone:
           lda joy1up
           beq ApplyBounceRadishGoblin
           lda # 1

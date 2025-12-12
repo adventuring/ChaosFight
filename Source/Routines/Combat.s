@@ -117,9 +117,15 @@ CheckPlayerWillDie:
           ;; Will die
           lda # 0
           sta temp3
-          if temp2 < temp1 then let temp3 = 1
+          ;; If temp2 < temp1, set temp3 = 1
+          lda temp2
+          cmp temp1
+          bcs CheckPlayerDies
+          lda # 1
+          sta temp3
+CheckPlayerDies:
           ;; If player will die, instantly vanish (eliminate)
-          ;; if temp3 then jmp PlayerDies
+          ;; If temp3, then jmp PlayerDies
           lda temp3
           beq ApplyDamageToPlayer
 
@@ -128,8 +134,14 @@ CheckPlayerWillDie:
 ApplyDamageToPlayer:
 
           ;; Player survives - apply damage and enter hurt sta
-
-          let playerHealth[defenderID] = temp2 - temp1
+          ;; Set playerHealth[defenderID] = temp2 - temp1
+          lda defenderID
+          asl
+          tax
+          lda temp2
+          sec
+          sbc temp1
+          sta playerHealth,x
 
           ;; Set hurt animation (ActionHit = 5)
           lda defenderID

@@ -393,7 +393,15 @@ RenderRoboTitoStretchMissile .proc
           ;;
           ;; Constraints: Caller supplies participant/missile pairing so this
           ;; routine does not perform frame-parity dispatch.
-                    if playerCharacter[temp1] = CharacterRoboTito then RRTM_CheckStretch
+          ;; If playerCharacter[temp1] = CharacterRoboTito, then RRTM_CheckStretch
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CharacterRoboTito
+          bne RRTM_CheckStretchDone
+          jmp RRTM_CheckStretch
+RRTM_CheckStretchDone:
           jmp BS_return
 
 .pend

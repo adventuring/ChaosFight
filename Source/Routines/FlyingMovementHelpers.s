@@ -130,11 +130,16 @@ CheckDragonOfStormsLeft:
           jmp HFCM_LeftDirect
 HFCM_LeftStandard:
 
-          ;; let playerVelocityX[temp1] = $ff
+          ;; Set playerVelocityX[temp1] = $ff
           lda temp1
           asl
           tax
-          lda 0
+          lda # $ff
+          sta playerVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda # 0
           sta playerVelocityXL,x
           jmp HFCM_LeftFacing
 .pend
@@ -146,11 +151,18 @@ HFCM_LeftMomentum .proc
           tax
           lda CharacterMovementSpeed,x
           sta characterMovementSpeed
-          ;; let playerVelocityX[temp1] = playerVelocityX[temp1] - characterMovementSpeed
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - characterMovementSpeed
           lda temp1
           asl
           tax
-          lda 0
+          lda playerVelocityX,x
+          sec
+          sbc characterMovementSpeed
+          sta playerVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda # 0
           sta playerVelocityXL,x
           jmp HFCM_LeftFacing
 .pend
@@ -184,7 +196,7 @@ HFCM_LeftDirect .proc
           lda temp1
           asl
           tax
-          lda 1
+          lda # 1
           sta playerVelocityXL,x
           ;; Subpixel: 1 = 1/256 pixel for subpixel accuracy
 .pend
@@ -227,7 +239,13 @@ HFCM_LeftFacingDone:
 .pend
 
 HFCM_SetFacingLeft .proc
-          ;; let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # (255 - PlayerStateBitFacing)
+          sta playerState,x
           jmp BS_return
 .pend
 
@@ -361,12 +379,12 @@ HFCM_RightStandard:
           lda temp1
           asl
           tax
-          lda 1
+          lda # 1
           sta playerVelocityX,x
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
           jmp HFCM_RightFacing
 .pend
@@ -378,11 +396,18 @@ HFCM_RightMomentum .proc
           tax
           lda CharacterMovementSpeed,x
           sta characterMovementSpeed
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] + characterMovementSpeed
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + characterMovementSpeed
           lda temp1
           asl
           tax
-          lda 0
+          lda playerVelocityX,x
+          clc
+          adc characterMovementSpeed
+          sta playerVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda # 0
           sta playerVelocityXL,x
           jmp HFCM_RightFacing
 .pend
@@ -403,7 +428,7 @@ HFCM_RightDirect .proc
           lda temp1
           asl
           tax
-          lda 1
+          lda # 1
           sta playerVelocityXL,x
           ;; Subpixel: 1 = 1/256 pixel for subpixel accuracy
 .pend
@@ -446,7 +471,13 @@ HFCM_RightFacingDone:
 .pend
 
 HFCM_SetFacingRight .proc
-                    let playerState[temp1] = playerState[temp1] | 1
+          ;; Set playerState[temp1] = playerState[temp1] | 1
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 1
+          sta playerState,x
           jmp BS_return
 
 

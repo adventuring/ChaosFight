@@ -79,8 +79,13 @@ DragonOfStormsDown:
 
 
           ;; Check for wraparound: if subtraction wrapped negative, result ≥ 128
-
-                    if temp2 & $80 then let temp2 = 0
+          ;; If temp2 & $80, set temp2 = 0
+          lda temp2
+          and # $80
+          beq CheckTemp2RangeCCDStandard
+          lda # 0
+          sta temp2
+CheckTemp2RangeCCDStandard:
           lda temp2
           cmp # 32
           bcc CheckRowBelowStandard
@@ -146,10 +151,12 @@ CheckRowBelowStandard:
           jmp BS_jsr
 AfterPlayfieldReadDownFirst:
 
-
-                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDownStandard
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq BlockedCannotMoveDownStandard
+          lda # 1
+          sta temp5
 BlockedCannotMoveDownStandard:
-          jmp BlockedCannotMoveDownStandard
           lda temp6
           sta temp1
 
@@ -309,12 +316,12 @@ HarpySetDive .proc
           dim HSD_stateFlags = temp5 (dim removed - variable definitions handled elsewhere)
 
           ;; Fix RMW: Read from _R, modify, write to _W
-
-                    let HSD_stateFlags = characterStateFlags_R[temp1] | 4         
+          ;; Set HSD_stateFlags = characterStateFlags_R[temp1] | 4
           lda temp1
           asl
           tax
           lda characterStateFlags_R,x
+          ora # 4
           sta HSD_stateFlags
 
           lda temp1
@@ -464,10 +471,12 @@ CheckRowBelow:
           jmp BS_jsr
 AfterPlayfieldReadHarpyDown:
 
-
-                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq BlockedCannotMoveDown
+          lda # 1
+          sta temp5
 BlockedCannotMoveDown:
-          jmp BlockedCannotMoveDown
           lda temp6
           sta temp1
 
@@ -656,10 +665,12 @@ CheckRowBelowFrooty:
           jmp BS_jsr
 AfterPlayfieldReadFrootyDown:
 
-
-                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDownFrooty
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq BlockedCannotMoveDownFrooty
+          lda # 1
+          sta temp5
 BlockedCannotMoveDownFrooty:
-          jmp BlockedCannotMoveDownFrooty
           lda temp6
           sta temp1
 
@@ -750,12 +761,16 @@ RoboTitoVoluntaryDrop .proc
           ;; Returns: Far (return otherbank)
 
           ;; Fix RMW: Read from _R, modify, write to _W
-
-                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & ($ff ^ PlayerStateBitFacing)
+          ;; Set characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & ($ff ^ PlayerStateBitFacing)
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          and # ($ff ^ PlayerStateBitFacing)
+          sta characterStateFlags_W,x
 
           ;; Clear latched bit (bit 0)
-
-                    let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
+          ;; Set playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
           lda temp1
           asl
           tax
@@ -799,8 +814,13 @@ RoboTitoVoluntaryDrop .proc
           sta playerVelocityYL,x
 
           ;; Set jumping bit
-
-                    let playerState[temp1] = playerState[temp1] | 4
+          ;; Set playerState[temp1] = playerState[temp1] | 4
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 4
+          sta playerState,x
           jmp BS_return
 
 .pend

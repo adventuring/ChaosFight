@@ -74,8 +74,13 @@ UpdatePlayer1HealthBar .proc
           ;; Constraints: Must be colocated with P1SetPattern (called via goto)
 
           ;; Clamp health to valid range (unsigned bytes cannot be negative)
-
-          if temp1 > PlayerHealthMax then let temp1 = PlayerHealthMax
+          ;; If temp1 > PlayerHealthMax, then set temp1 = PlayerHealthMax
+          lda temp1
+          cmp # PlayerHealthMax
+          bcc CheckHealthMaxDone
+          lda # PlayerHealthMax
+          sta temp1
+CheckHealthMaxDone:
 
           ;; Compare health against thresholds starting from 83
 
@@ -805,7 +810,6 @@ SetScoreBytes .proc
 
 
           ;; Score colors are now set directly in MultiSpriteKernel.s
-          ;; Note: These assignments are obsolete - colors set in MultiSpriteKernel.s
           lda # ColIndigo(12)
           sta COLUP0
           lda # ColRed(12)

@@ -26,14 +26,12 @@ SelectDrawScreen .proc
           ;; Playfield layout is static; no runtime register writes
           lda # 2
           sta temp6
-          if controllerStatus & SetQuadtariDetected then let temp6 = 4
+          ;; If controllerStatus & SetQuadtariDetected, set temp6 = 4
           lda controllerStatus
           and # SetQuadtariDetected
           beq SetPlayerCount
-
           lda # 4
           sta temp6
-
 SetPlayerCount:
           lda # 0
           sta temp1

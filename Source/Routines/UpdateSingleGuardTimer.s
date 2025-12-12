@@ -47,10 +47,9 @@ UpdateSingleGuardTimer .proc
           tax
           lda playerState,x
           sta temp2
-          if temp2 then UpdateGuardTimerActive
+          ;; If temp2, then UpdateGuardTimerActive
           lda temp2
           beq UpdateCooldownTimer
-
           jmp UpdateGuardTimerActive
 
 UpdateCooldownTimer:
@@ -146,10 +145,13 @@ GuardTimerExpired .proc
           ;; Called Routines: None
           ;; Constraints: Must be colocated with UpdateSingleGuardTimer, UpdateGuardTimerActive
           ;; Start cooldown timer (same duration as guard)
-                    let playerState[temp1] = playerState[temp1] & MaskClearGuard
+          ;; Set playerState[temp1] = playerState[temp1] & MaskClearGuard
           lda temp1
           asl
           tax
+          lda playerState,x
+          and # MaskClearGuard
+          sta playerState,x
           lda GuardTimerMaxFrames
           sta playerTimers_W,x
           jmp BS_return

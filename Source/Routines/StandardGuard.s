@@ -71,8 +71,13 @@ ActivateGuard:
           ;; Activate guard state - inlined (StartGuard)
 
           ;; Set guard bit in playerState
-
-          let playerState[temp1] = playerState[temp1] | 2
+          ;; Set playerState[temp1] = playerState[temp1] | 2
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 2
+          sta playerState,x
 
           ;; Set guard duration timer
           lda temp1

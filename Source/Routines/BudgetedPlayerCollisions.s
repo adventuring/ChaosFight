@@ -122,9 +122,20 @@ BPC_CalcDiff
 BPC_CheckSep .proc
           rts
 
-                    if playerX[temp3] < playerX[temp4] then BPC_SepLeft
+          ;; If playerX[temp3] < playerX[temp4], then BPC_SepLeft
+          lda temp3
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+          lda temp4
+          asl
+          tax
+          lda playerX,x
+          cmp temp2
+          bcc BPC_SepLeft
 
-          ;; let playerX[temp3] = playerX[temp3] + 1
+          ;; Set playerX[temp3] = playerX[temp3] + 1
           lda temp3
           asl
           tax

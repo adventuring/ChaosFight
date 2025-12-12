@@ -252,19 +252,24 @@ CEJB_CheckPlayer0 .proc
           ;; Player 0: Check Genesis controller first
           ;; Returns: Far (return otherbank)
 
-                    if !controllerStatus{0} then jmp CEJB_CheckPlayer0Joy2bPlus
+          ;; If !controllerStatus{0}, then jmp CEJB_CheckPlayer0Joy2bPlus
+          lda controllerStatus
+          and # 1
+          bne CEJB_ReadButton0
+          jmp CEJB_CheckPlayer0Joy2bPlus
 
-CEJB_ReadButton0
+CEJB_ReadButton0:
 
           ;; Shared button read for Player 0 enhanced controllers (Button C/II)
           ;; Returns: Far (return otherbank)
 
-                    if !INPT0{7} then let
+          ;; If !INPT0{7}, set temp3 = 1
           bit INPT0
           bmi CEJB_DonePlayer0
-          jmp let_label
-CEJB_DonePlayer0: temp3 = 1
-          jmp CEJB_DonePlayer0
+          lda # 1
+          sta temp3
+CEJB_DonePlayer0:
+          jmp BS_return
 
 .pend
 
@@ -273,7 +278,12 @@ CEJB_CheckPlayer0Joy2bPlus .proc
           ;; Player 0: Check Joy2b+ controller (fallback)
           ;; Returns: Far (return otherbank)
 
-                    if !controllerStatus{1} then CEJB_DonePlayer0
+          ;; If !controllerStatus{1}, then CEJB_DonePlayer0
+          lda controllerStatus
+          and # 2
+          bne CEJB_ReadButton0Label
+          jmp CEJB_DonePlayer0
+CEJB_ReadButton0Label:
           jmp CEJB_ReadButton0
 
 .pend

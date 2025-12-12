@@ -25,7 +25,7 @@ CheckGuardCooldown .proc
           tax
           lda playerState,x
           sta temp3
-          if temp3 then GuardCooldownBlocked
+          ;; If temp3, then GuardCooldownBlocked
           lda temp3
           beq CheckCooldownTimer
 

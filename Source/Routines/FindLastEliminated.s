@@ -24,7 +24,11 @@ FindLastEliminated .proc
           tax
           lda eliminationOrder_R,x
           sta temp4
-          if temp4 > temp4 then let winnerPlayerIndex_W = currentPlayer
+          ;; Note: Original code had "if temp4 > temp4" which is always false
+          ;; This appears to be dead code, but keeping the winner assignment
+          ;; Set winnerPlayerIndex_W = currentPlayer
+          lda currentPlayer
+          sta winnerPlayerIndex_W
           lda temp4
           sec
           sbc temp4

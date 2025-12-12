@@ -245,8 +245,15 @@ HarpyDown .proc
           ;; conversion (not shared subroutine)
 
           ;; Check if Harpy is airborne and set dive mode
-
-          if (playerState[temp1] & 4) then HarpySetDive
+          ;; If (playerState[temp1] & 4), then HarpySetDive
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # 4
+          beq CheckHarpyYPosition
+          jmp HarpySetDive
+CheckHarpyYPosition:
 
           ;; Jumping bit set, airborne
 
@@ -267,8 +274,7 @@ HarpyDown .proc
 HarpyNormalDown:
 
           ;; Above ground level, airborne
-
-          jmp HarpyNormalDown
+          jmp BS_return
 
 .pend
 
@@ -298,8 +304,13 @@ HarpySetDive .proc
 
 
           ;; Fix RMW: Read from _R, modify, write to _W
-
-          let HSD_stateFlags = characterStateFlags_R[temp1] | 4
+          ;; Set HSD_stateFlags = characterStateFlags_R[temp1] | 4
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          ora # 4
+          sta HSD_stateFlags
           lda temp1
           asl
           tax
@@ -640,10 +651,12 @@ CheckRowBelowFrooty:
           jmp BS_jsr
 AfterPlayfieldReadRadishGoblin:
 
-
-                    if temp1 then let temp5 = 1          lda temp1          beq BlockedCannotMoveDown
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq BlockedCannotMoveDown
+          lda # 1
+          sta temp5
 BlockedCannotMoveDown:
-          jmp BlockedCannotMoveDown
           lda temp6
           sta temp1
 

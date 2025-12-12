@@ -161,8 +161,12 @@ SetPlayerLocked .proc
 .pend
 
 SetPlayerLockedUseTemp .proc
-
-          if temp3 > 3 then return otherbank
+          ;; If temp3 > 3, then return otherbank
+          lda temp3
+          cmp # 4
+          bcc SetPlayerLockedUseTempContinue
+          jmp BS_return
+SetPlayerLockedUseTempContinue:
           ;; Returns: Far (return otherbank)
 
           lda temp1

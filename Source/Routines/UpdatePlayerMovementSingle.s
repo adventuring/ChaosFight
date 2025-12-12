@@ -32,12 +32,19 @@ UpdatePlayerMovementSingle .proc
           cmp # 1
           bcc NoXCarry
 
-          let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
+          ;; Set playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
+          lda currentPlayer
+          asl
+          tax
+          lda playerSubpixelX_R,x
+          clc
+          adc # 1
+          sta playerSubpixelX_W,x
 
 NoXCarry:
 
           ;; Apply integer velocity component
-          let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + playerVelocityX[currentPlayer]
+          ;; Set playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + playerVelocityX[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -54,7 +61,7 @@ NoXCarry:
           tax
           sta playerSubpixelX_W,x
           ;; Sync integer position for rendering
-          let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
+          ;; Set playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
           lda currentPlayer
           asl
           tax
@@ -102,7 +109,7 @@ NoYCarry:
           tax
           sta playerSubpixelY_W,x
           ;; Sync integer position for rendering
-          let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
+          ;; Set playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
           lda currentPlayer
           asl
           tax

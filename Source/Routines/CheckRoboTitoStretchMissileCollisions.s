@@ -91,12 +91,13 @@ IsStretchingAnimation .proc
 
 CalculateMissilePosition:
 
-          ldx temp1
-          let temp3 = playerX,x + 7
+          ;; Set temp3 = playerX[temp1] + 7
           lda temp1
           asl
           tax
           lda playerX,x
+          clc
+          adc # 7
           sta temp3
           ;; Set temp4 = playerY[temp1] + 16
           lda temp1

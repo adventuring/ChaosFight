@@ -35,11 +35,11 @@ title_do_vertical_sync:
 
           ;; VBLANK: Use Reference cycle-exact timing
           .if ! vblank_time
-          .if TVStandard == 1
+          .if TVStandard == PAL
           lda # 42+128
           sta TIM64T
           .else
-          .if TVStandard == 2
+          .if TVStandard == SECAM
           lda # 42+128
           sta TIM64T
           .else
@@ -155,11 +155,11 @@ PFWAIT:
 OVERSCAN:
           ;; Overscan: Use Reference cycle-exact timing
           .if ! overscan_time
-          .if TVStandard == 1
+          .if TVStandard == PAL
           lda # 34+128
           sta TIM64T
           .else
-          .if TVStandard == 2
+          .if TVStandard == SECAM
           lda # 34+128
           sta TIM64T
           .else

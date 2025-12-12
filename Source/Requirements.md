@@ -20,15 +20,12 @@ Then continues into warm start:
 
 ## Naming Conventions
 
-- Built-in identifiers (temp1-temp6, joy0up, frame, and
-  their hardware frenemies) stay lowercase because they were here before
-  we moved in.
 - User-defined variables flaunt camelCase (`gameState`, `playerX`,
   `playerCharacter[0]`) so we can spot our handiwork instantly.
 - Constants, enums, labels, and routines work the PascalCase runway
   (`MaxCharacter`, `ActionStanding`, `LoadCharacterSprite`) to telegraph
   their importance.
-- TIA registers (`player0x`, `COLUP0`, `pf0`-`pf2`, etc.) keep their
+- TIA registers (`COLUP0`, `PF0`-`PF2`, etc.) keep their
   canonical-case spellings—do not “improve” them.
 
 

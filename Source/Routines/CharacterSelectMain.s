@@ -892,7 +892,7 @@ CharacterSelectCheckReady .proc
           ;; P1 is locked, check P2
 
           ;; Set temp1 = 0 cross-bank call to GetPlayerLocked bank6
-          lda 0
+          lda # 0
           sta temp1
           lda # >(return_point-1)
           pha

@@ -412,7 +412,7 @@ SelectUpdatePlayerAnimation
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta characterSelectPlayerAnimationTimer_W,x
           ;; Set temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
           lda temp1

@@ -349,7 +349,7 @@ HCSF_HandleRandomSound:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta randomSelectFlags_W,x
 
 .pend

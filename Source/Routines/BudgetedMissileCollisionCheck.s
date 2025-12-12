@@ -32,7 +32,6 @@ BudgetedMissileCollisionCheck:
           ;; Use CheckAllMissileCollisions from MissileCollision.bas which checks one player missile
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne Use4PlayerMode
 
           jmp BudgetedMissileCollisionCheck2P

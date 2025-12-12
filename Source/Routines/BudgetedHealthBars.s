@@ -193,7 +193,7 @@ CheckPlayer2Character:
 BudgetedHealthBarPlayer2Done:
           rts
 
-DonePlayer2HealthUpdate
+DonePlayer2HealthUpdate:
           ;; Player 2 health update check complete (label only)
           ;;
           ;; Input: None (label only, no execution)
@@ -271,7 +271,7 @@ CheckPlayer3Character:
 BudgetedHealthBarUpdateDone:
           rts
 
-DonePlayer3HealthUpdate
+DonePlayer3HealthUpdate:
           ;; Player 3 health update check complete (label only)
           ;;
           ;; Input: None (label only, no execution)

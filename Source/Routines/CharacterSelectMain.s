@@ -448,7 +448,7 @@ P2TailCheckP4CharacterSelect .proc
           lda NoCharacter
           sta temp6
 
-P2TailDoneCharacterSelect
+P2TailDoneCharacterSelect:
 
           rts
 

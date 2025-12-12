@@ -63,7 +63,6 @@ UpdateCooldownTimer:
           lda playerTimers_R,x
           sta temp3
           lda temp3
-          cmp # 0
           beq NoCooldownActive
 
           dec temp3

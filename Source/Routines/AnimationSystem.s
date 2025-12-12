@@ -423,7 +423,7 @@ SetWindupAnimation:
 
           jmp AnimationSetPlayerAnimationInlined
 
-AnimationHandleExecuteEnd
+AnimationHandleExecuteEnd:
           ;; Set temp1 = playerCharacter[currentPlayer]
          
           lda currentPlayer
@@ -470,7 +470,7 @@ SetExecuteAnimation:
 
           jmp AnimationSetPlayerAnimationInlined
 
-AnimationHarpyExecute
+AnimationHarpyExecute:
           ;; Harpy: Execute → Idle
           ;; Clear dive flag and stop diagonal movement when attack completes
           lda currentPlayer
@@ -531,7 +531,7 @@ AnimationHandleRecoveryEnd
 
           jmp AnimationSetPlayerAnimationInlined
 
-AnimationSetPlayerAnimationInlined
+AnimationSetPlayerAnimationInlined:
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
           ;; Set animation action for a player (inlined from AnimationSystem.bas)
@@ -862,9 +862,10 @@ AnimationNextPlayerLabel:
 
 AnimationNextLabel1 .proc
           jmp BS_return
-SetPlayerAnimation
+
+SetPlayerAnimation:
           ;; Returns: Far (return otherbank)
-SetPlayerAnimation
+SetPlayerAnimation:
 
           ;; Set animation action for a player
           ;; Returns: Far (return otherbank)
@@ -965,7 +966,7 @@ AfterLoadPlayerSprite:
 
           jmp BS_return
 
-InitializeAnimationSystem
+InitializeAnimationSystem:
           ;; Initialize animation system for all players
           ;; Returns: Far (return otherbank)
           ;; Called at game start to set up initial animation sta
@@ -1027,7 +1028,8 @@ TransitionLoopAnimation
           lda 0
           sta currentAnimationFrame_W,x
           jmp BS_return
-TransitionToIdle
+
+TransitionToIdle:
           lda ActionIdle
           sta temp2
           ;; tail call
@@ -1041,7 +1043,7 @@ TransitionToFallen
           ;; Returns: Far (return otherbank)
           jmp SetPlayerAnimation
 
-TransitionHandleJump
+TransitionHandleJump:
           ;; Stay on frame 7 until Y velocity goes negative
           ;; Returns: Far (return otherbank)
           ;; Check if player is falling (positive Y velocity =
@@ -1079,7 +1081,7 @@ TransitionHandleJump_TransitionToFalling
           ;; tail call
           jmp SetPlayerAnimation
 
-TransitionHandleFallBack
+TransitionHandleFallBack:
           ;; Check wall collision using pfread
           ;; Returns: Far (return otherbank)
           If hit wall: jmp idle, else: jmp fallen
@@ -1183,7 +1185,7 @@ TransitionHandleFallBack_HitWall
           ;; Attack Transition Handling
           ;; Character-specific attack transitions based on patterns
 
-HandleAttackTransition
+HandleAttackTransition:
           ;; Returns: Far (return otherbank)
           ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
           lda currentPlayer
@@ -1229,7 +1231,7 @@ HandleWindupEndAttack:
           sta temp2
           rts
 
-HandleExecuteEnd
+HandleExecuteEnd:
           ;; Returns: Far (return otherbank)
           ;; Set temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
@@ -1331,7 +1333,7 @@ HarpyExecute .proc
           ;; execute, keeping the jump tables dense until bespoke logic
           ;; arrives.
 
-HandleRecoveryEnd
+HandleRecoveryEnd:
           ;; All characters: Recovery → Idle
           ;; Returns: Far (return otherbank)
           lda ActionIdle

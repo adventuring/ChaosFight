@@ -48,7 +48,6 @@ Joy2bPauseDone:
           ;; Debounce: only toggle if button just pressed (was 0, now
           ;; 1)
           lda temp1
-          cmp # 0
           bne CheckPauseButtonPrev
 
           jmp DonePauseToggle

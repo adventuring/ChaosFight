@@ -168,7 +168,6 @@ AfterDetectPadsSelect:
 
           lda systemFlags
           and SystemFlagGameStatePaused
-          cmp # 0
           bne SetPausedFlag
           ;; Set systemFlags = systemFlags | SystemFlagGameStatePausedjmp Player1PauseDone
 SetPausedFlag:
@@ -211,7 +210,6 @@ AfterDetectPadsSelectP2:
 
           lda systemFlags
           and SystemFlagGameStatePaused
-          cmp # 0
           bne SetPausedFlagP2
           ;; Set systemFlags = systemFlags | SystemFlagGameStatePaused, then jump to Player2PauseDone
 SetPausedFlagP2:
@@ -298,7 +296,6 @@ CheckEnhancedPause .proc
           Then check enhanced pause buttons for the specified player
           ;; Joy2B+ Button III uses different registers than Button II/C
           lda temp2
-          cmp # 0
           bne CheckPlayer2Pause
           jmp CheckPlayer1EnhancedPause
 CheckPlayer2Pause:
@@ -347,7 +344,6 @@ CheckPlayer2EnhancedPause .proc
           ;; Called same-bank from CheckEnhancedPause, so use return thisbank
           lda INPT2
           and # 128
-          cmp # 0
           bne CheckINPT3
           lda # 1
           sta temp1
@@ -355,7 +351,6 @@ CheckINPT3:
 
           lda INPT3
           and # 128
-          cmp # 0
           bne CheckPlayer2EnhancedPauseDone
           lda # 1
           sta temp1
@@ -422,7 +417,7 @@ AfterDetectPadsColorBW:
           lda temp6
           sta colorBWPrevious_W
 
-DoneSwitchChange
+DoneSwitchChange:
           ;; Color/B&W switch change check complete (label only, no
           ;; Returns: Near (return thisbank)
           ;; execution)

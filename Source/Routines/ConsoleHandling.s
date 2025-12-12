@@ -10,7 +10,7 @@ WarmStart .proc
           ;; Output: All memory cleared, TIA registers initialized, PIA RIOT ports initialized,
           ;; controller detection performed, jumps to BeginPublisherPrelude
           ;;
-          ;; Mutates: All RAM ($81-$FF), SCRAM ($F080-$F0FF), TIA registers, PIA RIOT ports,
+          ;; Mutates: All RAM ($81-$FF), SCRAM (w000-w127 via $F000-$F07F), TIA registers, PIA RIOT ports,
           ;; controllerStatus (via DetectPads)
           ;;
           ;; Called Routines: DetectPads (bank13) - controller detection,
@@ -28,13 +28,14 @@ WarmStartClearMemory:
           cpx # $80                        ;;; Stop at $80 (console7800Detected must be preserved)
           bne WarmStartClearMemory
           
-          ;; Step 2: Clear SCRAM $F081 to $F0FF and $F080 also
+          ;; Step 2: Clear SCRAM w000-w127
+          ;; SCRAM write ports are at $F000-$F07F (w000-w127)
           ;; SCRAM read ports are at $F080-$F0FF (r000-r127)
-          ;; Clear via read ports directly to be explicit
+          ;; Must write to write ports, not read ports
           lda # 0
           ldx # $7F                        ;;; 128 bytes ($00-$7F)
 WarmStartClearSCRAM:
-          sta $F080,x                      ;;; Clear SCRAM read ports ($F080-$F0FF = r000-r127)
+          sta $F000,x                      ;;; Clear SCRAM write ports ($F000-$F07F = w000-w127)
           dex
           bpl WarmStartClearSCRAM
           

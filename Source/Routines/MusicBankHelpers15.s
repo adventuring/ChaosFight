@@ -83,8 +83,6 @@ LoadSongVoice1PointerBank15:
           ;; Constraints: Only songs 0-Bank14MaxSongID are in Bank 15. Index mapping:
           ;; song ID maps directly (index = songID). Returns songPointer = 0 if song not in this bank
           ;; Bounds check: Only songs 0-Bank14MaxSongID are in Bank 15
-          rts
-          rts
           ;; Calculate compact index: index = songID
           lda temp1
           sta temp2
@@ -96,11 +94,6 @@ LoadSongVoice1PointerBank15:
           lda SongPointers2SecondH,x
           sta songPointerH
           ;; Set songPointer = SongPointers2SecondL[temp2]
-          lda temp2
-          asl
-          tax
-          lda SongPointers2SecondL,x
-          sta songPointer
           lda temp2
           asl
           tax
@@ -150,7 +143,8 @@ LoadMusicNote0Bank15:
           ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
           ;; Set temp6 = temp2 & %11110000
           ;; Set temp6 = temp6 / 16
-          lda temp6
+          lda temp2
+          and # $f0
           lsr
           lsr
           lsr
@@ -231,15 +225,17 @@ LoadMusicNote1Bank15:
           sta temp4
           iny
           lda (musicVoice1Pointer),y      ; Load Delay
-            sta temp5
+          sta temp5
 
           ;; Check for end of track (Duration = 0)
-          rts
+          lda temp4
+          beq LoadMusicNote1EndOfTrack
 
           ;; Set temp6 = temp2 & %11110000
           ;; Extract AUDC and AUDV
           ;; Set temp6 = temp6 / 16
-          lda temp6
+          lda temp2
+          and # $f0
           lsr
           lsr
           lsr
@@ -279,6 +275,12 @@ LoadMusicNote1Bank15:
           adc # 4
           sta musicVoice1Pointer
 
+          ;; LoadMusicNote1Bank15 is called from UpdateMusicVoice1 which is reached via cross-bank call
+          ;; (PlayMusic is called cross-bank from MainLoop). Therefore it must always use return thisbank.
+          rts
+
+LoadMusicNote1EndOfTrack:
+          ;; End of track reached - return without advancing pointer
           ;; LoadMusicNote1Bank15 is called from UpdateMusicVoice1 which is reached via cross-bank call
           ;; (PlayMusic is called cross-bank from MainLoop). Therefore it must always use return thisbank.
           rts

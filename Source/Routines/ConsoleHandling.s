@@ -3,88 +3,135 @@
 
 WarmStart .proc
           ;; Warm Start / Reset Handler
-          ;; Returns: Far (return otherbank)
+          ;; Returns: Far (return otherbank) - jumps to BeginPublisherPrelude
           ;;
-          ;; Input: None (called from MainLoop on RESET)
+          ;; Input: None (called from cold start procedure in Reset handler)
           ;;
-          ;; Output: gameMode set to ModePublisherPrelude,
-          ;; ChangeGameMode called, TIA registers initialized
+          ;; Output: All memory cleared, TIA registers initialized, PIA RIOT ports initialized,
+          ;; controller detection performed, jumps to BeginPublisherPrelude
           ;;
-          ;; Mutates: systemFlags (paused flag cleared), frame (reset
-          ;; to 0), gameMode (set to ModePublisherPrelude),
-          ;; COLUBK, COLUPF, COLUP0, _COLUP1 (TIA color
-          ;; registers),
-          ;; AUDC0, AUDV0, AUDC1, AUDV1 (TIA audio registers),
-          ;; ENAM0, ENAM1, ENABL (sprite enable registers)
+          ;; Mutates: All RAM ($81-$FF), SCRAM ($F080-$F0FF), TIA registers, PIA RIOT ports,
+          ;; controllerStatus (via DetectPads)
           ;;
-          ;; Called Routines: ChangeGameMode (bank14) - accesses game
-          ;; mode sta
-
+          ;; Called Routines: DetectPads (bank13) - controller detection,
+          ;; BeginPublisherPrelude (bank14) - publisher prelude entry
           ;;
-          ;; Constraints: Entry point for warm start/reset (called from
-          ;; MainLoop)
-          ;; Step 1: Clear critical game state variables
-          lda systemFlags
-          and # ClearSystemFlagGameStatePaused
-          sta systemFlags
-          ;; Clear paused flag (0 = normal, not paused, not ending)
-          ;; Initialize frame counter to 0 on warm sta
-
+          ;; Constraints: Entry point for warm start (called from cold start procedure)
+          ;; Must clear memory before any stack operations
+          
+          ;; Step 1: Clear all memory from $81 to $FF
           lda # 0
-          sta frame
-
-          ;; Step 2: Reinitialize TIA color registers to safe defaults
-          ;; Match ColdStart initialization for consistency
-          ;; Background: black (COLUBK starts black, no need to set)
-          ;; Playfield: white
-          lda # $0E
-          sta COLUPF
-          ;; Player 0: bright blue
-          lda # $8E
-          sta COLUP0
-          ;; Player 1: bright red (multisprite kernel requires NewCOLUP1)
-          lda # $4E
-          sta NewCOLUP1
-
-          ;; Step 3: Initialize audio channels (silent on reset)
+          ldx # $FF
+WarmStartClearMemory:
+          sta $00,x                        ;;; Clear zero-page RAM ($81-$FF)
+          dex
+          cpx # $80                        ;;; Stop at $80 (console7800Detected must be preserved)
+          bne WarmStartClearMemory
+          
+          ;; Step 2: Clear SCRAM $F081 to $F0FF and $F080 also
+          ;; SCRAM read ports are at $F080-$F0FF (r000-r127)
+          ;; Clear via read ports directly to be explicit
           lda # 0
-          sta AUDC0
+          ldx # $7F                        ;;; 128 bytes ($00-$7F)
+WarmStartClearSCRAM:
+          sta $F080,x                      ;;; Clear SCRAM read ports ($F080-$F0FF = r000-r127)
+          dex
+          bpl WarmStartClearSCRAM
+          
+          ;; Step 3: Clear TIA registers
+          ;; Clear all TIA registers to safe defaults
           lda # 0
-          sta AUDV0
+          sta VSYNC                        ;;; Vertical sync
+          sta VBLANK                       ;;; Vertical blank
+          sta WSYNC                        ;;; Wait for sync
+          sta RSYNC                        ;;; Reset sync
+          sta NUSIZ0                       ;;; Number/size player 0
+          sta NUSIZ1                       ;;; Number/size player 1
+          sta COLUP0                       ;;; Color/luminance player 0
+          sta COLUP1                       ;;; Color/luminance player 1
+          sta COLUPF                       ;;; Color/luminance playfield
+          sta COLUBK                       ;;; Color/luminance background
+          sta CTRLPF                       ;;; Control playfield
+          sta REFP0                        ;;; Reflect player 0
+          sta REFP1                        ;;; Reflect player 1
+          sta PF0                          ;;; Playfield register 0
+          sta PF1                          ;;; Playfield register 1
+          sta PF2                          ;;; Playfield register 2
+          sta RESP0                        ;;; Reset player 0
+          sta RESP1                        ;;; Reset player 1
+          sta RESM0                        ;;; Reset missile 0
+          sta RESM1                        ;;; Reset missile 1
+          sta RESBL                        ;;; Reset ball
+          sta AUDC0                        ;;; Audio control 0
+          sta AUDC1                        ;;; Audio control 1
+          sta AUDF0                        ;;; Audio frequency 0
+          sta AUDF1                        ;;; Audio frequency 1
+          sta AUDV0                        ;;; Audio volume 0
+          sta AUDV1                        ;;; Audio volume 1
+          sta GRP0                         ;;; Graphics player 0
+          sta GRP1                         ;;; Graphics player 1
+          sta ENAM0                        ;;; Enable missile 0
+          sta ENAM1                        ;;; Enable missile 1
+          sta ENABL                        ;;; Enable ball
+          sta HMP0                         ;;; Horizontal motion player 0
+          sta HMP1                         ;;; Horizontal motion player 1
+          sta HMM0                         ;;; Horizontal motion missile 0
+          sta HMM1                         ;;; Horizontal motion missile 1
+          sta HMBL                         ;;; Horizontal motion ball
+          sta VDELP0                       ;;; Vertical delay player 0
+          sta VDELP1                       ;;; Vertical delay player 1
+          sta VDELBL                       ;;; Vertical delay ball
+          sta HMOVE                        ;;; Apply horizontal motion
+          sta HMCLR                        ;;; Clear horizontal motion
+          
+          ;; Step 4: Initialize PIA RIOT I/O ports
+          ;; RIOT (6532) I/O ports: SWCHA ($0280) and SWCHB ($0282) are read-only
+          ;; Timer registers can be initialized:
+          ;; TIM1T ($0294) - set 1 clock interval
+          ;; TIM8T ($0295) - set 8 clock intervals  
+          ;; TIM64T ($0296) - set 64 clock intervals
+          ;; T1024T ($0297) - set 1024 clock intervals
+          ;; Initialize timer to a known state (1 clock interval - will expire immediately)
           lda # 0
-          sta AUDC1
-          lda # 0
-          sta AUDV1
-
-          ;; Step 4: Clear sprite enable registers
-          lda # 0
-          sta ENAM0
-          lda # 0
-          sta ENAM1
-          lda # 0
-          sta ENABL
-
-          ;; Step 5: Reset game mode to startup sequence
-          lda # ModePublisherPrelude
-          sta gameMode
-          ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(AfterChangeGameModeReset-1)
+          sta TIM1T                        ;;; Set timer to 1 clock interval
+          
+          ;; Step 5: Perform input controller detection for Quadtari, Joy2b+, or MegaDrive controllers
+          ;; DetectPads is in Bank 12 (same bank as WarmStart), but it uses jmp BS_return
+          ;; so we must use BS_jsr even though it's same-bank (inefficient but correct)
+          lda # >(AfterDetectPadsWarmStart-1)
           pha
-          lda # <(AfterChangeGameModeReset-1)
+          lda # <(AfterDetectPadsWarmStart-1)
           pha
-          lda # >(ChangeGameMode-1)
+          lda # >(DetectPads-1)
           pha
-          lda # <(ChangeGameMode-1)
+          lda # <(DetectPads-1)
           pha
-          ldx # 13
+          ldx # 12                         ;;; Bank 12 = $ffe0 + 12, 0-based = 12
           jmp BS_jsr
 
-AfterChangeGameModeReset:
+AfterDetectPadsWarmStart:
 
-          jmp BS_return
+          ;; Step 6: Go to publisher prelude
+          ;; Set game mode to Publisher Prelude
+          lda # ModePublisherPrelude
+          sta gameMode
+          
+          ;; Cross-bank call to BeginPublisherPrelude in bank 13
+          lda # >(AfterBeginPublisherPreludeWarmStart-1)
+          pha
+          lda # <(AfterBeginPublisherPreludeWarmStart-1)
+          pha
+          lda # >(BeginPublisherPrelude-1)
+          pha
+          lda # <(BeginPublisherPrelude-1)
+          pha
+          ldx # 13                         ;;; Bank 13 = $ffe0 + 13, 0-based = 13
+          jmp BS_jsr
 
-          ;; Reset complete - return to MainLoop which will dispatch to
-          ;; new mode
+AfterBeginPublisherPreludeWarmStart:
+
+          ;; Tail call to MainLoop
+          jmp MainLoop
 
 .pend
 

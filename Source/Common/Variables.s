@@ -133,10 +133,15 @@
           GPL_playerIndex  = $ed
           GPL_lockedState  = $ee
 
+          ;; 7800 system detection flag (must be at address $80)
+          ;; $00 = 2600 console, $80 = 7800 console
+          ;; Set during cold start console detection
+          console7800Detected  = $80
+
           ;; Game state and system flags (consolidated to save RAM)
           ;; Game mode index (0-8): ModePublisherPrelude, ModeAuthorPrelude, etc.
           ;; System flags (packed byte):
-          ;; bit 7: 7800 console detected (SystemFlag7800 = $80)
+          ;; bit 7: 7800 console detected (SystemFlag7800 = $80) - mirrors console7800Detected
           ;; bit 6: Color/B&W override active
           ;; (SystemFlagColorBWOverride = $40, 7800 only)
           ;; bit 5: Pause button previous state (SystemFlagPauseButtonPrev = $20)

@@ -32,11 +32,12 @@ ConsoleDetHW .proc
           ;; MUST run before any code modifies $D0/$D1
           ;; registers
           ;; Entry point for console detection (called
-          ;; from ColdStart)
-          ;; Initialize systemFlags to 0 (assume 2600 console initially)
+          ;; from cold start procedure)
+          ;; Initialize console7800Detected and systemFlags to 0 (assume 2600 console initially)
           lda # 0
+          sta console7800Detected          ;;; Initialize $80 to $00 (2600)
           sta systemFlags
-          ;; No need to read prior value since it contains random garbage at sta
+          ;; No need to read prior value since it contains random garbage at cold start
 
           ;; Check $D0 value
           lda $d0
@@ -105,33 +106,43 @@ CheckFlashed .proc
 CheckCDFJDriver:
 
           ;; Both $D0 and #$D1 are $00 - check $80 for CDFJ driver
-          ;; result
-          lda $80
+          ;; result (this is the console7800Detected flag, not CDFJ driver)
+          ;; If $80 is already $00 or $80, use that value
+          lda console7800Detected
           sta temp1
           lda temp1
-          cmp # 0
-          bne CDFJDriverDetected7800
+          cmp # $80
+          beq CDFJDriverDetected7800
+          cmp # $00
+          beq CDFJDriverDetected2600
 
+          ;; $80 is not $00 or $80, treat as 2600
+          jmp Is2600
+
+CDFJDriverDetected2600:
+          ;; $80 was $00, confirmed 2600
           jmp Is2600
 
 CDFJDriverDetected7800:
 
           ;; fall through to Is7800
-          ;; CDFJ driver detected 7800
+          ;; $80 was $80, confirmed 7800
 
 .pend
 
 Is7800 .proc
           ;; 7800 console detected
           ;;
-          ;; Input: systemFlags (global) = system flags
+          ;; Input: None
           ;;
-          ;; Output: systemFlags updated with SystemFlag7800 set
+          ;; Output: console7800Detected ($80) set to $80, systemFlags updated with SystemFlag7800 set
           ;;
-          ;; Mutates: systemFlags (SystemFlag7800 set)
+          ;; Mutates: console7800Detected ($80) set to $80, systemFlags (SystemFlag7800 set)
           ;;
           ;; Called Routines: None
           ;; Constraints: Must be colocated with ConsoleDetHW
+          lda # $80
+          sta console7800Detected          ;;; Set $80 to $80 for 7800 console
           lda # SystemFlag7800
           sta systemFlags
           jmp ConsoleDetected
@@ -140,6 +151,16 @@ Is7800 .proc
 
 Is2600 .proc
           ;; 2600 console detected
+          ;;
+          ;; Input: None
+          ;;
+          ;; Output: console7800Detected ($80) set to $00, systemFlags cleared
+          ;;
+          ;; Mutates: console7800Detected ($80) set to $00, systemFlags (SystemFlag7800 cleared)
+          lda # $00
+          sta console7800Detected          ;;; Set $80 to $00 for 2600 console
+          lda # 0
+          sta systemFlags
           ;; Fall through to ConsoleDetected
 
 .pend

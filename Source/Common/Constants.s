@@ -608,6 +608,9 @@ _suppress_pf_pointer_code = 1
           INPT3 = $0B  ;;; Input port 3
           INPT4 = $0C  ;;; Input port 4 (paddle)
           INPT5 = $0D  ;;; Input port 5 (paddle)
+          TIM1T = $0294  ;;; Timer set (1T mode)
+          TIM8T = $0295  ;;; Timer set (8T mode)
           TIM64T = $0296  ;;; Timer set (64T mode)
+          T1024T = $0297  ;;; Timer set (1024T mode)
 
 ;;; Forward declarations for sound symbols

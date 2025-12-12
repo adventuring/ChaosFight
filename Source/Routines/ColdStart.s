@@ -1,124 +1,30 @@
 ;;; ChaosFight - Source/Routines/ColdStart.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
-
+;;;
+;;; DEPRECATED: Cold start procedure is now in Reset handler (BankSwitching.s)
+;;; This file is kept for compatibility but is no longer the entry point.
+;;; The cold start procedure must occur before any stack use, so it's now
+;;; implemented directly in the Reset handler at $fff0.
+;;;
+;;; Cold start procedure (now in Reset handler):
+;;; 1. CLD (Clear Decimal mode)
+;;; 2. Set X to $FF, then txs (initialize stack pointer)
+;;; 3. Check $80 for exactly $00 or $80 (7800 system detection flag)
+;;; 4. If not, detect 7800 console and set $80 to $00 or $80
+;;; 5. Jump to WarmStart
+;;;
+;;; Warm start procedure (now in ConsoleHandling.s):
+;;; 1. Clear all memory from $81 to $FF, $F081 to $F0FF, and $F080
+;;; 2. Clear TIA registers
+;;; 3. Initialize PIA RIOT I/O ports
+;;; 4. Perform input controller detection
+;;; 5. Go to publisher prelude
 
 ColdStart .proc
-          ;; Cold Start Initialization
-          ;; Returns: Far (return otherbank)
-          ;;
-          ;; Proper cold start initialization sequence for batariBASIC.
-          ;; Called from Reset handler (BankSwitching.s) - Reset handler
-          ;; in every bank switches to Bank 14 and jumps to ColdStart.
-          ;;
-          ;; This routine handles game-specific initialization:
-          ;; 1. Hardware detection (console type)
-          ;; 2. TIA register initialization (colors, audio)
-          ;; 3. Game state initialization
-          ;; 4. Transition to first game mode
-          ;; Step 1: Detect console hardware type (7800 vs 2600)
-          ;; This MUST run before any code modifies $D0/$D1 registers
-          ;; as those registers are used for hardware detection
-          ;;
-          ;; Input: None (cold start entry point)
-          ;;
-          ;; Output: Console type detected, sprite pointers
-          ;; initialized,
-          ;; TIA registers initialized, gameMode set,
-          ;; transitions to MainLoop
-          ;;
-          ;; Mutates: Console detection state (via ConsoleDetHW),
-          ;; Sprite pointer state (via
-          ;; InitializeSpritePointers),
-          ;; COLUBK, COLUPF, COLUP0, _COLUP1, AUDC0, AUDV0,
-          ;; AUDC1, AUDV1,
-          ;; gameMode (global)
-          ;;
-          ;; Called Routines: ConsoleDetHW (bank1) - accesses $D0/$D1
-          ;; hardware registers,
-          ;; InitializeSpritePointers (bank14) - sets sprite pointer
-          ;; addresses,
-          ;; ChangeGameMode (bank1) - sets up initial game mode
-          ;;
-          ;; Constraints: Must be entry point for cold start (called
-          ;; from Bank1)
-          ;;
-          ;; CRITICAL: Console detection MUST run inline (not as subroutine)
-          ;; because the stack is not yet initialized. It must execute
-          ;; before any code modifies $D0/$D1 registers.
-.include "Source/Routines/ConsoleDetection.s"
-          ;; After console detection, we need to initialize:
-          ;; - RAM clearing (all RAM set to 0)
-          ;; - Stack initialization (SP = $FF)
-          ;; - Register initialization (A = × = Y = 0)
-          ;; - Decimal mode disabled (CLD)
-          ;; This routine is designed to be included directly
-          ;; here and will fall through to continue.
-
-.include "Source/Common/Startup.s"
-          ;; Step 2: Initialize sprite pointers to RAM addresses
-          ;; Must be done before any sprite loading to ensure pointers
-          ;; point to SCRAM buffers instead of ROM
-          ;; CRITICAL: InitializeSpritePointers is called both same-bank (from ColdStart)
-          ;; and cross-bank (from BeginGameLoop). Since it’s called cross-bank, it must
-          ;; always use return otherbank. When called same-bank, specifying bank14 still
-          ;; uses cross-bank mechanism, so the return otherbank matches.
-          ;; Cross-bank call to InitializeSpritePointers in bank 14
-          ;; For 64k banks: encode bank number (13, 0-based) in high byte of return address
-          lda # >(sprite_init_return-1)
-          pha
-          lda # <(sprite_init_return-1)
-          pha
-          lda # >(InitializeSpritePointers-1)
-          pha
-          lda # <(InitializeSpritePointers-1)
-          pha
-          ldx # 13
-          jmp BS_jsr
-
-sprite_init_return:
-
-          ;; Step 3: Initialize TIA color registers to safe defaults
-          ;; Prevents undefined colors on cold start
-
-          ;; Background: black (COLUBK starts black, no need to set)
-          ;; Playfield: white
-          ;; Player 1 (P0): indigo
-          lda # $0E
-          sta COLUPF
-          ;; Player 2: bright red (multisprite kernel requires NewCOLUP1)
-          lda # $7C
-          sta COLUP0
-          ;; Player 3: yellow
-          lda # $4C
-          sta NewCOLUP1
-          ;; Player 4: green
-          lda # $1C
-          sta COLUP2
-          lda # $DC
-          sta COLUP3
-
-          ;; Step 4: Initialize game state and transition to first mode
-          ;; Set initial game mode (Publisher Prelude)
-          lda # ModePublisherPrelude
-          sta gameMode
-          ;; OPTIMIZATION: Call BeginPublisherPrelude directly to save 4 bytes
-          ;; (skip ChangeGameMode dispatcher overhead)
-          ;; Cross-bank call to BeginPublisherPrelude in bank 14
-          lda # >(AfterBeginPublisherPrelude-1)
-          pha
-          lda # <(AfterBeginPublisherPrelude-1)
-          pha
-          lda # >(BeginPublisherPrelude-1)
-          pha
-          lda # <(BeginPublisherPrelude-1)
-          pha
-          ldx # 13
-          jmp BS_jsr
-
-AfterBeginPublisherPrelude:
-
-          ;; Step 5: Tail call to MainLoop
-          jmp MainLoop
+          ;; DEPRECATED: This is no longer the entry point
+          ;; Cold start is now in Reset handler, warm start is in WarmStart
+          ;; This stub exists for compatibility only
+          ;; Should never be called - if reached, jump to WarmStart
+          jmp WarmStart
 
 .pend
-

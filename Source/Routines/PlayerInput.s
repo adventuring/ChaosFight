@@ -1220,7 +1220,7 @@ HandleStandardHorizontalMovement
           lda temp1
           cmp # 0
           bne CheckPlayer2JoyPortHSHM
-          jmp HSHM_UseJoy0
+          jmp HandleStandardHorizontalMovementUseJoy0
 CheckPlayer2JoyPortHSHM:
 
 
@@ -1229,49 +1229,49 @@ CheckPlayer2JoyPortHSHM:
           lda temp1
           cmp # 2
           bne CheckJoy1Left
-          jmp HSHM_UseJoy0
+          jmp HandleStandardHorizontalMovementUseJoy0
 CheckJoy1Left:
 
 
           lda joy1left
-          bne HSHM_HandleLeft
-          jmp HSHM_CheckRight
-HSHM_HandleLeft:
+          bne HandleStandardHorizontalMovementHandleLeft
+          jmp HandleStandardHorizontalMovementCheckRight
+HandleStandardHorizontalMovementHandleLeft:
 
 
-          jmp HSHM_HandleLeft
+          jmp HandleStandardHorizontalMovementHandleLeft
 
 .pend
 
-HSHM_UseJoy0 .proc
+HandleStandardHorizontalMovementUseJoy0 .proc
 
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
           lda joy0left
-          bne HSHM_HandleLeftJoy0
-          jmp HSHM_CheckRight
-HSHM_HandleLeftJoy0:
+          bne HandleStandardHorizontalMovementHandleLeftJoy0
+          jmp HandleStandardHorizontalMovementCheckRight
+HandleStandardHorizontalMovementHandleLeftJoy0:
 
 
 .pend
 
-HSHM_HandleLeft .proc
+HandleStandardHorizontalMovementHandleLeft .proc
 
           ;; Left movement: set negative velocity
           ;; Returns: Far (return otherbank)
 
-          ;; If playerCharacter[temp1] = CharacterFrooty then jmp HSHM_LeftMomentum
+          ;; If playerCharacter[temp1] = CharacterFrooty then jmp HandleStandardHorizontalMovementLeftMomentum
 
-          ;; if playerCharacter[temp1] = CharacterDragonOfStorms, then jmp HSHM_LeftDirectSubpixel
+          ;; if playerCharacter[temp1] = CharacterDragonOfStorms, then jmp HandleStandardHorizontalMovementLeftDirectSubpixel
           lda temp1
           asl
           tax
           lda playerCharacter,x
           cmp CharacterDragonOfStorms
-          bne HSHM_LeftStandard
-          jmp HSHM_LeftDirectSubpixel
-HSHM_LeftStandard:
+          bne HandleStandardHorizontalMovementLeftStandard
+          jmp HandleStandardHorizontalMovementLeftDirectSubpixel
+HandleStandardHorizontalMovementLeftStandard:
 
                     ;; Set temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
@@ -1315,11 +1315,11 @@ HSHM_LeftStandard:
           lda 0
           sta playerVelocityXL,x
 
-          jmp HSHM_AfterLeftSet
+          jmp HandleStandardHorizontalMovementAfterLeftSet
 
 .pend
 
-HSHM_LeftDirectSubpixel .proc
+HandleStandardHorizontalMovementLeftDirectSubpixel .proc
 
           ;; Dragon of Storms: direct velocity with subpixel accuracy
           ;; Returns: Far (return otherbank)
@@ -1368,11 +1368,11 @@ HSHM_LeftDirectSubpixel .proc
 
           ;; Subpixel: 1 = 1/256 pixel for subpixel accuracy
 
-          jmp HSHM_AfterLeftSet
+          jmp HandleStandardHorizontalMovementAfterLeftSet
 
 .pend
 
-HSHM_LeftMomentum .proc
+HandleStandardHorizontalMovementLeftMomentum .proc
 
                     ;; Set temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
@@ -1405,19 +1405,19 @@ HSHM_LeftMomentum .proc
 
 .pend
 
-HSHM_AfterLeftSet .proc
+HandleStandardHorizontalMovementAfterLeftSet .proc
 
           ;; Inline ShouldPreserveFacing logic
           ;; Returns: Far (return otherbank)
-          ;; If (playerState[temp1] & 8), then jmp HSHM_SPF_Yes1
+          ;; If (playerState[temp1] & 8), then jmp HandleStandardHorizontalMovementShouldPreserveFacingYes1
           lda temp1
           asl
           tax
           lda playerState,x
           and # 8
-          beq HSHM_SPF_No1
-          jmp HSHM_SPF_Yes1
-HSHM_SPF_No1:
+          beq HandleStandardHorizontalMovementShouldPreserveFacingNo1
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingYes1
+HandleStandardHorizontalMovementShouldPreserveFacingNo1:
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateAfterLeftSet-1)
@@ -1433,50 +1433,50 @@ HSHM_SPF_No1:
 AfterGetPlayerAnimationStateAfterLeftSet:
 
 
-          ;; If temp2 < 5, then jmp HSHM_SPF_No1          lda temp2          cmp 5          bcs .skip_1803          jmp
+          ;; If temp2 < 5, then jmp HandleStandardHorizontalMovementShouldPreserveFacingNo1          lda temp2          cmp 5          bcs .skip_1803          jmp
           lda temp2
           cmp # 5
           bcs CheckAnimationState10
           goto_label:
 
-          jmp HSHM_SPF_No1
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingNo1
 CheckAnimationState10:
 
           lda temp2
           cmp # 5
           bcs CheckAnimationState10Label
-          jmp HSHM_SPF_No1
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingNo1
 CheckAnimationState10Label:
 
           
 
           lda temp2
           cmp # 10
-          bcc HSHM_SPF_No1
-          jmp HSHM_SPF_Yes1
-HSHM_SPF_No1:
+          bcc HandleStandardHorizontalMovementShouldPreserveFacingNo1
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingYes1
+HandleStandardHorizontalMovementShouldPreserveFacingNo1:
 
 
 .pend
 
-HSHM_SPF_Yes1 .proc
+HandleStandardHorizontalMovementShouldPreserveFacingYes1 .proc
 
           lda # 1
           sta temp3
 
-          jmp HSHM_SPF_Done1
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingDone1
 
 .pend
 
-HSHM_SPF_No1 .proc
+HandleStandardHorizontalMovementShouldPreserveFacingNo1 .proc
 
           lda # 0
           sta temp3
 
-HSHM_SPF_Done1
+HandleStandardHorizontalMovementShouldPreserveFacingDone1
 
           lda temp3
-          bne HSHM_AfterLeftSetDone
+          bne HandleStandardHorizontalMovementAfterLeftSetDone
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           lda temp1
           asl
@@ -1484,19 +1484,19 @@ HSHM_SPF_Done1
           lda playerState,x
           and # (255 - PlayerStateBitFacing)
           sta playerState,x
-HSHM_AfterLeftSetDone:
+HandleStandardHorizontalMovementAfterLeftSetDone:
 
 
 .pend
 
-HSHM_CheckRight .proc
+HandleStandardHorizontalMovementCheckRight .proc
 
           ;; Determine which joy port to use for right movement
           ;; Returns: Far (return otherbank)
           lda temp1
           cmp # 0
           bne CheckPlayer2JoyPortRight
-          jmp HSHM_CheckRightJoy0
+          jmp HandleStandardHorizontalMovementCheckRightJoy0
 CheckPlayer2JoyPortRight:
 
 
@@ -1504,18 +1504,18 @@ CheckPlayer2JoyPortRight:
 
           lda temp1
           cmp # 2
-          bne HSHM_HandleRight
-          jmp HSHM_CheckRightJoy0
-HSHM_HandleRight:
+          bne HandleStandardHorizontalMovementHandleRight
+          jmp HandleStandardHorizontalMovementCheckRightJoy0
+HandleStandardHorizontalMovementHandleRight:
 
 
           jmp BS_return
 
-          jmp HSHM_HandleRight
+          jmp HandleStandardHorizontalMovementHandleRight
 
 .pend
 
-HSHM_CheckRightJoy0 .proc
+HandleStandardHorizontalMovementCheckRightJoy0 .proc
 
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
@@ -1524,22 +1524,22 @@ HSHM_CheckRightJoy0 .proc
 
 .pend
 
-HSHM_HandleRight .proc
+HandleStandardHorizontalMovementHandleRight .proc
 
           ;; Right movement: set positive velocity
           ;; Returns: Far (return otherbank)
 
-          ;; If playerCharacter[temp1] = CharacterFrooty then jmp HSHM_RightMomentum
+          ;; If playerCharacter[temp1] = CharacterFrooty then jmp HandleStandardHorizontalMovementRightMomentum
 
-          ;; if playerCharacter[temp1] = CharacterDragonOfStorms, then jmp HSHM_RightDirectSubpixel
+          ;; if playerCharacter[temp1] = CharacterDragonOfStorms, then jmp HandleStandardHorizontalMovementRightDirectSubpixel
           lda temp1
           asl
           tax
           lda playerCharacter,x
           cmp CharacterDragonOfStorms
-          bne HSHM_RightStandard
-          jmp HSHM_RightDirectSubpixel
-HSHM_RightStandard:
+          bne HandleStandardHorizontalMovementRightStandard
+          jmp HandleStandardHorizontalMovementRightDirectSubpixel
+HandleStandardHorizontalMovementRightStandard:
 
                     ;; Set temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
@@ -1572,7 +1572,7 @@ HSHM_RightStandard:
 
 .pend
 
-HSHM_RightDirectSubpixel .proc
+HandleStandardHorizontalMovementRightDirectSubpixel .proc
 
           ;; Dragon of Storms: direct velocity with subpixel accuracy
           ;; Returns: Far (return otherbank)
@@ -1606,11 +1606,11 @@ HSHM_RightDirectSubpixel .proc
 
           ;; Subpixel: 1 = 1/256 pixel for subpixel accuracy
 
-          jmp HSHM_AfterRightSet
+          jmp HandleStandardHorizontalMovementAfterRightSet
 
 .pend
 
-HSHM_RightMomentum .proc
+HandleStandardHorizontalMovementRightMomentum .proc
 
                     ;; Set temp6 = playerCharacter[temp1]
                     lda temp1          asl          tax          lda playerCharacter,x          sta temp6
@@ -1643,19 +1643,19 @@ HSHM_RightMomentum .proc
 
 .pend
 
-HSHM_AfterRightSet .proc
+HandleStandardHorizontalMovementAfterRightSet .proc
 
           ;; Inline ShouldPreserveFacing logic
           ;; Returns: Far (return otherbank)
-          ;; If (playerState[temp1] & 8), then jmp HSHM_SPF_Yes2
+          ;; If (playerState[temp1] & 8), then jmp HandleStandardHorizontalMovementShouldPreserveFacingYes2
           lda temp1
           asl
           tax
           lda playerState,x
           and # 8
-          beq HSHM_SPF_No2
-          jmp HSHM_SPF_Yes2
-HSHM_SPF_No2:
+          beq HandleStandardHorizontalMovementShouldPreserveFacingNo2
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingYes2
+HandleStandardHorizontalMovementShouldPreserveFacingNo2:
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateAfterRightSet-1)
@@ -1671,48 +1671,48 @@ HSHM_SPF_No2:
 AfterGetPlayerAnimationStateAfterRightSet:
 
 
-          ;; If temp2 < 5, then jmp HSHM_SPF_No2          lda temp2          cmp 5          bcs .skip_6914          jmp
+          ;; If temp2 < 5, then jmp HandleStandardHorizontalMovementShouldPreserveFacingNo2          lda temp2          cmp 5          bcs .skip_6914          jmp
           lda temp2
           cmp # 5
           bcs CheckAnimationState10Right
-          jmp HSHM_SPF_No2
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingNo2
 CheckAnimationState10Right:
 
           lda temp2
           cmp # 5
           bcs CheckAnimationState10RightLabel
-          jmp HSHM_SPF_No2
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingNo2
 CheckAnimationState10RightLabel:
 
           
 
           lda temp2
           cmp # 10
-          bcc HSHM_SPF_No2
-          jmp HSHM_SPF_Yes2
-HSHM_SPF_No2:
+          bcc HandleStandardHorizontalMovementShouldPreserveFacingNo2
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingYes2
+HandleStandardHorizontalMovementShouldPreserveFacingNo2:
 
 
 .pend
 
-HSHM_SPF_Yes2 .proc
+HandleStandardHorizontalMovementShouldPreserveFacingYes2 .proc
 
           lda # 1
           sta temp3
 
-          jmp HSHM_SPF_Done2
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingDone2
 
 .pend
 
-HSHM_SPF_No2 .proc
+HandleStandardHorizontalMovementShouldPreserveFacingNo2 .proc
 
           lda # 0
           sta temp3
 
-HSHM_SPF_Done2
+HandleStandardHorizontalMovementShouldPreserveFacingDone2
 
           lda temp3
-          bne HSHM_AfterRightSetDoneFirst
+          bne HandleStandardHorizontalMovementAfterRightSetDoneFirst
           ;; Set playerState[temp1] = playerState[temp1] | 1
           lda temp1
           asl
@@ -1720,7 +1720,7 @@ HSHM_SPF_Done2
           lda playerState,x
           ora # 1
           sta playerState,x
-HSHM_AfterRightSetDoneFirst:
+HandleStandardHorizontalMovementAfterRightSetDoneFirst:
 
           rts
 
@@ -1764,30 +1764,30 @@ HandleFlyingCharacterMovement .proc
 
           ;; If temp1 & 2 = 0 then jmp HFCM_UseJoy0
 
-          ;; if joy1left, then jmp HFCM_CheckLeftCollision
+          ;; if joy1left, then jmp HandleFlyingCharacterMovementCheckLeftCollision
           lda joy1left
-          beq HFCM_CheckRightMovement
-          jmp HFCM_CheckLeftCollision
-HFCM_CheckRightMovement:
+          beq HandleFlyingCharacterMovementCheckRightMovement
+          jmp HandleFlyingCharacterMovementCheckLeftCollision
+HandleFlyingCharacterMovementCheckRightMovement:
 
-          jmp HFCM_CheckRightMovement
+          jmp HandleFlyingCharacterMovementCheckRightMovement
 
 .pend
 
-HFCM_UseJoy0 .proc
+HandleFlyingCharacterMovementUseJoy0 .proc
 
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
-          ;; If joy0left, then jmp HFCM_CheckLeftCollision
+          ;; If joy0left, then jmp HandleFlyingCharacterMovementCheckLeftCollision
           lda joy0left
-          beq HFCM_CheckRightMovementJoy0
-          jmp HFCM_CheckLeftCollision
-HFCM_CheckRightMovementJoy0:
+          beq HandleFlyingCharacterMovementCheckRightMovementJoy0
+          jmp HandleFlyingCharacterMovementCheckLeftCollision
+HandleFlyingCharacterMovementCheckRightMovementJoy0:
 
-          jmp HFCM_CheckRightMovementJoy0
+          jmp HandleFlyingCharacterMovementCheckRightMovementJoy0
 
-HFCM_CheckLeftCollision
+HandleFlyingCharacterMovementCheckLeftCollision
 
           ;; Convert player position to playfield coordinates
           ;; Returns: Far (return otherbank)
@@ -1835,12 +1835,12 @@ CheckTemp2RangeLeft:
 
 
 
-          ;; If temp2 <= 0, then jmp HFCM_CheckRightMovement
+          ;; If temp2 <= 0, then jmp HandleFlyingCharacterMovementCheckRightMovement
           lda temp2
-          beq HFCM_CheckRightMovementColumn
-          bmi HFCM_CheckRightMovementColumn
+          beq HandleFlyingCharacterMovementCheckRightMovementColumn
+          bmi HandleFlyingCharacterMovementCheckRightMovementColumn
           jmp CheckColumnLeft
-HFCM_CheckRightMovementColumn:
+HandleFlyingCharacterMovementCheckRightMovementColumn:
 CheckColumnLeft:
 
           ;; Already at left edge
@@ -1921,9 +1921,9 @@ CheckBottomRowMoveLeft:
 
           lda temp5
           cmp # 1
-          bne HFCM_MoveLeftOK
-          jmp HFCM_CheckRightMovement
-HFCM_MoveLeftOK:
+          bne HandleFlyingCharacterMovementMoveLeftOK
+          jmp HandleFlyingCharacterMovementCheckRightMovement
+HandleFlyingCharacterMovementMoveLeftOK:
 
 
           ;; Also check bottom row (feet)
@@ -1948,13 +1948,13 @@ HFCM_MoveLeftOK:
 
           ;; Do not check if beyond screen
 
-          ;; If temp6 >= pfrows, then jmp HFCM_MoveLeftOK
+          ;; If temp6 >= pfrows, then jmp HandleFlyingCharacterMovementMoveLeftOK
           lda temp6
           cmp pfrows
 
           bcc CheckBottomRowLeft
 
-          jmp HFCM_MoveLeftOK
+          jmp HandleFlyingCharacterMovementMoveLeftOK
 
           CheckBottomRowLeft:
 
@@ -1987,14 +1987,14 @@ CheckBottomRowMoveLeftBottom:
 
           lda temp5
           cmp # 1
-          bne HFCM_MoveLeftOKLabel
-          jmp HFCM_CheckRightMovementJoy0
-HFCM_MoveLeftOKLabel:
+          bne HandleFlyingCharacterMovementMoveLeftOKLabel
+          jmp HandleFlyingCharacterMovementCheckRightMovementJoy0
+HandleFlyingCharacterMovementMoveLeftOKLabel:
 
 
 .pend
 
-HFCM_MoveLeftOK .proc
+HandleFlyingCharacterMovementMoveLeftOK .proc
 
           ;; Blocked at bottom too
           ;; Returns: Far (return otherbank)
@@ -2002,7 +2002,7 @@ HFCM_MoveLeftOK .proc
           lda temp5
           cmp # 8
           bne CheckDragonOfStormsLeft
-          jmp HFCM_LeftMomentumApply
+          jmp HandleFlyingCharacterMovementLeftMomentumApply
 CheckDragonOfStormsLeft:
 
 
@@ -2010,9 +2010,9 @@ CheckDragonOfStormsLeft:
 
           lda temp5
           cmp # 2
-          bne HFCM_LeftStandard
-          jmp HFCM_LeftDirectApply
-HFCM_LeftStandard:
+          bne HandleFlyingCharacterMovementLeftStandard
+          jmp HandleFlyingCharacterMovementLeftDirectApply
+HandleFlyingCharacterMovementLeftStandard:
           ;; Set playerVelocityX[temp1] = $ff
           lda temp1
           asl
@@ -2025,11 +2025,11 @@ HFCM_LeftStandard:
           lda # 0
           sta playerVelocityXL,x
 
-          jmp HFCM_LeftApplyDone
+          jmp HandleFlyingCharacterMovementLeftApplyDone
 
 .pend
 
-HFCM_LeftMomentumApply .proc
+HandleFlyingCharacterMovementLeftMomentumApply .proc
 
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - CharacterMovementSpeed[temp5]
           lda temp5
@@ -2050,11 +2050,11 @@ HFCM_LeftMomentumApply .proc
           lda 0
           sta playerVelocityXL,x
 
-          jmp HFCM_LeftApplyDone
+          jmp HandleFlyingCharacterMovementLeftApplyDone
 
 .pend
 
-HFCM_LeftDirectApply .proc
+HandleFlyingCharacterMovementLeftDirectApply .proc
           ;; Set playerX[temp1] = playerX[temp1] - CharacterMovementSpeed[temp5]
           lda temp5
           asl
@@ -2069,7 +2069,7 @@ HFCM_LeftDirectApply .proc
           sbc temp6
           sta playerX,x
 
-HFCM_LeftApplyDone:
+HandleFlyingCharacterMovementLeftApplyDone:
 
           ;; Preserve facing during hurt/recovery states (knockback, hitstun)
           ;; Returns: Far (return otherbank)
@@ -2148,7 +2148,7 @@ SPF_InlineNo1 .proc
 SPF_InlineDone1
 
           lda temp3
-          bne HSHM_AfterLeftSetDoneHFCM
+          bne HandleStandardHorizontalMovementAfterLeftSetDoneHandleFlyingCharacterMovement
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           lda temp1
           asl
@@ -2156,19 +2156,19 @@ SPF_InlineDone1
           lda playerState,x
           and # (255 - PlayerStateBitFacing)
           sta playerState,x
-HSHM_AfterLeftSetDoneHFCM:
+HandleStandardHorizontalMovementAfterLeftSetDoneHandleFlyingCharacterMovement:
 
 
 .pend
 
-HFCM_CheckRightMovement .proc
+HandleFlyingCharacterMovementCheckRightMovement .proc
 
           ;; Determine which joy port to use for right movement
           ;; Returns: Far (return otherbank)
           lda temp1
           cmp # 0
           bne CheckPlayer2JoyPortRightMovement
-          jmp HFCM_CheckRightJoy0
+          jmp HandleFlyingCharacterMovementCheckRightJoy0
 CheckPlayer2JoyPortRightMovement:
 
 
@@ -2176,18 +2176,18 @@ CheckPlayer2JoyPortRightMovement:
 
           lda temp1
           cmp # 2
-          bne HFCM_DoRightMovement
-          jmp HFCM_CheckRightJoy0
-HFCM_DoRightMovement:
+          bne HandleFlyingCharacterMovementDoRightMovement
+          jmp HandleFlyingCharacterMovementCheckRightJoy0
+HandleFlyingCharacterMovementDoRightMovement:
 
 
           jmp BS_return
 
-          jmp HFCM_DoRightMovement
+          jmp HandleFlyingCharacterMovementDoRightMovement
 
 .pend
 
-HFCM_CheckRightJoy0 .proc
+HandleFlyingCharacterMovementCheckRightJoy0 .proc
 
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
@@ -2196,7 +2196,7 @@ HFCM_CheckRightJoy0 .proc
 
 .pend
 
-HFCM_DoRightMovement .proc
+HandleFlyingCharacterMovementDoRightMovement .proc
 
           ;; Convert player position to playfield coordinates
           ;; Returns: Far (return otherbank)
@@ -2352,13 +2352,13 @@ CheckBottomRow:
 
           ;; Do not check if beyond screen
 
-          ;; If temp6 >= pfrows, then jmp HFCM_MoveRightOK
+          ;; If temp6 >= pfrows, then jmp HandleFlyingCharacterMovementMoveRightOK
           lda temp6
           cmp pfrows
 
           bcc CheckBottomRowRight
 
-          jmp HFCM_MoveRightOK
+          jmp HandleFlyingCharacterMovementMoveRightOK
 
           CheckBottomRowRight:
 
@@ -2394,7 +2394,7 @@ CheckBottomRowMoveRightBottom:
 
 .pend
 
-HFCM_MoveRightOK .proc
+HandleFlyingCharacterMovementMoveRightOK .proc
 
           ;; Blocked at bottom too
           ;; Returns: Far (return otherbank)
@@ -2402,7 +2402,7 @@ HFCM_MoveRightOK .proc
           lda temp5
           cmp # 8
           bne CheckDragonOfStormsRight
-          jmp HFCM_RightMomentumApply
+          jmp HandleFlyingCharacterMovementRightMomentumApply
 CheckDragonOfStormsRight:
 
 
@@ -2410,9 +2410,9 @@ CheckDragonOfStormsRight:
 
           lda temp5
           cmp # 2
-          bne HFCM_RightStandard
-          jmp HFCM_RightDirectApply
-HFCM_RightStandard:
+          bne HandleFlyingCharacterMovementRightStandard
+          jmp HandleFlyingCharacterMovementRightDirectApply
+HandleFlyingCharacterMovementRightStandard:
           lda temp1
           asl
           tax
@@ -2425,11 +2425,11 @@ HFCM_RightStandard:
           lda # 0
           sta playerVelocityXL,x
 
-          jmp HFCM_RightApplyDone
+          jmp HandleFlyingCharacterMovementRightApplyDone
 
 .pend
 
-HFCM_RightMomentumApply .proc
+HandleFlyingCharacterMovementRightMomentumApply .proc
 
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + CharacterMovementSpeed[temp5]
           lda temp5
@@ -2450,11 +2450,11 @@ HFCM_RightMomentumApply .proc
           lda 0
           sta playerVelocityXL,x
 
-          jmp HFCM_RightApplyDone
+          jmp HandleFlyingCharacterMovementRightApplyDone
 
 .pend
 
-HFCM_RightDirectApply .proc
+HandleFlyingCharacterMovementRightDirectApply .proc
 
           ;; Set playerX[temp1] = playerX[temp1] + CharacterMovementSpeed[temp5]
           lda temp5
@@ -2470,7 +2470,7 @@ HFCM_RightDirectApply .proc
           adc temp6
           sta playerX,x
 
-HFCM_RightApplyDone
+HandleFlyingCharacterMovementRightApplyDone
 
           ;; Preserve facing during hurt/recovery states while processing right movement
           ;; Returns: Far (return otherbank)
@@ -2552,7 +2552,7 @@ SPF_InlineDone2
           ;; Returns: Far (return otherbank)
 
           lda temp3
-          bne HSHM_AfterRightSetDoneSecond
+          bne HandleStandardHorizontalMovementAfterRightSetDoneSecond
           ;; Set playerState[temp1] = playerState[temp1] | 1
           lda temp1
           asl
@@ -2560,51 +2560,51 @@ SPF_InlineDone2
           lda playerState,x
           ora # 1
           sta playerState,x
-HSHM_AfterRightSetDoneSecond:
+HandleStandardHorizontalMovementAfterRightSetDoneSecond:
 
 
-          ;; If temp1 & 2 = 0, then jmp HFCM_VertJoy0
+          ;; If temp1 & 2 = 0, then jmp HandleFlyingCharacterMovementVerticalJoy0
           lda temp1
           and # 2
           bne CheckJoy1UpHSHM
-          jmp HFCM_VertJoy0
+          jmp HandleFlyingCharacterMovementVerticalJoy0
 CheckJoy1UpHSHM:
 
-          ;; If joy1up, then jmp HFCM_VertUp
+          ;; If joy1up, then jmp HandleFlyingCharacterMovementVerticalUp
           lda joy1up
           beq CheckJoy1DownHSHM
-          jmp HFCM_VertUp
+          jmp HandleFlyingCharacterMovementVerticalUp
 CheckJoy1DownHSHM:
 
-          ;; If joy1down, then jmp HFCM_VertDown
+          ;; If joy1down, then jmp HandleFlyingCharacterMovementVerticalDown
           lda joy1down
           beq HandleFlyingCharacterMovementDoneJoy1
-          jmp HFCM_VertDown
+          jmp HandleFlyingCharacterMovementVerticalDown
 HandleFlyingCharacterMovementDoneJoy1:
 
           jmp BS_return
 
 .pend
 
-HFCM_VertJoy0 .proc
+HandleFlyingCharacterMovementVerticalJoy0 .proc
 
-          ;; If joy0up, then jmp HFCM_VertUp
+          ;; If joy0up, then jmp HandleFlyingCharacterMovementVerticalUp
           lda joy0up
           beq CheckJoy0Down
-          jmp HFCM_VertUp
+          jmp HandleFlyingCharacterMovementVerticalUp
 CheckJoy0Down:
 
-          ;; If joy0down, then jmp HFCM_VertDown
+          ;; If joy0down, then jmp HandleFlyingCharacterMovementVerticalDown
           lda joy0down
           beq HandleFlyingCharacterMovementDoneJoy0
-          jmp HFCM_VertDown
+          jmp HandleFlyingCharacterMovementVerticalDown
 HandleFlyingCharacterMovementDoneJoy0:
 
           rts
 
 .pend
 
-HFCM_VertUp .proc
+HandleFlyingCharacterMovementVerticalUp .proc
 
           rts
 
@@ -2614,7 +2614,7 @@ HFCM_VertUp .proc
 
 .pend
 
-HFCM_VertDown .proc
+HandleFlyingCharacterMovementVerticalDown .proc
 
           rts
 

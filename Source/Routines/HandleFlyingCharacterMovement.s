@@ -61,86 +61,86 @@ HandleFlyingCharacterMovement .proc
 
           lda temp6
           cmp # 0
-          bne HFCM_CheckLeftJoy1
+          bne HandleFlyingCharacterMovementCheckLeftJoy1
 
-          jmp HFCM_CheckLeftJoy0
+          jmp HandleFlyingCharacterMovementCheckLeftJoy0
 
-HFCM_CheckLeftJoy1:
+HandleFlyingCharacterMovementCheckLeftJoy1:
 
           lda SWCHA
           and # $08
-          bne HFCM_CheckRight
+          bne HandleFlyingCharacterMovementCheckRight
 
-          jmp HFCM_DoLeft
+          jmp HandleFlyingCharacterMovementDoLeft
 
 .pend
 
-HFCM_CheckLeftJoy0 .proc
+HandleFlyingCharacterMovementCheckLeftJoy0 .proc
           lda SWCHA
           and # $80
-          bne HFCM_CheckRight
+          bne HandleFlyingCharacterMovementCheckRight
 
-          jmp HFCM_DoLeft
+          jmp HandleFlyingCharacterMovementDoLeft
 
 
 .pend
 
-HFCM_DoLeft .proc
-          ;; Tail call: Cross-bank call to HFCM_AttemptMoveLeft in Bank 6
-          ;; HFCM_AttemptMoveLeft will return directly to InputHandleLeftPortPlayerFunction
+HandleFlyingCharacterMovementDoLeft .proc
+          ;; Tail call: Cross-bank call to HandleFlyingCharacterMovementAttemptMoveLeft in Bank 6
+          ;; HandleFlyingCharacterMovementAttemptMoveLeft will return directly to InputHandleLeftPortPlayerFunction
           ;; (skipping HandleFlyingCharacterMovement's return)
-          lda # >(HFCM_AttemptMoveLeft-1)
+          lda # >(HandleFlyingCharacterMovementAttemptMoveLeft-1)
           pha
-          lda # <(HFCM_AttemptMoveLeft-1)
+          lda # <(HandleFlyingCharacterMovementAttemptMoveLeft-1)
           pha
           ldx # 5
           jmp BS_jsr
 .pend
 
-HFCM_CheckRight .proc
+HandleFlyingCharacterMovementCheckRight .proc
 
           ;; Check right movement
           ;; Returns: Far (return otherbank)
 
           lda temp6
           cmp # 0
-          bne HFCM_CheckRightJoy1
-          ;; TODO: #1307 HFCM_CheckRightJoy0
-HFCM_CheckRightJoy1:
+          bne HandleFlyingCharacterMovementCheckRightJoy1
+          ;; TODO: #1307 HandleFlyingCharacterMovementCheckRightJoy0
+HandleFlyingCharacterMovementCheckRightJoy1:
 
           lda SWCHA
           and # $04
-          bne HFCM_CheckVertical
+          bne HandleFlyingCharacterMovementCheckVertical
 
-          jmp HFCM_DoRight
+          jmp HandleFlyingCharacterMovementDoRight
 
 .pend
 
-HFCM_CheckRightJoy0 .proc
+HandleFlyingCharacterMovementCheckRightJoy0 .proc
           ;; Returns: Far (return otherbank)
 
           lda SWCHA
           and # $40
-          bne HFCM_CheckVertical
+          bne HandleFlyingCharacterMovementCheckVertical
 
-          jmp HFCM_DoRight
+          jmp HandleFlyingCharacterMovementDoRight
 
 
 .pend
 
-HFCM_DoRight .proc
-          ;; Tail call: Cross-bank call to HFCM_AttemptMoveRight in Bank 6
-          ;; HFCM_AttemptMoveRight will return directly to InputHandleLeftPortPlayerFunction
+HandleFlyingCharacterMovementDoRight .proc
+          ;; Tail call: Cross-bank call to HandleFlyingCharacterMovementAttemptMoveRight in Bank 6
+          ;; HandleFlyingCharacterMovementAttemptMoveRight will return directly to InputHandleLeftPortPlayerFunction
           ;; (skipping HandleFlyingCharacterMovement's return)
-          lda # >(HFCM_AttemptMoveRight-1)
+          lda # >(HandleFlyingCharacterMovementAttemptMoveRight-1)
           pha
-          lda # <(HFCM_AttemptMoveRight-1)
+          lda # <(HandleFlyingCharacterMovementAttemptMoveRight-1)
           pha
           ldx # 5
           jmp BS_jsr
 .pend
 
-HFCM_CheckVertical .proc
+HandleFlyingCharacterMovementCheckVertical .proc
 
           ;; Vertical control for flying characters: UP/DOWN
           ;; Returns: Far (return otherbank)
@@ -169,48 +169,48 @@ HFCM_CheckVertical .proc
 
           lda temp6
           cmp # 0
-          bne HFCM_VertJoy1
-          ;; TODO: #1307 HFCM_VertJoy0
-HFCM_VertJoy1:
+          bne HandleFlyingCharacterMovementVerticalJoy1
+          ;; TODO: #1307 HandleFlyingCharacterMovementVerticalJoy0
+HandleFlyingCharacterMovementVerticalJoy1:
 
 
-          ;; if joy1up then jmp HFCM_VertUp
+          ;; if joy1up then jmp HandleFlyingCharacterMovementVerticalUp
           lda SWCHA
           and # $01
           bne CheckJoy1Down
-          jmp HFCM_VertUp
+          jmp HandleFlyingCharacterMovementVerticalUp
 CheckJoy1Down:
 
-          ;; if joy1down then jmp HFCM_VertDown
+          ;; if joy1down then jmp HandleFlyingCharacterMovementVerticalDown
           lda SWCHA
           and # $02
           bne HandleFlyingCharacterMovementDoneJoy1
-          jmp HFCM_VertDown
+          jmp HandleFlyingCharacterMovementVerticalDown
 HandleFlyingCharacterMovementDoneJoy1:
 
           rts
 
 .pend
 
-HFCM_VertJoy0 .proc
+HandleFlyingCharacterMovementVerticalJoy0 .proc
 
-          ;; if joy0up then jmp HFCM_VertUp
+          ;; if joy0up then jmp HandleFlyingCharacterMovementVerticalUp
           lda joy0up
           beq CheckJoy0Down
-          jmp HFCM_VertUp
+          jmp HandleFlyingCharacterMovementVerticalUp
 CheckJoy0Down:
 
-          ;; if joy0down then jmp HFCM_VertDown
+          ;; if joy0down then jmp HandleFlyingCharacterMovementVerticalDown
           lda joy0down
           beq HandleFlyingCharacterMovementDoneJoy0
-          jmp HFCM_VertDown
+          jmp HandleFlyingCharacterMovementVerticalDown
 HandleFlyingCharacterMovementDoneJoy0:
 
           rts
 
 .pend
 
-HFCM_VertUp .proc
+HandleFlyingCharacterMovementVerticalUp .proc
 
           rts
 
@@ -220,7 +220,7 @@ HFCM_VertUp .proc
 
 .pend
 
-HFCM_VertDown .proc
+HandleFlyingCharacterMovementVerticalDown .proc
 
           rts
 

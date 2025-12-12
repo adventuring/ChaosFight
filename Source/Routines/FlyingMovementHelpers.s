@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-HFCM_AttemptMoveLeft .proc
+HandleFlyingCharacterMovementAttemptMoveLeft .proc
           lda currentPlayer
           sta temp1
           ;; Set temp2 = playerX[temp1]
@@ -79,13 +79,13 @@ AfterPlayfieldReadMoveLeft1:
             lsr temp2
           lda temp2
           sta temp7
-          ;; if temp7 >= pfrows then jmp HFCM_ApplyLeft
+          ;; if temp7 >= pfrows then jmp HandleFlyingCharacterMovementApplyLeft
           lda temp7
           cmp # pfrows
 
           bcc RowInRange
 
-          jmp HFCM_ApplyLeft
+          jmp HandleFlyingCharacterMovementApplyLeft
 
 RowInRange:
           lda temp3
@@ -109,7 +109,7 @@ AfterPlayfieldReadMoveLeft2:
           jmp BS_return
 .pend
 
-HFCM_ApplyLeft .proc
+HandleFlyingCharacterMovementApplyLeft .proc
           lda currentPlayer
           sta temp1
           ;; Set temp5 = playerCharacter[temp1]
@@ -121,14 +121,14 @@ HFCM_ApplyLeft .proc
           lda temp5
           cmp # 8
           bne CheckDragonOfStormsLeft
-          jmp HFCM_LeftMomentum
+          jmp HandleFlyingCharacterMovementLeftMomentum
 CheckDragonOfStormsLeft:
 
           lda temp5
           cmp # 2
-          bne HFCM_LeftStandard
-          jmp HFCM_LeftDirect
-HFCM_LeftStandard:
+          bne HandleFlyingCharacterMovementLeftStandard
+          jmp HandleFlyingCharacterMovementLeftDirect
+HandleFlyingCharacterMovementLeftStandard:
 
           ;; Set playerVelocityX[temp1] = $ff
           lda temp1
@@ -141,10 +141,10 @@ HFCM_LeftStandard:
           tax
           lda # 0
           sta playerVelocityXL,x
-          jmp HFCM_LeftFacing
+          jmp HandleFlyingCharacterMovementLeftFacing
 .pend
 
-HFCM_LeftMomentum .proc
+HandleFlyingCharacterMovementLeftMomentum .proc
           ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
           asl
@@ -164,10 +164,10 @@ HFCM_LeftMomentum .proc
           tax
           lda # 0
           sta playerVelocityXL,x
-          jmp HFCM_LeftFacing
+          jmp HandleFlyingCharacterMovementLeftFacing
 .pend
 
-HFCM_LeftDirect .proc
+HandleFlyingCharacterMovementLeftDirect .proc
           ;; Dragon of Storms: direct velocity with subpixel accuracy
           ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
@@ -201,7 +201,7 @@ HFCM_LeftDirect .proc
           ;; Subpixel: 1 = 1/256 pixel for subpixel accuracy
 .pend
 
-HFCM_LeftFacing .proc
+HandleFlyingCharacterMovementLeftFacing .proc
           jmp BS_return
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateLeft-1)
@@ -216,29 +216,29 @@ HFCM_LeftFacing .proc
           jmp BS_jsr
 AfterGetPlayerAnimationStateLeft:
 
-          ;; If temp2 < 5, then HFCM_SetFacingLeft
+          ;; If temp2 < 5, then HandleFlyingCharacterMovementSetFacingLeft
           lda temp2
           cmp # 5
           bcs CheckAnimationState10Left
-          jmp HFCM_SetFacingLeft
+          jmp HandleFlyingCharacterMovementSetFacingLeft
 CheckAnimationState10Left:
 
           lda temp2
           cmp # 5
           bcs CheckAnimationState10LeftLabel
-          jmp HFCM_SetFacingLeft
+          jmp HandleFlyingCharacterMovementSetFacingLeft
 CheckAnimationState10LeftLabel:
 
 
           lda temp2
           cmp # 10
-          bcc HFCM_LeftFacingDone
-HFCM_LeftFacingDone:
+          bcc HandleFlyingCharacterMovementLeftFacingDone
+HandleFlyingCharacterMovementLeftFacingDone:
 
           jmp BS_return
 .pend
 
-HFCM_SetFacingLeft .proc
+HandleFlyingCharacterMovementSetFacingLeft .proc
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           lda temp1
           asl
@@ -249,7 +249,7 @@ HFCM_SetFacingLeft .proc
           jmp BS_return
 .pend
 
-HFCM_AttemptMoveRight .proc
+HandleFlyingCharacterMovementAttemptMoveRight .proc
           lda currentPlayer
           sta temp1
           ;; Set temp2 = playerX[temp1]
@@ -326,7 +326,7 @@ AfterPlayfieldReadMoveRight1:
             lsr temp2
           lda temp2
           sta temp7
-          ;; if temp7 >= pfrows then jmp HFCM_ApplyRight
+          ;; if temp7 >= pfrows then jmp HandleFlyingCharacterMovementApplyRight
           lda temp7
           cmp pfrows
 
@@ -355,7 +355,7 @@ AfterPlayfieldReadMoveRight2:
           jmp BS_return
 .pend
 
-HFCM_ApplyRight .proc
+HandleFlyingCharacterMovementApplyRight .proc
           lda currentPlayer
           sta temp1
           ;; Set temp5 = playerCharacter[temp1]
@@ -367,14 +367,14 @@ HFCM_ApplyRight .proc
           lda temp5
           cmp # 8
           bne CheckDragonOfStormsRight
-          jmp HFCM_RightMomentum
+          jmp HandleFlyingCharacterMovementRightMomentum
 CheckDragonOfStormsRight:
 
           lda temp5
           cmp # 2
-          bne HFCM_RightStandard
-          jmp HFCM_RightDirect
-HFCM_RightStandard:
+          bne HandleFlyingCharacterMovementRightStandard
+          jmp HandleFlyingCharacterMovementRightDirect
+HandleFlyingCharacterMovementRightStandard:
 
           lda temp1
           asl
@@ -386,10 +386,10 @@ HFCM_RightStandard:
           tax
           lda # 0
           sta playerVelocityXL,x
-          jmp HFCM_RightFacing
+          jmp HandleFlyingCharacterMovementRightFacing
 .pend
 
-HFCM_RightMomentum .proc
+HandleFlyingCharacterMovementRightMomentum .proc
           ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
           asl
@@ -409,10 +409,10 @@ HFCM_RightMomentum .proc
           tax
           lda # 0
           sta playerVelocityXL,x
-          jmp HFCM_RightFacing
+          jmp HandleFlyingCharacterMovementRightFacing
 .pend
 
-HFCM_RightDirect .proc
+HandleFlyingCharacterMovementRightDirect .proc
           ;; Dragon of Storms: direct velocity with subpixel accuracy
           ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
@@ -433,7 +433,7 @@ HFCM_RightDirect .proc
           ;; Subpixel: 1 = 1/256 pixel for subpixel accuracy
 .pend
 
-HFCM_RightFacing .proc
+HandleFlyingCharacterMovementRightFacing .proc
           jmp BS_return
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateRight-1)
@@ -448,29 +448,29 @@ HFCM_RightFacing .proc
           jmp BS_jsr
 AfterGetPlayerAnimationStateRight:
 
-          ;; If temp2 < 5, then HFCM_SetFacingRight
+          ;; If temp2 < 5, then HandleFlyingCharacterMovementSetFacingRight
           lda temp2
           cmp # 5
           bcs CheckAnimationState10Right
-          jmp HFCM_SetFacingRight
+          jmp HandleFlyingCharacterMovementSetFacingRight
 CheckAnimationState10Right:
 
           lda temp2
           cmp # 5
           bcs CheckAnimationState10RightLabel
-          jmp HFCM_SetFacingRight
+          jmp HandleFlyingCharacterMovementSetFacingRight
 CheckAnimationState10RightLabel:
 
 
           lda temp2
           cmp # 10
-          bcc HFCM_RightFacingDone
-HFCM_RightFacingDone:
+          bcc HandleFlyingCharacterMovementRightFacingDone
+HandleFlyingCharacterMovementRightFacingDone:
 
           jmp BS_return
 .pend
 
-HFCM_SetFacingRight .proc
+HandleFlyingCharacterMovementSetFacingRight .proc
           ;; Set playerState[temp1] = playerState[temp1] | 1
           lda temp1
           asl

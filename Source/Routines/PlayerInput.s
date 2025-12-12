@@ -185,9 +185,15 @@ HandlePlayers12:
           jmp InputDonePlayer0Input
 CheckPlayer0State:
 
-
-                    if (playerState[0] & 8) then jmp InputDonePlayer0Input
-
+          ;; If (playerState[0] & 8), then jmp InputDonePlayer0Input
+          lda # 0
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq InputDonePlayer0InputSkip
+          jmp InputDonePlayer0Input
+InputDonePlayer0InputSkip:
           ;; Set temp1 = 0
           lda # 0
           sta temp1 : cross-bank call to InputHandleLeftPortPlayerFunction
@@ -774,8 +780,14 @@ HandleUpInputEnhancedButtonRoboTitoAscend
           sta temp6
 
           ;; Compute playfield column
-
-                    let playerY[temp1] = playerY[temp1] - temp6
+          ;; Set playerY[temp1] = playerY[temp1] - temp6
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sec
+          sbc temp6
+          sta playerY,x
 
           ;; Set temp4 = playerX[temp1]
           lda temp1

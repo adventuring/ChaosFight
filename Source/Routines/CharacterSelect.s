@@ -307,7 +307,7 @@ CharacterSelectDoneQuadtariPlayersInline
 
           ;; Need at least 1 player ready for 2-player mode
           ;; ;;           ;; Set temp1 = 0 cross-bank call to GetPlayerLocked bank6
-          lda 0
+          lda # 0
           sta temp1
           lda # >(AfterGetPlayerLockedCheckReady-1)
           pha
@@ -532,11 +532,11 @@ CharacterSelectCompleted
                     if playerCharacter[0] = NoCharacter then DoneCharacter1FacingSel
 
                     let playerState[0] = playerState[0]
-          lda 0
+          lda # 0
           asl
           tax
           lda playerState,x
-          lda 0
+          lda # 0
           asl
           tax
           sta playerState,x | 1
@@ -553,11 +553,11 @@ DoneCharacter1FacingSel
 SetPlayer2Facing:
 
                     let playerState[1] = playerState[1]
-          lda 1
+          lda # 1
           asl
           tax
           lda playerState,x
-          lda 1
+          lda # 1
           asl
           tax
           sta playerState,x | 1

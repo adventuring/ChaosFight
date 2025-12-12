@@ -222,3 +222,4 @@ Estimated savings for confirmed cases: ~72+ bytes and ~72+ cycles.
 - Some patterns like `lda temp1` → `sta temp4` are intentional (preserving values)
 - Some patterns involve array indexing where the temp is needed for the index calculation
 - Always verify the variable isn't used between store and load before optimizing
+

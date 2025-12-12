@@ -35,3 +35,4 @@ while IFS=: read file line_num line; do
         printf "%s:%s: %s\n" "$file" "$line_num" "$line"
     fi
 done | sort -u
+

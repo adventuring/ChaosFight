@@ -398,15 +398,12 @@ AnimationHandleWindupEnd
           jmp ClampCharacterIndex
 
           ClampCharacterIndex:
-          if temp1 >= 16 then let temp1 = 0
+          ;; If temp1 >= 16, then set temp1 = 0
           lda temp1
-          cmp # 17
-
+          cmp # 16
           bcc GetWindupNextAction
-
           lda # 0
-
-          sta .GetWindupNextAction
+          sta temp1
 
           label_unknown:
           ;; Set temp2 = CharacterWindupNextAction[temp1]         

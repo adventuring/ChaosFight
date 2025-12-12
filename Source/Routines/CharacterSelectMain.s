@@ -558,12 +558,31 @@ AfterControllerRescan:
 
           ;; Player offset: 0=P1/P2, 2=P3/P4
 
-                    if controllerStatus & SetQuadtariDetected then let temp3 = qtcontroller * 2
+          ;; If controllerStatus & SetQuadtariDetected, then set temp3 = qtcontroller * 2
+          lda controllerStatus
+          and # SetQuadtariDetected
+          beq SetTemp3TwoPlayer
+          lda qtcontroller
+          asl
+          sta temp3
+          jmp CharacterSelectHandleQuadtari
+SetTemp3TwoPlayer:
+          lda # 0
+          sta temp3
+CharacterSelectHandleQuadtari:
           jsr CharacterSelectHandleTwoPlayers
 
-
-
-                    if controllerStatus & SetQuadtariDetected then let qtcontroller = qtcontroller ^ 1 else qtcontroller = 0
+          ;; If controllerStatus & SetQuadtariDetected, then set qtcontroller = qtcontroller ^ 1, else qtcontroller = 0
+          lda controllerStatus
+          and # SetQuadtariDetected
+          beq SetQtControllerZero
+          lda qtcontroller
+          eor # 1
+          sta qtcontroller
+          jmp CharacterSelectInputComplete
+SetQtControllerZero:
+          lda # 0
+          sta qtcontroller
           jmp CharacterSelectInputComplete
 
 

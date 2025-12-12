@@ -217,7 +217,13 @@ AnimationTransitionToFallen
 
 AnimationTransitionHandleJump
           ;; Stay on frame 7 until Y velocity goes negative
-          if 0 < playerVelocityY[currentPlayer] then AnimationTransitionHandleJump_TransitionToFalling
+          ;; If 0 < playerVelocityY[currentPlayer], then AnimationTransitionHandleJump_TransitionToFalling
+          lda currentPlayer
+          asl
+          tax
+          lda playerVelocityY,x
+          bmi AnimationTransitionHandleJump_TransitionToFalling
+          beq AnimationTransitionHandleJump_TransitionToFalling
           lda currentPlayer
           asl
 
@@ -323,7 +329,11 @@ AfterPlayfieldReadAnimationTransition:
 
           lda temp3
           sta temp2
-          if temp1 then AnimationTransitionHandleFallBack_HitWall
+          ;; If temp1, then AnimationTransitionHandleFallBack_HitWall
+          lda temp1
+          beq AnimationTransitionHandleFallBackContinue
+          jmp AnimationTransitionHandleFallBack_HitWall
+AnimationTransitionHandleFallBackContinue:
           lda temp1
           beq TransitionToFallen
           jmp AnimationTransitionHandleFallBack_HitWall
@@ -471,7 +481,13 @@ AnimationHarpyExecute
           lda currentPlayer
           sta temp1
           ;; Clear dive flag (bit 4 in characterStateFlags)
-          let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
+          ;; Set C6E_stateFlags = 239 & characterStateFlags_R[temp1]
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          and # 239
+          sta C6E_stateFlags
           lda temp1
           asl
           tax
@@ -1036,7 +1052,13 @@ TransitionHandleJump
           ;; Check if player is falling (positive Y velocity =
           ;; downward)
           ;; Still ascending (negative or zero Y velocity), stay in jump
-          if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
+          ;; If 0 < playerVelocityY[currentPlayer], then TransitionHandleJump_TransitionToFalling
+          lda currentPlayer
+          asl
+          tax
+          lda playerVelocityY,x
+          bmi TransitionHandleJump_TransitionToFalling
+          beq TransitionHandleJump_TransitionToFalling
           lda currentPlayer
           asl
 
@@ -1180,22 +1202,20 @@ HandleAttackTransition
           sbc ActionAttackWindup
           sta temp1
 
-          jmp HandleWindupEnd
-HandleWindupEnd:
+          jmp HandleWindupEndAttack
+HandleWindupEndAttack:
           ;; Set temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
           asl
           tax
           lda playerCharacter,x
           sta temp1
-         
-          lda currentPlayer
-          asl
-          tax
-          lda playerCharacter,x
+          ;; If temp1 >= 16, then set temp1 = 0
+          lda temp1
+          cmp # 16
+          bcc GetWindupNextActionHandleDone
+          lda # 0
           sta temp1
-          rts
-          if temp1 >= 16 then let temp1 = 0
           lda temp1
           cmp # 17
 
@@ -1224,7 +1244,6 @@ HandleExecuteEnd
           tax
           lda playerCharacter,x
           sta temp1
-          jmp BS_return
           lda temp1
           cmp # 6
           bne GetExecuteNextActionHandle
@@ -1263,7 +1282,13 @@ HarpyExecute .proc
           sta temp1
           ;; Clear dive flag (bit 4 in characterStateFlags)
           ;; Fix RMW: Read from _R, modify, write to _W
-          let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
+          ;; Set C6E_stateFlags = 239 & characterStateFlags_R[temp1]
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          and # 239
+          sta C6E_stateFlags
           lda temp1
           asl
           tax

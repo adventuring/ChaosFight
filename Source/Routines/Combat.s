@@ -194,7 +194,13 @@ StoreRecoveryFrames:
           sta playerRecoveryFrames,x
 
           ;; Set playerState bit 3 (recovery flag) when recovery frames are set
-                    let playerState[defenderID] = playerState[defenderID] | 8
+          ;; Set playerState[defenderID] = playerState[defenderID] | 8
+          lda defenderID
+          asl
+          tax
+          lda playerState,x
+          ora # 8
+          sta playerState,x
 
           ;; Issue #1180: Ursulo uppercut knock-up scaling with target weight
           ;; Ursulo’s punches toss opponents upward with launch height proportional to target weight
@@ -279,7 +285,13 @@ ApplyUpwardVelocity:
           tax
           lda 0
           sta playerVelocityYL,x
-                    let playerState[defenderID] = playerState[defenderID] | PlayerStateBitJumping
+          ;; Set playerState[defenderID] = playerState[defenderID] | PlayerStateBitJumping
+          lda defenderID
+          asl
+          tax
+          lda playerState,x
+          ora # PlayerStateBitJumping
+          sta playerState,x
 
           ;; Sound effect (tail call)
           jmp PlayDamageSound
@@ -380,7 +392,16 @@ CheckAttackHit .proc
           and defender_bottom > hitboxTop and defender_top <
           ;; hitboxBottom
           ;; Defender right edge <= hitbox left edge (no overlap)
-                    if playerX[defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R then NoHit
+          ;; If playerX[defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R, then NoHit
+          lda defenderID
+          asl
+          tax
+          lda playerX,x
+          clc
+          adc # PlayerSpriteWidth
+          cmp cachedHitboxLeft_R
+          bcc NoHit
+          beq NoHit
 
           ;; Defender left edge >= hitbox right edge (no overlap)
                     if playerX[defenderID] >= cachedHitboxRight_R then NoHit

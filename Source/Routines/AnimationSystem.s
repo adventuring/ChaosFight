@@ -1165,7 +1165,7 @@ AfterPlayfieldReadTransition:
 
           lda temp3
           sta temp2
-          if temp1 then TransitionHandleFallBack_HitWall
+          ;; If temp1, then TransitionHandleFallBack_HitWall
           lda temp1
           beq TransitionToFallenHandle
           jmp TransitionHandleFallBack_HitWall

@@ -128,23 +128,33 @@ TitleDoneQuad:
 
           ;; Update character parade animation
           ;; Cross-bank call to UpdateCharacterParade in bank 14
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from BS_jsr call (cross-bank call from MainLoop)
           lda # >(AfterUpdateCharacterParade-1)
           pha
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterUpdateCharacterParade hi]
           lda # <(AfterUpdateCharacterParade-1)
           pha
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterUpdateCharacterParade hi] [SP+0: AfterUpdateCharacterParade lo]
           lda # >(UpdateCharacterParade-1)
           pha
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterUpdateCharacterParade hi] [SP+1: AfterUpdateCharacterParade lo] [SP+0: UpdateCharacterParade hi]
           lda # <(UpdateCharacterParade-1)
           pha
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterUpdateCharacterParade hi] [SP+2: AfterUpdateCharacterParade lo] [SP+1: UpdateCharacterParade hi] [SP+0: UpdateCharacterParade lo]
                     ldx # 13
           jmp BS_jsr
 AfterUpdateCharacterParade:
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (BS_return consumed 4 bytes from UpdateCharacterParade call, left original 4 bytes)
 
 
           ;; Draw title screen
           ;; CRITICAL: Do NOT call DrawTitleScreen here - MainLoopDrawScreen (MainLoop.bas line 139)
           ;; handles per-frame drawing. Calling it here would cause stack overflow (16-byte limit).
           ;; TitleScreenMain is always called via MainLoop, so MainLoopDrawScreen will handle drawing.
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from original BS_jsr call
           jmp BS_return
 
 .pend
@@ -154,6 +164,9 @@ TitleScreenComplete .proc
           ;; Returns: Far (return otherbank)
           ;;
           ;; Input: None (called from TitleScreenMain)
+          ;;
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from BS_jsr call (same as TitleScreenMain entry)
           ;;
           ;; Output: gameMode set to ModeCharacterSelect,
           ;; ChangeGameMode called
@@ -167,19 +180,28 @@ TitleScreenComplete .proc
           lda ModeCharacterSelect
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           lda # >(AfterChangeGameModeTitle-1)
           pha
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterChangeGameModeTitle hi]
           lda # <(AfterChangeGameModeTitle-1)
           pha
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterChangeGameModeTitle hi] [SP+0: AfterChangeGameModeTitle lo]
           lda # >(ChangeGameMode-1)
           pha
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterChangeGameModeTitle hi] [SP+1: AfterChangeGameModeTitle lo] [SP+0: ChangeGameMode hi]
           lda # <(ChangeGameMode-1)
           pha
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterChangeGameModeTitle hi] [SP+2: AfterChangeGameModeTitle lo] [SP+1: ChangeGameMode hi] [SP+0: ChangeGameMode lo]
                     ldx # 13
           jmp BS_jsr
 AfterChangeGameModeTitle:
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (BS_return consumed 4 bytes from ChangeGameMode call, left original 4 bytes)
 
 
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from original BS_jsr call
           jmp BS_return
 
 .pend

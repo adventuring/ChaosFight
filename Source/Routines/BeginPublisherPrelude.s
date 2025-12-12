@@ -51,24 +51,31 @@ BeginPublisherPrelude .proc
           lda # MusicAtariToday
           sta temp1
           ;; Cross-bank call to StartMusic in bank 15
+          ;; STACK PICTURE: [] (empty, BeginPublisherPrelude called cross-bank)
           lda # >(AfterStartMusicPublisher-1)
           pha
+          ;; STACK PICTURE: [SP+0: AfterStartMusicPublisher hi]
           lda # <(AfterStartMusicPublisher-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterStartMusicPublisher hi] [SP+0: AfterStartMusicPublisher lo]
           lda # >(StartMusic-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterStartMusicPublisher hi] [SP+1: AfterStartMusicPublisher lo] [SP+0: StartMusic hi]
           lda # <(StartMusic-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterStartMusicPublisher hi] [SP+2: AfterStartMusicPublisher lo] [SP+1: StartMusic hi] [SP+0: StartMusic lo]
           ldx # 14
           jmp BS_jsr
 
 AfterStartMusicPublisher:
+          ;; STACK PICTURE: [] (empty, BS_return consumed 4 bytes)
 
           ;; Set window values for Publisher screen (AtariAge logo + AtariAge text)
           ;; Window values are set once during setup, not every frame
           ;; OPTIMIZATION: Inlined to save call overhead (only used once)
           ;; Set titlescreenWindow1 = 42  ; AtariAge logo visible
           ;; Set titlescreenWindow2 = 42  ; AtariAgeText visible
+          ;; STACK PICTURE: [] (empty)
           lda # 42
           sta titlescreenWindow2
           ;; Set titlescreenWindow3 = 0  ; ChaosFight hidden
@@ -77,6 +84,7 @@ AfterStartMusicPublisher:
           ;; Set titlescreenWindow4 = 0  ; BRP hidden
           lda # 0
           sta titlescreenWindow4
+          ;; STACK PICTURE: [] (empty, BS_return expects 4 bytes from cross-bank caller)
           jmp BS_return
 
 .pend

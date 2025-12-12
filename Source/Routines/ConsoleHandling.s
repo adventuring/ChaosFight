@@ -99,18 +99,24 @@ WarmStartClearSCRAM:
           ;; Step 5: Perform input controller detection for Quadtari, Joy2b+, or MegaDrive controllers
           ;; DetectPads is in Bank 12 (same bank as WarmStart), but it uses jmp BS_return
           ;; so we must use BS_jsr even though it's same-bank (inefficient but correct)
+          ;; STACK PICTURE: [] (empty, WarmStart entry)
           lda # >(AfterDetectPadsWarmStart-1)
           pha
+          ;; STACK PICTURE: [SP+0: AfterDetectPadsWarmStart hi]
           lda # <(AfterDetectPadsWarmStart-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterDetectPadsWarmStart hi] [SP+0: AfterDetectPadsWarmStart lo]
           lda # >(DetectPads-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterDetectPadsWarmStart hi] [SP+1: AfterDetectPadsWarmStart lo] [SP+0: DetectPads hi]
           lda # <(DetectPads-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterDetectPadsWarmStart hi] [SP+2: AfterDetectPadsWarmStart lo] [SP+1: DetectPads hi] [SP+0: DetectPads lo]
           ldx # 12                         ;;; Bank 12 = $ffe0 + 12, 0-based = 12
           jmp BS_jsr
 
 AfterDetectPadsWarmStart:
+          ;; STACK PICTURE: [] (empty, BS_return consumed 4 bytes)
 
           ;; Step 6: Go to publisher prelude
           ;; Set game mode to Publisher Prelude
@@ -118,21 +124,33 @@ AfterDetectPadsWarmStart:
           sta gameMode
           
           ;; Cross-bank call to BeginPublisherPrelude in bank 13
+          ;; STACK PICTURE: [] (empty, after previous BS_return)
           lda # >(AfterBeginPublisherPreludeWarmStart-1)
           pha
+          ;; STACK PICTURE: [SP+0: AfterBeginPublisherPreludeWarmStart hi]
           lda # <(AfterBeginPublisherPreludeWarmStart-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterBeginPublisherPreludeWarmStart hi] [SP+0: AfterBeginPublisherPreludeWarmStart lo]
           lda # >(BeginPublisherPrelude-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterBeginPublisherPreludeWarmStart hi] [SP+1: AfterBeginPublisherPreludeWarmStart lo] [SP+0: BeginPublisherPrelude hi]
           lda # <(BeginPublisherPrelude-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterBeginPublisherPreludeWarmStart hi] [SP+2: AfterBeginPublisherPreludeWarmStart lo] [SP+1: BeginPublisherPrelude hi] [SP+0: BeginPublisherPrelude lo]
           ldx # 13                         ;;; Bank 13 = $ffe0 + 13, 0-based = 13
           jmp BS_jsr
 
 AfterBeginPublisherPreludeWarmStart:
+          ;; STACK PICTURE: [] (empty, BS_return consumed 4 bytes)
 
-          ;; Tail call to MainLoop
-          jmp MainLoop
+          ;; Jump to MainLoop in bank 15 without pushing to stack
+          ;; CRITICAL: MainLoop is in Bank 15, WarmStart is in Bank 12
+          ;; MainLoop is an infinite loop - it NEVER returns, so we must NOT push bytes to stack
+          ;; Switch banks directly using nop $ffe0, x then jump
+          ;; STACK PICTURE: [] (empty - no bytes pushed)
+          ldx # 14                         ;;; Bank 15 = $ffe0 + 14, 0-based = 14
+          nop $ffe0, x                     ;;; Switch to bank 15
+          jmp MainLoop                     ;;; Jump directly to MainLoop (no stack push)
 
 .pend
 
@@ -292,6 +310,8 @@ CheckEnhancedPause .proc
           sta temp1
 
           ;; Always check Game Select switch first (works with any controller)
+          ;; STACK PICTURE: [SP+1: caller ret hi] [SP+0: caller ret lo] (from jsr CheckEnhancedPause)
+          ;; RTS will pop 2 bytes and return to caller
           rts
 
           Then check enhanced pause buttons for the specified player

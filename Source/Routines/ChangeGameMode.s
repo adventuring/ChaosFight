@@ -27,9 +27,13 @@ ChangeGameMode .proc
           ;; Thunks ensure labels resolve correctly within same bank
           ;; Thunks are placed at end of file to prevent fall-through
           ;; Note: on...jmp pushes 2 bytes then immediately pops them (net zero stack change)
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from BS_jsr call (cross-bank call)
           jmp ThunkPublisherPrelude
 
           ;; Safety exit if gameMode is invalid
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from BS_jsr call
           jmp BS_return
 
 .pend
@@ -39,6 +43,9 @@ SetupPublisherPrelude .proc
           ;; Returns: Far (return otherbank)
           ;;
           ;; Input: gameMode (global) = ModePublisherPrelude (0)
+          ;;
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
           ;;
           ;; Output: Publisher prelude state initialized
           ;;
@@ -52,6 +59,8 @@ SetupPublisherPrelude .proc
           ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (tail call preserves stack, BeginPublisherPrelude will use BS_return)
 
           jmp BeginPublisherPrelude
 
@@ -62,6 +71,9 @@ SetupAuthorPrelude .proc
           ;; Returns: Far (return otherbank)
           ;;
           ;; Input: gameMode (global) = ModeAuthorPrelude (1)
+          ;;
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
           ;;
           ;; Output: Author prelude state initialized
           ;;
@@ -75,6 +87,8 @@ SetupAuthorPrelude .proc
           ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (tail call preserves stack, BeginAuthorPrelude will use BS_return)
 
           jmp BeginAuthorPrelude
 
@@ -85,6 +99,9 @@ SetupTitle .proc
           ;; Returns: Far (return otherbank)
           ;;
           ;; Input: gameMode (global) = ModeTitle (2)
+          ;;
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
           ;;
           ;; Output: Title screen state initialized
           ;;
@@ -98,6 +115,8 @@ SetupTitle .proc
           ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (tail call preserves stack, BeginTitleScreen will use BS_return)
 
           jmp BeginTitleScreen
 
@@ -106,7 +125,11 @@ SetupTitle .proc
 SetupCharacterSelect .proc
           ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; Returns: Far (return otherbank)
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from BS_jsr call
           jmp BS_return
 
 SetupFallingAnimation
@@ -139,20 +162,30 @@ SetupFallingAnimation
           ;; Constraints: Must be colocated with ChangeGameMode
           ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
           ;; Cross-bank call to BeginFallingAnimation in bank 14
           lda # >(AfterBeginFallingAnimation-1)
           pha
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginFallingAnimation hi]
           lda # <(AfterBeginFallingAnimation-1)
           pha
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginFallingAnimation hi] [SP+0: AfterBeginFallingAnimation lo]
           lda # >(BeginFallingAnimation-1)
           pha
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginFallingAnimation hi] [SP+1: AfterBeginFallingAnimation lo] [SP+0: BeginFallingAnimation hi]
           lda # <(BeginFallingAnimation-1)
           pha
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginFallingAnimation hi] [SP+2: AfterBeginFallingAnimation lo] [SP+1: BeginFallingAnimation hi] [SP+0: BeginFallingAnimation lo]
                     ldx # 13
           jmp BS_jsr
 AfterBeginFallingAnimation:
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (BS_return consumed 4 bytes from BeginFallingAnimation call, left original 4 bytes)
 
 
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from original BS_jsr call
           jmp BS_return
 
 .pend
@@ -174,20 +207,30 @@ SetupArenaSelect .proc
           ;; Constraints: Must be colocated with ChangeGameMode
           ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
           ;; Cross-bank call to BeginArenaSelect in bank 14
           lda # >(AfterBeginArenaSelect-1)
           pha
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginArenaSelect hi]
           lda # <(AfterBeginArenaSelect-1)
           pha
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginArenaSelect hi] [SP+0: AfterBeginArenaSelect lo]
           lda # >(BeginArenaSelect-1)
           pha
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginArenaSelect hi] [SP+1: AfterBeginArenaSelect lo] [SP+0: BeginArenaSelect hi]
           lda # <(BeginArenaSelect-1)
           pha
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginArenaSelect hi] [SP+2: AfterBeginArenaSelect lo] [SP+1: BeginArenaSelect hi] [SP+0: BeginArenaSelect lo]
                     ldx # 13
           jmp BS_jsr
 AfterBeginArenaSelect:
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (BS_return consumed 4 bytes from BeginArenaSelect call, left original 4 bytes)
 
 
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from original BS_jsr call
           jmp BS_return
 
 .pend
@@ -211,20 +254,30 @@ SetupGame .proc
           ;; MainLoop will dispatch to GameMainLoop when gameMode = ModeGame
           ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
           ;; Cross-bank call to BeginGameLoop in bank 11
           lda # >(AfterBeginGameLoop-1)
           pha
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginGameLoop hi]
           lda # <(AfterBeginGameLoop-1)
           pha
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginGameLoop hi] [SP+0: AfterBeginGameLoop lo]
           lda # >(BeginGameLoop-1)
           pha
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginGameLoop hi] [SP+1: AfterBeginGameLoop lo] [SP+0: BeginGameLoop hi]
           lda # <(BeginGameLoop-1)
           pha
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginGameLoop hi] [SP+2: AfterBeginGameLoop lo] [SP+1: BeginGameLoop hi] [SP+0: BeginGameLoop lo]
                     ldx # 10
           jmp BS_jsr
 AfterBeginGameLoop:
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (BS_return consumed 4 bytes from BeginGameLoop call, left original 4 bytes)
 
 
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from original BS_jsr call
           jmp BS_return
 
 .pend
@@ -246,20 +299,30 @@ SetupWinner .proc
           ;; Constraints: Must be colocated with ChangeGameMode
           ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
           ;; Cross-bank call to BeginWinnerAnnouncement in bank 14
           lda # >(AfterBeginWinnerAnnouncement-1)
           pha
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginWinnerAnnouncement hi]
           lda # <(AfterBeginWinnerAnnouncement-1)
           pha
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginWinnerAnnouncement hi] [SP+0: AfterBeginWinnerAnnouncement lo]
           lda # >(BeginWinnerAnnouncement-1)
           pha
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginWinnerAnnouncement hi] [SP+1: AfterBeginWinnerAnnouncement lo] [SP+0: BeginWinnerAnnouncement hi]
           lda # <(BeginWinnerAnnouncement-1)
           pha
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginWinnerAnnouncement hi] [SP+2: AfterBeginWinnerAnnouncement lo] [SP+1: BeginWinnerAnnouncement hi] [SP+0: BeginWinnerAnnouncement lo]
                     ldx # 13
           jmp BS_jsr
 AfterBeginWinnerAnnouncement:
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (BS_return consumed 4 bytes from BeginWinnerAnnouncement call, left original 4 bytes)
 
 
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from original BS_jsr call
           jmp BS_return
 
 .pend
@@ -281,7 +344,11 @@ SetupAttract .proc
           ;; Constraints: Must be colocated with ChangeGameMode
           ;; CRITICAL: on gameMode jmp pushes 2 bytes then immediately pops them (net zero)
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
           ;; OPTIMIZATION: Tail call to save 4 bytes on sta
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (tail call preserves stack, BeginAttractMode will use BS_return)
 
           jmp BeginAttractMode
           ;; ============================================================

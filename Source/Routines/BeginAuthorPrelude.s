@@ -36,24 +36,33 @@ BeginAuthorPrelude .proc
           lda # MusicInterworldly
           sta temp1
           ;; Cross-bank call to StartMusic in bank 15
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from BS_jsr call (cross-bank call from ChangeGameMode)
           lda # >(AfterStartMusicAuthorPrelude-1)
           pha
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterStartMusicAuthorPrelude hi]
           lda # <(AfterStartMusicAuthorPrelude-1)
           pha
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterStartMusicAuthorPrelude hi] [SP+0: AfterStartMusicAuthorPrelude lo]
           lda # >(StartMusic-1)
           pha
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterStartMusicAuthorPrelude hi] [SP+1: AfterStartMusicAuthorPrelude lo] [SP+0: StartMusic hi]
           lda # <(StartMusic-1)
           pha
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterStartMusicAuthorPrelude hi] [SP+2: AfterStartMusicAuthorPrelude lo] [SP+1: StartMusic hi] [SP+0: StartMusic lo]
           ldx # 14
           jmp BS_jsr
 
 AfterStartMusicAuthorPrelude:
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (BS_return consumed 4 bytes from StartMusic call, left original 4 bytes)
 
 
           ;; Set window values for Author screen (Interworldly only)
           ;; OPTIMIZATION: Inlined to save call overhead (only used once)
           ;; Set titlescreenWindow1 = 0   ; AtariAge logo hidden
           ;; Set titlescreenWindow2 = 0  ; AtariAgeText hidden
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           lda # 0
           sta titlescreenWindow2
           ;; Set titlescreenWindow3 = 0  ; ChaosFight hidden
@@ -68,6 +77,8 @@ AfterStartMusicAuthorPrelude:
           ;; BeginAuthorPrelude is called cross-bank from SetupAuthorPrelude
           ;; (cross-bank call to BeginAuthorPrelude bank14 forces BS_jsr even though same bank)
           ;; so it must return with return otherbank to match
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from original BS_jsr call
           jmp BS_return
 
 .pend

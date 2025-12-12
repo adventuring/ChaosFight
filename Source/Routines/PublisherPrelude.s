@@ -53,11 +53,15 @@
 
 
 PublisherPreludeMain .proc
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from BS_jsr call (cross-bank call from MainLoop)
           ;; Check for button press on any controller to skip
           ;; if joy0fire then jmp PublisherPreludeComplete
           bit INPT0
           bmi CheckJoy1Fire
 
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (jmp PublisherPreludeComplete preserves stack)
           jmp PublisherPreludeComplete
 
 CheckJoy1Fire:
@@ -152,6 +156,8 @@ IncrementTimer:
           inc preambleTimer
 
           ;; Music and drawing handled by MainLoop (PlayMusic and DrawTitleScreen)
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from BS_jsr call
           jmp BS_return
 
 PublisherPreludeComplete
@@ -159,6 +165,9 @@ PublisherPreludeComplete
           ;; Returns: Far (return otherbank)
           ;;
           ;; Input: None (called from PublisherPreludeMain)
+          ;;
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from BS_jsr call (same as PublisherPreludeMain entry)
           ;;
           ;; Output: gameMode set to ModeAuthorPrelude, BeginAuthorPrelude called
           ;;
@@ -170,19 +179,28 @@ PublisherPreludeComplete
           lda ModeAuthorPrelude
           sta gameMode
           ;; Cross-bank call to BeginAuthorPrelude in bank 14
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           lda # >(AfterBeginAuthorPrelude-1)
           pha
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginAuthorPrelude hi]
           lda # <(AfterBeginAuthorPrelude-1)
           pha
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginAuthorPrelude hi] [SP+0: AfterBeginAuthorPrelude lo]
           lda # >(BeginAuthorPrelude-1)
           pha
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginAuthorPrelude hi] [SP+1: AfterBeginAuthorPrelude lo] [SP+0: BeginAuthorPrelude hi]
           lda # <(BeginAuthorPrelude-1)
           pha
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginAuthorPrelude hi] [SP+2: AfterBeginAuthorPrelude lo] [SP+1: BeginAuthorPrelude hi] [SP+0: BeginAuthorPrelude lo]
           ldx # 13
           jmp BS_jsr
 AfterBeginAuthorPrelude:
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; (BS_return consumed 4 bytes from BeginAuthorPrelude call, left original 4 bytes)
 
 
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 4 bytes on stack from original BS_jsr call
           jmp BS_return
           ;;
           ;; Bitmap Loading

@@ -9,6 +9,8 @@
 
           * = $ffe0 - BS_length
 BS_return:
+          ;; STACK PICTURE: [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: caller ret hi] [SP+0: caller ret lo]
+          ;; Expected: 4 bytes on stack (2-byte encoded return address + 2-byte caller return address)
           ;; Use temp7 (zero-page) instead of stack to avoid overflow
           tsx
           ;; Encoded return address (offset 2 = no A/X save)
@@ -27,8 +29,12 @@ BS_return:
           ldx temp7
 
 BS_jsr:
+          ;; STACK PICTURE: [SP+3: target hi] [SP+2: target lo] [SP+1: return hi] [SP+0: return lo]
+          ;; Expected: 4 bytes on stack (2-byte target address + 2-byte return address)
           ;; Bankswitch: $ffe0 + X where X is 0-based bank number
           nop $ffe0, x
+          ;; STACK PICTURE: [SP+1: return hi] [SP+0: return lo] (target address consumed by bankswitch)
+          ;; RTS will pop 2 bytes (return address) and jump to caller
           rts
 
           ;; Size check: verify bankswitch code ends before $FFE0

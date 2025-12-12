@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 ;;; EFSC 64k bankswitch code and vectors
 
-          BS_length = $31    ; = 49 bytes (was 24, increased by 25 for additional stack comments)
+          BS_length = $32    ; = 50 bytes (was 24, increased by 26 for additional stack comments)
           .if * > $ffe0 - BS_length
           .error format("Bank %d overflow: $%04x > $%04x", current_bank, *, $ffe0 - BS_length)
           .fi

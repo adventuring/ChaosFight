@@ -324,7 +324,7 @@ CheckCooldownExpired:
           lda temp1
           asl
           tax
-          lda 254
+          lda # 254
           sta playerVelocityY,x
           lda temp1
           asl

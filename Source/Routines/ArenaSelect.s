@@ -536,7 +536,7 @@ CheckINPT2Fire:
           ;; If !INPT2{7}, then set temp1 = 1
           bit INPT2
           bmi CheckQuadtariFireHoldDone
-          lda 1
+          lda # 1
           sta temp1
 CheckQuadtariFireHoldDone:
           jmp BS_return

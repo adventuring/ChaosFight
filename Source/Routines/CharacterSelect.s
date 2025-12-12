@@ -319,43 +319,36 @@ CharacterSelectDoneQuadtariPlayersInline
           pha
           ldx # 5
           jmp BS_jsr
-AfterGetPlayerLockedCheckReady: : if temp2 then jmp CharacterSelectCompleted
-
-lda temp2
-
-beq CheckPlayer2Locked
+AfterGetPlayerLockedCheckReady:
+          ;; If temp2 then jmp CharacterSelectCompleted
+          lda temp2
+          beq CheckPlayer2Locked
+          jmp CharacterSelectCompleted
 
 CheckPlayer2Locked:
-          jmp CheckPlayer2Locked
 
+          ;; Set temp1 = 1
+          ;; Cross-bank call to GetPlayerLocked bank6
+          lda # 1
+          sta temp1
+          lda # >(AfterGetPlayerLockedP1-1)
+          pha
+          lda # <(AfterGetPlayerLockedP1-1)
+          pha
+          lda # >(GetPlayerLocked-1)
+          pha
+          lda # <(GetPlayerLocked-1)
+          pha
+          ldx # 5
+          jmp BS_jsr
+
+AfterGetPlayerLockedP1:
+          ;; If temp2 then jmp CharacterSelectCompleted
           lda temp2
-
-          beq CheckPlayer2LockedLabel
-
-          jmp CheckPlayer2LockedLabel:
-
-          lda temp2
-
-          beq CheckPlayer2LockedLabel2
-
-          jmp CheckPlayer2LockedLabel2:
-
-          ;; ;;           ;; Set temp1 = 1 cross-bank call to GetPlayerLocked bank6 : if temp2 then jmp CharacterSelectCompleted          lda temp2          beq CheckPlayer2LockedLabel3
-CheckPlayer2LockedLabel3:
-          jmp CheckPlayer2LockedLabel3
-          lda temp2
-
           beq CharacterSelectDoneQuadtariReadyInline
+          jmp CharacterSelectCompleted
 
-          jmp CharacterSelectDoneQuadtariReadyInline:
-
-          lda temp2
-
-          beq CharacterSelectDoneQuadtariReadyInlineLabel
-
-          jmp CharacterSelectDoneQuadtariReadyInlineLabel:
-
-          jmp CharacterSelectDoneQuadtariReadyInline
+CharacterSelectDoneQuadtariReadyInline:
 
 .pend
 

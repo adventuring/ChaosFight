@@ -110,7 +110,7 @@ AdvanceFrame .proc
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta animationCounter_W,x
           ;; Inline AdvanceAnimationFrame
           ;; Advance to next frame in current animation action
@@ -198,7 +198,7 @@ AnimationTransitionLoopAnimation:
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta currentAnimationFrame_W,x
           jmp UpdateSprite
 
@@ -498,23 +498,23 @@ AnimationHarpyExecute:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityX,x
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
           ;; Apply upward wing flap momentum after swoop attack
           lda temp1
           asl
           tax
-          lda 254
+          lda # 254
           sta playerVelocityY,x
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
           ;; Transition to Idle
           lda ActionIdle
@@ -554,14 +554,14 @@ AnimationSetPlayerAnimationInlined:
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta currentAnimationFrame_W,x
           ;; SCRAM write to animationCounter_W
           ;; Reset animation counter
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta animationCounter_W,x
           ;; Update character sprite immediately using inlined LoadPlayerSprite logic
           ;; Set up parameters for sprite loading (frame=0, action=temp2, player=currentPlayer)
@@ -761,15 +761,15 @@ AfterSetPlayerCharacterArtBank2:
           jmp AnimationNextPlayerLabel
 
 UpdateSprite_Bank3Dispatch
-          ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc 8          sta temp6
+          ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc # 8          sta temp6
           lda temp1
           sec
-          sbc 8
+          sbc # 8
           sta temp6
 
           lda temp1
           sec
-          sbc 8
+          sbc # 8
           sta temp6
 
           lda temp4
@@ -819,15 +819,15 @@ AfterSetPlayerCharacterArtBank4:
           jmp AnimationNextPlayer
 
 UpdateSprite_Bank5Dispatch
-          ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc 24          sta temp6
+          ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc # 24          sta temp6
           lda temp1
           sec
-          sbc 24
+          sbc # 24
           sta temp6
 
           lda temp1
           sec
-          sbc 24
+          sbc # 24
           sta temp6
 
           lda temp4
@@ -912,14 +912,14 @@ SetPlayerAnimation:
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta currentAnimationFrame_W,x
           ;; SCRAM write to animationCounter_W
           ;; Reset animation counter
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta animationCounter_W,x
 
           ;; Update character sprite immediately
@@ -1025,7 +1025,7 @@ TransitionLoopAnimation
           lda currentPlayer
           asl
           tax
-          lda 0
+          lda # 0
           sta currentAnimationFrame_W,x
           jmp BS_return
 
@@ -1298,13 +1298,13 @@ HarpyExecute .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityX,x
           ;; Apply upward wing flap momentum after swoop attack
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
           ;; (equivalent to HarpyJump)
           ;; Same as normal flap: -2 pixels/frame upward (254 in twos
@@ -1312,14 +1312,14 @@ HarpyExecute .proc
           lda temp1
           asl
           tax
-          lda 254
+          lda # 254
           sta playerVelocityY,x
           ;; -2 in 8-bit twos complement: 256 - 2 = 254
           ;; Keep jumping flag set to allow vertical movement
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
           ;; playerState[temp1] bit 2 (jumping) already set
           ;; from attack, keep it

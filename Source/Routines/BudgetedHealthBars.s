@@ -95,7 +95,7 @@ BudgetedHealthBarPlayer1 .proc
           ;; Local trampoline so branch stays in range; tail-calls target
           ;; Update Player 1 health bar (inline from UpdatePlayer1HealthBar pattern)
           ;; Set temp6 = playerHealth[1]
-          lda 1
+          lda # 1
           asl
           tax
           lda playerHealth,x

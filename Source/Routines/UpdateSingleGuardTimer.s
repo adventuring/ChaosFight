@@ -48,7 +48,6 @@ UpdateSingleGuardTimer .proc
           lda playerState,x
           sta temp2
           ;; If temp2, then UpdateGuardTimerActive
-          lda temp2
           beq UpdateCooldownTimer
           jmp UpdateGuardTimerActive
 
@@ -62,7 +61,6 @@ UpdateCooldownTimer:
           tax
           lda playerTimers_R,x
           sta temp3
-          lda temp3
           beq NoCooldownActive
 
           dec temp3
@@ -100,7 +98,6 @@ UpdateGuardTimerActive .proc
           lda playerTimers_R,x
           sta temp3
           ;; Guard timer already expired (shouldn’t happen, but safety
-          lda temp3
           cmp # 0
           bne SkipExpiredCheck
           jmp GuardTimerExpired
@@ -115,7 +112,6 @@ SkipExpiredCheck:
           tax
           lda temp3
           sta playerTimers_W,x
-          lda temp3
           cmp # 0
           bne GuardTimerStillActive
           jmp GuardTimerExpired

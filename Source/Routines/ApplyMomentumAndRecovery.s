@@ -80,7 +80,7 @@ CheckPlayer3Character:
           lda temp1
           cmp # 2
           bne CheckPlayer3NoCharacter
-          lda 2
+          lda # 2
           asl
           tax
           lda playerCharacter,x
@@ -94,7 +94,7 @@ CheckPlayer3NoCharacter:
           lda temp1
           cmp # 3
           bne MomentumRecoveryProcess
-          lda 3
+          lda # 3
           asl
           tax
           lda playerCharacter,x
@@ -106,7 +106,7 @@ MomentumRecoveryProcess:
           lda temp1
           cmp # 3
           bne ProcessRecoveryFrames
-          lda 3
+          lda # 3
           asl
           tax
           lda playerCharacter,x

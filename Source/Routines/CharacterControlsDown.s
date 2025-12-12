@@ -179,7 +179,7 @@ BlockedCannotMoveDownStandard:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
 
           ;; Ensure guard bit clear
@@ -499,7 +499,7 @@ BlockedCannotMoveDown:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
 
           ;; Ensure guard bit clear
@@ -693,7 +693,7 @@ BlockedCannotMoveDownFrooty:
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
 
           ;; Ensure guard bit clear
@@ -731,7 +731,7 @@ RoboTitoDown .proc
           ;; Not latched, dispatcher will fall through to StandardGuard
 
           lda characterStateFlags_R[temp1]
-          and 1
+          and # 1
           cmp # 0
           bne RoboTitoInitiateDrop
 RoboTitoInitiateDrop:
@@ -785,7 +785,7 @@ RoboTitoVoluntaryDrop .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta missileStretchHeight_W,x
 
           jmp BS_return
@@ -810,7 +810,7 @@ RoboTitoVoluntaryDrop .proc
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityYL,x
 
           ;; Set jumping bit

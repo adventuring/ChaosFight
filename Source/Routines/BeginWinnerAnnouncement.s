@@ -60,7 +60,6 @@ BeginWinnerAnnouncement .proc
           ;; Get winner’s character index
           lda winnerPlayerIndex_R
           sta temp1
-          lda temp1
           cmp # 0
           bne CheckPlayer1Character
           ;; Set temp2 = playerCharacter[0]

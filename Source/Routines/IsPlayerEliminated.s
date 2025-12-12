@@ -15,7 +15,6 @@ IsPlayerEliminated .proc
           tax
           lda playerHealth,x
           sta temp2
-          lda temp2
           bne PlayerNotEliminated
 
           ;; Set temp2 = 1 jmp IsEliminatedDone

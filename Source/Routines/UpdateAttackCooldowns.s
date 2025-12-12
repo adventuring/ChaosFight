@@ -36,9 +36,6 @@ DecrementCooldown:
 
 UpdateAttackCooldownSkip:
 
-.pend
-
-next_label_1_L39 .proc
           jmp BS_return
 
 .pend

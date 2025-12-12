@@ -921,29 +921,23 @@ AfterGetPlayerLockedP0: : if !temp2 then jmp CharacterSelectReadyDone
           pha
           ldx # 5
           jmp BS_jsr
-AfterGetPlayerLockedP1: : if temp2 then jmp CharacterSelectFinish
-
-lda temp2
-
-beq CheckPlayer2Locked
-
-CheckPlayer2Locked:
-          jmp CheckPlayer2Locked
-
+AfterGetPlayerLockedP1:
+          ;; If temp2 then jmp CharacterSelectFinish
           lda temp2
-
           beq CheckPlayer2CPU
+          jmp CharacterSelectFinish
 
-          jmp CheckPlayer2CPU:
+CheckPlayer2CPU:
+          ;; If playerCharacter[1] = CPUCharacter then jmp CharacterSelectFinish
+          lda # 1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CPUCharacter
+          bne CharacterSelectReadyDone
+          jmp CharacterSelectFinish
 
-          lda temp2
-
-          beq CharacterSelectReadyDone
-
-          jmp CharacterSelectReadyDone:
-
-          ;; if playerCharacter[1] = CPUCharacter then jmp CharacterSelectFinish
-          jmp CharacterSelectReadyDone
+CharacterSelectReadyDone:
 
 
 

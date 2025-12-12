@@ -496,7 +496,6 @@ CalculateAttackHitbox .proc
           tax
           lda playerAttackType_R,x
           sta temp1
-          lda temp1
           cmp # 0
           bne CheckProjectileHitbox
           jmp MeleeHitbox

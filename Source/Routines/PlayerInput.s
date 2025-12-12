@@ -182,21 +182,22 @@ HandlePlayers12:
           lda temp2
           cmp # 0
           bne CheckPlayer0State
-          jmp InputDonePlayer0Input:
+          jmp InputDonePlayer0Input
 CheckPlayer0State:
 
-          ;; If (playerState[0] & 8), then jmp InputDonePlayer0Input:
+          ;; If (playerState[0] & 8), then jmp InputDonePlayer0Input
           lda # 0
           asl
           tax
           lda playerState,x
           and # 8
           beq InputDonePlayer0InputSkip
-          jmp InputDonePlayer0Input:
+          jmp InputDonePlayer0Input
 InputDonePlayer0InputSkip:
           ;; Set temp1 = 0
+          ;; Cross-bank call to InputHandleLeftPortPlayerFunction
           lda # 0
-          sta temp1 : cross-bank call to InputHandleLeftPortPlayerFunction:
+          sta temp1
 
 
 
@@ -357,12 +358,12 @@ InputHandleQuadtariPlayers .proc
           cmp # 0
           bne CheckPlayer3Character
 
-          jmp InputDonePlayer3Input:
+          jmp InputDonePlayer3Input
 
 CheckPlayer3Character:
 
 
-          ;; If playerCharacter[2] = NoCharacter, then jmp InputDonePlayer3Input:
+          ;; If playerCharacter[2] = NoCharacter, then jmp InputDonePlayer3Input
 
           ;; Inlined IsPlayerAlive check for player 2
           lda # 2
@@ -373,20 +374,21 @@ CheckPlayer3Character:
           lda temp2
           cmp # 0
           bne CheckPlayer3State
-          jmp InputDonePlayer3Input:
+          jmp InputDonePlayer3Input
 CheckPlayer3State:
-          ;; If (playerState[2] & 8), then jmp InputDonePlayer3Input:
+          ;; If (playerState[2] & 8), then jmp InputDonePlayer3Input
           lda # 2
           asl
           tax
           lda playerState,x
           and # 8
           beq InputDonePlayer3InputSkip
-          jmp InputDonePlayer3Input:
+          jmp InputDonePlayer3Input
 InputDonePlayer3InputSkip:
           ;; Set temp1 = 2
+          ;; Cross-bank call to InputHandleLeftPortPlayerFunction
           lda # 2
-          sta temp1 : cross-bank call to InputHandleLeftPortPlayerFunction:
+          sta temp1
 
 
 
@@ -442,8 +444,9 @@ CheckPlayer4State:
           jmp InputDonePlayer4Input
 InputDonePlayer4InputSkipSecond:
           ;; Set temp1 = 3
+          ;; Cross-bank call to InputHandleRightPortPlayerFunction
           lda # 3
-          sta temp1 : cross-bank call to InputHandleRightPortPlayerFunction:
+          sta temp1
 
 
 
@@ -730,7 +733,7 @@ HandleUpInputEnhancedButtonHandleUp .proc
 
           ;; Check Bernie fall-through
 
-          ;; If playerCharacter[temp1] = CharacterRoboTito then jmp HandleUpInputEnhancedButtonRoboTitoAscend:
+          ;; If playerCharacter[temp1] = CharacterRoboTito then jmp HandleUpInputEnhancedButtonRoboTitoAscend
 
           ;; Check Harpy flap
 
@@ -1464,7 +1467,7 @@ HandleStandardHorizontalMovementShouldPreserveFacingYes1 .proc
           lda # 1
           sta temp3
 
-          jmp HandleStandardHorizontalMovementShouldPreserveFacingDone1:
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingDone1
 
 .pend
 
@@ -1700,7 +1703,7 @@ HandleStandardHorizontalMovementShouldPreserveFacingYes2 .proc
           lda # 1
           sta temp3
 
-          jmp HandleStandardHorizontalMovementShouldPreserveFacingDone2:
+          jmp HandleStandardHorizontalMovementShouldPreserveFacingDone2
 
 .pend
 
@@ -1764,10 +1767,10 @@ HandleFlyingCharacterMovement .proc
 
           ;; If temp1 & 2 = 0 then jmp HandleFlyingCharacterMovementUseJoy0
 
-          ;; if joy1left, then jmp HandleFlyingCharacterMovementCheckLeftCollision:
+          ;; if joy1left, then jmp HandleFlyingCharacterMovementCheckLeftCollision
           lda joy1left
           beq HandleFlyingCharacterMovementCheckRightMovement
-          jmp HandleFlyingCharacterMovementCheckLeftCollision:
+          jmp HandleFlyingCharacterMovementCheckLeftCollision
 HandleFlyingCharacterMovementCheckRightMovement:
 
           jmp HandleFlyingCharacterMovementCheckRightMovement
@@ -1779,10 +1782,10 @@ HandleFlyingCharacterMovementUseJoy0 .proc
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
-          ;; If joy0left, then jmp HandleFlyingCharacterMovementCheckLeftCollision:
+          ;; If joy0left, then jmp HandleFlyingCharacterMovementCheckLeftCollision
           lda joy0left
           beq HandleFlyingCharacterMovementCheckRightMovementJoy0
-          jmp HandleFlyingCharacterMovementCheckLeftCollision:
+          jmp HandleFlyingCharacterMovementCheckLeftCollision
 HandleFlyingCharacterMovementCheckRightMovementJoy0:
 
           jmp HandleFlyingCharacterMovementCheckRightMovementJoy0
@@ -2136,7 +2139,7 @@ ShouldPreserveFacingInlineYes1 .proc
           lda # 1
           sta temp3
 
-          jmp ShouldPreserveFacingInlineDone1:
+          jmp ShouldPreserveFacingInlineDone1
 
 .pend
 
@@ -2425,7 +2428,7 @@ HandleFlyingCharacterMovementRightStandard:
           lda # 0
           sta playerVelocityXL,x
 
-          jmp HandleFlyingCharacterMovementRightApplyDone:
+          jmp HandleFlyingCharacterMovementRightApplyDone
 
 .pend
 
@@ -2450,7 +2453,7 @@ HandleFlyingCharacterMovementRightMomentumApply .proc
           lda 0
           sta playerVelocityXL,x
 
-          jmp HandleFlyingCharacterMovementRightApplyDone:
+          jmp HandleFlyingCharacterMovementRightApplyDone
 
 .pend
 
@@ -2537,7 +2540,7 @@ ShouldPreserveFacingInlineYes2 .proc
           lda # 1
           sta temp3
 
-          jmp ShouldPreserveFacingInlineDone2:
+          jmp ShouldPreserveFacingInlineDone2
 
 .pend
 
@@ -2608,24 +2611,13 @@ HandleFlyingCharacterMovementVerticalUp .proc
 
           rts
 
-          rts
-
-          rts
-
 .pend
 
 HandleFlyingCharacterMovementVerticalDown .proc
 
           rts
 
-          rts
-
-          rts
-
-
-
-InputHandleLeftPortPlayerFunction:
-
+.pend
 
 InputHandleLeftPortPlayerFunction:
 
@@ -2667,13 +2659,13 @@ AfterGetPlayerAnimationStateLeftPort:
 
           ;; Block movement during attack windup/execute/recovery
 
-          ;; If temp2 >= 13, then jmp DoneLeftPortMovement:
+          ;; If temp2 >= 13, then jmp DoneLeftPortMovement
           lda temp2
           cmp 13
 
           bcc CheckFlyingCharacter
 
-          jmp DoneLeftPortMovement:
+          jmp DoneLeftPortMovement
 
           CheckFlyingCharacter:
 
@@ -2723,7 +2715,7 @@ HandleStandardHorizontalMovementLabel:
 
           ;; Standard horizontal movement (modifies velocity, not position)
 
-          jsr HandleStandardHorizontalMovement:
+          jsr HandleStandardHorizontalMovement
 
 DoneLeftPortMovement:
 
@@ -2745,7 +2737,7 @@ IHLP_RadishGoblinMovement .proc
 AfterRadishGoblinHandleInputLeftPort:
 
 
-          jmp DoneLeftPortMovement:
+          jmp DoneLeftPortMovement
 
 .pend
 
@@ -2773,7 +2765,7 @@ IHLP_DoneFlyingLeftRight
 
           ;; temp2 already contains cached animation state from GetPlayerAnimationStateFunction
 
-          jsr HandleUpInputAndEnhancedButton:
+          jsr HandleUpInputAndEnhancedButton
 
 
 
@@ -2783,7 +2775,7 @@ IHLP_DoneFlyingLeftRight
 
           ;; Players 0,2 use joy0; Players 1,3 use joy1
 
-          ;; If playerCharacter[temp1] = CharacterFrooty, then jmp HandleGuardInputDoneLeftPort:
+          ;; If playerCharacter[temp1] = CharacterFrooty, then jmp HandleGuardInputDoneLeftPort
           lda temp1
           cmp # 0
           bne CheckPlayer2JoyPort1
@@ -2835,13 +2827,13 @@ HandleGuardInputHandleDownPressedLeftPort .proc
           lda playerCharacter,x
           sta temp4
 
-          ;; If temp4 >= 32, then jmp HandleGuardInputDoneLeftPort:
+          ;; If temp4 >= 32, then jmp HandleGuardInputDoneLeftPort
           lda temp4
           cmp 32
 
           bcc CheckDragonOfStormsDown1
 
-          jmp HandleGuardInputDoneLeftPort:
+          jmp HandleGuardInputDoneLeftPort
 
           CheckDragonOfStormsDown1:
 
@@ -3007,13 +2999,13 @@ HandleGuardInputDoneLeftPort:
 
           ;; Block attack input during attack windup/execute/recovery
 
-          ;; If temp2 >= 13, then jmp InputDoneLeftPortAttack:
+          ;; If temp2 >= 13, then jmp InputDoneLeftPortAttack
           lda temp2
           cmp 13
 
           bcc CheckGuardStatus1
 
-          jmp InputDoneLeftPortAttack:
+          jmp InputDoneLeftPortAttack
 
           CheckGuardStatus1:
 
@@ -3028,25 +3020,25 @@ HandleGuardInputDoneLeftPort:
 
           ;; Guarding - block attack input
 
-          ;; If temp2, then jmp InputDoneLeftPortAttack:
+          ;; If temp2, then jmp InputDoneLeftPortAttack
           lda temp2
           beq CheckJoy0Fire
-          jmp InputDoneLeftPortAttack:
+          jmp InputDoneLeftPortAttack
 CheckJoy0Fire:
 
           lda joy0fire
           bne DispatchAttack
-          jmp InputDoneLeftPortAttack:
+          jmp InputDoneLeftPortAttack
 DispatchAttack:
 
-          ;; If (playerState[temp1] & PlayerStateBitFacing), then jmp InputDoneLeftPortAttack:
+          ;; If (playerState[temp1] & PlayerStateBitFacing), then jmp InputDoneLeftPortAttack
           lda temp1
           asl
           tax
           lda playerState,x
           and # PlayerStateBitFacing
           beq InputDoneLeftPortAttackSkipSecond
-          jmp InputDoneLeftPortAttack:
+          jmp InputDoneLeftPortAttack
 InputDoneLeftPortAttackSkipSecond:
 
           ;; Set temp4 = playerCharacter[temp1]         
@@ -3078,10 +3070,7 @@ InputDoneLeftPortAttack:
 
           rts
 
-
-
-InputHandleRightPortPlayerFunction:
-
+.pend
 
 InputHandleRightPortPlayerFunction:
 
@@ -3123,13 +3112,13 @@ AfterGetPlayerAnimationStateRightPort:
 
           ;; Block movement during attack windup/execute/recovery
 
-          ;; If temp2 >= 13, then jmp DoneRightPortMovement:
+          ;; If temp2 >= 13, then jmp DoneRightPortMovement
           lda temp2
           cmp 13
 
           bcc CheckGuardStatus2
 
-          jmp DoneRightPortMovement:
+          jmp DoneRightPortMovement
 
           CheckGuardStatus2:
 
@@ -3152,10 +3141,10 @@ AfterGetPlayerAnimationStateRightPort:
 
           ;; Guarding - block movement
 
-          ;; If temp6, then jmp DoneRightPortMovement:
+          ;; If temp6, then jmp DoneRightPortMovement
           lda temp6
           beq CheckFlyingCharacter2
-          jmp DoneRightPortMovement:
+          jmp DoneRightPortMovement
 CheckFlyingCharacter2:
 
 
@@ -3200,7 +3189,7 @@ HandleStandardHorizontalMovement2:
 
           ;; Standard horizontal movement (no collision check)
 
-          jsr HandleStandardHorizontalMovement:
+          jsr HandleStandardHorizontalMovement
 
 DoneRightPortMovement:
 
@@ -3222,7 +3211,7 @@ IHRP_RadishGoblinMovement .proc
 AfterRadishGoblinHandleInputRightPort:
 
 
-          jmp DoneRightPortMovement:
+          jmp DoneRightPortMovement
 
 .pend
 
@@ -3254,7 +3243,7 @@ IHRP_DoneFlyingLeftRight
 
           ;; Process down/guard input (inlined for performance)
 
-          jsr HandleUpInputAndEnhancedButton:
+          jsr HandleUpInputAndEnhancedButton
 
           ;; Frooty cannot guard
 
@@ -3403,7 +3392,7 @@ AfterRoboTitoDownInput2:
           lda temp2
           cmp # 1
           bne UseStandardGuard2Label
-          jmp HandleGuardInputDoneRightPort:
+          jmp HandleGuardInputDoneRightPort
 UseStandardGuard2Label:
 
 
@@ -3482,13 +3471,13 @@ HandleGuardInputDoneRightPort:
 
           ;; Block attack input during attack windup/execute/recovery
 
-          ;; If temp2 >= 13, then jmp InputDoneRightPortAttack:
+          ;; If temp2 >= 13, then jmp InputDoneRightPortAttack
           lda temp2
           cmp 13
 
           bcc CheckGuardStatus3
 
-          jmp InputDoneRightPortAttack:
+          jmp InputDoneRightPortAttack
 
           CheckGuardStatus3:
 
@@ -3501,24 +3490,24 @@ HandleGuardInputDoneRightPort:
 
           ;; Guarding - block attack input
 
-          ;; If temp2, then jmp InputDoneRightPortAttack:
+          ;; If temp2, then jmp InputDoneRightPortAttack
           lda temp2
           beq CheckJoy1Fire
-          jmp InputDoneRightPortAttack:
+          jmp InputDoneRightPortAttack
 CheckJoy1Fire:
 
           lda joy1fire
           bne DispatchAttack2
-          jmp InputDoneRightPortAttack:
+          jmp InputDoneRightPortAttack
 DispatchAttack2:
-          ;; If (playerState[temp1] & PlayerStateBitFacing), then jmp InputDoneRightPortAttack:
+          ;; If (playerState[temp1] & PlayerStateBitFacing), then jmp InputDoneRightPortAttack
           lda temp1
           asl
           tax
           lda playerState,x
           and # PlayerStateBitFacing
           beq InputDoneRightPortAttackSkip
-          jmp InputDoneRightPortAttack:
+          jmp InputDoneRightPortAttack
 InputDoneRightPortAttackSkip:
 
           ;; Set temp4 = playerCharacter[temp1]         
@@ -3605,17 +3594,17 @@ Joy2bPauseDone:
           lda temp1
           cmp # 0
           bne CheckPauseButtonPrev
-          jmp DonePauseToggle:
+          jmp DonePauseToggle
 CheckPauseButtonPrev:
 
 
           ;; Toggle pause flag in systemFlags
 
-          ;; If systemFlags & SystemFlagPauseButtonPrev, then jmp DonePauseToggle:
+          ;; If systemFlags & SystemFlagPauseButtonPrev, then jmp DonePauseToggle
           lda systemFlags
           and # SystemFlagPauseButtonPrev
           beq TogglePauseFlag
-          jmp DonePauseToggle:
+          jmp DonePauseToggle
 TogglePauseFlag:
 
           ;; If systemFlags & SystemFlagGameStatePaused, then set systemFlags = systemFlags & ClearSystemFlagGameStatePaused, else set systemFlags = systemFlags | SystemFlagGameStatePaused

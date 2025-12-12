@@ -9,12 +9,13 @@
 
           * = $ffe0 - BS_length
 BS_return:
-          ;; STACK PICTURE: [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: caller ret hi] [SP+0: caller ret lo]
-          ;; Expected: 4 bytes on stack (2-byte encoded return address + 2-byte caller return address)
+          ;; STACK PICTURE: [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Expected: 2 bytes on stack (encoded return address with bank info in low nybble of high byte)
+          ;; After BS_jsr's RTS consumed the target address, only the encoded return address remains
           ;; Use temp7 (zero-page) instead of stack to avoid overflow
           tsx
-          ;; Encoded return address (offset 2 = no A/X save)
-          lda 2, x
+          ;; Encoded return address (offset 1 = high byte contains bank info in low nybble)
+          lda 1, x
           tay
           lsr a
           lsr a
@@ -25,8 +26,16 @@ BS_return:
           tya
           ;; Restore to $Fx format
           ora #$f0
-          sta 2, x
+          sta 1, x
+          ;; DO NOT pop the encoded return address - leave it on stack for RTS
+          ;; RTS will pop the decoded return address and jump to it
           ldx temp7
+          ;; STACK PICTURE: [SP+1: decoded ret hi] [SP+0: decoded ret lo] (encoded return decoded in place)
+          ;; Bankswitch: $ffe0 + X where X is 0-based bank number
+          nop $ffe0, x
+          ;; STACK PICTURE: [SP+1: decoded ret hi] [SP+0: decoded ret lo] (bankswitch doesn't affect stack)
+          ;; RTS will pop 2 bytes (decoded return address) and jump to caller
+          rts
 
 BS_jsr:
           ;; STACK PICTURE: [SP+3: target hi] [SP+2: target lo] [SP+1: return hi] [SP+0: return lo]

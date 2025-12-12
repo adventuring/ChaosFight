@@ -283,21 +283,21 @@ CycleLeftCharacterSelect .proc
           ;; Returns: Far (return otherbank)
 
           lda temp1
-          cmp RandomCharacter
+          cmp # RandomCharacter
           bne CheckNoCharacterLeft
           jmp LeftFromRandomCharacterSelect
 CheckNoCharacterLeft:
 
 
           lda temp1
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckCPUCharacterLeft
           jmp LeftFromNoOrCPUCharacterSelect
 CheckCPUCharacterLeft:
 
 
           lda temp1
-          cmp CPUCharacter
+          cmp # CPUCharacter
           bne CheckZeroLeft
           jmp LeftFromNoOrCPUCharacterSelect
 CheckZeroLeft:
@@ -326,7 +326,7 @@ SetNoCharacterLeft:
 
           jsr GetPlayer2TailCharacterSelect
 
-          lda NoCharacter
+          lda # NoCharacter
           sta temp1
 
           jmp CycleDoneCharacterSelect
@@ -335,7 +335,7 @@ SetNoCharacterLeft:
 
 LeftFromNoOrCPUCharacterSelect .proc
 
-          lda MaxCharacter
+          lda # MaxCharacter
           sta temp1
 
           jmp CycleDoneCharacterSelect
@@ -344,7 +344,7 @@ LeftFromNoOrCPUCharacterSelect .proc
 
 LeftFromZeroCharacterSelect .proc
 
-          lda RandomCharacter
+          lda # RandomCharacter
           sta temp1
 
           jmp CycleDoneCharacterSelect
@@ -357,28 +357,28 @@ CycleRightCharacterSelect .proc
           ;; Returns: Far (return otherbank)
 
           lda temp1
-          cmp RandomCharacter
+          cmp # RandomCharacter
           bne CheckNoCharacterRight
           jmp RightFromRandomCharacterSelect
 CheckNoCharacterRight:
 
 
           lda temp1
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckCPUCharacterRight
           jmp RightFromNoOrCPUCharacterSelect
 CheckCPUCharacterRight:
 
 
           lda temp1
-          cmp CPUCharacter
+          cmp # CPUCharacter
           bne CheckMaxCharacterRight
           jmp RightFromNoOrCPUCharacterSelect
 CheckMaxCharacterRight:
 
 
           lda temp1
-          cmp MaxCharacter
+          cmp # MaxCharacter
           bne IncrementCharacter
           jmp RightFromMaxCharacterSelect
 IncrementCharacter:
@@ -401,7 +401,7 @@ RightFromRandomCharacterSelect .proc
 
 RightFromNoOrCPUCharacterSelect .proc
 
-          lda RandomCharacter
+          lda # RandomCharacter
           sta temp1
 
           jmp CycleDoneCharacterSelect
@@ -418,7 +418,7 @@ SetNoCharacterRight:
 
           jsr GetPlayer2TailCharacterSelect
 
-          lda NoCharacter
+          lda # NoCharacter
           sta temp1
 
           jmp CycleDoneCharacterSelect
@@ -431,11 +431,11 @@ GetPlayer2TailCharacterSelect .proc
           ;; Determine whether Player 2 wraps to CPU or NO
           ;; Returns: Far (return otherbank)
 
-          lda CPUCharacter
+          lda # CPUCharacter
           sta temp6
 
           ;; if playerCharacter[2] = NoCharacter then jmp P2TailCheckP4CharacterSelect
-          lda NoCharacter
+          lda # NoCharacter
           sta temp6
 
           jmp P2TailDoneCharacterSelect
@@ -445,7 +445,7 @@ GetPlayer2TailCharacterSelect .proc
 P2TailCheckP4CharacterSelect .proc
 
           ;; if playerCharacter[3] = NoCharacter then jmp P2TailDoneCharacterSelect
-          lda NoCharacter
+          lda # NoCharacter
           sta temp6
 
 P2TailDoneCharacterSelect:
@@ -986,14 +986,14 @@ CheckCPUCharacterQuadtari:
           sta temp4
 
           lda temp4
-          cmp CPUCharacter
+          cmp # CPUCharacter
           bne CheckNoCharacterQuadtari
           jmp CharacterSelectQuadtariReadyIncrement
 CheckNoCharacterQuadtari:
 
 
           lda temp4
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CharacterSelectQuadtariReadyNext
           jmp CharacterSelectQuadtariReadyIncrement
 CharacterSelectQuadtariReadyNext:

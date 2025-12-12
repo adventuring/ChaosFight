@@ -108,7 +108,7 @@ StartMusic .proc
 
           ;; If temp1 < Bank0MinSongID, then jmp LoadSongFromBank15
           lda temp1
-          cmp Bank0MinSongID
+          cmp # Bank0MinSongID
           bcs LoadSongFromBank1
           jmp LoadSongFromBank15
 LoadSongFromBank1:
@@ -450,7 +450,7 @@ CheckDecayPhase:
           ;; If temp3 <= NoteDecayFrames,, then ApplyDecayEnvelope
           lda temp3
           sec
-          sbc NoteDecayFrames
+          sbc # NoteDecayFrames
           bcc ApplyDecayEnvelope
           beq ApplyDecayEnvelope
           jmp ApplySustainEnvelope
@@ -498,15 +498,15 @@ ApplyAttackEnvelope .proc
           lda temp5
           sta temp6
 
-          ;; Set temp6 = temp6 - NoteAttackFrames          lda temp6          sec          sbc NoteAttackFrames          sta temp6
+          ;; Set temp6 = temp6 - NoteAttackFrames          lda temp6          sec          sbc # NoteAttackFrames          sta temp6
           lda temp6
           sec
-          sbc NoteAttackFrames
+          sbc # NoteAttackFrames
           sta temp6
 
           lda temp6
           sec
-          sbc NoteAttackFrames
+          sbc # NoteAttackFrames
           sta temp6
 
 
@@ -568,15 +568,15 @@ ApplyDecayEnvelope .proc
           lda temp5
           sta temp6
 
-          ;; Set temp6 = temp6 - NoteDecayFrames          lda temp6          sec          sbc NoteDecayFrames          sta temp6
+          ;; Set temp6 = temp6 - NoteDecayFrames          lda temp6          sec          sbc # NoteDecayFrames          sta temp6
           lda temp6
           sec
-          sbc NoteDecayFrames
+          sbc # NoteDecayFrames
           sta temp6
 
           lda temp6
           sec
-          sbc NoteDecayFrames
+          sbc # NoteDecayFrames
           sta temp6
 
 
@@ -666,30 +666,35 @@ UpdateMusicVoice0 .proc
 
           ;; Frame counter reached 0 - load next note from appropriate bank
 
-          ;; Check which bank this song is in (Bank 15: songs 0-Bank14MaxSongID, Bank
+          ;; Check which bank this song is in (Bank 14: songs 0-Bank14MaxSongID, Bank
 
-          ;; 1: others)
+          ;; 0: others)
 
-          ;; Song in Bank 15
+          ;; If currentSongID_R <= Bank14MaxSongID, then song is in Bank 14
+          lda currentSongID_R
+          cmp # Bank14MaxSongID
+          bcc LoadMusicNote0FromBank14
+          beq LoadMusicNote0FromBank14
 
-          jsr LoadMusicNote0Bank15
-
-          ;; Song in Bank 1
-
-          ;; Cross-bank call to LoadMusicNote0 in bank 1
-          lda # >(AfterLoadMusicNote0Bank1-1)
+          ;; Song in Bank 0 - Cross-bank call to LoadMusicNote0 in bank 0
+          lda # >(AfterLoadMusicNote0Bank0-1)
           pha
-          lda # <(AfterLoadMusicNote0Bank1-1)
+          lda # <(AfterLoadMusicNote0Bank0-1)
           pha
           lda # >(LoadMusicNote0-1)
           pha
           lda # <(LoadMusicNote0-1)
           pha
-                    ldx # 0
+          ldx # 0
           jmp BS_jsr
-AfterLoadMusicNote0Bank1:
+AfterLoadMusicNote0Bank0:
+          jmp UpdateMusicVoice0Done
 
+LoadMusicNote0FromBank14:
+          ;; Song in Bank 14
+          jsr LoadMusicNote0Bank15
 
+UpdateMusicVoice0Done:
           rts
 
 .pend
@@ -783,30 +788,35 @@ UpdateMusicVoice1 .proc
 
           ;; Frame counter reached 0 - load next note from appropriate bank
 
-          ;; Check which bank this song is in (Bank 15: songs 0-Bank14MaxSongID, Bank
+          ;; Check which bank this song is in (Bank 14: songs 0-Bank14MaxSongID, Bank
 
-          ;; 1: others)
+          ;; 0: others)
 
-          ;; Song in Bank 15
+          ;; If currentSongID_R <= Bank14MaxSongID, then song is in Bank 14
+          lda currentSongID_R
+          cmp # Bank14MaxSongID
+          bcc LoadMusicNote1FromBank14
+          beq LoadMusicNote1FromBank14
 
-          jsr LoadMusicNote1Bank15
-
-          ;; Song in Bank 1
-
-          ;; Cross-bank call to LoadMusicNote1 in bank 1
-          lda # >(AfterLoadMusicNote1Bank1-1)
+          ;; Song in Bank 0 - Cross-bank call to LoadMusicNote1 in bank 0
+          lda # >(AfterLoadMusicNote1Bank0-1)
           pha
-          lda # <(AfterLoadMusicNote1Bank1-1)
+          lda # <(AfterLoadMusicNote1Bank0-1)
           pha
           lda # >(LoadMusicNote1-1)
           pha
           lda # <(LoadMusicNote1-1)
           pha
-                    ldx # 0
+          ldx # 0
           jmp BS_jsr
-AfterLoadMusicNote1Bank1:
+AfterLoadMusicNote1Bank0:
+          jmp UpdateMusicVoice1Done
 
+LoadMusicNote1FromBank14:
+          ;; Song in Bank 14
+          jsr LoadMusicNote1Bank15
 
+UpdateMusicVoice1Done:
           rts
 
 .pend

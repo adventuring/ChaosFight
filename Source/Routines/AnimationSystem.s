@@ -78,7 +78,7 @@ UCA_CheckCharacter:
           ;; Check if time to advance animation frame (every AnimationFrameDelay frames)
           ;; If temp4 < AnimationFrameDelay, then jmp DoneAdvanceInlined
           lda temp4
-          cmp AnimationFrameDelay
+          cmp # AnimationFrameDelay
           bcs UPA_CheckAnimationSpeed
           jmp DoneAdvanceInlinedLabel
 UPA_CheckAnimationSpeed:
@@ -145,7 +145,7 @@ AdvanceFrame .proc
           ;; (temp4)
           ;; If temp4 >= FramesPerSequence, then jmp HandleFrame7Transition
           lda temp4
-          cmp FramesPerSequence
+          cmp # FramesPerSequence
 
           bcc UPA_CheckAnimationLength
 
@@ -184,7 +184,7 @@ HandleFrame7Transition:
           lda currentAnimationSeq_R,x
           sta temp1
           ;; If ActionAttackRecovery < temp1, then jmp AnimationTransitionLoopAnimation
-          lda ActionAttackRecovery
+          lda # ActionAttackRecovery
           cmp temp1
           bcs AnimationTransitionLoopAnimation
           jmp AnimationTransitionLoopAnimation
@@ -203,14 +203,14 @@ AnimationTransitionLoopAnimation:
           jmp UpdateSprite
 
 AnimationTransitionToIdle
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
           jmp AnimationSetPlayerAnimationInlined
 
 AnimationTransitionToFallen:
-          lda ActionFallen
+          lda # ActionFallen
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -238,7 +238,7 @@ AnimationTransitionHandleJump:
           jmp TransitionToJumping
 
           TransitionToJumping:
-          lda ActionJumping
+          lda # ActionJumping
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -246,7 +246,7 @@ AnimationTransitionHandleJump:
 
 AnimationTransitionHandleJump_TransitionToFalling
           ;; Falling (positive Y velocity), transition to falling
-          lda ActionFalling
+          lda # ActionFalling
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -261,15 +261,15 @@ AnimationTransitionHandleFallBack:
           tax
           lda playerX,x
           sta temp5
-          ;; Set temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc ScreenInsetX          sta temp5
+          ;; Set temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc # ScreenInsetX          sta temp5
           lda temp5
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp5
 
           lda temp5
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp5
 
           ;; Set temp5 = temp5 / 4          lda temp5          lsr          lsr          sta temp5
@@ -340,7 +340,7 @@ AnimationTransitionHandleFallBackContinue:
           jmp AnimationTransitionHandleFallBack_HitWall
 TransitionToFallen:
           ;; No wall collision, transition to fallen
-          lda ActionFallen
+          lda # ActionFallen
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -348,7 +348,7 @@ TransitionToFallen:
 
 AnimationTransitionHandleFallBack_HitWall
           ;; Hit wall, transition to idle
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -364,7 +364,7 @@ AnimationHandleAttackTransition:
           sta temp1
           ;; If temp1 < ActionAttackWindup, then jmp UpdateSprite
           lda temp1
-          cmp ActionAttackWindup
+          cmp # ActionAttackWindup
           bcs HandleWindupEnd
           jmp UpdateSprite
 HandleWindupEnd:
@@ -517,7 +517,7 @@ AnimationHarpyExecute:
           lda # 0
           sta playerVelocityYL,x
           ;; Transition to Idle
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -525,7 +525,7 @@ AnimationHarpyExecute:
 
 AnimationHandleRecoveryEnd
           ;; All characters: Recovery → Idle
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -537,7 +537,7 @@ AnimationSetPlayerAnimationInlined:
           ;; Set animation action for a player (inlined from AnimationSystem.bas)
           ;; If temp2 >= AnimationSequenceCount, then jmp UpdateSprite
           lda temp2
-          cmp AnimationSequenceCount
+          cmp # AnimationSequenceCount
 
           bcc SetAnimationSequence
 
@@ -652,19 +652,19 @@ UpdateSprite .proc
           lda playerCharacter,x
           sta currentCharacter
           lda currentCharacter
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckCPUCharacterSprite
           jmp AnimationNextPlayer
 CheckCPUCharacterSprite:
 
           lda currentCharacter
-          cmp CPUCharacter
+          cmp # CPUCharacter
           bne CheckRandomCharacterSprite
           jmp AnimationNextPlayer
 CheckRandomCharacterSprite:
 
           lda currentCharacter
-          cmp RandomCharacter
+          cmp # RandomCharacter
           bne ValidateCharacterRangeSprite
           jmp AnimationNextPlayer
 ValidateCharacterRangeSprite:
@@ -674,7 +674,7 @@ ValidateCharacterRangeSprite:
           ;; If currentCharacter > MaxCharacter, then jmp AnimationNextPlayer
           lda currentCharacter
           sec
-          sbc MaxCharacter
+          sbc # MaxCharacter
           bcc DetermineSpriteBank
           beq DetermineSpriteBank
           jmp AnimationNextPlayer
@@ -682,7 +682,7 @@ DetermineSpriteBank:
 
           lda currentCharacter
           sec
-          sbc MaxCharacter
+          sbc # MaxCharacter
           bcc CheckBank2
           beq CheckBank2
           jmp AnimationNextPlayer
@@ -980,7 +980,7 @@ InitializeAnimationSystem:
 
           ;; (ActionIdle)
           ;; Initialize all players to idle animation
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; TODO: #1254 for currentPlayer = 0 to 3
           ;; Cross-bank call to SetPlayerAnimation in bank 12
@@ -1009,7 +1009,7 @@ HandleAnimationTransition .proc
           lda currentAnimationSeq_R,x
           sta temp1
           ;; If ActionAttackRecovery < temp1, then jmp TransitionLoopAnimation
-          lda ActionAttackRecovery
+          lda # ActionAttackRecovery
           cmp temp1
           bcs TransitionLoopAnimation
           jmp TransitionLoopAnimation
@@ -1030,14 +1030,14 @@ TransitionLoopAnimation
           jmp BS_return
 
 TransitionToIdle:
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; tail call
           jmp SetPlayerAnimation
 
 TransitionToFallen
           ;; Returns: Far (return otherbank)
-          lda ActionFallen
+          lda # ActionFallen
           sta temp2
           ;; tail call
           ;; Returns: Far (return otherbank)
@@ -1069,14 +1069,14 @@ TransitionHandleJump:
           jmp TransitionToJumpingHandle
 
           TransitionToJumpingHandle:
-          lda ActionJumping
+          lda # ActionJumping
           sta temp2
           ;; tail call
           jmp SetPlayerAnimation
 TransitionHandleJump_TransitionToFalling
           ;; Falling (positive Y velocity), transition to falling
           ;; Returns: Far (return otherbank)
-          lda ActionFalling
+          lda # ActionFalling
           sta temp2
           ;; tail call
           jmp SetPlayerAnimation
@@ -1092,15 +1092,15 @@ TransitionHandleFallBack:
           tax
           lda playerX,x
           sta temp5
-          ;; Set temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc ScreenInsetX          sta temp5
+          ;; Set temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc # ScreenInsetX          sta temp5
           lda temp5
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp5
 
           lda temp5
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp5
 
           ;; Set temp5 = temp5 / 4          lda temp5          lsr          lsr          sta temp5
@@ -1169,14 +1169,14 @@ AfterPlayfieldReadTransition:
 TransitionToFallenHandle:
           
           ;; No wall collision, transition to fallen
-          lda ActionFallen
+          lda # ActionFallen
           sta temp2
           ;; tail call
           jmp SetPlayerAnimation
 TransitionHandleFallBack_HitWall
           ;; Hit wall, transition to idle
           ;; Returns: Far (return otherbank)
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; tail call
           jmp SetPlayerAnimation
@@ -1196,7 +1196,7 @@ HandleAttackTransition:
           ;; Set temp1 = temp1 - ActionAttackWindup
           lda temp1
           sec
-          sbc ActionAttackWindup
+          sbc # ActionAttackWindup
           sta temp1
 
           jmp HandleWindupEndAttack
@@ -1324,7 +1324,7 @@ HarpyExecute .proc
           ;; playerState[temp1] bit 2 (jumping) already set
           ;; from attack, keep it
           ;; Transition to Idle
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; tail call
           jmp SetPlayerAnimation
@@ -1336,7 +1336,7 @@ HarpyExecute .proc
 HandleRecoveryEnd:
           ;; All characters: Recovery → Idle
           ;; Returns: Far (return otherbank)
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; tail call
           jmp SetPlayerAnimation

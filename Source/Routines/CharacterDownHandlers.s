@@ -775,7 +775,7 @@ RoboTitoVoluntaryDrop .proc
           tax
           lda playerState,x
           and MaskPlayerStateFlags
-          ora ActionFallingShifted
+          ora # ActionFallingShifted
           sta playerState,x
 
           ;; Set falling animation

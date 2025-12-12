@@ -654,7 +654,7 @@ ArenaSelectDrawCharacters .proc
           asl
           tax
           lda playerCharacter,x
-          cmp CPUCharacter
+          cmp # CPUCharacter
           bne CheckRandomCharacterP0
           jmp ArenaSelectDoneDrawP0
 CheckRandomCharacterP0:
@@ -664,7 +664,7 @@ CheckRandomCharacterP0:
           asl
           tax
           lda playerCharacter,x
-          cmp RandomCharacter
+          cmp # RandomCharacter
           bne DrawPlayer0Character
           jmp ArenaSelectDoneDrawP0
 DrawPlayer0Character:
@@ -719,7 +719,7 @@ ArenaSelectDoneDrawP0
           asl
           tax
           lda playerCharacter,x
-          cmp CPUCharacter
+          cmp # CPUCharacter
           bne CheckRandomCharacterP1
           jmp ArenaSelectDoneDrawP1
 CheckRandomCharacterP1:
@@ -729,7 +729,7 @@ CheckRandomCharacterP1:
           asl
           tax
           lda playerCharacter,x
-          cmp RandomCharacter
+          cmp # RandomCharacter
           bne DrawPlayer1Character
           jmp ArenaSelectDoneDrawP1
 DrawPlayer1Character:
@@ -800,7 +800,7 @@ AfterSelectHideLowerPlayerPreviews:
           asl
           tax
           lda playerCharacter,x
-          cmp CPUCharacter
+          cmp # CPUCharacter
           bne CheckRandomCharacterP2
           jmp ArenaSelectDoneDrawP2
 CheckRandomCharacterP2:
@@ -810,7 +810,7 @@ CheckRandomCharacterP2:
           asl
           tax
           lda playerCharacter,x
-          cmp RandomCharacter
+          cmp # RandomCharacter
           bne DrawPlayer2Character
           jmp ArenaSelectDoneDrawP2
 DrawPlayer2Character:
@@ -876,7 +876,7 @@ CheckPlayer3Character:
           asl
           tax
           lda playerCharacter,x
-          cmp CPUCharacter
+          cmp # CPUCharacter
           bne CheckRandomCharacterP3
           jmp ArenaSelectDoneDrawP23
 CheckRandomCharacterP3:
@@ -886,7 +886,7 @@ CheckRandomCharacterP3:
           asl
           tax
           lda playerCharacter,x
-          cmp RandomCharacter
+          cmp # RandomCharacter
           bne DrawPlayer3Character
           jmp ArenaSelectDoneDrawP23
 DrawPlayer3Character:

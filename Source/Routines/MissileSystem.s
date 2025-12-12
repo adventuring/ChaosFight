@@ -979,15 +979,15 @@ MissileSysPF .proc
           lda temp2
           sta temp6
           ;; Divide by 4 using bit shift (2 right shifts)
-          ;; Set temp6 = temp6 - ScreenInsetX          lda temp6          sec          sbc ScreenInsetX          sta temp6
+          ;; Set temp6 = temp6 - ScreenInsetX          lda temp6          sec          sbc # ScreenInsetX          sta temp6
           lda temp6
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp6
 
           lda temp6
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp6
 
           ;; temp6 = playfield column (0-31)

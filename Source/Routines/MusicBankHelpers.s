@@ -145,15 +145,15 @@ CalculateIndexVoice1:
 
           ;; Calculate compact index: songID - Bank0MinSongID (song Bank0MinSongID → 0)
 
-          ;; Set temp2 = temp1 - Bank0MinSongID          lda temp1          sec          sbc Bank0MinSongID          sta temp2
+          ;; Set temp2 = temp1 - Bank0MinSongID          lda temp1          sec          sbc # Bank0MinSongID          sta temp2
           lda temp1
           sec
-          sbc Bank0MinSongID
+          sbc # Bank0MinSongID
           sta temp2
 
           lda temp1
           sec
-          sbc Bank0MinSongID
+          sbc # Bank0MinSongID
           sta temp2
 
 

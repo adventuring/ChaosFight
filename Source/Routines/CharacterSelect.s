@@ -547,7 +547,7 @@ DoneCharacter1FacingSel
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne SetPlayer2Facing
           jmp DoneCharacter2FacingSel
 SetPlayer2Facing:
@@ -568,7 +568,7 @@ DoneCharacter2FacingSel
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne SetPlayer3Facing
           jmp DoneCharacter3FacingSel
 SetPlayer3Facing:
@@ -589,7 +589,7 @@ DoneCharacter3FacingSel
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne SetPlayer4Facing
           jmp DoneCharacter4FacingSel
 SetPlayer4Facing:

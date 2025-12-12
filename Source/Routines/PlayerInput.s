@@ -805,15 +805,15 @@ HandleUpInputEnhancedButtonRoboTitoAscend:
           lda playerX,x
           sta temp4
 
-          ;; Set temp4 = temp4 - ScreenInsetX          lda temp4          sec          sbc ScreenInsetX          sta temp4
+          ;; Set temp4 = temp4 - ScreenInsetX          lda temp4          sec          sbc # ScreenInsetX          sta temp4
           lda temp4
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp4
 
           lda temp4
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp4
 
 
@@ -1802,15 +1802,15 @@ HandleFlyingCharacterMovementCheckLeftCollision:
           lda playerX,x
           sta temp2
 
-          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc # ScreenInsetX          sta temp2
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
 
@@ -2211,15 +2211,15 @@ HandleFlyingCharacterMovementDoRightMovement .proc
           lda playerX,x
           sta temp2
 
-          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc # ScreenInsetX          sta temp2
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
 

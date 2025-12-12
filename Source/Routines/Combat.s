@@ -896,7 +896,7 @@ CheckAttackWindow:
                     if temp1 > ActionAttackRecoveryShifted then NextAttacker
           lda temp1
           sec
-          sbc ActionAttackRecoveryShifted
+          sbc # ActionAttackRecoveryShifted
           bcc ProcessAttackerAttacksLabel
           beq ProcessAttackerAttacksLabel
           jmp NextAttacker

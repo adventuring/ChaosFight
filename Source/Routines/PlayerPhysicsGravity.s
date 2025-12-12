@@ -109,7 +109,7 @@ CheckPlayer2Character:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckPlayer3Character
           jmp GravityNextPlayer
 CheckPlayer3Character:
@@ -121,7 +121,7 @@ CheckPlayer3Character:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckPlayer3Active
           jmp GravityNextPlayer
 CheckPlayer3Active:
@@ -135,7 +135,7 @@ CheckPlayer3Active:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne GravityCheckCharacter
           jmp GravityNextPlayer
 GravityCheckCharacter:
@@ -147,7 +147,7 @@ GravityCheckCharacter:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckCharacterType
           jmp GravityNextPlayer
 CheckCharacterType:
@@ -247,15 +247,15 @@ CheckTerminalVelocity:
           ;; Output: temp2 = playfield column (saved to temp6)
                     ;; Set temp2 = playerX[temp1]
                     lda temp1          asl          tax          lda playerX,x          sta temp2
-          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc # ScreenInsetX          sta temp2
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
           ;; Set temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2

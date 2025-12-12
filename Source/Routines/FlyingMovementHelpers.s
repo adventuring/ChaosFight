@@ -258,15 +258,15 @@ HandleFlyingCharacterMovementAttemptMoveRight .proc
           tax
           lda playerX,x
           sta temp2
-          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc ScreenInsetX          sta temp2
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc # ScreenInsetX          sta temp2
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
           lda temp2
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp2
 
             lsr temp2

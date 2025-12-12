@@ -263,7 +263,7 @@ AdvanceAnimationFrame:
           ;; Check if time to advance animation frame (every AnimationFrameDelay frames)
           ;; if temp4 < AnimationFrameDelay then jmp VblankDoneAdvanceInlined
           lda temp4
-          cmp AnimationFrameDelay
+          cmp # AnimationFrameDelay
           bcs VblankAdvanceFrame
           jmp VblankDoneAdvanceInlined
 VblankAdvanceFrame:
@@ -299,7 +299,7 @@ VblankAdvanceFrame .proc
           ;; Check if we have completed the current action (8 frames per action)
           ;; if temp4 >= FramesPerSequence then jmp VblankHandleFrame7Transition
           lda temp4
-          cmp FramesPerSequence
+          cmp # FramesPerSequence
 
           bcc VblankUpdateSprite
 
@@ -324,7 +324,7 @@ VblankHandleFrame7Transition
           lda currentAnimationSeq_R,x
           sta temp1
           ;; if ActionAttackRecovery < temp1 then jmp VblankTransitionLoopAnimation
-          lda ActionAttackRecovery
+          lda # ActionAttackRecovery
           cmp temp1
           bcs TransitionToLoopAnimation
           jmp VblankTransitionLoopAnimation
@@ -342,14 +342,14 @@ VblankTransitionLoopAnimation
           jmp VblankUpdateSprite
 
 VblankTransitionToIdle
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
           jmp VblankSetPlayerAnimationInlined
 
 VblankTransitionToFallen
-          lda ActionFallen
+          lda # ActionFallen
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -370,7 +370,7 @@ VblankTransitionHandleJump
 
           TransitionToJumping:
 
-          lda ActionJumping
+          lda # ActionJumping
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -378,7 +378,7 @@ VblankTransitionHandleJump
 
 VblankTransitionHandleJumpTransitionToFalling
           ;; Falling (positive Y velocity), transition to falling
-          lda ActionFalling
+          lda # ActionFalling
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -389,15 +389,15 @@ VblankTransitionHandleFallBack
           ;; Convert player X position to playfield column (0-31)
                     ;; Set temp5 = playerX[currentPlayer]
                     lda currentPlayer          asl          tax          lda playerX,x          sta temp5
-          ;; Set temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc ScreenInsetX          sta temp5
+          ;; Set temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc # ScreenInsetX          sta temp5
           lda temp5
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp5
 
           lda temp5
           sec
-          sbc ScreenInsetX
+          sbc # ScreenInsetX
           sta temp5
 
           ;; Set temp5 = temp5 / 4          lda temp5          lsr          lsr          sta temp5
@@ -466,7 +466,7 @@ TransitionToFallen:
           
 
           ;; No wall collision, transition to fallen
-          lda ActionFallen
+          lda # ActionFallen
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -474,7 +474,7 @@ TransitionToFallen:
 
 VblankTransitionHandleFallBackHitWall
           ;; Hit wall, transition to idle
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -486,7 +486,7 @@ VblankSetPlayerAnimationInlined
           ;; Set animation action for a player (inlined from AnimationSystem.bas)
           ;; if temp2 >= AnimationSequenceCount then jmp VblankUpdateSprite
           lda temp2
-          cmp AnimationSequenceCount
+          cmp # AnimationSequenceCount
 
           bcc SetAnimationSequence
 
@@ -537,7 +537,7 @@ VblankHandleAttackTransition
           sta temp1
           ;; if temp1 < ActionAttackWindup then jmp VblankUpdateSprite
           lda temp1
-          cmp ActionAttackWindup
+          cmp # ActionAttackWindup
           bcs HandleWindupEnd
           jmp VblankUpdateSprite
 HandleWindupEnd:
@@ -696,7 +696,7 @@ VblankHarpyExecute .proc
           lda # 0
           sta playerVelocityYL,x
           ;; Transition to Idle
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -704,7 +704,7 @@ VblankHarpyExecute .proc
 
 VblankHandleRecoveryEnd
           ;; All characters: Recovery → Idle
-          lda ActionIdle
+          lda # ActionIdle
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
@@ -722,19 +722,19 @@ VblankUpdateSprite .proc
           lda playerCharacter,x
           sta currentCharacter
           lda currentCharacter
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckCPUCharacter
           jmp VblankAnimationNextPlayer
 CheckCPUCharacter:
 
           lda currentCharacter
-          cmp CPUCharacter
+          cmp # CPUCharacter
           bne CheckRandomCharacter
           jmp VblankAnimationNextPlayer
 CheckRandomCharacter:
 
           lda currentCharacter
-          cmp RandomCharacter
+          cmp # RandomCharacter
           bne ValidateCharacterRange
           jmp VblankAnimationNextPlayer
 ValidateCharacterRange:
@@ -744,7 +744,7 @@ ValidateCharacterRange:
           ;; if currentCharacter > MaxCharacter then jmp VblankAnimationNextPlayer
           lda currentCharacter
           sec
-          sbc MaxCharacter
+          sbc # MaxCharacter
           bcc LoadSpriteFrame
           beq LoadSpriteFrame
           jmp VblankAnimationNextPlayer
@@ -752,7 +752,7 @@ LoadSpriteFrame:
 
           lda currentCharacter
           sec
-          sbc MaxCharacter
+          sbc # MaxCharacter
           bcc DetermineSpriteBank
           beq DetermineSpriteBank
           jmp VblankAnimationNextPlayer

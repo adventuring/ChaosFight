@@ -84,7 +84,7 @@ CheckPlayer3Character:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckPlayer3NoCharacter
           jmp MomentumRecoveryNext
 CheckPlayer3NoCharacter:
@@ -98,7 +98,7 @@ CheckPlayer3NoCharacter:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne MomentumRecoveryProcess
           jmp MomentumRecoveryNext
 MomentumRecoveryProcess:
@@ -110,7 +110,7 @@ MomentumRecoveryProcess:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne ProcessRecoveryFrames
           jmp MomentumRecoveryNext
 ProcessRecoveryFrames:

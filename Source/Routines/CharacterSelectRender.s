@@ -204,7 +204,7 @@ RenderPlayerPreview .proc
           sta currentCharacter
           ;; if currentCharacter >= RandomCharacter then jmp RenderPlayerPreviewDefault
           lda currentCharacter
-          cmp RandomCharacter
+          cmp # RandomCharacter
 
           bcc GetAnimationFrame
 
@@ -235,12 +235,12 @@ AfterGetPlayerLockedPreview:
           sta temp5
           lda temp4
           sta temp2
-          lda ActionIdle
+          lda # ActionIdle
           sta temp3
           lda temp5
           cmp PlayerHandicapped
           bne RenderPlayerPreviewInvoke
-          lda ActionFallen
+          lda # ActionFallen
           sta temp3
 RenderPlayerPreviewInvoke:
 
@@ -248,7 +248,7 @@ RenderPlayerPreviewInvoke:
 RenderPlayerPreviewDefault
           lda # 0
           sta temp2
-          lda ActionIdle
+          lda # ActionIdle
           sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
           lda # >(AfterLoadCharacterSpritePreview-1)

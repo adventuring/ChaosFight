@@ -83,7 +83,7 @@ CheckPlayer3Character:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckPlayer3Active
           jmp NextOuterCollisionCheck
 CheckPlayer3Active:
@@ -98,7 +98,7 @@ CheckPlayer3Active:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne InnerLoopCollisionCheck
           jmp NextOuterCollisionCheck
 InnerLoopCollisionCheck:
@@ -110,7 +110,7 @@ InnerLoopCollisionCheck:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckPairCollision
           jmp NextOuterCollisionCheck
 CheckPairCollision:
@@ -167,7 +167,7 @@ CheckP2Character:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckP2Character3
           jmp NextInnerCollisionCheck
 CheckP2Character3:
@@ -179,7 +179,7 @@ CheckP2Character3:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckP2CharacterActive
           jmp NextInnerCollisionCheck
 CheckP2CharacterActive:
@@ -194,7 +194,7 @@ CheckP2CharacterActive:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckDistanceCollisionP2
           jmp NextInnerCollisionCheck
 CheckDistanceCollisionP2:
@@ -206,7 +206,7 @@ CheckDistanceCollisionP2:
           asl
           tax
           lda playerCharacter,x
-          cmp NoCharacter
+          cmp # NoCharacter
           bne CheckDistanceActive
           jmp NextInnerCollisionCheck
 CheckDistanceActive:

@@ -394,10 +394,10 @@ ApplyGravityAcceleration:
                     if temp2 > TerminalVelocity then let temp2 = TerminalVelocity
           lda temp2
           sec
-          sbc TerminalVelocity
+          sbc # TerminalVelocity
           bcc FallDamageApplyGravityDone
           beq FallDamageApplyGravityDone
-          lda TerminalVelocity
+          lda # TerminalVelocity
           sta temp2
 FallDamageApplyGravityDone:
           jmp BS_return

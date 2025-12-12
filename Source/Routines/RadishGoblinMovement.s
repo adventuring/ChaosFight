@@ -529,15 +529,20 @@ CheckTerminalVelocityDone:
 
           bcc CheckPlayerIndex
 
-          jmp CheckStickRadishGoblin
+          jmp CheckStickRadishGoblinLabel
 
-          CheckPlayerIndex:
+CheckPlayerIndex:
 
           lda temp1
           cmp # 0
           bne CheckStickRadishGoblinProc
           jmp CheckEnhanced0RadishGoblin
-CheckStickRadishGoblinProc .proc:
+
+          jmp ApplyBounceRadishGoblin
+
+.pend
+
+CheckStickRadishGoblinProc .proc
           ;; If (enhancedButtonStates_R & 2), set temp3 = 1
           lda enhancedButtonStates_R
           and # 2
@@ -583,14 +588,13 @@ ApplyBounceRadishGoblin:
 .pend
 
 StickJoy0RadishGoblin .proc
-
-          if joy0up then let temp3 = 1
+          ;; If joy0up, set temp3 = 1
           lda joy0up
           beq ApplyBounceRadishGoblinLabel
           lda # 1
           sta temp3
 ApplyBounceRadishGoblinLabel:
-          jmp ApplyBounceRadishGoblinLabel
+          jmp ApplyBounceRadishGoblin
 
 .pend
 
@@ -730,11 +734,17 @@ RadishGoblinHandleStickDownRelease .proc
           lda 0
           sta playerVelocityYL,x
 
-                    let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
+          ;; Set playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           lda temp1
           asl
           tax
-          lda 0
+          lda playerState,x
+          ora # PlayerStateBitJumping
+          sta playerState,x
+          lda temp1
+          asl
+          tax
+          lda # 0
           sta radishGoblinBounceState_W,x
 
           jmp BS_return

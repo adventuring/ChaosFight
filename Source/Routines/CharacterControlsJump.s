@@ -213,10 +213,10 @@ BernieCheckBottomWrapFreeFlight1:
 
 .pend
 
-CCJ_FreeFlightUp .proc
+FreeFlightUp .proc
           ;; Shared free flight upward movement (DragonOfStorms, Frooty)
           ;; Calling Convention: Near
-          ;; Input: temp1 = player index, temp2 = playfield column (inlined from CCJ_ConvertPlayerXToPlayfieldColumn)
+          ;; Input: temp1 = player index, temp2 = playfield column (inlined from ConvertPlayerXToPlayfieldColumn)
           ;; Output: Upward velocity applied if clear above, jumping flag set
           ;; Mutates: temp3-temp6, playerVelocityY[], playerVelocityYL[], playerState[]
           ;; Set temp3 = playerY[temp1]         
@@ -372,12 +372,12 @@ HarpyFlapRecordDone:
 FrootyJump .proc
 .pend
 
-CCJ_FreeFlightCharacterJump .proc
+FreeFlightCharacterJump .proc
           ;; Shared free-flight jump for DragonOfStorms (2) and Frooty (8)
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = player index
           ;; Output: Upward velocity if clear above
-          ;; Inlined CCJ_ConvertPlayerXToPlayfieldColumn (FIXME #1250)
+          ;; Inlined ConvertPlayerXToPlayfieldColumn (FIXME #1250)
           ;; Convert player X to playfield column: (playerX[temp1] - ScreenInsetX) / 4
           lda temp1
           asl
@@ -393,7 +393,7 @@ CCJ_FreeFlightCharacterJump .proc
           lsr
           sta temp2
 
-          jsr CCJ_FreeFlightUp
+          jsr FreeFlightUp
 
           jmp BS_return
 

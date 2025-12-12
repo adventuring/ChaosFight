@@ -73,12 +73,12 @@ DCJ_BernieJump .proc
 .pend
 
 DCJ_DragonJump .proc
-          ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call CCJ_FreeFlightCharacterJump
-          ;; DragonOfStormsJump is empty and should call CCJ_FreeFlightCharacterJump
-          ;; Cross-bank call to CCJ_FreeFlightCharacterJump in bank 11
-          lda # >(CCJ_FreeFlightCharacterJump-1)
+          ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call FreeFlightCharacterJump
+          ;; DragonOfStormsJump is empty and should call FreeFlightCharacterJump
+          ;; Cross-bank call to FreeFlightCharacterJump in bank 11
+          lda # >(FreeFlightCharacterJump-1)
           pha
-          lda # <(CCJ_FreeFlightCharacterJump-1)
+          lda # <(FreeFlightCharacterJump-1)
           pha
           ldx # 10
           jmp BS_jsr

@@ -227,9 +227,15 @@ InputDonePlayer0Input
           bne CheckPlayer1State
           jmp InputDonePlayer1Input
 CheckPlayer1State:
-
-
-                    if (playerState[1] & 8) then jmp InputDonePlayer1Input
+          ;; If (playerState[1] & 8), then jmp InputDonePlayer1Input
+          lda # 1
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq InputDonePlayer1InputSkip
+          jmp InputDonePlayer1Input
+InputDonePlayer1InputSkip:
           jmp InputHandlePlayer1
 
 
@@ -363,10 +369,15 @@ CheckPlayer3Character:
           bne CheckPlayer3State
           jmp InputDonePlayer3Input
 CheckPlayer3State:
-
-
-                    if (playerState[2] & 8) then jmp InputDonePlayer3Input
-
+          ;; If (playerState[2] & 8), then jmp InputDonePlayer3Input
+          lda # 2
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq InputDonePlayer3InputSkip
+          jmp InputDonePlayer3Input
+InputDonePlayer3InputSkip:
           ;; Set temp1 = 2
           lda # 2
           sta temp1 : cross-bank call to InputHandleLeftPortPlayerFunction
@@ -485,7 +496,7 @@ HandleGuardInput .proc
           lda temp1
           cmp # 0
           bne CheckPlayer2Joy
-          jmp HGI_CheckJoy0
+          jmp HandleGuardInputCheckJoy0
 CheckPlayer2Joy:
 
 
@@ -494,34 +505,34 @@ CheckPlayer2Joy:
           lda temp1
           cmp # 2
           bne CheckJoy1
-          jmp HGI_CheckJoy0
+          jmp HandleGuardInputCheckJoy0
 CheckJoy1:
 
 
           lda joy1down
-          bne HGI_HandleDownPressedJoy1
-          jmp HGI_CheckGuardRelease
-HGI_HandleDownPressedJoy1:
+          bne HandleGuardInputHandleDownPressedJoy1
+          jmp HandleGuardInputCheckGuardRelease
+HandleGuardInputHandleDownPressedJoy1:
 
 
-          jmp HGI_HandleDownPressed
+          jmp HandleGuardInputHandleDownPressed
 
 .pend
 
-HGI_CheckJoy0 .proc
+HandleGuardInputCheckJoy0 .proc
 
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
           lda joy0down
-          bne HGI_HandleDownPressedJoy0
-          jmp HGI_CheckGuardRelease
-HGI_HandleDownPressedJoy0:
+          bne HandleGuardInputHandleDownPressedJoy0
+          jmp HandleGuardInputCheckGuardRelease
+HandleGuardInputHandleDownPressedJoy0:
 
 
 .pend
 
-HGI_HandleDownPressed .proc
+HandleGuardInputHandleDownPressed .proc
 
           ;; DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           ;; Returns: Far (return otherbank)
@@ -589,7 +600,7 @@ AfterRoboTitoDownInput:
 
 .pend
 
-HGI_CheckGuardRelease .proc
+HandleGuardInputCheckGuardRelease .proc
 
           ;; DOWN released - check for early guard release
           ;; Returns: Far (return otherbank)
@@ -606,8 +617,13 @@ HGI_CheckGuardRelease .proc
           jmp BS_return
 
           ;; Stop guard early and start cooldown
-
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # (255 - PlayerStateBitGuarding)
+          sta playerState,x
 
           ;; Start cooldown timer
           lda temp1
@@ -649,7 +665,7 @@ HandleUpInputAndEnhancedButton
           lda temp1
           cmp # 0
           bne CheckPlayer2JoyPort
-          jmp HUIEB_UseJoy0
+          jmp HandleUpInputEnhancedButtonUseJoy0
 CheckPlayer2JoyPort:
 
 
@@ -658,34 +674,34 @@ CheckPlayer2JoyPort:
           lda temp1
           cmp # 2
           bne CheckJoy1Up
-          jmp HUIEB_UseJoy0
+          jmp HandleUpInputEnhancedButtonUseJoy0
 CheckJoy1Up:
 
 
           lda joy1up
-          bne HUIEB_HandleUpJoy1
-          jmp HUIEB_CheckEnhanced
-HUIEB_HandleUpJoy1:
+          bne HandleUpInputEnhancedButtonHandleUpJoy1
+          jmp HandleUpInputEnhancedButtonCheckEnhanced
+HandleUpInputEnhancedButtonHandleUpJoy1:
 
 
-          jmp HUIEB_HandleUp
+          jmp HandleUpInputEnhancedButtonHandleUp
 
 .pend
 
-HUIEB_UseJoy0 .proc
+HandleUpInputEnhancedButtonUseJoy0 .proc
 
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
           lda joy0up
-          bne HUIEB_HandleUpJoy0
-          jmp HUIEB_CheckEnhanced
-HUIEB_HandleUpJoy0:
+          bne HandleUpInputEnhancedButtonHandleUpJoy0
+          jmp HandleUpInputEnhancedButtonCheckEnhanced
+HandleUpInputEnhancedButtonHandleUpJoy0:
 
 
 .pend
 
-HUIEB_HandleUp .proc
+HandleUpInputEnhancedButtonHandleUp .proc
 
           ;; Check Shamone form switching first (Shamone <-> MethHound)
           ;; Returns: Far (return otherbank)
@@ -702,37 +718,37 @@ HUIEB_HandleUp .proc
 
           ;; Check Bernie fall-through
 
-          ;; If playerCharacter[temp1] = CharacterRoboTito then jmp HUIEB_RoboTitoAscend
+          ;; If playerCharacter[temp1] = CharacterRoboTito then jmp HandleUpInputEnhancedButtonRoboTitoAscend
 
           ;; Check Harpy flap
 
-          ;; if playerCharacter[temp1] = CharacterBernie, then jmp HUIEB_BernieFallThrough
+          ;; if playerCharacter[temp1] = CharacterBernie, then jmp HandleUpInputEnhancedButtonBernieFallThrough
           lda temp1
           asl
           tax
           lda playerCharacter,x
           cmp CharacterBernie
           bne CheckHarpyFlap
-          jmp HUIEB_BernieFallThrough
+          jmp HandleUpInputEnhancedButtonBernieFallThrough
 CheckHarpyFlap:
 
           ;; For all other characters, UP is jump
 
-          ;; If playerCharacter[temp1] = CharacterHarpy, then jmp HUIEB_HarpyFlap
+          ;; If playerCharacter[temp1] = CharacterHarpy, then jmp HandleUpInputEnhancedButtonHarpyFlap
           lda temp1
           asl
           tax
           lda playerCharacter,x
           cmp CharacterHarpy
-          bne HUIEB_StandardJump
-          jmp HUIEB_HarpyFlap
-HUIEB_StandardJump:
+          bne HandleUpInputEnhancedButtonStandardJump
+          jmp HandleUpInputEnhancedButtonHarpyFlap
+HandleUpInputEnhancedButtonStandardJump:
           lda # 1
           sta temp3
 
-          jmp HUIEB_CheckEnhanced
+          jmp HandleUpInputEnhancedButtonCheckEnhanced
 
-HUIEB_RoboTitoAscend
+HandleUpInputEnhancedButtonRoboTitoAscend
 
           ;; Ascend toward ceiling
           ;; Returns: Far (return otherbank)
@@ -818,7 +834,7 @@ ColumnInRange:
           lda temp3
           cmp # 0
           bne CheckCeilingPixel
-          jmp HUIEB_RoboTitoLatch
+          jmp HandleUpInputEnhancedButtonRoboTitoLatch
 CheckCeilingPixel:
 
 
@@ -858,40 +874,40 @@ AfterPlayfieldReadRestoreAnimation:
 
           ;; Clear latch if DOWN pressed (check appropriate joy port)
 
-          ;; If temp1, then jmp HUIEB_RoboTitoLatch
+          ;; If temp1, then jmp HandleUpInputEnhancedButtonRoboTitoLatch
           lda temp1
-          beq HUIEB_RoboTitoLatch
-          jmp HUIEB_RoboTitoLatch
-HUIEB_RoboTitoLatch:
+          beq HandleUpInputEnhancedButtonRoboTitoLatch
+          jmp HandleUpInputEnhancedButtonRoboTitoLatch
+HandleUpInputEnhancedButtonRoboTitoLatch:
 
           lda temp1
           cmp # 0
           bne CheckPlayer2JoyPortRoboTito
-          jmp HUIEB_RoboTitoCheckJoy0
+          jmp HandleUpInputEnhancedButtonRoboTitoCheckJoy0
 CheckPlayer2JoyPortRoboTito:
 
 
           lda temp1
           cmp # 2
           bne CheckJoy1Down
-          jmp HUIEB_RoboTitoCheckJoy0
+          jmp HandleUpInputEnhancedButtonRoboTitoCheckJoy0
 CheckJoy1Down:
 
 
-                    if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy1down          beq HUIEB_RoboTitoDoneJoy1
-HUIEB_RoboTitoDoneJoy1:
-          jmp HUIEB_RoboTitoDoneJoy1
-          jmp HUIEB_RoboTitoDoneJoy1
+                    if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy1down          beq HandleUpInputEnhancedButtonRoboTitoDoneJoy1
+HandleUpInputEnhancedButtonRoboTitoDoneJoy1:
+          jmp HandleUpInputEnhancedButtonRoboTitoDoneJoy1
+          jmp HandleUpInputEnhancedButtonRoboTitoDoneJoy1
 
 .pend
 
-HUIEB_RoboTitoCheckJoy0 .proc
+HandleUpInputEnhancedButtonRoboTitoCheckJoy0 .proc
 
-                    if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq HUIEB_RoboTitoDoneJoy0
-HUIEB_RoboTitoDoneJoy0:
-          jmp HUIEB_RoboTitoDoneJoy0
+                    if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)          lda joy0down          beq HandleUpInputEnhancedButtonRoboTitoDoneJoy0
+HandleUpInputEnhancedButtonRoboTitoDoneJoy0:
+          jmp HandleUpInputEnhancedButtonRoboTitoDoneJoy0
 
-HUIEB_RoboTitoDoneJoy0Label:
+HandleUpInputEnhancedButtonRoboTitoDoneJoy0Label:
           lda # 0
           sta temp3
 
@@ -899,7 +915,7 @@ HUIEB_RoboTitoDoneJoy0Label:
 
 .pend
 
-HUIEB_RoboTitoLatch .proc
+HandleUpInputEnhancedButtonRoboTitoLatch .proc
 
           ;; Restore cached animation sta
 
@@ -908,7 +924,13 @@ HUIEB_RoboTitoLatch .proc
           lda temp5
           sta temp2
 
-                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
+          ;; Set characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          ora # 1
+          sta characterStateFlags_W,x
           lda # 0
           sta temp3
 
@@ -916,7 +938,7 @@ HUIEB_RoboTitoLatch .proc
 
 .pend
 
-HUIEB_BernieFallThrough .proc
+HandleUpInputEnhancedButtonBernieFallThrough .proc
 
           ;; Bernie UP input handled in BernieJump routine (fall through 1-row floors)
           ;; Returns: Far (return otherbank)
@@ -942,7 +964,7 @@ AfterBernieJumpInput:
 
 .pend
 
-HUIEB_HarpyFlap .proc
+HandleUpInputEnhancedButtonHarpyFlap .proc
 
           ;; Harpy UP input handled in HarpyJump routine (flap to fly)
           ;; Returns: Far (return otherbank)
@@ -968,7 +990,7 @@ AfterHarpyJumpInput:
 
 .pend
 
-HUIEB_CheckEnhanced .proc
+HandleUpInputEnhancedButtonCheckEnhanced .proc
 
           ;; Process jump input from enhanced buttons (Genesis/Joy2b+ Button C/II)
           ;; Returns: Far (return otherbank)
@@ -979,44 +1001,44 @@ HUIEB_CheckEnhanced .proc
 
           ;; Note: For Harpy, UP is flap, so jump via enhanced buttons only
 
-          ;; If playerCharacter[temp1] = CharacterShamone then jmp HUIEB_EnhancedCheck
+          ;; If playerCharacter[temp1] = CharacterShamone then jmp HandleUpInputEnhancedButtonEnhancedCheck
 
-          ;; if playerCharacter[temp1] = CharacterMethHound, then jmp HUIEB_EnhancedCheck
+          ;; if playerCharacter[temp1] = CharacterMethHound, then jmp HandleUpInputEnhancedButtonEnhancedCheck
           lda temp1
           asl
           tax
           lda playerCharacter,x
           cmp CharacterMethHound
           bne CheckBernie
-          jmp HUIEB_EnhancedCheck
+          jmp HandleUpInputEnhancedButtonEnhancedCheck
 CheckBernie:
 
-          ;; If playerCharacter[temp1] = CharacterBernie, then jmp HUIEB_EnhancedCheck
+          ;; If playerCharacter[temp1] = CharacterBernie, then jmp HandleUpInputEnhancedButtonEnhancedCheck
           lda temp1
           asl
           tax
           lda playerCharacter,x
           cmp CharacterBernie
           bne CheckHarpyEnhanced
-          jmp HUIEB_EnhancedCheck
+          jmp HandleUpInputEnhancedButtonEnhancedCheck
 CheckHarpyEnhanced:
 
           ;; Bernie and Harpy also use enhanced buttons for jump
 
-          ;; If playerCharacter[temp1] = CharacterHarpy, then jmp HUIEB_EnhancedCheck
+          ;; If playerCharacter[temp1] = CharacterHarpy, then jmp HandleUpInputEnhancedButtonEnhancedCheck
           lda temp1
           asl
           tax
           lda playerCharacter,x
           cmp CharacterHarpy
-          bne HUIEB_StandardEnhancedCheck
-          jmp HUIEB_EnhancedCheck
-HUIEB_StandardEnhancedCheck:
-          jmp HUIEB_StandardEnhancedCheck
+          bne HandleUpInputEnhancedButtonStandardEnhancedCheck
+          jmp HandleUpInputEnhancedButtonEnhancedCheck
+HandleUpInputEnhancedButtonStandardEnhancedCheck:
+          jmp HandleUpInputEnhancedButtonStandardEnhancedCheck
 
 .pend
 
-HUIEB_EnhancedCheck .proc
+HandleUpInputEnhancedButtonEnhancedCheck .proc
 
           ;; Check Genesis/Joy2b+ Button C/II for alternative UP for any characters
           ;; Returns: Far (return otherbank)
@@ -1043,11 +1065,11 @@ AfterCheckEnhancedJumpButtonEnhanced:
 
           jmp BS_return
 
-          jmp HUIEB_ExecuteJump
+          jmp HandleUpInputEnhancedButtonExecuteJump
 
 .pend
 
-HUIEB_StandardEnhancedCheck .proc
+HandleUpInputEnhancedButtonStandardEnhancedCheck .proc
 
           ;; Check Genesis/Joy2b+ Button C/II
           ;; Returns: Far (return otherbank)
@@ -1070,23 +1092,23 @@ AfterCheckEnhancedJumpButtonCheck:
 
 .pend
 
-HUIEB_ExecuteJump .proc
+HandleUpInputEnhancedButtonExecuteJump .proc
 
           ;; Execute jump if pressed and not already jumping
           ;; Returns: Far (return otherbank)
 
           ;; Allow Zoe Ryen a single mid-air double-jump
 
-          ;; If playerCharacter[temp1] = CharacterZoeRyen, then jmp HUIEB_ZoeJumpCheck
+          ;; If playerCharacter[temp1] = CharacterZoeRyen, then jmp HandleUpInputEnhancedButtonZoeJumpCheck
 
           ;; Already jumping, cannot jump again
           jmp BS_return
 
-          jmp HUIEB_JumpProceed
+          jmp HandleUpInputEnhancedButtonJumpProceed
 
 .pend
 
-HUIEB_ZoeJumpCheck .proc
+HandleUpInputEnhancedButtonZoeJumpCheck .proc
 
           lda # 0
           sta temp6
@@ -1099,7 +1121,7 @@ HUIEB_ZoeJumpCheck .proc
 
 .pend
 
-HUIEB_JumpProceed .proc
+HandleUpInputEnhancedButtonJumpProceed .proc
 
           ;; Use cached animation state - block jump during attack animations (states 13-15)
           ;; Returns: Far (return otherbank)
@@ -1118,15 +1140,21 @@ HUIEB_JumpProceed .proc
 
           jsr DispatchCharacterJump
 
-HUIEB_JumpDoneLabel:
+HandleUpInputEnhancedButtonJumpDoneLabel:
 
           ;; Set Zoe Ryen double-jump flag if applicable
           ;; Returns: Far (return otherbank)
           lda temp6
           cmp # 1
-          bne HUIEB_JumpDoneCheck
-          let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
-HUIEB_JumpDoneCheck:
+          bne HandleUpInputEnhancedButtonJumpDoneCheck
+          ;; Set characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          ora # 8
+          sta characterStateFlags_W,x
+HandleUpInputEnhancedButtonJumpDoneCheck:
 
           jmp BS_return
 
@@ -1337,8 +1365,15 @@ HSHM_AfterLeftSet .proc
 
           ;; Inline ShouldPreserveFacing logic
           ;; Returns: Far (return otherbank)
-
-                    if (playerState[temp1] & 8) then jmp HSHM_SPF_Yes1
+          ;; If (playerState[temp1] & 8), then jmp HSHM_SPF_Yes1
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq HSHM_SPF_No1
+          jmp HSHM_SPF_Yes1
+HSHM_SPF_No1:
 
           ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
           lda # >(AfterGetPlayerAnimationStateAfterLeftSet-1)
@@ -1542,11 +1577,18 @@ HSHM_RightMomentum .proc
           lda CharacterMovementSpeed,x
           sta temp6
 
-                    let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
+          ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
           lda temp1
           asl
           tax
-          lda 0
+          lda playerVelocityX,x
+          clc
+          adc temp6
+          sta playerVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda # 0
           sta playerVelocityXL,x
 
 .pend
@@ -1719,11 +1761,13 @@ HFCM_CheckLeftCollision
           lda # 31
           sta temp2
 ColumnInRangeLeft:
-
-
-                    if temp2 & $80 then let temp2 = 0
-
-
+          ;; If temp2 & $80, set temp2 = 0
+          lda temp2
+          and # $80
+          beq CheckTemp2RangeLeft
+          lda # 0
+          sta temp2
+CheckTemp2RangeLeft:
 
           ;; Check column to the left
 
@@ -1802,11 +1846,12 @@ CheckColumnLeft:
                     ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadMoveLeftCurrentRow:
-
-
-                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRowMoveLeft
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq CheckBottomRowMoveLeft
+          lda # 1
+          sta temp5
 CheckBottomRowMoveLeft:
-          jmp CheckBottomRowMoveLeft
           lda currentPlayer
           sta temp1
 
@@ -1869,11 +1914,12 @@ HFCM_MoveLeftOK:
                     ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadMoveLeftBottomRow:
-
-
-                    if temp1 then let temp5 = 1          lda temp1          beq CheckBottomRowMoveLeftBottom
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq CheckBottomRowMoveLeftBottom
+          lda # 1
+          sta temp5
 CheckBottomRowMoveLeftBottom:
-          jmp CheckBottomRowMoveLeftBottom
           lda currentPlayer
           sta temp1
 
@@ -1905,13 +1951,16 @@ CheckDragonOfStormsLeft:
           bne HFCM_LeftStandard
           jmp HFCM_LeftDirectApply
 HFCM_LeftStandard:
-
-
-                    let playerVelocityX[temp1] = $ff
+          ;; Set playerVelocityX[temp1] = $ff
           lda temp1
           asl
           tax
-          lda 0
+          lda # $ff
+          sta playerVelocityX,x
+          lda temp1
+          asl
+          tax
+          lda # 0
           sta playerVelocityXL,x
 
           jmp HFCM_LeftApplyDone
@@ -1932,17 +1981,35 @@ HFCM_LeftMomentumApply .proc
 .pend
 
 HFCM_LeftDirectApply .proc
+          ;; Set playerX[temp1] = playerX[temp1] - CharacterMovementSpeed[temp5]
+          lda temp5
+          asl
+          tax
+          lda CharacterMovementSpeed,x
+          sta temp6
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sec
+          sbc temp6
+          sta playerX,x
 
-                    let playerX[temp1] = playerX[temp1] - CharacterMovementSpeed[temp5]
-
-HFCM_LeftApplyDone
+HFCM_LeftApplyDone:
 
           ;; Preserve facing during hurt/recovery states (knockback, hitstun)
           ;; Returns: Far (return otherbank)
 
           ;; Inline ShouldPreserveFacing logic
-
-                    if (playerState[temp1] & 8) then jmp SPF_InlineYes1
+          ;; If (playerState[temp1] & 8), then jmp SPF_InlineYes1
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq SPF_InlineNo1
+          jmp SPF_InlineYes1
+SPF_InlineNo1:
           lda temp1
           asl
           tax
@@ -2256,18 +2323,16 @@ CheckDragonOfStormsRight:
           bne HFCM_RightStandard
           jmp HFCM_RightDirectApply
 HFCM_RightStandard:
-
-
           lda temp1
           asl
           tax
-          lda 1
+          lda # 1
           sta playerVelocityX,x
 
           lda temp1
           asl
           tax
-          lda 0
+          lda # 0
           sta playerVelocityXL,x
 
           jmp HFCM_RightApplyDone
@@ -2297,8 +2362,15 @@ HFCM_RightApplyDone
           ;; Returns: Far (return otherbank)
 
           ;; Inline ShouldPreserveFacing logic
-
-                    if (playerState[temp1] & 8) then jmp SPF_InlineYes2
+          ;; If (playerState[temp1] & 8), then jmp SPF_InlineYes2
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # 8
+          beq SPF_InlineNo2
+          jmp SPF_InlineYes2
+SPF_InlineNo2:
           lda temp1
           asl
           tax
@@ -2591,11 +2663,11 @@ IHLP_DoneFlyingLeftRight
 
           ;; Players 0,2 use joy0; Players 1,3 use joy1
 
-          ;; If playerCharacter[temp1] = CharacterFrooty, then jmp HGI_Done1
+          ;; If playerCharacter[temp1] = CharacterFrooty, then jmp HandleGuardInputDoneLeftPort
           lda temp1
           cmp # 0
           bne CheckPlayer2JoyPort1
-          jmp HGI_CheckJoy0_1
+          jmp HandleGuardInputCheckJoy0LeftPort
 CheckPlayer2JoyPort1:
 
 
@@ -2604,34 +2676,34 @@ CheckPlayer2JoyPort1:
           lda temp1
           cmp # 2
           bne CheckJoy1Down1
-          jmp HGI_CheckJoy0_1
+          jmp HandleGuardInputCheckJoy0LeftPort
 CheckJoy1Down1:
 
 
           lda joy1down
-          bne HGI_HandleDownPressed1
-          jmp HGI_CheckGuardRelease1
-HGI_HandleDownPressed1:
+          bne HandleGuardInputHandleDownPressedLeftPort
+          jmp HandleGuardInputCheckGuardReleaseLeftPort
+HandleGuardInputHandleDownPressedLeftPort:
 
 
-          jmp HGI_HandleDownPressed1
+          jmp HandleGuardInputHandleDownPressedLeftPort
 
 .pend
 
-HGI_CheckJoy0_1 .proc
+HandleGuardInputCheckJoy0LeftPort .proc
 
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
 
           lda joy0down
-          bne HGI_HandleDownPressed1Joy0
-          jmp HGI_CheckGuardRelease1
-HGI_HandleDownPressed1Joy0:
+          bne HandleGuardInputHandleDownPressedLeftPortJoy0
+          jmp HandleGuardInputCheckGuardReleaseLeftPort
+HandleGuardInputHandleDownPressedLeftPortJoy0:
 
 
 .pend
 
-HGI_HandleDownPressed1 .proc
+HandleGuardInputHandleDownPressedLeftPort .proc
 
           ;; DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           ;; Returns: Far (return otherbank)
@@ -2643,13 +2715,13 @@ HGI_HandleDownPressed1 .proc
           lda playerCharacter,x
           sta temp4
 
-          ;; If temp4 >= 32, then jmp HGI_Done1
+          ;; If temp4 >= 32, then jmp HandleGuardInputDoneLeftPort
           lda temp4
           cmp 32
 
           bcc CheckDragonOfStormsDown1
 
-          jmp HGI_Done1
+          jmp HandleGuardInputDoneLeftPort
 
           CheckDragonOfStormsDown1:
 
@@ -2715,7 +2787,7 @@ AfterRadishGoblinHandleStickDownLeftPort:
 
 .pend
 
-DCD_HandleRoboTitoDown1 .proc
+DispatchCharacterDownHandleRoboTitoDownLeftPort .proc
 
           ;; Cross-bank call to RoboTitoDown in bank 13
           lda # >(AfterRoboTitoDownInput1-1)
@@ -2742,7 +2814,7 @@ UseStandardGuard1Label:
 
 .pend
 
-HGI_CheckGuardRelease1 .proc
+HandleGuardInputCheckGuardReleaseLeftPort .proc
 
           ;; DOWN released - check for early guard release
           ;; Returns: Far (return otherbank)
@@ -2758,13 +2830,18 @@ HGI_CheckGuardRelease1 .proc
 
           lda temp2
           bne StopGuardEarly1
-          jmp HGI_CheckRadishGoblinRelease1
+          jmp HandleGuardInputCheckRadishGoblinReleaseLeftPort
 StopGuardEarly1:
 
 
           ;; Stop guard early and start cooldown
-
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # (255 - PlayerStateBitGuarding)
+          sta playerState,x
 
           ;; Start cooldown timer
           lda temp1
@@ -2794,7 +2871,7 @@ HGI_CheckRadishGoblinRelease1 .proc
 AfterRadishGoblinHandleStickDownReleaseLeftPort:
 
 
-HGI_Done1
+HandleGuardInputDoneLeftPort
 
 
 
@@ -3089,14 +3166,14 @@ HGI_CheckJoy0_2 .proc
           ;; Returns: Far (return otherbank)
 
           lda joy0down
-          bne HGI_HandleDownPressed2Joy0
-          jmp HGI_CheckGuardRelease2
-HGI_HandleDownPressed2Joy0:
+          bne HandleGuardInputHandleDownPressedRightPortJoy0
+          jmp HandleGuardInputCheckGuardReleaseRightPort
+HandleGuardInputHandleDownPressedRightPortJoy0:
 
 
 .pend
 
-HGI_HandleDownPressed2 .proc
+HandleGuardInputHandleDownPressedRightPort .proc
 
           ;; DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           ;; Returns: Far (return otherbank)
@@ -3199,7 +3276,7 @@ AfterRoboTitoDownInput2:
           lda temp2
           cmp # 1
           bne UseStandardGuard2Label
-          jmp HGI_Done2
+          jmp HandleGuardInputDoneRightPort
 UseStandardGuard2Label:
 
 
@@ -3207,7 +3284,7 @@ UseStandardGuard2Label:
 
 .pend
 
-HGI_CheckGuardRelease2 .proc
+HandleGuardInputCheckGuardReleaseRightPort .proc
 
           ;; DOWN released - check for early guard release
           ;; Returns: Far (return otherbank)
@@ -3223,13 +3300,18 @@ HGI_CheckGuardRelease2 .proc
 
           lda temp2
           bne StopGuardEarly2
-          jmp HGI_CheckRadishGoblinRelease2
+          jmp HandleGuardInputCheckRadishGoblinReleaseRightPort
 StopGuardEarly2:
 
 
           ;; Stop guard early and start cooldown
-
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # (255 - PlayerStateBitGuarding)
+          sta playerState,x
 
           ;; Start cooldown timer
           lda temp1
@@ -3240,7 +3322,7 @@ StopGuardEarly2:
 
 .pend
 
-HGI_CheckRadishGoblinRelease2 .proc
+HandleGuardInputCheckRadishGoblinReleaseRightPort .proc
 
           ;; Check if Radish Goblin and apply short bounce on stick down release
           ;; Returns: Far (return otherbank)
@@ -3259,7 +3341,7 @@ HGI_CheckRadishGoblinRelease2 .proc
 AfterRadishGoblinHandleStickDownReleaseRightPort:
 
 
-HGI_Done2
+HandleGuardInputDoneRightPort
 
 
 
@@ -3302,9 +3384,15 @@ CheckJoy1Fire:
           bne DispatchAttack2
           jmp InputDoneRightPortAttack
 DispatchAttack2:
-
-
-                    if (playerState[temp1] & PlayerStateBitFacing) then jmp InputDoneRightPortAttack
+          ;; If (playerState[temp1] & PlayerStateBitFacing), then jmp InputDoneRightPortAttack
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # PlayerStateBitFacing
+          beq InputDoneRightPortAttackSkip
+          jmp InputDoneRightPortAttack
+InputDoneRightPortAttackSkip:
 
           ;; Set temp4 = playerCharacter[temp1]         
           lda temp1
@@ -3351,17 +3439,19 @@ HandlePauseInput .proc
           lda # 0
           sta temp1
 
-                    if switchselect then let temp1 = 1          lda switchselect          beq CheckJoy2bPlus
+          ;; If switchselect, set temp1 = 1
+          lda switchselect
+          beq CheckJoy2bPlus
+          lda # 1
+          sta temp1
 CheckJoy2bPlus:
-          jmp CheckJoy2bPlus
 
 
 
           ;; Check Joy2b+ Button III (INPT1 for Player 1, INPT3 for
 
           ;; Player 2)
-
-                    if LeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
+          ;; If LeftPortJoy2bPlus and !INPT1{7}, set temp1 = 1
           lda LeftPortJoy2bPlus
           beq CheckRightPortJoy2bPlus
           bit INPT1
@@ -3369,8 +3459,7 @@ CheckJoy2bPlus:
           lda # 1
           sta temp1
 CheckRightPortJoy2bPlus:
-
-                    if RightPortJoy2bPlus then if !INPT3{7} then let temp1 = 1
+          ;; If RightPortJoy2bPlus and !INPT3{7}, set temp1 = 1
           lda RightPortJoy2bPlus
           beq Joy2bPauseDone
           bit INPT3
@@ -3378,8 +3467,6 @@ CheckRightPortJoy2bPlus:
           lda # 1
           sta temp1
 Joy2bPauseDone:
-
-Joy2bPauseDone
 
           ;; Player 2 Button III
 

@@ -132,9 +132,9 @@ CheckRowBelow:
           sta temp2
 
           ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(CDH_PlayfieldReadReturn-1)
+          lda # >(PlayfieldReadReturn-1)
           pha
-          lda # <(CDH_PlayfieldReadReturn-1)
+          lda # <(PlayfieldReadReturn-1)
           pha
           lda # >(PlayfieldRead-1)
           pha
@@ -142,7 +142,7 @@ CheckRowBelow:
           pha
                     ldx # 15
           jmp BS_jsr
-CDH_PlayfieldReadReturn:
+PlayfieldReadReturn:
 
 
           ;; if temp1 then let temp5 = 1

@@ -30,8 +30,7 @@ Then continues into warm start:
   their importance.
 - TIA registers (`player0x`, `COLUP0`, `pf0`-`pf2`, etc.) keep their
   canonical-case spellings—do not “improve” them.
-- Never redefine built-in variables; they are already reserved and will
-  cause conflicts if double-booked.
+
 
 Stick to these rules and the codebase reads like a chic gossip column
 instead of an anonymized police report.

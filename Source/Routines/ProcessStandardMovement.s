@@ -31,7 +31,7 @@ PSM_UseJoy0Label:
 PSM_CheckJoy1:
           ;; Left movement: set negative velocity (joy1)
           lda SWCHA
-          and # $08
+          bit BitMask + SWCHA_BitP1Left
           beq PSM_ApplyLeftJoy1Label
           jmp PSM_CheckRightJoy1
 PSM_ApplyLeftJoy1Label:
@@ -325,7 +325,7 @@ PSM_UseJoy0 .proc
           ;; Returns: Far (return otherbank)
           ;; Left movement: set negative velocity (joy0)
           lda SWCHA
-          and # $80
+          bit BitMask + SWCHA_BitP0Right
           beq PSM_ApplyLeftJoy0
           jmp PSM_CheckRightJoy0
           jmp PSM_CheckRightJoy0

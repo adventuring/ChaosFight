@@ -69,7 +69,7 @@ CheckZoeRyen:
           cmp # CharacterZoeRyen
           beq ZoeJumpCheckUpAction
 
-          jmp StandardJump
+          jmp PUA_StandardJump
 
 PUA_StandardJump:
 

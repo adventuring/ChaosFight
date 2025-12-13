@@ -68,7 +68,7 @@ HandleFlyingCharacterMovement .proc
 HandleFlyingCharacterMovementCheckLeftJoy1:
 
           lda SWCHA
-          bit # SWCHA_P1Left
+          bit BitMask + SWCHA_BitP1Left
           bne HandleFlyingCharacterMovementCheckRight
 
           jmp HandleFlyingCharacterMovementDoLeft
@@ -76,8 +76,8 @@ HandleFlyingCharacterMovementCheckLeftJoy1:
 .pend
 
 HandleFlyingCharacterMovementCheckLeftJoy0 .proc
-          lda # SWCHA_P0Left
-          bit SWCHA
+          lda SWCHA
+          bit BitMask + SWCHA_BitP0Left
           bne HandleFlyingCharacterMovementCheckRight
 
           jmp HandleFlyingCharacterMovementDoLeft
@@ -109,8 +109,8 @@ HandleFlyingCharacterMovementCheckRight .proc
           jmp HandleFlyingCharacterMovementCheckVertical
 HandleFlyingCharacterMovementCheckRightJoy1:
 
-          lda # SWCHA_P1Right
-          bit SWCHA
+          lda SWCHA
+          bit BitMask + SWCHA_BitP1Right
           bne HandleFlyingCharacterMovementCheckVertical
 
           jmp HandleFlyingCharacterMovementDoRight
@@ -120,8 +120,8 @@ HandleFlyingCharacterMovementCheckRightJoy1:
 HandleFlyingCharacterMovementCheckRightJoy0 .proc
           ;; Returns: Far (return otherbank)
 
-          lda # SWCHA_P0Right
-          bit SWCHA
+          lda SWCHA
+          bit BitMask + SWCHA_BitP0Right
           bne HandleFlyingCharacterMovementCheckVertical
 
           jmp HandleFlyingCharacterMovementDoRight
@@ -178,14 +178,14 @@ HandleFlyingCharacterMovementVerticalJoy1:
 
           ;; if joy1up then jmp HandleFlyingCharacterMovementVerticalUp
           lda SWCHA
-          bit # SWCHA_P1Up
+          bit BitMask + SWCHA_BitP1Up
           bne CheckJoy1Down
           jmp HandleFlyingCharacterMovementVerticalUp
 CheckJoy1Down:
 
           ;; if joy1down then jmp HandleFlyingCharacterMovementVerticalDown
           lda SWCHA
-          bit # SWCHA_P1Down
+          bit BitMask + SWCHA_BitP1Down
           bne HandleFlyingCharacterMovementDoneJoy1
           jmp HandleFlyingCharacterMovementVerticalDown
 HandleFlyingCharacterMovementDoneJoy1:
@@ -197,15 +197,15 @@ HandleFlyingCharacterMovementDoneJoy1:
 HandleFlyingCharacterMovementVerticalJoy0 .proc
           ;; Returns: Near (called from same bank)
           ;; if joy0up then jmp HandleFlyingCharacterMovementVerticalUp
-          lda # SWCHA_P0Up
-          bit SWCHA
+          lda SWCHA
+          bit BitMask + SWCHA_BitP0Up
           bne CheckJoy0Down
           jmp HandleFlyingCharacterMovementVerticalUp
 CheckJoy0Down:
 
           ;; if joy0down then jmp HandleFlyingCharacterMovementVerticalDown
-          lda # SWCHA_P0Down
-          bit SWCHA
+          lda SWCHA
+          bit BitMask + SWCHA_BitP0Down
           bne HandleFlyingCharacterMovementDoneJoy0
           jmp HandleFlyingCharacterMovementVerticalDown
 HandleFlyingCharacterMovementDoneJoy0:

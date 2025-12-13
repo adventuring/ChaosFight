@@ -22,6 +22,150 @@ similar without explicit permission.
 - FrameMap and Frames references must stay within their character's bank
 - Verify no unresolved symbol errors after changes
 
+# Subroutine Calling Conventions (EFSC Bankswitch)
+
+This project uses EFSC 64KB bankswitching with 16 banks (0-15). Subroutines can be called in four ways, and return in two ways.
+
+## Four Ways to Call a Subroutine
+
+### 1. Near Call (Same Bank, Regular Return)
+**Use when:** Calling a routine in the same bank that uses `rts` to return.
+
+**Syntax:**
+```asm
+jsr TargetRoutine
+; Execution continues here after TargetRoutine returns
+```
+
+**Stack usage:** 2 bytes (return address pushed by JSR, popped by RTS)
+
+---
+
+### 2. Same-Bank Far Call (Same Bank, Uses BS_return)
+**Use when:** Calling a routine in the same bank that uses `jmp BS_return` to return (because the routine can also be called from other banks).
+
+**Syntax:**
+```asm
+lda # ((>(AfterCall-1)) & $0f) | $XX  ; Encode current bank in high nybble
+pha                                    ; Push encoded return high byte
+lda # <(AfterCall-1)
+pha                                    ; Push return low byte
+jsr TargetRoutine                      ; Call same-bank routine
+jmp BS_return                          ; Let BS_return handle the return
+AfterCall:
+; Execution continues here
+```
+
+**Where:** `$XX` = `$Y0` where Y is current bank number (e.g., `$c0` for bank 12)
+
+**Stack usage:** 4 bytes total (2 for encoded return + 2 for JSR)
+
+**Note:** This is inefficient but necessary if TargetRoutine is also called from other banks.
+
+---
+
+### 3. Cross-Bank Call (Different Bank, Uses BS_jsr)
+**Use when:** Calling a routine in a different bank.
+
+**Syntax:**
+```asm
+lda # ((>(AfterCall-1)) & $0f) | $XX  ; Encode caller bank in high nybble
+pha                                    ; Push encoded return high byte
+lda # <(AfterCall-1)
+pha                                    ; Push return low byte
+lda # ((>(TargetRoutine-1)) & $0f) | $YY  ; Encode target bank in high nybble
+pha                                    ; Push encoded target high byte
+lda # <(TargetRoutine-1)
+pha                                    ; Push target low byte
+ldx # Z                                ; Load target bank number (0-15)
+jmp BS_jsr                             ; Bankswitch and call
+AfterCall:
+; Execution continues here after TargetRoutine returns
+```
+
+**Where:** 
+- `$XX` = `$W0` where W is caller's bank number
+- `$YY` = `$Z0` where Z is target's bank number
+- Z = target bank number (0-15)
+
+**Stack usage:** 4 bytes (2 for encoded return + 2 for encoded target, consumed by BS_jsr)
+
+**Encoding formula:** `((>(Address-1)) & $0f) | (Bank << 4)`
+
+---
+
+### 4. Optimized Same-Bank Call (Rare, Special Cases)
+**Use when:** Optimization is critical and the routine is only called within its own bank.
+
+**Syntax:**
+```asm
+jsr TargetRoutine
+; Execution continues here
+```
+
+**Note:** Only use if TargetRoutine uses `rts`, not `jmp BS_return`.
+
+---
+
+## Two Ways to Return from a Subroutine
+
+### 1. Regular Return (Near Return)
+**Use when:** Subroutine is ONLY called via near calls (same bank, `jsr` only).
+
+**Syntax:**
+```asm
+TargetRoutine:
+; ... routine code ...
+rts                ; Return to caller (6502 RTS instruction)
+```
+
+**Stack effect:** Pops 2 bytes (return address) from stack
+
+---
+
+### 2. Far Return (Cross-Bank Return)
+**Use when:** Subroutine may be called from other banks OR via same-bank far calls.
+
+**Syntax:**
+```asm
+TargetRoutine:
+; ... routine code ...
+jmp BS_return      ; Far return - handles bank decoding
+```
+
+**What BS_return does:**
+1. Reads encoded return address from stack (offset 2 from SP)
+2. Extracts bank number from high nybble of high byte
+3. Restores high byte to $fX format (OR with $f0)
+4. Bankswitches to caller's bank (`nop $ffe0,x` where x = bank)
+5. Returns via RTS (pops decoded return address)
+
+**Stack effect:** Pops 2 bytes (encoded return address), decoded in-place before RTS
+
+---
+
+## Return Address Encoding Format
+
+**Encoded high byte:** `(AddressHi & $0f) | (Bank << 4)`
+
+**Example:** Address $f6ed in bank 12 ($c):
+- High byte = $f6
+- Low nybble = $6
+- Bank in high nybble = $c0
+- **Encoded high byte = $c6**
+
+**Critical:** Always encode the bank number in the high nybble when pushing return addresses for BS_return. Failure to encode correctly causes stack corruption and crashes.
+
+---
+
+## Common Errors to Avoid
+
+1. **Wrong encoding:** Pushing raw `>(Address-1)` instead of encoded `((>(Address-1)) & $0f) | $BankNumber0`
+2. **Wrong bank:** Encoding caller's bank when target is in different bank
+3. **Missing encoding:** Using `jsr` + `jmp BS_return` without encoding return address
+4. **Wrong return type:** Using `rts` in a routine that's called cross-bank
+5. **Stack imbalance:** Pushing wrong number of bytes before BS_jsr
+
 # Testing
 - Check for linter errors after edits
 - Verify build completes successfully

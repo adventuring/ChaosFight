@@ -892,6 +892,7 @@ ProcessAttackerLoop:
           lda attackerID
           asl
           tax
+          lda playerHealth,x
           beq CheckAttackWindow
           bmi CheckAttackWindow
           jmp NextAttacker
@@ -924,7 +925,8 @@ NextAttacker:
           lda attackerID
           cmp # 4
           bcc ProcessAttackerLoop
-          ;; Returns: Near (return thisbank) - called same-bank
+          ;; Returns: Far (return otherbank) - called cross-bank
+          jmp BS_return
 .pend
 
 ProcessAllAttacksDone2 .proc

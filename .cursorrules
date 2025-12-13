@@ -46,7 +46,7 @@ jsr TargetRoutine
 
 **Syntax:**
 ```asm
-lda # ((>(AfterCall-1)) & $0f) | $XX  ; Encode current bank in high nybble
+lda # ((>(AfterCall-1)) & $0f) | BANK  ; Encode current bank in high nybble
 pha                                    ; Push encoded return high byte
 lda # <(AfterCall-1)
 pha                                    ; Push return low byte
@@ -64,7 +64,7 @@ AfterCall:
 
 ---
 
-### 3. Cross-Bank Call (Different Bank, Uses BS_jsr)
+### 3. Cross-Bank Call (Different Bank, Uses BS_return)
 **Use when:** Calling a routine in a different bank.
 
 **Syntax:**
@@ -91,21 +91,6 @@ AfterCall:
 **Stack usage:** 4 bytes (2 for encoded return + 2 for encoded target, consumed by BS_jsr)
 
 **Encoding formula:** `((>(Address-1)) & $0f) | (Bank << 4)`
-
----
-
-### 4. Optimized Same-Bank Call (Rare, Special Cases)
-**Use when:** Optimization is critical and the routine is only called within its own bank.
-
-**Syntax:**
-```asm
-jsr TargetRoutine
-; Execution continues here
-```
-
-**Note:** Only use if TargetRoutine uses `rts`, not `jmp BS_return`.
-
----
 
 ## Two Ways to Return from a Subroutine
 

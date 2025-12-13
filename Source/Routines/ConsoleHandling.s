@@ -58,28 +58,23 @@ WarmStartClearAll:
           sta TIM1T                        ;;; Set timer to 1 clock interval
           
           ;; Step 5: Perform input controller detection for Quadtari, Joy2b+, or MegaDrive controllers
-          ;; DetectPads is in Bank 12 (same bank as WarmStart), but it uses jmp BS_return
-          ;; so we must use BS_jsr even though it's same-bank (inefficient but correct)
+          ;; DetectPads is in Bank 12 (same bank as WarmStart), uses jmp BS_return
+          ;; Use same-bank far call: push encoded return address, then jsr DetectPads
           ;; STACK PICTURE: [] (empty, WarmStart entry)
-          ;; Use raw addresses (not encoded) for consistency with other DetectPads calls
-          ;; BS_jsr handles the stack correctly for cross-bank calls
-          lda # >(AfterDetectPadsWarmStart-1)
+          ;; Encode bank 12 ($c) in high nybble of return address high byte
+          lda # ((>(AfterDetectPadsWarmStart-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
-          ;; STACK PICTURE: [SP+0: AfterDetectPadsWarmStart hi]
+          ;; STACK PICTURE: [SP+0: AfterDetectPadsWarmStart hi (encoded)]
           lda # <(AfterDetectPadsWarmStart-1)
           pha
-          ;; STACK PICTURE: [SP+1: AfterDetectPadsWarmStart hi] [SP+0: AfterDetectPadsWarmStart lo]
-          lda # >(DetectPads-1)
-          pha
-          ;; STACK PICTURE: [SP+2: AfterDetectPadsWarmStart hi] [SP+1: AfterDetectPadsWarmStart lo] [SP+0: DetectPads hi]
-          lda # <(DetectPads-1)
-          pha
-          ;; STACK PICTURE: [SP+3: AfterDetectPadsWarmStart hi] [SP+2: AfterDetectPadsWarmStart lo] [SP+1: DetectPads hi] [SP+0: DetectPads lo]
-          ldx # 12                         ;;; Bank 12 = $ffe0 + 12, 0-based = 12
-          jmp BS_jsr
+          ;; STACK PICTURE: [SP+1: AfterDetectPadsWarmStart hi (encoded)] [SP+0: AfterDetectPadsWarmStart lo]
+          jsr DetectPads
+          ;; STACK PICTURE: [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: jsr ret hi] [SP+0: jsr ret lo]
+          ;; DetectPads will jmp BS_return, which decodes the encoded return address (offset 2)
+          ;; and returns to AfterDetectPadsWarmStart
 
 AfterDetectPadsWarmStart:
-          ;; STACK PICTURE: [] (empty, BS_return consumed 4 bytes)
+          ;; STACK PICTURE: [] (empty, BS_return consumed encoded return address)
 
           ;; Step 6: Go to publisher prelude
           ;; Set game mode to Publisher Prelude

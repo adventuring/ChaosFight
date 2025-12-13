@@ -21,6 +21,8 @@ UpdatePlayerMovementSingle .proc
           asl
           tax
           lda playerSubpixelX_RL,x
+          clc
+          adc playerVelocityXL,x
           sta subpixelAccumulator
           lda currentPlayer
           asl
@@ -60,6 +62,8 @@ NoXCarry:
           asl
           tax
           lda playerSubpixelY_RL,x
+          clc
+          adc playerVelocityYL,x
           sta subpixelAccumulator
           lda currentPlayer
           asl

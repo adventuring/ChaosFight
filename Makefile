@@ -63,11 +63,17 @@ bin/buildapp: SkylineTool/prepare-system.lisp | bin/
 	sbcl --load SkylineTool/prepare-system.lisp --eval '(cl-user::quit)'
 
 # Output files
-GAME = ChaosFight
-GAMEYEAR = 26
-ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 PROJECT_JSON = Project.json
-PROJECT_VERSION := $(shell jq '.Version' $(PROJECT_JSON))
+GAME := $(shell jq -r '.Game' $(PROJECT_JSON))
+ifeq ($(strip $(GAME)),)
+$(error Game field missing in $(PROJECT_JSON))
+endif
+GAMEYEAR := $(shell jq -r '.GameYear' $(PROJECT_JSON))
+ifeq ($(strip $(GAMEYEAR)),)
+$(error GameYear field missing in $(PROJECT_JSON))
+endif
+ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
+PROJECT_VERSION := $(shell jq -r '.Version' $(PROJECT_JSON))
 ifeq ($(strip $(PROJECT_VERSION)),)
 $(error Version field missing in $(PROJECT_JSON))
 endif

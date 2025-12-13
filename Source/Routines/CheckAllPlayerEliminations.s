@@ -73,15 +73,13 @@ CAPE_CheckPlayerEliminationReturn:
           jmp CAPE_Loop
 CAPE_LoopDone:
 
-CAPE_next_label_1 .proc
-
           ;; Count remaining players and check game end (inline
           ;; CheckGameEndCondition)
           ;; Game ends when 1 or fewer players remain
-          ;; Cross-bank call to CountRemainingPlayers in bank 14
-          lda # >(return_point-1)
+          ;; Cross-bank call to CountRemainingPlayers in bank 13
+          lda # >(AfterCountRemainingPlayers-1)
           pha
-          lda # <(return_point-1)
+          lda # <(AfterCountRemainingPlayers-1)
           pha
           lda # >(CountRemainingPlayers-1)
           pha
@@ -91,11 +89,20 @@ CAPE_next_label_1 .proc
           jmp BS_jsr
 
 AfterCountRemainingPlayers:
+          ;; Check if game should end (1 or fewer players remain)
+          ;; CountRemainingPlayers sets playersRemaining_R
+          lda playersRemaining_R
+          cmp # 2
+          bcs CheckGameEndContinue
+          ;; 1 or fewer players remain - game ends, find winner
+          jmp CheckGameEndFindWinner
 
-          ;; If players still remain, no game end yet
+CheckGameEndContinue:
+          ;; More than 1 player remains - no game end yet
           jmp BS_return
 
-          ;; Cross-bank call to FindWinner in bank 14
+CheckGameEndFindWinner:
+          ;; Cross-bank call to FindWinner in bank 13
           lda # >(AfterFindWinner-1)
           pha
           lda # <(AfterFindWinner-1)

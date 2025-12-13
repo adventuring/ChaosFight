@@ -687,7 +687,7 @@ ProjectileHitbox .proc
           sta cachedHitboxTop_W
           lda # 0
           sta cachedHitboxBottom_W
-          jmp BS_return
+          rts
 
 .pend
 

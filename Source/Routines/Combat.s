@@ -818,27 +818,15 @@ ProcessDefenderLoop:
           bne CheckDefenderHealth
           jmp NextDefender
 CheckDefenderHealth:
-
-
           ;; Skip if defender is dead
-
           ;; If playerHealth[defenderID] <= 0, then NextDefender
           lda defenderID
           asl
           tax
           lda playerHealth,x
-          beq CheckAttackHitDefender
-          bmi CheckAttackHitDefender
-          jmp NextDefender
-CheckAttackHitDefender:
-
-          lda defenderID
-          asl
-          tax
-          lda playerHealth,x
-          beq ProcessAttackHit
-          bmi ProcessAttackHit
-          jmp NextDefender
+          beq NextDefender
+          bmi NextDefender
+          ;; Defender is alive, proceed to check if attack hits
 ProcessAttackHit:
 
 

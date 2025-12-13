@@ -700,11 +700,25 @@ DivideBy100 .proc
           ;; DivideBy100: compute floor(temp2 ÷ 100) using range check
           ;; Returns: Far (return otherbank)
           ;;
-          ;; INPUT: temp2 = dividend
+          ;; INPUT: temp2 = dividend (0-255)
           ;;
           ;; OUTPUT: temp2 = quotient (0, 1, or 2)
-          ;; Fast approximation for values 0-255
-          ;; TODO: #1311 Implement DivideBy100 using range checks
+          ;; Fast approximation for values 0-255 using range checks
+          lda temp2
+          cmp # 200
+          bcc Check100
+          lda # 2
+          sta temp2
+          jmp BS_return
+
+Check100:
+          cmp # 100
+          bcc SetZero
+          lda # 1
+          sta temp2
+          jmp BS_return
+
+SetZero:
           lda # 0
           sta temp2
           jmp BS_return

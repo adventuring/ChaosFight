@@ -1,6 +1,6 @@
-;;; Grizzards Source/Common/VCS-Consts.s
+;;; ChaosFight - Source/Common/VCS-Consts.s
 ;;; Atari VCS constants
-;;; Copyright © 2006,2007,2017,2020-2022 Bruce-Robert Pocock (brpocock@star-hope.org)
+;;; Copyright © 2006,2007,2017,2020-2022,2025 Bruce-Robert Pocock (brpocock@star-hope.org)
 ;;;
 
           BuildPlatform = 2600

@@ -1129,50 +1129,69 @@ CheckPlayerHealth:
 CheckAABBCollision:
           ;; if temp2 >= playerX[temp6] + PlayerSpriteHalfWidth then jmp MissileCheckNextPlayer
           ;; if temp2 + MissileAABBSize <= playerX[temp6] then jmp MissileCheckNextPlayer
+          ;; Save loop counter in temp7 to preserve it
+          lda temp6
+          sta temp7
           lda temp2
           clc
           adc MissileAABBSize
+          sta temp5
+          ;; Restore loop counter
+          lda temp7
           sta temp6
           lda temp6
           asl
           tax
           lda playerX,x
           sec
-          sbc temp6
+          sbc temp5
           bcc CheckVerticalCollision
           beq CheckVerticalCollision
           jmp MissileCheckNextPlayer
 CheckVerticalCollision:
           ;; if temp3 >= playerY[temp6] + PlayerSpriteHeight then jmp MissileCheckNextPlayer
+          ;; Save loop counter
+          lda temp6
+          sta temp7
           lda temp6
           asl
           tax
           lda playerY,x
           clc
           adc PlayerSpriteHeight
+          sta temp5
+          ;; Restore loop counter
+          lda temp7
           sta temp6
           lda temp3
           sec
-          sbc temp6
+          sbc temp5
           bcc CheckBottomCollision
           jmp MissileCheckNextPlayer
 CheckBottomCollision:
           ;; Collision detected - return otherbank hit player index
           ;; if temp3 + MissileAABBSize <= playerY[temp6] then jmp MissileCheckNextPlayer
+          ;; Save loop counter
+          lda temp6
+          sta temp7
           lda temp3
           clc
           adc MissileAABBSize
+          sta temp5
+          ;; Restore loop counter
+          lda temp7
           sta temp6
           lda temp6
           asl
           tax
           lda playerY,x
           sec
-          sbc temp6
+          sbc temp5
           bcc CollisionDetected
           beq CollisionDetected
           jmp MissileCheckNextPlayer
 CollisionDetected:
+          ;; Save loop counter (player index) to temp4 as hit result
           lda temp6
           sta temp4
           jmp MissileCollisionReturn

@@ -77,6 +77,8 @@ AfterStartMusicPublisher:
           ;; Set titlescreenWindow2 = 42  ; AtariAgeText visible
           ;; STACK PICTURE: [] (empty)
           lda # 42
+          sta titlescreenWindow1
+          lda # 42
           sta titlescreenWindow2
           ;; Set titlescreenWindow3 = 0  ; ChaosFight hidden
           lda # 0

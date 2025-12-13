@@ -65,6 +65,8 @@ AfterStartMusicTitle:
           ;; Set titlescreenWindow2 = 0  ; AtariAgeText hidden
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           lda # 0
+          sta titlescreenWindow1
+          lda # 0
           sta titlescreenWindow2
           ;; Set titlescreenWindow3 = 42  ; ChaosFight visible
           lda # 42

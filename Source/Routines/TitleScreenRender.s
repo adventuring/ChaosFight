@@ -50,7 +50,7 @@ CheckAuthorMode:
 
 DrawTitleScreenOnly:
           ;; Default: Title screen (gameMode = 2)
-          jmp DrawTitleScreenOnly
+          ;; Fall through to DrawTitleScreenOnly proc (defined below)
 
 .pend
 
@@ -58,6 +58,8 @@ DrawPublisherScreen .proc
           ;; Publisher Prelude: Show AtariAge logo + AtariAge text
           ;; Set titlescreenWindow1 = 42  ; AtariAge logo visible
           ;; Set titlescreenWindow2 = 42  ; AtariAgeText visible
+          lda # 42
+          sta titlescreenWindow1
           lda # 42
           sta titlescreenWindow2
           ;; Set titlescreenWindow3 = 0  ; ChaosFight hidden
@@ -75,6 +77,8 @@ DrawAuthorScreen .proc
           ;; Set titlescreenWindow1 = 0   ; AtariAge logo hidden
           ;; Set titlescreenWindow2 = 0  ; AtariAgeText hidden
           lda # 0
+          sta titlescreenWindow1
+          lda # 0
           sta titlescreenWindow2
           ;; Set titlescreenWindow3 = 0  ; ChaosFight hidden
           lda # 0
@@ -90,6 +94,8 @@ DrawTitleScreenOnly .proc
           ;; Title Screen: Show ChaosFight title only
           ;; Set titlescreenWindow1 = 0   ; AtariAge logo hidden
           ;; Set titlescreenWindow2 = 0  ; AtariAgeText hidden
+          lda # 0
+          sta titlescreenWindow1
           lda # 0
           sta titlescreenWindow2
           ;; Set titlescreenWindow3 = 42  ; ChaosFight visible

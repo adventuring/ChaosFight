@@ -6,7 +6,9 @@
 
 
 HandleFlyingCharacterMovement .proc
-          ;; Returns: Near (return thisbank) - changed from Far to save stack depth (FIXME #1241)
+          ;; Returns: Far (return otherbank)
+          ;; Called from Bank 7, so must use Far return convention (jmp BS_return)
+          ;; However, this routine is currently only called via tail call (jmp), so it never actually returns
           ;;
           ;; Input: temp1 = player index, temp2 = (document other inputs)
           ;;
@@ -190,7 +192,7 @@ CheckJoy1Down:
           jmp HandleFlyingCharacterMovementVerticalDown
 HandleFlyingCharacterMovementDoneJoy1:
 
-          rts
+          jmp BS_return
 
 .pend
 
@@ -210,32 +212,31 @@ CheckJoy0Down:
           jmp HandleFlyingCharacterMovementVerticalDown
 HandleFlyingCharacterMovementDoneJoy0:
 
-          rts
+          jmp BS_return
 
 .pend
 
 HandleFlyingCharacterMovementCheckVerticalEnd:
-          rts
+          ;; This label is jumped to from HandleFlyingCharacterMovementCheckVertical
+          ;; which is called from HandleFlyingCharacterMovement (all in Bank 11)
+          ;; Since HandleFlyingCharacterMovement is only tail-called from Bank 7,
+          ;; and never returns, this should theoretically use Far return.
+          ;; However, since it's only reached via jmp (not jsr), it never returns either.
+          ;; Using BS_return to maintain protocol: any routine that could return to
+          ;; a cross-bank caller must use Far return.
+          jmp BS_return
 
 HandleFlyingCharacterMovementVerticalUp .proc
-
-          rts
-
-          rts
-
+          ;; Called from HandleFlyingCharacterMovementCheckVertical (same bank)
+          ;; So Near return is correct
           rts
 
 .pend
 
 HandleFlyingCharacterMovementVerticalDown .proc
-
+          ;; Called from HandleFlyingCharacterMovementCheckVertical (same bank)
+          ;; So Near return is correct
           rts
-
-          rts
-
-          rts
-
-
 
 .pend
 

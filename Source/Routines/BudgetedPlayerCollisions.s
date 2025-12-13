@@ -37,221 +37,117 @@ BudgetedCollisionCheck:
           jsr CheckCollisionP1vsP2
 
           ;; Skip other checks if not Quadtari
-          jmp BS_return
+          lda controllerStatus
+          and # $80
+          cmp # 0
+          beq BPC_NotQuadtari
 
           ;; Check additional pairs based on frame phase
           lda framePhase
           cmp # 0
-          bne BPC_CheckPhase0
-
-          ;; TODO: #1306 BPC_Phase0
-
-BPC_CheckPhase0:
-
-          lda framePhase
-          cmp # 1
           bne BPC_CheckPhase1
-
-          ;; TODO: #1306 BPC_Phase1
+          jsr BPC_Phase0
+          jmp BS_return
 
 BPC_CheckPhase1:
-
           lda framePhase
-          cmp # 2
+          cmp # 1
           bne BPC_CheckPhase2
-
-          ;; TODO: #1306 BPC_Phase2
+          jsr BPC_Phase1
+          jmp BS_return
 
 BPC_CheckPhase2:
+          lda framePhase
+          cmp # 2
+          bne BPC_Phase3
+          jsr BPC_Phase2
+          jmp BS_return
 
+BPC_Phase3:
+          ;; Frame phase 3: repeat phase 0 pairs
+          jsr BPC_Phase0
+          jmp BS_return
+
+BPC_NotQuadtari:
           jmp BS_return
 
 BPC_Phase0 .proc
-          jmp BS_return
-
+          ;; Returns: Near (called from same bank)
+          ;; Check pairs 0, 1: P1 vs P2 (already checked), P1 vs P3
           jsr CheckCollisionP1vsP3
-
-          jmp BS_return
+          rts
 
 .pend
 
 BPC_Phase1 .proc
+          ;; Returns: Near (called from same bank)
+          ;; Check pairs 2, 3: P1 vs P4, P2 vs P3
           jsr CheckCollisionP1vsP4
-
-          jmp BS_return
-
           jsr CheckCollisionP2vsP3
-
-          jmp BS_return
+          rts
 
 .pend
 
 BPC_Phase2 .proc
+          ;; Returns: Near (called from same bank)
+          ;; Check pairs 4, 5: P2 vs P4, P3 vs P4
           jsr CheckCollisionP2vsP4
-
-          jmp BS_return
-
-          jmp BS_return
-
           jsr CheckCollisionP3vsP4
-
-          jmp BS_return
-
-          ;; Input: temp3 = player 1 index, temp4 = player 2 index
-          ;; Output: separates players if collision detected
-          ;; If playerX[temp3] >= playerX[temp4], then BPC_CalcDiff
-          lda temp3
-          asl
-          tax
-          lda playerX,x
-          sta temp2
-          lda temp4
-          asl
-          tax
-          lda playerX,x
-          cmp temp2
-          bcc BPC_CalcDiff
-          ;; Set temp2 = playerX[temp4] - playerX[temp3]
-          lda temp4
-          asl
-          tax
-          lda playerX,x
-          sec
-          sbc temp2
-          sta temp2
-          jmp BPC_CheckSep
-
-BPC_CalcDiff
-          ;; Set temp2 = playerX[temp3]
-          lda temp3
-          asl
-          tax
-          lda playerX,x
-          sta temp2 - playerX[temp4]
-          lda temp3
-          asl
-          tax
-          lda playerX,x
-          sta temp2
-
-.pend
-
-BPC_CheckSep .proc
-          rts
-
-          ;; If playerX[temp3] < playerX[temp4], then BPC_SepLeft
-          lda temp3
-          asl
-          tax
-          lda playerX,x
-          sta temp2
-          lda temp4
-          asl
-          tax
-          lda playerX,x
-          cmp temp2
-          bcc BPC_SepLeft
-
-          ;; Set playerX[temp3] = playerX[temp3] + 1
-          lda temp3
-          asl
-          tax
-          inc playerX,x
-
-          lda temp3
-          asl
-          tax
-          inc playerX,x
-
-          ;; let playerX[temp4] = playerX[temp4] - 1
-          lda temp4
-          asl
-          tax
-          dec playerX,x
-
-          lda temp4
-          asl
-          tax
-          dec playerX,x
-
           rts
 
 .pend
 
-BPC_SepLeft .proc
-          ;; let playerX[temp3] = playerX[temp3] - 1
-          lda temp3
-          asl
-          tax
-          dec playerX,x
-
-          lda temp3
-          asl
-          tax
-          dec playerX,x
-
-          ;; let playerX[temp4] = playerX[temp4] + 1
-          lda temp4
-          asl
-          tax
-          inc playerX,x
-
-          lda temp4
-          asl
-          tax
-          inc playerX,x
-
-          rts
-
-CheckCollisionP1vsP3
-CheckCollisionP1vsP3
+CheckCollisionP1vsP3 .proc
+          ;; Returns: Near (called from same bank)
           lda # 0
           sta temp3
           lda # 2
           sta temp4
           jsr CheckCollisionPair
-
           rts
 
-CheckCollisionP1vsP4
-CheckCollisionP1vsP4
+.pend
+
+CheckCollisionP1vsP4 .proc
+          ;; Returns: Near (called from same bank)
           lda # 0
           sta temp3
           lda # 3
           sta temp4
           jsr CheckCollisionPair
-
-          rts
-
-CheckCollisionP2vsP3
-CheckCollisionP2vsP3
-          lda # 1
-          sta temp3
-          lda # 2
-          sta temp4
-          jsr CheckCollisionPair
-
-          rts
-
-CheckCollisionP2vsP4
-CheckCollisionP2vsP4
-          lda # 1
-          sta temp3
-          lda # 3
-          sta temp4
-          jsr CheckCollisionPair
-
-          rts
-
-CheckCollisionP3vsP4
-CheckCollisionP3vsP4
-          lda # 2
-          sta temp3
-          lda # 3
-          sta temp4
-          jsr CheckCollisionPair
-
           rts
 
 .pend
 
+CheckCollisionP2vsP3 .proc
+          ;; Returns: Near (called from same bank)
+          lda # 1
+          sta temp3
+          lda # 2
+          sta temp4
+          jsr CheckCollisionPair
+          rts
+
+.pend
+
+CheckCollisionP2vsP4 .proc
+          ;; Returns: Near (called from same bank)
+          lda # 1
+          sta temp3
+          lda # 3
+          sta temp4
+          jsr CheckCollisionPair
+          rts
+
+.pend
+
+CheckCollisionP3vsP4 .proc
+          ;; Returns: Near (called from same bank)
+          lda # 2
+          sta temp3
+          lda # 3
+          sta temp4
+          jsr CheckCollisionPair
+          rts
+
+.pend

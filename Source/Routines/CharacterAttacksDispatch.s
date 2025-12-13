@@ -230,7 +230,8 @@ CheckEnhancedJumpButton:
           lda currentPlayer
           cmp # 0
           bne CheckPlayer1Enhanced
-          ;; TODO: #1308 CEJB_CheckPlayer0
+          jsr CEJB_CheckPlayer0
+          jmp CEJB_Done
 CheckPlayer1Enhanced:
 
 
@@ -239,7 +240,7 @@ CheckPlayer1Enhanced:
           lda currentPlayer
           cmp # 1
           bne CEJB_Done
-          ;; TODO: #1308 CEJB_CheckPlayer2
+          jsr CEJB_CheckPlayer2
 CEJB_Done:
 
 
@@ -281,10 +282,16 @@ CEJB_CheckPlayer0Joy2bPlus .proc
           ;; If !controllerStatus{1}, then CEJB_DonePlayer0
           lda controllerStatus
           and # 2
-          bne CEJB_ReadButton0Label
+          bne CEJB_ReadButton0Label2
           jmp CEJB_DonePlayer0
-CEJB_ReadButton0Label:
-          jmp CEJB_ReadButton0
+CEJB_ReadButton0Label2:
+          ;; Read button for Joy2b+ (same as enhanced controller)
+          bit INPT0
+          bmi CEJB_DonePlayer0
+          lda # 1
+          sta temp3
+CEJB_DonePlayer0:
+          jmp BS_return
 
 .pend
 

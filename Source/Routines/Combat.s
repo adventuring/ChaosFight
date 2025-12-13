@@ -795,12 +795,15 @@ ProcessAttackerAttacks .proc
           ;; Hitbox values are already written into cachedHitbox*_W via aliasing
 
           ;; Attack each defender
-          ;; TODO: #1310 for defenderID = 0 to 3
+          ;; Issue #1310: Loop through defenderID = 0 to 3
+          lda # 0
+          sta defenderID
+ProcessDefenderLoop:
           ;; Skip if defender is attacker
           lda defenderID
           cmp attackerID
           bne CheckDefenderHealth
-          ;; TODO: #1310 NextDefender
+          jmp NextDefender
 CheckDefenderHealth:
 
 
@@ -832,7 +835,12 @@ ProcessAttackHit:
 
           jsr ApplyDamage
 
-NextDefender
+NextDefender:
+          ;; Issue #1310: Loop increment and check
+          inc defenderID
+          lda defenderID
+          cmp # 4
+          bcc ProcessDefenderLoop
           ;; Returns: Near (return thisbank) - called same-bank
 .pend
 
@@ -861,7 +869,10 @@ ProcessAllAttacks .proc
           ;;
           ;; Constraints: Must be colocated with NextAttacker (called
           ;; via next). Skips dead attackers
-          ;; TODO: #1310 for attackerID = 0 to 3
+          ;; Issue #1310: Loop through attackerID = 0 to 3
+          lda # 0
+          sta attackerID
+ProcessAttackerLoop:
           ;; Skip if attacker is dead
           ;; If playerHealth[attackerID] <= 0, then NextAttacker
           lda attackerID
@@ -903,10 +914,12 @@ CheckAttackWindow:
 ProcessAttackerAttacksLabel:
           jsr ProcessAttackerAttacks
 
-.pend
-
-NextAttacker .proc
-          ;; Helper: End of attacker loop iteration (label only)
+NextAttacker:
+          ;; Issue #1310: Loop increment and check
+          inc attackerID
+          lda attackerID
+          cmp # 4
+          bcc ProcessAttackerLoop
           ;; Returns: Near (return thisbank) - called same-bank
 .pend
 

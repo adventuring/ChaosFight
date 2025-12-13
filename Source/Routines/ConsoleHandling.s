@@ -423,7 +423,7 @@ CheckSwitchChanged:
           lda temp6
           cmp colorBWPrevious_R
           bne TriggerDetectPads
-          ;; TODO: #1310 DoneSwitchChange
+          jmp DoneSwitchChange
 TriggerDetectPads:
 
           ;; Cross-bank call to DetectPads in bank 13

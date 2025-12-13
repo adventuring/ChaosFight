@@ -77,7 +77,7 @@ HandleFlyingCharacterMovementCheckLeftJoy1:
 
 HandleFlyingCharacterMovementCheckLeftJoy0 .proc
           lda SWCHA
-          and # $80
+          and # $40
           bne HandleFlyingCharacterMovementCheckRight
 
           jmp HandleFlyingCharacterMovementDoLeft
@@ -105,7 +105,8 @@ HandleFlyingCharacterMovementCheckRight .proc
           lda temp6
           cmp # 0
           bne HandleFlyingCharacterMovementCheckRightJoy1
-          ;; TODO: #1307 HandleFlyingCharacterMovementCheckRightJoy0
+          jsr HandleFlyingCharacterMovementCheckRightJoy0
+          jmp HandleFlyingCharacterMovementCheckVertical
 HandleFlyingCharacterMovementCheckRightJoy1:
 
           lda SWCHA
@@ -120,7 +121,7 @@ HandleFlyingCharacterMovementCheckRightJoy0 .proc
           ;; Returns: Far (return otherbank)
 
           lda SWCHA
-          and # $40
+          and # $80
           bne HandleFlyingCharacterMovementCheckVertical
 
           jmp HandleFlyingCharacterMovementDoRight
@@ -170,7 +171,8 @@ HandleFlyingCharacterMovementCheckVertical .proc
           lda temp6
           cmp # 0
           bne HandleFlyingCharacterMovementVerticalJoy1
-          ;; TODO: #1307 HandleFlyingCharacterMovementVerticalJoy0
+          jsr HandleFlyingCharacterMovementVerticalJoy0
+          jmp HandleFlyingCharacterMovementCheckVerticalEnd
 HandleFlyingCharacterMovementVerticalJoy1:
 
 
@@ -193,22 +195,27 @@ HandleFlyingCharacterMovementDoneJoy1:
 .pend
 
 HandleFlyingCharacterMovementVerticalJoy0 .proc
-
+          ;; Returns: Near (called from same bank)
           ;; if joy0up then jmp HandleFlyingCharacterMovementVerticalUp
-          lda joy0up
-          beq CheckJoy0Down
+          lda SWCHA
+          and # $10
+          bne CheckJoy0Down
           jmp HandleFlyingCharacterMovementVerticalUp
 CheckJoy0Down:
 
           ;; if joy0down then jmp HandleFlyingCharacterMovementVerticalDown
-          lda joy0down
-          beq HandleFlyingCharacterMovementDoneJoy0
+          lda SWCHA
+          and # $20
+          bne HandleFlyingCharacterMovementDoneJoy0
           jmp HandleFlyingCharacterMovementVerticalDown
 HandleFlyingCharacterMovementDoneJoy0:
 
           rts
 
 .pend
+
+HandleFlyingCharacterMovementCheckVerticalEnd:
+          rts
 
 HandleFlyingCharacterMovementVerticalUp .proc
 

@@ -282,8 +282,16 @@ UpdateAllMissiles .proc
           ;;
           ;; Constraints: None
           ;; Optimized: Loop through all player missiles instead of individual calls
-          ;; TODO: #1254 for temp1 = 0 to 3
+          ;; Issue #1254: Loop through temp1 = 0 to 3
+          lda # 0
+          sta temp1
+UAM_Loop:
           jsr UpdateOneMissile
+          inc temp1
+          lda temp1
+          cmp # 4
+          bcs UpdateMissilesDone
+          jmp UAM_Loop
 .pend
 
 UpdateMissilesDone .proc
@@ -1099,9 +1107,11 @@ CheckMissilePlayerCollision
 
           ;; Optimized: Loop through all players instead of copy-paste code
           ;; This reduces ROM footprint by ~150 bytes
+          ;; Issue #1254: Loop through temp6 = 0 to 3
+          lda # 0
+          sta temp6
+MCC_Loop:
           ;; Skip owner player
-          ;; TODO: #1254 for temp6 = 0 to 3
-          ;; Skip eliminated players
           lda temp6
           cmp temp1
           bne CheckPlayerHealth
@@ -1166,6 +1176,15 @@ CollisionDetected:
           lda temp6
           sta temp4
           jmp MissileCollisionReturn
+
+MissileCheckNextPlayer:
+          ;; Issue #1254: Loop increment and check
+          inc temp6
+          lda temp6
+          cmp # 4
+          bcs MCC_LoopDone
+          jmp MCC_Loop
+MCC_LoopDone:
 .pend
 
 MissileCheckNextPlayer .proc

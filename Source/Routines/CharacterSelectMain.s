@@ -811,13 +811,20 @@ NoQuadtariForRandom:
           lda # 3
           sta temp1
 CharacterSelectRollRandomPlayer:
-
-          ;; TODO: #1254 for currentPlayer = 0 to temp1
-
+          ;; Issue #1254: Loop through currentPlayer = 0 to temp1
+          lda # 0
+          sta currentPlayer
+CSRRP_Loop:
           jsr CharacterSelectRollRandomPlayer
 
 CharacterSelectRollRandomPlayerReturn:
-
+          inc currentPlayer
+          lda currentPlayer
+          sec
+          sbc temp1
+          bcs CSRRP_LoopDone
+          jmp CSRRP_Loop
+CSRRP_LoopDone:
           jmp CharacterSelectRollsDone
 
 .pend
@@ -953,8 +960,10 @@ CharacterSelectQuadtariReady .proc
           lda # 0
           sta readyCount
 
-          ;; TODO: #1254 for currentPlayer = 0 to 3
-
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+CSQR_Loop:
           lda currentPlayer
           sta temp1
 
@@ -1001,9 +1010,17 @@ CharacterSelectQuadtariReadyNext:
 
           jmp CharacterSelectQuadtariReadyNext
 
-CharacterSelectQuadtariReadyIncrement
-
+CharacterSelectQuadtariReadyIncrement:
           inc readyCount
+
+CharacterSelectQuadtariReadyNext:
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcs CSQR_LoopDone
+          jmp CSQR_Loop
+CSQR_LoopDone:
 
 .pend
 
@@ -1069,8 +1086,10 @@ CharacterSelectFinish .proc
 
           ;; (default: face right = 1)
 
-          ;; TODO: #1254 for currentPlayer = 0 to 3
-
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+CSF_Loop:
           ;; If playerCharacter[currentPlayer] = NoCharacter, then jmp CharacterSelectSkipFacing
           lda currentPlayer
           asl
@@ -1085,6 +1104,15 @@ CharacterSelectFinish .proc
           lda playerState,x
           ora # PlayerStateBitFacing
           sta playerState,x
+
+CharacterSelectSkipFacing:
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcs CSF_LoopDone
+          jmp CSF_Loop
+CSF_LoopDone:
 
 .pend
 

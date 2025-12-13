@@ -83,9 +83,11 @@ AfterInitializeSpritePointers:
 
 
           ;; Set screen layout for gameplay (32×8 game layout) - inlined
-          ;; TODO: #1266 pfrowheight = ScreenPfRowHeight
+          lda # ScreenPfRowHeight
+          sta pfrowheight
           ;; SuperChip variables var0-var15 available in gameplay
-          ;; TODO: #1266 pfrows = ScreenPfRows
+          lda # ScreenPfRows
+          sta pfrows
 
           ;; Initialize player positions
           ;; 2-Player Game: P1 at 1/3 width (53), P2 at 2/3 width (107)
@@ -246,7 +248,10 @@ InitPositionsDone:
           ;; Initialize player health (apply handicap if selected)
           ;; PlayerLocked value: 0=unlocked, 1=normal (100% health),
           ;; Optimized: Simplified player health initialization
-          ;; TODO: #1254 for currentPlayer = 0 to 3
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+IPH_Loop:
           lda currentPlayer
           sta GPL_playerIndex
           ;; Cross-bank call to GetPlayerLocked in bank 6
@@ -278,13 +283,23 @@ PlayerHealthInitDone:
           tax
           lda PlayerHealthMax
           sta playerHealth,x
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcs IPH_LoopDone
+          jmp IPH_Loop
+IPH_LoopDone:
 
 .pend
 
 InitializePlayerTimers .proc
 
           ;; Initialize player timers
-          ;; TODO: #1254 for currentPlayer = 0 to 3
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+IPT_Loop:
           lda currentPlayer
           asl
           tax
@@ -315,6 +330,13 @@ InitializePlayerTimers .proc
           tax
           lda # 0
           sta playerSubpixelY_W,x
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcs IPT_LoopDone
+          jmp IPT_Loop
+IPT_LoopDone:
 .pend
 
 SetPlayers34ActiveFlag .proc

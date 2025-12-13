@@ -23,7 +23,10 @@ UpdateCharacterAnimations:
           lda controllerStatus
           and # SetQuadtariDetected
           sta UCA_quadtariActive
-          ;; TODO: #1254 for currentPlayer = 0 to 3
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+UCA_Loop:
           ;; If currentPlayer >= 2 && !UCA_quadtariActive, then jmp AnimationNextPlayer
           lda currentPlayer
           cmp # 3
@@ -853,11 +856,13 @@ DoneAdvanceInlinedLabel:
           ;; End of inlined UpdatePlayerAnimation - skip to next player
           jmp AnimationNextPlayerLabel
 AnimationNextPlayerLabel:
-          ;; Increment currentPlayer and loop if not done
+          ;; Issue #1254: Loop increment and check
           inc currentPlayer
           lda currentPlayer
           cmp # 4
-          bcc UpdateCharacterAnimations
+          bcs UCA_LoopDone
+          jmp UCA_Loop
+UCA_LoopDone:
           jmp BS_return
 
 AnimationNextLabel1 .proc
@@ -982,7 +987,10 @@ InitializeAnimationSystem:
           ;; Initialize all players to idle animation
           lda # ActionIdle
           sta temp2
-          ;; TODO: #1254 for currentPlayer = 0 to 3
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+HAT_Loop:
           ;; Cross-bank call to SetPlayerAnimation in bank 12
           lda # >(return_point-1)
           pha
@@ -995,6 +1003,13 @@ InitializeAnimationSystem:
                     ldx # 11
           jmp BS_jsr
 AfterSetPlayerAnimationTransition:
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcs HAT_LoopDone
+          jmp HAT_Loop
+HAT_LoopDone:
 
 .pend
 

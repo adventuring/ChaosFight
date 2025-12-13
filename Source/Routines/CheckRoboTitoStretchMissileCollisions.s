@@ -121,7 +121,7 @@ CRTSMC_CheckOtherPlayer .proc
           lda temp6
           cmp temp1
           bne CheckPlayerHealth
-          ;; TODO: #1310 CRTSMC_DoneSelf
+          jmp DoneSelfStretchCheck
 CheckPlayerHealth:
 
 

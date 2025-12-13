@@ -216,7 +216,10 @@ VblankSharedUpdateCharacterAnimations
           lda controllerStatus
           and # SetQuadtariDetected
           sta VblankUCA_quadtariActive
-          ;; TODO: #1254 for currentPlayer = 0 to 3
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+VUCA_Loop:
           ;; if currentPlayer >= 2 && !VblankUCA_quadtariActive then jmp VblankAnimationNextPlayer
           lda currentPlayer
           cmp # 3
@@ -941,7 +944,14 @@ AfterSetPlayerCharacterArtBank5Vblank:
 
           jmp VblankAnimationNextPlayer
 
-VblankAnimationNextPlayer
+VblankAnimationNextPlayer:
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcs VUCA_LoopDone
+          jmp VUCA_Loop
+VUCA_LoopDone:
 .pend
 
 VblankGameModeCheck .proc
@@ -1020,7 +1030,10 @@ AfterCheckBoundaryCollisions:
 
 
           ;; Optimized: Single loop for playfield collisions (walls, ceilings, ground)
-          ;; TODO: #1254 for currentPlayer = 0 to 3
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+VPC_Loop:
           ;; if currentPlayer >= 2 then jmp VblankCheckQuadtariSkip
           lda currentPlayer
           cmp # 2
@@ -1086,6 +1099,13 @@ AfterRadishGoblinCheckWallBounce:
 .pend
 
 VblankGameMainQuadtariCheckDone .proc
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcs VPC_LoopDone
+          jmp VPC_Loop
+VPC_LoopDone:
 
 .pend
 
@@ -1165,7 +1185,8 @@ VblankCheckGameEndTransition
           lda gameEndTimer_R
           cmp # 0
           bne DecrementGameEndTimer
-          ;; TODO: #1302 VblankTransitionToWinner
+          jsr VblankTransitionToWinner
+          jmp VblankGameEndCheckDone
 DecrementGameEndTimer:
 
 

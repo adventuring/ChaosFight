@@ -15,7 +15,7 @@ CheckPlayfieldCollisionAllDirections:
           ;; Uses CharacterHeights table for proper hitbox detection.
 
           ;;
-          ;; Input: ;; TODO: #1298 Convert assignment: currentPlayer = player index (0-3)
+          ;; Input: currentPlayer = player index (0-3)
 
           ;; playerX[], playerY[], playerCharacter[]
 
@@ -351,13 +351,14 @@ PF_CheckColumnSpan .proc
           ;; Helper: sample a column at up to three row offsets (top/mid/bottom)
           ;; Returns: Far (return otherbank)
 
-          ;; Input: playfieldColumn (global), playfieldRow (global top row), ;; TODO: #1298 Convert assignment: temp3 = row span
+          ;; Input: playfieldColumn (global), playfieldRow (global top row)
+          ;; Note: row span is pfrowheight (16 pixels, constant)
 
 
-          ;; Output: ;; TODO: #1298 Convert assignment: temp4 = 1 if any solid pixel encountered
+          ;; Output: temp4 = 1 if any solid pixel encountered
 
 
-          ;; TODO: #1298 dim ;; TODO: #1298 Convert assignment: PCC_rowSpan = temp3
+          ;; PCC_rowSpan is pfrowheight (16 pixels per row, constant)
 
 
           ;; PCC_result = 0 (initialize, use temp5 to store it)
@@ -434,9 +435,11 @@ PFCS_Advance .proc
           bne IncrementRowCounter
           jmp PFCS_Done
 IncrementRowCounter:
-
-
-                    ;; TODO: #1298 Convert assignment: rowCounter = rowCounter + PCC_rowSpan
+          ;; Issue #1298: Advance to next row (rowCounter = rowCounter + pfrowheight)
+          lda rowCounter
+          clc
+          adc pfrowheight
+          sta rowCounter
 
           jmp PFCS_SampleLoop
 
@@ -456,10 +459,10 @@ PF_CheckRowColumns .proc
           ;; Helper: test current row for center/side collisions
           ;; Returns: Far (return otherbank)
 
-          ;; Input: ;; TODO: #1298 Convert assignment: temp2 = row index, temp6 = center column
+          ;; Input: temp2 = row index, temp6 = center column
 
 
-          ;; Output: ;; TODO: #1298 Convert assignment: temp4 = 1 if any column collides
+          ;; Output: temp4 = 1 if any column collides
 
 
           ;; PRC_rowIndex = temp2
@@ -795,8 +798,11 @@ PHC_ClampRightDone:
 .pend
 
 PFCheckDown_Body .proc
-
-                    ;; TODO: #1298 Convert assignment: rowCounter = playfieldRow + temp5
+          ;; Issue #1298: Set rowCounter = playfieldRow + temp5
+          lda playfieldRow
+          clc
+          adc temp5
+          sta rowCounter
 
           jmp BS_return
 

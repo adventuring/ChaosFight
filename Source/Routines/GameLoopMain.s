@@ -209,7 +209,10 @@ AfterAttackCooldownsUpdated:
 
 
           ;; Issue #1177: Update Frooty charge system every frame
-          ;; TODO: #1254 for currentPlayer = 0 to 3
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+FCS_Loop:
           ;; if currentPlayer >= 2 then jmp FrootyChargeQuadtariCheck
           lda currentPlayer
           cmp # 2
@@ -225,34 +228,11 @@ AfterAttackCooldownsUpdated:
 .pend
 
 FrootyChargeQuadtariCheck .proc
-          lda controllerStatus
-          and # SetQuadtariDetected
-          cmp # 0
-          bne FrootyChargeUpdate
-          jmp FrootyChargeNext
-FrootyChargeUpdate:
-
-
+          ;; This proc is now inlined above
 .pend
 
 FrootyChargeUpdate .proc
-          ;; Cross-bank call to FrootyAttack in bank 8
-          lda # >(return_point-1)
-          pha
-          lda # <(return_point-1)
-          pha
-          lda # >(FrootyAttack-1)
-          pha
-          lda # <(FrootyAttack-1)
-          pha
-                    ldx # 7
-          jmp BS_jsr
-AfterFrootyAttack:
-
-
-.pend
-
-FrootyChargeNext .proc
+          ;; This proc is now inlined above
 .pend
 
 UpdateSoundEffects .proc

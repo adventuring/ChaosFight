@@ -59,43 +59,43 @@ GetPlayerLockedP0 .proc
           lda playerLocked
           and # 3
           sta temp2
-
-          ;; TODO: #1291 GPL_lockedState = temp2
+          sta GPL_lockedState
 
           rts
 
 .pend
 
 GetPlayerLockedP1 .proc
-
           ;; Set temp2 = (playerLocked / 4) & 3
-          ;; TODO: #1291 GPL_lockedState = temp2
+          lda playerLocked
+          lsr
+          lsr
+          and # 3
+          sta temp2
+          sta GPL_lockedState
 
           rts
 
 .pend
 
 GetPlayerLockedP2 .proc
-
-          ;; Set temp2 = (temp2 / 16) & 3
-          lda temp2
+          ;; Set temp2 = (playerLocked / 16) & 3
+          lda playerLocked
           lsr
           lsr
           lsr
           lsr
           and # 3
           sta temp2
-
-          ;; TODO: #1291 GPL_lockedState = temp2
+          sta GPL_lockedState
 
           rts
 
 .pend
 
 GetPlayerLockedP3 .proc
-
-          ;; Set temp2 = (temp2 / 64) & 3
-          lda temp2
+          ;; Set temp2 = (playerLocked / 64) & 3
+          lda playerLocked
           lsr
           lsr
           lsr
@@ -104,12 +104,9 @@ GetPlayerLockedP3 .proc
           lsr
           and # 3
           sta temp2
-
-          ;; TODO: #1291 GPL_lockedState = temp2
+          sta GPL_lockedState
 
           rts
-
-
 
 .pend
 

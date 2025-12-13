@@ -588,8 +588,8 @@ ConvertToBCDLoop
 
             dey
             ; decrement tens counter
-
-          ;; TODO: #1265 bpl ConvertToBCDLoop
+          ;; Issue #1265: Loop while Y >= 0
+          bpl ConvertToBCDLoop
 
             cld
             ; clear decimal mode
@@ -798,21 +798,14 @@ SetScoreBytes .proc
           ;; already have BCD or bad BCD values)
 
           ;; Write raw byte values: $ee/$CF/$ee or health BCD values
-
-
-          ;; TODO: #1265 lda temp4
-
-          ;; TODO: #1265 sta score
-
-          ;; TODO: #1265 ; Middle 2 digits always "CF" (literal hex - bad BCD)
-
-          ;; TODO: #1265 lda # $CF
-
-          ;; TODO: #1265 sta score+1
-
-          ;; TODO: #1265 lda temp5
-
-          ;; TODO: #1265 sta score+2
+          ;; Issue #1265: Set score bytes for P3/P4 health display
+          lda temp4
+          sta score
+          ;; Middle 2 digits always "CF" (literal hex - bad BCD)
+          lda # $CF
+          sta score+1
+          lda temp5
+          sta score+2
 
 
 
@@ -851,19 +844,13 @@ DisplayCF2026 .proc
           ;; score+1 (digits 2-3) = $20 (20)
 
           ;; score+2 (digits 4-5) = $26 (26)
-
-
-          ;; TODO: #1265 lda # $CF
-
-          ;; TODO: #1265 sta score
-
-          ;; TODO: #1265 lda # $20
-
-          ;; TODO: #1265 sta score+1
-
-          ;; TODO: #1265 lda # $26
-
-          ;; TODO: #1265 sta score+2
+          ;; Issue #1265: Set score bytes for CF2026 display
+          lda # $CF
+          sta score
+          lda # $20
+          sta score+1
+          lda # $26
+          sta score+2
 
 
 

@@ -58,8 +58,7 @@ ReadZero:
           jmp BS_return
 
           ;; Bit mask lookup table for playfield column bits
-          ;; TODO: #1311 ifndef BitMask
-          ;; TODO: #1311 BitMask       BYTE 1,2,4,8,$10,$20,$40,$80
+          ;; Note: BitMask table is defined in Source/Data/CharacterMissileTables.s
 
 
 

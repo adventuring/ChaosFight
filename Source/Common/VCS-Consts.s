@@ -5,9 +5,8 @@
 
           BuildPlatform = 2600
 
-          NTSC = "n"[0]
-          PAL = "p"[0]
-          SECAM = "s"[0]
+          ;; NTSC, PAL, SECAM are defined in Constants.s (values 0, 1, 2)
+          ;; Removed duplicate definitions to avoid conflicts
 
 ;;; 
 ;;; Input pins
@@ -54,7 +53,7 @@
           ;; Console
           SWCHBReset = $01
           SWCHBSelect = $02
-          .if TV != SECAM
+          .if TVStandard != SECAM
             SWCHBColor = $08
           .fi
           SWCHBP0Advanced = $40
@@ -63,7 +62,7 @@
 ;;;
 ;;; Palettes
 
-          .switch TV
+          .switch TVStandard
           .case NTSC
           COLGREY = 0
           COLYELLOW = $10
@@ -131,7 +130,7 @@
 ;;; models, in particular since SECAM is weird.
 
 colu:     .macro co, lu=$7
-          .switch TV
+          .switch TVStandard
 
 ;;; SECAM
           .case SECAM
@@ -153,7 +152,7 @@ colu:     .macro co, lu=$7
           .default
           .byte (\co | \lu)
           
-          .endswitch            ; TV
+          .endswitch            ; TVStandard
           
           .endm
 
@@ -161,7 +160,7 @@ colu:     .macro co, lu=$7
           ;; but  blue or  yellow instead,  to guarantee  a good  enough
 	;; display on a black or white background.
 mcolu:     .macro co, lu=$7
-          .switch TV
+          .switch TVStandard
 
 ;;; SECAM
           .case SECAM
@@ -183,12 +182,12 @@ mcolu:     .macro co, lu=$7
           .default
           .byte (\co | \lu)
           
-          .endswitch            ; TV
+          .endswitch            ; TVStandard
           
           .endm
 
 ldacolu .macro co, lu=$7
-          .switch TV
+          .switch TVStandard
 
 ;;; SECAM
           .case SECAM
@@ -210,13 +209,13 @@ ldacolu .macro co, lu=$7
           .default
           lda #(\co | \lu)
           
-          .endswitch            ; TV
+          .endswitch            ; TVStandard
 .endm
            
 ;;;
 
 colors:   .macro co1, co2
-          .switch TV
+          .switch TVStandard
 
 ;;; SECAM
           .case SECAM
@@ -232,7 +231,7 @@ colors:   .macro co1, co2
 
           .byte (\co1 | (\co2 >> 4))
 
-          .endswitch            ; TV
+          .endswitch            ; TVStandard
 .endm
 
           
@@ -264,7 +263,7 @@ colors:   .macro co1, co2
           ENABLED = $02          ; for ENAM0/1, ENABL, VSYNC, VBLANK
 
           VBlankLatchINPT45 = $40
-          VBlankGroundINPT0123 = $80
+          ;; VBlankGroundINPT0123 is defined in Constants.s ($C0) - removed duplicate
 
           REFLECTED = $08       ; for REFP0
 
@@ -274,13 +273,13 @@ colors:   .macro co1, co2
 
 ;;;
 
-          .switch TV
+          .switch TVStandard
           .case NTSC
           VBlankLines = 40
           KernelLines = 192
           OverscanLines = 30
           FrameDuration = 16686
-          FramesPerSecond = 60
+          ;; FramesPerSecond is defined in Constants.s - removed duplicate
           
           .default
           ;;  PAL and SECAM match
@@ -288,7 +287,7 @@ colors:   .macro co1, co2
           KernelLines = 228
           OverscanLines = 36
           FrameDuration = 20055
-          FramesPerSecond = 50
+          ;; FramesPerSecond is defined in Constants.s - removed duplicate
           .endswitch
 
           VBlankWorkLines = VBlankLines - 3

@@ -8,6 +8,10 @@
 ;; CRITICAL: Include VCS.s to define TIA and RIOT register symbols (SWCHA, SWACNT, SWBCNT, etc.)
 .include "Source/Common/VCS.s"
 
+;; CRITICAL: Include VCS-Consts.s for VCS constants and macros (ldacolu, etc.)
+;; This must be after VCS.s (uses INPT4, INPT5, etc.) and before Macros.s (which uses .ldacolu)
+.include "Source/Common/VCS-Consts.s"
+
 ;; Define TV standard constants for .if  checks in MultiSpriteSuperChip.s
 ;; These are set by the platform files (NTSC.s, PAL.s, SECAM.s) before
 ;; Preamble.s is included. The platform files define TVStandard constants.
@@ -46,6 +50,8 @@
 .include "Source/Common/Colors.s"
 .include "Source/Common/Constants.s"
 .include "Source/Common/Enums.s"
+;; CRITICAL: Include 48Pixels.s before Macros.s (Macros.s uses .MiniText from 48Pixels.s)
+.include "Source/Common/48Pixels.s"
 .include "Source/Common/Macros.s"
 .include "Source/Common/Variables.s"
 

@@ -18,6 +18,17 @@
           ;; after compilation
           ;; Songs stored in Bank 14: IDs 0-Bank14MaxSongID (currently Bernie, OCascadia, Revontuli, EXO, Grizzards, MagicalFairyForce, Bolero)
 
+          ;; Include pointer tables BEFORE songs/sounds (uses forward references like SongPointers1.s in Bank0.s)
+SongPointers2Start:
+          .include "Source/Data/SongPointers2.s"
+SongPointers2End:
+          .warn format("// Bank 14: %d bytes = SongPointers2", [SongPointers2End - SongPointers2Start])
+
+SoundPointersStart:
+          .include "Source/Data/SoundPointers.s"
+SoundPointersEnd:
+          .warn format("// Bank 14: %d bytes = SoundPointers", [SoundPointersEnd - SoundPointersStart])
+
 Bank15DataStart:
 BernieSongStart:
 
@@ -191,16 +202,6 @@ SoundLandingDamageStart:
 .fi
 SoundLandingDamageEnd:
             .warn format("// Bank 14: %d bytes = Sound.SoundLandingDamage", [SoundLandingDamageEnd - SoundLandingDamageStart])
-SoundPointersStart:
-
-          ;; Data segment for sound and song pointer tables
-.include "Source/Data/SoundPointers.s"
-SoundPointersEnd:
-            .warn format("// Bank 14: %d bytes = SoundPointers", [SoundPointersEnd - SoundPointersStart])
-SongPointers2Start:
-.include "Source/Data/SongPointers2.s"
-SongPointers2End:
-            .warn format("// Bank 14: %d bytes = SongPointers2", [SongPointers2End - SongPointers2Start])
 Bank14DataEnds:
 
           ;; Sounds Bank Helper Functions And Data

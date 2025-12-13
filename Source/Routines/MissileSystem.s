@@ -854,22 +854,29 @@ AfterPlaySoundEffectBounce:
 
           ;; Invert X velocity (bounce back)
           ;; Set temp6 = 0 - missileVelocityX[temp1]
+          lda temp1
+          asl
+          tax
           lda # 0
           sec
-          sbc missileVelocityX
-          sta temp6
-
-          lda # 0
-          sec
-          sbc missileVelocityX
+          sbc missileVelocityX,x
           sta temp6
 
           ;; Reduce by 25% (divide by 4, then subtract)
-            lda temp6
-            lsr
-            lsr
-            sta velocityCalculation
+          lda temp6
+          lsr
+          lsr
+          sta velocityCalculation
           ;; let missileVelocityX[temp1] = temp6 - velocityCalculation
+          lda temp6
+          sec
+          sbc velocityCalculation
+          sta temp6
+          lda temp1
+          asl
+          tax
+          lda temp6
+          sta missileVelocityX,x
           ;; Continue without deactivating - missile bounces
           jmp MissileSystemNoHit
 
@@ -907,17 +914,9 @@ DecrementLifetime:
           dec missileLifetimeValue
           lda missileLifetimeValue
           cmp # 0
-          bne LifetimeNotExpired
-          jmp DeactivateMissile
-LifetimeNotExpired:
-
-          ;; tail call
-          dec missileLifetimeValue
-          lda missileLifetimeValue
-          cmp # 0
-          bne LifetimeStillActive
-          jmp DeactivateMissile
-LifetimeStillActive:
+          beq DeactivateMissile
+          bmi DeactivateMissile
+          ;; Lifetime still valid, continue
 
           lda temp1
           asl

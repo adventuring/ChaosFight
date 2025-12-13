@@ -799,11 +799,10 @@ ProcessAttackerAttacks .proc
           tax
           lda playerAttackType_R,x
           sta temp1
-          ;; Cache hitbox for this attacker (calculated once, used for
-          rts
-
-          ;; all
-          ;; defenders)
+          ;; Skip if projectile/ranged attack type (1 = projectile, handled by missile system)
+          cmp # 1
+          beq ProcessAttackerAttacksDone
+          ;; Cache hitbox for this attacker (calculated once, used for all defenders)
           jsr CalculateAttackHitbox
 
           ;; Hitbox values are already written into cachedHitbox*_W via aliasing
@@ -855,7 +854,10 @@ NextDefender:
           lda defenderID
           cmp # 4
           bcc ProcessDefenderLoop
+
+ProcessAttackerAttacksDone:
           ;; Returns: Near (return thisbank) - called same-bank
+          rts
 .pend
 
 ProcessAllAttacksDone .proc

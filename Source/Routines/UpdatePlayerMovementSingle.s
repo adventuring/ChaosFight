@@ -43,23 +43,16 @@ UpdatePlayerMovementSingle .proc
 NoXCarry:
 
           ;; Apply integer velocity component
-          ;; Set playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + playerVelocityX[currentPlayer]
+          ;; Set playerX[currentPlayer] = playerX[currentPlayer] + playerVelocityX[currentPlayer]
           lda currentPlayer
           asl
           tax
-          lda playerSubpixelX_R,x
+          lda playerX,x
           sta temp6
-          lda currentPlayer
-          asl
-          tax
           lda playerVelocityX,x
           clc
           adc temp6
-          lda currentPlayer
-          asl
-          tax
-          sta playerSubpixelX_W,x
-          ;; Position already synced above
+          sta playerX,x
           ;; Apply Y Velocity To Y Position (8.8 fixed-point)
           ;; Use batariBASIC’s built-in 16-bit addition for carry detection
           ;; Set subpixelAccumulator = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]

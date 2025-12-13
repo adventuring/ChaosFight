@@ -48,20 +48,14 @@ FindWinnerNextPlayer:
           bcs FW_LoopDone
           jmp FW_Loop
 FW_LoopDone:
-
-.pend
-
-FindWinnerNoWinnerFound .proc
-
-          ;; If no winner found (all eliminated), pick last eliminated
+          ;; Check if a winner was found (all players eliminated = winnerPlayerIndex == 255)
           lda winnerPlayerIndex_R
           cmp # 255
           bne FindWinnerDone
-
+          ;; No winner found (all eliminated) - find last eliminated player
           jmp FindLastEliminated
 
 FindWinnerDone:
-
           jmp BS_return
 
 .pend

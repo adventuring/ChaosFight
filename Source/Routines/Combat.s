@@ -24,11 +24,25 @@ GetWeightBasedDamage .proc
           tax
           lda CharacterWeights,x
           sta temp3
-          jmp BS_return
-
+          ;; Check weight tier and set damage value
+          cmp # 16
+          bcs CheckTier2
+          ;; Weight <= 15: 12 damage
+          lda # 12
+          sta temp2
+          rts
+CheckTier2:
+          cmp # 26
+          bcs Tier3
+          ;; Weight <= 25: 18 damage
+          lda # 18
+          sta temp2
+          rts
+Tier3:
+          ;; Weight > 25: 22 damage
           lda # 22
           sta temp2
-          jmp BS_return
+          rts
 
 .pend
 
@@ -878,16 +892,6 @@ ProcessAttackerLoop:
           lda attackerID
           asl
           tax
-          lda playerHealth,x
-          beq CheckAttackState
-          bmi CheckAttackState
-          jmp NextAttacker
-CheckAttackState:
-
-          lda attackerID
-          asl
-          tax
-          lda playerHealth,x
           beq CheckAttackWindow
           bmi CheckAttackWindow
           jmp NextAttacker

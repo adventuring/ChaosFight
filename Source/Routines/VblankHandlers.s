@@ -1030,25 +1030,18 @@ AfterCheckBoundaryCollisions:
           lda # 3
           sta currentPlayer
 VPC_Loop:
-          ;; if currentPlayer >= 2 then jmp VblankCheckQuadtariSkip
+          ;; if currentPlayer >= 2 then check Quadtari status
           lda currentPlayer
           cmp # 2
+          bcc VblankProcessCollision
+          ;; currentPlayer >= 2, check if Quadtari detected
+          lda controllerStatus
+          and # SetQuadtariDetected
+          bne VblankProcessCollision
+          ;; No Quadtari - skip players 2-3 collision checks
+          jmp VblankGameMainQuadtariCheckDone
 
-          bcc ProcessCollision
-
-          jmp ProcessCollision
-
-          ProcessCollision:
-
-          jmp VblankProcessCollision
-
-.pend
-
-VblankCheckQuadtariSkip .proc
-          ;; if controllerStatus & SetQuadtariDetected then jmp VblankProcessCollision
-          jmp VblankGameMainQuadtariSkip
-
-VblankProcessCollision
+VblankProcessCollision:
           ;; Check for Radish Goblin bounce movement (ground and wall bounces)
           ;; Cross-bank call to CheckPlayfieldCollisionAllDirections in bank 10
           lda # >(AfterCheckPlayfieldCollisionAllDirections-1)

@@ -122,7 +122,7 @@ InputDonePlayer0Input
           lda temp2
           cmp # 0
           bne CheckPlayer1State
-          ;; TODO: #1310 InputDonePlayer1Input
+InputDonePlayer1Input:
 CheckPlayer1State:
 
 

@@ -39,7 +39,10 @@ UpdatePlayerMovement .proc
           ;; Mutates: currentPlayer, player positions (via UpdatePlayerMovementSingle)
           ;; Called Routines: UpdatePlayerMovementSingle
           ;; Constraints: Must be colocated with UpdatePlayerMovementQuadtariSkip (jmp target)
-          ;; TODO: #1254 for currentPlayer = 0 to 1
+          ;; Issue #1254: Loop through currentPlayer = 0 to 1
+          lda # 0
+          sta currentPlayer
+UPM_Players01Loop:
           ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
           lda # >(AfterUpdatePlayerMovementSingle-1)
           pha
@@ -53,6 +56,13 @@ UpdatePlayerMovement .proc
           jmp BS_jsr
 
 AfterUpdatePlayerMovementSingle:
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 2
+          bcs UPM_Players01LoopDone
+          jmp UPM_Players01Loop
+UPM_Players01LoopDone:
 
           ;; Players 2-3 only if Quadtari detected
 
@@ -68,7 +78,10 @@ UpdatePlayerMovementQuadtariCheck .proc
 
 UpdatePlayerMovementQuadtari:
 
-          ;; TODO: #1254 for currentPlayer = 2 to 3
+          ;; Issue #1254: Loop through currentPlayer = 2 to 3
+          lda # 2
+          sta currentPlayer
+UPM_Players23Loop:
           ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
           lda # >(AfterUpdatePlayerMovementSingleQuadtari-1)
           pha
@@ -82,6 +95,13 @@ UpdatePlayerMovementQuadtari:
           jmp BS_jsr
 
 AfterUpdatePlayerMovementSingleQuadtari:
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcs UPM_Players23LoopDone
+          jmp UPM_Players23Loop
+UPM_Players23LoopDone:
 
 .pend
 

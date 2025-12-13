@@ -44,7 +44,10 @@ CheckBoundaryCollisions:
 
 SkipRandomArena:
 
-          ;; TODO: #1254 for temp1 = 0 to 3
+          ;; Issue #1254: Loop through temp1 = 0 to 3
+          lda # 0
+          sta temp1
+PBC_Loop:
           ;; if temp1 < 2 then jmp PBC_ProcessPlayer
           lda temp1
           cmp # 2
@@ -76,6 +79,13 @@ PBC_ProcessPlayer .proc
 .pend
 
 PBC_NextPlayer .proc
+          ;; Issue #1254: Loop increment and check
+          inc temp1
+          lda temp1
+          cmp # 4
+          bcs PBC_LoopDone
+          jmp PBC_Loop
+PBC_LoopDone:
           rts
 .pend
 

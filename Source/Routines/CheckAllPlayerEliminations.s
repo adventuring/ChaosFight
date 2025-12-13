@@ -48,8 +48,10 @@ CheckAllPlayerEliminations:
           ;; PlaySoundEffect (bank15, via TriggerEliminationEffects)
           ;;
           ;; Constraints: None
-          ;; Check each player for elimination using FOR loop
-          ;; TODO: #1254 for currentPlayer = 0 to 3
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+CAPE_Loop:
           ;; Cross-bank call to CheckPlayerElimination in bank 14
           lda # >(CAPE_CheckPlayerEliminationReturn-1)
           pha
@@ -63,6 +65,13 @@ CheckAllPlayerEliminations:
           jmp BS_jsr
 
 CAPE_CheckPlayerEliminationReturn:
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcs CAPE_LoopDone
+          jmp CAPE_Loop
+CAPE_LoopDone:
 
 CAPE_next_label_1 .proc
 

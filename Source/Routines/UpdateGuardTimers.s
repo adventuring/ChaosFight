@@ -12,8 +12,10 @@ UpdateGuardTimers .proc
           ;; timer for one player
           ;; Constraints: Tail call to UpdateSingleGuardTimer for
           ;; player 3
-          ;; Optimized: Loop through all players instead of individual calls
-          ;; TODO: #1254 for temp1 = 0 to 3
+          ;; Issue #1254: Loop through temp1 = 0 to 3
+          lda # 0
+          sta temp1
+UGT_Loop:
           ;; Cross-bank call to UpdateSingleGuardTimer in bank 6
           lda # >(UpdateGuardTimersReturn-1)
           pha
@@ -27,6 +29,13 @@ UpdateGuardTimers .proc
           jmp BS_jsr
 
 UpdateGuardTimersReturn:
+          ;; Issue #1254: Loop increment and check
+          inc temp1
+          lda temp1
+          cmp # 4
+          bcs UGT_LoopDone
+          jmp UGT_Loop
+UGT_LoopDone:
 
 .pend
 

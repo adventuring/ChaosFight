@@ -16,8 +16,10 @@ FindWinner .proc
           sta winnerPlayerIndex_W
           ;; Invalid initially
 
-          ;; Check each player using FOR loop
-          ;; TODO: #1254 for currentPlayer = 0 to 3
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+FW_Loop:
           ;; Cross-bank call to IsPlayerEliminated in bank 13
           lda # >(AfterIsPlayerEliminated-1)
           pha
@@ -31,6 +33,13 @@ FindWinner .proc
           jmp BS_jsr
 
 AfterIsPlayerEliminated:
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcs FW_LoopDone
+          jmp FW_Loop
+FW_LoopDone:
 
           lda temp2
           bne FindWinnerNextPlayer

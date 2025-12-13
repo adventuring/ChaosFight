@@ -132,9 +132,19 @@ SetSpritePositions:
           ;; Missiles are available for projectiles since participants
           ;; use proper sprites
           ;; Set Participant 3 & 4 positions (arrays [2] & [3] → P2 & P3 sprites)
-          ;; Loop over participants 2-3 instead of duplicate calls
-          ;; TODO: #1254 for temp1 = 2 to 3
+          ;; Issue #1254: Loop through temp1 = 2 to 3
+          lda # 2
+          sta temp1
+SSP_ParticipantLoop:
           jsr CopyParticipantSpritePosition
+
+          ;; Issue #1254: Loop increment and check
+          inc temp1
+          lda temp1
+          cmp # 4
+          bcs SSP_ParticipantLoopDone
+          jmp SSP_ParticipantLoop
+SSP_ParticipantLoopDone:
 
 SSP_NextParticipant .proc
 

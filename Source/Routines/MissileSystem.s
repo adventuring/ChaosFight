@@ -444,7 +444,9 @@ ApplyGravity:
           lda temp1
           asl
           tax
-          lda temp3
+          lda missileVelocityY,x
+          clc
+          adc # GravityPerFrame
           sta missileVelocityY,x
 GravityDone
           ;; Update stored Y velocity

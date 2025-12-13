@@ -219,6 +219,8 @@ AfterMovePlayerToTargetP2:
           inc fallComplete
 DonePlayer2MoveLabel:
           jmp DonePlayer2Move
+
+DonePlayer2Move:
           ;; Player 2 movement complete (skipped if not active)
           ;; Returns: Far (return otherbank)
           ;;

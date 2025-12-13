@@ -443,8 +443,7 @@ CheckVerticalOverlap:
           sbc cachedHitboxTop_R
           bcc NoHit
           beq NoHit
-          jmp CheckBottomOverlap
-NoHit:
+
 CheckBottomOverlap:
 
           ;; Defender top edge >= hitbox bottom edge (no overlap)
@@ -719,12 +718,7 @@ AreaHitbox .proc
           lda playerX,x
           sta temp2
           ;; Left edge: center - radius
-          ;; Set cachedHitboxLeft_W = temp2 - 24          lda temp2          sec          sbc # 24          sta cachedHitboxLeft_W
-          lda temp2
-          sec
-          sbc # 24
-          sta cachedHitboxLeft_W
-
+          ;; Set cachedHitboxLeft_W = temp2 - 24
           lda temp2
           sec
           sbc # 24

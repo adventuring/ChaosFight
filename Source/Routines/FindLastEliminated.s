@@ -18,27 +18,25 @@ FindLastEliminated .proc
 
           ;; Check each player elimination order using FOR loop
           ;; Issue #1254: Loop through currentPlayer = 3 downto 0
+          ;; temp4 stores the highest elimination order found so far
           lda # 3
           sta currentPlayer
 FLE_Loop:
-          ;; Set temp4 = eliminationOrder_R[currentPlayer]
+          ;; Load current player's elimination order
+          lda currentPlayer
+          asl
+          tax
+          lda eliminationOrder_R,x
+          ;; Compare to highest found so far (temp4)
+          sec
+          sbc temp4
+          bcc SkipUpdateWinner
+          ;; Current player has higher (or equal) elimination order - update winner
           lda currentPlayer
           asl
           tax
           lda eliminationOrder_R,x
           sta temp4
-          ;; Note: Original code had "if temp4 > temp4" which is always false
-          ;; This appears to be dead code, but keeping the winner assignment
-          ;; Set winnerPlayerIndex_W = currentPlayer
-          lda currentPlayer
-          sta winnerPlayerIndex_W
-          lda temp4
-          sec
-          sbc temp4
-          bcc SkipUpdateWinner
-
-          beq SkipUpdateWinner
-
           lda currentPlayer
           sta winnerPlayerIndex_W
 
@@ -48,10 +46,6 @@ SkipUpdateWinner:
           bpl FLE_Loop
 
           jmp BS_return
-
-.pend
-
-FLE_next_label_1 .proc
 
 .pend
 

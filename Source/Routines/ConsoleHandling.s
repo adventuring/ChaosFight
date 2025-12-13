@@ -61,15 +61,17 @@ WarmStartClearAll:
           ;; DetectPads is in Bank 12 (same bank as WarmStart), but it uses jmp BS_return
           ;; so we must use BS_jsr even though it's same-bank (inefficient but correct)
           ;; STACK PICTURE: [] (empty, WarmStart entry)
-          lda # ((>(AfterDetectPadsWarmStart-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
+          ;; Use raw addresses (not encoded) for consistency with other DetectPads calls
+          ;; BS_jsr handles the stack correctly for cross-bank calls
+          lda # >(AfterDetectPadsWarmStart-1)
           pha
-          ;; STACK PICTURE: [SP+0: AfterDetectPadsWarmStart hi (encoded)]
+          ;; STACK PICTURE: [SP+0: AfterDetectPadsWarmStart hi]
           lda # <(AfterDetectPadsWarmStart-1)
           pha
           ;; STACK PICTURE: [SP+1: AfterDetectPadsWarmStart hi] [SP+0: AfterDetectPadsWarmStart lo]
-          lda # ((>(DetectPads-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
+          lda # >(DetectPads-1)
           pha
-          ;; STACK PICTURE: [SP+2: AfterDetectPadsWarmStart hi] [SP+1: AfterDetectPadsWarmStart lo] [SP+0: DetectPads hi (encoded)]
+          ;; STACK PICTURE: [SP+2: AfterDetectPadsWarmStart hi] [SP+1: AfterDetectPadsWarmStart lo] [SP+0: DetectPads hi]
           lda # <(DetectPads-1)
           pha
           ;; STACK PICTURE: [SP+3: AfterDetectPadsWarmStart hi] [SP+2: AfterDetectPadsWarmStart lo] [SP+1: DetectPads hi] [SP+0: DetectPads lo]

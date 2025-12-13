@@ -704,10 +704,7 @@ DivideBy100 .proc
           ;;
           ;; OUTPUT: temp2 = quotient (0, 1, or 2)
           ;; Fast approximation for values 0-255
-          jmp BS_return
-
-          jmp BS_return
-
+          ;; TODO: #1311 Implement DivideBy100 using range checks
           lda # 0
           sta temp2
           jmp BS_return

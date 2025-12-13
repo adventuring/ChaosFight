@@ -59,16 +59,7 @@ NoXCarry:
           asl
           tax
           sta playerSubpixelX_W,x
-          ;; Sync integer position for rendering
-          ;; Set playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
-          lda currentPlayer
-          asl
-          tax
-          lda playerSubpixelX_R,x
-          lda currentPlayer
-          asl
-          tax
-          sta playerX,x
+          ;; Position already synced above
           ;; Apply Y Velocity To Y Position (8.8 fixed-point)
           ;; Use batariBASIC’s built-in 16-bit addition for carry detection
           ;; Set subpixelAccumulator = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]

@@ -33,6 +33,14 @@ FW_Loop:
           jmp BS_jsr
 
 AfterIsPlayerEliminated:
+          ;; Check if this player is not eliminated (temp2 = 0 means not eliminated)
+          lda temp2
+          bne FindWinnerNextPlayer
+          ;; Player is not eliminated - set as winner
+          lda currentPlayer
+          sta winnerPlayerIndex_W
+
+FindWinnerNextPlayer:
           ;; Issue #1254: Loop increment and check
           inc currentPlayer
           lda currentPlayer
@@ -40,14 +48,6 @@ AfterIsPlayerEliminated:
           bcs FW_LoopDone
           jmp FW_Loop
 FW_LoopDone:
-
-          lda temp2
-          bne FindWinnerNextPlayer
-
-          lda currentPlayer
-          sta winnerPlayerIndex_W
-
-FindWinnerNextPlayer:
 
 .pend
 

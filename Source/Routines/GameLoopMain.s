@@ -218,11 +218,11 @@ FCS_Loop:
           cmp # 2
 
           bcc FrootyChargeUpdate
-
-          jmp FrootyChargeQuadtariCheck
-
-          FrootyChargeQuadtariCheck:
-
+          ;; currentPlayer >= 2, check if Quadtari detected
+          lda controllerStatus
+          and # SetQuadtariDetected
+          beq FrootyChargeUpdateNext
+          ;; Quadtari detected, process Frooty charge for player
           jmp FrootyChargeUpdate
 
 FrootyChargeUpdate:
@@ -256,10 +256,6 @@ FrootyChargeUpdateNext:
           dec currentPlayer
           bpl FCS_Loop
 
-.pend
-
-FrootyChargeQuadtariCheck .proc
-          ;; This proc is now inlined above
 .pend
 
 UpdateSoundEffects .proc

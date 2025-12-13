@@ -153,7 +153,7 @@ DonePlayer1Move:
           tax
           lda playerCharacter,x
           cmp # NoCharacter
-          beq DonePlayer2MoveForward
+          beq DonePlayer2Move
 SetPlayer2Target:
           ;; Check if 4-player mode for target X
           lda # 1
@@ -235,10 +235,10 @@ DonePlayer2MoveLabel:
 .pend
 
           ;; Move Player 3 from quadrant to target (if active)
+          ;; Player 3 only active in 4-player mode
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
-          bne MovePlayer3
+          beq DonePlayer3Move
 
 MovePlayer3:
           ;; Check if player 3 is active

@@ -98,8 +98,6 @@ PAI_UseJoy0 .proc
 PAI_ExecuteAttack .proc
           ;; Returns: Far (return otherbank)
 
-          jmp BS_return
-
           ;; Set temp4 = playerCharacter[temp1]
           lda temp1
           asl
@@ -116,10 +114,9 @@ PAI_ExecuteAttack .proc
           pha
           lda # <(DispatchCharacterAttack-1)
           pha
-                    ldx # 9
+          ldx # 9
           jmp BS_jsr
 AfterDispatchCharacterAttack:
-
 
           jmp BS_return
 

@@ -280,11 +280,16 @@ CheckEnhancedPause .proc
           sta temp1
 
           ;; Always check Game Select switch first (works with any controller)
-          ;; STACK PICTURE: [SP+1: caller ret hi] [SP+0: caller ret lo] (from jsr CheckEnhancedPause)
-          ;; RTS will pop 2 bytes and return to caller
+          ;; If switchselect is pressed, set temp1 = 1 and return
+          lda switchselect
+          beq CheckEnhancedPauseButtons
+
+          lda # 1
+          sta temp1
           rts
 
-          Then check enhanced pause buttons for the specified player
+CheckEnhancedPauseButtons:
+          ;; Then check enhanced pause buttons for the specified player
           ;; Joy2B+ Button III uses different registers than Button II/C
           lda temp2
           bne CheckPlayer2Pause

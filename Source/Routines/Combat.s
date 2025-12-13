@@ -716,6 +716,8 @@ AreaHitbox .proc
           asl
           tax
           lda playerX,x
+          clc
+          adc # 8
           sta temp2
           ;; Left edge: center - radius
           ;; Set cachedHitboxLeft_W = temp2 - 24
@@ -737,12 +739,7 @@ AreaHitbox .proc
           lda playerY,x
           sta temp2
           ;; Top edge: center - radius
-          ;; Set cachedHitboxTop_W = temp2 - 24          lda temp2          sec          sbc # 24          sta cachedHitboxTop_W
-          lda temp2
-          sec
-          sbc # 24
-          sta cachedHitboxTop_W
-
+          ;; Set cachedHitboxTop_W = temp2 - 24
           lda temp2
           sec
           sbc # 24

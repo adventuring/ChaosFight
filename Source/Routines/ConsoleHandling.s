@@ -130,15 +130,15 @@ AfterDetectPadsWarmStart:
           
           ;; Cross-bank call to BeginPublisherPrelude in bank 13
           ;; STACK PICTURE: [] (empty, after previous BS_return)
-          lda # >(AfterBeginPublisherPreludeWarmStart-1)
+          lda # ((>(AfterBeginPublisherPreludeWarmStart-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
-          ;; STACK PICTURE: [SP+0: AfterBeginPublisherPreludeWarmStart hi]
+          ;; STACK PICTURE: [SP+0: AfterBeginPublisherPreludeWarmStart hi (encoded)]
           lda # <(AfterBeginPublisherPreludeWarmStart-1)
           pha
           ;; STACK PICTURE: [SP+1: AfterBeginPublisherPreludeWarmStart hi] [SP+0: AfterBeginPublisherPreludeWarmStart lo]
-          lda # >(BeginPublisherPrelude-1)
+          lda # ((>(BeginPublisherPrelude-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
-          ;; STACK PICTURE: [SP+2: AfterBeginPublisherPreludeWarmStart hi] [SP+1: AfterBeginPublisherPreludeWarmStart lo] [SP+0: BeginPublisherPrelude hi]
+          ;; STACK PICTURE: [SP+2: AfterBeginPublisherPreludeWarmStart hi] [SP+1: AfterBeginPublisherPreludeWarmStart lo] [SP+0: BeginPublisherPrelude hi (encoded)]
           lda # <(BeginPublisherPrelude-1)
           pha
           ;; STACK PICTURE: [SP+3: AfterBeginPublisherPreludeWarmStart hi] [SP+2: AfterBeginPublisherPreludeWarmStart lo] [SP+1: BeginPublisherPrelude hi] [SP+0: BeginPublisherPrelude lo]

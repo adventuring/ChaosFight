@@ -4,11 +4,11 @@
     Weight: 115 kg (250 lbs)
     Attack: Mêlée (sword)
     Special: (none - armor and sword are normal abilities)
-    Original Game: Knight Guy: Escapes from Castle, In Another Castle, and 30 Squares of Fate
+    Original Games: Knight Guy in Low-Res World (2600), Castle Days (7800), In Another Castle (7800), and others
     Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.games/,VHZC Games}
-    Purchase: @url{https://store.atariage.com/products/knight-guy-in-another-castle-atari-2600,Knight Guy: In Another Castle at AtariAge Store}
+    Purchase: @url{https://store.atariage.com/products/knight-guy-in-low-res-world-castle-days-atari-7800,Knight Guy: Castle Days (7800) at AtariAge Store}; @url{https://store.atariage.com/products/knight-guy-in-another-castle-atari-2600,Knight Guy: In Another Castle at AtariAge Store}
     Download: @url{https://vhzc.itch.io/knight-guy-in-another-castle,Knight Guy free download}
-    Forum: @url{https://forums.atariage.com/topic/,Knight Guy release thread}
+    Forum: @url{https://forums.atariage.com/topic/356587-knight-guy-in-another-castle/,Knight Guy: In Another Castle release thread}
 @end group
 @end display
 

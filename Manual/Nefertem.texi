@@ -7,7 +7,7 @@
     Original Game: Phantasia (in development)
     Author: Zephyr & Bruce-Robert Pocock (Bruce-Robert Pocock) @url{https://interworldly.com,Interworldly.com}
     Website: @url{https://phantasiagame.com,Phantasia Official Website} (no downloads available yet)
-    Forum: @url{https://forums.atariage.com/topic/,Phantasia development thread}
+    Forum: @url{https://forums.atariage.com/topic/343031-phantasia-atari-7800-arpg/,Phantasia development thread}
 @end group
 @end display
 

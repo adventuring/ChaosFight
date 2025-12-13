@@ -10,7 +10,7 @@
     Purchase: @url{https://store.atariage.com/products/grizzards-atari-2600,Grizzards at AtariAge Store}; @url{https://grizzards.com,Grizzards Official Website}; @url{https://atari.com/pages/atari-vcs-store,Grizzards on Atari VCS eShop}; @url{https://store.atariage.com/store_search?q=little+cupid+tales,Little Cupid Tales at AtariAge Store}
     Website: @url{https://phantasiagame.com,Phantasia Official Website} (in development, no downloads available yet)
     Download: @url{https://grizzards.com,Grizzards free download}
-    Forum: @url{https://forums.atariage.com/topic/,Grizzards release thread}; @url{https://forums.atariage.com/topic/,Phantasia development thread}
+    Forum: @url{https://forums.atariage.com/topic/322957-grizzards-%E2%80%94-turn-based-rpg-completed/,Grizzards release thread}; @url{https://forums.atariage.com/topic/343031-phantasia-atari-7800-arpg/,Phantasia development thread}
 @end group
 @end display
 

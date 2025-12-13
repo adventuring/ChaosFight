@@ -15,78 +15,74 @@ These forum topic links are already complete and working:
 
 ---
 
-## ❌ Incomplete Links Requiring Search
+## ✅ Complete Links (Updated)
 
-### AtariAge Forum Topics (Missing Topic Numbers)
+### AtariAge Forum Topics (Now Complete)
 
-These links currently use `https://forums.atariage.com/topic/` without topic IDs:
+All forum links have been successfully researched and updated:
 
-#### High Priority (Referenced in Character Pages)
+#### Completed Links
 
 1. **RealSports Curling** (Ryan Witmer)
-   - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/curling-sweeper.html`, `26/manual/Characters.html`
-   - Search: "RealSports Curling" Ryan Witmer Atari 5200
+   - **FOUND:** `https://forums.atariage.com/topic/280059-realsports-curling-release-thread/`
+   - Status: ✅ Updated in all files
 
 2. **Grizzards** (Zephyr & Bruce-Robert Pocock)
-   - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/fat-tony.html`, `25/characters/megax.html`, `25/characters/radish-goblin.html`, `26/manual/Characters.html`
-   - Search: "Grizzards" Atari 2600 homebrew
+   - **FOUND:** `https://forums.atariage.com/topic/322957-grizzards-%E2%80%94-turn-based-rpg-completed/`
+   - Status: ✅ Updated in all files
 
 3. **Harpy's Curse** (Todd "Revontulli" Furmanski)
-   - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/harpy.html`, `26/manual/Characters.html`
-   - Search: "Harpy's Curse" Revontulli Atari 2600
+   - **FOUND:** `https://forums.atariage.com/topic/342060-harpys-curse-a-metroidvania-for-the-7800/`
+   - Status: ✅ Updated in all files
+   - Note: This is a 7800 game, not 2600
 
 4. **Knight Guy** (Vladimir "vhzc" Zúñiga)
-   - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/knight-guy.html`, `26/manual/Characters.html`
-   - Search: "Knight Guy" "In Another Castle" vhzc
+   - **FOUND:** `https://forums.atariage.com/topic/356587-knight-guy-in-another-castle/`
+   - Status: ✅ Updated in all files
 
 5. **Magical Fairy Force** (Ryan Witmer)
-   - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/frooty.html`, `25/characters/pork-chop.html`, `26/manual/Characters.html`
-   - Search: "Magical Fairy Force" Ryan Witmer Atari 2600
+   - **FOUND:** `https://forums.atariage.com/topic/307426-magical-fairy-force-release-thread/`
+   - Status: ✅ Updated in all files
+   - Note: Originally for Atari 5200
 
-6. **Fairy Drop** (Ryan Witmer)
-   - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/frooty.html`, `25/characters/pork-chop.html`, `26/manual/Characters.html`
-   - Search: "Fairy Drop" Ryan Witmer Atari 2600
+6. **Magical Fairy Drop** (Ryan Witmer)
+   - **FOUND:** `https://forums.atariage.com/topic/368460-magical-fairy-drop/`
+   - Status: ✅ Updated in all files
+   - Note: Development thread for new game
 
 7. **Ninjish Guy** (Vladimir "vhzc" Zúñiga)
-   - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/ninjish-guy.html`, `26/manual/Characters.html`
-   - Search: "Ninjish Guy" "Low-Res World" vhzc
+   - **FOUND:** `https://forums.atariage.com/topic/318874-2021-harmony-games-round-2-ninjish-guy-in-low-res-world/`
+   - Status: ✅ Updated in all files
+   - Note: This is a tournament/discussion thread; no dedicated release thread found
 
 8. **Rob 'N' Banks** (Ryan Witmer)
-   - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/pork-chop.html`, `26/manual/Characters.html`
-   - Search: "Rob N Banks" Ryan Witmer Atari 2600
+   - **FOUND:** `https://forums.atariage.com/topic/336986-rob-n-banks-release-thread/`
+   - Status: ✅ Updated in all files
+   - Note: Originally for Atari 5200
 
 9. **Ratcatcher** (Ryan Witmer)
-   - Current: `https://forums.atariage.com/topic/`
-   - Location: `25/characters/pork-chop.html`, `26/manual/Characters.html`
-   - Search: "Ratcatcher" Ryan Witmer Atari 2600
+   - **FOUND:** `https://forums.atariage.com/topic/253218-ratcatcher-a-new-original-atari-5200-game/`
+   - Status: ✅ Updated in all files
+   - Note: Originally for Atari 5200
 
-10. **Robo Tito** (Author TBD)
-    - Current: `https://forums.atariage.com/topic/`
-    - Location: `25/characters/robo-tito.html`, `26/manual/Characters.html`
-    - Search: "Robo Tito" "Tito el robotito" Atari 2600
+10. **Robo Tito** (Vladimir "vhzc" Zúñiga)
+    - **FOUND:** `https://forums.atariage.com/topic/365608-robo-tito-aka-tito-el-robotito-contra-los-fantasmas/`
+    - Status: ✅ Updated in all files
 
-11. **Phantasia** (Zephyr & Bruce-Robert Pocock - in development)
-    - Current: `https://forums.atariage.com/topic/`
-    - Location: `25/characters/nefertem.html`, `25/characters/radish-goblin.html`, `26/manual/Characters.html`
-    - Search: "Phantasia" Zephyr Pocock development thread
+11. **Phantasia** (Zephyr & Bruce-Robert Pocock)
+    - **FOUND:** `https://forums.atariage.com/topic/343031-phantasia-atari-7800-arpg/`
+    - Status: ✅ Updated in all files
+    - Note: 7800 game in development
 
 12. **Ducks Away** (Blake "SmittyB" Smith)
-    - Current: `https://forums.atariage.com/topic/`
-    - Location: `25/characters/shamone.html`, `26/manual/Characters.html`
-    - Search: "Ducks Away" SmittyB Blake Smith Atari 2600
+    - **FOUND:** `https://forums.atariage.com/topic/358950-ducks-away-wip/`
+    - Status: ✅ Updated in all files
+    - Note: WIP/development thread
 
-13. **Chaos Fight Forum Thread** (General support)
-    - Current: `https://forums.atariage.com/topic/`
-    - Location: `25/about/index.html`
-    - Search: "Chaos Fight" release thread or support thread
+13. **Chaos Fight Forum Thread**
+    - **STATUS:** Not yet created
+    - Action: Updated about page to note that forum thread will be created upon release
+    - Location: `26/about/index.html`
 
 #### Suggested Search Queries
 
@@ -110,27 +106,18 @@ site:forums.atariage.com "Chaos Fight"
 
 ---
 
-### Steam App Links (Missing App IDs)
+### Steam App Links (Now Complete)
 
-#### Missing Steam App ID
+#### Completed Steam App ID
 
-1. **Magical Fairy Force Championship Adventure**
-   - Current: `https://store.steampowered.com/app/`
-   - Location: 
-     - `25/characters/frooty.html` (line 41)
-     - `25/characters/pork-chop.html` (line 42)
-     - `26/manual/Characters.html` (line 542, 612)
-   - Search: "Magical Fairy Force Championship Adventure" Steam store
-
-#### Suggested Search Query
-
-```
-site:store.steampowered.com "Magical Fairy Force Championship Adventure"
-```
-
-Or search SteamDB:
-- Visit: https://steamdb.info/
-- Search for: "Magical Fairy Force Championship Adventure"
+1. **Magical Fairy Force Champion Edition**
+   - **FOUND:** `https://store.steampowered.com/app/2144100/Magical_Fairy_Force__Champion_Edition/`
+   - Status: ✅ Updated in all files
+   - Location: Updated in all character pages and manual
+   - Note: The game is called "Champion Edition" (not "Championship Adventure") on Steam
+   - Price: $4.99
+   - Release Date: May 29, 2023
+   - Developer: Phaser Cat Games LLC
 
 ---
 
@@ -185,15 +172,21 @@ Example:
 
 ## 📝 Notes
 
-- Some games may not have public forum threads if they're still in development
-- Some games may not be available on Steam
-- Consider adding a note like "Forum thread not yet available" for games without threads
-- The Chaos Fight forum thread needs to be created if it doesn't exist yet
+- All forum links have been successfully located and updated
+- Chaos Fight does not have its own forum thread yet; will be created upon release
+- Ninjish Guy does not have a dedicated release thread, but has a tournament/discussion thread
+- Some games (Harpy's Curse, Phantasia) are 7800 games, not 2600
+- Several Ryan Witmer games were originally for Atari 5200
+- Steam game is officially called "Magical Fairy Force Champion Edition" (not "Championship Adventure")
 
 ---
 
-**Last Updated:** Link validation review  
-**Status:** Incomplete - requires manual verification and updates
+**Last Updated:** December 2025 (Complete research and update)  
+**Status:** ✅ COMPLETE - All links researched and updated in:
+- Character HTML files (WWW/26/characters/*.html)
+- Manual HTML (WWW/26/manual/Characters.html)
+- TeXinfo source files (Manual/*.texi)
+- About page (WWW/26/about/index.html)
 
 
 

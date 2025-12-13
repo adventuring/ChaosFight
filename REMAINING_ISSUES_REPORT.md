@@ -194,30 +194,35 @@ These issues are mentioned in code comments but appear to be completed:
 
 ## Documentation / External Issues
 
-### WWW Link Completion
+### ✅ WWW Link Completion (COMPLETED)
 **File:** `WWW_LINK_SEARCH_RESULTS.md`  
-**Status:** Incomplete  
-**Description:** Multiple AtariAge forum topic links and Steam app links are missing topic IDs or app IDs. These need to be searched and updated in the HTML files.
+**Status:** ✅ Complete  
+**Completed:** December 2025  
+**Description:** All AtariAge forum topic links and Steam app links have been successfully researched and updated throughout the codebase.
 
-**Missing forum topics (13):**
-1. RealSports Curling
-2. Grizzards
-3. Harpy's Curse
-4. Knight Guy
-5. Magical Fairy Force
-6. Fairy Drop
-7. Ninjish Guy
-8. Rob 'N' Banks
-9. Ratcatcher
-10. Robo Tito
-11. Phantasia
-12. Ducks Away
-13. Chaos Fight forum thread
+**Completed updates (13 forum threads + 1 Steam app):**
+1. ✅ RealSports Curling - `topic/280059`
+2. ✅ Grizzards - `topic/322957`
+3. ✅ Harpy's Curse - `topic/342060`
+4. ✅ Knight Guy - `topic/356587`
+5. ✅ Magical Fairy Force - `topic/307426`
+6. ✅ Magical Fairy Drop - `topic/368460`
+7. ✅ Ninjish Guy - `topic/318874` (tournament thread)
+8. ✅ Rob 'N' Banks - `topic/336986`
+9. ✅ Ratcatcher - `topic/253218`
+10. ✅ Robo Tito - `topic/365608`
+11. ✅ Phantasia - `topic/343031`
+12. ✅ Ducks Away - `topic/358950`
+13. ⏳ Chaos Fight - To be created upon release
+14. ✅ Magical Fairy Force Champion Edition on Steam - `app/2144100`
 
-**Missing Steam app:**
-- Magical Fairy Force Championship Adventure
+**Files updated:**
+- All character HTML files (`WWW/26/characters/*.html`)
+- Manual HTML (`WWW/26/manual/Characters.html`)
+- TeXinfo source files (`Manual/*.texi`)
+- About page (`WWW/26/about/index.html`)
 
-See `WWW_LINK_SEARCH_RESULTS.md` for detailed search queries and locations.
+See `WWW_LINK_SEARCH_RESULTS.md` for complete details and URLs.
 
 ---
 

@@ -226,7 +226,32 @@ FCS_Loop:
           jmp FrootyChargeUpdate
 
 FrootyChargeUpdate:
-          ;; TODO: Implement FrootyChargeUpdate (call FrootyAttack or inline logic)
+          ;; Check if current player is Frooty
+          lda currentPlayer
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CharacterFrooty
+          bne FrootyChargeUpdateNext
+          
+          ;; Set temp1 = currentPlayer for FrootyAttack
+          lda currentPlayer
+          sta temp1
+          
+          ;; Cross-bank call to FrootyAttack in bank 7
+          lda # >(AfterFrootyAttack-1)
+          pha
+          lda # <(AfterFrootyAttack-1)
+          pha
+          lda # >(FrootyAttack-1)
+          pha
+          lda # <(FrootyAttack-1)
+          pha
+          ldx # 7
+          jmp BS_jsr
+AfterFrootyAttack:
+
+FrootyChargeUpdateNext:
           ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
           dec currentPlayer
           bpl FCS_Loop

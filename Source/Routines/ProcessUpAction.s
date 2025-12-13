@@ -67,8 +67,9 @@ CheckZoeRyen:
           tax
           lda playerCharacter,x
           cmp # CharacterZoeRyen
-          beq ZoeJumpCheckUpAction
-
+          bne PUA_NotZoeRyen
+          jmp ZoeJumpCheckUpAction
+PUA_NotZoeRyen:
           jmp PUA_StandardJump
 
 PUA_StandardJump:

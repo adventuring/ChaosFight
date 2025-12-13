@@ -737,6 +737,8 @@ AreaHitbox .proc
           asl
           tax
           lda playerY,x
+          clc
+          adc # 8
           sta temp2
           ;; Top edge: center - radius
           ;; Set cachedHitboxTop_W = temp2 - 24

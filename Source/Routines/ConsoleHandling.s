@@ -19,86 +19,42 @@ WarmStart .proc
           ;; Constraints: Entry point for warm start (called from cold start procedure)
           ;; Must clear memory before any stack operations
           
-          ;; Step 1: Clear all memory from $81 to $FF (zero-page RAM) and SCRAM w000-w127 together
+          ;; Step 1: Save console7800Detected flag (will be overwritten by loop)
+          lda console7800Detected
+          tay                              ;;; Save in Y register
+          
+          ;; Step 2: Clear TIA registers ($00-$2C), RAM ($81-$FF), and SCRAM ($F000-$F07F) in one loop
           ;; SCRAM write ports are at $F000-$F07F (w000-w127)
-          ;; SCRAM read ports are at $F080-$F0FF (r000-r127)
-          ;; Must write to write ports, not read ports
-          ;; Iterate from $7F down to $01, writing to both $80,x (ZPRAM $FF-$81) and $F000,x (SCRAM $F07F-$F001)
-          ;; Then iterate from $7F down to $00 for SCRAM only (clearing $F07F-$F000)
-          ;; Never write to $80 (console7800Detected at $80 must be preserved)
+          ;; Loop clears: TIA $00-$7F, RAM $81-$FF, SCRAM $F000-$F07F
+          ;; Does NOT clear $80 (will restore console7800Detected after loop)
           lda # 0
           ldx # $7F                        ;;; Start at $7F, iterate down to $01
-WarmStartClearMemory:
-          ;; Clear zero-page RAM at $80,x (which is $FF down to $81 when X = $7F down to $01)
-          ;; X never reaches 0 in this loop, so we never write to $80+0=$80
-          sta $80,x                        ;;; Clear zero-page RAM ($80+$7F=$FF down to $80+$01=$81)
-          ;; Clear SCRAM at $F000,x
-          sta $F000,x                      ;;; Clear SCRAM write ports ($F000+$7F=$F07F down to $F000+$01=$F001)
+WarmStartClearAll:
+          sta $00,x                        ;;; Clear TIA registers $00-$7F (only $00-$2C are TIA, rest ignored)
+          sta $80,x                        ;;; Clear zero-page RAM $81-$FF (skips $80 when X=0)
+          sta $F000,x                      ;;; Clear SCRAM write ports $F000-$F07F
           dex                              ;;; Decrement X
-          bne WarmStartClearMemory         ;;; Continue until X wraps from $01 to $00 (bne fails when X becomes $00)
-          ;; X is now $00, clear remaining SCRAM from $7F down to $00 (never write to $80)
-          ldx # $7F                        ;;; Start at $7F, iterate down to $00
-WarmStartClearSCRAM:
-          sta $F000,x                      ;;; Clear SCRAM write ports ($F000+$7F=$F07F down to $F000+$00=$F000)
-          dex                              ;;; Decrement X
-          bpl WarmStartClearSCRAM          ;;; Continue until X wraps from $00 to $FF (bpl fails when X becomes $FF)
-          ;; X is now $FF (wrapped), loop complete
+          bne WarmStartClearAll            ;;; Continue until X wraps from $01 to $00
           
-          ;; Step 3: Clear TIA registers
-          ;; Clear all TIA registers to safe defaults
+          ;; X is now $00, clear final positions: TIA $00, SCRAM $F000
+          sta $00                          ;;; Clear TIA register at $00 (VSYNC)
+          sta $F000                        ;;; Clear SCRAM write port at $F000
+          
+          ;; Step 3: Restore console7800Detected flag from Y
+          sty console7800Detected          ;;; Restore preserved value
+          
+          ;; Step 4: Initialize PIA RIOT I/O ports and DDR
+          ;; RIOT (6532) I/O ports and Data Direction Registers:
+          ;; SWCHA ($0280) - Port A read
+          ;; SWACNT ($0281) - Port A DDR (0=input, 1=output)
+          ;; SWCHB ($0282) - Port B read  
+          ;; SWBCNT ($0283) - Port B DDR (0=input, 1=output)
+          ;; Set all pins as inputs (DDR = 0)
           lda # 0
-          sta VSYNC                        ;;; Vertical sync
-          sta VBLANK                       ;;; Vertical blank
-          sta WSYNC                        ;;; Wait for sync
-          sta RSYNC                        ;;; Reset sync
-          sta NUSIZ0                       ;;; Number/size player 0
-          sta NUSIZ1                       ;;; Number/size player 1
-          sta COLUP0                       ;;; Color/luminance player 0
-          sta COLUP1                       ;;; Color/luminance player 1
-          sta COLUPF                       ;;; Color/luminance playfield
-          sta COLUBK                       ;;; Color/luminance background
-          sta CTRLPF                       ;;; Control playfield
-          sta REFP0                        ;;; Reflect player 0
-          sta REFP1                        ;;; Reflect player 1
-          sta PF0                          ;;; Playfield register 0
-          sta PF1                          ;;; Playfield register 1
-          sta PF2                          ;;; Playfield register 2
-          sta RESP0                        ;;; Reset player 0
-          sta RESP1                        ;;; Reset player 1
-          sta RESM0                        ;;; Reset missile 0
-          sta RESM1                        ;;; Reset missile 1
-          sta RESBL                        ;;; Reset ball
-          sta AUDC0                        ;;; Audio control 0
-          sta AUDC1                        ;;; Audio control 1
-          sta AUDF0                        ;;; Audio frequency 0
-          sta AUDF1                        ;;; Audio frequency 1
-          sta AUDV0                        ;;; Audio volume 0
-          sta AUDV1                        ;;; Audio volume 1
-          sta GRP0                         ;;; Graphics player 0
-          sta GRP1                         ;;; Graphics player 1
-          sta ENAM0                        ;;; Enable missile 0
-          sta ENAM1                        ;;; Enable missile 1
-          sta ENABL                        ;;; Enable ball
-          sta HMP0                         ;;; Horizontal motion player 0
-          sta HMP1                         ;;; Horizontal motion player 1
-          sta HMM0                         ;;; Horizontal motion missile 0
-          sta HMM1                         ;;; Horizontal motion missile 1
-          sta HMBL                         ;;; Horizontal motion ball
-          sta VDELP0                       ;;; Vertical delay player 0
-          sta VDELP1                       ;;; Vertical delay player 1
-          sta VDELBL                       ;;; Vertical delay ball
-          sta HMOVE                        ;;; Apply horizontal motion
-          sta HMCLR                        ;;; Clear horizontal motion
+          sta SWACNT                       ;;; Port A: all pins input
+          sta SWBCNT                       ;;; Port B: all pins input
           
-          ;; Step 4: Initialize PIA RIOT I/O ports
-          ;; RIOT (6532) I/O ports: SWCHA ($0280) and SWCHB ($0282) are read-only
-          ;; Timer registers can be initialized:
-          ;; TIM1T ($0294) - set 1 clock interval
-          ;; TIM8T ($0295) - set 8 clock intervals  
-          ;; TIM64T ($0296) - set 64 clock intervals
-          ;; T1024T ($0297) - set 1024 clock intervals
           ;; Initialize timer to a known state (1 clock interval - will expire immediately)
-          lda # 0
           sta TIM1T                        ;;; Set timer to 1 clock interval
           
           ;; Step 5: Perform input controller detection for Quadtari, Joy2b+, or MegaDrive controllers

@@ -25,7 +25,14 @@ AddVelocitySubpixelY .proc
           lda temp3
           cmp # 1
           bcc NoCarryToInteger
-
+          ;; Carry occurred - increment integer component
+          lda temp1
+          asl
+          tax
+          lda playerVelocityY,x
+          clc
+          adc # 1
+          sta playerVelocityY,x
 NoCarryToInteger:
 
           lda temp1

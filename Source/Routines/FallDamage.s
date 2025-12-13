@@ -137,7 +137,7 @@ MultiplyBy4:
             jmp MultiplyDone
 MultiplyBy5:
 
-          sta
+          sta temp3
 
             asl
             asl
@@ -154,11 +154,7 @@ WeightMultDone:
           lda currentCharacter
           cmp CharacterNinjishGuy
           bne CheckRoboTitoReduction
-          ;; Set temp4 = temp4 / 2          lda temp4          lsr          sta temp4
-          lda temp4
-          lsr
-          sta temp4
-
+          ;; Set temp4 = temp4 / 2
           lda temp4
           lsr
           sta temp4
@@ -169,11 +165,7 @@ CheckRoboTitoReduction:
           lda currentCharacter
           cmp CharacterRoboTito
           bne CapMaximumDamage
-          ;; Set temp4 = temp4 / 2          lda temp4          lsr          sta temp4
-          lda temp4
-          lsr
-          sta temp4
-
+          ;; Set temp4 = temp4 / 2
           lda temp4
           lsr
           sta temp4

@@ -13,8 +13,7 @@ UpdatePlayerMovementSingle .proc
           ;; Constraints: Must be colocated with XCarry/XNoCarry/YCarry/YNoCarry
           ;; Notes: temp2-temp4 are clobbered; caller must not reuse them afterward.
           ;; 16-bit accumulator for proper carry detection
-          ;; Skip if player is eliminated
-          jmp BS_return
+          ;; Skip if player is eliminated - TODO: implement elimination check
           ;; Apply X Velocity To X Position (8.8 fixed-point)
           ;; Use batariBASIC’s built-in 16-bit addition for carry detection
           ;; Set subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]

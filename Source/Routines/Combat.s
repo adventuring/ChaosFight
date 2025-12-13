@@ -911,19 +911,6 @@ NextAttacker:
           jmp BS_return
 .pend
 
-ProcessAllAttacksDone2 .proc
-          jmp BS_return
-          ;; Input: None (label only)
-          ;;
-          ;; Output: None (label only)
-          ;;
-          ;; Mutates: None
-          ;;
-          ;; Called Routines: None
-          ;;
-          ;; Constraints: Internal label for ProcessAllAttacks FOR loop
-.pend
-
 ;; CombatShowDamageIndicator .proc (no matching .pend)
           ;; Damage indicator system (handled inline)
           ;; Returns: Far (return otherbank)

@@ -54,10 +54,12 @@ CheckPlayerElimination:
           tax
           lda playerHealth,x
           sta temp2
-
+          ;; Check if health has reached 0
+          beq PlayerEliminated
           ;; Still alive
           jmp BS_return
 
+PlayerEliminated:
           ;; Player health reached 0 - trigger elimination effects
 
           ;; Update Players34Active flag if Player 3 or 4 was

@@ -214,6 +214,8 @@ ApplyGravityToVelocity:
           asl
           tax
           lda playerVelocityYL,x
+          clc
+          adc gravityRate
           sta subpixelAccumulator
           lda temp1
           asl
@@ -224,11 +226,6 @@ ApplyGravityToVelocity:
           cmp # 1
           bcc CheckTerminalVelocity
           ;; let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
-          lda temp1
-          asl
-          tax
-          inc playerVelocityY,x
-
           lda temp1
           asl
           tax

@@ -320,7 +320,7 @@ FastBCDDivideBy10:
           bcc FastBCDOnesDigit
 
           inx
-          ;; TODO: #1311 cpx #3
+          cpx # 3
           beq FastBCDMaxTens
 
           jmp FastBCDDivideBy10

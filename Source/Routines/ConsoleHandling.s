@@ -125,7 +125,8 @@ HandleConsoleSwitches .proc
           jsr CheckEnhancedPause
 
           lda temp1
-          bne CheckSelectPressed
+          beq DonePlayer1Pause
+
 CheckSelectPressed:
 
           ;; Re-detect controllers when Select is pressed
@@ -145,10 +146,15 @@ AfterDetectPadsSelect:
 
           lda systemFlags
           and SystemFlagGameStatePaused
-          bne SetPausedFlag
-          ;; Set systemFlags = systemFlags | SystemFlagGameStatePausedjmp Player1PauseDone
-SetPausedFlag:
+          bne ClearPausedFlag
+          ;; Set systemFlags = systemFlags | SystemFlagGameStatePaused
+          lda systemFlags
+          ora # SystemFlagGameStatePaused
+          sta systemFlags
+          jmp Player1PauseDone
 
+ClearPausedFlag:
+          ;; Clear systemFlags = systemFlags & ClearSystemFlagGameStatePaused
           lda systemFlags
           and ClearSystemFlagGameStatePaused
           sta systemFlags
@@ -167,7 +173,8 @@ DonePlayer1Pause:
           jsr CheckEnhancedPause
 
           lda temp1
-          bne CheckSelectPressedP2
+          beq DonePlayer2Pause
+
 CheckSelectPressedP2:
 
           ;; Re-detect controllers when Select is pressed
@@ -187,10 +194,15 @@ AfterDetectPadsSelectP2:
 
           lda systemFlags
           and SystemFlagGameStatePaused
-          bne SetPausedFlagP2
-          ;; Set systemFlags = systemFlags | SystemFlagGameStatePaused, then jump to Player2PauseDone
-SetPausedFlagP2:
+          bne ClearPausedFlagP2
+          ;; Set systemFlags = systemFlags | SystemFlagGameStatePaused
+          lda systemFlags
+          ora # SystemFlagGameStatePaused
+          sta systemFlags
+          jmp Player2PauseDone
 
+ClearPausedFlagP2:
+          ;; Clear systemFlags = systemFlags & ClearSystemFlagGameStatePaused
           lda systemFlags
           and ClearSystemFlagGameStatePaused
           sta systemFlags

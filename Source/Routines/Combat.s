@@ -558,9 +558,10 @@ MeleeHitbox .proc
           sta temp2
           ;; if temp2 then jmp FacingRight
           lda temp2
-          beq FacingLeft
+          beq MeleeHitboxFacingLeft
           jmp FacingRight
-          ;; FacingLeft label is defined below in FacingLeft .proc
+MeleeHitboxFacingLeft:
+          jmp FacingLeft
 
 .pend
 

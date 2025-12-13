@@ -633,11 +633,15 @@ FacingLeft .proc
           ;; Attacker sprite: [playerX, playerX+16] × [playerY,
           ;; playerY+16]
           ;; Hitbox: [playerX-16, playerX] × [playerY, playerY+16]
-                    let cachedHitboxLeft_W = playerX[attackerID] - PlayerSpriteWidth          lda attackerID          asl          tax          lda playerX,x          sta cachedHitboxLeft_W
-          ;; Set cachedHitboxRight_W = playerX[attackerID]
+          ;; Set cachedHitboxLeft_W = playerX[attackerID] - PlayerSpriteWidth
           lda attackerID
           asl
           tax
+          lda playerX,x
+          sec
+          sbc # PlayerSpriteWidth
+          sta cachedHitboxLeft_W
+          ;; Set cachedHitboxRight_W = playerX[attackerID]
           lda playerX,x
           sta cachedHitboxRight_W
           ;; Set cachedHitboxTop_W = playerY[attackerID]
@@ -646,16 +650,10 @@ FacingLeft .proc
           tax
           lda playerY,x
           sta cachedHitboxTop_W
-          ;; Set cachedHitboxBottom_W = playerY[attackerID]
-          lda attackerID
-          asl
-          tax
+          ;; Set cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
           lda playerY,x
-          sta cachedHitboxBottom_W + PlayerSpriteHeight
-          lda attackerID
-          asl
-          tax
-          lda playerY,x
+          clc
+          adc # PlayerSpriteHeight
           sta cachedHitboxBottom_W
           rts
 

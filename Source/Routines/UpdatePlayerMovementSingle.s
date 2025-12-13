@@ -76,37 +76,27 @@ NoXCarry:
           lda temp3
           cmp # 1
           bcc NoYCarry
-
-          let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + 1
+          ;; Carry occurred - increment integer component
+          lda currentPlayer
+          asl
+          tax
+          lda playerSubpixelY_R,x
+          clc
+          adc # 1
+          sta playerSubpixelY_W,x
 
 NoYCarry:
 
           ;; Apply integer velocity component
-          let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + playerVelocityY[currentPlayer]
+          ;; Set playerY[currentPlayer] = playerY[currentPlayer] + playerVelocityY[currentPlayer]
           lda currentPlayer
           asl
           tax
-          lda playerSubpixelY_R,x
+          lda playerY,x
           sta temp6
-          lda currentPlayer
-          asl
-          tax
           lda playerVelocityY,x
           clc
           adc temp6
-          lda currentPlayer
-          asl
-          tax
-          sta playerSubpixelY_W,x
-          ;; Sync integer position for rendering
-          ;; Set playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
-          lda currentPlayer
-          asl
-          tax
-          lda playerSubpixelY_R,x
-          lda currentPlayer
-          asl
-          tax
           sta playerY,x
           jmp BS_return
 

@@ -555,53 +555,8 @@ _suppress_pf_pointer_code = 1
 ;;; Additional constants for MultiSpriteSuperChip
 ;;; Forward declarations for song symbols (defined in generated music files)
 ;;; TIA/RIOT Hardware Registers (Atari 2600)
-          VSYNC = $00  ;;; Vertical sync
-          VBLANK = $01  ;;; Vertical blank
-          WSYNC = $02  ;;; Wait for horizontal sync
-          RSYNC = $03  ;;; Reset horizontal sync counter
-          NUSIZ0 = $04  ;;; Number-size player-missile 0
-          NUSIZ1 = $05  ;;; Number-size player-missile 1
-          COLUP0 = $06  ;;; Color-luminescence player 0
-          COLUP1 = $07  ;;; Color-luminescence player 1
-          COLUPF = $08  ;;; Color-luminescence playfield
-          COLUBK = $09  ;;; Color-luminescence background
-          CTRLPF = $0A  ;;; Control playfield ball size & reflect
-          REFP0 = $0B  ;;; Reflect player 0
-          REFP1 = $0C  ;;; Reflect player 1
-          PF0 = $0D  ;;; Playfield register 0
-          PF1 = $0E  ;;; Playfield register 1
-          PF2 = $0F  ;;; Playfield register 2
-          RESP0 = $10  ;;; Reset player 0
-          RESP1 = $11  ;;; Reset player 1
-          RESM0 = $12  ;;; Reset missile 0
-          RESM1 = $13  ;;; Reset missile 1
-          RESBL = $14  ;;; Reset ball
-          AUDC0 = $15  ;;; Audio control 0
-          AUDC1 = $16  ;;; Audio control 1
-          AUDF0 = $17  ;;; Audio frequency 0
-          AUDF1 = $18  ;;; Audio frequency 1
-          AUDV0 = $19  ;;; Audio volume 0
-          AUDV1 = $1A  ;;; Audio volume 1
-          GRP0 = $1B  ;;; Graphics Player 0
-          GRP1 = $1C  ;;; Graphics Player 1
-          ENAM0 = $1D  ;;; Enable missile 0
-          ENAM1 = $1E  ;;; Enable missile 1
-          ENABL = $1F  ;;; Enable ball
-          HMP0 = $20  ;;; Horizontal motion player 0
-          HMP1 = $21  ;;; Horizontal motion player 1
-          HMM0 = $22  ;;; Horizontal motion missile 0
-          HMM1 = $23  ;;; Horizontal motion missile 1
-          HMBL = $24  ;;; Horizontal motion ball
-          VDELP0 = $25  ;;; Vertical delay player 0
-          VDELP1 = $26  ;;; Vertical delay player 1
-          VDELBL = $27  ;;; Vertical delay ball
-          RESMP0 = $28  ;;; Reset missile 0 to player 0
-          RESMP1 = $29  ;;; Reset missile 1 to player 1
-          HMOVE = $2A  ;;; Apply horizontal motion
-          HMCLR = $2C  ;;; Clear horizontal motion registers
-          CXCLR = $2C  ;;; Clear collision latches
-          INTIM = $0284  ;;; Timer (read-only)
-          SWCHA = $0280  ;;; Port A data (joystick directions)
+;;; NOTE: All TIA and RIOT register definitions are now in VCS.s
+;;; Only ChaosFight-specific constants are defined here
           ;; SWCHA bit indices for BitMask table (0-7)
           ;; Use with: lda SWCHA / bit BitMask + SWCHA_Bit*
           SWCHA_BitP0Right = 7  ;;; P0 joystick right (bit 7)
@@ -612,15 +567,5 @@ _suppress_pf_pointer_code = 1
           SWCHA_BitP1Left = 2   ;;; P1 joystick left (bit 2)
           SWCHA_BitP1Down = 1   ;;; P1 joystick down (bit 1)
           SWCHA_BitP1Up = 0     ;;; P1 joystick up (bit 0)
-          INPT0 = $08  ;;; Input port 0 (joystick/button)
-          INPT1 = $09  ;;; Input port 1
-          INPT2 = $0A  ;;; Input port 2
-          INPT3 = $0B  ;;; Input port 3
-          INPT4 = $0C  ;;; Input port 4 (paddle)
-          INPT5 = $0D  ;;; Input port 5 (paddle)
-          TIM1T = $0294  ;;; Timer set (1T mode)
-          TIM8T = $0295  ;;; Timer set (8T mode)
-          TIM64T = $0296  ;;; Timer set (64T mode)
-          T1024T = $0297  ;;; Timer set (1024T mode)
 
 ;;; Forward declarations for sound symbols

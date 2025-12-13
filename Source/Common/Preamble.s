@@ -5,6 +5,8 @@
 ;; This must be before MultiSpriteSuperChip.s (which includes vcs.h and macro.h)
 .include "Source/Common/AssemblyConfig.s"
 
+;; CRITICAL: Include VCS.s to define TIA and RIOT register symbols (SWCHA, SWACNT, SWBCNT, etc.)
+.include "Source/Common/VCS.s"
 
 ;; Define TV standard constants for .if  checks in MultiSpriteSuperChip.s
 ;; These are set by the platform files (NTSC.s, PAL.s, SECAM.s) before

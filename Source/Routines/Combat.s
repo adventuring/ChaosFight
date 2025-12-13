@@ -799,7 +799,7 @@ ProcessAttackerAttacks .proc
           tax
           lda playerAttackType_R,x
           sta temp1
-          ;; Skip if projectile/ranged attack type (1 = projectile, handled by missile system)
+          ;; Skip if projectile/ranged attack type (1 = RangedAttack, handled by missile system)
           cmp # 1
           beq ProcessAttackerAttacksDone
           ;; Cache hitbox for this attacker (calculated once, used for all defenders)

@@ -234,8 +234,6 @@ DonePlayer2Move:
           ;;
           ;; Constraints: Must be colocated with FallingAnimation1
 
-.pend
-
           ;; Move Player 3 from quadrant to target (if active)
           ;; Player 3 only active in 4-player mode
           lda controllerStatus

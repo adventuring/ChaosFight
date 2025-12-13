@@ -123,5 +123,3 @@ AfterFindWinner:
           sta systemFlags
           jmp BS_return
 
-.pend
-

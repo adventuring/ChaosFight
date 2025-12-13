@@ -126,12 +126,12 @@ CheckPlayerHealth:
 
 
           ;; Skip eliminated players
-          ;; If !playerHealth[temp6], then CRTSMC_DoneSelf
+          ;; If !playerHealth[temp6], then DoneSelfStretchCheck
           lda temp6
           asl
           tax
           lda playerHealth,x
-          beq CRTSMC_DoneSelf
+          beq DoneSelfStretchCheck
 
           ;; AABB collision check
           ;; Missile left/right: missileX to missileX+1 (missile width

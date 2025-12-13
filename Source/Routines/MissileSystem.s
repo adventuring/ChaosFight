@@ -282,16 +282,14 @@ UpdateAllMissiles .proc
           ;;
           ;; Constraints: None
           ;; Optimized: Loop through all player missiles instead of individual calls
-          ;; Issue #1254: Loop through temp1 = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through temp1 = 3 downto 0
+          lda # 3
           sta temp1
 UAM_Loop:
           jsr UpdateOneMissile
-          inc temp1
-          lda temp1
-          cmp # 4
-          bcs UpdateMissilesDone
-          jmp UAM_Loop
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec temp1
+          bpl UAM_Loop
 .pend
 
 UpdateMissilesDone .proc
@@ -1107,8 +1105,8 @@ CheckMissilePlayerCollision
 
           ;; Optimized: Loop through all players instead of copy-paste code
           ;; This reduces ROM footprint by ~150 bytes
-          ;; Issue #1254: Loop through temp6 = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through temp6 = 3 downto 0
+          lda # 3
           sta temp6
 MCC_Loop:
           ;; Skip owner player
@@ -1178,13 +1176,9 @@ CollisionDetected:
           jmp MissileCollisionReturn
 
 MissileCheckNextPlayer:
-          ;; Issue #1254: Loop increment and check
-          inc temp6
-          lda temp6
-          cmp # 4
-          bcs MCC_LoopDone
-          jmp MCC_Loop
-MCC_LoopDone:
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec temp6
+          bpl MCC_Loop
 .pend
 
 MissileCheckNextPlayer .proc

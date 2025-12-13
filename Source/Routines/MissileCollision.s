@@ -608,8 +608,8 @@ CheckPlayersAgainstCachedHitbox .proc
           lda MissileHitNotFound
           sta temp4
 
-          ;; Issue #1254: Loop through temp2 = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through temp2 = 3 downto 0
+          lda # 3
           sta temp2
 CPB_Loop:
           lda temp2
@@ -681,13 +681,9 @@ HitDetected:
           rts
 
 CPB_NextPlayerBottom:
-          ;; Issue #1254: Loop increment and check
-          inc temp2
-          lda temp2
-          cmp # 4
-          bcs CPB_LoopDone
-          jmp CPB_Loop
-CPB_LoopDone:
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec temp2
+          bpl CPB_Loop
 
 .pend
           rts

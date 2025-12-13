@@ -216,8 +216,8 @@ VblankSharedUpdateCharacterAnimations
           lda controllerStatus
           and # SetQuadtariDetected
           sta VblankUCA_quadtariActive
-          ;; Issue #1254: Loop through currentPlayer = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through currentPlayer = 3 downto 0
+          lda # 3
           sta currentPlayer
 VUCA_Loop:
           ;; if currentPlayer >= 2 && !VblankUCA_quadtariActive then jmp VblankAnimationNextPlayer
@@ -945,13 +945,9 @@ AfterSetPlayerCharacterArtBank5Vblank:
           jmp VblankAnimationNextPlayer
 
 VblankAnimationNextPlayer:
-          ;; Issue #1254: Loop increment and check
-          inc currentPlayer
-          lda currentPlayer
-          cmp # 4
-          bcs VUCA_LoopDone
-          jmp VUCA_Loop
-VUCA_LoopDone:
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec currentPlayer
+          bpl VUCA_Loop
 .pend
 
 VblankGameModeCheck .proc
@@ -1030,8 +1026,8 @@ AfterCheckBoundaryCollisions:
 
 
           ;; Optimized: Single loop for playfield collisions (walls, ceilings, ground)
-          ;; Issue #1254: Loop through currentPlayer = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through currentPlayer = 3 downto 0
+          lda # 3
           sta currentPlayer
 VPC_Loop:
           ;; if currentPlayer >= 2 then jmp VblankCheckQuadtariSkip
@@ -1099,13 +1095,9 @@ AfterRadishGoblinCheckWallBounce:
 .pend
 
 VblankGameMainQuadtariCheckDone .proc
-          ;; Issue #1254: Loop increment and check
-          inc currentPlayer
-          lda currentPlayer
-          cmp # 4
-          bcs VPC_LoopDone
-          jmp VPC_Loop
-VPC_LoopDone:
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec currentPlayer
+          bpl VPC_Loop
 
 .pend
 

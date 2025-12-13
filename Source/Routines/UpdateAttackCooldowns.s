@@ -12,8 +12,8 @@ UpdateAttackCooldowns .proc
           ;; Called Routines: None
           ;; Constraints: Must be in same bank as GameLoopMain (Bank 11)
           ;; Optimized: Loop through all players instead of individual calls
-          ;; Issue #1254: Loop through temp1 = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through temp1 = 3 downto 0
+          lda # 3
           sta temp1
 UAC_Loop:
           ;; Set temp2 = playerAttackCooldown_R[temp1]
@@ -38,13 +38,9 @@ DecrementCooldown:
           sta playerAttackCooldown_W,x
 
 UpdateAttackCooldownSkip:
-          ;; Issue #1254: Loop increment and check
-          inc temp1
-          lda temp1
-          cmp # 4
-          bcs UAC_LoopDone
-          jmp UAC_Loop
-UAC_LoopDone:
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec temp1
+          bpl UAC_Loop
 
           jmp BS_return
 

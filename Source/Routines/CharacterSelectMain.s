@@ -811,20 +811,16 @@ NoQuadtariForRandom:
           lda # 3
           sta temp1
 CharacterSelectRollRandomPlayer:
-          ;; Issue #1254: Loop through currentPlayer = 0 to temp1
-          lda # 0
+          ;; Issue #1254: Loop through currentPlayer = temp1 downto 0
+          lda temp1
           sta currentPlayer
 CSRRP_Loop:
           jsr CharacterSelectRollRandomPlayer
 
 CharacterSelectRollRandomPlayerReturn:
-          inc currentPlayer
-          lda currentPlayer
-          sec
-          sbc temp1
-          bcs CSRRP_LoopDone
-          jmp CSRRP_Loop
-CSRRP_LoopDone:
+          ;; Issue #1254: Loop decrement and check (count down from temp1 to 0)
+          dec currentPlayer
+          bpl CSRRP_Loop
           jmp CharacterSelectRollsDone
 
 .pend
@@ -960,8 +956,8 @@ CharacterSelectQuadtariReady .proc
           lda # 0
           sta readyCount
 
-          ;; Issue #1254: Loop through currentPlayer = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through currentPlayer = 3 downto 0
+          lda # 3
           sta currentPlayer
 CSQR_Loop:
           lda currentPlayer
@@ -1014,13 +1010,9 @@ CharacterSelectQuadtariReadyIncrement:
           inc readyCount
 
 CharacterSelectQuadtariReadyNext:
-          ;; Issue #1254: Loop increment and check
-          inc currentPlayer
-          lda currentPlayer
-          cmp # 4
-          bcs CSQR_LoopDone
-          jmp CSQR_Loop
-CSQR_LoopDone:
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec currentPlayer
+          bpl CSQR_Loop
 
 .pend
 
@@ -1086,8 +1078,8 @@ CharacterSelectFinish .proc
 
           ;; (default: face right = 1)
 
-          ;; Issue #1254: Loop through currentPlayer = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through currentPlayer = 3 downto 0
+          lda # 3
           sta currentPlayer
 CSF_Loop:
           ;; If playerCharacter[currentPlayer] = NoCharacter, then jmp CharacterSelectSkipFacing
@@ -1106,13 +1098,9 @@ CSF_Loop:
           sta playerState,x
 
 CharacterSelectSkipFacing:
-          ;; Issue #1254: Loop increment and check
-          inc currentPlayer
-          lda currentPlayer
-          cmp # 4
-          bcs CSF_LoopDone
-          jmp CSF_Loop
-CSF_LoopDone:
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec currentPlayer
+          bpl CSF_Loop
 
 .pend
 

@@ -17,8 +17,8 @@ FindLastEliminated .proc
           ;; Default winner
 
           ;; Check each player elimination order using FOR loop
-          ;; Issue #1254: Loop through currentPlayer = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through currentPlayer = 3 downto 0
+          lda # 3
           sta currentPlayer
 FLE_Loop:
           ;; Set temp4 = eliminationOrder_R[currentPlayer]
@@ -43,13 +43,9 @@ FLE_Loop:
           sta winnerPlayerIndex_W
 
 SkipUpdateWinner:
-          ;; Issue #1254: Loop increment and check
-          inc currentPlayer
-          lda currentPlayer
-          cmp # 4
-          bcs FLE_LoopDone
-          jmp FLE_Loop
-FLE_LoopDone:
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec currentPlayer
+          bpl FLE_Loop
 
           jmp BS_return
 

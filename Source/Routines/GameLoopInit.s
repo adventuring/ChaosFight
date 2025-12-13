@@ -248,8 +248,8 @@ InitPositionsDone:
           ;; Initialize player health (apply handicap if selected)
           ;; PlayerLocked value: 0=unlocked, 1=normal (100% health),
           ;; Optimized: Simplified player health initialization
-          ;; Issue #1254: Loop through currentPlayer = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through currentPlayer = 3 downto 0
+          lda # 3
           sta currentPlayer
 IPH_Loop:
           lda currentPlayer
@@ -283,21 +283,17 @@ PlayerHealthInitDone:
           tax
           lda PlayerHealthMax
           sta playerHealth,x
-          ;; Issue #1254: Loop increment and check
-          inc currentPlayer
-          lda currentPlayer
-          cmp # 4
-          bcs IPH_LoopDone
-          jmp IPH_Loop
-IPH_LoopDone:
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec currentPlayer
+          bpl IPH_Loop
 
 .pend
 
 InitializePlayerTimers .proc
 
           ;; Initialize player timers
-          ;; Issue #1254: Loop through currentPlayer = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through currentPlayer = 3 downto 0
+          lda # 3
           sta currentPlayer
 IPT_Loop:
           lda currentPlayer
@@ -330,13 +326,9 @@ IPT_Loop:
           tax
           lda # 0
           sta playerSubpixelY_W,x
-          ;; Issue #1254: Loop increment and check
-          inc currentPlayer
-          lda currentPlayer
-          cmp # 4
-          bcs IPT_LoopDone
-          jmp IPT_Loop
-IPT_LoopDone:
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec currentPlayer
+          bpl IPT_Loop
 .pend
 
 SetPlayers34ActiveFlag .proc

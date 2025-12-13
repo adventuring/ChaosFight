@@ -209,8 +209,8 @@ AfterAttackCooldownsUpdated:
 
 
           ;; Issue #1177: Update Frooty charge system every frame
-          ;; Issue #1254: Loop through currentPlayer = 0 to 3
-          lda # 0
+          ;; Issue #1254: Loop through currentPlayer = 3 downto 0
+          lda # 3
           sta currentPlayer
 FCS_Loop:
           ;; if currentPlayer >= 2 then jmp FrootyChargeQuadtariCheck
@@ -225,13 +225,15 @@ FCS_Loop:
 
           jmp FrootyChargeUpdate
 
+FrootyChargeUpdate:
+          ;; TODO: Implement FrootyChargeUpdate (call FrootyAttack or inline logic)
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec currentPlayer
+          bpl FCS_Loop
+
 .pend
 
 FrootyChargeQuadtariCheck .proc
-          ;; This proc is now inlined above
-.pend
-
-FrootyChargeUpdate .proc
           ;; This proc is now inlined above
 .pend
 

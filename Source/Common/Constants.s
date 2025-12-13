@@ -602,6 +602,15 @@ _suppress_pf_pointer_code = 1
           CXCLR = $2C  ;;; Clear collision latches
           INTIM = $0284  ;;; Timer (read-only)
           SWCHA = $0280  ;;; Port A data (joystick directions)
+          ;; SWCHA bit constants (P0 = Player 0, P1 = Player 1)
+          SWCHA_P0Right = $80  ;;; P0 joystick right
+          SWCHA_P0Left = $40   ;;; P0 joystick left
+          SWCHA_P0Down = $20   ;;; P0 joystick down
+          SWCHA_P0Up = $10     ;;; P0 joystick up
+          SWCHA_P1Right = $08  ;;; P1 joystick right
+          SWCHA_P1Left = $04   ;;; P1 joystick left
+          SWCHA_P1Down = $02   ;;; P1 joystick down
+          SWCHA_P1Up = $01     ;;; P1 joystick up
           INPT0 = $08  ;;; Input port 0 (joystick/button)
           INPT1 = $09  ;;; Input port 1
           INPT2 = $0A  ;;; Input port 2

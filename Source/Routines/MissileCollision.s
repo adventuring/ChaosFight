@@ -541,6 +541,11 @@ CacheAOERightHitbox .proc
           sta cachedHitboxLeft_W
 
           ;; Set cachedHitboxRight_W = cachedHitboxLeft_R + PlayerSpriteHalfWidth
+          lda cachedHitboxLeft_R
+          clc
+          adc # PlayerSpriteHalfWidth
+          sta cachedHitboxRight_W
+
           ;; Set cachedHitboxTop_W = playerY[temp1]
           lda temp1
           asl
@@ -549,6 +554,10 @@ CacheAOERightHitbox .proc
           sta cachedHitboxTop_W
 
           ;; Set cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
+          lda cachedHitboxTop_R
+          clc
+          adc # PlayerSpriteHeight
+          sta cachedHitboxBottom_W
           rts
 
 
@@ -592,6 +601,10 @@ CacheAOELeftHitbox .proc
           sta cachedHitboxTop_W
 
           ;; Set cachedHitboxBottom_W = cachedHitboxTop_R + PlayerSpriteHeight
+          lda cachedHitboxTop_R
+          clc
+          adc # PlayerSpriteHeight
+          sta cachedHitboxBottom_W
           rts
 
 .pend

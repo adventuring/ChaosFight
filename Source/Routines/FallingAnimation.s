@@ -165,16 +165,7 @@ SetPlayer2Target:
           ;; 2-player mode: target × = 107
           lda # 107
           sta temp2
-          jmp Player2TargetDoneLabel
-
-Player2TargetDoneLabel:
-          jmp Player2Target4P.Player2TargetDone
-
-DonePlayer2MoveForward:
-          jmp DonePlayer2Move
-
-DonePlayer2Move:
-          jmp BS_return
+          jmp Player2TargetDone
 
 Player2Target4P .proc
           ;; Set Player 2 target × for 4-player mode
@@ -193,6 +184,7 @@ Player2Target4P .proc
           ;; 4-player mode: target × = 128
           lda # 128
           sta temp2
+.pend
 
 Player2TargetDone:
           ;; Player 2 target calculation complete

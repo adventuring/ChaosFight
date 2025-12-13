@@ -560,9 +560,7 @@ MeleeHitbox .proc
           lda temp2
           beq FacingLeft
           jmp FacingRight
-FacingLeft:
-
-          jmp FacingLeft
+          ;; FacingLeft label is defined below in FacingLeft .proc
 
 .pend
 
@@ -656,7 +654,7 @@ FacingLeft .proc
           tax
           lda playerY,x
           sta cachedHitboxBottom_W
-          jmp BS_return
+          rts
 
 .pend
 

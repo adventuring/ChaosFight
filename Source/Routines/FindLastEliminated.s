@@ -4,11 +4,12 @@
 
 FindLastEliminated .proc
           ;;
-          ;; Returns: Far (return otherbank)
+          ;; Returns: Near (return thisbank) - called from FindWinner same bank
           ;; Find player eliminated most recently (highest elimination order).
           ;; Input: currentPlayer loop variable, eliminationOrder[]
           ;; Output: winnerPlayerIndex updated to last eliminated player
           ;; Mutates: temp4, currentPlayer, winnerPlayerIndex
+          ;; NOTE: Only called from FindWinner (same bank) - uses near return
           lda # 0
           sta temp4
           ;; Highest elimination order found
@@ -45,7 +46,7 @@ SkipUpdateWinner:
           dec currentPlayer
           bpl FLE_Loop
 
-          jmp BS_return
+          rts
 
 .pend
 

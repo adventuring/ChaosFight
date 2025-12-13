@@ -53,7 +53,8 @@ FW_LoopDone:
           cmp # 255
           bne FindWinnerDone
           ;; No winner found (all eliminated) - find last eliminated player
-          jmp FindLastEliminated
+          ;; Same-bank call (both in Bank 13) - use near call/return
+          jsr FindLastEliminated
 
 FindWinnerDone:
           jmp BS_return

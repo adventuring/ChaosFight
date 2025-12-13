@@ -105,6 +105,25 @@ The function has a TODO comment: "Skip if player is eliminated - TODO: implement
 
 ---
 
+### 2. MissileSystem.s - Duplicate Code and Incomplete Implementation (FIXED)
+**Status:** FIXED in this session  
+**Priority:** HIGH  
+**Location:** `Source/Routines/MissileSystem.s`
+
+**Bugs Found:**
+1. **Duplicate velocity inversion** (lines 857-865): Same calculation done twice
+2. **Duplicate lifetime decrement** (lines 907, 915): Lifetime decremented twice with unreachable code
+3. **Incomplete bounce velocity calculation**: Calculated `temp6 - velocityCalculation` but never stored back to `missileVelocityX[temp1]`
+
+**Impact:**
+- Bounce velocity not properly applied (missile doesn't reduce speed on bounce)
+- Lifetime decremented twice (missiles expire too quickly)
+- Wasted CPU cycles with duplicate calculations
+
+**Fix:** Removed duplicates, fixed array indexing, completed bounce velocity storage.
+
+---
+
 ## Bugs Fixed in This Session
 
 The following bugs were fixed during this code review session:

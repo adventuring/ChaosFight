@@ -412,7 +412,7 @@ AfterPlayfieldReadColumnSpan:
           jmp PFCS_Done
 
 PFCS_AdvanceLabel:
-          jmp PFCS_AdvanceLabel
+          jmp PFCS_Advance
 
 .pend
 

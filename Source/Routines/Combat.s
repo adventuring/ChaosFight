@@ -875,10 +875,9 @@ ProcessAttackerLoop:
           asl
           tax
           lda playerHealth,x
-          beq CheckAttackWindow
-          bmi CheckAttackWindow
-          jmp NextAttacker
-CheckAttackWindow:
+          beq NextAttacker
+          bmi NextAttacker
+          ;; Attacker is alive, continue to check attack window
 
 
 

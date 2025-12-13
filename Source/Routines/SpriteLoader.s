@@ -195,51 +195,30 @@ AfterCopyGlyphToPlayerBank16Third:
           sta temp6
           ;; Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
           ;; Use jmp instead of cross-bank call to to avoid stack push
-          ;; if temp1 < 8 then jmp LoadPlayerSprite_Bank2Dispatch          lda temp1          cmp 8          bcs .skip_4485          jmp
           lda temp1
           cmp # 8
           bcs CheckBank3
-          goto_label:
-
           jmp LoadPlayerSprite_Bank2Dispatch
+
 CheckBank3:
 
-          lda temp1
-          cmp # 8
-          bcs CheckBank3Label
-          jmp LoadPlayerSprite_Bank2Dispatch
-CheckBank3Label:
 
-          
-          ;; if temp1 < 16 then jmp LoadPlayerSprite_Bank3Dispatch          lda temp1          cmp 16          bcs .skip_8460          jmp
+          ;; if temp1 < 16 then jmp LoadPlayerSprite_Bank3Dispatch
           lda temp1
           cmp # 16
           bcs CheckBank4
           jmp LoadPlayerSprite_Bank3Dispatch
+
 CheckBank4:
 
-          lda temp1
-          cmp # 16
-          bcs CheckBank4Label
-          jmp LoadPlayerSprite_Bank3Dispatch
-CheckBank4Label:
 
-          
-          ;; if temp1 < 24 then jmp LoadPlayerSprite_Bank4Dispatch          lda temp1          cmp 24          bcs .skip_2409          jmp
+          ;; if temp1 < 24 then jmp LoadPlayerSprite_Bank4Dispatch
           lda temp1
           cmp # 24
           bcs LoadPlayerSprite_Bank5Dispatch
           jmp LoadPlayerSprite_Bank4Dispatch
-LoadPlayerSprite_Bank5Dispatch:
 
-          lda temp1
-          cmp # 24
-          bcs LoadPlayerSprite_Bank5DispatchDone
-          jmp LoadPlayerSprite_Bank4Dispatch
-LoadPlayerSprite_Bank5DispatchDone:
-
-          
-          jmp LoadPlayerSprite_Bank5Dispatch
+          ;; temp1 >= 24, fall through to LoadPlayerSprite_Bank5Dispatch (defined below)
 
 LoadPlayerSprite_Bank2Dispatch
           ;; Bank 2: Characters 0-7 (bank-relative 0-7)

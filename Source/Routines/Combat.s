@@ -752,7 +752,7 @@ AreaHitbox .proc
           clc
           adc # 24
           sta cachedHitboxBottom_W
-          jmp BS_return
+          rts
 
 .pend
 

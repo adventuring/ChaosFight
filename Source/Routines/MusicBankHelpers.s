@@ -370,7 +370,7 @@ LoadMusicNote1 .proc
 
           ;; PlayMusic when both voices end
 
-          ;; Issue #1296: Load 4 bytes from stream[pointer]
+          ;; Load 4 bytes from stream[pointer]
           ldy # 0
           lda (musicVoice1Pointer),y      ; Load AUDCV
           sta temp2

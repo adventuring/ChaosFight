@@ -123,7 +123,7 @@ LoadMusicNote0Bank15:
           ;; bits) and AUDV (lower 4 bits) from AUDCV. End of track
           ;; marked by Duration = 0. Chaotica loop handled in
           ;; PlayMusic when both voices end
-          ;; Issue #1296: Load 4 bytes from stream[pointer]
+          ;; Load 4 bytes from stream[pointer]
           ldy # 0
           lda (musicVoice0Pointer),y  ; Load AUDCV
           sta temp2

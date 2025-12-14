@@ -75,46 +75,50 @@ CheckEnhancedControllers:
           ;; Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0) or Joy2b+ Button III (INPT1)
           ;; OR flags together and check for nonzero match
           ;; Set temp1 = controllerStatus & (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
-          ;; If temp1 is non-zero and !INPT0{7}, then AuthorPreludeComplete
-          lda temp1
-          beq CheckRightPortControllers
-          bit INPT0
-          bmi CheckRightPortControllers
-          jmp AuthorPreludeComplete
-CheckRightPortControllers:
           lda controllerStatus
-          and SetLeftPortJoy2bPlus
+          and # SetLeftPortGenesis
           sta temp1
-          ;; If temp1 is non-zero and !INPT1{7}, then AuthorPreludeComplete
+          lda controllerStatus
+          and # SetLeftPortJoy2bPlus
+          ora temp1
+          sta temp1
+          ;; If temp1 is non-zero and !INPT0{7}, then AuthorPreludeComplete
+          ;; Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0)
           lda temp1
-          beq CheckRightPortControllersLabel
+          beq CheckPlayer1Joy2bPlusButton3
+          bit INPT0
+          bpl AuthorPreludeComplete  ; Button pressed (bit 7 = 0)
+CheckPlayer1Joy2bPlusButton3:
+          ;; Check Joy2b+ Button III (INPT1) for Player 1
+          lda controllerStatus
+          and # SetLeftPortJoy2bPlus
+          beq CheckPlayer2Enhanced
           bit INPT1
-          bmi CheckRightPortControllersLabel
-          jmp AuthorPreludeComplete
-CheckRightPortControllersLabel:
+          bpl AuthorPreludeComplete  ; Button pressed (bit 7 = 0)
+CheckPlayer2Enhanced:
 
           ;; Player 2: Genesis Button C (INPT2) or Joy2b+ Button C/II (INPT2) or Joy2b+ Button III (INPT3)
           ;; Set temp1 = controllerStatus & (SetRightPortGenesis | SetRightPortJoy2bPlus)
           lda controllerStatus
-          and # 96
+          and # SetRightPortGenesis
+          sta temp1
+          lda controllerStatus
+          and # SetRightPortJoy2bPlus
+          ora temp1
           sta temp1
           ;; If temp1 is non-zero and !INPT2{7}, then AuthorPreludeComplete
           lda temp1
-          beq CheckAutoAdvance
+          beq CheckPlayer2Joy2bPlusButton3
           bit INPT2
-          bmi CheckAutoAdvance
-          jmp AuthorPreludeComplete
-CheckAutoAdvance:
+          bpl AuthorPreludeComplete  ; Button pressed (bit 7 = 0)
+CheckPlayer2Joy2bPlusButton3:
+          ;; Check Joy2b+ Button III (INPT3) for Player 2
           lda controllerStatus
-          and SetRightPortJoy2bPlus
-          sta temp1
-          ;; If temp1 is non-zero and !INPT3{7}, then AuthorPreludeComplete
-          lda temp1
-          beq CheckAutoAdvanceLabel
+          and # SetRightPortJoy2bPlus
+          beq CheckAutoAdvance
           bit INPT3
-          bmi CheckAutoAdvanceLabel
-          jmp AuthorPreludeComplete
-CheckAutoAdvanceLabel:
+          bpl AuthorPreludeComplete  ; Button pressed (bit 7 = 0)
+CheckAutoAdvance:
 
 
           ;; Auto-advance after music completes + 0.5s

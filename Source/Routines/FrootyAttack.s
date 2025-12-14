@@ -161,6 +161,9 @@ ResetFrameCounter:
           lda # 0
           sta temp4
           ;; Fall through to FrootyUpdateFrameCounter
+          jmp FrootyUpdateFrameCounter
+
+.pend
 
 FrootyUpdateFrameCounter .proc
 

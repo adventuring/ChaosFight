@@ -57,20 +57,18 @@ PublisherPreludeMain .proc
           ;; Expected: 4 bytes on stack from BS_jsr call (cross-bank call from MainLoop)
           ;; Check for button press on any controller to skip
           ;; if joy0fire then jmp PublisherPreludeComplete
-          bit INPT0
-          bmi CheckJoy1Fire
-
-          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
-          ;; (jmp PublisherPreludeComplete preserves stack)
-          jmp PublisherPreludeComplete
+          ;; Player 0 fire button is INPT4 bit 7 (bit sets N flag, bpl = button pressed)
+          bit INPT4
+          bmi CheckJoy1Fire  ; Button not pressed (bit 7 = 1), continue
+          jmp PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
 
 CheckJoy1Fire:
 
           ;; if joy1fire then jmp PublisherPreludeComplete
-          bit INPT1
-          bmi CheckEnhancedControllers
-
-          jmp PublisherPreludeComplete
+          ;; Player 1 fire button is INPT5 bit 7 (bit sets N flag, bpl = button pressed)
+          bit INPT5
+          bmi CheckEnhancedControllers  ; Button not pressed (bit 7 = 1), continue
+          jmp PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
 
 CheckEnhancedControllers:
 
@@ -86,13 +84,12 @@ CheckEnhancedControllers:
           ora temp1
           sta temp1
           ;; if temp1 then if !INPT0{7} then jmp PublisherPreludeComplete
+          ;; Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0)
           lda temp1
           beq CheckPlayer1Joy2bPlusButton3
 
           bit INPT0
-          bmi CheckPlayer1Joy2bPlusButton3
-
-          jmp PublisherPreludeComplete
+          bpl PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
 
 CheckPlayer1Joy2bPlusButton3:
 
@@ -102,9 +99,7 @@ CheckPlayer1Joy2bPlusButton3:
           beq CheckPlayer2Enhanced
 
           bit INPT1
-          bmi CheckPlayer2Enhanced
-
-          jmp PublisherPreludeComplete
+          bpl PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
 
 CheckPlayer2Enhanced:
 
@@ -122,9 +117,7 @@ CheckPlayer2Enhanced:
           beq CheckPlayer2Joy2bPlusButton3
 
           bit INPT2
-          bmi CheckPlayer2Joy2bPlusButton3
-
-          jmp PublisherPreludeComplete
+          bpl PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
 
 CheckPlayer2Joy2bPlusButton3:
 
@@ -134,9 +127,7 @@ CheckPlayer2Joy2bPlusButton3:
           beq CheckAutoAdvance
 
           bit INPT3
-          bmi CheckAutoAdvance
-
-          jmp PublisherPreludeComplete
+          bpl PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
 
 CheckAutoAdvance:
 

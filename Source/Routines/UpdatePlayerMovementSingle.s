@@ -13,7 +13,14 @@ UpdatePlayerMovementSingle .proc
           ;; Constraints: Must be colocated with XCarry/XNoCarry/YCarry/YNoCarry
           ;; Notes: temp2-temp4 are clobbered; caller must not reuse them afterward.
           ;; 16-bit accumulator for proper carry detection
-          ;; Skip if player is eliminated - TODO: implement elimination check
+          ;; Skip if player is eliminated - check if playerHealth[currentPlayer] <= 0
+          lda currentPlayer
+          asl
+          tax
+          lda playerHealth,x
+          beq UpdatePlayerMovementSkip  ; Health = 0, skip
+          bmi UpdatePlayerMovementSkip  ; Health < 0, skip
+          ;; Player is alive, continue with movement update
           ;; Apply X Velocity To X Position (8.8 fixed-point)
           ;; Use batariBASIC’s built-in 16-bit addition for carry detection
           ;; Set subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]
@@ -95,6 +102,10 @@ NoYCarry:
           clc
           adc temp6
           sta playerY,x
+          jmp BS_return
+
+UpdatePlayerMovementSkip:
+          ;; Player is eliminated, skip movement update
           jmp BS_return
 
 .pend

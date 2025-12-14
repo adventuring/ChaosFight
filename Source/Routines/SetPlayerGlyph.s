@@ -106,15 +106,15 @@ SetPlayerGlyphP5 .proc
 
             lda temp4
 
-            sta player5pointerlo
+            sta player5PointerLo
 
             lda temp5
 
-            sta player5pointerhi
+            sta player5PointerHi
 
             lda # 16
 
-            sta player5height
+            sta player5Height
 
           jmp BS_return
 
@@ -125,15 +125,15 @@ SetPlayerGlyphP0 .proc
 
             lda temp4
 
-            sta player0pointerlo
+            sta player0PointerLo
 
             lda temp5
 
-            sta player0pointerhi
+            sta player0PointerHi
 
             lda # 16
 
-            sta player0height
+            sta player0Height
 
           jmp BS_return
 
@@ -144,15 +144,15 @@ SetPlayerGlyphP1 .proc
 
             lda temp4
 
-            sta player1pointerlo
+            sta player1PointerLo
 
             lda temp5
 
-            sta player1pointerhi
+            sta player1PointerHi
 
             lda # 16
 
-            sta player1height
+            sta player1Height
 
           jmp BS_return
 
@@ -163,15 +163,15 @@ SetPlayerGlyphP2 .proc
 
             lda temp4
 
-            sta player2pointerlo
+            sta player2PointerLo
 
             lda temp5
 
-            sta player2pointerhi
+            sta player2PointerHi
 
             lda # 16
 
-            sta player2height
+            sta player2Height
 
           jmp BS_return
 
@@ -182,15 +182,15 @@ SetPlayerGlyphP3 .proc
 
             lda temp4
 
-            sta player3pointerlo
+            sta player3PointerLo
 
             lda temp5
 
-            sta player3pointerhi
+            sta player3PointerHi
 
             lda # 16
 
-            sta player3height
+            sta player3Height
 
           jmp BS_return
 
@@ -201,15 +201,15 @@ SetPlayerGlyphP4 .proc
 
             lda temp4
 
-            sta player4pointerlo
+            sta player4PointerLo
 
             lda temp5
 
-            sta player4pointerhi
+            sta player4PointerHi
 
             lda # 16
 
-            sta player4height
+            sta player4Height
 
           jmp BS_return
 

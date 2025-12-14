@@ -23,18 +23,18 @@ InitializeSpritePointers .proc
           ;;
           ;; Input: None (initialization routine)
           ;;
-          ;; Output: player0pointerlo/hi, player1pointerlo/hi,
-          ;; player2pointerlo/hi,
-          ;; player3pointerlo/hi set to SCRAM read port
+          ;; Output: player0PointerLo/hi, player1PointerLo/hi,
+          ;; player2PointerLo/hi,
+          ;; player3PointerLo/hi set to SCRAM read port
           ;; addresses
           ;;
-          ;; Mutates: player0pointerlo, player0pointerhi (set to
+          ;; Mutates: player0PointerLo, player0PointerHi (set to
           ;; $80/$F0 for r000),
-          ;; player1pointerlo, player1pointerhi (set to $90/$F0
+          ;; player1PointerLo, player1PointerHi (set to $90/$F0
           ;; for r016),
-          ;; player2pointerlo, player2pointerhi (set to $A0/$F0
+          ;; player2PointerLo, player2PointerHi (set to $A0/$F0
           ;; for r032),
-          ;; player3pointerlo, player3pointerhi (set to $B0/$F0
+          ;; player3PointerLo, player3PointerHi (set to $B0/$F0
           ;; for r048)
           ;;
           ;; Called Routines: None (uses inline assembly)
@@ -42,33 +42,33 @@ InitializeSpritePointers .proc
           ;; Constraints: Called once at game initialization (from
           ;; ColdStart, BeginGameLoop)
           ;; Set Player 0 pointer to r000 ($F080)
-          ;; player0pointer is 16-bit pointer (player0pointerlo +
-          ;; player0pointerhi)
+          ;; player0pointer is 16-bit pointer (player0PointerLo +
+          ;; player0PointerHi)
           ;; Low byte: $80 (base address of r000)
           ;; High byte: $F0 (SCRAM read port base)
-          player0pointerlo = $80
-          player0pointerhi = $F0
+          player0PointerLo = $80
+          player0PointerHi = $F0
 
           ;; Set Player 1 pointer to r016 ($F090)
-          ;; player1pointerlo/hi are arrays indexed by sprite number
+          ;; player1PointerLo/hi are arrays indexed by sprite number
           ;; Index 0 = Player 1, Index 1 = Player 2, Index 2 = Player 3
-          ;; Note: player1pointerlo[0] is actually player1pointerlo
+          ;; Note: player1PointerLo[0] is actually player1PointerLo
           ;; memory location
-          ;; player1pointerlo[1] is player2pointerlo, etc.
+          ;; player1PointerLo[1] is player2PointerLo, etc.
           lda #$90
-          sta player1pointerlo
+          sta player1PointerLo
           lda #$F0
-          sta player1pointerhi
+          sta player1PointerHi
 
           lda #$A0
-          sta player2pointerlo
+          sta player2PointerLo
           lda #$F0
-          sta player2pointerhi
+          sta player2PointerHi
 
           lda #$B0
-          sta player3pointerlo
+          sta player3PointerLo
           lda #$F0
-          sta player3pointerhi
+          sta player3PointerHi
 
           ;; Note: Kernel will adjust these pointers for Y offsets
           ;; automatically

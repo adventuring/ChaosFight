@@ -11,76 +11,76 @@ save_variables:
           sta temp3
 
 init_variables:
-          lda # (bmp_player_window+1)
+          lda # (bmpPlayerWindow+1)
           sta temp1 ;;; our line count
           lda # 1
           sta VDELP0
           lda # 0
           sta GRP1
           sta GRP0
-          lda bmp_player0_refp
+          lda bmpPlayer0Refp
           sta REFP0
-          lda bmp_player1_refp
+          lda bmpPlayer1Refp
           sta REFP1
-          lda bmp_player0_nusiz
+          lda bmpPlayer0Nusiz
           sta NUSIZ0
-          lda bmp_player1_nusiz
+          lda bmpPlayer1Nusiz
           sta NUSIZ1
-          lda # (bmp_player0_height-1)
-          sta player0height
-          lda # (bmp_player1_height-1)
-          sta player1height
+          lda # (bmpPlayer0Height-1)
+          sta player0Height
+          lda # (bmpPlayer1Height-1)
+          sta player1Height
 
           lda # <bmp_player0
-          .if  bmp_player0_index
+          .if  bmpPlayer0Index
           clc
-          adc bmp_player0_index
+          adc bmpPlayer0Index
           .fi
           sta player0pointer
           lda # >bmp_player0
-          .if  bmp_player0_index
+          .if  bmpPlayer0Index
           adc # 0
           .fi
           sta player0pointer+1
 
           lda # <bmp_color_player0
-          .if  bmp_player0_index
+          .if  bmpPlayer0Index
           clc
-          adc bmp_player0_index
+          adc bmpPlayer0Index
           .fi
           sta player0color
           lda # >bmp_color_player0
-          .if  bmp_player0_index
+          .if  bmpPlayer0Index
           adc # 0
           .fi
           sta player0color+1
 
 
           lda # <bmp_player1
-          .if  bmp_player1_index
+          .if  bmpPlayer1Index
           clc
-          adc bmp_player1_index
+          adc bmpPlayer1Index
           .fi
           sta player1pointer
           lda # >bmp_player1
-          .if  bmp_player1_index
+          .if  bmpPlayer1Index
           adc # 0
           .fi
           sta player1pointer+1
 
           lda # <bmp_color_player1
-          .if  bmp_player1_index
+          .if  bmpPlayer1Index
           clc
-          adc bmp_player1_index
+          adc bmpPlayer1Index
           .fi
           sta player1color
           lda # >bmp_color_player1
-          .if  bmp_player1_index
+          .if  bmpPlayer1Index
           adc # 0
           .fi
           sta player1color+1
 
-          lda # bmp_player_kernellines
+          lda # bmpPlayerKernellines
           sta temp4
           lda # 0
 
@@ -91,7 +91,7 @@ draw_players:
           sta COLUP1		;;;3
           stx COLUP0		;;;3
 
-          lda player0height	;;;3
+          lda player0Height	;;;3
           dcp player0y		;;;5
           bcc skipdrawP0		;;;2/3
           ldy player0y		;;;3
@@ -102,10 +102,10 @@ continueP0:
           lax (player0color),y	;;;5+
 				;;=29++
 
-          .rept (bmp_player_kernellines-1)
+          .rept (bmpPlayerKernellines-1)
           sta WSYNC
           .next
-          lda player1height	;;;3
+          lda player1Height	;;;3
           dcp player1y		;;;5
           bcc skipdrawP1		;;;2/3
           ldy player1y		;;;3

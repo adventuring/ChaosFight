@@ -46,7 +46,7 @@ UpdatePlayer1HealthBar .proc
           ;;
           ;; Returns: Far (return otherbank)
 
-          ;; Update Player 1 health bar (pfscore1).
+          ;; Update Player 1 health bar (pfScore1).
 
           ;; Input: temp1 = health value (0-100)
 
@@ -57,7 +57,7 @@ UpdatePlayer1HealthBar .proc
           ;; pattern table
 
           ;;
-          ;; Output: pfscore1 set to health bar pattern (8 pixels, bit
+          ;; Output: pfScore1 set to health bar pattern (8 pixels, bit
 
           ;; pattern)
 
@@ -66,7 +66,7 @@ UpdatePlayer1HealthBar .proc
 
           ;; (pattern index), temp3 (pattern value),
 
-          ;; pfscore1 (TIA register)
+          ;; pfScore1 (TIA register)
 
           ;;
           ;; Called Routines: None (reads ROM data table)
@@ -163,7 +163,7 @@ P1SetPattern:
 
 P1SetPattern .proc
 
-          ;; Look up bit pattern from table and set pfscore1
+          ;; Look up bit pattern from table and set pfScore1
           ;; Returns: Far (return otherbank)
 
           ;;
@@ -172,10 +172,10 @@ P1SetPattern .proc
           ;; HealthBarPatterns (ROM constant, bank6)
 
           ;;
-          ;; Output: pfscore1 set to health bar pattern
+          ;; Output: pfScore1 set to health bar pattern
 
           ;;
-          ;; Mutates: temp3 (pattern value), pfscore1 (TIA register)
+          ;; Mutates: temp3 (pattern value), pfScore1 (TIA register)
 
           ;;
           ;; Called Routines: None (reads ROM data table)
@@ -198,10 +198,10 @@ P1SetPattern .proc
 
 
 
-          ;; Set pfscore1 to health bar pattern
+          ;; Set pfScore1 to health bar pattern
 
           lda temp3
-          sta pfscore1
+          sta pfScore1
 
 
 
@@ -211,7 +211,7 @@ P1SetPattern .proc
 
 UpdatePlayer2HealthBar .proc
 
-          ;; Update Player 2 health bar (pfscore2).
+          ;; Update Player 2 health bar (pfScore2).
           ;; Returns: Far (return otherbank)
 
           ;; Input: temp1 = health value (0-100)
@@ -223,7 +223,7 @@ UpdatePlayer2HealthBar .proc
           ;; pattern table
 
           ;;
-          ;; Output: pfscore2 set to health bar pattern (8 pixels, bit
+          ;; Output: pfScore2 set to health bar pattern (8 pixels, bit
 
           ;; pattern)
 
@@ -232,7 +232,7 @@ UpdatePlayer2HealthBar .proc
 
           ;; (pattern index), temp3 (pattern value),
 
-          ;; pfscore2 (TIA register)
+          ;; pfScore2 (TIA register)
 
           ;;
           ;; Called Routines: None (reads ROM data table)
@@ -326,7 +326,7 @@ P2SetPattern:
 
 P2SetPattern .proc
 
-          ;; Look up bit pattern from table and set pfscore2
+          ;; Look up bit pattern from table and set pfScore2
           ;; Returns: Far (return otherbank)
 
           ;;
@@ -335,10 +335,10 @@ P2SetPattern .proc
           ;; HealthBarPatterns (ROM constant, bank6)
 
           ;;
-          ;; Output: pfscore2 set to health bar pattern
+          ;; Output: pfScore2 set to health bar pattern
 
           ;;
-          ;; Mutates: temp3 (pattern value), pfscore2 (TIA register)
+          ;; Mutates: temp3 (pattern value), pfScore2 (TIA register)
 
           ;;
           ;; Called Routines: None (reads ROM data table)
@@ -361,10 +361,10 @@ P2SetPattern .proc
 
 
 
-          ;; Set pfscore2 to health bar pattern
+          ;; Set pfScore2 to health bar pattern
 
           lda temp3
-          sta pfscore2
+          sta pfScore2
 
 
 
@@ -391,14 +391,14 @@ UpdatePlayer12HealthBars .proc
           ;; values
 
           ;;
-          ;; Output: pfscore1, pfscore2 updated
+          ;; Output: pfScore1, pfScore2 updated
 
           ;;
           ;; Mutates: temp1 (passed to
 
           ;; UpdatePlayer1HealthBar/UpdatePlayer2HealthBar),
 
-          ;; pfscore1, pfscore2 (TIA registers, via
+          ;; pfScore1, pfScore2 (TIA registers, via
 
           ;; UpdatePlayer1HealthBar/UpdatePlayer2HealthBar)
 
@@ -463,14 +463,14 @@ InitializeHealthBars .proc
           ;; Input: PlayerHealthMax (constant) = maximum health value
 
           ;;
-          ;; Output: pfscore1, pfscore2 set to full health pattern
+          ;; Output: pfScore1, pfScore2 set to full health pattern
 
           ;;
           ;; Mutates: temp1 (passed to
 
           ;; UpdatePlayer1HealthBar/UpdatePlayer2HealthBar),
 
-          ;; pfscore1, pfscore2 (TIA registers, via
+          ;; pfScore1, pfScore2 (TIA registers, via
 
           ;; UpdatePlayer1HealthBar/UpdatePlayer2HealthBar)
 

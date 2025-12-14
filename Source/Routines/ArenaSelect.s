@@ -349,7 +349,7 @@ DrawTensDigit .proc
           lda # 20
           sta player4y
           lda $0E(14)
-          sta COLUP4
+          sta colup4
           ;; Use player4 for tens digit
           lda # 4
           sta temp3
@@ -380,7 +380,7 @@ SkipTens .proc
           lda # 20
           sta player5y
           lda $0E(14)
-          sta COLUP5
+          sta colup5
           ;; Use player5 for ones digit
           lda # 5
           sta temp3
@@ -414,7 +414,7 @@ DisplayRandomArena .proc
           lda # 20
           sta player4y
           lda # $0E
-          sta COLUP4
+          sta colup4
           ;; White
           lda # 4
           sta temp3
@@ -439,7 +439,7 @@ AfterSetGlyphRandom1:
           lda # 20
           sta player5y
           lda # $0E
-          sta COLUP5
+          sta colup5
           ;; Use player5
           lda # 5
           sta temp3
@@ -627,7 +627,7 @@ ArenaSelectDrawCharacters .proc
           ;;
           ;; Mutates: player0-3x, player0-3y (TIA registers),
           ;; player sprite pointers (via LocateCharacterArt),
-          ;; COLUP0-COLUP3 (via PlayerPreviewApplyColor bank6)
+          ;; COLUP0-colup3 (via PlayerPreviewApplyColor bank6)
           ;;
           ;; Called Routines: PlayerPreviewSetPosition (bank6) - sets
           ;; sprite coordinates,

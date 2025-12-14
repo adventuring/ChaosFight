@@ -1,5 +1,5 @@
-          .if ! bmp_gameselect_color
-bmp_gameselect_color:
+          .if ! bmpGameselectColor
+bmpGameselectColor:
           .fi
           .byte $0f
 

@@ -34,17 +34,17 @@ draw_bmp_48x2_X .proc
 
 pf48x2_X_loop:
 
-	lda (scorepointers+0),y 	;;;5
+	lda (scorePointers+0),y 	;;;5
 	sta GRP0			;;3
-	lda (scorepointers+2),y 	;;;5
+	lda (scorePointers+2),y 	;;;5
 	sta GRP1			;;3
-        lda (scorepointers+4),y         ;;;5
+        lda (scorePointers+4),y         ;;;5
         sta GRP0                        ;;;3
 
-        lax (scorepointers+10),y        ;;;5
-        lda (scorepointers+8),y         ;;;5
+        lax (scorePointers+10),y        ;;;5
+        lda (scorePointers+8),y         ;;;5
         sta aux3                        ;;;3
-        lda (scorepointers+6),y         ;;;5
+        lda (scorePointers+6),y         ;;;5
         ldy aux3                        ;;;3
 
         sta GRP1                        ;;;3
@@ -62,17 +62,17 @@ pf48x2_X_loop:
 	dec aux2			;;5
 
 
-	lda (scorepointers+0),y 	;;;5
+	lda (scorePointers+0),y 	;;;5
 	sta GRP0			;;3
-	lda (scorepointers+2),y 	;;;5
+	lda (scorePointers+2),y 	;;;5
 	sta GRP1			;;3
-        lda (scorepointers+4),y         ;;;5
+        lda (scorePointers+4),y         ;;;5
         sta GRP0                        ;;;3
 
-        lax (scorepointers+10),y        ;;;5
-        lda (scorepointers+8),y         ;;;5
+        lax (scorePointers+10),y        ;;;5
+        lda (scorePointers+8),y         ;;;5
         sta aux3                        ;;;3
-        lda (scorepointers+6),y         ;;;5
+        lda (scorePointers+6),y         ;;;5
         ldy aux3                        ;;;3
 
         sta GRP1                        ;;;3

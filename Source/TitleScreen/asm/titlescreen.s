@@ -13,7 +13,7 @@ bmp_48x2_2_index = bmp_48x2_2_index_value
 bmp_48x2_3_index = bmp_48x2_3_index_value
 bmp_48x2_4_index = bmp_48x2_4_index_value
 scorefade_1:= 0
-score_kernel_fade = 0
+scoreKernelFade = 0
 
 titledrawscreen:
 title_eat_overscan:
@@ -131,7 +131,7 @@ draw_48x2_4_1:
 	;; Gameselect minikernel removed - not used (mk_gameselect_on = 0)
 	;; Gameselect symbols defined as stubs to avoid unresolved symbol errors
 	;; These are referenced by batariBASIC compiler output but never used
-bmp_gameselect_color:
+bmpGameselectColor:
           .byte $00
 bmp_gameselect_CHAR0:
           .byte $00, $00, $00, $00, $00
@@ -176,10 +176,10 @@ OVERSCAN:
           .if  player9height
           ldy # 8
           lda # 0
-          sta player0height
+          sta player0Height
 TitleScreenFixPlayerHeights:
 playerheightfixloop:
-          sta player1height,y
+          sta player1Height,y
           ;; .if _NUSIZ1 != 0  ;;; Commented out - code inside is duplicate
           dey
           bpl playerheightfixloop

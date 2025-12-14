@@ -65,9 +65,9 @@ SetSpritePositions:
           ;; Participant 2 (array [1]): P1 sprite (player1x/player1y,
           ;; _COLUP1 - virtual sprite)
           ;; Participant 3 (array [2]): P2 sprite (player2x/player2y,
-          ;; COLUP2)
+          ;; colup2)
           ;; Participant 4 (array [3]): P3 sprite (player3x/player3y,
-          ;; COLUP3)
+          ;; colup3)
           ;; MISSILE SPRITES:
           ;; 2-player mode: missile0 = Participant 1, missile1 =
           ;; Participant 2 (no multiplexing)
@@ -126,9 +126,9 @@ SetSpritePositions:
           ;; Set positions for participants 3 & 4 in 4-player mode
           ;; (multisprite kernel)
           ;; Participant 3 (array [2]): P2 sprite (player2x/player2y,
-          ;; COLUP2)
+          ;; colup2)
           ;; Participant 4 (array [3]): P3 sprite (player3x/player3y,
-          ;; COLUP3)
+          ;; colup3)
           ;; Missiles are available for projectiles since participants
           ;; use proper sprites
           ;; Set Participant 3 & 4 positions (arrays [2] & [3] → P2 & P3 sprites)

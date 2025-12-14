@@ -435,7 +435,7 @@
           ;; ADMIN: Runtime window value for bmp_48x2_4 (BRP)
           ;; - 0=hidden, 42=visible
           titlescreenWindow4  = $BB
-          bmp_index  = $BC
+          bmpIndex  = $BC
 
           ;; GAME MODE VARIABLES (may be re-used in Admin Mode for
           ;; other purposes)
@@ -489,11 +489,11 @@
 
           ;; Player sprite pointer aliases (built-in batariBASIC multisprite kernel variables)
           ;; These are aliases for the lo/hi byte pairs used by the multisprite kernel
-          player1pointer  = player1pointerlo.player1pointerhi
-          player2pointer  = player2pointerlo.player2pointerhi
-          player3pointer  = player3pointerlo.player3pointerhi
-          player4pointer  = player4pointerlo.player4pointerhi
-          player5pointer  = player5pointerlo.player5pointerhi
+          player1pointer  = player1PointerLo.player1PointerHi
+          player2pointer  = player2PointerLo.player2PointerHi
+          player3pointer  = player3PointerLo.player3PointerHi
+          player4pointer  = player4PointerLo.player4PointerHi
+          player5pointer  = player5PointerLo.player5PointerHi
 
           ;; playerRecoveryFrames[0-3] - Recovery/hitstun frame
           ;; counters

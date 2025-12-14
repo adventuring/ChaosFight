@@ -26,30 +26,30 @@ SpriteHeightTable:
           ;;--set initial P1 positions
 multisprite_setup:
           lda # 15
-          sta pfheight
+          sta pfHeight
 
           ldx # 4
           stx temp3
 SetCopyHeight:
           lda # 76
-          sta NewSpriteX,x
+          sta newSpriteX,x
           lda CopyColorData,x
-          sta NewCOLUP1,x
+          sta newCOLUP1,x
           lda SpriteHeightTable,x
-          sta spriteheight,x
+          sta spriteHeight,x
           txa
-          sta SpriteGfxIndex,x
+          sta spriteGfxIndex,x
           sta spritesort,x
           dex
           bpl SetCopyHeight
 
           ;; since we cannot turn off pf, point PF to BlankPlayfield in Bank 16
           lda # >BlankPlayfield
-          sta PF2pointer+1
-          sta PF1pointer+1
+          sta pf2Pointer+1
+          sta pf1Pointer+1
           lda # <BlankPlayfield
-          sta PF2pointer
-          sta PF1pointer
+          sta pf2Pointer
+          sta pf1Pointer
           rts
 
 drawscreen:
@@ -105,16 +105,16 @@ SkipVblankCall:
           sec
           sbc player0y
           clc
-          adc player0height
+          adc player0Height
           sta player0pointer
 
           lda player0y
-          sta P0Top
+          sta p0Top
           sec
-          sbc player0height
+          sbc player0Height
           clc
           adc #$80
-          sta P0Bottom
+          sta p0Bottom
 
           ;;--some final setup
 
@@ -197,29 +197,29 @@ KernelSetupSubroutine:
 
           ldx # 4
 AdjustYValuesUpLoop:
-          lda NewSpriteY,x
+          lda newSpriteY,x
           clc
           adc # 2
-          sta NewSpriteY,x
+          sta newSpriteY,x
           dex
           bpl AdjustYValuesUpLoop
 
           ldx temp3                   ;;;; first sprite displayed
 
-          lda SpriteGfxIndex,x
+          lda spriteGfxIndex,x
           tay
-          lda NewSpriteY,y
-          sta RepoLine
+          lda newSpriteY,y
+          sta repoLine
 
-          lda SpriteGfxIndex-1,x
+          lda spriteGfxIndex-1,x
           tay
-          lda NewSpriteY,y
+          lda newSpriteY,y
           sta temp6
 
-          stx SpriteIndex
+          stx spriteIndex
 
           lda # 255
-          sta P1Bottom
+          sta p1Bottom
 
           lda player0y
           .if  screenheight
@@ -229,8 +229,8 @@ AdjustYValuesUpLoop:
           .fi
           bcc nottoohigh
 
-          lda P0Bottom
-          sta P0Top
+          lda p0Bottom
+          sta p0Top
 
 nottoohigh:
           rts
@@ -282,7 +282,7 @@ sixdigscore:
           clc
           adc player0y
           sec
-          sbc player0height
+          sbc player0Height
           sta player0pointer
           inc player0y
 
@@ -326,17 +326,17 @@ sixdigscore:
           ;; swap lo4->temp3
           ;; swap lo6->temp5
 
-          lda scorepointers+5
+          lda scorePointers+5
           sta temp5
-          lda scorepointers+1
+          lda scorePointers+1
           sta temp1
-          lda scorepointers+3
+          lda scorePointers+3
           sta temp3
 
           lda # >SetFontNumbers
-          sta scorepointers+1
-          sta scorepointers+3
-          sta scorepointers+5
+          sta scorePointers+1
+          sta scorePointers+3
+          sta scorePointers+5
           sta temp2
           sta temp4
           sta temp6
@@ -380,8 +380,8 @@ FineAdjustTableBegin:
           ;;     org $F240
 
 SwitchDrawP0K1:                      ;;;;    72
-          lda P0Bottom
-          sta P0Top                   ;;;;+6   2
+          lda p0Bottom
+          sta p0Top                   ;;;;+6   2
           jmp BackFromSwitchDrawP0K1
 
 WaitDrawP0K1:                        ;;;;    74
@@ -406,7 +406,7 @@ KernelRoutine:
           txs                         ;;;;+9   9
 
           ldx # 0
-          lda pfheight
+          lda pfHeight
           bpl asdhj
 
           .byte $24
@@ -414,7 +414,7 @@ KernelRoutine:
 asdhj:
           tax
 
-          ldx pfheight
+          ldx pfHeight
           lda PFStart,x               ;;;; get pf pixel resolution for heights 15,7,3,1,0
 
           .if  screenheight
@@ -426,7 +426,7 @@ asdhj:
                     .fi
           .fi
 
-          sta pfpixelheight
+          sta pfPixelHeight
 
           .if  screenheight
                     ldy # screenheight
@@ -443,7 +443,7 @@ KernelLoopa:                         ;;;;    50
           .SLEEP 7                    ;;;;+4   54
 KernelLoopb:                         ;;;;    54
           .SLEEP 2                    ;;;;+12  66
-          cpy P0Top                   ;;;;+3   69
+          cpy p0Top                   ;;;;+3   69
           beq SwitchDrawP0K1         ;;;;+2   71
 
           bpl WaitDrawP0K1            ;;;;+2   73
@@ -453,33 +453,33 @@ KernelLoopb:                         ;;;;    54
 
 BackFromSwitchDrawP0K1:
 
-          cpy P1Bottom                ;;;;+3   8       unless we mean to draw immediately, this should be set
+          cpy p1Bottom                ;;;;+3   8       unless we mean to draw immediately, this should be set
           ;;                          to a value greater than maximum Y value initially
           bcc SkipDrawP1K1             ;;;;+2   10
 
-          lda (P1display),y           ;;;;+5   15
+          lda (p1Display),y           ;;;;+5   15
           sta GRP1                    ;;;;+4   19
 
 BackFromSkipDrawP1:
 
           sty temp1
-          ldy pfpixelheight
-          lax (PF1pointer),y
+          ldy pfPixelHeight
+          lax (pf1Pointer),y
           stx PF1                     ;;;;+7   26
-          lda (PF2pointer),y
+          lda (pf2Pointer),y
           sta PF2                     ;;;;+7   33
           ;;SLEEP 6
-          stx PF1temp2
-          sta PF2temp2
+          stx pf1Temp2
+          sta pf2Temp2
           dey
           bmi pagewraphandler
 
-          lda (PF1pointer),y
+          lda (pf1Pointer),y
 
 cyclebalance:
-          sta PF1temp1
-          lda (PF2pointer),y
-          sta PF2temp1
+          sta pf1Temp1
+          lda (pf2Pointer),y
+          sta pf2Temp1
           ldy temp1
 
           ldx # ENABL
@@ -495,7 +495,7 @@ cyclebalance:
 
           dey                         ;;;;+2   15
 
-          cpy RepoLine                ;;;;+3   18
+          cpy repoLine                ;;;;+3   18
           beq RepoKernel              ;;;;+2   20
 
           ;;      .SLEEP 20           ;+23    43
@@ -503,20 +503,20 @@ cyclebalance:
 
 newrepo:                              ;; since we have time here, store next repoline
           ;; CRITICAL: Cannot use temp6 here (used for SP save/restore at line 403)
-          ;; Use RepoLine directly instead of temp6 intermediate storage
-          ldx SpriteIndex
-          lda SpriteGfxIndex-1,x
+          ;; Use repoLine directly instead of temp6 intermediate storage
+          ldx spriteIndex
+          lda spriteGfxIndex-1,x
           tax
-          lda NewSpriteY,x
-          sta RepoLine  ;;; Store directly to RepoLine (was temp6, conflicts with SP save/restore)
+          lda newSpriteY,x
+          sta repoLine  ;;; Store directly to repoLine (was temp6, conflicts with SP save/restore)
           .SLEEP 4
 
 BackFromRepoKernel:
           tya                         ;;;;+2   45
-          and pfheight                ;;;;+2   47
+          and pfHeight                ;;;;+2   47
           bne KernelLoopa             ;;;;+2   49
 
-          dec pfpixelheight
+          dec pfPixelHeight
           bpl KernelLoopb             ;;;;+3   54
 
           bmi donewkernel             ;+3     54
@@ -535,18 +535,18 @@ setscorepointers:
           lax score+2
           jsr scorepointerset
 
-          sty scorepointers+5
-          stx scorepointers+2
+          sty scorePointers+5
+          stx scorePointers+2
           lax score+1
           jsr scorepointerset
 
-          sty scorepointers+4
-          stx scorepointers+1
+          sty scorePointers+4
+          stx scorePointers+1
           lax score
           jsr scorepointerset
 
-          sty scorepointers+3
-          stx scorepointers
+          sty scorePointers+3
+          stx scorePointers
 
 wastetime:
           rts
@@ -571,8 +571,8 @@ scorepointerset:
           ;;     align 256
 
 SwitchDrawP0KR:                      ;;;;    45
-          lda P0Bottom
-          sta P0Top                   ;;;;+6   51
+          lda p0Bottom
+          sta p0Top                   ;;;;+6   51
           jmp BackFromSwitchDrawP0KR
 
 WaitDrawP0KR:                        ;;;;    47
@@ -581,7 +581,7 @@ WaitDrawP0KR:                        ;;;;    47
 
 noUpdateXKR:
           ldx # 1
-          cpy P0Top
+          cpy p0Top
           jmp retXKR
 
 skipthis:
@@ -590,16 +590,16 @@ skipthis:
 
 RepoKernel:                          ;;;;    22      crosses page boundary
           tya
-          and pfheight                ;;;;+2   26
+          and pfHeight                ;;;;+2   26
           bne noUpdateXKR            ;;;;+2   28
 
           tax
           dex                         ;+2     30
-          dec pfpixelheight
+          dec pfPixelHeight
           stx temp1                   ;+3     35 (use temp1 instead of undefined Temp)
           ;;      .SLEEP 3
 
-          cpy P0Top                   ;;;;+3   42
+          cpy p0Top                   ;;;;+3   42
 
 retXKR:
           beq SwitchDrawP0KR         ;;;;+2   44
@@ -612,19 +612,19 @@ retXKR:
 BackFromSwitchDrawP0KR:
           sec                         ;;;;+2   56
 
-          lda PF2temp1,x
-          ldy PF1temp1,x
+          lda pf2Temp1,x
+          ldy pf1Temp1,x
 
-          ldx SpriteIndex             ;;;;+3   2
+          ldx spriteIndex             ;;;;+3   2
 
           sta PF2                     ;;;;+7   63
 
-          lda SpriteGfxIndex,x
+          lda spriteGfxIndex,x
           sty PF1                     ;;;;+7   70      too early?
           tax
           lda # 0
           sta GRP1                    ;;;;+5   75      to display player 0
-          lda NewSpriteX,x            ;;;;+4   6
+          lda newSpriteX,x            ;;;;+4   6
 
 DivideBy15LoopK:                      ;;;;    6       (carry set above)
           sbc # 15
@@ -640,7 +640,7 @@ DivideBy15LoopK:                      ;;;;    6       (carry set above)
 
           ldx # ENABL
           txs                         ;;;;+4   25
-          ldy RepoLine                ;;;; restore y
+          ldy repoLine                ;;;; restore y
           cpy bally
           php                         ;;;;+6   9       VDEL ball
 
@@ -652,7 +652,7 @@ DivideBy15LoopK:                      ;;;;    6       (carry set above)
 
           ;;15 cycles
           tya
-          and pfheight
+          and pfHeight
           ;;eor #1
           and #$FE
           bne skipthis
@@ -664,7 +664,7 @@ DivideBy15LoopK:                      ;;;;    6       (carry set above)
 goback:
 
           dey
-          cpy P0Top                   ;;;;+3   52
+          cpy p0Top                   ;;;;+3   52
           beq SwitchDrawP0KV          ;;;;+2   54
 
           bpl WaitDrawP0KV            ;;;;+2   56
@@ -676,9 +676,9 @@ BackFromSwitchDrawP0KV:
 
           ;; .SLEEP 3
 
-          lda PF2temp1,x
+          lda pf2Temp1,x
           sta PF2                     ;;;;+7   5
-          lda PF1temp1,x
+          lda pf1Temp1,x
           sta PF1                     ;;;;+7   74
           sta HMOVE
 
@@ -688,31 +688,31 @@ BackFromSwitchDrawP0KV:
           ldx # ENABL
           txs                         ;;;;+4   8
 
-          ldx SpriteIndex             ;;;;+3   13      restore index into new sprite vars
+          ldx spriteIndex             ;;;;+3   13      restore index into new sprite vars
           ;;--now, set all new variables and return to main kernel loop
 
-          lda SpriteGfxIndex,x        ;;;;+4   31
+          lda spriteGfxIndex,x        ;;;;+4   31
           tax                         ;;;;+2   33
 
-          lda NewNUSIZ,x
+          lda newNUSIZ,x
           sta NUSIZ1                  ;;;;+7   20
           sta REFP1
-          lda NewCOLUP1,x
+          lda newCOLUP1,x
           sta COLUP1                  ;;;;+7   27
 
-          lda SpriteGfxIndex,x        ;+4     31
+          lda spriteGfxIndex,x        ;+4     31
           tax                         ;+2     33
-          lda NewSpriteY,x            ;;;;+4   46
+          lda newSpriteY,x            ;;;;+4   46
           sec                         ;;;;+2   38
-          sbc spriteheight,x          ;;;;+4   42
-          sta P1Bottom                ;;;;+3   45
+          sbc spriteHeight,x          ;;;;+4   42
+          sta p1Bottom                ;;;;+3   45
 
           .SLEEP 6
-          lda player1pointerlo,x     ;;;;+4   49
-          sbc P1Bottom                ;;;;+3   52      carry should still be set
-          sta P1display               ;;;;+3   55
-          lda player1pointerhi,x
-          sta P1display+1             ;;;;+7   62
+          lda player1PointerLo,x     ;;;;+4   49
+          sbc p1Bottom                ;;;;+3   52      carry should still be set
+          sta p1Display               ;;;;+3   55
+          lda player1PointerHi,x
+          sta p1Display+1             ;;;;+7   62
 
           cpy bally
           php                         ;;;;+6   68      VDELed
@@ -723,12 +723,12 @@ BackFromSwitchDrawP0KV:
           cpy missile0y
           php                         ;;;;+6   4
 
-          lda SpriteGfxIndex-1,x
+          lda spriteGfxIndex-1,x
           ;; .SLEEP 3
-          dec SpriteIndex             ;;;;+5   13
+          dec spriteIndex             ;;;;+5   13
           ;; tax
-          lda NewSpriteY,x
-          sta RepoLine
+          lda newSpriteY,x
+          sta repoLine
 
           ;; 10 cycles below...
           bpl SetNextLine
@@ -738,17 +738,17 @@ BackFromSwitchDrawP0KV:
 
 SetNextLine:
           ;; CRITICAL: Cannot use temp6 here (used for SP save/restore)
-          ;; RepoLine already contains value from newrepo (line 509), use it directly
-          lda RepoLine  ;;; Use RepoLine directly (was temp6, conflicts with SP save/restore)
+          ;; repoLine already contains value from newrepo (line 509), use it directly
+          lda repoLine  ;;; Use repoLine directly (was temp6, conflicts with SP save/restore)
 
 SetLastLine:
-          sta RepoLine
+          sta repoLine
 
           tya
-          and pfheight
+          and pfHeight
           bne nodec
 
-          dec pfpixelheight
+          dec pfPixelHeight
           dey                         ;;;;+2   30
 
           ;; 10 cycles
@@ -761,8 +761,8 @@ nodec:
           jmp BackFromRepoKernel
 
 SwitchDrawP0KV:                      ;;;;    69
-          lda P0Bottom
-          sta P0Top                   ;;;;+6   75
+          lda p0Bottom
+          sta p0Top                   ;;;;+6   75
           jmp BackFromSwitchDrawP0KV
 
 WaitDrawP0KV:                        ;;;;    71
@@ -813,48 +813,48 @@ BottomOfKernelLoop:
           sta RESP1
 
           .SLEEP 9
-          lda  (scorepointers),y
+          lda  (scorePointers),y
           sta  GRP0
           .if  pfscore
-                    lda pfscorecolor
+                    lda pfScoreColor
                     sta COLUPF
           .else
                     .SLEEP 6
           .fi
 
           sta HMOVE
-          lda  (scorepointers+8),y
+          lda  (scorePointers+8),y
           sta WSYNC
           ;;SLEEP 2
           jmp beginscore
 
 loop2:
-          lda  (scorepointers),y     ;;;;+5  68  204
+          lda  (scorePointers),y     ;;;;+5  68  204
           sta  GRP0                  ;;;;+3  71  213      D1     --      --     --
           .if  pfscore
-                    lda pfscore1
+                    lda pfScore1
                     sta PF1
           .else
                     .SLEEP 7
           .fi
           ;; cycle 0
-          lda  (scorepointers+$8),y  ;;;;+5   5   15
+          lda  (scorePointers+$8),y  ;;;;+5   5   15
 
 beginscore:
           sta  GRP1                 ;;;;+3   8   24      D1     D1      D2     --
-          lda  (scorepointers+$6),y  ;;;;+5  13   39
+          lda  (scorePointers+$6),y  ;;;;+5  13   39
           sta  GRP0                  ;;;;+3  16   48      D3     D1      D2     D2
-          lax  (scorepointers+$2),y  ;;;;+5  29   87
+          lax  (scorePointers+$2),y  ;;;;+5  29   87
           txs
-          lax  (scorepointers+$4),y  ;;;;+5  36  108
+          lax  (scorePointers+$4),y  ;;;;+5  36  108
           .SLEEP 3
           .if  pfscore
-                    lda pfscore2
+                    lda pfScore2
                     sta PF1
           .else
                     .SLEEP 6
           .fi
-          lda  (scorepointers+$A),y  ;;;;+5  21   63
+          lda  (scorePointers+$A),y  ;;;;+5  21   63
           stx  GRP1                 ;;;;+3  44  132      D3     D3      D4     D2!
           tsx
           stx  GRP0                  ;;;;+3  47  141      D5     D3!     D4     D4
@@ -873,10 +873,10 @@ beginscore:
 
           txs
 
-          lda scorepointers+1
+          lda scorePointers+1
           ldy temp1
           sta temp1
-          sty scorepointers+1
+          sty scorePointers+1
 
           lda # 0
           sta GRP0
@@ -887,15 +887,15 @@ beginscore:
           sta NUSIZ0
           sta NUSIZ1
 
-          lda scorepointers+3
+          lda scorePointers+3
           ldy temp3
           sta temp3
-          sty scorepointers+3
+          sty scorePointers+3
 
-          lda scorepointers+5
+          lda scorePointers+5
           ldy temp5
           sta temp5
-          sty scorepointers+5
+          sty scorePointers+5
 
 
           ;;------------------------Overscan Routine---------------------------------
@@ -922,10 +922,10 @@ KernelCleanupSubroutine:
 
           ldx # 4
 AdjustYValuesDownLoop:
-          lda NewSpriteY,x
+          lda newSpriteY,x
           sec
           sbc # 2
-          sta NewSpriteY,x
+          sta newSpriteY,x
           dex
           bpl AdjustYValuesDownLoop
 
@@ -947,7 +947,7 @@ fsstart:
 copytable:
           inx
           lda spritesort,x
-          sta SpriteGfxIndex,x
+          sta spriteGfxIndex,x
           cpx # 4
           bne copytable
 
@@ -959,20 +959,20 @@ sortloop:
           ldx temp2
           lda spritesort,x
           tax
-          lda NewSpriteY,x
+          lda newSpriteY,x
           sta temp1
 
           ldx temp2
           lda spritesort+1,x
           tax
-          lda NewSpriteY,x
+          lda newSpriteY,x
           sec
           clc
           sbc temp1
           bcc largerXislower
 
           ;; larger x is higher (A>= temp1)
-          cmp spriteheight,x
+          cmp spriteHeight,x
           bcs countdown
 
           ;; overlap with x+1>x
@@ -997,7 +997,7 @@ largerXislower:                        ;;;; (temp1>A)
           sbc # 1
           bcc overlapping
 
-          cmp spriteheight,x
+          cmp spriteHeight,x
           bcs notoverlapping
 
           dec temp3
@@ -1009,10 +1009,10 @@ largerXislower:                        ;;;; (temp1>A)
 
 notoverlapping:
           ldx temp2                    ; swap display table
-          ldy SpriteGfxIndex+1,x
-          lda SpriteGfxIndex,x
-          sty SpriteGfxIndex,x
-          sta SpriteGfxIndex+1,x
+          ldy spriteGfxIndex+1,x
+          lda spriteGfxIndex,x
+          sty spriteGfxIndex,x
+          sta spriteGfxIndex+1,x
 
 skipswapGfxtable:
           ldx temp2                     ;;;; swap sort table
@@ -1027,9 +1027,9 @@ countdown:
 
 checktoohigh:
           ldx temp3
-          lda SpriteGfxIndex,x
+          lda spriteGfxIndex,x
           tax
-          lda NewSpriteY,x
+          lda newSpriteY,x
           .if  screenheight
                     cmp # screenheight-3
           .else
@@ -1050,19 +1050,19 @@ shiftnumbers:
           ;; if x=2: 2=3, 3=4, 4=2
           ;; if x=1: 1=2, 2=3, 3=4, 4=1
           ;; if x=0: 0=1, 1=2, 2=3, 3=4, 4=0
-          ldy SpriteGfxIndex,x
+          ldy spriteGfxIndex,x
 
 swaploop:
           cpx # 4
           beq shiftdone
 
-          lda SpriteGfxIndex+1,x
-          sta SpriteGfxIndex,x
+          lda spriteGfxIndex+1,x
+          sta spriteGfxIndex,x
           inx
           jmp swaploop
 
 shiftdone:
-          sty SpriteGfxIndex,x
+          sty spriteGfxIndex,x
           rts
 
           ;;.error "Multi-sprite kernel ends at ", *

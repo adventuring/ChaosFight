@@ -27,9 +27,9 @@ DisplayWinScreen .proc
           ;;
           ;; Mutates: pfrowheight, pfrows (set via
           ;; SetGameScreenLayout),
-          ;; PF1pointer, PF2pointer (playfield pointers, set
+          ;; pf1Pointer, pf2Pointer (playfield pointers, set
           ;; via inline assembly),
-          ;; pfcolortable (playfield color table pointer, set
+          ;; pfColorTable (playfield color table pointer, set
           ;; via DWS_LoadColorColors),
           ;; playerX[0-3], playerY[0-3] (TIA registers), player
           ;; sprite pointers (via LoadCharacterSprite),
@@ -62,11 +62,11 @@ DisplayWinScreen .proc
           ;; Load winner screen playfield pattern
           ;; Set playfield pointers to WinnerScreenPlayfield data (optimized: load once, store twice)
           lda # <WinnerScreenPlayfield
-          sta PF1pointer
-          sta PF2pointer
+          sta pf1Pointer
+          sta pf2Pointer
           lda # >WinnerScreenPlayfield
-          sta PF1pointer+1
-          sta PF2pointer+1
+          sta pf1Pointer+1
+          sta pf2Pointer+1
 
           ;; Winner screen always uses color mode
           jsr LoadColorColorsWinScreen
@@ -668,17 +668,17 @@ LoadColorColorsWinScreen .proc
 
           ;; TODO: #1309 ; rem Load color colors (gold gradient)
           ;; TODO: #1309 ; rem Input: WinnerScreenColorsColor table
-          ;; TODO: #1309 ; rem Output: pfcolortable pointer set to WinnerScreenColorsColor
-          ;; TODO: #1309 ; rem Mutates: pfcolortable (via inline assembly)
+          ;; TODO: #1309 ; rem Output: pfColorTable pointer set to WinnerScreenColorsColor
+          ;; TODO: #1309 ; rem Mutates: pfColorTable (via inline assembly)
           ;; TODO: #1309 ; rem Called Routines: None (uses inline assembly)
           ;; TODO: #1309 ; rem Constraints: Must be colocated with DisplayWinScreen
 
 
-          ;; TODO: #1309 ; rem Set pfcolortable pointer to WinnerScreenColorsColor
+          ;; TODO: #1309 ; rem Set pfColorTable pointer to WinnerScreenColorsColor
             lda # <WinnerScreenColorsColor
-            sta pfcolortable
+            sta pfColorTable
             lda # >WinnerScreenColorsColor
-            sta pfcolortable+1
+            sta pfColorTable+1
           rts
 
 .pend

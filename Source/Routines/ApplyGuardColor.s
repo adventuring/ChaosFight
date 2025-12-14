@@ -10,7 +10,7 @@ ApplyGuardColor .proc
           ;; playerState[] (global) = player state flags (bit 1 = guarding)
           ;;
           ;; Output: Player color forced to 12 while guarding
-          ;; Mutates: temp1-temp2, COLUP0, _COLUP1, COLUP2, COLUP3
+          ;; Mutates: temp1-temp2, COLUP0, _COLUP1, colup2, colup3
           ;;
           ;; Called Routines: None
           ;;
@@ -41,16 +41,16 @@ GuardColor0:
 
 GuardColor1:
           lda # 12
-          sta NewCOLUP1
+          sta newCOLUP1
           rts
 
 GuardColor2:
           lda # 12
-          sta COLUP2
+          sta colup2
           rts
 
 GuardColor3:
           lda # 12
-          sta COLUP3
+          sta colup3
           rts
 

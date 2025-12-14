@@ -25,9 +25,9 @@ SetPlayerSprites .proc
           ;; reflections set based on facing direction
           ;;
           ;; Mutates: temp1-temp3 (color parameter packing), COLUP0,
-          ;; COLUP1, COLUP2, COLUP3 (TIA registers) = player colors,
+          ;; COLUP1, colup2, colup3 (TIA registers) = player colors,
           ;; REFP0 (TIA register) = player 0 reflection, _NUSIZ1,
-          ;; NewNUSIZ+2, NewNUSIZ+3 (TIA registers) = player sprite
+          ;; newNUSIZ+2, newNUSIZ+3 (TIA registers) = player sprite
           ;; reflections, player sprite pointers (via
           ;; LoadCharacterSprite), currentPlayer + temp2-temp3 (LoadCharacterColors parameters) = color
           ;; loading parameters (hurt flag, guard flag)
@@ -157,24 +157,24 @@ AfterLoadCharacterSpriteP0:
 AfterLoadCharacterColorsP1:
 
           lda temp6
-          sta NewCOLUP1
+          sta newCOLUP1
 
 Player2ColorDone
 
           ;; Set sprite reflection based on facing direction
-          ;; NOTE: Multi-sprite kernel requires _NUSIZ1 (not NewNUSIZ+1)
+          ;; NOTE: Multi-sprite kernel requires _NUSIZ1 (not newNUSIZ+1)
           ;; for Player 2 virtual sprite
           ;; NUSIZ reflection uses bit 6 - preserve other bits (size,
           ;; etc.)
-          lda NewNUSIZ
+          lda newNUSIZ
           and # NUSIZMaskReflection
-          sta NewNUSIZ
+          sta newNUSIZ
           lda playerState+1
           and # PlayerStateBitFacing
           beq Player2ReflectionDone
-          lda NewNUSIZ
+          lda newNUSIZ
           ora # PlayerStateBitFacingNUSIZ
-          sta NewNUSIZ
+          sta newNUSIZ
 Player2ReflectionDone:
 
 
@@ -207,7 +207,7 @@ AfterLoadCharacterSpriteP1:
 
 
           ;; Set colors for Players 3 & 4 (multisprite kernel)
-          ;; Players 3 & 4 have independent COLUP2/COLUP3 registers
+          ;; Players 3 & 4 have independent colup2/colup3 registers
           ;; No color inheritance issues with proper multisprite
           ;; implementation
 
@@ -278,22 +278,22 @@ AfterLoadCharacterColorsP3:
 
           ;; fall through to Player3ColorDone
           lda temp6
-          sta COLUP2
+          sta colup2
 
 Player3ColorDone
 
           ;; Set sprite reflection based on facing direction
           ;; NUSIZ reflection uses bit 6 - preserve other bits (size,
           ;; etc.)
-            lda NewNUSIZ+2
+            lda newNUSIZ+2
             and # NUSIZMaskReflection
-            sta NewNUSIZ+2
+            sta newNUSIZ+2
             lda playerState+2
             and # PlayerStateBitFacing
             beq Player3ReflectionDone
-            lda NewNUSIZ+2
+            lda newNUSIZ+2
             ora # PlayerStateBitFacingNUSIZ
-            sta NewNUSIZ+2
+            sta newNUSIZ+2
 Player3ReflectionDone:
 
 
@@ -394,22 +394,22 @@ SetPlayer4Color:
 AfterLoadCharacterColorsP4:
 
           lda temp6
-          sta COLUP3
+          sta colup3
 
 Player4ColorDone
 
           ;; Set sprite reflection based on facing direction
           ;; NUSIZ reflection uses bit 6 - preserve other bits (size,
           ;; etc.)
-            lda NewNUSIZ+3
+            lda newNUSIZ+3
             and # NUSIZMaskReflection
-            sta NewNUSIZ+3
+            sta newNUSIZ+3
             lda playerState+3
             and # PlayerStateBitFacing
             beq Player4ReflectionDone
-            lda NewNUSIZ+3
+            lda newNUSIZ+3
             ora # PlayerStateBitFacingNUSIZ
-            sta NewNUSIZ+3
+            sta newNUSIZ+3
 Player4ReflectionDone:
 
 

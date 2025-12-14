@@ -8,7 +8,7 @@ LoadArenaByIndex .proc
           ;; Returns: Far (return otherbank)
           ;; Input: temp1 = arena index (0-31)
           ;; Output: Playfield RAM loaded with arena data
-          ;; Mutates: PF1pointer, PF2pointer, temp2-temp5
+          ;; Mutates: pf1Pointer, pf2Pointer, temp2-temp5
           ;; Constraints: PF0pointer remains glued to the status bar layout
           ;; Arena playfield data stored sequentially: PF1|PF2 (8 bytes each)
           ;; Calculate arena data pointer: Arena0Playfield + (arena_index × 24)
@@ -58,11 +58,11 @@ MultiplyBy8:
           sta temp5
 
           lda temp4
-          sta PF1pointer
-          sta PF2pointer
+          sta pf1Pointer
+          sta pf2Pointer
           lda temp5
-          sta PF1pointer+1
-          sta PF2pointer+1
+          sta pf1Pointer+1
+          sta pf2Pointer+1
           jmp BS_return
 
 .pend

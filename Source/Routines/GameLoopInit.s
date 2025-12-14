@@ -49,7 +49,7 @@ BeginGameLoop .proc
           ;; EliminationCounter, EliminationOrder[],
           ;; WinnerPlayerIndex, DisplayRank,
           ;; GameState,
-          ;; NUSIZ0, _NUSIZ1, NUSIZ2, NUSIZ3, frame, sprite
+          ;; NUSIZ0, _NUSIZ1, nusiz2, nusiz3, frame, sprite
           ;; pointers, screen layout
           ;;
           ;; Called Routines: InitializeSpritePointers (bank14) - sets
@@ -446,10 +446,10 @@ SkipPlayer4 .proc
           sta _NUSIZ1
           ;; Player 2 (Player 3) - multisprite kernel
           lda # 5
-          sta NUSIZ2
+          sta nusiz2
           ;; Player 3 (Player 4) - multisprite kernel
           lda # 5
-          sta NUSIZ3
+          sta nusiz3
 
           ;; Initialize health bars
           ;; Cross-bank call to InitializeHealthBars in bank 6

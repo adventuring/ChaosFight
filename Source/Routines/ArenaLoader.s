@@ -27,8 +27,8 @@ LoadArena .proc
           ;; Output: Arena playfield and colors loaded
           ;;
           ;; Mutates: temp1 (arena index), temp2 (B&W scratch), temp6
-          ;; (B&W flag), PF1pointer, PF2pointer (TIA registers) =
-          ;; playfield pointers, pfcolortable (TIA register) = color
+          ;; (B&W flag), pf1Pointer, pf2Pointer (TIA registers) =
+          ;; playfield pointers, pfColorTable (TIA register) = color
           ;; table pointer
           ;;
           ;; Called Routines: DWS_GetBWMode (bank15), LoadArenaRandom,
@@ -108,9 +108,9 @@ LoadArenaColorsColor .proc
           ;; Load arena color table pointer using stride calculation
           ;; Returns: Far (return otherbank)
             lda # <Arena0Colors
-            sta pfcolortable
+            sta pfColorTable
             lda # >Arena0Colors
-            sta pfcolortable+1
+            sta pfColorTable+1
 
                     ldx temp1
             beq SetArenaColorPointerDone
@@ -118,12 +118,12 @@ LoadArenaColorsColor .proc
 AdvanceArenaColorPointer:
 
             clc
-            lda pfcolortable
+            lda pfColorTable
             adc # <(Arena1Colors - Arena0Colors)
-            sta pfcolortable
-            lda pfcolortable+1
+            sta pfColorTable
+            lda pfColorTable+1
             adc # >(Arena1Colors - Arena0Colors)
-            sta pfcolortable+1
+            sta pfColorTable+1
             dex
             bne AdvanceArenaColorPointer
 
@@ -139,17 +139,17 @@ LoadArenaColorsBW .proc
           ;;
           ;; Input: None
           ;;
-          ;; Output: pfcolortable pointer set to ArenaColorsBW
+          ;; Output: pfColorTable pointer set to ArenaColorsBW
           ;;
-          ;; Mutates: pfcolortable (playfield color table pointer)
+          ;; Mutates: pfColorTable (playfield color table pointer)
           ;;
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with LoadArena
             lda # <ArenaColorsBW
-            sta pfcolortable
+            sta pfColorTable
             lda # >ArenaColorsBW
-            sta pfcolortable+1
+            sta pfColorTable+1
           rts
 .pend
 

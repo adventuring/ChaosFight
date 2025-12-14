@@ -105,9 +105,9 @@ LoadBWColorsArenaReload .proc
           ;; Load B&W color table
           ;; Returns: Far (return otherbank)
             lda # <ArenaColorsBW
-            sta pfcolortable
+            sta pfColorTable
             lda # >ArenaColorsBW
-            sta pfcolortable + 1
+            sta pfColorTable + 1
           jmp BS_return
 
 

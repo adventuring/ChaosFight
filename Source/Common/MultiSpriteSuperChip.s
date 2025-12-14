@@ -30,9 +30,9 @@ missile0height = $A5
 missile0x = $80
 missile1x = $81
 ballx = $82
-SpriteIndex = $83
+spriteIndex = $83
 player0x = $84
-NewSpriteX = $85
+newSpriteX = $85
 player1x = $85
 player2x = $86
 player3x = $87
@@ -43,73 +43,73 @@ missile0y = $8A
 missile1y = $8B
 bally = $8C
 player0y = $8D
-NewSpriteY = $8E
+newSpriteY = $8E
 player1y = $8E
 player2y = $8F
 player3y = $90
 player4y = $91
 player5y = $92
-NewNUSIZ = $93
+newNUSIZ = $93
 _NUSIZ1 = $93
-NUSIZ2 = $94
-NUSIZ3 = $95
-NUSIZ4 = $96
-NUSIZ5 = $97
-NewCOLUP1 = $98
+nusiz2 = $94
+nusiz3 = $95
+nusiz4 = $96
+nusiz5 = $97
+newCOLUP1 = $98
 _COLUP1 = $98
-COLUP2 = $99
-COLUP3 = $9A
-COLUP4 = $9B
-COLUP5 = $9C
-SpriteGfxIndex = $9D
-;; aux2 and pfcolortable moved to safe zero-page locations (see below)
+colup2 = $99
+colup3 = $9A
+colup4 = $9B
+colup5 = $9C
+spriteGfxIndex = $9D
+;; aux2 and pfColorTable moved to safe zero-page locations (see below)
 player0pointer = $A2
-player0pointerlo = $A2
-player0pointerhi = $A3
-P0Top = $CF
-P0Bottom = $A4
-P1Bottom = $A5
-player1pointerlo = $A6
-player2pointerlo = $A7
-player3pointerlo = $A8
-player4pointerlo = $A9
-player5pointerlo = $AA
-player1pointerhi = $AB
-player2pointerhi = $AC
-player3pointerhi = $AD
-player4pointerhi = $AE
-player5pointerhi = $AF
-player0height = $B0
-spriteheight = $B1
-player1height = $B1
-player2height = $B2
-player3height = $B3
-player4height = $B4
-player5height = $B5
-PF1temp1 = $B6
-PF1temp2 = $B7
-PF2temp1 = $B8
-PF2temp2 = $B9
-pfpixelheight = $BA
+player0PointerLo = $A2
+player0PointerHi = $A3
+p0Top = $CF
+p0Bottom = $A4
+p1Bottom = $A5
+player1PointerLo = $A6
+player2PointerLo = $A7
+player3PointerLo = $A8
+player4PointerLo = $A9
+player5PointerLo = $AA
+player1PointerHi = $AB
+player2PointerHi = $AC
+player3PointerHi = $AD
+player4PointerHi = $AE
+player5PointerHi = $AF
+player0Height = $B0
+spriteHeight = $B1
+player1Height = $B1
+player2Height = $B2
+player3Height = $B3
+player4Height = $B4
+player5Height = $B5
+pf1Temp1 = $B6
+pf1Temp2 = $B7
+pf2Temp1 = $B8
+pf2Temp2 = $B9
+pfPixelHeight = $BA
 playfield = $BB
-PF1pointer = $BB
-PF2pointer = $BD
-statusbarlength = $BF
+pf1Pointer = $BB
+pf2Pointer = $BD
+statusBarLength = $BF
 aux3 = $BF
-lifecolor = $C0
-pfscorecolor = $C0
+lifeColor = $C0
+pfScoreColor = $C0
 aux4 = $C0
-P1display = $cc
-lifepointer = $c1
+p1Display = $cc
+lifePointer = $c1
 lives = $c2
-pfscore1 = $c1
-pfscore2 = $c2
+pfScore1 = $c1
+pfScore2 = $c2
 aux5 = $c1
 aux6 = $c2
-playfieldpos = $C3
-RepoLine = $ce
-pfheight = $C4
-scorepointers = $C5
+playfieldPos = $C3
+repoLine = $ce
+pfHeight = $C4
+scorePointers = $C5
 ;; Multisprite temp variables (different addresses than standard batariBASIC)
 temp1 = $CB
 temp2 = $CC
@@ -120,7 +120,7 @@ temp6 = $D0
 temp7 = $D1
 score = $D2
 ;; Kernel variables moved from stack space ($f0-$ff) to safe zero-page locations
-pfcolortable = $D3
+pfColorTable = $D3
 aux2 = $D4
 spritesort = $D5
 spritesort2 = $D6
@@ -253,11 +253,11 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           ballx = $82
 
 ;; multisprite bookkeeping (5 bytes per sprite set)
-;; SpriteIndex = $83 (duplicate - already defined above)
+;; spriteIndex = $83 (duplicate - already defined above)
 
 ;;           player0x = $84
 ;; X position for multiplexed sprites
-;; NewSpriteX = $85 (duplicate - already defined above)
+;; newSpriteX = $85 (duplicate - already defined above)
 ;;           player1x = $85
 ;;           player2x = $86
 ;;           player3x = $87
@@ -271,85 +271,85 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 
 ;;           player0y = $8D
 ;; Y position for multiplexed sprites
-;; NewSpriteY = $8E (duplicate - already defined above)
+;; newSpriteY = $8E (duplicate - already defined above)
 ;;           player1y = $8E
 ;;           player2y = $8F
 ;;           player3y = $90
 ;;           player4y = $91
 ;;           player5y = $92
 
-;; NewNUSIZ = $93 (duplicate - already defined above)
+;; newNUSIZ = $93 (duplicate - already defined above)
 ;;           _NUSIZ1 = $93
-;; NUSIZ2 = $94 (duplicate - already defined above)
-;; NUSIZ3 = $95 (duplicate - already defined above)
-;; NUSIZ4 = $96 (duplicate - already defined above)
-;; NUSIZ5 = $97 (duplicate - already defined above)
+;; nusiz2 = $94 (duplicate - already defined above)
+;; nusiz3 = $95 (duplicate - already defined above)
+;; nusiz4 = $96 (duplicate - already defined above)
+;; nusiz5 = $97 (duplicate - already defined above)
 
-;; NewCOLUP1 = $98 (duplicate - already defined above)
+;; newCOLUP1 = $98 (duplicate - already defined above)
 ;;           _COLUP1 = $98
-;; COLUP2 = $99 (duplicate - already defined above)
-;; COLUP3 = $9A (duplicate - already defined above)
-;; COLUP4 = $9B (duplicate - already defined above)
-;; COLUP5 = $9C (duplicate - already defined above)
+;; colup2 = $99 (duplicate - already defined above)
+;; colup3 = $9A (duplicate - already defined above)
+;; colup4 = $9B (duplicate - already defined above)
+;; colup5 = $9C (duplicate - already defined above)
 
-;; SpriteGfxIndex = $9D (duplicate - already defined above)
+;; spriteGfxIndex = $9D (duplicate - already defined above)
 
 ;;           player0pointer = $A2
-;;           player0pointerlo = $A2
-;;           player0pointerhi = $A3
+;;           player0PointerLo = $A2
+;;           player0PointerHi = $A3
 
-;; P0Top = temp5 in original kernel; use a hard value to avoid dasm issues.
-;; P0Top = $CF (duplicate - already defined above)
-;; P0Bottom = $A4 (duplicate - already defined above)
-;; P1Bottom = $A5 (duplicate - already defined above)
+;; p0Top = temp5 in original kernel; use a hard value to avoid dasm issues.
+;; p0Top = $CF (duplicate - already defined above)
+;; p0Bottom = $A4 (duplicate - already defined above)
+;; p1Bottom = $A5 (duplicate - already defined above)
 
-;;           player1pointerlo = $A6
-;;           player2pointerlo = $A7
-;;           player3pointerlo = $A8
-;;           player4pointerlo = $A9
-;;           player5pointerlo = $AA
+;;           player1PointerLo = $A6
+;;           player2PointerLo = $A7
+;;           player3PointerLo = $A8
+;;           player4PointerLo = $A9
+;;           player5PointerLo = $AA
 
-;;           player1pointerhi = $AB
-;;           player2pointerhi = $AC
-;;           player3pointerhi = $AD
-;;           player4pointerhi = $AE
-;;           player5pointerhi = $AF
+;;           player1PointerHi = $AB
+;;           player2PointerHi = $AC
+;;           player3PointerHi = $AD
+;;           player4PointerHi = $AE
+;;           player5PointerHi = $AF
 
-;;           player0height = $B0
+;;           player0Height = $B0
 ;; heights of multiplexed player sprite
-;;           spriteheight = $B1
-;;           player1height = $B1
-;;           player2height = $B2
-;;           player3height = $B3
-;;           player4height = $B4
-;;           player5height = $B5
+;;           spriteHeight = $B1
+;;           player1Height = $B1
+;;           player2Height = $B2
+;;           player3Height = $B3
+;;           player4Height = $B4
+;;           player5Height = $B5
 
-;;           pfpixelheight = $BA
+;;           pfPixelHeight = $BA
 
 ;; playfield pointers now reference sprite data
 ;;           playfield = $BB
 
-;;           statusbarlength = $BF
+;;           statusBarLength = $BF
 ;;           aux3 = $BF
 
-;;           lifecolor = $C0
-;;           pfscorecolor = $C0
+;;           lifeColor = $C0
+;;           pfScoreColor = $C0
 ;;           aux4 = $C0
 
-;; P1display reused for multisprite bookkeeping (hard-coded to avoid dasm issues)
-;;           lifepointer = $C1
+;; p1Display reused for multisprite bookkeeping (hard-coded to avoid dasm issues)
+;;           lifePointer = $C1
 ;;           lives = $C2
-;;           pfscore1 = $C1
-;;           pfscore2 = $C2
+;;           pfScore1 = $C1
+;;           pfScore2 = $C2
 ;;           aux5 = $C1
 ;;           aux6 = $C2
 
-;;           playfieldpos = $C3
+;;           playfieldPos = $C3
 
-;; RepoLine reused for multisprite bookkeeping
+;; repoLine reused for multisprite bookkeeping
 
-;;           pfheight = $C4
-;;           scorepointers = $C5
+;;           pfHeight = $C4
+;;           scorePointers = $C5
 
 ;; kernel temps are relocated for multisprite
 ;;           temp1 = $CB
@@ -363,7 +363,7 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 
 ;;           score = $D2
 ;; Kernel variables moved from stack space ($f0-$ff) to safe zero-page locations
-;;           pfcolortable = $D3
+;;           pfColorTable = $D3
 ;;           aux2 = $D4
 ;;           spritesort = $D5
 ;;           spritesort2 = $D6
@@ -441,7 +441,7 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           player9height = $BC
           aux1 = $D3
 ;;           aux2 = $D4
-;;           pfcolortable = $D3
+;;           pfColorTable = $D3
           pfheighttable = $D3
 
 ;; --- Zero-page variable labels ------------------------------------------------

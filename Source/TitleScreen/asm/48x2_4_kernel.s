@@ -21,14 +21,14 @@ draw_bmp_48x2_4:
           ldy # 11
 bmp_48x2_4_pointersetup:
           lda bmp_48x2_4_values,y
-          sta scorepointers,y
+          sta scorePointers,y
           dey
           lda bmp_48x2_4_values,y
           .if  bmp_48x2_4_index
           sec
           sbc bmp_48x2_4_index
           .fi
-          sta scorepointers,y
+          sta scorePointers,y
           dey
           bpl bmp_48x2_4_pointersetup
 

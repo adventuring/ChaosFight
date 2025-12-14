@@ -9,16 +9,16 @@ draw_score_display:
 
           lax score+0
           jsr miniscorepointerset
-          sty scorepointers+8 
-          stx scorepointers+0
+          sty scorePointers+8 
+          stx scorePointers+0
           lax score+1
           jsr miniscorepointerset
-          sty scorepointers+4
-          stx scorepointers+6
+          sty scorePointers+4
+          stx scorePointers+6
           lax score+2
           jsr miniscorepointerset
-          sty scorepointers+10
-          stx scorepointers+2
+          sty scorePointers+10
+          stx scorePointers+2
 
           sta HMCLR
           tsx
@@ -36,12 +36,12 @@ draw_score_display:
           .SLEEP 7   ;;; 7 13
 
           lda # >SetFontNumbers   ;;; 2 15  ; Use SetFontNumbers from Numbers.bas
-          sta scorepointers+1,x  ;;; 4 19
-          sta scorepointers+3,x  ;;; 4 23
-          sta scorepointers+5,x  ;;; 4 27
-          sta scorepointers+7,x  ;;; 4 31
-          sta scorepointers+9,x  ;;; 4 35
-          sta scorepointers+11,x ;;; 4 39
+          sta scorePointers+1,x  ;;; 4 19
+          sta scorePointers+3,x  ;;; 4 23
+          sta scorePointers+5,x  ;;; 4 27
+          sta scorePointers+7,x  ;;; 4 31
+          sta scorePointers+9,x  ;;; 4 35
+          sta scorePointers+11,x ;;; 4 39
 
           ldy # 7		;;; 2 41
           sta RESP0	;;; 3 44
@@ -57,8 +57,8 @@ draw_score_display:
           sta HMP1		;;; 3 67
           lda scorecolor	;;; 3 70
           sta HMOVE 	;;; cycle 73 ?
-          .if  score_kernel_fade
-          and score_kernel_fade
+          .if  scoreKernelFade
+          and scoreKernelFade
           .fi
 
           sta COLUP0
@@ -66,9 +66,9 @@ draw_score_display:
           .if  scorefade
           sta aux3 ;;; scorefade (use aux3, NOT stack2 which is in $f0-$ff stack space)
           .fi
-          lda  (scorepointers),y
+          lda  (scorePointers),y
           sta  GRP0
-          lda  (scorepointers+8),y
+          lda  (scorePointers+8),y
           sta WSYNC
           .SLEEP 2
           jmp beginscoreloop
@@ -85,17 +85,17 @@ scoreloop2:
           .else
           .SLEEP 9
           .fi
-          lda  (scorepointers),y     ;;;+5  68  204
+          lda  (scorePointers),y     ;;;+5  68  204
           sta  GRP0            ;;;+3  71  213      D1     --      --     --
-          lda  (scorepointers+$8),y  ;;;+5   5   15
+          lda  (scorePointers+$8),y  ;;;+5   5   15
  ;; cycle 0
 beginscoreloop:
           sta  GRP1            ;;;+3   8   24      D1     D1      D2     --
-          lda  (scorepointers+$6),y  ;;;+5  13   39
+          lda  (scorePointers+$6),y  ;;;+5  13   39
           sta  GRP0            ;;;+3  16   48      D3     D1      D2     D2
-          lax  (scorepointers+$2),y  ;;;+5  29   87
+          lax  (scorePointers+$2),y  ;;;+5  29   87
           txs
-          lax  (scorepointers+$4),y  ;;;+5  36  108
+          lax  (scorePointers+$4),y  ;;;+5  36  108
 
           .if  scorefade
           dec aux3  ;;; Decrement fade value (use aux3, NOT stack2 which is in $f0-$ff stack space)
@@ -104,7 +104,7 @@ beginscoreloop:
           .fi
           .SLEEP 2
 
-          lda  (scorepointers+$A),y  ;;;+5  21   63 DIGIT 6
+          lda  (scorePointers+$A),y  ;;;+5  21   63 DIGIT 6
           stx  GRP1            ;;;+3  44  132      D3     D3      D4     D2!
           tsx
           stx  GRP0            ;;;+3  47  141      D5     D3!     D4     D4
@@ -134,18 +134,18 @@ scoreloop2end:
  ;; clear out the score pointers in case they’re stolen DPC variables...
           ldx # 11
 clearscoreploop:
-          sta scorepointers,x
+          sta scorePointers,x
           dex
           bpl clearscoreploop
 
 
  ;;;ldy temp3
- ;;ldy scorepointers+8
- ;;sty scorepointers+3
+ ;;ldy scorePointers+8
+ ;;sty scorePointers+3
 
  ;;;ldy temp5
- ;;ldy scorepointers+10
- ;;sty scorepointers+5
+ ;;ldy scorePointers+10
+ ;;sty scorePointers+5
           rts
 
 miniscorepointerset:

@@ -6,7 +6,7 @@
           ldy # 4
           sty aux2
 
-          lda bmp_gameselect_color
+          lda bmpGameselectColor
           sta COLUP0
           sta COLUP1
 
@@ -36,7 +36,7 @@ converttobcd:
           adc temp3 ;;; *5
           clc
           adc # <(font_gameselect_img)
-          sta scorepointers+10
+          sta scorePointers+10
 
           lda temp4
           and #$f0
@@ -49,32 +49,32 @@ converttobcd:
           adc temp3 ;;; *5
           clc
           adc # <(font_gameselect_img)
-          sta scorepointers+8
+          sta scorePointers+8
 
 
         ;;setup score pointers to point at my bitmap slices instead
           lda # <(bmp_gameselect_CHAR0)
-          sta scorepointers+0
+          sta scorePointers+0
           lda # >(bmp_gameselect_CHAR0)
-          sta scorepointers+1
+          sta scorePointers+1
           lda # <(bmp_gameselect_CHAR1)
-          sta scorepointers+2
+          sta scorePointers+2
           lda # >(bmp_gameselect_CHAR1)
-          sta scorepointers+3
+          sta scorePointers+3
           lda # <(bmp_gameselect_CHAR2)
-          sta scorepointers+4
+          sta scorePointers+4
           lda # >(bmp_gameselect_CHAR2)
-          sta scorepointers+5
+          sta scorePointers+5
           lda # <(bmp_gameselect_CHAR3)
-          sta scorepointers+6
+          sta scorePointers+6
           lda # >(bmp_gameselect_CHAR3)
-          sta scorepointers+7
+          sta scorePointers+7
 
           lda # >(font_gameselect_img)
-          sta scorepointers+9
+          sta scorePointers+9
 
           lda # >(font_gameselect_img)
-          sta scorepointers+11
+          sta scorePointers+11
 
           jmp draw_bmp_48x1_X
 .pend

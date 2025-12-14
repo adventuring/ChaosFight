@@ -1,40 +1,40 @@
 
 
 ;;;;*** the height of this mini-kernel.
-bmp_player_window = 10
+bmpPlayerWindow = 10
 
  ;;*** how many scanlines per pixel. 
-bmp_player_kernellines = 1
+bmpPlayerKernellines = 1
 
  ;;*** the height of each player.
-bmp_player0_height = 10
-bmp_player1_height = 10
+bmpPlayer0Height = 10
+bmpPlayer1Height = 10
 
  ;;*** NUSIZ0 value. If you want to change it in a variable
- ;;*** instead, dim on in bB called "bmp_player0_nusiz"
-          .if ! bmp_player0_nusiz
-bmp_player0_nusiz:
+ ;;*** instead, dim on in bB called "bmpPlayer0Nusiz"
+          .if ! bmpPlayer0Nusiz
+bmpPlayer0Nusiz:
           .fi
           .byte 0
 
  ;;*** NUSIZ1 value. If you want to change it in a variable
- ;;*** instead, dim on in bB called "bmp_player1_nusiz"
-          .if ! bmp_player1_nusiz
-bmp_player1_nusiz:
+ ;;*** instead, dim on in bB called "bmpPlayer1Nusiz"
+          .if ! bmpPlayer1Nusiz
+bmpPlayer1Nusiz:
           .fi
           .byte 0
 
  ;;*** REFP0 value. If you want to change it in a variable
- ;;*** instead, dim on in bB called "bmp_player0_refp"
-          .if ! bmp_player0_refp
-bmp_player0_refp:
+ ;;*** instead, dim on in bB called "bmpPlayer0Refp"
+          .if ! bmpPlayer0Refp
+bmpPlayer0Refp:
           .fi
           .byte 3
 
  ;;*** REFP1 value. If you want to change it in a variable
- ;;*** instead, dim on in bB called "bmp_player1_refp"
-          .if ! bmp_player1_refp
-bmp_player1_refp:
+ ;;*** instead, dim on in bB called "bmpPlayer1Refp"
+          .if ! bmpPlayer1Refp
+bmpPlayer1Refp:
           .fi
           .byte 3
 

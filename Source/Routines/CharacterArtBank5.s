@@ -340,7 +340,7 @@ SetHeightBank5:
           ;;;;; Load player number from temp6 (0-3) - already set at line 227
           lda # 16
           ;;;;; All sprites are 16 scanlines
-          sta player0height,x ;;;;; Store using indexed addressing (player0height=$B0, so $B0+x = correct address)
+          sta player0Height,x ;;;;; Store using indexed addressing (player0Height=$B0, so $B0+x = correct address)
           ;;; CRITICAL: This routine is called cross-bank via BS_jsr ... bank5
           ;;; Must use jmp BS_return instead of rts to properly decode encoded return address
           jmp BS_return

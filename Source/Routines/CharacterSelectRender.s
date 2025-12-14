@@ -299,12 +299,12 @@ SelectApplyPlayerColorP1 .proc
 
 SelectApplyPlayerColorP2 .proc
           lda temp2
-          sta COLUP2
+          sta colup2
 .pend
 
 SelectApplyPlayerColorP3 .proc
           lda temp2
-          sta COLUP3
+          sta colup3
 
 .pend
 

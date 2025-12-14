@@ -863,10 +863,10 @@ AfterPlaySoundEffectBounce:
           sta temp6
 
           ;; Reduce by 25% (divide by 4, then subtract)
-          lda temp6
-          lsr
-          lsr
-          sta velocityCalculation
+            lda temp6
+            lsr
+            lsr
+            sta velocityCalculation
           ;; let missileVelocityX[temp1] = temp6 - velocityCalculation
           lda temp6
           sec

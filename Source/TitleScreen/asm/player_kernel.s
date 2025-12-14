@@ -149,13 +149,26 @@ skipdrawP1:
           .fi
 
 TSpositionp0p1:
-          ldx # 1
+          ;; CRITICAL: Cannot use aux6 here (used for SP save/restore in draw_bmp_48x2_X)
+          ;; Cannot use temp variables (temp1-temp4 used in draw_player_display)
+          ;; Use aux4 and aux5 for player X positions (safe scratch variables)
           lda player0x
-          sta aux5
+          sta aux4  ;;; Player 0 X position
           lda player1x
-          sta aux6
+          sta aux5  ;;; Player 1 X position (was aux6, conflicts with SP save/restore)
+          
+          ldx # 1
 TSpositionp0p1Loop:
-          lda aux5,x
+          ;; Load correct player X position based on X register
+          cpx # 1
+          beq LoadPlayer1X
+          ;; Player 0 (x=0)
+          lda aux4
+          jmp TSpositionp0p1Continue
+LoadPlayer1X:
+          ;; Player 1 (x=1)
+          lda aux5
+TSpositionp0p1Continue:
           clc
           adc TSadjust,x
           cmp # 161
@@ -163,13 +176,31 @@ TSpositionp0p1Loop:
           sec
           sbc # 160
 TSskipadjust:
-          sta aux5,x
+          ;; Store back to correct aux variable
+          cpx # 1
+          beq StorePlayer1X
+          ;; Player 0 (x=0)
+          sta aux4
+          jmp TSpositionp0p1AfterStore
+StorePlayer1X:
+          ;; Player 1 (x=1)
+          sta aux5
+TSpositionp0p1AfterStore:
           sta WSYNC
           sta HMCLR       ;;; clear out HMP*
           .SLEEP 2
 TSHorPosLoop       ;;;     5
-          lda aux5,x  ;;;+4   9
-          sec           ;;;+2  11
+          ;; Load correct player X position based on X register
+          cpx # 1
+          beq LoadPlayer1XHorPos
+          ;; Player 0 (x=0)
+          lda aux4  ;;;+3   8
+          jmp TSpositionp0p1HorPosContinue
+LoadPlayer1XHorPos:
+          ;; Player 1 (x=1)
+          lda aux5  ;;;+3   8
+TSpositionp0p1HorPosContinue:
+          sec           ;;;+2  10 (adjusted timing)
 TSDivLoop:
           sbc # 15
           bcs TSDivLoop;;;+4  15

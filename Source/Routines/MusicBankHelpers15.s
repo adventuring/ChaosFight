@@ -125,8 +125,8 @@ LoadMusicNote0Bank15:
           ;; PlayMusic when both voices end
           ;; Load 4 bytes from stream[pointer]
           ldy # 0
-          lda (musicVoice0Pointer),y  ; Load AUDCV
-          sta temp2
+            lda (musicVoice0Pointer),y  ; Load AUDCV
+            sta temp2
             iny
             lda (musicVoice0Pointer),y  ; Load AUDF
             sta temp3

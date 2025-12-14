@@ -247,7 +247,7 @@ FrootyChargeUpdate:
           pha
           lda # <(FrootyAttack-1)
           pha
-          ldx # 7
+                    ldx # 7
           jmp BS_jsr
 AfterFrootyAttack:
 

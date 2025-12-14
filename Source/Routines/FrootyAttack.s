@@ -137,20 +137,12 @@ FrootyCheckJoy0 .proc
 
           ;; Frame counter reached 6 - increment charge timer and reset counter
 
-          ;; if temp4 < 6 then jmp FrootyUpdateFrameCounter          lda temp4          cmp 6          bcs .skip_7916          jmp
+          ;; if temp4 < 6 then jmp FrootyUpdateFrameCounter
           lda temp4
           cmp # 6
           bcs IncrementChargeTimer
-          goto_label:
-
           jmp FrootyUpdateFrameCounter
 IncrementChargeTimer:
-
-          lda temp4
-          cmp # 6
-          bcs IncrementChargeTimerDone
-          jmp FrootyUpdateFrameCounter
-IncrementChargeTimerDone:
 
           
 

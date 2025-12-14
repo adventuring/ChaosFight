@@ -571,12 +571,7 @@ ApplyDecayEnvelope .proc
           lda temp5
           sta temp6
 
-          ;; Set temp6 = temp6 - NoteDecayFrames          lda temp6          sec          sbc # NoteDecayFrames          sta temp6
-          lda temp6
-          sec
-          sbc # NoteDecayFrames
-          sta temp6
-
+          ;; Set temp6 = temp6 - NoteDecayFrames
           lda temp6
           sec
           sbc # NoteDecayFrames

@@ -40,13 +40,15 @@ LoadSoundNote1 .proc
           sta temp5
 
           ;; Check for end of sound (Duration = 0)
-          jmp BS_return
+          lda temp4
+          beq LoadSoundNote1End
 
           ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           ;; AUDCV
           ;; Set temp6 = temp2 & %11110000
           ;; Set temp6 = temp6 / 16
-          lda temp6
+          lda temp2
+          and # %11110000
           lsr
           lsr
           lsr
@@ -77,7 +79,14 @@ LoadSoundNote1 .proc
           clc
           adc # 4
           sta soundEffectPointer1
+          jmp BS_return
 
+LoadSoundNote1End:
+          ;; End of sound - clear pointer and volume
+          lda # 0
+          sta soundEffectPointer1
+          sta soundEffectPointer1 + 1
+          sta AUDV1
           jmp BS_return
 
 .pend

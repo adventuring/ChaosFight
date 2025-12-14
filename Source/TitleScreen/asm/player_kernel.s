@@ -173,11 +173,11 @@ TSHorPosLoop       ;;;     5
 TSDivLoop:
           sbc # 15
           bcs TSDivLoop;;;+4  15
-          sta stack1,x    ;;;+4  19
-          sta RESP0,x   ;;;+4  23
+          tay                 ;;;+2  17 (save division result in Y)
+          sta RESP0,x   ;;;+4  21
           sta WSYNC
 
-          ldy stack1,x            ;;;+4
+          ;;; Y already contains division result (no need to load from stack1,x)
           lda TSrepostable-256,y  ;;;+4
           sta HMP0,x              ;;;+4
                                 ;;=12

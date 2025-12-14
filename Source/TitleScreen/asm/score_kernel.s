@@ -64,7 +64,7 @@ draw_score_display:
           sta COLUP0
           sta COLUP1
           .if  scorefade
-          sta stack2 ;;; scorefade
+          sta aux3 ;;; scorefade (use aux3, NOT stack2 which is in $f0-$ff stack space)
           .fi
           lda  (scorepointers),y
           sta  GRP0
@@ -79,7 +79,7 @@ draw_score_display:
 
 scoreloop2:
           .if  scorefade
-          lda stack2  ;;; Use stack2 for score fade (defined as scratch variable)
+          lda aux3  ;;; Use aux3 for score fade (NOT stack2 which is in $f0-$ff stack space)
           sta COLUP0
           sta COLUP1
           .else
@@ -98,7 +98,7 @@ beginscoreloop:
           lax  (scorepointers+$4),y  ;;;+5  36  108
 
           .if  scorefade
-          dec stack2  ;;; Decrement fade value (use stack2, not temp6 which holds saved SP)
+          dec aux3  ;;; Decrement fade value (use aux3, NOT stack2 which is in $f0-$ff stack space)
           .else
           .SLEEP 5
           .fi

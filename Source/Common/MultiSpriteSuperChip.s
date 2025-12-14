@@ -136,12 +136,7 @@ rand = $DB
 qtcontroller = $e7
 ;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
 ;; Z/z not available - use SCRAM for any variables that were using z
-;; stack1-4 are stack addresses ($f6-$f9) - defined as constants for kernel code
-;; but they are NOT variables - they are stack space that kernel may use directly
-stack1 = $f6
-stack2 = $f7
-stack3 = $f8
-stack4 = $f9
+;; DO NOT define variables in stack space ($f0-$ff) - use zero-page or SCRAM instead
           ;; Compile-time constants (from MS_ASSIGN macros, but defined unconditionally here)
           player9height = $BC
           pfscore = 1
@@ -430,12 +425,7 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           y = $EF
 ;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
 ;; Z/z not available - use SCRAM for any variables that were using z
-;; stack1-4 are stack addresses ($f6-$f9) - defined as constants for kernel code
-;; but they are NOT variables - they are stack space that kernel may use directly
-;;           stack1 = $F6
-;;           stack2 = $F7
-;;           stack3 = $F8
-;;           stack4 = $F9
+;; DO NOT define variables in stack space ($f0-$ff) - use zero-page or SCRAM instead
 
 ;; --- Zero-page utility aliases ------------------------------------------------
           ;; NOTE: missile1height, missile0height are now defined at the top of this file
@@ -498,11 +488,7 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;; X = $EE
 ;; y = $EF
 ;; Y = $EF
-;; Stack addresses (not variables - stack space $f6-$f9)
-;; stack1 = $F6
-;; stack2 = $F7
-;; stack3 = $F8
-;; stack4 = $F9
+;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
 ;; var48-var127 don’t exist in multisprite - SuperChip RAM is accessed via r000-r127/w000-w127
 ;; Variable aliases - ensure batariBASIC variable aliases are also assembly labels
 ;; These are defined in Variables.s as dim aliases, but assembler needs labels

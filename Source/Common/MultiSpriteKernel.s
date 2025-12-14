@@ -402,8 +402,10 @@ KernelRoutine:
           tsx
           stx temp7  ;;; Save stack pointer (use temp7, temp6 is overwritten by setscorepointers in sixdigscore)
 
-          ldx # ENABL
-          txs                         ;;;;+9   9
+          ;; CRITICAL: Do NOT set SP to ENABL ($1f) - that's way too low and corrupts memory!
+          ;; Original code had: ldx # ENABL / txs which set SP to $1f (WRONG!)
+          ;; We keep the original SP value (already in X from tsx above)
+          ;; SP will be properly restored from temp7 at lines 777/872
 
           ldx # 0
           lda pfHeight
@@ -482,7 +484,8 @@ cyclebalance:
           sta pf2Temp1
           ldy temp1
 
-          ldx # ENABL
+          ;; CRITICAL: Do NOT set SP to ENABL ($1f) - restore from temp7 instead
+          ldx temp7
           txs
           cpy bally
           php                         ;;;;+6   39      VDEL ball
@@ -638,7 +641,8 @@ DivideBy15LoopK:                      ;;;;    6       (carry set above)
           sta WSYNC                   ;;;;+3   0       begin line 2
           ;;sta HMOVE                 ;+3     3
 
-          ldx # ENABL
+          ;; CRITICAL: Do NOT set SP to ENABL ($1f) - restore from temp7 instead
+          ldx temp7
           txs                         ;;;;+4   25
           ldy repoLine                ;;;; restore y
           cpy bally
@@ -685,7 +689,8 @@ BackFromSwitchDrawP0KV:
           lda # 0
           sta GRP1                    ;;;;+5   10      to display GRP0
 
-          ldx # ENABL
+          ;; CRITICAL: Do NOT set SP to ENABL ($1f) - restore from temp7 instead
+          ldx temp7
           txs                         ;;;;+4   8
 
           ldx spriteIndex             ;;;;+3   13      restore index into new sprite vars

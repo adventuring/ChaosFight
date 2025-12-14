@@ -502,11 +502,13 @@ cyclebalance:
           .SLEEP 6
 
 newrepo:                              ;; since we have time here, store next repoline
+          ;; CRITICAL: Cannot use temp6 here (used for SP save/restore at line 403)
+          ;; Use RepoLine directly instead of temp6 intermediate storage
           ldx SpriteIndex
           lda SpriteGfxIndex-1,x
           tax
           lda NewSpriteY,x
-          sta temp6
+          sta RepoLine  ;;; Store directly to RepoLine (was temp6, conflicts with SP save/restore)
           .SLEEP 4
 
 BackFromRepoKernel:
@@ -735,8 +737,9 @@ BackFromSwitchDrawP0KV:
           jmp SetLastLine
 
 SetNextLine:
-          lda NewSpriteY-1,x
-          lda temp6
+          ;; CRITICAL: Cannot use temp6 here (used for SP save/restore)
+          ;; RepoLine already contains value from newrepo (line 509), use it directly
+          lda RepoLine  ;;; Use RepoLine directly (was temp6, conflicts with SP save/restore)
 
 SetLastLine:
           sta RepoLine

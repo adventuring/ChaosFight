@@ -202,7 +202,9 @@ LoadSongPointersDone
           lda # 1
           sta musicVoice1Frame_W
 
-
+          ;; Set musicPlaying = 1 to indicate music is active
+          lda # 1
+          sta musicPlaying
 
           ;; StartMusic is called via cross-bank call from other banks, so must return otherbank
 
@@ -291,23 +293,24 @@ PlayMusic .proc
 
           ;; Only Chaotica loops - other songs stop when both voices end
 
-          ;; Voice 0 still active, no reset needed
+          ;; Check if Voice 0 is still active (high byte ≠ 0)
+          lda musicVoice0Pointer + 1
+          bne PlayMusicDone  ; Voice 0 still active
 
-          jmp BS_return
-
-          ;; Voice 1 still active, no reset needed
-
-          jmp BS_return
+          ;; Check if Voice 1 is still active (high byte ≠ 0)
+          lda musicVoice1Pointer + 1
+          bne PlayMusicDone  ; Voice 1 still active
 
           ;; Both voices inactive - check if Chaotica (song ID 26)
-
           lda currentSongID_R
           cmp # 26
-          bne PlayMusicDone
+          bne PlayMusicEnded
           jmp IsChaotica
+PlayMusicEnded:
+          ;; Both voices ended and song is not Chaotica - set musicPlaying = 0
+          lda # 0
+          sta musicPlaying
 PlayMusicDone:
-
-
           jmp BS_return
 
 .pend

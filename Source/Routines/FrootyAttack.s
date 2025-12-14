@@ -148,24 +148,25 @@ IncrementChargeTimer:
 
           ;; Increment charge timer (0-30 range, 30 = 3 seconds at 10 Hz)
 
-          lda # 0
-          sta temp4
-
-          ;; At max charge, don’t increment further, but still update frame counter
-
-          ;; if frootyChargeTimer_R[temp1] >= 30 then jmp FrootyUpdateFrameCounter
-
-          ;; let frootyChargeTimer_W[temp1] = frootyChargeTimer_R[temp1]
+          ;; At max charge, don't increment further, but still update frame counter
           lda temp1
           asl
           tax
           lda frootyChargeTimer_R,x
-          lda temp1
-          asl
-          tax
-          sta frootyChargeTimer_W,x + 1
+          cmp # 30
+          bcs ResetFrameCounter  ; Max charge reached, don't increment
 
-.pend
+          ;; let frootyChargeTimer_W[temp1] = frootyChargeTimer_R[temp1] + 1
+          lda frootyChargeTimer_R,x
+          clc
+          adc # 1
+          sta frootyChargeTimer_W,x
+
+ResetFrameCounter:
+          ;; Reset frame counter to 0 for next 6-frame cycle
+          lda # 0
+          sta temp4
+          ;; Fall through to FrootyUpdateFrameCounter
 
 FrootyUpdateFrameCounter .proc
 

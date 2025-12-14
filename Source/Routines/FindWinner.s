@@ -20,16 +20,16 @@ FindWinner .proc
           lda # 0
           sta currentPlayer
 FW_Loop:
-          ;; Cross-bank call to IsPlayerEliminated in bank 13
-          lda # >(AfterIsPlayerEliminated-1)
+          ;; Cross-bank call to IsPlayerEliminated in bank 12
+          lda # ((>(AfterIsPlayerEliminated-1)) & $0f) | $d0  ; Encode bank 13 in high nybble
           pha
           lda # <(AfterIsPlayerEliminated-1)
           pha
-          lda # >(IsPlayerEliminated-1)
+          lda # ((>(IsPlayerEliminated-1)) & $0f) | $c0  ; Encode bank 12 in high nybble
           pha
           lda # <(IsPlayerEliminated-1)
           pha
-          ldx # 12
+          ldx # 12  ; Target bank 12
           jmp BS_jsr
 
 AfterIsPlayerEliminated:
@@ -45,8 +45,8 @@ FindWinnerNextPlayer:
           inc currentPlayer
           lda currentPlayer
           cmp # 4
-          bcs FW_LoopDone
-          jmp FW_Loop
+          bcc FW_Loop  ; Continue loop if currentPlayer < 4
+          ;; Fall through when currentPlayer >= 4
 FW_LoopDone:
           ;; Check if a winner was found (all players eliminated = winnerPlayerIndex == 255)
           lda winnerPlayerIndex_R

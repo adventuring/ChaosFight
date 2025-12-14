@@ -22,7 +22,7 @@ draw_score_display:
 
           sta HMCLR
           tsx
-          stx aux6  ;;; Save stack pointer (use aux6, not temp6 which gets modified)
+          stx temp7  ;;; Save stack pointer (use temp7, aux6 conflicts with pfScore2/lives at $c2)
 
  ;;ldx #$20
           ldx #$60
@@ -118,7 +118,7 @@ scoreloop2end:
  ;;.error "critical size: ",(scoreloop2end-scoreloop2)
 
 
-          ldx aux6  ;;; Restore stack pointer from aux6 (not temp6 which was corrupted)
+          ldx temp7  ;;; Restore stack pointer from temp7 (aux6 conflicts with pfScore2/lives at $c2)
 
           txs
 

@@ -11,7 +11,7 @@ draw_bmp_48x2_X .proc
           sta NUSIZ1      ;; 7=Triplex (Player drawn three times)
 
           tsx
-          stx aux6        ;; save the stack pointer
+          stx temp7        ;; save the stack pointer (use temp7, aux6 conflicts with pfScore2/lives at $c2)
 
           jsr position48
 
@@ -101,7 +101,7 @@ pf48x2_X_codeend:
 	sta VDELP0
 	sta VDELP1
 
-          ldx aux6        ;;restore the stack pointer
+          ldx temp7        ;;restore the stack pointer (use temp7, aux6 conflicts with pfScore2/lives at $c2)
           txs
           rts
 .pend

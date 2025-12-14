@@ -126,13 +126,7 @@ FrootyCheckJoy0 .proc
           and # 7
           sta temp4
 
-          lda temp3
-          and # 7
-          sta temp4
-
-
           ;; Check if frame counter reached 6 (time to increment charge)
-
           inc temp4
 
           ;; Frame counter reached 6 - increment charge timer and reset counter

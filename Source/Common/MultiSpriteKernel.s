@@ -400,7 +400,7 @@ KernelRoutine:
                     .SLEEP 6
           .fi
           tsx
-          stx temp6  ;;; Save stack pointer (sta conflicts with 6502 instruction)
+          stx temp7  ;;; Save stack pointer (use temp7, temp6 is overwritten by setscorepointers in sixdigscore)
 
           ldx # ENABL
           txs                         ;;;;+9   9
@@ -774,7 +774,7 @@ DoneWithKernel:
 BottomOfKernelLoop:
 
           sta WSYNC
-          ldx temp6  ;;; Use temp6 instead of sta (sta conflicts with 6502 instruction)
+          ldx temp7  ;;; Restore stack pointer from temp7 (temp6 is overwritten by setscorepointers in sixdigscore)
 
           txs
           jsr sixdigscore             ;;;; set up score
@@ -869,7 +869,7 @@ beginscore:
                     and #$FB          ;;;; Clear bit 2 (score mode)
                     sta CTRLPF
           .fi
-          ldx temp6  ;;; Use temp6 instead of sta (sta conflicts with 6502 instruction)
+          ldx temp7  ;;; Restore stack pointer from temp7 (temp6 is overwritten by setscorepointers in sixdigscore)
 
           txs
 

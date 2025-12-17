@@ -149,7 +149,7 @@ gamenumber_titlescreen:
 
 PFWAIT:
           lda INTIM
-          bne PFWAIT
+          bmi PFWAIT
           sta WSYNC
 
 OVERSCAN:

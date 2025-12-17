@@ -1,15 +1,15 @@
 ;;; ChaosFight - Source/Routines/SpriteLoader.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-          ;; TODO: #1304 ; SUPPORTED SPRITE CONFIGURATIONS:
-          ;; TODO: #1304 ; P0 = character | ?
-          ;; TODO: #1304 ; P1 = character | CPU | No | ?
-          ;; TODO: #1304 ; P2 = character | No | ?
-          ;; TODO: #1304 ; P3 = character | No | ?
-          ;; TODO: #1304 ; P4 = digit | blank (arena select only)
-          ;; TODO: #1304 ; P5 = digit | ? (arena select only)
-          ;; TODO: #1304 ;
-; Multi-bank sprite loading system - supports 32 characters across 4 banks
+          ;; SUPPORTED SPRITE CONFIGURATIONS:
+          ;; P0 = character | ?
+          ;; P1 = character | CPU | No | ?
+          ;; P2 = character | No | ?
+          ;; P3 = character | No | ?
+          ;; P4 = digit | blank (arena select only)
+          ;; P5 = digit | ? (arena select only)
+          ;;
+          ;; Multi-bank sprite loading system - supports 32 characters across 4 banks
 
 
 LoadCharacterSprite .proc
@@ -114,39 +114,29 @@ AfterLocateCharacterArt:
 .pend
 
 LoadPlayerSprite .proc
-          ;; TODO: #1304 ;
-          ;; TODO: #1304 ; LOAD PLAYER SPRITE (generic Dispatcher)
-; Load sprite data for any player using character art system
-          ;; TODO: #1304 ;
-Input:
-
-currentPlayer
-
-;
-playerCharacter[] (global array) = character indices per
-;
-player:
-          ;; TODO: #1304 ;        temp2 = animation frame (0-7) from sprite 10fps
-          ;; TODO: #1304 ;        counter
-          ;; TODO: #1304 ;        temp3 = animation action (0-15) from
-          ;; TODO: #1304 ;        currentAnimationSeq
-;
-temp4 = player number (0-3)
-          ;; TODO: #1304 ; Note: Frame is relative to sprite own 10fps counter, NOT
-          ;; TODO: #1304 ;   global frame counter
-          ;; TODO: #1304 ;
-          ;; TODO: #1304 ; Output: Sprite data loaded via LocateCharacterArt (bank9)
-          ;; TODO: #1304 ;
-          ;; TODO: #1304 ; Mutates: currentCharacter (global), temp1 (passed to
-          ;; TODO: #1304 ; LocateCharacterArt)
-          ;; TODO: #1304 ;
-          ;; TODO: #1304 ; Called Routines: LocateCharacterArt (bank9) - see
-          ;; TODO: #1304 ; LoadCharacterSprite
-          ;; TODO: #1304 ;
-          ;; TODO: #1304 ; Constraints: Must be colocated with
-          ;; TODO: #1304 ; LoadPlayerSpriteDispatch (called via goto)
-; Get character index for this player from playerCharacter array
-          ;; TODO: #1304 ; Use currentPlayer global variable (set by caller)
+          ;;
+          ;; LOAD PLAYER SPRITE (generic Dispatcher)
+          ;; Load sprite data for any player using character art system
+          ;;
+          ;; Input:
+          ;;        currentPlayer (global) = player index (0-3)
+          ;;        playerCharacter[] (global array) = character indices per player
+          ;;        temp2 = animation frame (0-7) from sprite 10fps counter
+          ;;        temp3 = animation action (0-15) from currentAnimationSeq
+          ;;        temp4 = player number (0-3)
+          ;;
+          ;; Note: Frame is relative to sprite own 10fps counter, NOT global frame counter
+          ;;
+          ;; Output: Sprite data loaded via LocateCharacterArt (bank9)
+          ;;
+          ;; Mutates: currentCharacter (global), temp1 (passed to LocateCharacterArt)
+          ;;
+          ;; Called Routines: LocateCharacterArt (bank9) - see LoadCharacterSprite
+          ;;
+          ;; Constraints: Must be colocated with LoadPlayerSpriteDispatch (called via goto)
+          ;;
+          ;; Get character index for this player from playerCharacter array
+          ;; Use currentPlayer global variable (set by caller)
           ;; Set currentCharacter = playerCharacter[currentPlayer]
           lda currentPlayer
           asl

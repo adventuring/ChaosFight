@@ -2223,7 +2223,6 @@ HandleFlyingCharacterMovementCheckRightMovement .proc
           ;; Determine which joy port to use for right movement
           ;; Returns: Far (return otherbank)
           lda temp1
-          cmp # 0
           bne CheckPlayer2JoyPortRightMovement
           jmp HandleFlyingCharacterMovementCheckRightJoy0
 CheckPlayer2JoyPortRightMovement:
@@ -2867,7 +2866,6 @@ IHLP_DoneFlyingLeftRight
 
           ;; If playerCharacter[temp1] = CharacterFrooty, then jmp HandleGuardInputDoneLeftPort
           lda temp1
-          cmp # 0
           bne CheckPlayer2JoyPort1
           jmp HandleGuardInputCheckJoy0LeftPort
 CheckPlayer2JoyPort1:
@@ -3347,7 +3345,6 @@ IHRP_DoneFlyingLeftRight
 
           ;; If playerCharacter[temp1] = CharacterFrooty, then jmp HGI_Done2
           lda temp1
-          cmp # 0
           bne CheckPlayer2JoyPort2
           jmp HGI_CheckJoy0_2
 CheckPlayer2JoyPort2:
@@ -3700,7 +3697,6 @@ Joy2bPauseDone:
 
           ;; 1)
           lda temp1
-          cmp # 0
           bne CheckPauseButtonPrev
           jmp DonePauseToggle
 CheckPauseButtonPrev:

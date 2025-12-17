@@ -183,7 +183,6 @@ CheckJumpingState:
           If NOT jumping, skip gravity (player is on ground)
           lda playerState[temp1]
           and # PlayerStateBitJumping
-          cmp # 0
           bne ApplyGravityAcceleration
           jmp GravityNextPlayer
 ApplyGravityAcceleration:
@@ -355,7 +354,6 @@ CheckGroundDetected:
           sta temp1
           ;; Ground detected! Skip standard landing logic for Radish Goblin (bounce system handles it)
           lda temp3
-          cmp # 0
           bne CheckRadishGoblin
           jmp GravityNextPlayer
 CheckRadishGoblin:
@@ -387,7 +385,6 @@ StandardLandingLogic:
           lda temp5
           sta rowCounter
           lda rowCounter
-          cmp # 0
           bne GravityRowCalcLoop
           jmp GravityRowCalcDone
 GravityRowCalcLoop:
@@ -500,7 +497,6 @@ ClampToBottom:
           sbc # 1
           sta rowCounter
           lda rowCounter
-          cmp # 0
           bne GravityBottomCalcLoopLabel
           jmp GravityBottomCalcDone
 GravityBottomCalcLoopLabel:

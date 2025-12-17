@@ -201,10 +201,6 @@ HarpyDown .proc
 
           jmp BS_return
 
-
-          ;; TODO: #1311 HarpyDown = .HarpyDown
-
-
           ;; HARPY (6) - FLY DOWN (no guard action)
           ;; Returns: Far (return otherbank)
 
@@ -524,10 +520,6 @@ BlockedCannotMoveDown:
 FrootyDown .proc
 
           jmp BS_return
-
-
-          ;; TODO: #1311 FrootyDown = .FrootyDown
-
 
           ;; FROOTY (8) - FLY DOWN (no guard action)
 

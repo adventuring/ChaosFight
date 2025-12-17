@@ -680,12 +680,12 @@ DivideBy20 .proc
           ;; arithmetic for speed
           ;; Thanks to Omegamatrix and AtariAge forum contributors for
           ;; these routines
-          ;; TODO: #1311 ; rem DivideBy20: compute floor(A / 20) using optimized assembly
-          ;; TODO: #1311 ; rem
-          ;; TODO: #1311 ; rem INPUT: A register = dividend (temp2)
-          ;; TODO: #1311 ; rem
-          ;; TODO: #1311 ; rem OUTPUT: A register = quotient (result in temp2)
-          ;; TODO: #1311 ; rem Uses 18 bytes, 32 cycles
+          ;; DivideBy20: compute floor(A / 20) using optimized assembly
+          ;;
+          ;; INPUT: A register = dividend (temp2)
+          ;;
+          ;; OUTPUT: A register = quotient (result in temp2)
+          ;; Uses 18 bytes, 32 cycles
             lda temp2
             lsr
             lsr

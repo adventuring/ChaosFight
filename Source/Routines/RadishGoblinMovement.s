@@ -552,7 +552,6 @@ CheckTerminalVelocityDone:
 CheckPlayerIndex:
 
           lda temp1
-          cmp # 0
           bne CheckStickRadishGoblinProc
           jmp CheckEnhanced0RadishGoblin
 

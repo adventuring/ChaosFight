@@ -358,7 +358,6 @@ SSP_WriteMissileRegistersUnified .proc
           ;; Input: temp5 = missile select (0=missile0, 1=missile1)
           ;; temp6 = X position, temp2 = Y position, temp3 = NUSIZ, temp4 = height
           lda temp5
-          cmp # 0
           bne SSP_CheckMissile0
           jmp SSP_WriteUnified0
 SSP_CheckMissile0:

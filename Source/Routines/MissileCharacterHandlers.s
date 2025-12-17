@@ -205,7 +205,7 @@ CalculateYPosition:
           lda temp6
           cmp # 14
           bne DeactivateMissile
-          ;; TODO: #1311 MegaxMissileActive
+          ;; Megax: missile remains active during attack execution
 DeactivateMissile:
 
 
@@ -291,7 +291,7 @@ HandleKnightGuyMissile .proc
           lda temp6
           cmp # 14
           bne DeactivateMissileKnightGuy
-          ;; TODO: #1311 KnightGuyAttackActive
+          ;; Knight Guy: missile remains active during attack execution
 DeactivateMissileKnightGuy:
 
 

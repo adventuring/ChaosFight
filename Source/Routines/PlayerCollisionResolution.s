@@ -358,7 +358,6 @@ CalculateWeights:
 
           ;; Set totalHeight = halfHeight1 + halfHeight2
           lda totalHeight
-          cmp # 0
           bne CheckHeightCollision
           jmp NextInnerCollisionCheck
 CheckHeightCollision:
@@ -400,7 +399,6 @@ CalculateWeightsLabel:
 
           ;; Set totalWeight = halfHeight1 + halfHeight2
           lda totalWeight
-          cmp # 0
           bne CalculateWeightDifference
           jmp NextInnerCollisionCheck
 CalculateWeightDifference:
@@ -580,7 +578,6 @@ ApplyImpulseRightCollision .proc
 ApplyImpulseCollision .proc
 
           lda impulseStrength
-          cmp # 0
           bne CheckImpulseDirection
           lda # 1
           sta impulseStrength
@@ -588,7 +585,6 @@ CheckImpulseDirection:
 
 
           lda temp5
-          cmp # 0
           bne ApplyImpulseLeft
           jmp ImpulseRightDirection
 ApplyImpulseLeft:

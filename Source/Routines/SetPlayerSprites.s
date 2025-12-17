@@ -239,7 +239,6 @@ AfterLoadCharacterSpriteP1:
 
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer3Health
           jmp DonePlayer3Sprite
 CheckPlayer3Health:
@@ -367,7 +366,6 @@ DonePlayer3Sprite
 
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer4Health
           jmp DonePlayer4Sprite
 CheckPlayer4Health:

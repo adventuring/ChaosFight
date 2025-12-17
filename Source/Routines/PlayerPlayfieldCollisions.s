@@ -123,7 +123,6 @@ RowInRange:
           sta playfieldRow
 CheckLeftCollision:
           lda temp6
-          cmp # 0
           bne ProcessLeftCollision
           jmp PFCheckRight
 ProcessLeftCollision:
@@ -206,7 +205,6 @@ PFCheckUp .proc
           ;; Returns: Far (return otherbank)
 
           lda playfieldRow
-          cmp # 0
           bne CheckUpCollision
 
           jmp PFCheckDown_Body
@@ -455,7 +453,6 @@ PFCS_Advance .proc
           AdvanceRowCounter:
 
           lda temp3
-          cmp # 0
           bne IncrementRowCounter
           jmp PFCS_Done
 IncrementRowCounter:

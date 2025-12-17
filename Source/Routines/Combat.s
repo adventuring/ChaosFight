@@ -811,7 +811,7 @@ ProcessAttackerAttacks .proc
           ;; Hitbox values are already written into cachedHitbox*_W via aliasing
 
           ;; Attack each defender
-          ;; Issue #1310: Loop through defenderID = 0 to 3
+          ;; Loop through defenderID = 0 to 3
           lda # 0
           sta defenderID
 ProcessDefenderLoop:
@@ -840,7 +840,7 @@ ProcessAttackHit:
           jsr ApplyDamage
 
 NextDefender:
-          ;; Issue #1310: Loop increment and check
+          ;; Loop increment and check
           inc defenderID
           lda defenderID
           cmp # 4
@@ -876,7 +876,7 @@ ProcessAllAttacks .proc
           ;;
           ;; Constraints: Must be colocated with NextAttacker (called
           ;; via next). Skips dead attackers
-          ;; Issue #1310: Loop through attackerID = 0 to 3
+          ;; Loop through attackerID = 0 to 3
           lda # 0
           sta attackerID
 ProcessAttackerLoop:
@@ -912,7 +912,7 @@ ProcessAttackerAttacksLabel:
           jsr ProcessAttackerAttacks
 
 NextAttacker:
-          ;; Issue #1310: Loop increment and check
+          ;; Loop increment and check
           inc attackerID
           lda attackerID
           cmp # 4

@@ -58,9 +58,7 @@ TitleScreenMain .proc
           lda rand
           lsr
           .if  rand16_W
-          ;; CRITICAL:
-
-          ;; TODO: #1311 ; Must read from read port, perform operation in register, write to write port
+          ;; CRITICAL: Must read from read port, perform operation in register, write to write port
           lda rand16_R
           rol
           sta rand16_W

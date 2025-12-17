@@ -14,7 +14,9 @@ SelectPlayerColorNormal:
           .byte 12, 12, 12, 12
 
 SelectPlayerColorHandicap_data:
-          ;; TODO: #1311 ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
+          ;; Dimmed player colors (brightness 6) for handicap mode
+          ;; Matches PlayerColors6: ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
+          .byte $76, $46, $16, $96
 SelectPlayerColorHandicap_end:
 SelectPlayerColorHandicap = SelectPlayerColorHandicap_data
 

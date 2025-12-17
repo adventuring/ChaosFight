@@ -467,7 +467,6 @@ DoneSwitchChange:
           lda temp1
           beq CheckColorBWToggleDone
           jmp ReloadArenaColorsNow
-          jmp ReloadArenaColorsNow
 CheckColorBWToggleDone:
           
           ;; Check7800PauseButton

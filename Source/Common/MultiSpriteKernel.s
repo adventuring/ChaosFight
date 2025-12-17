@@ -400,7 +400,7 @@ KernelRoutine:
                     .SLEEP 6
           .fi
           tsx
-          stx temp7  ;;; Save stack pointer (use temp7, temp6 is overwritten by setscorepointers in sixdigscore)
+          stx aux2  ;;; Save stack pointer (use aux2 instead of temp7 to avoid conflict with BS_return)
 
           ;; CRITICAL: During kernel rendering, stack is NOT used, so SP can be used as temporary storage
           ;; Original code sets SP to ENABL ($1f) for the GRP manipulation trick in the score loop
@@ -825,7 +825,7 @@ DoneWithKernel:
 BottomOfKernelLoop:
 
           sta WSYNC
-          ldx temp7  ;;; Restore stack pointer from temp7 (temp6 is overwritten by setscorepointers in sixdigscore)
+          ldx aux2  ;;; Restore stack pointer from aux2 (use aux2 instead of temp7 to avoid conflict with BS_return)
 
           txs
           jsr sixdigscore             ;;;; set up score
@@ -920,7 +920,7 @@ beginscore:
                     and #$FB          ;;;; Clear bit 2 (score mode)
                     sta CTRLPF
           .fi
-          ldx temp7  ;;; Restore stack pointer from temp7 (temp6 is overwritten by setscorepointers in sixdigscore)
+          ldx aux2  ;;; Restore stack pointer from aux2 (use aux2 instead of temp7 to avoid conflict with BS_return)
 
           txs
 

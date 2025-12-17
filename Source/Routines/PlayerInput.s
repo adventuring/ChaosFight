@@ -2247,7 +2247,12 @@ HandleFlyingCharacterMovementCheckRightJoy0 .proc
 
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
+          lda SWCHA
+          bit BitMask + SWCHA_BitP0Right
+          bne HandleFlyingCharacterMovementCheckRightJoy0Done
 
+          jmp HandleFlyingCharacterMovementDoRightMovement
+HandleFlyingCharacterMovementCheckRightJoy0Done:
           jmp BS_return
 
 .pend

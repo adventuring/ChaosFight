@@ -97,8 +97,7 @@ UpdateGuardTimerActive .proc
           tax
           lda playerTimers_R,x
           sta temp3
-          ;; Guard timer already expired (shouldn’t happen, but safety
-          cmp # 0
+          ;; Guard timer already expired (shouldn't happen, but safety
           bne SkipExpiredCheck
           jmp GuardTimerExpired
 SkipExpiredCheck:
@@ -112,7 +111,6 @@ SkipExpiredCheck:
           tax
           lda temp3
           sta playerTimers_W,x
-          cmp # 0
           bne GuardTimerStillActive
           jmp GuardTimerExpired
 GuardTimerStillActive:

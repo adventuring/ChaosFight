@@ -151,15 +151,21 @@ AuthorPreludeComplete
           lda ModeTitle
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(AfterChangeGameModeAuthorPrelude-1)
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterChangeGameModeAuthorPrelude-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterChangeGameModeAuthorPrelude hi (encoded)]
           lda # <(AfterChangeGameModeAuthorPrelude-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterChangeGameModeAuthorPrelude hi (encoded)] [SP+0: AfterChangeGameModeAuthorPrelude lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ChangeGameMode-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterChangeGameModeAuthorPrelude hi (encoded)] [SP+1: AfterChangeGameModeAuthorPrelude lo] [SP+0: ChangeGameMode hi (raw)]
           lda # <(ChangeGameMode-1)
           pha
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterChangeGameModeAuthorPrelude hi (encoded)] [SP+2: AfterChangeGameModeAuthorPrelude lo] [SP+1: ChangeGameMode hi (raw)] [SP+0: ChangeGameMode lo]
+          ldx # 13
           jmp BS_jsr
 AfterChangeGameModeAuthorPrelude:
 

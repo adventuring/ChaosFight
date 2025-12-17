@@ -95,7 +95,6 @@ GravityPlayerCheck .proc
           ;; Players 0-1 always active
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer2Character
 
           jmp GravityNextPlayer
@@ -330,16 +329,22 @@ CheckTerminalVelocity:
           sta temp1
           lda temp5
           sta temp2
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadGravity-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadGravity-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadGravity hi (encoded)]
           lda # <(AfterPlayfieldReadGravity-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadGravity hi (encoded)] [SP+0: AfterPlayfieldReadGravity lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadGravity hi (encoded)] [SP+1: AfterPlayfieldReadGravity lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadGravity hi (encoded)] [SP+2: AfterPlayfieldReadGravity lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadGravity:
 

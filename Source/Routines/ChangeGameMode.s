@@ -164,20 +164,22 @@ SetupFallingAnimation
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
-          ;; Cross-bank call to BeginFallingAnimation in bank 14
-          lda # >(AfterBeginFallingAnimation-1)
+          ;; Cross-bank call to BeginFallingAnimation in bank 13
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterBeginFallingAnimation-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
-          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginFallingAnimation hi]
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginFallingAnimation hi (encoded)]
           lda # <(AfterBeginFallingAnimation-1)
           pha
-          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginFallingAnimation hi] [SP+0: AfterBeginFallingAnimation lo]
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginFallingAnimation hi (encoded)] [SP+0: AfterBeginFallingAnimation lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(BeginFallingAnimation-1)
           pha
-          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginFallingAnimation hi] [SP+1: AfterBeginFallingAnimation lo] [SP+0: BeginFallingAnimation hi]
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginFallingAnimation hi (encoded)] [SP+1: AfterBeginFallingAnimation lo] [SP+0: BeginFallingAnimation hi (raw)]
           lda # <(BeginFallingAnimation-1)
           pha
-          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginFallingAnimation hi] [SP+2: AfterBeginFallingAnimation lo] [SP+1: BeginFallingAnimation hi] [SP+0: BeginFallingAnimation lo]
-                    ldx # 13
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginFallingAnimation hi (encoded)] [SP+2: AfterBeginFallingAnimation lo] [SP+1: BeginFallingAnimation hi (raw)] [SP+0: BeginFallingAnimation lo]
+          ldx # 13
           jmp BS_jsr
 AfterBeginFallingAnimation:
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
@@ -209,20 +211,22 @@ SetupArenaSelect .proc
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
-          ;; Cross-bank call to BeginArenaSelect in bank 14
-          lda # >(AfterBeginArenaSelect-1)
+          ;; Cross-bank call to BeginArenaSelect in bank 13
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterBeginArenaSelect-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
-          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginArenaSelect hi]
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginArenaSelect hi (encoded)]
           lda # <(AfterBeginArenaSelect-1)
           pha
-          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginArenaSelect hi] [SP+0: AfterBeginArenaSelect lo]
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginArenaSelect hi (encoded)] [SP+0: AfterBeginArenaSelect lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(BeginArenaSelect-1)
           pha
-          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginArenaSelect hi] [SP+1: AfterBeginArenaSelect lo] [SP+0: BeginArenaSelect hi]
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginArenaSelect hi (encoded)] [SP+1: AfterBeginArenaSelect lo] [SP+0: BeginArenaSelect hi (raw)]
           lda # <(BeginArenaSelect-1)
           pha
-          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginArenaSelect hi] [SP+2: AfterBeginArenaSelect lo] [SP+1: BeginArenaSelect hi] [SP+0: BeginArenaSelect lo]
-                    ldx # 13
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginArenaSelect hi (encoded)] [SP+2: AfterBeginArenaSelect lo] [SP+1: BeginArenaSelect hi (raw)] [SP+0: BeginArenaSelect lo]
+          ldx # 13
           jmp BS_jsr
 AfterBeginArenaSelect:
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
@@ -256,20 +260,22 @@ SetupGame .proc
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
-          ;; Cross-bank call to BeginGameLoop in bank 11
-          lda # >(AfterBeginGameLoop-1)
+          ;; Cross-bank call to BeginGameLoop in bank 10
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterBeginGameLoop-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
-          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginGameLoop hi]
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginGameLoop hi (encoded)]
           lda # <(AfterBeginGameLoop-1)
           pha
-          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginGameLoop hi] [SP+0: AfterBeginGameLoop lo]
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginGameLoop hi (encoded)] [SP+0: AfterBeginGameLoop lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(BeginGameLoop-1)
           pha
-          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginGameLoop hi] [SP+1: AfterBeginGameLoop lo] [SP+0: BeginGameLoop hi]
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginGameLoop hi (encoded)] [SP+1: AfterBeginGameLoop lo] [SP+0: BeginGameLoop hi (raw)]
           lda # <(BeginGameLoop-1)
           pha
-          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginGameLoop hi] [SP+2: AfterBeginGameLoop lo] [SP+1: BeginGameLoop hi] [SP+0: BeginGameLoop lo]
-                    ldx # 10
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginGameLoop hi (encoded)] [SP+2: AfterBeginGameLoop lo] [SP+1: BeginGameLoop hi (raw)] [SP+0: BeginGameLoop lo]
+          ldx # 10
           jmp BS_jsr
 AfterBeginGameLoop:
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
@@ -301,20 +307,22 @@ SetupWinner .proc
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           ;; Expected: 4 bytes on stack (on...jmp net zero change, preserves original stack)
-          ;; Cross-bank call to BeginWinnerAnnouncement in bank 14
-          lda # >(AfterBeginWinnerAnnouncement-1)
+          ;; Cross-bank call to BeginWinnerAnnouncement in bank 13
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterBeginWinnerAnnouncement-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
-          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginWinnerAnnouncement hi]
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginWinnerAnnouncement hi (encoded)]
           lda # <(AfterBeginWinnerAnnouncement-1)
           pha
-          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginWinnerAnnouncement hi] [SP+0: AfterBeginWinnerAnnouncement lo]
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginWinnerAnnouncement hi (encoded)] [SP+0: AfterBeginWinnerAnnouncement lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(BeginWinnerAnnouncement-1)
           pha
-          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginWinnerAnnouncement hi] [SP+1: AfterBeginWinnerAnnouncement lo] [SP+0: BeginWinnerAnnouncement hi]
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginWinnerAnnouncement hi (encoded)] [SP+1: AfterBeginWinnerAnnouncement lo] [SP+0: BeginWinnerAnnouncement hi (raw)]
           lda # <(BeginWinnerAnnouncement-1)
           pha
-          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginWinnerAnnouncement hi] [SP+2: AfterBeginWinnerAnnouncement lo] [SP+1: BeginWinnerAnnouncement hi] [SP+0: BeginWinnerAnnouncement lo]
-                    ldx # 13
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginWinnerAnnouncement hi (encoded)] [SP+2: AfterBeginWinnerAnnouncement lo] [SP+1: BeginWinnerAnnouncement hi (raw)] [SP+0: BeginWinnerAnnouncement lo]
+          ldx # 13
           jmp BS_jsr
 AfterBeginWinnerAnnouncement:
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]

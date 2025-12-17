@@ -185,7 +185,6 @@ SetSpritePositionsRenderMissiles:
           ;; Returns: Near (return thisbank)
           lda controllerStatus
           and # SetPlayers34Active
-          cmp # 0
           bne SSP_CheckTwoPlayer
 
           jmp RenderMissilesTwoPlayer
@@ -275,15 +274,21 @@ RenderMissileForParticipant:
 RMF_CheckMissileActive:
           lda temp2
           sta temp2
-          ;; Cross-bank call to RenderRoboTitoStretchMissile in bank 8
-          lda # >(RMF_ReturnPoint-1)
+          ;; Cross-bank call to RenderRoboTitoStretchMissile in bank 7
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(RMF_ReturnPoint-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: RMF_ReturnPoint hi (encoded)]
           lda # <(RMF_ReturnPoint-1)
           pha
+          ;; STACK PICTURE: [SP+1: RMF_ReturnPoint hi (encoded)] [SP+0: RMF_ReturnPoint lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(RenderRoboTitoStretchMissile-1)
           pha
+          ;; STACK PICTURE: [SP+2: RMF_ReturnPoint hi (encoded)] [SP+1: RMF_ReturnPoint lo] [SP+0: RenderRoboTitoStretchMissile hi (raw)]
           lda # <(RenderRoboTitoStretchMissile-1)
           pha
+          ;; STACK PICTURE: [SP+3: RMF_ReturnPoint hi (encoded)] [SP+2: RMF_ReturnPoint lo] [SP+1: RenderRoboTitoStretchMissile hi (raw)] [SP+0: RenderRoboTitoStretchMissile lo]
           ldx # 7
           jmp BS_jsr
 

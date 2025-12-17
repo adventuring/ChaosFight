@@ -54,7 +54,6 @@ CheckQuadtariActive:
 
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer2NoCharacter
 
           jmp MomentumRecoveryNext

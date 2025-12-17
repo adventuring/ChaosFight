@@ -56,15 +56,21 @@ CheckDragonOfStorms:
 IHLPF_ProcessStandardMovementLabel:
 
           ;; Standard horizontal movement (uses shared routine)
-          ;; Cross-bank call to ProcessStandardMovement in bank 13
-          lda # >(IHLPF_ProcessStandardMovementReturn-1)
+          ;; Cross-bank call to ProcessStandardMovement in bank 12
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(IHLPF_ProcessStandardMovementReturn-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: IHLPF_ProcessStandardMovementReturn hi (encoded)]
           lda # <(IHLPF_ProcessStandardMovementReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: IHLPF_ProcessStandardMovementReturn hi (encoded)] [SP+0: IHLPF_ProcessStandardMovementReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ProcessStandardMovement-1)
           pha
+          ;; STACK PICTURE: [SP+2: IHLPF_ProcessStandardMovementReturn hi (encoded)] [SP+1: IHLPF_ProcessStandardMovementReturn lo] [SP+0: ProcessStandardMovement hi (raw)]
           lda # <(ProcessStandardMovement-1)
           pha
+          ;; STACK PICTURE: [SP+3: IHLPF_ProcessStandardMovementReturn hi (encoded)] [SP+2: IHLPF_ProcessStandardMovementReturn lo] [SP+1: ProcessStandardMovement hi (raw)] [SP+0: ProcessStandardMovement lo]
           ldx # 12
           jmp BS_jsr
 
@@ -91,31 +97,43 @@ IHLP_DoneFlyingLeftRight:
 InputDoneLeftPortJump
 
           ;; Process down/guard input
-          ;; Cross-bank call to HandleGuardInput in bank 12
-          lda # >(IHLPF_CCJReturn-1)
+          ;; Cross-bank call to HandleGuardInput in bank 11
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(IHLPF_CCJReturn-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: IHLPF_CCJReturn hi (encoded)]
           lda # <(IHLPF_CCJReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: IHLPF_CCJReturn hi (encoded)] [SP+0: IHLPF_CCJReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(HandleGuardInput-1)
           pha
+          ;; STACK PICTURE: [SP+2: IHLPF_CCJReturn hi (encoded)] [SP+1: IHLPF_CCJReturn lo] [SP+0: HandleGuardInput hi (raw)]
           lda # <(HandleGuardInput-1)
           pha
-                    ldx # 11
+          ;; STACK PICTURE: [SP+3: IHLPF_CCJReturn hi (encoded)] [SP+2: IHLPF_CCJReturn lo] [SP+1: HandleGuardInput hi (raw)] [SP+0: HandleGuardInput lo]
+          ldx # 11
           jmp BS_jsr
 IHLPF_CCJReturn:
 
 
           ;; Process attack input
-          ;; Cross-bank call to ProcessAttackInput in bank 10
-          lda # >(IHLPF_ProcessAttackInputReturn-1)
+          ;; Cross-bank call to ProcessAttackInput in bank 9
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(IHLPF_ProcessAttackInputReturn-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: IHLPF_ProcessAttackInputReturn hi (encoded)]
           lda # <(IHLPF_ProcessAttackInputReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: IHLPF_ProcessAttackInputReturn hi (encoded)] [SP+0: IHLPF_ProcessAttackInputReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ProcessAttackInput-1)
           pha
+          ;; STACK PICTURE: [SP+2: IHLPF_ProcessAttackInputReturn hi (encoded)] [SP+1: IHLPF_ProcessAttackInputReturn lo] [SP+0: ProcessAttackInput hi (raw)]
           lda # <(ProcessAttackInput-1)
           pha
-                    ldx # 9
+          ;; STACK PICTURE: [SP+3: IHLPF_ProcessAttackInputReturn hi (encoded)] [SP+2: IHLPF_ProcessAttackInputReturn lo] [SP+1: ProcessAttackInput hi (raw)] [SP+0: ProcessAttackInput lo]
+          ldx # 9
           jmp BS_jsr
 IHLPF_ProcessAttackInputReturn:
 

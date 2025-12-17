@@ -83,7 +83,7 @@ NudgePlayerFromPlayfield .proc
 
           jsr NudgeLeftMovePlayer
 
-          rts
+          jmp BS_return
 
 .pend
 
@@ -165,16 +165,22 @@ CheckPlayfieldPixel:
           sta temp1
           lda temp5
           sta temp2
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadNudge1-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadNudge1-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadNudge1 hi (encoded)]
           lda # <(AfterPlayfieldReadNudge1-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadNudge1 hi (encoded)] [SP+0: AfterPlayfieldReadNudge1 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadNudge1 hi (encoded)] [SP+1: AfterPlayfieldReadNudge1 lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadNudge1 hi (encoded)] [SP+2: AfterPlayfieldReadNudge1 lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadNudge1:
 
@@ -189,16 +195,22 @@ CheckCollisionMovePlayerDone:
           sta temp3
           ;; Set temp5 = temp3 / 16
           ;; CheckCollisionMovePlayer is called same-bank, so use return thisbank
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadNudge2-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadNudge2-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadNudge2 hi (encoded)]
           lda # <(AfterPlayfieldReadNudge2-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadNudge2 hi (encoded)] [SP+0: AfterPlayfieldReadNudge2 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadNudge2 hi (encoded)] [SP+1: AfterPlayfieldReadNudge2 lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadNudge2 hi (encoded)] [SP+2: AfterPlayfieldReadNudge2 lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadNudge2:
 

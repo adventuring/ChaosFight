@@ -28,15 +28,21 @@ PerformGenericAttack .proc
           ;;
           ;; Constraints: None
           ;; Spawn missile visual for this attack
-          ;; Cross-bank call to SpawnMissile in bank 7
-          lda # >(AfterSpawnMissileGeneric-1)
+          ;; Cross-bank call to SpawnMissile in bank 6
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterSpawnMissileGeneric-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSpawnMissileGeneric hi (encoded)]
           lda # <(AfterSpawnMissileGeneric-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSpawnMissileGeneric hi (encoded)] [SP+0: AfterSpawnMissileGeneric lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SpawnMissile-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSpawnMissileGeneric hi (encoded)] [SP+1: AfterSpawnMissileGeneric lo] [SP+0: SpawnMissile hi (raw)]
           lda # <(SpawnMissile-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterSpawnMissileGeneric hi (encoded)] [SP+2: AfterSpawnMissileGeneric lo] [SP+1: SpawnMissile hi (raw)] [SP+0: SpawnMissile lo]
           ldx # 6
           jmp BS_jsr
 

@@ -261,15 +261,21 @@ LoadIdleSpriteWinScreen .proc
           lda # 0
           sta temp3
           ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(AfterLoadCharacterSpriteWinScreen-1)
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterLoadCharacterSpriteWinScreen-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadCharacterSpriteWinScreen hi (encoded)]
           lda # <(AfterLoadCharacterSpriteWinScreen-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadCharacterSpriteWinScreen hi (encoded)] [SP+0: AfterLoadCharacterSpriteWinScreen lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadCharacterSprite-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadCharacterSpriteWinScreen hi (encoded)] [SP+1: AfterLoadCharacterSpriteWinScreen lo] [SP+0: LoadCharacterSprite hi (raw)]
           lda # <(LoadCharacterSprite-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterLoadCharacterSpriteWinScreen hi (encoded)] [SP+2: AfterLoadCharacterSpriteWinScreen lo] [SP+1: LoadCharacterSprite hi (raw)] [SP+0: LoadCharacterSprite lo]
+          ldx # 15
           jmp BS_jsr
 AfterLoadCharacterSpriteWinScreen:
 

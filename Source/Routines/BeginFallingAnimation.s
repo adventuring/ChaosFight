@@ -141,7 +141,6 @@ DonePlayer2Init:
           ;; Player 3: Bottom-left quadrant (if Quadtari and not NO)
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer3Character
 
           jmp DonePlayer3Init
@@ -187,7 +186,6 @@ DonePlayer3Init:
           ;; Player 4: Bottom-right quadrant (if Quadtari and not NO)
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer4Character
 
           jmp DonePlayer4Init

@@ -84,16 +84,22 @@ MoveLeftRadishGoblin .proc
           jmp AfterLeftRadishGoblin
 AfterLeftRadishGoblinSkip:
 
-          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(AfterGetPlayerAnimationStateLeft-1)
+          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 12
+          ;; Return address: ENCODED with caller bank 11 ($b0) for BS_return to decode
+          lda # ((>(AfterGetPlayerAnimationStateLeft-1)) & $0f) | $b0  ;;; Encode bank 11 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerAnimationStateLeft hi (encoded)]
           lda # <(AfterGetPlayerAnimationStateLeft-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerAnimationStateLeft hi (encoded)] [SP+0: AfterGetPlayerAnimationStateLeft lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerAnimationStateLeft hi (encoded)] [SP+1: AfterGetPlayerAnimationStateLeft lo] [SP+0: GetPlayerAnimationStateFunction hi (raw)]
           lda # <(GetPlayerAnimationStateFunction-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerAnimationStateLeft hi (encoded)] [SP+2: AfterGetPlayerAnimationStateLeft lo] [SP+1: GetPlayerAnimationStateFunction hi (raw)] [SP+0: GetPlayerAnimationStateFunction lo]
+          ldx # 12
           jmp BS_jsr
 AfterGetPlayerAnimationStateLeft:
 
@@ -201,16 +207,22 @@ MoveRightRadishGoblin .proc
 
           rts
 
-          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(AfterGetPlayerAnimationStateLeft-1)
+          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 12
+          ;; Return address: ENCODED with caller bank 11 ($b0) for BS_return to decode
+          lda # ((>(AfterGetPlayerAnimationStateLeft-1)) & $0f) | $b0  ;;; Encode bank 11 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerAnimationStateLeft hi (encoded)]
           lda # <(AfterGetPlayerAnimationStateLeft-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerAnimationStateLeft hi (encoded)] [SP+0: AfterGetPlayerAnimationStateLeft lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerAnimationStateLeft hi (encoded)] [SP+1: AfterGetPlayerAnimationStateLeft lo] [SP+0: GetPlayerAnimationStateFunction hi (raw)]
           lda # <(GetPlayerAnimationStateFunction-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerAnimationStateLeft hi (encoded)] [SP+2: AfterGetPlayerAnimationStateLeft lo] [SP+1: GetPlayerAnimationStateFunction hi (raw)] [SP+0: GetPlayerAnimationStateFunction lo]
+          ldx # 12
           jmp BS_jsr
 AfterGetPlayerAnimationStateLeft:
 
@@ -408,16 +420,22 @@ CalculateFeetRow:
           lda temp6
           sta temp1
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadRadishGoblin-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 11 ($b0) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadRadishGoblin-1)) & $0f) | $b0  ;;; Encode bank 11 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadRadishGoblin hi (encoded)]
           lda # <(AfterPlayfieldReadRadishGoblin-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadRadishGoblin hi (encoded)] [SP+0: AfterPlayfieldReadRadishGoblin lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadRadishGoblin hi (encoded)] [SP+1: AfterPlayfieldReadRadishGoblin lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadRadishGoblin hi (encoded)] [SP+2: AfterPlayfieldReadRadishGoblin lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadRadishGoblin:
 

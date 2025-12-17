@@ -138,7 +138,6 @@ HandleMegaxMissile .proc
           sta temp2
           ;; Facing left, spawn left
           lda temp4
-          cmp # 0
           bne CheckFacingRight
           ;; Set temp2 = temp2 + CharacterMissileSpawnOffsetLeft[temp5]
 CheckFacingRight:
@@ -371,7 +370,6 @@ KnightGuySetPosition
 
           ;; Apply swing offset in facing direction
           lda temp4
-          cmp # 0
           bne KnightGuySwingRight
           ;; TODO: #1311 KnightGuySwingLeft
 KnightGuySwingRight:

@@ -36,7 +36,6 @@ VblankModePublisherPrelude .proc
           ;; On first frame, BeginPublisherPrelude hasn’t called StartMusic yet
           ;; Check if music is initialized before calling PlayMusic to prevent crash
           lda musicVoice0Pointer
-          cmp # 0
           bne PlayPublisherPreludeMusic
 
           jmp VblankPublisherPreludeSkipMusic
@@ -45,15 +44,21 @@ PlayPublisherPreludeMusic:
 
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           ;; When called from Vblank, stack is shallower than when called from MainLoop
-          ;; Cross-bank call to PlayMusic in bank 15
-          lda # >(AfterPlayMusicPublisherPrelude-1)
+          ;; Cross-bank call to PlayMusic in bank 14
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterPlayMusicPublisherPrelude-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayMusicPublisherPrelude hi (encoded)]
           lda # <(AfterPlayMusicPublisherPrelude-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayMusicPublisherPrelude hi (encoded)] [SP+0: AfterPlayMusicPublisherPrelude lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayMusic-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayMusicPublisherPrelude hi (encoded)] [SP+1: AfterPlayMusicPublisherPrelude lo] [SP+0: PlayMusic hi (raw)]
           lda # <(PlayMusic-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterPlayMusicPublisherPrelude hi (encoded)] [SP+2: AfterPlayMusicPublisherPrelude lo] [SP+1: PlayMusic hi (raw)] [SP+0: PlayMusic lo]
           ldx # 14
           jmp BS_jsr
 
@@ -74,7 +79,6 @@ VblankModeAuthorPrelude .proc
           ;; CRITICAL: Guard PlayMusic call - only call if music is initialized
           ;; musicVoice0Pointer = 0 means music not started yet
           lda musicVoice0Pointer
-          cmp # 0
           bne PlayAuthorPreludeMusic
           jmp VblankAuthorPreludeSkipMusic
 PlayAuthorPreludeMusic:
@@ -82,16 +86,22 @@ PlayAuthorPreludeMusic:
 
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           ;; When called from Vblank, stack is shallower than when called from MainLoop
-          ;; Cross-bank call to PlayMusic in bank 15
-          lda # >(return_point-1)
+          ;; Cross-bank call to PlayMusic in bank 14
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterPlayMusicAuthorPrelude-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterPlayMusicAuthorPrelude hi (encoded)]
+          lda # <(AfterPlayMusicAuthorPrelude-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayMusicAuthorPrelude hi (encoded)] [SP+0: AfterPlayMusicAuthorPrelude lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayMusic-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayMusicAuthorPrelude hi (encoded)] [SP+1: AfterPlayMusicAuthorPrelude lo] [SP+0: PlayMusic hi (raw)]
           lda # <(PlayMusic-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterPlayMusicAuthorPrelude hi (encoded)] [SP+2: AfterPlayMusicAuthorPrelude lo] [SP+1: PlayMusic hi (raw)] [SP+0: PlayMusic lo]
+          ldx # 14
           jmp BS_jsr
 AfterPlayMusicAuthorPrelude:
 
@@ -110,7 +120,6 @@ VblankModeTitleScreen .proc
           ;; CRITICAL: Guard PlayMusic call - only call if music is initialized
           ;; musicVoice0Pointer = 0 means music not started yet
           lda musicVoice0Pointer
-          cmp # 0
           bne PlayTitleScreenMusic
           jmp VblankTitleScreenSkipMusic
 PlayTitleScreenMusic:
@@ -118,16 +127,22 @@ PlayTitleScreenMusic:
 
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           ;; When called from Vblank, stack is shallower than when called from MainLoop
-          ;; Cross-bank call to PlayMusic in bank 15
-          lda # >(AfterPlayMusicTitleScreen-1)
+          ;; Cross-bank call to PlayMusic in bank 14
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterPlayMusicTitleScreen-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayMusicTitleScreen hi (encoded)]
           lda # <(AfterPlayMusicTitleScreen-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayMusicTitleScreen hi (encoded)] [SP+0: AfterPlayMusicTitleScreen lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayMusic-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayMusicTitleScreen hi (encoded)] [SP+1: AfterPlayMusicTitleScreen lo] [SP+0: PlayMusic hi (raw)]
           lda # <(PlayMusic-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterPlayMusicTitleScreen hi (encoded)] [SP+2: AfterPlayMusicTitleScreen lo] [SP+1: PlayMusic hi (raw)] [SP+0: PlayMusic lo]
+          ldx # 14
           jmp BS_jsr
 AfterPlayMusicTitleScreen:
 
@@ -445,16 +460,22 @@ VblankTransitionHandleFallBack
           sta temp3
           lda temp6
           sta temp2
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadVblank-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadVblank-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadVblank hi (encoded)]
           lda # <(AfterPlayfieldReadVblank-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadVblank hi (encoded)] [SP+0: AfterPlayfieldReadVblank lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadVblank hi (encoded)] [SP+1: AfterPlayfieldReadVblank lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadVblank hi (encoded)] [SP+2: AfterPlayfieldReadVblank lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadVblank:
 
@@ -839,15 +860,21 @@ VblankUpdateSpriteBank2Dispatch
           lda temp4
           sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank2 in bank 2
-          lda # >(return_point-1)
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterSetPlayerCharacterArtBank2Vblank-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerCharacterArtBank2Vblank hi (encoded)]
+          lda # <(AfterSetPlayerCharacterArtBank2Vblank-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerCharacterArtBank2Vblank hi (encoded)] [SP+0: AfterSetPlayerCharacterArtBank2Vblank lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerCharacterArtBank2-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerCharacterArtBank2Vblank hi (encoded)] [SP+1: AfterSetPlayerCharacterArtBank2Vblank lo] [SP+0: SetPlayerCharacterArtBank2 hi (raw)]
           lda # <(SetPlayerCharacterArtBank2-1)
           pha
-                    ldx # 1
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank2Vblank hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank2Vblank lo] [SP+1: SetPlayerCharacterArtBank2 hi (raw)] [SP+0: SetPlayerCharacterArtBank2 lo]
+          ldx # 1
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank2Vblank:
 
@@ -869,15 +896,21 @@ VblankUpdateSpriteBank3Dispatch
           lda temp4
           sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank3 in bank 3
-          lda # >(return_point-1)
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterSetPlayerCharacterArtBank3Vblank-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerCharacterArtBank3Vblank hi (encoded)]
+          lda # <(AfterSetPlayerCharacterArtBank3Vblank-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerCharacterArtBank3Vblank hi (encoded)] [SP+0: AfterSetPlayerCharacterArtBank3Vblank lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerCharacterArtBank3-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerCharacterArtBank3Vblank hi (encoded)] [SP+1: AfterSetPlayerCharacterArtBank3Vblank lo] [SP+0: SetPlayerCharacterArtBank3 hi (raw)]
           lda # <(SetPlayerCharacterArtBank3-1)
           pha
-                    ldx # 2
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank3Vblank hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank3Vblank lo] [SP+1: SetPlayerCharacterArtBank3 hi (raw)] [SP+0: SetPlayerCharacterArtBank3 lo]
+          ldx # 2
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank3Vblank:
 
@@ -899,15 +932,21 @@ VblankUpdateSpriteBank4Dispatch
           lda temp4
           sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank4 in bank 4
-          lda # >(return_point-1)
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterSetPlayerCharacterArtBank4Vblank-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerCharacterArtBank4Vblank hi (encoded)]
+          lda # <(AfterSetPlayerCharacterArtBank4Vblank-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerCharacterArtBank4Vblank hi (encoded)] [SP+0: AfterSetPlayerCharacterArtBank4Vblank lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerCharacterArtBank4-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerCharacterArtBank4Vblank hi (encoded)] [SP+1: AfterSetPlayerCharacterArtBank4Vblank lo] [SP+0: SetPlayerCharacterArtBank4 hi (raw)]
           lda # <(SetPlayerCharacterArtBank4-1)
           pha
-                    ldx # 3
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank4Vblank hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank4Vblank lo] [SP+1: SetPlayerCharacterArtBank4 hi (raw)] [SP+0: SetPlayerCharacterArtBank4 lo]
+          ldx # 3
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank4Vblank:
 
@@ -929,15 +968,21 @@ VblankUpdateSpriteBank5Dispatch
           lda temp4
           sta temp5
           ;; Cross-bank call to SetPlayerCharacterArtBank5 in bank 5
-          lda # >(return_point-1)
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterSetPlayerCharacterArtBank5Vblank-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerCharacterArtBank5Vblank hi (encoded)]
+          lda # <(AfterSetPlayerCharacterArtBank5Vblank-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerCharacterArtBank5Vblank hi (encoded)] [SP+0: AfterSetPlayerCharacterArtBank5Vblank lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerCharacterArtBank5-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerCharacterArtBank5Vblank hi (encoded)] [SP+1: AfterSetPlayerCharacterArtBank5Vblank lo] [SP+0: SetPlayerCharacterArtBank5 hi (raw)]
           lda # <(SetPlayerCharacterArtBank5-1)
           pha
-                    ldx # 4
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank5Vblank hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank5Vblank lo] [SP+1: SetPlayerCharacterArtBank5 hi (raw)] [SP+0: SetPlayerCharacterArtBank5 lo]
+          ldx # 4
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank5Vblank:
 
@@ -965,62 +1010,86 @@ VblankHandlerDoneCheck:
 
 VblankModeGameMainAfterAnimations
           ;; Update movement system (full frame rate movement) (in Bank 8)
-          ;; Cross-bank call to UpdatePlayerMovement in bank 8
-          lda # >(AfterUpdatePlayerMovement-1)
+          ;; Cross-bank call to UpdatePlayerMovement in bank 7
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterUpdatePlayerMovement-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterUpdatePlayerMovement hi (encoded)]
           lda # <(AfterUpdatePlayerMovement-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterUpdatePlayerMovement hi (encoded)] [SP+0: AfterUpdatePlayerMovement lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdatePlayerMovement-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterUpdatePlayerMovement hi (encoded)] [SP+1: AfterUpdatePlayerMovement lo] [SP+0: UpdatePlayerMovement hi (raw)]
           lda # <(UpdatePlayerMovement-1)
           pha
-                    ldx # 7
+          ;; STACK PICTURE: [SP+3: AfterUpdatePlayerMovement hi (encoded)] [SP+2: AfterUpdatePlayerMovement lo] [SP+1: UpdatePlayerMovement hi (raw)] [SP+0: UpdatePlayerMovement lo]
+          ldx # 7
           jmp BS_jsr
 AfterUpdatePlayerMovement:
 AfterUpdatePlayerMovementVblank:
 
 
           ;; Apply gravity and physics (in Bank 13)
-          ;; Cross-bank call to PhysicsApplyGravity in bank 13
-          lda # >(AfterPhysicsApplyGravity-1)
+          ;; Cross-bank call to PhysicsApplyGravity in bank 12
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterPhysicsApplyGravity-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPhysicsApplyGravity hi (encoded)]
           lda # <(AfterPhysicsApplyGravity-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPhysicsApplyGravity hi (encoded)] [SP+0: AfterPhysicsApplyGravity lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PhysicsApplyGravity-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPhysicsApplyGravity hi (encoded)] [SP+1: AfterPhysicsApplyGravity lo] [SP+0: PhysicsApplyGravity hi (raw)]
           lda # <(PhysicsApplyGravity-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterPhysicsApplyGravity hi (encoded)] [SP+2: AfterPhysicsApplyGravity lo] [SP+1: PhysicsApplyGravity hi (raw)] [SP+0: PhysicsApplyGravity lo]
+          ldx # 12
           jmp BS_jsr
 AfterPhysicsApplyGravity:
 
 
           ;; Apply momentum and recovery effects (in Bank 8)
-          ;; Cross-bank call to ApplyMomentumAndRecovery in bank 8
-          lda # >(AfterApplyMomentumAndRecovery-1)
+          ;; Cross-bank call to ApplyMomentumAndRecovery in bank 7
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterApplyMomentumAndRecovery-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterApplyMomentumAndRecovery hi (encoded)]
           lda # <(AfterApplyMomentumAndRecovery-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterApplyMomentumAndRecovery hi (encoded)] [SP+0: AfterApplyMomentumAndRecovery lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ApplyMomentumAndRecovery-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterApplyMomentumAndRecovery hi (encoded)] [SP+1: AfterApplyMomentumAndRecovery lo] [SP+0: ApplyMomentumAndRecovery hi (raw)]
           lda # <(ApplyMomentumAndRecovery-1)
           pha
-                    ldx # 7
+          ;; STACK PICTURE: [SP+3: AfterApplyMomentumAndRecovery hi (encoded)] [SP+2: AfterApplyMomentumAndRecovery lo] [SP+1: ApplyMomentumAndRecovery hi (raw)] [SP+0: ApplyMomentumAndRecovery lo]
+          ldx # 7
           jmp BS_jsr
 AfterApplyMomentumAndRecovery:
 
 
           ;; Check boundary collisions (in Bank 10)
-          ;; Cross-bank call to CheckBoundaryCollisions in bank 10
-          lda # >(AfterCheckBoundaryCollisions-1)
+          ;; Cross-bank call to CheckBoundaryCollisions in bank 9
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterCheckBoundaryCollisions-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckBoundaryCollisions hi (encoded)]
           lda # <(AfterCheckBoundaryCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckBoundaryCollisions hi (encoded)] [SP+0: AfterCheckBoundaryCollisions lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckBoundaryCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckBoundaryCollisions hi (encoded)] [SP+1: AfterCheckBoundaryCollisions lo] [SP+0: CheckBoundaryCollisions hi (raw)]
           lda # <(CheckBoundaryCollisions-1)
           pha
-                    ldx # 9
+          ;; STACK PICTURE: [SP+3: AfterCheckBoundaryCollisions hi (encoded)] [SP+2: AfterCheckBoundaryCollisions lo] [SP+1: CheckBoundaryCollisions hi (raw)] [SP+0: CheckBoundaryCollisions lo]
+          ldx # 9
           jmp BS_jsr
 AfterCheckBoundaryCollisions:
 
@@ -1043,44 +1112,62 @@ VPC_Loop:
 
 VblankProcessCollision:
           ;; Check for Radish Goblin bounce movement (ground and wall bounces)
-          ;; Cross-bank call to CheckPlayfieldCollisionAllDirections in bank 10
-          lda # >(AfterCheckPlayfieldCollisionAllDirections-1)
+          ;; Cross-bank call to CheckPlayfieldCollisionAllDirections in bank 9
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterCheckPlayfieldCollisionAllDirections-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckPlayfieldCollisionAllDirections hi (encoded)]
           lda # <(AfterCheckPlayfieldCollisionAllDirections-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckPlayfieldCollisionAllDirections hi (encoded)] [SP+0: AfterCheckPlayfieldCollisionAllDirections lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckPlayfieldCollisionAllDirections-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckPlayfieldCollisionAllDirections hi (encoded)] [SP+1: AfterCheckPlayfieldCollisionAllDirections lo] [SP+0: CheckPlayfieldCollisionAllDirections hi (raw)]
           lda # <(CheckPlayfieldCollisionAllDirections-1)
           pha
-                    ldx # 9
+          ;; STACK PICTURE: [SP+3: AfterCheckPlayfieldCollisionAllDirections hi (encoded)] [SP+2: AfterCheckPlayfieldCollisionAllDirections lo] [SP+1: CheckPlayfieldCollisionAllDirections hi (raw)] [SP+0: CheckPlayfieldCollisionAllDirections lo]
+          ldx # 9
           jmp BS_jsr
 AfterCheckPlayfieldCollisionAllDirections:
 
 
-          ;; Cross-bank call to RadishGoblinCheckGroundBounce in bank 12
-          lda # >(AfterRadishGoblinCheckGroundBounce-1)
+          ;; Cross-bank call to RadishGoblinCheckGroundBounce in bank 11
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterRadishGoblinCheckGroundBounce-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterRadishGoblinCheckGroundBounce hi (encoded)]
           lda # <(AfterRadishGoblinCheckGroundBounce-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterRadishGoblinCheckGroundBounce hi (encoded)] [SP+0: AfterRadishGoblinCheckGroundBounce lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(RadishGoblinCheckGroundBounce-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterRadishGoblinCheckGroundBounce hi (encoded)] [SP+1: AfterRadishGoblinCheckGroundBounce lo] [SP+0: RadishGoblinCheckGroundBounce hi (raw)]
           lda # <(RadishGoblinCheckGroundBounce-1)
           pha
-                    ldx # 11
+          ;; STACK PICTURE: [SP+3: AfterRadishGoblinCheckGroundBounce hi (encoded)] [SP+2: AfterRadishGoblinCheckGroundBounce lo] [SP+1: RadishGoblinCheckGroundBounce hi (raw)] [SP+0: RadishGoblinCheckGroundBounce lo]
+          ldx # 11
           jmp BS_jsr
 AfterRadishGoblinCheckGroundBounce:
 
 
-          ;; Cross-bank call to RadishGoblinCheckWallBounce in bank 12
-          lda # >(AfterRadishGoblinCheckWallBounce-1)
+          ;; Cross-bank call to RadishGoblinCheckWallBounce in bank 11
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterRadishGoblinCheckWallBounce-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterRadishGoblinCheckWallBounce hi (encoded)]
           lda # <(AfterRadishGoblinCheckWallBounce-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterRadishGoblinCheckWallBounce hi (encoded)] [SP+0: AfterRadishGoblinCheckWallBounce lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(RadishGoblinCheckWallBounce-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterRadishGoblinCheckWallBounce hi (encoded)] [SP+1: AfterRadishGoblinCheckWallBounce lo] [SP+0: RadishGoblinCheckWallBounce hi (raw)]
           lda # <(RadishGoblinCheckWallBounce-1)
           pha
-                    ldx # 11
+          ;; STACK PICTURE: [SP+3: AfterRadishGoblinCheckWallBounce hi (encoded)] [SP+2: AfterRadishGoblinCheckWallBounce lo] [SP+1: RadishGoblinCheckWallBounce hi (raw)] [SP+0: RadishGoblinCheckWallBounce lo]
+          ldx # 11
           jmp BS_jsr
 AfterRadishGoblinCheckWallBounce:
 
@@ -1096,61 +1183,85 @@ VblankGameMainQuadtariCheckDone .proc
 
 VblankGameMainQuadtariSkip .proc
           ;; Check multi-player collisions (in Bank 11)
-          ;; Cross-bank call to CheckAllPlayerCollisions in bank 11
-          lda # >(AfterCheckAllPlayerCollisions-1)
+          ;; Cross-bank call to CheckAllPlayerCollisions in bank 10
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterCheckAllPlayerCollisions-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckAllPlayerCollisions hi (encoded)]
           lda # <(AfterCheckAllPlayerCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckAllPlayerCollisions hi (encoded)] [SP+0: AfterCheckAllPlayerCollisions lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckAllPlayerCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckAllPlayerCollisions hi (encoded)] [SP+1: AfterCheckAllPlayerCollisions lo] [SP+0: CheckAllPlayerCollisions hi (raw)]
           lda # <(CheckAllPlayerCollisions-1)
           pha
-                    ldx # 10
+          ;; STACK PICTURE: [SP+3: AfterCheckAllPlayerCollisions hi (encoded)] [SP+2: AfterCheckAllPlayerCollisions lo] [SP+1: CheckAllPlayerCollisions hi (raw)] [SP+0: CheckAllPlayerCollisions lo]
+          ldx # 10
           jmp BS_jsr
 AfterCheckAllPlayerCollisions:
 
 
           ;; Process mêlée and area attack collisions (in Bank 7)
-          ;; Cross-bank call to ProcessAllAttacks in bank 7
-          lda # >(AfterProcessAllAttacks-1)
+          ;; Cross-bank call to ProcessAllAttacks in bank 6
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterProcessAllAttacks-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterProcessAllAttacks hi (encoded)]
           lda # <(AfterProcessAllAttacks-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterProcessAllAttacks hi (encoded)] [SP+0: AfterProcessAllAttacks lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ProcessAllAttacks-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterProcessAllAttacks hi (encoded)] [SP+1: AfterProcessAllAttacks lo] [SP+0: ProcessAllAttacks hi (raw)]
           lda # <(ProcessAllAttacks-1)
           pha
-                    ldx # 6
+          ;; STACK PICTURE: [SP+3: AfterProcessAllAttacks hi (encoded)] [SP+2: AfterProcessAllAttacks lo] [SP+1: ProcessAllAttacks hi (raw)] [SP+0: ProcessAllAttacks lo]
+          ldx # 6
           jmp BS_jsr
 AfterProcessAllAttacks:
 
 
           ;; Check for player eliminations
-          ;; Cross-bank call to CheckAllPlayerEliminations in bank 14
-          lda # >(AfterCheckAllPlayerEliminations-1)
+          ;; Cross-bank call to CheckAllPlayerEliminations in bank 13
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterCheckAllPlayerEliminations-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckAllPlayerEliminations hi (encoded)]
           lda # <(AfterCheckAllPlayerEliminations-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckAllPlayerEliminations hi (encoded)] [SP+0: AfterCheckAllPlayerEliminations lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckAllPlayerEliminations-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckAllPlayerEliminations hi (encoded)] [SP+1: AfterCheckAllPlayerEliminations lo] [SP+0: CheckAllPlayerEliminations hi (raw)]
           lda # <(CheckAllPlayerEliminations-1)
           pha
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterCheckAllPlayerEliminations hi (encoded)] [SP+2: AfterCheckAllPlayerEliminations lo] [SP+1: CheckAllPlayerEliminations hi (raw)] [SP+0: CheckAllPlayerEliminations lo]
+          ldx # 13
           jmp BS_jsr
 AfterCheckAllPlayerEliminations:
 
 
-          ;; Update missiles (in Bank 7)
-          ;; Cross-bank call to UpdateAllMissiles in bank 7
-          lda # >(AfterUpdateAllMissiles-1)
+          ;; Update missiles (in Bank 6)
+          ;; Cross-bank call to UpdateAllMissiles in bank 6
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterUpdateAllMissiles-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterUpdateAllMissiles hi (encoded)]
           lda # <(AfterUpdateAllMissiles-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterUpdateAllMissiles hi (encoded)] [SP+0: AfterUpdateAllMissiles lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdateAllMissiles-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterUpdateAllMissiles hi (encoded)] [SP+1: AfterUpdateAllMissiles lo] [SP+0: UpdateAllMissiles hi (raw)]
           lda # <(UpdateAllMissiles-1)
           pha
-                    ldx # 6
+          ;; STACK PICTURE: [SP+3: AfterUpdateAllMissiles hi (encoded)] [SP+2: AfterUpdateAllMissiles lo] [SP+1: UpdateAllMissiles hi (raw)] [SP+0: UpdateAllMissiles lo]
+          ldx # 6
           jmp BS_jsr
 AfterUpdateAllMissiles:
 
@@ -1168,7 +1279,6 @@ VblankCheckGameEndTransition
           ;; Returns: Near (return thisbank)
           ;; When timer reaches 0, transition to winner announcement
           lda gameEndTimer_R
-          cmp # 0
           bne DecrementGameEndTimer
           jsr VblankTransitionToWinner
           jmp VblankGameEndCheckDone
@@ -1187,16 +1297,22 @@ VblankTransitionToWinner
           ;; Returns: Near (return thisbank)
           lda # ModeWinner
           sta gameMode
-          ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(AfterChangeGameModeToWinner-1)
+          ;; Cross-bank call to ChangeGameMode in bank 13
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterChangeGameModeToWinner-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterChangeGameModeToWinner hi (encoded)]
           lda # <(AfterChangeGameModeToWinner-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterChangeGameModeToWinner hi (encoded)] [SP+0: AfterChangeGameModeToWinner lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ChangeGameMode-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterChangeGameModeToWinner hi (encoded)] [SP+1: AfterChangeGameModeToWinner lo] [SP+0: ChangeGameMode hi (raw)]
           lda # <(ChangeGameMode-1)
           pha
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterChangeGameModeToWinner hi (encoded)] [SP+2: AfterChangeGameModeToWinner lo] [SP+1: ChangeGameMode hi (raw)] [SP+0: ChangeGameMode lo]
+          ldx # 13
           jmp BS_jsr
 AfterChangeGameModeToWinner:
 
@@ -1204,47 +1320,65 @@ AfterChangeGameModeToWinner:
           rts
 
 VblankGameEndCheckDone
-          ;; Update missiles again (in Bank 7)
-          ;; Cross-bank call to UpdateAllMissiles in bank 7
-          lda # >(AfterUpdateAllMissilesSecond-1)
+          ;; Update missiles again (in Bank 6)
+          ;; Cross-bank call to UpdateAllMissiles in bank 6
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterUpdateAllMissilesSecond-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterUpdateAllMissilesSecond hi (encoded)]
           lda # <(AfterUpdateAllMissilesSecond-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterUpdateAllMissilesSecond hi (encoded)] [SP+0: AfterUpdateAllMissilesSecond lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdateAllMissiles-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterUpdateAllMissilesSecond hi (encoded)] [SP+1: AfterUpdateAllMissilesSecond lo] [SP+0: UpdateAllMissiles hi (raw)]
           lda # <(UpdateAllMissiles-1)
           pha
-                    ldx # 6
+          ;; STACK PICTURE: [SP+3: AfterUpdateAllMissilesSecond hi (encoded)] [SP+2: AfterUpdateAllMissilesSecond lo] [SP+1: UpdateAllMissiles hi (raw)] [SP+0: UpdateAllMissiles lo]
+          ldx # 6
           jmp BS_jsr
 AfterUpdateAllMissilesSecond:
 
 
-          ;; Check RoboTito stretch missile collisions (bank 7)
-          ;; Cross-bank call to CheckRoboTitoStretchMissileCollisions in bank 10
-          lda # >(AfterCheckRoboTitoStretchMissileCollisions-1)
+          ;; Check RoboTito stretch missile collisions (bank 9)
+          ;; Cross-bank call to CheckRoboTitoStretchMissileCollisions in bank 9
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterCheckRoboTitoStretchMissileCollisions-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckRoboTitoStretchMissileCollisions hi (encoded)]
           lda # <(AfterCheckRoboTitoStretchMissileCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckRoboTitoStretchMissileCollisions hi (encoded)] [SP+0: AfterCheckRoboTitoStretchMissileCollisions lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckRoboTitoStretchMissileCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckRoboTitoStretchMissileCollisions hi (encoded)] [SP+1: AfterCheckRoboTitoStretchMissileCollisions lo] [SP+0: CheckRoboTitoStretchMissileCollisions hi (raw)]
           lda # <(CheckRoboTitoStretchMissileCollisions-1)
           pha
-                    ldx # 9
+          ;; STACK PICTURE: [SP+3: AfterCheckRoboTitoStretchMissileCollisions hi (encoded)] [SP+2: AfterCheckRoboTitoStretchMissileCollisions lo] [SP+1: CheckRoboTitoStretchMissileCollisions hi (raw)] [SP+0: CheckRoboTitoStretchMissileCollisions lo]
+          ldx # 9
           jmp BS_jsr
 AfterCheckRoboTitoStretchMissileCollisions:
 
 
-          ;; Set sprite graphics (in Bank 6)
-          ;; Cross-bank call to SetPlayerSprites in bank 6
-          lda # >(AfterSetPlayerSprites-1)
+          ;; Set sprite graphics (in Bank 5)
+          ;; Cross-bank call to SetPlayerSprites in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterSetPlayerSprites-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerSprites hi (encoded)]
           lda # <(AfterSetPlayerSprites-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerSprites hi (encoded)] [SP+0: AfterSetPlayerSprites lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerSprites-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerSprites hi (encoded)] [SP+1: AfterSetPlayerSprites lo] [SP+0: SetPlayerSprites hi (raw)]
           lda # <(SetPlayerSprites-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerSprites hi (encoded)] [SP+2: AfterSetPlayerSprites lo] [SP+1: SetPlayerSprites hi (raw)] [SP+0: SetPlayerSprites lo]
+          ldx # 5
           jmp BS_jsr
 AfterSetPlayerSprites:
 
@@ -1268,16 +1402,22 @@ AfterUpdatePlayer12HealthBars:
 
 
           ;; Update P3/P4 health bars using playfield system
-          ;; Cross-bank call to UpdatePlayer34HealthBars in bank 11
-          lda # >(AfterUpdatePlayer34HealthBars-1)
+          ;; Cross-bank call to UpdatePlayer34HealthBars in bank 10
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterUpdatePlayer34HealthBars-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterUpdatePlayer34HealthBars hi (encoded)]
           lda # <(AfterUpdatePlayer34HealthBars-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterUpdatePlayer34HealthBars hi (encoded)] [SP+0: AfterUpdatePlayer34HealthBars lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdatePlayer34HealthBars-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterUpdatePlayer34HealthBars hi (encoded)] [SP+1: AfterUpdatePlayer34HealthBars lo] [SP+0: UpdatePlayer34HealthBars hi (raw)]
           lda # <(UpdatePlayer34HealthBars-1)
           pha
-                    ldx # 10
+          ;; STACK PICTURE: [SP+3: AfterUpdatePlayer34HealthBars hi (encoded)] [SP+2: AfterUpdatePlayer34HealthBars lo] [SP+1: UpdatePlayer34HealthBars hi (raw)] [SP+0: UpdatePlayer34HealthBars lo]
+          ldx # 10
           jmp BS_jsr
 AfterUpdatePlayer34HealthBars:
 
@@ -1292,7 +1432,6 @@ VblankModeWinnerAnnouncement .proc
           ;; CRITICAL: Guard PlayMusic call - only call if music is initialized
           ;; musicVoice0Pointer = 0 means music not started yet
           lda musicVoice0Pointer
-          cmp # 0
           bne PlayWinnerAnnouncementMusic
           jmp VblankWinnerAnnouncementSkipMusic
 PlayWinnerAnnouncementMusic:

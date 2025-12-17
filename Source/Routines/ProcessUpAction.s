@@ -89,15 +89,21 @@ BernieFallThroughUpAction .proc
           ;; CRITICAL: Must use gosub/return, not goto, because BernieJump returns otherbank
           lda # 0
           sta temp3
-          ;; Cross-bank call to BernieJump in bank 12
-          lda # >(AfterBernieJump-1)
+          ;; Cross-bank call to BernieJump in bank 11
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterBernieJump-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterBernieJump hi (encoded)]
           lda # <(AfterBernieJump-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterBernieJump hi (encoded)] [SP+0: AfterBernieJump lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(BernieJump-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterBernieJump hi (encoded)] [SP+1: AfterBernieJump lo] [SP+0: BernieJump hi (raw)]
           lda # <(BernieJump-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterBernieJump hi (encoded)] [SP+2: AfterBernieJump lo] [SP+1: BernieJump hi (raw)] [SP+0: BernieJump lo]
           ldx # 11
           jmp BS_jsr
 
@@ -112,15 +118,21 @@ HarpyFlapUpAction .proc
           ;; CRITICAL: Must use gosub/return, not goto, because HarpyJump returns otherbank
           lda # 0
           sta temp3
-          ;; Cross-bank call to HarpyJump in bank 12
-          lda # >(AfterHarpyJump-1)
+          ;; Cross-bank call to HarpyJump in bank 11
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterHarpyJump-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterHarpyJump hi (encoded)]
           lda # <(AfterHarpyJump-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterHarpyJump hi (encoded)] [SP+0: AfterHarpyJump lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(HarpyJump-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterHarpyJump hi (encoded)] [SP+1: AfterHarpyJump lo] [SP+0: HarpyJump hi (raw)]
           lda # <(HarpyJump-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterHarpyJump hi (encoded)] [SP+2: AfterHarpyJump lo] [SP+1: HarpyJump hi (raw)] [SP+0: HarpyJump lo]
           ldx # 11
           jmp BS_jsr
 
@@ -194,7 +206,6 @@ ColumnInRange:
             lsr temp2
             lsr temp2
           lda temp2
-          cmp # 0
           bne CheckCeilingPixel
 
           jmp PUA_RoboTitoLatch
@@ -211,15 +222,21 @@ CheckCeilingPixel:
           sta temp1
           lda temp3
           sta temp2
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadRoboTitoAscend-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadRoboTitoAscend-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadRoboTitoAscend hi (encoded)]
           lda # <(AfterPlayfieldReadRoboTitoAscend-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadRoboTitoAscend hi (encoded)] [SP+0: AfterPlayfieldReadRoboTitoAscend lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadRoboTitoAscend hi (encoded)] [SP+1: AfterPlayfieldReadRoboTitoAscend lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadRoboTitoAscend hi (encoded)] [SP+2: AfterPlayfieldReadRoboTitoAscend lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
           ldx # 15
           jmp BS_jsr
 

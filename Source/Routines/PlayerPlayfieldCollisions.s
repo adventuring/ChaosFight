@@ -139,15 +139,21 @@ ProcessLeftCollision:
           lda # 0
           sta temp3
 
-          ;; Cross-bank call to PF_ProcessHorizontalCollision in bank 10
-          lda # >(PFCheckRightReturn-1)
+          ;; Cross-bank call to PF_ProcessHorizontalCollision in bank 9
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(PFCheckRightReturn-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: PFCheckRightReturn hi (encoded)]
           lda # <(PFCheckRightReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: PFCheckRightReturn hi (encoded)] [SP+0: PFCheckRightReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PF_ProcessHorizontalCollision-1)
           pha
+          ;; STACK PICTURE: [SP+2: PFCheckRightReturn hi (encoded)] [SP+1: PFCheckRightReturn lo] [SP+0: PF_ProcessHorizontalCollision hi (raw)]
           lda # <(PF_ProcessHorizontalCollision-1)
           pha
+          ;; STACK PICTURE: [SP+3: PFCheckRightReturn hi (encoded)] [SP+2: PFCheckRightReturn lo] [SP+1: PF_ProcessHorizontalCollision hi (raw)] [SP+0: PF_ProcessHorizontalCollision lo]
           ldx # 9
           jmp BS_jsr
 
@@ -174,15 +180,21 @@ ProcessRightCollision:
           lda # 1
           sta temp3
 
-          ;; Cross-bank call to PF_ProcessHorizontalCollision in bank 10
-          lda # >(PFCheckLeftReturn-1)
+          ;; Cross-bank call to PF_ProcessHorizontalCollision in bank 9
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(PFCheckLeftReturn-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: PFCheckLeftReturn hi (encoded)]
           lda # <(PFCheckLeftReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: PFCheckLeftReturn hi (encoded)] [SP+0: PFCheckLeftReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PF_ProcessHorizontalCollision-1)
           pha
+          ;; STACK PICTURE: [SP+2: PFCheckLeftReturn hi (encoded)] [SP+1: PFCheckLeftReturn lo] [SP+0: PF_ProcessHorizontalCollision hi (raw)]
           lda # <(PF_ProcessHorizontalCollision-1)
           pha
+          ;; STACK PICTURE: [SP+3: PFCheckLeftReturn hi (encoded)] [SP+2: PFCheckLeftReturn lo] [SP+1: PF_ProcessHorizontalCollision hi (raw)] [SP+0: PF_ProcessHorizontalCollision lo]
           ldx # 9
           jmp BS_jsr
 
@@ -209,15 +221,21 @@ CheckUpCollision:
           lda rowCounter
           sta temp2
 
-          ;; Cross-bank call to PF_CheckRowColumns in bank 10
-          lda # >(PFCheckRowColumnsReturn-1)
+          ;; Cross-bank call to PF_CheckRowColumns in bank 9
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(PFCheckRowColumnsReturn-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: PFCheckRowColumnsReturn hi (encoded)]
           lda # <(PFCheckRowColumnsReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: PFCheckRowColumnsReturn hi (encoded)] [SP+0: PFCheckRowColumnsReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PF_CheckRowColumns-1)
           pha
+          ;; STACK PICTURE: [SP+2: PFCheckRowColumnsReturn hi (encoded)] [SP+1: PFCheckRowColumnsReturn lo] [SP+0: PF_CheckRowColumns hi (raw)]
           lda # <(PF_CheckRowColumns-1)
           pha
+          ;; STACK PICTURE: [SP+3: PFCheckRowColumnsReturn hi (encoded)] [SP+2: PFCheckRowColumnsReturn lo] [SP+1: PF_CheckRowColumns hi (raw)] [SP+0: PF_CheckRowColumns lo]
           ldx # 9
           jmp BS_jsr
 
@@ -390,16 +408,22 @@ PFCS_ReadPlayfieldPixel:
           lda rowCounter
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadColumnSpan-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadColumnSpan-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadColumnSpan hi (encoded)]
           lda # <(AfterPlayfieldReadColumnSpan-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadColumnSpan hi (encoded)] [SP+0: AfterPlayfieldReadColumnSpan lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadColumnSpan hi (encoded)] [SP+1: AfterPlayfieldReadColumnSpan lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadColumnSpan hi (encoded)] [SP+2: AfterPlayfieldReadColumnSpan lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadColumnSpan:
 
@@ -479,16 +503,22 @@ PF_CheckRowColumns .proc
           lda temp3  ;;; PRC_rowIndex
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadCenter-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadCenter-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadCenter hi (encoded)]
           lda # <(AfterPlayfieldReadCenter-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadCenter hi (encoded)] [SP+0: AfterPlayfieldReadCenter lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadCenter hi (encoded)] [SP+1: AfterPlayfieldReadCenter lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadCenter hi (encoded)] [SP+2: AfterPlayfieldReadCenter lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadCenter:
 

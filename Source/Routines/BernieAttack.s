@@ -98,15 +98,21 @@ BernieAttack .proc
 
           ;; Attack facing direction
           ;; Cross-bank call to PerformGenericAttack in bank 7
-          lda # >(AfterPerformGenericAttackFacing-1)
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(AfterPerformGenericAttackFacing-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPerformGenericAttackFacing hi (encoded)]
           lda # <(AfterPerformGenericAttackFacing-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPerformGenericAttackFacing hi (encoded)] [SP+0: AfterPerformGenericAttackFacing lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PerformGenericAttack-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPerformGenericAttackFacing hi (encoded)] [SP+1: AfterPerformGenericAttackFacing lo] [SP+0: PerformGenericAttack hi (raw)]
           lda # <(PerformGenericAttack-1)
           pha
-                    ldx # 6
+          ;; STACK PICTURE: [SP+3: AfterPerformGenericAttackFacing hi (encoded)] [SP+2: AfterPerformGenericAttackFacing lo] [SP+1: PerformGenericAttack hi (raw)] [SP+0: PerformGenericAttack lo]
+          ldx # 6
           jmp BS_jsr
 AfterPerformGenericAttackFacing:
 
@@ -121,15 +127,21 @@ AfterPerformGenericAttackFacing:
           sta playerState,x
 
           ;; Cross-bank call to PerformGenericAttack in bank 7
-          lda # >(AfterPerformGenericAttackOpposite-1)
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(AfterPerformGenericAttackOpposite-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPerformGenericAttackOpposite hi (encoded)]
           lda # <(AfterPerformGenericAttackOpposite-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPerformGenericAttackOpposite hi (encoded)] [SP+0: AfterPerformGenericAttackOpposite lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PerformGenericAttack-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPerformGenericAttackOpposite hi (encoded)] [SP+1: AfterPerformGenericAttackOpposite lo] [SP+0: PerformGenericAttack hi (raw)]
           lda # <(PerformGenericAttack-1)
           pha
-                    ldx # 6
+          ;; STACK PICTURE: [SP+3: AfterPerformGenericAttackOpposite hi (encoded)] [SP+2: AfterPerformGenericAttackOpposite lo] [SP+1: PerformGenericAttack hi (raw)] [SP+0: PerformGenericAttack lo]
+          ldx # 6
           jmp BS_jsr
 AfterPerformGenericAttackOpposite:
 

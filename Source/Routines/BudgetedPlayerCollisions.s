@@ -39,12 +39,10 @@ BudgetedCollisionCheck:
           ;; Skip other checks if not Quadtari
           lda controllerStatus
           and # $80
-          cmp # 0
           beq BPC_NotQuadtari
 
           ;; Check additional pairs based on frame phase
           lda framePhase
-          cmp # 0
           bne BPC_CheckPhase1
           jsr BPC_Phase0
           jmp BS_return

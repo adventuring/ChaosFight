@@ -42,15 +42,21 @@ DisplayWinScreen:
 
           ;; Display win screen and continue loop
           ;; drawscreen called by MainLoop
-          ;; Cross-bank call to DisplayWinScreen in bank 16
-          lda # >(AfterDisplayWinScreen-1)
+          ;; Cross-bank call to DisplayWinScreen in bank 13
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterDisplayWinScreen-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterDisplayWinScreen hi (encoded)]
           lda # <(AfterDisplayWinScreen-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterDisplayWinScreen hi (encoded)] [SP+0: AfterDisplayWinScreen lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(DisplayWinScreen-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterDisplayWinScreen hi (encoded)] [SP+1: AfterDisplayWinScreen lo] [SP+0: DisplayWinScreen hi (raw)]
           lda # <(DisplayWinScreen-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterDisplayWinScreen hi (encoded)] [SP+2: AfterDisplayWinScreen lo] [SP+1: DisplayWinScreen hi (raw)] [SP+0: DisplayWinScreen lo]
           ldx # 13
           jmp BS_jsr
 
@@ -76,15 +82,21 @@ WinnerAdvanceToCharacterSelect .proc
           ;; Constraints: Must be colocated with WinnerAnnouncementLoop
           lda # ModeTitle
           sta gameMode
-          ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(AfterChangeGameModeWinner-1)
+          ;; Cross-bank call to ChangeGameMode in bank 13
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterChangeGameModeWinner-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterChangeGameModeWinner hi (encoded)]
           lda # <(AfterChangeGameModeWinner-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterChangeGameModeWinner hi (encoded)] [SP+0: AfterChangeGameModeWinner lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ChangeGameMode-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterChangeGameModeWinner hi (encoded)] [SP+1: AfterChangeGameModeWinner lo] [SP+0: ChangeGameMode hi (raw)]
           lda # <(ChangeGameMode-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterChangeGameModeWinner hi (encoded)] [SP+2: AfterChangeGameModeWinner lo] [SP+1: ChangeGameMode hi (raw)] [SP+0: ChangeGameMode lo]
           ldx # 13
           jmp BS_jsr
 AfterChangeGameModeWinner:

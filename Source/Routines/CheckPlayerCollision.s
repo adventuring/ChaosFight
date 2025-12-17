@@ -31,7 +31,6 @@ XDistanceCheckCollision:
           ;; Check Y collision
           ;; If temp3 == 0, then CPC_Done
           lda temp3
-          cmp # 0
           beq CPC_Done
 
           ;;

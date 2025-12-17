@@ -65,15 +65,21 @@ SetPlayerSprites .proc
           tax
           lda playerState,x
           sta temp3
-          ;; Cross-bank call to LoadCharacterColors in bank 14
-          lda # >(AfterLoadCharacterColorsP0-1)
+          ;; Cross-bank call to LoadCharacterColors in bank 13
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterLoadCharacterColorsP0-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadCharacterColorsP0 hi (encoded)]
           lda # <(AfterLoadCharacterColorsP0-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadCharacterColorsP0 hi (encoded)] [SP+0: AfterLoadCharacterColorsP0 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadCharacterColors-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadCharacterColorsP0 hi (encoded)] [SP+1: AfterLoadCharacterColorsP0 lo] [SP+0: LoadCharacterColors hi (raw)]
           lda # <(LoadCharacterColors-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterLoadCharacterColorsP0 hi (encoded)] [SP+2: AfterLoadCharacterColorsP0 lo] [SP+1: LoadCharacterColors hi (raw)] [SP+0: LoadCharacterColors lo]
           ldx # 13
           jmp BS_jsr
 
@@ -102,15 +108,21 @@ Player1ColorDone:
           ;; Animation action (0 = idle)
           lda # 0
           sta temp3
-          ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(AfterLoadCharacterSpriteP0-1)
+          ;; Cross-bank call to LoadCharacterSprite in bank 15
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterLoadCharacterSpriteP0-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadCharacterSpriteP0 hi (encoded)]
           lda # <(AfterLoadCharacterSpriteP0-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadCharacterSpriteP0 hi (encoded)] [SP+0: AfterLoadCharacterSpriteP0 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadCharacterSprite-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadCharacterSpriteP0 hi (encoded)] [SP+1: AfterLoadCharacterSpriteP0 lo] [SP+0: LoadCharacterSprite hi (raw)]
           lda # <(LoadCharacterSprite-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterLoadCharacterSpriteP0 hi (encoded)] [SP+2: AfterLoadCharacterSpriteP0 lo] [SP+1: LoadCharacterSprite hi (raw)] [SP+0: LoadCharacterSprite lo]
           ldx # 15
           jmp BS_jsr
 
@@ -143,15 +155,21 @@ AfterLoadCharacterSpriteP0:
           tax
           lda playerState,x
           sta temp3
-          ;; Cross-bank call to LoadCharacterColors in bank 14
-          lda # >(AfterLoadCharacterColorsP1-1)
+          ;; Cross-bank call to LoadCharacterColors in bank 13
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterLoadCharacterColorsP1-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadCharacterColorsP1 hi (encoded)]
           lda # <(AfterLoadCharacterColorsP1-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadCharacterColorsP1 hi (encoded)] [SP+0: AfterLoadCharacterColorsP1 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadCharacterColors-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadCharacterColorsP1 hi (encoded)] [SP+1: AfterLoadCharacterColorsP1 lo] [SP+0: LoadCharacterColors hi (raw)]
           lda # <(LoadCharacterColors-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterLoadCharacterColorsP1 hi (encoded)] [SP+2: AfterLoadCharacterColorsP1 lo] [SP+1: LoadCharacterColors hi (raw)] [SP+0: LoadCharacterColors lo]
           ldx # 13
           jmp BS_jsr
 AfterLoadCharacterColorsP1:
@@ -192,16 +210,22 @@ Player2ReflectionDone:
           ;; Animation action (0 = idle)
           lda # 0
           sta temp3
-          ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(AfterLoadCharacterSpriteP1-1)
+          ;; Cross-bank call to LoadCharacterSprite in bank 15
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterLoadCharacterSpriteP1-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadCharacterSpriteP1 hi (encoded)]
           lda # <(AfterLoadCharacterSpriteP1-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadCharacterSpriteP1 hi (encoded)] [SP+0: AfterLoadCharacterSpriteP1 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadCharacterSprite-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadCharacterSpriteP1 hi (encoded)] [SP+1: AfterLoadCharacterSpriteP1 lo] [SP+0: LoadCharacterSprite hi (raw)]
           lda # <(LoadCharacterSprite-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterLoadCharacterSpriteP1 hi (encoded)] [SP+2: AfterLoadCharacterSpriteP1 lo] [SP+1: LoadCharacterSprite hi (raw)] [SP+0: LoadCharacterSprite lo]
+          ldx # 15
           jmp BS_jsr
 AfterLoadCharacterSpriteP1:
 
@@ -263,16 +287,22 @@ SetPlayer3Color:
           tax
           lda playerState,x
           sta temp3
-          ;; Cross-bank call to LoadCharacterColors in bank 14
-          lda # >(AfterLoadCharacterColorsP3-1)
+          ;; Cross-bank call to LoadCharacterColors in bank 13
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterLoadCharacterColorsP3-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadCharacterColorsP3 hi (encoded)]
           lda # <(AfterLoadCharacterColorsP3-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadCharacterColorsP3 hi (encoded)] [SP+0: AfterLoadCharacterColorsP3 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadCharacterColors-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadCharacterColorsP3 hi (encoded)] [SP+1: AfterLoadCharacterColorsP3 lo] [SP+0: LoadCharacterColors hi (raw)]
           lda # <(LoadCharacterColors-1)
           pha
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterLoadCharacterColorsP3 hi (encoded)] [SP+2: AfterLoadCharacterColorsP3 lo] [SP+1: LoadCharacterColors hi (raw)] [SP+0: LoadCharacterColors lo]
+          ldx # 13
           jmp BS_jsr
 AfterLoadCharacterColorsP3:
 
@@ -311,16 +341,22 @@ Player3ReflectionDone:
           ;; Animation action (0 = idle)
           lda # 0
           sta temp3
-          ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(AfterLoadCharacterSpriteP3-1)
+          ;; Cross-bank call to LoadCharacterSprite in bank 15
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterLoadCharacterSpriteP3-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadCharacterSpriteP3 hi (encoded)]
           lda # <(AfterLoadCharacterSpriteP3-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadCharacterSpriteP3 hi (encoded)] [SP+0: AfterLoadCharacterSpriteP3 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadCharacterSprite-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadCharacterSpriteP3 hi (encoded)] [SP+1: AfterLoadCharacterSpriteP3 lo] [SP+0: LoadCharacterSprite hi (raw)]
           lda # <(LoadCharacterSprite-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterLoadCharacterSpriteP3 hi (encoded)] [SP+2: AfterLoadCharacterSpriteP3 lo] [SP+1: LoadCharacterSprite hi (raw)] [SP+0: LoadCharacterSprite lo]
+          ldx # 15
           jmp BS_jsr
 AfterLoadCharacterSpriteP3:
 
@@ -380,16 +416,22 @@ SetPlayer4Color:
           tax
           lda playerState,x
           sta temp3
-          ;; Cross-bank call to LoadCharacterColors in bank 14
-          lda # >(AfterLoadCharacterColorsP4-1)
+          ;; Cross-bank call to LoadCharacterColors in bank 13
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterLoadCharacterColorsP4-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadCharacterColorsP4 hi (encoded)]
           lda # <(AfterLoadCharacterColorsP4-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadCharacterColorsP4 hi (encoded)] [SP+0: AfterLoadCharacterColorsP4 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadCharacterColors-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadCharacterColorsP4 hi (encoded)] [SP+1: AfterLoadCharacterColorsP4 lo] [SP+0: LoadCharacterColors hi (raw)]
           lda # <(LoadCharacterColors-1)
           pha
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterLoadCharacterColorsP4 hi (encoded)] [SP+2: AfterLoadCharacterColorsP4 lo] [SP+1: LoadCharacterColors hi (raw)] [SP+0: LoadCharacterColors lo]
+          ldx # 13
           jmp BS_jsr
 AfterLoadCharacterColorsP4:
 
@@ -427,16 +469,22 @@ Player4ReflectionDone:
           ;; Animation action (0 = idle)
           lda # 0
           sta temp3
-          ;; Cross-bank call to LoadCharacterSprite in bank 16
-          lda # >(AfterLoadCharacterSpriteP4-1)
+          ;; Cross-bank call to LoadCharacterSprite in bank 15
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterLoadCharacterSpriteP4-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadCharacterSpriteP4 hi (encoded)]
           lda # <(AfterLoadCharacterSpriteP4-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadCharacterSpriteP4 hi (encoded)] [SP+0: AfterLoadCharacterSpriteP4 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadCharacterSprite-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadCharacterSpriteP4 hi (encoded)] [SP+1: AfterLoadCharacterSpriteP4 lo] [SP+0: LoadCharacterSprite hi (raw)]
           lda # <(LoadCharacterSprite-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterLoadCharacterSpriteP4 hi (encoded)] [SP+2: AfterLoadCharacterSpriteP4 lo] [SP+1: LoadCharacterSprite hi (raw)] [SP+0: LoadCharacterSprite lo]
+          ldx # 15
           jmp BS_jsr
 AfterLoadCharacterSpriteP4:
 

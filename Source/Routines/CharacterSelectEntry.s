@@ -62,15 +62,21 @@ CharacterSelectEntry .proc
           ;; Set temp2 = PlayerLockedNormal
           lda # PlayerLockedNormal
           sta temp2
-          ;; Cross-bank call to SetPlayerLocked bank6
-          lda # >(AfterSetPlayerLockedP3-1)
+          ;; Cross-bank call to SetPlayerLocked in bank 5
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterSetPlayerLockedP3-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerLockedP3 hi (encoded)]
           lda # <(AfterSetPlayerLockedP3-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerLockedP3 hi (encoded)] [SP+0: AfterSetPlayerLockedP3 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerLockedP3 hi (encoded)] [SP+1: AfterSetPlayerLockedP3 lo] [SP+0: SetPlayerLocked hi (raw)]
           lda # <(SetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerLockedP3 hi (encoded)] [SP+2: AfterSetPlayerLockedP3 lo] [SP+1: SetPlayerLocked hi (raw)] [SP+0: SetPlayerLocked lo]
           ldx # 5
           jmp BS_jsr
 AfterSetPlayerLockedP3:
@@ -82,15 +88,21 @@ AfterSetPlayerLockedP3:
           ;; Set temp2 = PlayerLockedNormal
           lda # PlayerLockedNormal
           sta temp2
-          ;; Cross-bank call to SetPlayerLocked bank6
-          lda # >(AfterSetPlayerLockedP4-1)
+          ;; Cross-bank call to SetPlayerLocked in bank 5
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterSetPlayerLockedP4-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerLockedP4 hi (encoded)]
           lda # <(AfterSetPlayerLockedP4-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerLockedP4 hi (encoded)] [SP+0: AfterSetPlayerLockedP4 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerLockedP4 hi (encoded)] [SP+1: AfterSetPlayerLockedP4 lo] [SP+0: SetPlayerLocked hi (raw)]
           lda # <(SetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerLockedP4 hi (encoded)] [SP+2: AfterSetPlayerLockedP4 lo] [SP+1: SetPlayerLocked hi (raw)] [SP+0: SetPlayerLocked lo]
           ldx # 5
           jmp BS_jsr
 AfterSetPlayerLockedP4:
@@ -102,15 +114,21 @@ AfterSetPlayerLockedP4:
           ;; Set temp2 = PlayerLockedNormal
           lda # PlayerLockedNormal
           sta temp2
-          ;; Cross-bank call to SetPlayerLocked bank6
-          lda # >(AfterSetPlayerLockedP3Second-1)
+          ;; Cross-bank call to SetPlayerLocked in bank 5
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterSetPlayerLockedP3Second-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerLockedP3Second hi (encoded)]
           lda # <(AfterSetPlayerLockedP3Second-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerLockedP3Second hi (encoded)] [SP+0: AfterSetPlayerLockedP3Second lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerLockedP3Second hi (encoded)] [SP+1: AfterSetPlayerLockedP3Second lo] [SP+0: SetPlayerLocked hi (raw)]
           lda # <(SetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerLockedP3Second hi (encoded)] [SP+2: AfterSetPlayerLockedP3Second lo] [SP+1: SetPlayerLocked hi (raw)] [SP+0: SetPlayerLocked lo]
           ldx # 5
           jmp BS_jsr
 AfterSetPlayerLockedP3Second:

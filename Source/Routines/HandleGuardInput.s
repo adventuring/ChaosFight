@@ -80,15 +80,21 @@ HandleRoboTitoDownGuardInput .proc
           ;; Tail call optimization: jmp instead of cross-bank call to to save 2 bytes on sta
 
           ;; Note: RoboTitoDown may return early, so we need to handle that case
-          ;; Cross-bank call to RoboTitoDown in bank 13
-          lda # >(AfterRoboTitoDownGuard-1)
+          ;; Cross-bank call to RoboTitoDown in bank 12
+          ;; Return address: ENCODED with caller bank 11 ($b0) for BS_return to decode
+          lda # ((>(AfterRoboTitoDownGuard-1)) & $0f) | $b0  ;;; Encode bank 11 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterRoboTitoDownGuard hi (encoded)]
           lda # <(AfterRoboTitoDownGuard-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterRoboTitoDownGuard hi (encoded)] [SP+0: AfterRoboTitoDownGuard lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(RoboTitoDown-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterRoboTitoDownGuard hi (encoded)] [SP+1: AfterRoboTitoDownGuard lo] [SP+0: RoboTitoDown hi (raw)]
           lda # <(RoboTitoDown-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterRoboTitoDownGuard hi (encoded)] [SP+2: AfterRoboTitoDownGuard lo] [SP+1: RoboTitoDown hi (raw)] [SP+0: RoboTitoDown lo]
           ldx # 12
           jmp BS_jsr
 

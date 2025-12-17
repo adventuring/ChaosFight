@@ -45,15 +45,21 @@ StandardGuard .proc
 
           ;; Check if guard is allowed (not in cooldown)
 
-          ;; Cross-bank call to CheckGuardCooldown in bank 6
-          lda # >(AfterCheckGuardCooldown-1)
+          ;; Cross-bank call to CheckGuardCooldown in bank 5
+          ;; Return address: ENCODED with caller bank 11 ($b0) for BS_return to decode
+          lda # ((>(AfterCheckGuardCooldown-1)) & $0f) | $b0  ;;; Encode bank 11 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckGuardCooldown hi (encoded)]
           lda # <(AfterCheckGuardCooldown-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckGuardCooldown hi (encoded)] [SP+0: AfterCheckGuardCooldown lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckGuardCooldown-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckGuardCooldown hi (encoded)] [SP+1: AfterCheckGuardCooldown lo] [SP+0: CheckGuardCooldown hi (raw)]
           lda # <(CheckGuardCooldown-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterCheckGuardCooldown hi (encoded)] [SP+2: AfterCheckGuardCooldown lo] [SP+1: CheckGuardCooldown hi (raw)] [SP+0: CheckGuardCooldown lo]
           ldx # 5
           jmp BS_jsr
 
@@ -61,7 +67,6 @@ AfterCheckGuardCooldown:
 
           ;; Guard blocked by cooldown
           lda temp2
-          cmp # 0
           bne ActivateGuard
 
           jmp BS_return

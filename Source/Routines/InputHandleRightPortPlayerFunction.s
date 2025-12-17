@@ -72,15 +72,21 @@ IHRP_CheckDragonOfStorms:
 IHRP_ProcessStandardMovement:
 
           ;; Standard horizontal movement (uses shared routine)
-          ;; Cross-bank call to ProcessStandardMovement in bank 13
-          lda # >(IHRPF_ProcessStandardMovementReturn-1)
+          ;; Cross-bank call to ProcessStandardMovement in bank 12
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(IHRPF_ProcessStandardMovementReturn-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: IHRPF_ProcessStandardMovementReturn hi (encoded)]
           lda # <(IHRPF_ProcessStandardMovementReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: IHRPF_ProcessStandardMovementReturn hi (encoded)] [SP+0: IHRPF_ProcessStandardMovementReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ProcessStandardMovement-1)
           pha
+          ;; STACK PICTURE: [SP+2: IHRPF_ProcessStandardMovementReturn hi (encoded)] [SP+1: IHRPF_ProcessStandardMovementReturn lo] [SP+0: ProcessStandardMovement hi (raw)]
           lda # <(ProcessStandardMovement-1)
           pha
+          ;; STACK PICTURE: [SP+3: IHRPF_ProcessStandardMovementReturn hi (encoded)] [SP+2: IHRPF_ProcessStandardMovementReturn lo] [SP+1: ProcessStandardMovement hi (raw)] [SP+0: ProcessStandardMovement lo]
           ldx # 12
           jmp BS_jsr
 IHRPF_ProcessStandardMovementReturn:
@@ -165,17 +171,24 @@ IHRP_UseStandardGuard:
 .pend
 
 IHRP_HandleRoboTitoDown .proc
-          ;; Cross-bank call to RoboTitoDown in bank 13
-          lda # >(return_point-1)
+          ;; Cross-bank call to RoboTitoDown in bank 12
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterRoboTitoDownRightPort-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterRoboTitoDownRightPort hi (encoded)]
+          lda # <(AfterRoboTitoDownRightPort-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterRoboTitoDownRightPort hi (encoded)] [SP+0: AfterRoboTitoDownRightPort lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(RoboTitoDown-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterRoboTitoDownRightPort hi (encoded)] [SP+1: AfterRoboTitoDownRightPort lo] [SP+0: RoboTitoDown hi (raw)]
           lda # <(RoboTitoDown-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterRoboTitoDownRightPort hi (encoded)] [SP+2: AfterRoboTitoDownRightPort lo] [SP+1: RoboTitoDown hi (raw)] [SP+0: RoboTitoDown lo]
+          ldx # 12
           jmp BS_jsr
+AfterRoboTitoDownRightPort:
 
           lda temp2
           cmp # 1
@@ -213,16 +226,22 @@ StopGuardEarly:
 
 IHRP_ProcessAttack .proc
           ;; Process attack input
-          ;; Cross-bank call to ProcessAttackInput in bank 10
-          lda # >(InputDoneRightPortAttack-1)
+          ;; Cross-bank call to ProcessAttackInput in bank 9
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(InputDoneRightPortAttack-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: InputDoneRightPortAttack hi (encoded)]
           lda # <(InputDoneRightPortAttack-1)
           pha
+          ;; STACK PICTURE: [SP+1: InputDoneRightPortAttack hi (encoded)] [SP+0: InputDoneRightPortAttack lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ProcessAttackInput-1)
           pha
+          ;; STACK PICTURE: [SP+2: InputDoneRightPortAttack hi (encoded)] [SP+1: InputDoneRightPortAttack lo] [SP+0: ProcessAttackInput hi (raw)]
           lda # <(ProcessAttackInput-1)
           pha
-                    ldx # 9
+          ;; STACK PICTURE: [SP+3: InputDoneRightPortAttack hi (encoded)] [SP+2: InputDoneRightPortAttack lo] [SP+1: ProcessAttackInput hi (raw)] [SP+0: ProcessAttackInput lo]
+          ldx # 9
           jmp BS_jsr
 
 InputDoneRightPortAttack:

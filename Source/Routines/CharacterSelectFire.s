@@ -54,7 +54,6 @@ HandleCharacterSelectFire .proc
           ;; Determine which joy port to use
 
           lda temp1
-          cmp # 0
           bne CheckPlayer2Joy
           jmp HCSF_CheckJoy0
 CheckPlayer2Joy:
@@ -195,16 +194,22 @@ SetNormalLockHandleFire:
           lda PlayerLockedNormal
           sta temp2
 
-          ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(AfterSetPlayerLockedNormal-1)
+          ;; Cross-bank call to SetPlayerLocked in bank 5
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterSetPlayerLockedNormal-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerLockedNormal hi (encoded)]
           lda # <(AfterSetPlayerLockedNormal-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerLockedNormal hi (encoded)] [SP+0: AfterSetPlayerLockedNormal lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerLockedNormal hi (encoded)] [SP+1: AfterSetPlayerLockedNormal lo] [SP+0: SetPlayerLocked hi (raw)]
           lda # <(SetPlayerLocked-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerLockedNormal hi (encoded)] [SP+2: AfterSetPlayerLockedNormal lo] [SP+1: SetPlayerLocked hi (raw)] [SP+0: SetPlayerLocked lo]
+          ldx # 5
           jmp BS_jsr
 AfterSetPlayerLockedNormal:
 
@@ -214,16 +219,22 @@ AfterSetPlayerLockedNormal:
           lda SoundMenuSelect
           sta temp1
 
-          ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(AfterPlaySoundEffectNormal-1)
+          ;; Cross-bank call to PlaySoundEffect in bank 14
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterPlaySoundEffectNormal-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlaySoundEffectNormal hi (encoded)]
           lda # <(AfterPlaySoundEffectNormal-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlaySoundEffectNormal hi (encoded)] [SP+0: AfterPlaySoundEffectNormal lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlaySoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlaySoundEffectNormal hi (encoded)] [SP+1: AfterPlaySoundEffectNormal lo] [SP+0: PlaySoundEffect hi (raw)]
           lda # <(PlaySoundEffect-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterPlaySoundEffectNormal hi (encoded)] [SP+2: AfterPlaySoundEffectNormal lo] [SP+1: PlaySoundEffect hi (raw)] [SP+0: PlaySoundEffect lo]
+          ldx # 14
           jmp BS_jsr
 AfterPlaySoundEffectNormal:
 
@@ -262,16 +273,22 @@ HCSF_HandleHandicap .proc
           lda PlayerHandicapped
           sta temp2
 
-          ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(AfterSetPlayerLockedHandicap-1)
+          ;; Cross-bank call to SetPlayerLocked in bank 5
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterSetPlayerLockedHandicap-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerLockedHandicap hi (encoded)]
           lda # <(AfterSetPlayerLockedHandicap-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerLockedHandicap hi (encoded)] [SP+0: AfterSetPlayerLockedHandicap lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerLockedHandicap hi (encoded)] [SP+1: AfterSetPlayerLockedHandicap lo] [SP+0: SetPlayerLocked hi (raw)]
           lda # <(SetPlayerLocked-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerLockedHandicap hi (encoded)] [SP+2: AfterSetPlayerLockedHandicap lo] [SP+1: SetPlayerLocked hi (raw)] [SP+0: SetPlayerLocked lo]
+          ldx # 5
           jmp BS_jsr
 AfterSetPlayerLockedHandicap:
 
@@ -281,16 +298,22 @@ AfterSetPlayerLockedHandicap:
           lda SoundMenuSelect
           sta temp1
 
-          ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(AfterPlaySoundEffectHandicap-1)
+          ;; Cross-bank call to PlaySoundEffect in bank 14
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterPlaySoundEffectHandicap-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlaySoundEffectHandicap hi (encoded)]
           lda # <(AfterPlaySoundEffectHandicap-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlaySoundEffectHandicap hi (encoded)] [SP+0: AfterPlaySoundEffectHandicap lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlaySoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlaySoundEffectHandicap hi (encoded)] [SP+1: AfterPlaySoundEffectHandicap lo] [SP+0: PlaySoundEffect hi (raw)]
           lda # <(PlaySoundEffect-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterPlaySoundEffectHandicap hi (encoded)] [SP+2: AfterPlaySoundEffectHandicap lo] [SP+1: PlaySoundEffect hi (raw)] [SP+0: PlaySoundEffect lo]
+          ldx # 14
           jmp BS_jsr
 AfterPlaySoundEffectHandicap:
 
@@ -364,16 +387,22 @@ HCSF_HandleRandomSound .proc
 
           ;; Fall through - character will stay as RandomCharacter
 
-          ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(AfterPlaySoundEffectRandom-1)
+          ;; Cross-bank call to PlaySoundEffect in bank 14
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(AfterPlaySoundEffectRandom-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlaySoundEffectRandom hi (encoded)]
           lda # <(AfterPlaySoundEffectRandom-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlaySoundEffectRandom hi (encoded)] [SP+0: AfterPlaySoundEffectRandom lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlaySoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlaySoundEffectRandom hi (encoded)] [SP+1: AfterPlaySoundEffectRandom lo] [SP+0: PlaySoundEffect hi (raw)]
           lda # <(PlaySoundEffect-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterPlaySoundEffectRandom hi (encoded)] [SP+2: AfterPlaySoundEffectRandom lo] [SP+1: PlaySoundEffect hi (raw)] [SP+0: PlaySoundEffect lo]
+          ldx # 14
           jmp BS_jsr
 AfterPlaySoundEffectRandom:
 

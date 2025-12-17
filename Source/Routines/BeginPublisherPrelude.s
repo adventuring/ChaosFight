@@ -52,18 +52,21 @@ BeginPublisherPrelude .proc
           sta temp1
           ;; Cross-bank call to StartMusic in bank 15
           ;; STACK PICTURE: [] (empty, BeginPublisherPrelude called cross-bank)
-          lda # >(AfterStartMusicPublisher-1)
+          ;; Cross-bank call to StartMusic in bank 14
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterStartMusicPublisher-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
-          ;; STACK PICTURE: [SP+0: AfterStartMusicPublisher hi]
+          ;; STACK PICTURE: [SP+0: AfterStartMusicPublisher hi (encoded)]
           lda # <(AfterStartMusicPublisher-1)
           pha
-          ;; STACK PICTURE: [SP+1: AfterStartMusicPublisher hi] [SP+0: AfterStartMusicPublisher lo]
+          ;; STACK PICTURE: [SP+1: AfterStartMusicPublisher hi (encoded)] [SP+0: AfterStartMusicPublisher lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(StartMusic-1)
           pha
-          ;; STACK PICTURE: [SP+2: AfterStartMusicPublisher hi] [SP+1: AfterStartMusicPublisher lo] [SP+0: StartMusic hi]
+          ;; STACK PICTURE: [SP+2: AfterStartMusicPublisher hi (encoded)] [SP+1: AfterStartMusicPublisher lo] [SP+0: StartMusic hi (raw)]
           lda # <(StartMusic-1)
           pha
-          ;; STACK PICTURE: [SP+3: AfterStartMusicPublisher hi] [SP+2: AfterStartMusicPublisher lo] [SP+1: StartMusic hi] [SP+0: StartMusic lo]
+          ;; STACK PICTURE: [SP+3: AfterStartMusicPublisher hi (encoded)] [SP+2: AfterStartMusicPublisher lo] [SP+1: StartMusic hi (raw)] [SP+0: StartMusic lo]
           ldx # 14
           jmp BS_jsr
 

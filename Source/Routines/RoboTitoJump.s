@@ -116,16 +116,22 @@ CheckPlayfieldPixel:
           sta temp1
           lda temp5
           sta temp2
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadStretch-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadStretch-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadStretch hi (encoded)]
           lda # <(AfterPlayfieldReadStretch-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadStretch hi (encoded)] [SP+0: AfterPlayfieldReadStretch lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadStretch hi (encoded)] [SP+1: AfterPlayfieldReadStretch lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadStretch hi (encoded)] [SP+2: AfterPlayfieldReadStretch lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadStretch:
 
@@ -266,16 +272,22 @@ CheckCeilingPixel:
           sta temp1
           lda temp4
           sta temp2
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadCeiling-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadCeiling-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadCeiling hi (encoded)]
           lda # <(AfterPlayfieldReadCeiling-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadCeiling hi (encoded)] [SP+0: AfterPlayfieldReadCeiling lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadCeiling hi (encoded)] [SP+1: AfterPlayfieldReadCeiling lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadCeiling hi (encoded)] [SP+2: AfterPlayfieldReadCeiling lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadCeiling:
 

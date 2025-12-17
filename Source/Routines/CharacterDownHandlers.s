@@ -131,16 +131,22 @@ CheckRowBelow:
           lda temp4
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(PlayfieldReadReturn-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(PlayfieldReadReturn-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: PlayfieldReadReturn hi (encoded)]
           lda # <(PlayfieldReadReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: PlayfieldReadReturn hi (encoded)] [SP+0: PlayfieldReadReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: PlayfieldReadReturn hi (encoded)] [SP+1: PlayfieldReadReturn lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: PlayfieldReadReturn hi (encoded)] [SP+2: PlayfieldReadReturn lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 PlayfieldReadReturn:
 
@@ -444,16 +450,22 @@ CheckRowBelowHarpy:
           lda temp4
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadHarpy-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadHarpy-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadHarpy hi (encoded)]
           lda # <(AfterPlayfieldReadHarpy-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadHarpy hi (encoded)] [SP+0: AfterPlayfieldReadHarpy lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadHarpy hi (encoded)] [SP+1: AfterPlayfieldReadHarpy lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadHarpy hi (encoded)] [SP+2: AfterPlayfieldReadHarpy lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadHarpy:
 
@@ -638,16 +650,22 @@ CheckRowBelowFrooty:
           lda temp4
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadRadishGoblin-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadRadishGoblin-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadRadishGoblin hi (encoded)]
           lda # <(AfterPlayfieldReadRadishGoblin-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadRadishGoblin hi (encoded)] [SP+0: AfterPlayfieldReadRadishGoblin lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadRadishGoblin hi (encoded)] [SP+1: AfterPlayfieldReadRadishGoblin lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadRadishGoblin hi (encoded)] [SP+2: AfterPlayfieldReadRadishGoblin lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadRadishGoblin:
 
@@ -723,7 +741,6 @@ RoboTitoDown .proc
 
           lda characterStateFlags_R[temp1]
           and # 1
-          cmp # 0
           bne RoboTitoInitiateDrop
 RoboTitoInitiateDrop:
 

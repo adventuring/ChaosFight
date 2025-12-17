@@ -112,7 +112,6 @@ CheckAllMissileCollisions:
           sta temp6
 
           lda temp6
-          cmp # 0
           bne CheckVisibleMissileCollision
           jmp CheckAOECollision
 
@@ -827,16 +826,22 @@ CheckPlayersAgainstCachedHitboxDone .proc
           lda temp3
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(MissileCollisionPlayfieldReadReturn-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(MissileCollisionPlayfieldReadReturn-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: MissileCollisionPlayfieldReadReturn hi (encoded)]
           lda # <(MissileCollisionPlayfieldReadReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: MissileCollisionPlayfieldReadReturn hi (encoded)] [SP+0: MissileCollisionPlayfieldReadReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: MissileCollisionPlayfieldReadReturn hi (encoded)] [SP+1: MissileCollisionPlayfieldReadReturn lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: MissileCollisionPlayfieldReadReturn hi (encoded)] [SP+2: MissileCollisionPlayfieldReadReturn lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 MissileCollisionPlayfieldReadReturn:
 

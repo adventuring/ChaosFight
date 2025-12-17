@@ -105,15 +105,21 @@ PAI_ExecuteAttack .proc
           lda playerCharacter,x
           sta temp4
 
-          ;; Cross-bank call to DispatchCharacterAttack in bank 10
-          lda # >(AfterDispatchCharacterAttack-1)
+          ;; Cross-bank call to DispatchCharacterAttack in bank 9
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(AfterDispatchCharacterAttack-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterDispatchCharacterAttack hi (encoded)]
           lda # <(AfterDispatchCharacterAttack-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterDispatchCharacterAttack hi (encoded)] [SP+0: AfterDispatchCharacterAttack lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(DispatchCharacterAttack-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterDispatchCharacterAttack hi (encoded)] [SP+1: AfterDispatchCharacterAttack lo] [SP+0: DispatchCharacterAttack hi (raw)]
           lda # <(DispatchCharacterAttack-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterDispatchCharacterAttack hi (encoded)] [SP+2: AfterDispatchCharacterAttack lo] [SP+1: DispatchCharacterAttack hi (raw)] [SP+0: DispatchCharacterAttack lo]
           ldx # 9
           jmp BS_jsr
 AfterDispatchCharacterAttack:

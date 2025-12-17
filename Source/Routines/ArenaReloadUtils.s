@@ -49,15 +49,21 @@ ReloadArenaColorsDispatch .proc
           ;; Returns: Far (return otherbank)
           ;; Call LoadArenaDispatch to handle color/B&W selection
           ;; (inline logic avoids cross-bank jmp issues)
-          ;; Cross-bank call to DWS_GetBWMode in bank 15
-          lda # >(AfterGetBWModeWinScreen-1)
+          ;; Cross-bank call to DWS_GetBWMode in bank 14
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterGetBWModeWinScreen-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGetBWModeWinScreen hi (encoded)]
           lda # <(AfterGetBWModeWinScreen-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetBWModeWinScreen hi (encoded)] [SP+0: AfterGetBWModeWinScreen lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetBWModeWinScreen-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetBWModeWinScreen hi (encoded)] [SP+1: AfterGetBWModeWinScreen lo] [SP+0: GetBWModeWinScreen hi (raw)]
           lda # <(GetBWModeWinScreen-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterGetBWModeWinScreen hi (encoded)] [SP+2: AfterGetBWModeWinScreen lo] [SP+1: GetBWModeWinScreen hi (raw)] [SP+0: GetBWModeWinScreen lo]
           ldx # 14
           jmp BS_jsr
 
@@ -66,14 +72,20 @@ AfterGetBWModeWinScreen:
           lda temp2
           sta temp6
           ;; Cross-bank call to LoadArenaByIndex in bank 16
-          lda # >(AfterLoadArenaByIndexReload-1)
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterLoadArenaByIndexReload-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadArenaByIndexReload hi (encoded)]
           lda # <(AfterLoadArenaByIndexReload-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadArenaByIndexReload hi (encoded)] [SP+0: AfterLoadArenaByIndexReload lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadArenaByIndex-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadArenaByIndexReload hi (encoded)] [SP+1: AfterLoadArenaByIndexReload lo] [SP+0: LoadArenaByIndex hi (raw)]
           lda # <(LoadArenaByIndex-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterLoadArenaByIndexReload hi (encoded)] [SP+2: AfterLoadArenaByIndexReload lo] [SP+1: LoadArenaByIndex hi (raw)] [SP+0: LoadArenaByIndex lo]
           ldx # 15
           jmp BS_jsr
 
@@ -85,16 +97,22 @@ AfterLoadArenaByIndexReload:
           beq LoadColorColors
           jmp LoadBWColorsArenaReload
 LoadColorColors:
-          ;; Cross-bank call to LoadArenaColorsColor in bank 16
-          lda # >(AfterLoadArenaColorsColor-1)
+          ;; Cross-bank call to LoadArenaColorsColor in bank 15
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterLoadArenaColorsColor-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadArenaColorsColor hi (encoded)]
           lda # <(AfterLoadArenaColorsColor-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadArenaColorsColor hi (encoded)] [SP+0: AfterLoadArenaColorsColor lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadArenaColorsColor-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadArenaColorsColor hi (encoded)] [SP+1: AfterLoadArenaColorsColor lo] [SP+0: LoadArenaColorsColor hi (raw)]
           lda # <(LoadArenaColorsColor-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterLoadArenaColorsColor hi (encoded)] [SP+2: AfterLoadArenaColorsColor lo] [SP+1: LoadArenaColorsColor hi (raw)] [SP+0: LoadArenaColorsColor lo]
+          ldx # 15
           jmp BS_jsr
 AfterLoadArenaColorsColor:
 

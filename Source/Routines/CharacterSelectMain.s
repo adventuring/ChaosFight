@@ -147,7 +147,6 @@ CheckJoy0CharacterSelect .proc
           ;; Players 0,2 use joy0
 
           lda temp2
-          cmp # 0
           bne HandleCharacterSelectCycle
           jmp CheckJoy0LeftCharacterSelect
 HandleCharacterSelectCycle:
@@ -267,7 +266,6 @@ HandleCharacterSelectCycle .proc
           sta temp3
 
           lda temp2
-          cmp # 0
           bne CycleRightCharacterSelect
           jmp CycleLeftCharacterSelect
 CycleRightCharacterSelect:
@@ -304,7 +302,6 @@ CheckZeroLeft:
 
 
           lda temp1
-          cmp # 0
           bne DecrementCharacter
           jmp LeftFromZeroCharacterSelect
 DecrementCharacter:
@@ -319,7 +316,6 @@ DecrementCharacter:
 LeftFromRandomCharacterSelect .proc
 
           lda temp3
-          cmp # 0
           bne SetNoCharacterLeft
           ;; Set temp1 = MaxCharacter jmp CycleDoneCharacterSelect
 SetNoCharacterLeft:
@@ -411,7 +407,6 @@ RightFromNoOrCPUCharacterSelect .proc
 RightFromMaxCharacterSelect .proc
 
           lda temp3
-          cmp # 0
           bne SetNoCharacterRight
           ;; Set temp1 = RandomCharacter jmp CycleDoneCharacterSelect
 SetNoCharacterRight:
@@ -492,16 +487,22 @@ CycleDoneCharacterSelect
           lda temp3
           sta temp1
 
-          ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          ;; Cross-bank call to SetPlayerLocked in bank 5
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterSetPlayerLocked-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerLocked hi (encoded)]
+          lda # <(AfterSetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerLocked hi (encoded)] [SP+0: AfterSetPlayerLocked lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerLocked hi (encoded)] [SP+1: AfterSetPlayerLocked lo] [SP+0: SetPlayerLocked hi (raw)]
           lda # <(SetPlayerLocked-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerLocked hi (encoded)] [SP+2: AfterSetPlayerLocked lo] [SP+1: SetPlayerLocked hi (raw)] [SP+0: SetPlayerLocked lo]
+          ldx # 5
           jmp BS_jsr
 AfterSetPlayerLocked:
 
@@ -511,16 +512,22 @@ AfterSetPlayerLocked:
           lda # SoundMenuNavigate
           sta temp1
 
-          ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(AfterPlaySoundEffectNav-1)
+          ;; Cross-bank call to PlaySoundEffect in bank 14
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterPlaySoundEffectNav-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlaySoundEffectNav hi (encoded)]
           lda # <(AfterPlaySoundEffectNav-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlaySoundEffectNav hi (encoded)] [SP+0: AfterPlaySoundEffectNav lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlaySoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlaySoundEffectNav hi (encoded)] [SP+1: AfterPlaySoundEffectNav lo] [SP+0: PlaySoundEffect hi (raw)]
           lda # <(PlaySoundEffect-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterPlaySoundEffectNav hi (encoded)] [SP+2: AfterPlaySoundEffectNav lo] [SP+1: PlaySoundEffect hi (raw)] [SP+0: PlaySoundEffect lo]
+          ldx # 14
           jmp BS_jsr
 AfterPlaySoundEffectNav:
 
@@ -534,16 +541,22 @@ CharacterSelectInputEntry .proc
 
 
 
-          ;; Cross-bank call to CharacterSelectCheckControllerRescan in bank 6
-          lda # >(AfterControllerRescan-1)
+          ;; Cross-bank call to CharacterSelectCheckControllerRescan in bank 5
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterControllerRescan-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterControllerRescan hi (encoded)]
           lda # <(AfterControllerRescan-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterControllerRescan hi (encoded)] [SP+0: AfterControllerRescan lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CharacterSelectCheckControllerRescan-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterControllerRescan hi (encoded)] [SP+1: AfterControllerRescan lo] [SP+0: CharacterSelectCheckControllerRescan hi (raw)]
           lda # <(CharacterSelectCheckControllerRescan-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterControllerRescan hi (encoded)] [SP+2: AfterControllerRescan lo] [SP+1: CharacterSelectCheckControllerRescan hi (raw)] [SP+0: CharacterSelectCheckControllerRescan lo]
+          ldx # 5
           jmp BS_jsr
 AfterControllerRescan:
 
@@ -609,7 +622,6 @@ CharacterSelectHandleTwoPlayers
           sta temp4
 
           lda temp3
-          cmp # 0
           bne CheckQuadtariActive
           lda # 255
           sta temp4
@@ -666,30 +678,42 @@ ProcessPlayerInput .proc
 
           ;; NOTE: DASM raises ’Label mismatch’ if multiple banks re-include HandleCharacterSelectFire
 
-          ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(AfterSetPlayerLockedJoy0Input-1)
+          ;; Cross-bank call to SetPlayerLocked in bank 5
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterSetPlayerLockedJoy0Input-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerLockedJoy0Input hi (encoded)]
           lda # <(AfterSetPlayerLockedJoy0Input-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerLockedJoy0Input hi (encoded)] [SP+0: AfterSetPlayerLockedJoy0Input lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerLockedJoy0Input hi (encoded)] [SP+1: AfterSetPlayerLockedJoy0Input lo] [SP+0: SetPlayerLocked hi (raw)]
           lda # <(SetPlayerLocked-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerLockedJoy0Input hi (encoded)] [SP+2: AfterSetPlayerLockedJoy0Input lo] [SP+1: SetPlayerLocked hi (raw)] [SP+0: SetPlayerLocked lo]
+          ldx # 5
           jmp BS_jsr
 AfterSetPlayerLockedJoy0Input:
 
 
-          ;; Cross-bank call to HandleCharacterSelectFire in bank 7
-          lda # >(AfterHandleCharacterSelectFireJoy0Input-1)
+          ;; Cross-bank call to HandleCharacterSelectFire in bank 6
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterHandleCharacterSelectFireJoy0Input-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterHandleCharacterSelectFireJoy0Input hi (encoded)]
           lda # <(AfterHandleCharacterSelectFireJoy0Input-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterHandleCharacterSelectFireJoy0Input hi (encoded)] [SP+0: AfterHandleCharacterSelectFireJoy0Input lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(HandleCharacterSelectFire-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterHandleCharacterSelectFireJoy0Input hi (encoded)] [SP+1: AfterHandleCharacterSelectFireJoy0Input lo] [SP+0: HandleCharacterSelectFire hi (raw)]
           lda # <(HandleCharacterSelectFire-1)
           pha
-                    ldx # 6
+          ;; STACK PICTURE: [SP+3: AfterHandleCharacterSelectFireJoy0Input hi (encoded)] [SP+2: AfterHandleCharacterSelectFireJoy0Input lo] [SP+1: HandleCharacterSelectFire hi (raw)] [SP+0: HandleCharacterSelectFire lo]
+          ldx # 6
           jmp BS_jsr
 AfterHandleCharacterSelectFireJoy0Input:
 
@@ -704,30 +728,42 @@ AfterHandleCharacterSelectFireJoy0Input:
 
           jsr HandleCharacterSelectCycle
 
-          ;; Cross-bank call to SetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          ;; Cross-bank call to SetPlayerLocked in bank 5
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterSetPlayerLockedJoy1Done-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerLockedJoy1Done hi (encoded)]
+          lda # <(AfterSetPlayerLockedJoy1Done-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerLockedJoy1Done hi (encoded)] [SP+0: AfterSetPlayerLockedJoy1Done lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerLockedJoy1Done hi (encoded)] [SP+1: AfterSetPlayerLockedJoy1Done lo] [SP+0: SetPlayerLocked hi (raw)]
           lda # <(SetPlayerLocked-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerLockedJoy1Done hi (encoded)] [SP+2: AfterSetPlayerLockedJoy1Done lo] [SP+1: SetPlayerLocked hi (raw)] [SP+0: SetPlayerLocked lo]
+          ldx # 5
           jmp BS_jsr
 AfterSetPlayerLockedJoy1Done:
 
 
-          ;; Cross-bank call to HandleCharacterSelectFire in bank 7
-          lda # >(AfterHandleCharacterSelectFireJoy1Done-1)
+          ;; Cross-bank call to HandleCharacterSelectFire in bank 6
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterHandleCharacterSelectFireJoy1Done-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterHandleCharacterSelectFireJoy1Done hi (encoded)]
           lda # <(AfterHandleCharacterSelectFireJoy1Done-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterHandleCharacterSelectFireJoy1Done hi (encoded)] [SP+0: AfterHandleCharacterSelectFireJoy1Done lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(HandleCharacterSelectFire-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterHandleCharacterSelectFireJoy1Done hi (encoded)] [SP+1: AfterHandleCharacterSelectFireJoy1Done lo] [SP+0: HandleCharacterSelectFire hi (raw)]
           lda # <(HandleCharacterSelectFire-1)
           pha
-                    ldx # 6
+          ;; STACK PICTURE: [SP+3: AfterHandleCharacterSelectFireJoy1Done hi (encoded)] [SP+2: AfterHandleCharacterSelectFireJoy1Done lo] [SP+1: HandleCharacterSelectFire hi (raw)] [SP+0: HandleCharacterSelectFire lo]
+          ldx # 6
           jmp BS_jsr
 AfterHandleCharacterSelectFireJoy1Done:
 
@@ -749,16 +785,22 @@ CharacterSelectInputComplete
 
           ;; Update character select animations
 
-          ;; Cross-bank call to SelectUpdateAnimations in bank 6
-          lda # >(return_point-1)
+          ;; Cross-bank call to SelectUpdateAnimations in bank 5
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterGetPlayerLockedRender-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerLockedRender hi (encoded)]
+          lda # <(AfterGetPlayerLockedRender-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerLockedRender hi (encoded)] [SP+0: AfterGetPlayerLockedRender lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SelectUpdateAnimations-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerLockedRender hi (encoded)] [SP+1: AfterGetPlayerLockedRender lo] [SP+0: SelectUpdateAnimations hi (raw)]
           lda # <(SelectUpdateAnimations-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerLockedRender hi (encoded)] [SP+2: AfterGetPlayerLockedRender lo] [SP+1: SelectUpdateAnimations hi (raw)] [SP+0: SelectUpdateAnimations lo]
+          ldx # 5
           jmp BS_jsr
 AfterGetPlayerLockedRender:
 
@@ -767,16 +809,22 @@ AfterGetPlayerLockedRender:
 
           ;; Draw character selection screen
 
-          ;; Cross-bank call to SelectDrawScreen in bank 6
-          lda # >(AfterSelectDrawScreen-1)
+          ;; Cross-bank call to SelectDrawScreen in bank 5
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterSelectDrawScreen-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSelectDrawScreen hi (encoded)]
           lda # <(AfterSelectDrawScreen-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSelectDrawScreen hi (encoded)] [SP+0: AfterSelectDrawScreen lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SelectDrawScreen-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSelectDrawScreen hi (encoded)] [SP+1: AfterSelectDrawScreen lo] [SP+0: SelectDrawScreen hi (raw)]
           lda # <(SelectDrawScreen-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterSelectDrawScreen hi (encoded)] [SP+2: AfterSelectDrawScreen lo] [SP+1: SelectDrawScreen hi (raw)] [SP+0: SelectDrawScreen lo]
+          ldx # 5
           jmp BS_jsr
 AfterSelectDrawScreen:
 
@@ -894,34 +942,46 @@ CharacterSelectCheckReady .proc
 
           ;; P1 is locked, check P2
 
-          ;; Set temp1 = 0 cross-bank call to GetPlayerLocked bank6
+          ;; Set temp1 = 0 cross-bank call to GetPlayerLocked bank 5
           lda # 0
           sta temp1
-          lda # >(return_point-1)
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterGetPlayerLockedP0-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerLockedP0 hi (encoded)]
+          lda # <(AfterGetPlayerLockedP0-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerLockedP0 hi (encoded)] [SP+0: AfterGetPlayerLockedP0 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerLockedP0 hi (encoded)] [SP+1: AfterGetPlayerLockedP0 lo] [SP+0: GetPlayerLocked hi (raw)]
           lda # <(GetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerLockedP0 hi (encoded)] [SP+2: AfterGetPlayerLockedP0 lo] [SP+1: GetPlayerLocked hi (raw)] [SP+0: GetPlayerLocked lo]
           ldx # 5
           jmp BS_jsr
 AfterGetPlayerLockedP0: : if !temp2 then jmp CharacterSelectReadyDone
 
           ;; P2 not locked, check if on CPU
 
-          ;; ;;           ;; Set temp1 = 1 cross-bank call to GetPlayerLocked bank6
+          ;; ;;           ;; Set temp1 = 1 cross-bank call to GetPlayerLocked bank 5
           lda # 1
           sta temp1
-          lda # >(AfterGetPlayerLockedP1-1)
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterGetPlayerLockedP1-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerLockedP1 hi (encoded)]
           lda # <(AfterGetPlayerLockedP1-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerLockedP1 hi (encoded)] [SP+0: AfterGetPlayerLockedP1 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerLockedP1 hi (encoded)] [SP+1: AfterGetPlayerLockedP1 lo] [SP+0: GetPlayerLocked hi (raw)]
           lda # <(GetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerLockedP1 hi (encoded)] [SP+2: AfterGetPlayerLockedP1 lo] [SP+1: GetPlayerLocked hi (raw)] [SP+0: GetPlayerLocked lo]
           ldx # 5
           jmp BS_jsr
 AfterGetPlayerLockedP1:
@@ -963,16 +1023,22 @@ CSQR_Loop:
           lda currentPlayer
           sta temp1
 
-          ;; Cross-bank call to GetPlayerLocked in bank 6
-          lda # >(return_point-1)
+          ;; Cross-bank call to GetPlayerLocked in bank 5
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterGetPlayerLockedQuadtariReady-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerLockedQuadtariReady hi (encoded)]
+          lda # <(AfterGetPlayerLockedQuadtariReady-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerLockedQuadtariReady hi (encoded)] [SP+0: AfterGetPlayerLockedQuadtariReady lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerLockedQuadtariReady hi (encoded)] [SP+1: AfterGetPlayerLockedQuadtariReady lo] [SP+0: GetPlayerLocked hi (raw)]
           lda # <(GetPlayerLocked-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerLockedQuadtariReady hi (encoded)] [SP+2: AfterGetPlayerLockedQuadtariReady lo] [SP+1: GetPlayerLocked hi (raw)] [SP+0: GetPlayerLocked lo]
+          ldx # 5
           jmp BS_jsr
 AfterGetPlayerLockedQuadtariReady:
 
@@ -1038,16 +1104,22 @@ CharacterSelectReadyDone
           ;; Returns: Far (return otherbank)
 
           ;; Update sound effects (active sound effects need per-frame updates)
-          ;; Cross-bank call to UpdateSoundEffect in bank 15
-          lda # >(return_point-1)
+          ;; Cross-bank call to UpdateSoundEffect in bank 14
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterUpdateSoundEffect-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterUpdateSoundEffect hi (encoded)]
+          lda # <(AfterUpdateSoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterUpdateSoundEffect hi (encoded)] [SP+0: AfterUpdateSoundEffect lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdateSoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterUpdateSoundEffect hi (encoded)] [SP+1: AfterUpdateSoundEffect lo] [SP+0: UpdateSoundEffect hi (raw)]
           lda # <(UpdateSoundEffect-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterUpdateSoundEffect hi (encoded)] [SP+2: AfterUpdateSoundEffect lo] [SP+1: UpdateSoundEffect hi (raw)] [SP+0: UpdateSoundEffect lo]
+          ldx # 14
           jmp BS_jsr
 AfterUpdateSoundEffect:
 
@@ -1111,16 +1183,22 @@ CharacterSelectSkipFacing .proc
 UpdateSoundEffectsCharacterSelect .proc
 
           ;; Update sound effects (active sound effects need per-frame updates)
-          ;; Cross-bank call to UpdateSoundEffect in bank 15
-          lda # >(UpdateSoundEffectsReturn-1)
+          ;; Cross-bank call to UpdateSoundEffect in bank 14
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(UpdateSoundEffectsReturn-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: UpdateSoundEffectsReturn hi (encoded)]
           lda # <(UpdateSoundEffectsReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: UpdateSoundEffectsReturn hi (encoded)] [SP+0: UpdateSoundEffectsReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdateSoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+2: UpdateSoundEffectsReturn hi (encoded)] [SP+1: UpdateSoundEffectsReturn lo] [SP+0: UpdateSoundEffect hi (raw)]
           lda # <(UpdateSoundEffect-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: UpdateSoundEffectsReturn hi (encoded)] [SP+2: UpdateSoundEffectsReturn lo] [SP+1: UpdateSoundEffect hi (raw)] [SP+0: UpdateSoundEffect lo]
+          ldx # 14
           jmp BS_jsr
 UpdateSoundEffectsReturn:
 
@@ -1130,16 +1208,22 @@ UpdateSoundEffectsReturn:
           lda ModeFallingAnimation
           sta gameMode
 
-          ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(return_point-1)
+          ;; Cross-bank call to ChangeGameMode in bank 13
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterChangeGameMode-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterChangeGameMode hi (encoded)]
+          lda # <(AfterChangeGameMode-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterChangeGameMode hi (encoded)] [SP+0: AfterChangeGameMode lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ChangeGameMode-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterChangeGameMode hi (encoded)] [SP+1: AfterChangeGameMode lo] [SP+0: ChangeGameMode hi (raw)]
           lda # <(ChangeGameMode-1)
           pha
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterChangeGameMode hi (encoded)] [SP+2: AfterChangeGameMode lo] [SP+1: ChangeGameMode hi (raw)] [SP+0: ChangeGameMode lo]
+          ldx # 13
           jmp BS_jsr
 AfterChangeGameMode:
 

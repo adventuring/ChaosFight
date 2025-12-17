@@ -25,7 +25,6 @@ BudgetedHealthBarUpdate .proc
           ;; UpdateHealthBarPlayer0-3 (all called via jmp or gosub)
           ;; Determine which player to update based on frame phase
           lda framePhase
-          cmp # 0
           bne CheckPhase1
 
           jmp BudgetedHealthBarPlayer0
@@ -143,7 +142,6 @@ CheckPlayer2HealthUpdate .proc
           ;; Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer2Character
 
           jmp DonePlayer2HealthUpdate
@@ -221,7 +219,6 @@ CheckPlayer3HealthUpdate .proc
           ;; Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer3Character
 
           jmp DonePlayer3HealthUpdate

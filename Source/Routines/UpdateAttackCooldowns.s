@@ -23,7 +23,6 @@ UAC_Loop:
           lda playerAttackCooldown_R,x
           sta temp2
           lda temp2
-          cmp # 0
           bne DecrementCooldown
 
           jmp UpdateAttackCooldownSkip

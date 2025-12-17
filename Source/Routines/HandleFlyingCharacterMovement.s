@@ -62,7 +62,6 @@ HandleFlyingCharacterMovement .proc
           ;; Check left movement
 
           lda temp6
-          cmp # 0
           bne HandleFlyingCharacterMovementCheckLeftJoy1
 
           jmp HandleFlyingCharacterMovementCheckLeftJoy0
@@ -88,13 +87,30 @@ HandleFlyingCharacterMovementCheckLeftJoy0 .proc
 .pend
 
 HandleFlyingCharacterMovementDoLeft .proc
-          ;; Tail call: Cross-bank call to HandleFlyingCharacterMovementAttemptMoveLeft in Bank 6
-          ;; HandleFlyingCharacterMovementAttemptMoveLeft will return directly to InputHandleLeftPortPlayerFunction
-          ;; (skipping HandleFlyingCharacterMovement's return)
+          ;; Tail call: Cross-bank call to HandleFlyingCharacterMovementAttemptMoveLeft in Bank 5
+          ;; HandleFlyingCharacterMovementAttemptMoveLeft will return directly to InputHandleLeftPortPlayerFunction's caller
+          ;; Preserve the return address from HandleFlyingCharacterMovement's caller (InputHandleLeftPortPlayerFunction in Bank 7)
+          ;; and re-encode it for BS_jsr
+          pla
+          sta temp6  ;;; Save low byte
+          pla
+          sta temp7  ;;; Save high byte (raw address in Bank 7)
+          ;; Encode return address with caller bank 7 ($70) for BS_return to decode
+          lda temp7
+          and # $0f  ;;; Get low nybble
+          ora # $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: return hi (encoded with bank 7)]
+          lda temp6
+          pha
+          ;; STACK PICTURE: [SP+1: return hi (encoded)] [SP+0: return lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(HandleFlyingCharacterMovementAttemptMoveLeft-1)
           pha
+          ;; STACK PICTURE: [SP+2: return hi (encoded)] [SP+1: return lo] [SP+0: HandleFlyingCharacterMovementAttemptMoveLeft hi (raw)]
           lda # <(HandleFlyingCharacterMovementAttemptMoveLeft-1)
           pha
+          ;; STACK PICTURE: [SP+3: return hi (encoded)] [SP+2: return lo] [SP+1: HandleFlyingCharacterMovementAttemptMoveLeft hi (raw)] [SP+0: HandleFlyingCharacterMovementAttemptMoveLeft lo]
           ldx # 5
           jmp BS_jsr
 .pend
@@ -105,7 +121,6 @@ HandleFlyingCharacterMovementCheckRight .proc
           ;; Returns: Far (return otherbank)
 
           lda temp6
-          cmp # 0
           bne HandleFlyingCharacterMovementCheckRightJoy1
           jsr HandleFlyingCharacterMovementCheckRightJoy0
           jmp HandleFlyingCharacterMovementCheckVertical
@@ -132,13 +147,30 @@ HandleFlyingCharacterMovementCheckRightJoy0 .proc
 .pend
 
 HandleFlyingCharacterMovementDoRight .proc
-          ;; Tail call: Cross-bank call to HandleFlyingCharacterMovementAttemptMoveRight in Bank 6
-          ;; HandleFlyingCharacterMovementAttemptMoveRight will return directly to InputHandleLeftPortPlayerFunction
-          ;; (skipping HandleFlyingCharacterMovement's return)
+          ;; Tail call: Cross-bank call to HandleFlyingCharacterMovementAttemptMoveRight in Bank 5
+          ;; HandleFlyingCharacterMovementAttemptMoveRight will return directly to InputHandleLeftPortPlayerFunction's caller
+          ;; Preserve the return address from HandleFlyingCharacterMovement's caller (InputHandleLeftPortPlayerFunction in Bank 7)
+          ;; and re-encode it for BS_jsr
+          pla
+          sta temp6  ;;; Save low byte
+          pla
+          sta temp7  ;;; Save high byte (raw address in Bank 7)
+          ;; Encode return address with caller bank 7 ($70) for BS_return to decode
+          lda temp7
+          and # $0f  ;;; Get low nybble
+          ora # $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: return hi (encoded with bank 7)]
+          lda temp6
+          pha
+          ;; STACK PICTURE: [SP+1: return hi (encoded)] [SP+0: return lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(HandleFlyingCharacterMovementAttemptMoveRight-1)
           pha
+          ;; STACK PICTURE: [SP+2: return hi (encoded)] [SP+1: return lo] [SP+0: HandleFlyingCharacterMovementAttemptMoveRight hi (raw)]
           lda # <(HandleFlyingCharacterMovementAttemptMoveRight-1)
           pha
+          ;; STACK PICTURE: [SP+3: return hi (encoded)] [SP+2: return lo] [SP+1: HandleFlyingCharacterMovementAttemptMoveRight hi (raw)] [SP+0: HandleFlyingCharacterMovementAttemptMoveRight lo]
           ldx # 5
           jmp BS_jsr
 .pend
@@ -171,7 +203,6 @@ HandleFlyingCharacterMovementCheckVertical .proc
           sta characterMovementSpeed
 
           lda temp6
-          cmp # 0
           bne HandleFlyingCharacterMovementVerticalJoy1
           jsr HandleFlyingCharacterMovementVerticalJoy0
           jmp HandleFlyingCharacterMovementCheckVerticalEnd

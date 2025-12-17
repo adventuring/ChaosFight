@@ -38,18 +38,22 @@ BeginAuthorPrelude .proc
           ;; Cross-bank call to StartMusic in bank 15
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           ;; Expected: 4 bytes on stack from BS_jsr call (cross-bank call from ChangeGameMode)
-          lda # >(AfterStartMusicAuthorPrelude-1)
+          ;; Cross-bank call to StartMusic in bank 14
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterStartMusicAuthorPrelude-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
-          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterStartMusicAuthorPrelude hi]
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterStartMusicAuthorPrelude hi (encoded)]
           lda # <(AfterStartMusicAuthorPrelude-1)
           pha
-          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterStartMusicAuthorPrelude hi] [SP+0: AfterStartMusicAuthorPrelude lo]
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterStartMusicAuthorPrelude hi (encoded)] [SP+0: AfterStartMusicAuthorPrelude lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(StartMusic-1)
           pha
-          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterStartMusicAuthorPrelude hi] [SP+1: AfterStartMusicAuthorPrelude lo] [SP+0: StartMusic hi]
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterStartMusicAuthorPrelude hi (encoded)] [SP+1: AfterStartMusicAuthorPrelude lo] [SP+0: StartMusic hi (raw)]
           lda # <(StartMusic-1)
           pha
-          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterStartMusicAuthorPrelude hi] [SP+2: AfterStartMusicAuthorPrelude lo] [SP+1: StartMusic hi] [SP+0: StartMusic lo]
+          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterStartMusicAuthorPrelude hi (encoded)] [SP+2: AfterStartMusicAuthorPrelude lo] [SP+1: StartMusic hi (raw)] [SP+0: StartMusic lo]
           ldx # 14
           jmp BS_jsr
 

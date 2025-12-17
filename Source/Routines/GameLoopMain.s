@@ -55,7 +55,6 @@ CheckPlayer2Enhanced:
           ;; Player 2 (INPT2) - Genesis/Joy2b+ Button C/II
           lda INPT2
           and # 128
-          cmp # 0
           bne ReadEnhancedButtonsDone
 
           ;; Set temp1 = temp1 | 2
@@ -148,62 +147,86 @@ GameMainLoopContinue
           ;; II/III)
           jsr ReadEnhancedButtons
 
-          ;; Handle console switches (in Bank 13)
-          ;; Cross-bank call to HandleConsoleSwitches in bank 13
-          lda # >(AfterConsoleSwitches-1)
+          ;; Handle console switches (in Bank 12)
+          ;; Cross-bank call to HandleConsoleSwitches in bank 12
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterConsoleSwitches-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterConsoleSwitches hi (encoded)]
           lda # <(AfterConsoleSwitches-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterConsoleSwitches hi (encoded)] [SP+0: AfterConsoleSwitches lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(HandleConsoleSwitches-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterConsoleSwitches hi (encoded)] [SP+1: AfterConsoleSwitches lo] [SP+0: HandleConsoleSwitches hi (raw)]
           lda # <(HandleConsoleSwitches-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterConsoleSwitches hi (encoded)] [SP+2: AfterConsoleSwitches lo] [SP+1: HandleConsoleSwitches hi (raw)] [SP+0: HandleConsoleSwitches lo]
+          ldx # 12
           jmp BS_jsr
 AfterConsoleSwitches:
 
 
-          ;; Handle all player input (with Quadtari multiplexing) (in Bank 8)
-          ;; Cross-bank call to InputHandleAllPlayers in bank 8
-          lda # >(AfterInputHandled-1)
+          ;; Handle all player input (with Quadtari multiplexing) (in Bank 7)
+          ;; Cross-bank call to InputHandleAllPlayers in bank 7
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterInputHandled-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterInputHandled hi (encoded)]
           lda # <(AfterInputHandled-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterInputHandled hi (encoded)] [SP+0: AfterInputHandled lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(InputHandleAllPlayers-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterInputHandled hi (encoded)] [SP+1: AfterInputHandled lo] [SP+0: InputHandleAllPlayers hi (raw)]
           lda # <(InputHandleAllPlayers-1)
           pha
-                    ldx # 7
+          ;; STACK PICTURE: [SP+3: AfterInputHandled hi (encoded)] [SP+2: AfterInputHandled lo] [SP+1: InputHandleAllPlayers hi (raw)] [SP+0: InputHandleAllPlayers lo]
+          ldx # 7
           jmp BS_jsr
 AfterInputHandled:
 
 
           ;; Update guard timers (duration and cooldown)
-          ;; Cross-bank call to UpdateGuardTimers in bank 6
-          lda # >(AfterGuardTimersUpdated-1)
+          ;; Cross-bank call to UpdateGuardTimers in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterGuardTimersUpdated-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGuardTimersUpdated hi (encoded)]
           lda # <(AfterGuardTimersUpdated-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGuardTimersUpdated hi (encoded)] [SP+0: AfterGuardTimersUpdated lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdateGuardTimers-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGuardTimersUpdated hi (encoded)] [SP+1: AfterGuardTimersUpdated lo] [SP+0: UpdateGuardTimers hi (raw)]
           lda # <(UpdateGuardTimers-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterGuardTimersUpdated hi (encoded)] [SP+2: AfterGuardTimersUpdated lo] [SP+1: UpdateGuardTimers hi (raw)] [SP+0: UpdateGuardTimers lo]
+          ldx # 5
           jmp BS_jsr
 AfterGuardTimersUpdated:
 
 
-          ;; Update attack cooldown timers (in Bank 12)
-          ;; Cross-bank call to UpdateAttackCooldowns in bank 12
-          lda # >(AfterAttackCooldownsUpdated-1)
+          ;; Update attack cooldown timers (in Bank 11)
+          ;; Cross-bank call to UpdateAttackCooldowns in bank 11
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterAttackCooldownsUpdated-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterAttackCooldownsUpdated hi (encoded)]
           lda # <(AfterAttackCooldownsUpdated-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterAttackCooldownsUpdated hi (encoded)] [SP+0: AfterAttackCooldownsUpdated lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdateAttackCooldowns-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterAttackCooldownsUpdated hi (encoded)] [SP+1: AfterAttackCooldownsUpdated lo] [SP+0: UpdateAttackCooldowns hi (raw)]
           lda # <(UpdateAttackCooldowns-1)
           pha
-                    ldx # 11
+          ;; STACK PICTURE: [SP+3: AfterAttackCooldownsUpdated hi (encoded)] [SP+2: AfterAttackCooldownsUpdated lo] [SP+1: UpdateAttackCooldowns hi (raw)] [SP+0: UpdateAttackCooldowns lo]
+          ldx # 11
           jmp BS_jsr
 AfterAttackCooldownsUpdated:
 
@@ -239,15 +262,21 @@ FrootyChargeUpdate:
           sta temp1
           
           ;; Cross-bank call to FrootyAttack in bank 7
-          lda # >(AfterFrootyAttack-1)
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterFrootyAttack-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterFrootyAttack hi (encoded)]
           lda # <(AfterFrootyAttack-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterFrootyAttack hi (encoded)] [SP+0: AfterFrootyAttack lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(FrootyAttack-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterFrootyAttack hi (encoded)] [SP+1: AfterFrootyAttack lo] [SP+0: FrootyAttack hi (raw)]
           lda # <(FrootyAttack-1)
           pha
-                    ldx # 7
+          ;; STACK PICTURE: [SP+3: AfterFrootyAttack hi (encoded)] [SP+2: AfterFrootyAttack lo] [SP+1: FrootyAttack hi (raw)] [SP+0: FrootyAttack lo]
+          ldx # 7
           jmp BS_jsr
 AfterFrootyAttack:
 

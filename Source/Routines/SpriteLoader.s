@@ -25,42 +25,60 @@ LoadCharacterSprite .proc
           ;; but normal character loading must be guarded
           ;; Handle special sprite cases first (these are safe)
           ;; Cross-bank call to CopyGlyphToPlayer in bank 15
-          lda # >(AfterCopyGlyphToPlayerBank15-1)
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterCopyGlyphToPlayerBank15-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCopyGlyphToPlayerBank15 hi (encoded)]
           lda # <(AfterCopyGlyphToPlayerBank15-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCopyGlyphToPlayerBank15 hi (encoded)] [SP+0: AfterCopyGlyphToPlayerBank15 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CopyGlyphToPlayer-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCopyGlyphToPlayerBank15 hi (encoded)] [SP+1: AfterCopyGlyphToPlayerBank15 lo] [SP+0: CopyGlyphToPlayer hi (raw)]
           lda # <(CopyGlyphToPlayer-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterCopyGlyphToPlayerBank15 hi (encoded)] [SP+2: AfterCopyGlyphToPlayerBank15 lo] [SP+1: CopyGlyphToPlayer hi (raw)] [SP+0: CopyGlyphToPlayer lo]
           ldx # 15
           jmp BS_jsr
 
 AfterCopyGlyphToPlayerBank15:
 
-          ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(AfterCopyGlyphToPlayerBank16-1)
+          ;; Cross-bank call to CopyGlyphToPlayer in bank 15
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterCopyGlyphToPlayerBank16-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCopyGlyphToPlayerBank16 hi (encoded)]
           lda # <(AfterCopyGlyphToPlayerBank16-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCopyGlyphToPlayerBank16 hi (encoded)] [SP+0: AfterCopyGlyphToPlayerBank16 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CopyGlyphToPlayer-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCopyGlyphToPlayerBank16 hi (encoded)] [SP+1: AfterCopyGlyphToPlayerBank16 lo] [SP+0: CopyGlyphToPlayer hi (raw)]
           lda # <(CopyGlyphToPlayer-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterCopyGlyphToPlayerBank16 hi (encoded)] [SP+2: AfterCopyGlyphToPlayerBank16 lo] [SP+1: CopyGlyphToPlayer hi (raw)] [SP+0: CopyGlyphToPlayer lo]
           ldx # 15
           jmp BS_jsr
 
 AfterCopyGlyphToPlayerBank16:
 
-          ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(AfterCopyGlyphToPlayerBank16Second-1)
+          ;; Cross-bank call to CopyGlyphToPlayer in bank 15
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterCopyGlyphToPlayerBank16Second-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCopyGlyphToPlayerBank16Second hi (encoded)]
           lda # <(AfterCopyGlyphToPlayerBank16Second-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCopyGlyphToPlayerBank16Second hi (encoded)] [SP+0: AfterCopyGlyphToPlayerBank16Second lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CopyGlyphToPlayer-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCopyGlyphToPlayerBank16Second hi (encoded)] [SP+1: AfterCopyGlyphToPlayerBank16Second lo] [SP+0: CopyGlyphToPlayer hi (raw)]
           lda # <(CopyGlyphToPlayer-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterCopyGlyphToPlayerBank16Second hi (encoded)] [SP+2: AfterCopyGlyphToPlayerBank16Second lo] [SP+1: CopyGlyphToPlayer hi (raw)] [SP+0: CopyGlyphToPlayer lo]
           ldx # 15
           jmp BS_jsr
 
@@ -71,16 +89,22 @@ AfterCopyGlyphToPlayerBank16Second:
           sta temp4
           lda currentCharacter
           sta temp1
-          ;; Cross-bank call to LocateCharacterArt in bank 9
-          lda # >(AfterLocateCharacterArt-1)
+          ;; Cross-bank call to LocateCharacterArt in bank 8
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterLocateCharacterArt-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLocateCharacterArt hi (encoded)]
           lda # <(AfterLocateCharacterArt-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLocateCharacterArt hi (encoded)] [SP+0: AfterLocateCharacterArt lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LocateCharacterArt-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLocateCharacterArt hi (encoded)] [SP+1: AfterLocateCharacterArt lo] [SP+0: LocateCharacterArt hi (raw)]
           lda # <(LocateCharacterArt-1)
           pha
-                    ldx # 8
+          ;; STACK PICTURE: [SP+3: AfterLocateCharacterArt hi (encoded)] [SP+2: AfterLocateCharacterArt lo] [SP+1: LocateCharacterArt hi (raw)] [SP+0: LocateCharacterArt lo]
+          ldx # 8
           jmp BS_jsr
 AfterLocateCharacterArt:
 
@@ -132,55 +156,79 @@ temp4 = player number (0-3)
 ; Set currentCharacter from playerCharacter[currentPlayer]
           ;; CRITICAL: Guard against invalid characters - prevent calling bank 2 when no characters on screen
           ;; Handle special sprite cases first (these are safe and don’t need bank dispatch)
-          ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(AfterCopyGlyphToPlayerBank16First-1)
+          ;; Cross-bank call to CopyGlyphToPlayer in bank 15
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterCopyGlyphToPlayerBank16First-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCopyGlyphToPlayerBank16First hi (encoded)]
           lda # <(AfterCopyGlyphToPlayerBank16First-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCopyGlyphToPlayerBank16First hi (encoded)] [SP+0: AfterCopyGlyphToPlayerBank16First lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CopyGlyphToPlayer-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCopyGlyphToPlayerBank16First hi (encoded)] [SP+1: AfterCopyGlyphToPlayerBank16First lo] [SP+0: CopyGlyphToPlayer hi (raw)]
           lda # <(CopyGlyphToPlayer-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterCopyGlyphToPlayerBank16First hi (encoded)] [SP+2: AfterCopyGlyphToPlayerBank16First lo] [SP+1: CopyGlyphToPlayer hi (raw)] [SP+0: CopyGlyphToPlayer lo]
+          ldx # 15
           jmp BS_jsr
 AfterCopyGlyphToPlayerBank16First:
 
-          ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(AfterCopyGlyphToPlayerBank16SecondFirst-1)
+          ;; Cross-bank call to CopyGlyphToPlayer in bank 15
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterCopyGlyphToPlayerBank16SecondFirst-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCopyGlyphToPlayerBank16SecondFirst hi (encoded)]
           lda # <(AfterCopyGlyphToPlayerBank16SecondFirst-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCopyGlyphToPlayerBank16SecondFirst hi (encoded)] [SP+0: AfterCopyGlyphToPlayerBank16SecondFirst lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CopyGlyphToPlayer-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCopyGlyphToPlayerBank16SecondFirst hi (encoded)] [SP+1: AfterCopyGlyphToPlayerBank16SecondFirst lo] [SP+0: CopyGlyphToPlayer hi (raw)]
           lda # <(CopyGlyphToPlayer-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterCopyGlyphToPlayerBank16SecondFirst hi (encoded)] [SP+2: AfterCopyGlyphToPlayerBank16SecondFirst lo] [SP+1: CopyGlyphToPlayer hi (raw)] [SP+0: CopyGlyphToPlayer lo]
+          ldx # 15
           jmp BS_jsr
 AfterCopyGlyphToPlayerBank16SecondFirst:
 
-          ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(AfterCopyGlyphToPlayerBank16SecondSecond-1)
+          ;; Cross-bank call to CopyGlyphToPlayer in bank 15
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterCopyGlyphToPlayerBank16SecondSecond-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCopyGlyphToPlayerBank16SecondSecond hi (encoded)]
           lda # <(AfterCopyGlyphToPlayerBank16SecondSecond-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCopyGlyphToPlayerBank16SecondSecond hi (encoded)] [SP+0: AfterCopyGlyphToPlayerBank16SecondSecond lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CopyGlyphToPlayer-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCopyGlyphToPlayerBank16SecondSecond hi (encoded)] [SP+1: AfterCopyGlyphToPlayerBank16SecondSecond lo] [SP+0: CopyGlyphToPlayer hi (raw)]
           lda # <(CopyGlyphToPlayer-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterCopyGlyphToPlayerBank16SecondSecond hi (encoded)] [SP+2: AfterCopyGlyphToPlayerBank16SecondSecond lo] [SP+1: CopyGlyphToPlayer hi (raw)] [SP+0: CopyGlyphToPlayer lo]
+          ldx # 15
           jmp BS_jsr
 AfterCopyGlyphToPlayerBank16SecondSecond:
 
-          ;; Cross-bank call to CopyGlyphToPlayer in bank 16
-          lda # >(AfterCopyGlyphToPlayerBank16Third-1)
+          ;; Cross-bank call to CopyGlyphToPlayer in bank 15
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterCopyGlyphToPlayerBank16Third-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCopyGlyphToPlayerBank16Third hi (encoded)]
           lda # <(AfterCopyGlyphToPlayerBank16Third-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCopyGlyphToPlayerBank16Third hi (encoded)] [SP+0: AfterCopyGlyphToPlayerBank16Third lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CopyGlyphToPlayer-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCopyGlyphToPlayerBank16Third hi (encoded)] [SP+1: AfterCopyGlyphToPlayerBank16Third lo] [SP+0: CopyGlyphToPlayer hi (raw)]
           lda # <(CopyGlyphToPlayer-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterCopyGlyphToPlayerBank16Third hi (encoded)] [SP+2: AfterCopyGlyphToPlayerBank16Third lo] [SP+1: CopyGlyphToPlayer hi (raw)] [SP+0: CopyGlyphToPlayer lo]
+          ldx # 15
           jmp BS_jsr
 AfterCopyGlyphToPlayerBank16Third:
 
@@ -227,16 +275,22 @@ LoadPlayerSprite_Bank2Dispatch
           sta temp6
           lda temp4
           sta temp5
-          ;; Cross-bank call to SetPlayerCharacterArtBank2 in bank 2
-          lda # >(AfterSetPlayerCharacterArtBank2-1)
+          ;; Cross-bank call to SetPlayerCharacterArtBank2 in bank 1
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterSetPlayerCharacterArtBank2-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerCharacterArtBank2 hi (encoded)]
           lda # <(AfterSetPlayerCharacterArtBank2-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerCharacterArtBank2 hi (encoded)] [SP+0: AfterSetPlayerCharacterArtBank2 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerCharacterArtBank2-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerCharacterArtBank2 hi (encoded)] [SP+1: AfterSetPlayerCharacterArtBank2 lo] [SP+0: SetPlayerCharacterArtBank2 hi (raw)]
           lda # <(SetPlayerCharacterArtBank2-1)
           pha
-                    ldx # 1
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank2 hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank2 lo] [SP+1: SetPlayerCharacterArtBank2 hi (raw)] [SP+0: SetPlayerCharacterArtBank2 lo]
+          ldx # 1
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank2:
 
@@ -258,16 +312,22 @@ LoadPlayerSprite_Bank3Dispatch
 
           lda temp4
           sta temp5
-          ;; Cross-bank call to SetPlayerCharacterArtBank3 in bank 3
-          lda # >(AfterSetPlayerCharacterArtBank3-1)
+          ;; Cross-bank call to SetPlayerCharacterArtBank3 in bank 2
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterSetPlayerCharacterArtBank3-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerCharacterArtBank3 hi (encoded)]
           lda # <(AfterSetPlayerCharacterArtBank3-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerCharacterArtBank3 hi (encoded)] [SP+0: AfterSetPlayerCharacterArtBank3 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerCharacterArtBank3-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerCharacterArtBank3 hi (encoded)] [SP+1: AfterSetPlayerCharacterArtBank3 lo] [SP+0: SetPlayerCharacterArtBank3 hi (raw)]
           lda # <(SetPlayerCharacterArtBank3-1)
           pha
-                    ldx # 2
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank3 hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank3 lo] [SP+1: SetPlayerCharacterArtBank3 hi (raw)] [SP+0: SetPlayerCharacterArtBank3 lo]
+          ldx # 2
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank3:
 
@@ -289,16 +349,22 @@ LoadPlayerSprite_Bank4Dispatch
 
           lda temp4
           sta temp5
-          ;; Cross-bank call to SetPlayerCharacterArtBank4 in bank 4
-          lda # >(AfterSetPlayerCharacterArtBank4-1)
+          ;; Cross-bank call to SetPlayerCharacterArtBank4 in bank 3
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterSetPlayerCharacterArtBank4-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerCharacterArtBank4 hi (encoded)]
           lda # <(AfterSetPlayerCharacterArtBank4-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerCharacterArtBank4 hi (encoded)] [SP+0: AfterSetPlayerCharacterArtBank4 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerCharacterArtBank4-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerCharacterArtBank4 hi (encoded)] [SP+1: AfterSetPlayerCharacterArtBank4 lo] [SP+0: SetPlayerCharacterArtBank4 hi (raw)]
           lda # <(SetPlayerCharacterArtBank4-1)
           pha
-                    ldx # 3
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank4 hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank4 lo] [SP+1: SetPlayerCharacterArtBank4 hi (raw)] [SP+0: SetPlayerCharacterArtBank4 lo]
+          ldx # 3
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank4:
 
@@ -320,16 +386,22 @@ LoadPlayerSprite_Bank5Dispatch
 
           lda temp4
           sta temp5
-          ;; Cross-bank call to SetPlayerCharacterArtBank5 in bank 5
-          lda # >(AfterSetPlayerCharacterArtBank5-1)
+          ;; Cross-bank call to SetPlayerCharacterArtBank5 in bank 4
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterSetPlayerCharacterArtBank5-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerCharacterArtBank5 hi (encoded)]
           lda # <(AfterSetPlayerCharacterArtBank5-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerCharacterArtBank5 hi (encoded)] [SP+0: AfterSetPlayerCharacterArtBank5 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerCharacterArtBank5-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerCharacterArtBank5 hi (encoded)] [SP+1: AfterSetPlayerCharacterArtBank5 lo] [SP+0: SetPlayerCharacterArtBank5 hi (raw)]
           lda # <(SetPlayerCharacterArtBank5-1)
           pha
-                    ldx # 4
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank5 hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank5 lo] [SP+1: SetPlayerCharacterArtBank5 hi (raw)] [SP+0: SetPlayerCharacterArtBank5 lo]
+          ldx # 4
           jmp BS_jsr
 AfterSetPlayerCharacterArtBank5:
 

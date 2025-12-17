@@ -188,14 +188,21 @@ SkipBernieWrap:
           sta playerHealth,x
           lda temp1
           sta currentPlayer
-          lda # >(AfterCheckPlayerEliminationBoundary-1)
+          ;; Cross-bank call to CheckPlayerElimination in bank 13
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(AfterCheckPlayerEliminationBoundary-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckPlayerEliminationBoundary hi (encoded)]
           lda # <(AfterCheckPlayerEliminationBoundary-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckPlayerEliminationBoundary hi (encoded)] [SP+0: AfterCheckPlayerEliminationBoundary lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckPlayerElimination-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckPlayerEliminationBoundary hi (encoded)] [SP+1: AfterCheckPlayerEliminationBoundary lo] [SP+0: CheckPlayerElimination hi (raw)]
           lda # <(CheckPlayerElimination-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterCheckPlayerEliminationBoundary hi (encoded)] [SP+2: AfterCheckPlayerEliminationBoundary lo] [SP+1: CheckPlayerElimination hi (raw)] [SP+0: CheckPlayerElimination lo]
           ldx # 13
           jmp BS_jsr
 

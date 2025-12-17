@@ -37,7 +37,6 @@ ProcessJumpInput .proc
           ;; Only players 0-1 can have enhanced controllers
           ;; Players 2-3 (Quadtari players) cannot have enhanced controllers
           lda currentPlayer
-          cmp # 0
           beq PJI_CheckPlayer0Enhanced
           cmp # 1
           beq PJI_CheckPlayer1Enhanced

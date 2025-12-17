@@ -615,7 +615,6 @@ UpdatePlayer34HealthBars .proc
 
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne UpdatePlayer34Health
           jmp DisplayCF2026
 UpdatePlayer34Health:
@@ -646,7 +645,6 @@ UpdatePlayer34Health:
 
           ;; if playerCharacter[2] = NoCharacter then jmp P3UseAA
           lda temp1
-          cmp # 0
           bne P3ConvertHealth
           jmp P3UseAA
 P3ConvertHealth:
@@ -713,7 +711,6 @@ P4GetHealth .proc
 
           ;; if playerCharacter[3] = NoCharacter then jmp P4UseAA
           lda temp2
-          cmp # 0
           bne ClampPlayer4Health
           jmp P4UseAA
 ClampPlayer4Health:

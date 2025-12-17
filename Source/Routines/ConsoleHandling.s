@@ -89,12 +89,13 @@ AfterDetectPadsWarmStart:
           lda # <(AfterBeginPublisherPreludeWarmStart-1)
           pha
           ;; STACK PICTURE: [SP+1: AfterBeginPublisherPreludeWarmStart hi] [SP+0: AfterBeginPublisherPreludeWarmStart lo]
-          lda # ((>(BeginPublisherPrelude-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(BeginPublisherPrelude-1)
           pha
-          ;; STACK PICTURE: [SP+2: AfterBeginPublisherPreludeWarmStart hi] [SP+1: AfterBeginPublisherPreludeWarmStart lo] [SP+0: BeginPublisherPrelude hi (encoded)]
+          ;; STACK PICTURE: [SP+2: AfterBeginPublisherPreludeWarmStart hi] [SP+1: AfterBeginPublisherPreludeWarmStart lo] [SP+0: BeginPublisherPrelude hi (raw)]
           lda # <(BeginPublisherPrelude-1)
           pha
-          ;; STACK PICTURE: [SP+3: AfterBeginPublisherPreludeWarmStart hi] [SP+2: AfterBeginPublisherPreludeWarmStart lo] [SP+1: BeginPublisherPrelude hi] [SP+0: BeginPublisherPrelude lo]
+          ;; STACK PICTURE: [SP+3: AfterBeginPublisherPreludeWarmStart hi (encoded)] [SP+2: AfterBeginPublisherPreludeWarmStart lo] [SP+1: BeginPublisherPrelude hi (raw)] [SP+0: BeginPublisherPrelude lo]
           ldx # 13                         ;;; Bank 13 = $ffe0 + 13, 0-based = 13
           jmp BS_jsr
 
@@ -130,16 +131,22 @@ HandleConsoleSwitches .proc
 CheckSelectPressed:
 
           ;; Re-detect controllers when Select is pressed
-          ;; Cross-bank call to DetectPads in bank 13
-          lda # >(AfterDetectPadsSelect-1)
+          ;; Cross-bank call to DetectPads in bank 12 (same bank, but uses BS_return)
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterDetectPadsSelect-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterDetectPadsSelect hi (encoded)]
           lda # <(AfterDetectPadsSelect-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterDetectPadsSelect hi (encoded)] [SP+0: AfterDetectPadsSelect lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(DetectPads-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterDetectPadsSelect hi (encoded)] [SP+1: AfterDetectPadsSelect lo] [SP+0: DetectPads hi (raw)]
           lda # <(DetectPads-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterDetectPadsSelect hi (encoded)] [SP+2: AfterDetectPadsSelect lo] [SP+1: DetectPads hi (raw)] [SP+0: DetectPads lo]
+          ldx # 12
           jmp BS_jsr
 AfterDetectPadsSelect:
 
@@ -178,16 +185,22 @@ DonePlayer1Pause:
 CheckSelectPressedP2:
 
           ;; Re-detect controllers when Select is pressed
-          ;; Cross-bank call to DetectPads in bank 13
-          lda # >(AfterDetectPadsSelectP2-1)
+          ;; Cross-bank call to DetectPads in bank 12 (same bank, but uses BS_return)
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterDetectPadsSelectP2-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterDetectPadsSelectP2 hi (encoded)]
           lda # <(AfterDetectPadsSelectP2-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterDetectPadsSelectP2 hi (encoded)] [SP+0: AfterDetectPadsSelectP2 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(DetectPads-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterDetectPadsSelectP2 hi (encoded)] [SP+1: AfterDetectPadsSelectP2 lo] [SP+0: DetectPads hi (raw)]
           lda # <(DetectPads-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterDetectPadsSelectP2 hi (encoded)] [SP+2: AfterDetectPadsSelectP2 lo] [SP+1: DetectPads hi (raw)] [SP+0: DetectPads lo]
+          ldx # 12
           jmp BS_jsr
 AfterDetectPadsSelectP2:
 
@@ -216,17 +229,23 @@ Player2PauseDone:
 
 DonePlayer2Pause:
           ;; Color/B&W switch - re-detect controllers when toggled
-          ;; CRITICAL: Use bank13 even though same-bank to match return otherbank
-          ;; Cross-bank call to CheckColorBWToggle in bank 13
-          lda # >(AfterCheckColorBWToggle-1)
+          ;; CRITICAL: Use bank12 even though same-bank to match return otherbank
+          ;; Cross-bank call to CheckColorBWToggle in bank 12
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterCheckColorBWToggle-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckColorBWToggle hi (encoded)]
           lda # <(AfterCheckColorBWToggle-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckColorBWToggle hi (encoded)] [SP+0: AfterCheckColorBWToggle lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckColorBWToggle-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckColorBWToggle hi (encoded)] [SP+1: AfterCheckColorBWToggle lo] [SP+0: CheckColorBWToggle hi (raw)]
           lda # <(CheckColorBWToggle-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterCheckColorBWToggle hi (encoded)] [SP+2: AfterCheckColorBWToggle lo] [SP+1: CheckColorBWToggle hi (raw)] [SP+0: CheckColorBWToggle lo]
+          ldx # 12
           jmp BS_jsr
 AfterCheckColorBWToggle:
 
@@ -396,16 +415,22 @@ CheckSwitchChanged:
           jmp DoneSwitchChange
 TriggerDetectPads:
 
-          ;; Cross-bank call to DetectPads in bank 13
-          lda # >(AfterDetectPadsColorBW-1)
+          ;; Cross-bank call to DetectPads in bank 12 (same bank, but uses BS_return)
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterDetectPadsColorBW-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterDetectPadsColorBW hi (encoded)]
           lda # <(AfterDetectPadsColorBW-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterDetectPadsColorBW hi (encoded)] [SP+0: AfterDetectPadsColorBW lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(DetectPads-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterDetectPadsColorBW hi (encoded)] [SP+1: AfterDetectPadsColorBW lo] [SP+0: DetectPads hi (raw)]
           lda # <(DetectPads-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterDetectPadsColorBW hi (encoded)] [SP+2: AfterDetectPadsColorBW lo] [SP+1: DetectPads hi (raw)] [SP+0: DetectPads lo]
+          ldx # 12
           jmp BS_jsr
 AfterDetectPadsColorBW:
 
@@ -458,16 +483,22 @@ ReloadArenaColorsNow .proc
 
           ;; Returns: Far (return otherbank)
           ;; CheckColorBWToggle is called cross-bank, so must use return otherbank
-          ;; Cross-bank call to ReloadArenaColors in bank 14
-          lda # >(AfterReloadArenaColors-1)
+          ;; Cross-bank call to ReloadArenaColors in bank 13
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterReloadArenaColors-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterReloadArenaColors hi (encoded)]
           lda # <(AfterReloadArenaColors-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterReloadArenaColors hi (encoded)] [SP+0: AfterReloadArenaColors lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ReloadArenaColors-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterReloadArenaColors hi (encoded)] [SP+1: AfterReloadArenaColors lo] [SP+0: ReloadArenaColors hi (raw)]
           lda # <(ReloadArenaColors-1)
           pha
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterReloadArenaColors hi (encoded)] [SP+2: AfterReloadArenaColors lo] [SP+1: ReloadArenaColors hi (raw)] [SP+0: ReloadArenaColors lo]
+          ldx # 13
           jmp BS_jsr
 AfterReloadArenaColors:
 

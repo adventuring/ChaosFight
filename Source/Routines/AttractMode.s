@@ -36,14 +36,20 @@ AttractMode .proc
           ;; Set gameMode = ModePublisherPrelude cross-bank call to ChangeGameMode bank14
           lda # ModePublisherPrelude
           sta gameMode
-          lda # >(AfterChangeGameModeAttract-1)
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterChangeGameModeAttract-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterChangeGameModeAttract hi (encoded)]
           lda # <(AfterChangeGameModeAttract-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterChangeGameModeAttract hi (encoded)] [SP+0: AfterChangeGameModeAttract lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ChangeGameMode-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterChangeGameModeAttract hi (encoded)] [SP+1: AfterChangeGameModeAttract lo] [SP+0: ChangeGameMode hi (raw)]
           lda # <(ChangeGameMode-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterChangeGameModeAttract hi (encoded)] [SP+2: AfterChangeGameModeAttract lo] [SP+1: ChangeGameMode hi (raw)] [SP+0: ChangeGameMode lo]
           ldx # 13
           jmp BS_jsr
 

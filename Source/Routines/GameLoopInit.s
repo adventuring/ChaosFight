@@ -68,16 +68,22 @@ BeginGameLoop .proc
           ;; Entry point for game loop initialization
           ;; Initialize sprite pointers to RAM addresses
           ;; Ensure pointers are set before loading any sprite data
-          ;; Cross-bank call to InitializeSpritePointers in bank 14
-          lda # >(AfterInitializeSpritePointers-1)
+          ;; Cross-bank call to InitializeSpritePointers in bank 13
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterInitializeSpritePointers-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterInitializeSpritePointers hi (encoded)]
           lda # <(AfterInitializeSpritePointers-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterInitializeSpritePointers hi (encoded)] [SP+0: AfterInitializeSpritePointers lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(InitializeSpritePointers-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterInitializeSpritePointers hi (encoded)] [SP+1: AfterInitializeSpritePointers lo] [SP+0: InitializeSpritePointers hi (raw)]
           lda # <(InitializeSpritePointers-1)
           pha
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterInitializeSpritePointers hi (encoded)] [SP+2: AfterInitializeSpritePointers lo] [SP+1: InitializeSpritePointers hi (raw)] [SP+0: InitializeSpritePointers lo]
+          ldx # 13
           jmp BS_jsr
 AfterInitializeSpritePointers:
 
@@ -254,16 +260,22 @@ InitPositionsDone:
 IPH_Loop:
           lda currentPlayer
           sta GPL_playerIndex
-          ;; Cross-bank call to GetPlayerLocked in bank 6
-          lda # >(AfterGetPlayerLockedInit-1)
+          ;; Cross-bank call to GetPlayerLocked in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterGetPlayerLockedInit-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerLockedInit hi (encoded)]
           lda # <(AfterGetPlayerLockedInit-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerLockedInit hi (encoded)] [SP+0: AfterGetPlayerLockedInit lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerLocked-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerLockedInit hi (encoded)] [SP+1: AfterGetPlayerLockedInit lo] [SP+0: GetPlayerLocked hi (raw)]
           lda # <(GetPlayerLocked-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerLockedInit hi (encoded)] [SP+2: AfterGetPlayerLockedInit lo] [SP+1: GetPlayerLocked hi (raw)] [SP+0: GetPlayerLocked lo]
+          ldx # 5
           jmp BS_jsr
 AfterGetPlayerLockedInit:
 
@@ -452,31 +464,43 @@ SkipPlayer4 .proc
           sta nusiz3
 
           ;; Initialize health bars
-          ;; Cross-bank call to InitializeHealthBars in bank 6
-          lda # >(return_point-1)
+          ;; Cross-bank call to InitializeHealthBars in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterInitializeHealthBars-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterInitializeHealthBars hi (encoded)]
+          lda # <(AfterInitializeHealthBars-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterInitializeHealthBars hi (encoded)] [SP+0: AfterInitializeHealthBars lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(InitializeHealthBars-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterInitializeHealthBars hi (encoded)] [SP+1: AfterInitializeHealthBars lo] [SP+0: InitializeHealthBars hi (raw)]
           lda # <(InitializeHealthBars-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterInitializeHealthBars hi (encoded)] [SP+2: AfterInitializeHealthBars lo] [SP+1: InitializeHealthBars hi (raw)] [SP+0: InitializeHealthBars lo]
+          ldx # 5
           jmp BS_jsr
 AfterInitializeHealthBars:
 
 
           ;; Load arena data
-          ;; Cross-bank call to LoadArena in bank 16
-          lda # >(AfterLoadArena-1)
+          ;; Cross-bank call to LoadArena in bank 15
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterLoadArena-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadArena hi (encoded)]
           lda # <(AfterLoadArena-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadArena hi (encoded)] [SP+0: AfterLoadArena lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadArena-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadArena hi (encoded)] [SP+1: AfterLoadArena lo] [SP+0: LoadArena hi (raw)]
           lda # <(LoadArena-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterLoadArena hi (encoded)] [SP+2: AfterLoadArena lo] [SP+1: LoadArena hi (raw)] [SP+0: LoadArena lo]
+          ldx # 15
           jmp BS_jsr
 AfterLoadArena:
 

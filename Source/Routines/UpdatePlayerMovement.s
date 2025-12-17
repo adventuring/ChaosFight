@@ -43,15 +43,21 @@ UpdatePlayerMovement .proc
           lda # 0
           sta currentPlayer
 UPM_Players01Loop:
-          ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
-          lda # >(AfterUpdatePlayerMovementSingle-1)
+          ;; Cross-bank call to UpdatePlayerMovementSingle in bank 7
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterUpdatePlayerMovementSingle-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterUpdatePlayerMovementSingle hi (encoded)]
           lda # <(AfterUpdatePlayerMovementSingle-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterUpdatePlayerMovementSingle hi (encoded)] [SP+0: AfterUpdatePlayerMovementSingle lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdatePlayerMovementSingle-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterUpdatePlayerMovementSingle hi (encoded)] [SP+1: AfterUpdatePlayerMovementSingle lo] [SP+0: UpdatePlayerMovementSingle hi (raw)]
           lda # <(UpdatePlayerMovementSingle-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterUpdatePlayerMovementSingle hi (encoded)] [SP+2: AfterUpdatePlayerMovementSingle lo] [SP+1: UpdatePlayerMovementSingle hi (raw)] [SP+0: UpdatePlayerMovementSingle lo]
           ldx # 7
           jmp BS_jsr
 
@@ -71,7 +77,6 @@ UPM_Players01LoopDone:
 UpdatePlayerMovementQuadtariCheck .proc
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne UpdatePlayerMovementQuadtari
 
           jmp UpdatePlayerMovementQuadtariSkip
@@ -82,15 +87,21 @@ UpdatePlayerMovementQuadtari:
           lda # 2
           sta currentPlayer
 UPM_Players23Loop:
-          ;; Cross-bank call to UpdatePlayerMovementSingle in bank 8
-          lda # >(AfterUpdatePlayerMovementSingleQuadtari-1)
+          ;; Cross-bank call to UpdatePlayerMovementSingle in bank 7
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterUpdatePlayerMovementSingleQuadtari-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterUpdatePlayerMovementSingleQuadtari hi (encoded)]
           lda # <(AfterUpdatePlayerMovementSingleQuadtari-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterUpdatePlayerMovementSingleQuadtari hi (encoded)] [SP+0: AfterUpdatePlayerMovementSingleQuadtari lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdatePlayerMovementSingle-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterUpdatePlayerMovementSingleQuadtari hi (encoded)] [SP+1: AfterUpdatePlayerMovementSingleQuadtari lo] [SP+0: UpdatePlayerMovementSingle hi (raw)]
           lda # <(UpdatePlayerMovementSingle-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterUpdatePlayerMovementSingleQuadtari hi (encoded)] [SP+2: AfterUpdatePlayerMovementSingleQuadtari lo] [SP+1: UpdatePlayerMovementSingle hi (raw)] [SP+0: UpdatePlayerMovementSingle lo]
           ldx # 7
           jmp BS_jsr
 

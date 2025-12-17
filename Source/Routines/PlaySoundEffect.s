@@ -50,17 +50,23 @@ PlaySoundEffect .proc
           ;; Check if music is active (music takes priority)
           jmp BS_return
 
-          ;; Lookup sound pointer from Sounds bank (Bank15)
-          ;; Cross-bank call to LoadSoundPointer in bank 15
-          lda # >(AfterLoadSoundPointer-1)
+          ;; Lookup sound pointer from Sounds bank (Bank 0)
+          ;; Cross-bank call to LoadSoundPointer in bank 0
+          ;; Return address: ENCODED with caller bank 14 ($e0) for BS_return to decode
+          lda # ((>(AfterLoadSoundPointer-1)) & $0f) | $e0  ;;; Encode bank 14 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadSoundPointer hi (encoded)]
           lda # <(AfterLoadSoundPointer-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadSoundPointer hi (encoded)] [SP+0: AfterLoadSoundPointer lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadSoundPointer-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadSoundPointer hi (encoded)] [SP+1: AfterLoadSoundPointer lo] [SP+0: LoadSoundPointer hi (raw)]
           lda # <(LoadSoundPointer-1)
           pha
-          ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterLoadSoundPointer hi (encoded)] [SP+2: AfterLoadSoundPointer lo] [SP+1: LoadSoundPointer hi (raw)] [SP+0: LoadSoundPointer lo]
+          ldx # 0
           jmp BS_jsr
 
 AfterLoadSoundPointer:

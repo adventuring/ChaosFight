@@ -180,7 +180,6 @@ HandlePlayers12:
           lda playerHealth,x
           sta temp2
           lda temp2
-          cmp # 0
           bne CheckPlayer0State
           jmp InputDonePlayer0Input
 CheckPlayer0State:
@@ -230,7 +229,6 @@ InputDonePlayer0Input:
           lda playerHealth,x
           sta temp2
           lda temp2
-          cmp # 0
           bne CheckPlayer1State
           jmp InputDonePlayer1Input
 CheckPlayer1State:
@@ -355,7 +353,6 @@ InputHandleQuadtariPlayers .proc
 
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer3Character
 
           jmp InputDonePlayer3Input
@@ -372,7 +369,6 @@ CheckPlayer3Character:
           lda playerHealth,x
           sta temp2
           lda temp2
-          cmp # 0
           bne CheckPlayer3State
           jmp InputDonePlayer3Input
 CheckPlayer3State:
@@ -412,7 +408,6 @@ InputDonePlayer3Input:
           ;; Constraints: Must be colocated with InputHandleQuadtariPlayers
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer4Character
 
           jmp InputDonePlayer4Input
@@ -429,7 +424,6 @@ CheckPlayer4Character:
           lda playerHealth,x
           sta temp2
           lda temp2
-          cmp # 0
           bne CheckPlayer4State
           jmp InputDonePlayer4Input
 CheckPlayer4State:
@@ -509,7 +503,6 @@ HandleGuardInput .proc
           jmp BS_return
 
           lda temp1
-          cmp # 0
           bne CheckPlayer2Joy
           jmp HandleGuardInputCheckJoy0
 CheckPlayer2Joy:
@@ -595,16 +588,22 @@ UseStandardGuard:
 
 DCD_HandleRoboTitoDown .proc
 
-          ;; Cross-bank call to RoboTitoDown in bank 13
-          lda # >(AfterRoboTitoDownInput-1)
+          ;; Cross-bank call to RoboTitoDown in bank 12
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterRoboTitoDownInput-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterRoboTitoDownInput hi (encoded)]
           lda # <(AfterRoboTitoDownInput-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterRoboTitoDownInput hi (encoded)] [SP+0: AfterRoboTitoDownInput lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(RoboTitoDown-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterRoboTitoDownInput hi (encoded)] [SP+1: AfterRoboTitoDownInput lo] [SP+0: RoboTitoDown hi (raw)]
           lda # <(RoboTitoDown-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterRoboTitoDownInput hi (encoded)] [SP+2: AfterRoboTitoDownInput lo] [SP+1: RoboTitoDown hi (raw)] [SP+0: RoboTitoDown lo]
+          ldx # 12
           jmp BS_jsr
 AfterRoboTitoDownInput:
 
@@ -678,7 +677,6 @@ HandleUpInputAndEnhancedButton:
           ;; Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
 
           lda temp1
-          cmp # 0
           bne CheckPlayer2JoyPort
           jmp HandleUpInputEnhancedButtonUseJoy0
 CheckPlayer2JoyPort:
@@ -858,7 +856,6 @@ CheckTemp4RangeSecond:
 
 
           lda temp3
-          cmp # 0
           bne CheckCeilingPixel
           jmp HandleUpInputEnhancedButtonRoboTitoLatch
 CheckCeilingPixel:
@@ -875,16 +872,22 @@ CheckCeilingPixel:
           lda temp3
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadRestoreAnimation-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadRestoreAnimation-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadRestoreAnimation hi (encoded)]
           lda # <(AfterPlayfieldReadRestoreAnimation-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadRestoreAnimation hi (encoded)] [SP+0: AfterPlayfieldReadRestoreAnimation lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadRestoreAnimation hi (encoded)] [SP+1: AfterPlayfieldReadRestoreAnimation lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadRestoreAnimation hi (encoded)] [SP+2: AfterPlayfieldReadRestoreAnimation lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadRestoreAnimation:
 
@@ -907,7 +910,6 @@ AfterPlayfieldReadRestoreAnimation:
 HandleUpInputEnhancedButtonRoboTitoLatch:
 
           lda temp1
-          cmp # 0
           bne CheckPlayer2JoyPortRoboTito
           jmp HandleUpInputEnhancedButtonRoboTitoCheckJoy0
 CheckPlayer2JoyPortRoboTito:
@@ -983,16 +985,22 @@ HandleUpInputEnhancedButtonBernieFallThrough .proc
           ;; Bernie UP input handled in BernieJump routine (fall through 1-row floors)
           ;; Returns: Far (return otherbank)
 
-          ;; Cross-bank call to BernieJump in bank 12
-          lda # >(AfterBernieJumpInput-1)
+          ;; Cross-bank call to BernieJump in bank 11
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterBernieJumpInput-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterBernieJumpInput hi (encoded)]
           lda # <(AfterBernieJumpInput-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterBernieJumpInput hi (encoded)] [SP+0: AfterBernieJumpInput lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(BernieJump-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterBernieJumpInput hi (encoded)] [SP+1: AfterBernieJumpInput lo] [SP+0: BernieJump hi (raw)]
           lda # <(BernieJump-1)
           pha
-                    ldx # 11
+          ;; STACK PICTURE: [SP+3: AfterBernieJumpInput hi (encoded)] [SP+2: AfterBernieJumpInput lo] [SP+1: BernieJump hi (raw)] [SP+0: BernieJump lo]
+          ldx # 11
           jmp BS_jsr
 AfterBernieJumpInput:
 
@@ -1009,16 +1017,22 @@ HandleUpInputEnhancedButtonHarpyFlap .proc
           ;; Harpy UP input handled in HarpyJump routine (flap to fly)
           ;; Returns: Far (return otherbank)
 
-          ;; Cross-bank call to HarpyJump in bank 12
-          lda # >(AfterHarpyJumpInput-1)
+          ;; Cross-bank call to HarpyJump in bank 11
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterHarpyJumpInput-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterHarpyJumpInput hi (encoded)]
           lda # <(AfterHarpyJumpInput-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterHarpyJumpInput hi (encoded)] [SP+0: AfterHarpyJumpInput lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(HarpyJump-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterHarpyJumpInput hi (encoded)] [SP+1: AfterHarpyJumpInput lo] [SP+0: HarpyJump hi (raw)]
           lda # <(HarpyJump-1)
           pha
-                    ldx # 11
+          ;; STACK PICTURE: [SP+3: AfterHarpyJumpInput hi (encoded)] [SP+2: AfterHarpyJumpInput lo] [SP+1: HarpyJump hi (raw)] [SP+0: HarpyJump lo]
+          ldx # 11
           jmp BS_jsr
 AfterHarpyJumpInput:
 
@@ -1083,16 +1097,22 @@ HandleUpInputEnhancedButtonEnhancedCheck .proc
           ;; Check Genesis/Joy2b+ Button C/II for alternative UP for any characters
           ;; Returns: Far (return otherbank)
 
-          ;; Cross-bank call to CheckEnhancedJumpButton in bank 10
-          lda # >(AfterCheckEnhancedJumpButtonEnhanced-1)
+          ;; Cross-bank call to CheckEnhancedJumpButton in bank 9
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterCheckEnhancedJumpButtonEnhanced-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckEnhancedJumpButtonEnhanced hi (encoded)]
           lda # <(AfterCheckEnhancedJumpButtonEnhanced-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckEnhancedJumpButtonEnhanced hi (encoded)] [SP+0: AfterCheckEnhancedJumpButtonEnhanced lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckEnhancedJumpButton-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckEnhancedJumpButtonEnhanced hi (encoded)] [SP+1: AfterCheckEnhancedJumpButtonEnhanced lo] [SP+0: CheckEnhancedJumpButton hi (raw)]
           lda # <(CheckEnhancedJumpButton-1)
           pha
-                    ldx # 9
+          ;; STACK PICTURE: [SP+3: AfterCheckEnhancedJumpButtonEnhanced hi (encoded)] [SP+2: AfterCheckEnhancedJumpButtonEnhanced lo] [SP+1: CheckEnhancedJumpButton hi (raw)] [SP+0: CheckEnhancedJumpButton lo]
+          ldx # 9
           jmp BS_jsr
 AfterCheckEnhancedJumpButtonEnhanced:
 
@@ -1114,16 +1134,22 @@ HandleUpInputEnhancedButtonStandardEnhancedCheck .proc
           ;; Check Genesis/Joy2b+ Button C/II
           ;; Returns: Far (return otherbank)
 
-          ;; Cross-bank call to CheckEnhancedJumpButton in bank 10
-          lda # >(AfterCheckEnhancedJumpButtonCheck-1)
+          ;; Cross-bank call to CheckEnhancedJumpButton in bank 9
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterCheckEnhancedJumpButtonCheck-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckEnhancedJumpButtonCheck hi (encoded)]
           lda # <(AfterCheckEnhancedJumpButtonCheck-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckEnhancedJumpButtonCheck hi (encoded)] [SP+0: AfterCheckEnhancedJumpButtonCheck lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckEnhancedJumpButton-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckEnhancedJumpButtonCheck hi (encoded)] [SP+1: AfterCheckEnhancedJumpButtonCheck lo] [SP+0: CheckEnhancedJumpButton hi (raw)]
           lda # <(CheckEnhancedJumpButton-1)
           pha
-                    ldx # 9
+          ;; STACK PICTURE: [SP+3: AfterCheckEnhancedJumpButtonCheck hi (encoded)] [SP+2: AfterCheckEnhancedJumpButtonCheck lo] [SP+1: CheckEnhancedJumpButton hi (raw)] [SP+0: CheckEnhancedJumpButton lo]
+          ldx # 9
           jmp BS_jsr
 AfterCheckEnhancedJumpButtonCheck:
 
@@ -1221,7 +1247,6 @@ HandleStandardHorizontalMovement:
           ;; Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
 
           lda temp1
-          cmp # 0
           bne CheckPlayer2JoyPortHSHM
           jmp HandleStandardHorizontalMovementUseJoy0
 CheckPlayer2JoyPortHSHM:
@@ -1422,16 +1447,22 @@ HandleStandardHorizontalMovementAfterLeftSet .proc
           jmp HandleStandardHorizontalMovementShouldPreserveFacingYes1
 HandleStandardHorizontalMovementShouldPreserveFacingNo1:
 
-          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(AfterGetPlayerAnimationStateAfterLeftSet-1)
+          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 12
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterGetPlayerAnimationStateAfterLeftSet-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerAnimationStateAfterLeftSet hi (encoded)]
           lda # <(AfterGetPlayerAnimationStateAfterLeftSet-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerAnimationStateAfterLeftSet hi (encoded)] [SP+0: AfterGetPlayerAnimationStateAfterLeftSet lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerAnimationStateAfterLeftSet hi (encoded)] [SP+1: AfterGetPlayerAnimationStateAfterLeftSet lo] [SP+0: GetPlayerAnimationStateFunction hi (raw)]
           lda # <(GetPlayerAnimationStateFunction-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerAnimationStateAfterLeftSet hi (encoded)] [SP+2: AfterGetPlayerAnimationStateAfterLeftSet lo] [SP+1: GetPlayerAnimationStateFunction hi (raw)] [SP+0: GetPlayerAnimationStateFunction lo]
+          ldx # 12
           jmp BS_jsr
 AfterGetPlayerAnimationStateAfterLeftSet:
 
@@ -1497,7 +1528,6 @@ HandleStandardHorizontalMovementCheckRight .proc
           ;; Determine which joy port to use for right movement
           ;; Returns: Far (return otherbank)
           lda temp1
-          cmp # 0
           bne CheckPlayer2JoyPortRight
           jmp HandleStandardHorizontalMovementCheckRightJoy0
 CheckPlayer2JoyPortRight:
@@ -1660,16 +1690,22 @@ HandleStandardHorizontalMovementAfterRightSet .proc
           jmp HandleStandardHorizontalMovementShouldPreserveFacingYes2
 HandleStandardHorizontalMovementShouldPreserveFacingNo2:
 
-          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(AfterGetPlayerAnimationStateAfterRightSet-1)
+          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 12
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterGetPlayerAnimationStateAfterRightSet-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerAnimationStateAfterRightSet hi (encoded)]
           lda # <(AfterGetPlayerAnimationStateAfterRightSet-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerAnimationStateAfterRightSet hi (encoded)] [SP+0: AfterGetPlayerAnimationStateAfterRightSet lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerAnimationStateAfterRightSet hi (encoded)] [SP+1: AfterGetPlayerAnimationStateAfterRightSet lo] [SP+0: GetPlayerAnimationStateFunction hi (raw)]
           lda # <(GetPlayerAnimationStateFunction-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerAnimationStateAfterRightSet hi (encoded)] [SP+2: AfterGetPlayerAnimationStateAfterRightSet lo] [SP+1: GetPlayerAnimationStateFunction hi (raw)] [SP+0: GetPlayerAnimationStateFunction lo]
+          ldx # 12
           jmp BS_jsr
 AfterGetPlayerAnimationStateAfterRightSet:
 
@@ -1899,16 +1935,22 @@ CheckColumnLeft:
           lda temp6
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadMoveLeftCurrentRow-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadMoveLeftCurrentRow-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadMoveLeftCurrentRow hi (encoded)]
           lda # <(AfterPlayfieldReadMoveLeftCurrentRow-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadMoveLeftCurrentRow hi (encoded)] [SP+0: AfterPlayfieldReadMoveLeftCurrentRow lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadMoveLeftCurrentRow hi (encoded)] [SP+1: AfterPlayfieldReadMoveLeftCurrentRow lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadMoveLeftCurrentRow hi (encoded)] [SP+2: AfterPlayfieldReadMoveLeftCurrentRow lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadMoveLeftCurrentRow:
           ;; If temp1, set temp5 = 1
@@ -1967,16 +2009,22 @@ HandleFlyingCharacterMovementMoveLeftOK:
           lda temp6
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadMoveLeftBottomRow-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadMoveLeftBottomRow-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadMoveLeftBottomRow hi (encoded)]
           lda # <(AfterPlayfieldReadMoveLeftBottomRow-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadMoveLeftBottomRow hi (encoded)] [SP+0: AfterPlayfieldReadMoveLeftBottomRow lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadMoveLeftBottomRow hi (encoded)] [SP+1: AfterPlayfieldReadMoveLeftBottomRow lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadMoveLeftBottomRow hi (encoded)] [SP+2: AfterPlayfieldReadMoveLeftBottomRow lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadMoveLeftBottomRow:
           ;; If temp1, set temp5 = 1
@@ -2096,16 +2144,22 @@ ShouldPreserveFacingInlineNo1:
           jmp ShouldPreserveFacingInlineYes1
 GetAnimationState:
 
-          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(AfterGetPlayerAnimationStateInline1-1)
+          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 12
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterGetPlayerAnimationStateInline1-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerAnimationStateInline1 hi (encoded)]
           lda # <(AfterGetPlayerAnimationStateInline1-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerAnimationStateInline1 hi (encoded)] [SP+0: AfterGetPlayerAnimationStateInline1 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerAnimationStateInline1 hi (encoded)] [SP+1: AfterGetPlayerAnimationStateInline1 lo] [SP+0: GetPlayerAnimationStateFunction hi (raw)]
           lda # <(GetPlayerAnimationStateFunction-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerAnimationStateInline1 hi (encoded)] [SP+2: AfterGetPlayerAnimationStateInline1 lo] [SP+1: GetPlayerAnimationStateFunction hi (raw)] [SP+0: GetPlayerAnimationStateFunction lo]
+          ldx # 12
           jmp BS_jsr
 AfterGetPlayerAnimationStateInline1:
 
@@ -2303,16 +2357,22 @@ CheckTemp2RangeLeftThird:
           lda temp6
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadMoveRightCurrentRow-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadMoveRightCurrentRow-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadMoveRightCurrentRow hi (encoded)]
           lda # <(AfterPlayfieldReadMoveRightCurrentRow-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadMoveRightCurrentRow hi (encoded)] [SP+0: AfterPlayfieldReadMoveRightCurrentRow lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadMoveRightCurrentRow hi (encoded)] [SP+1: AfterPlayfieldReadMoveRightCurrentRow lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadMoveRightCurrentRow hi (encoded)] [SP+2: AfterPlayfieldReadMoveRightCurrentRow lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadMoveRightCurrentRow:
 
@@ -2371,16 +2431,22 @@ CheckBottomRow:
           lda temp6
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadMoveRightBottomRow-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadMoveRightBottomRow-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadMoveRightBottomRow hi (encoded)]
           lda # <(AfterPlayfieldReadMoveRightBottomRow-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadMoveRightBottomRow hi (encoded)] [SP+0: AfterPlayfieldReadMoveRightBottomRow lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadMoveRightBottomRow hi (encoded)] [SP+1: AfterPlayfieldReadMoveRightBottomRow lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadMoveRightBottomRow hi (encoded)] [SP+2: AfterPlayfieldReadMoveRightBottomRow lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadMoveRightBottomRow:
 
@@ -2497,16 +2563,22 @@ ShouldPreserveFacingInlineNo2:
           jmp ShouldPreserveFacingInlineYes2
 GetAnimationStateRight:
 
-          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(AfterGetPlayerAnimationStateInline2-1)
+          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 12
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterGetPlayerAnimationStateInline2-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerAnimationStateInline2 hi (encoded)]
           lda # <(AfterGetPlayerAnimationStateInline2-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerAnimationStateInline2 hi (encoded)] [SP+0: AfterGetPlayerAnimationStateInline2 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerAnimationStateInline2 hi (encoded)] [SP+1: AfterGetPlayerAnimationStateInline2 lo] [SP+0: GetPlayerAnimationStateFunction hi (raw)]
           lda # <(GetPlayerAnimationStateFunction-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerAnimationStateInline2 hi (encoded)] [SP+2: AfterGetPlayerAnimationStateInline2 lo] [SP+1: GetPlayerAnimationStateFunction hi (raw)] [SP+0: GetPlayerAnimationStateFunction lo]
+          ldx # 12
           jmp BS_jsr
 AfterGetPlayerAnimationStateInline2:
 
@@ -2641,16 +2713,22 @@ InputHandleLeftPortPlayerFunction:
 
           ;; block movement during attack animations (states 13-15)
 
-          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(AfterGetPlayerAnimationStateLeftPort-1)
+          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 12
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterGetPlayerAnimationStateLeftPort-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerAnimationStateLeftPort hi (encoded)]
           lda # <(AfterGetPlayerAnimationStateLeftPort-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerAnimationStateLeftPort hi (encoded)] [SP+0: AfterGetPlayerAnimationStateLeftPort lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerAnimationStateLeftPort hi (encoded)] [SP+1: AfterGetPlayerAnimationStateLeftPort lo] [SP+0: GetPlayerAnimationStateFunction hi (raw)]
           lda # <(GetPlayerAnimationStateFunction-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerAnimationStateLeftPort hi (encoded)] [SP+2: AfterGetPlayerAnimationStateLeftPort lo] [SP+1: GetPlayerAnimationStateFunction hi (raw)] [SP+0: GetPlayerAnimationStateFunction lo]
+          ldx # 12
           jmp BS_jsr
 AfterGetPlayerAnimationStateLeftPort:
 
@@ -2723,16 +2801,22 @@ DoneLeftPortMovement:
 
 IHLP_RadishGoblinMovement .proc
 
-          ;; Cross-bank call to RadishGoblinHandleInput in bank 12
-          lda # >(AfterRadishGoblinHandleInputLeftPort-1)
+          ;; Cross-bank call to RadishGoblinHandleInput in bank 11
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterRadishGoblinHandleInputLeftPort-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterRadishGoblinHandleInputLeftPort hi (encoded)]
           lda # <(AfterRadishGoblinHandleInputLeftPort-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterRadishGoblinHandleInputLeftPort hi (encoded)] [SP+0: AfterRadishGoblinHandleInputLeftPort lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(RadishGoblinHandleInput-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterRadishGoblinHandleInputLeftPort hi (encoded)] [SP+1: AfterRadishGoblinHandleInputLeftPort lo] [SP+0: RadishGoblinHandleInput hi (raw)]
           lda # <(RadishGoblinHandleInput-1)
           pha
-                    ldx # 11
+          ;; STACK PICTURE: [SP+3: AfterRadishGoblinHandleInputLeftPort hi (encoded)] [SP+2: AfterRadishGoblinHandleInputLeftPort lo] [SP+1: RadishGoblinHandleInput hi (raw)] [SP+0: RadishGoblinHandleInput lo]
+          ldx # 11
           jmp BS_jsr
 AfterRadishGoblinHandleInputLeftPort:
 
@@ -2743,16 +2827,22 @@ AfterRadishGoblinHandleInputLeftPort:
 
 IHLP_FlyingMovement .proc
 
-          ;; Cross-bank call to HandleFlyingCharacterMovement in bank 12
-          lda # >(AfterHandleFlyingCharacterMovementLeftPort-1)
+          ;; Cross-bank call to HandleFlyingCharacterMovement in bank 11
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterHandleFlyingCharacterMovementLeftPort-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterHandleFlyingCharacterMovementLeftPort hi (encoded)]
           lda # <(AfterHandleFlyingCharacterMovementLeftPort-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterHandleFlyingCharacterMovementLeftPort hi (encoded)] [SP+0: AfterHandleFlyingCharacterMovementLeftPort lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(HandleFlyingCharacterMovement-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterHandleFlyingCharacterMovementLeftPort hi (encoded)] [SP+1: AfterHandleFlyingCharacterMovementLeftPort lo] [SP+0: HandleFlyingCharacterMovement hi (raw)]
           lda # <(HandleFlyingCharacterMovement-1)
           pha
-                    ldx # 11
+          ;; STACK PICTURE: [SP+3: AfterHandleFlyingCharacterMovementLeftPort hi (encoded)] [SP+2: AfterHandleFlyingCharacterMovementLeftPort lo] [SP+1: HandleFlyingCharacterMovement hi (raw)] [SP+0: HandleFlyingCharacterMovement lo]
+          ldx # 11
           jmp BS_jsr
 AfterHandleFlyingCharacterMovementLeftPort:
 
@@ -2901,16 +2991,22 @@ AfterRadishGoblinHandleStickDownLeftPort:
 
 DispatchCharacterDownHandleRoboTitoDownLeftPort .proc
 
-          ;; Cross-bank call to RoboTitoDown in bank 13
-          lda # >(AfterRoboTitoDownInput1-1)
+          ;; Cross-bank call to RoboTitoDown in bank 12
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterRoboTitoDownInput1-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterRoboTitoDownInput1 hi (encoded)]
           lda # <(AfterRoboTitoDownInput1-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterRoboTitoDownInput1 hi (encoded)] [SP+0: AfterRoboTitoDownInput1 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(RoboTitoDown-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterRoboTitoDownInput1 hi (encoded)] [SP+1: AfterRoboTitoDownInput1 lo] [SP+0: RoboTitoDown hi (raw)]
           lda # <(RoboTitoDown-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterRoboTitoDownInput1 hi (encoded)] [SP+2: AfterRoboTitoDownInput1 lo] [SP+1: RoboTitoDown hi (raw)] [SP+0: RoboTitoDown lo]
+          ldx # 12
           jmp BS_jsr
 AfterRoboTitoDownInput1:
 
@@ -3355,16 +3451,22 @@ HGI_HandleRadishGoblinDown2 .proc
           ;; Radish Goblin: drop momentum + normal guarding
           ;; Returns: Far (return otherbank)
 
-          ;; Cross-bank call to RadishGoblinHandleStickDown in bank 12
-          lda # >(AfterRadishGoblinHandleStickDownRightPort-1)
+          ;; Cross-bank call to RadishGoblinHandleStickDown in bank 11
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterRadishGoblinHandleStickDownRightPort-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterRadishGoblinHandleStickDownRightPort hi (encoded)]
           lda # <(AfterRadishGoblinHandleStickDownRightPort-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterRadishGoblinHandleStickDownRightPort hi (encoded)] [SP+0: AfterRadishGoblinHandleStickDownRightPort lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(RadishGoblinHandleStickDown-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterRadishGoblinHandleStickDownRightPort hi (encoded)] [SP+1: AfterRadishGoblinHandleStickDownRightPort lo] [SP+0: RadishGoblinHandleStickDown hi (raw)]
           lda # <(RadishGoblinHandleStickDown-1)
           pha
-                    ldx # 11
+          ;; STACK PICTURE: [SP+3: AfterRadishGoblinHandleStickDownRightPort hi (encoded)] [SP+2: AfterRadishGoblinHandleStickDownRightPort lo] [SP+1: RadishGoblinHandleStickDown hi (raw)] [SP+0: RadishGoblinHandleStickDown lo]
+          ldx # 11
           jmp BS_jsr
 AfterRadishGoblinHandleStickDownRightPort:
 
@@ -3375,16 +3477,22 @@ AfterRadishGoblinHandleStickDownRightPort:
 
 DCD_HandleRoboTitoDown2 .proc
 
-          ;; Cross-bank call to RoboTitoDown in bank 13
-          lda # >(AfterRoboTitoDownInput2-1)
+          ;; Cross-bank call to RoboTitoDown in bank 12
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterRoboTitoDownInput2-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterRoboTitoDownInput2 hi (encoded)]
           lda # <(AfterRoboTitoDownInput2-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterRoboTitoDownInput2 hi (encoded)] [SP+0: AfterRoboTitoDownInput2 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(RoboTitoDown-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterRoboTitoDownInput2 hi (encoded)] [SP+1: AfterRoboTitoDownInput2 lo] [SP+0: RoboTitoDown hi (raw)]
           lda # <(RoboTitoDown-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterRoboTitoDownInput2 hi (encoded)] [SP+2: AfterRoboTitoDownInput2 lo] [SP+1: RoboTitoDown hi (raw)] [SP+0: RoboTitoDown lo]
+          ldx # 12
           jmp BS_jsr
 AfterRoboTitoDownInput2:
 

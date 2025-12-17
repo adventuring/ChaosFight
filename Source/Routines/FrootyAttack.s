@@ -73,7 +73,6 @@ FrootyAttack .proc
           ;; Player 1 or 3: check joy1fire
 
           lda temp2
-          cmp # 0
           bne CheckJoy1Fire
           jmp FrootyCheckJoy0
 CheckJoy1Fire:
@@ -246,16 +245,22 @@ SpawnProjectile:
 
           ;; Override missile lifetime with charge time (in frames)
 
-          ;; Cross-bank call to SpawnMissile in bank 7
-          lda # >(AfterSpawnMissileFrooty-1)
+          ;; Cross-bank call to SpawnMissile in bank 6
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterSpawnMissileFrooty-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSpawnMissileFrooty hi (encoded)]
           lda # <(AfterSpawnMissileFrooty-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSpawnMissileFrooty hi (encoded)] [SP+0: AfterSpawnMissileFrooty lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SpawnMissile-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSpawnMissileFrooty hi (encoded)] [SP+1: AfterSpawnMissileFrooty lo] [SP+0: SpawnMissile hi (raw)]
           lda # <(SpawnMissile-1)
           pha
-                    ldx # 6
+          ;; STACK PICTURE: [SP+3: AfterSpawnMissileFrooty hi (encoded)] [SP+2: AfterSpawnMissileFrooty lo] [SP+1: SpawnMissile hi (raw)] [SP+0: SpawnMissile lo]
+          ldx # 6
           jmp BS_jsr
 AfterSpawnMissileFrooty:
 

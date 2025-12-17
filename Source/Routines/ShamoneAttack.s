@@ -69,15 +69,21 @@ ShamoneAttack:
 
           ;; Then execute the attack (inline former PerformMeleeAttack)
 
-          ;; Cross-bank call to SpawnMissile in bank 7
-          lda # >(ShamoneAttackSpawnMissileReturn-1)
+          ;; Cross-bank call to SpawnMissile in bank 6
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(ShamoneAttackSpawnMissileReturn-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: ShamoneAttackSpawnMissileReturn hi (encoded)]
           lda # <(ShamoneAttackSpawnMissileReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: ShamoneAttackSpawnMissileReturn hi (encoded)] [SP+0: ShamoneAttackSpawnMissileReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SpawnMissile-1)
           pha
+          ;; STACK PICTURE: [SP+2: ShamoneAttackSpawnMissileReturn hi (encoded)] [SP+1: ShamoneAttackSpawnMissileReturn lo] [SP+0: SpawnMissile hi (raw)]
           lda # <(SpawnMissile-1)
           pha
+          ;; STACK PICTURE: [SP+3: ShamoneAttackSpawnMissileReturn hi (encoded)] [SP+2: ShamoneAttackSpawnMissileReturn lo] [SP+1: SpawnMissile hi (raw)] [SP+0: SpawnMissile lo]
           ldx # 6
           jmp BS_jsr
 

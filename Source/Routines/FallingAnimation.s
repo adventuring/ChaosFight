@@ -115,16 +115,22 @@ Player1TargetDone:
           ;; Constraints: Must be colocated with FallingAnimation1
           lda # 24
           sta temp3
-          ;; Cross-bank call to MovePlayerToTarget in bank 6
-          lda # >(FallingAnimationPlayer1Return-1)
+          ;; Cross-bank call to MovePlayerToTarget in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(FallingAnimationPlayer1Return-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: FallingAnimationPlayer1Return hi (encoded)]
           lda # <(FallingAnimationPlayer1Return-1)
           pha
+          ;; STACK PICTURE: [SP+1: FallingAnimationPlayer1Return hi (encoded)] [SP+0: FallingAnimationPlayer1Return lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(MovePlayerToTarget-1)
           pha
+          ;; STACK PICTURE: [SP+2: FallingAnimationPlayer1Return hi (encoded)] [SP+1: FallingAnimationPlayer1Return lo] [SP+0: MovePlayerToTarget hi (raw)]
           lda # <(MovePlayerToTarget-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: FallingAnimationPlayer1Return hi (encoded)] [SP+2: FallingAnimationPlayer1Return lo] [SP+1: MovePlayerToTarget hi (raw)] [SP+0: MovePlayerToTarget lo]
+          ldx # 5
           jmp BS_jsr
 FallingAnimationPlayer1Return:
           ;; Increment fallComplete if player reached target
@@ -201,16 +207,22 @@ Player2TargetDone:
           ;; Constraints: Must be colocated with FallingAnimation1
           lda # 24
           sta temp3
-          ;; Cross-bank call to MovePlayerToTarget in bank 6
-          lda # >(AfterMovePlayerToTargetP2-1)
+          ;; Cross-bank call to MovePlayerToTarget in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterMovePlayerToTargetP2-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterMovePlayerToTargetP2 hi (encoded)]
           lda # <(AfterMovePlayerToTargetP2-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterMovePlayerToTargetP2 hi (encoded)] [SP+0: AfterMovePlayerToTargetP2 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(MovePlayerToTarget-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterMovePlayerToTargetP2 hi (encoded)] [SP+1: AfterMovePlayerToTargetP2 lo] [SP+0: MovePlayerToTarget hi (raw)]
           lda # <(MovePlayerToTarget-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterMovePlayerToTargetP2 hi (encoded)] [SP+2: AfterMovePlayerToTargetP2 lo] [SP+1: MovePlayerToTarget hi (raw)] [SP+0: MovePlayerToTarget lo]
+          ldx # 5
           jmp BS_jsr
 AfterMovePlayerToTargetP2:
           ;; Increment fallComplete if player reached target
@@ -255,16 +267,22 @@ MovePlayer3:
           sta temp2
           lda # 24
           sta temp3
-          ;; Cross-bank call to MovePlayerToTarget in bank 6
-          lda # >(AfterMovePlayerToTargetP3-1)
+          ;; Cross-bank call to MovePlayerToTarget in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterMovePlayerToTargetP3-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterMovePlayerToTargetP3 hi (encoded)]
           lda # <(AfterMovePlayerToTargetP3-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterMovePlayerToTargetP3 hi (encoded)] [SP+0: AfterMovePlayerToTargetP3 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(MovePlayerToTarget-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterMovePlayerToTargetP3 hi (encoded)] [SP+1: AfterMovePlayerToTargetP3 lo] [SP+0: MovePlayerToTarget hi (raw)]
           lda # <(MovePlayerToTarget-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterMovePlayerToTargetP3 hi (encoded)] [SP+2: AfterMovePlayerToTargetP3 lo] [SP+1: MovePlayerToTarget hi (raw)] [SP+0: MovePlayerToTarget lo]
+          ldx # 5
           jmp BS_jsr
 AfterMovePlayerToTargetP3:
 
@@ -294,7 +312,6 @@ DonePlayer3Move:
           ;; Move Player 4 from quadrant to target (if active)
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne MovePlayer4
 
 MovePlayer4:
@@ -313,16 +330,22 @@ MovePlayer4:
           sta temp2
           lda # 24
           sta temp3
-          ;; Cross-bank call to MovePlayerToTarget in bank 6
-          lda # >(AfterMovePlayerToTargetP4-1)
+          ;; Cross-bank call to MovePlayerToTarget in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterMovePlayerToTargetP4-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterMovePlayerToTargetP4 hi (encoded)]
           lda # <(AfterMovePlayerToTargetP4-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterMovePlayerToTargetP4 hi (encoded)] [SP+0: AfterMovePlayerToTargetP4 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(MovePlayerToTarget-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterMovePlayerToTargetP4 hi (encoded)] [SP+1: AfterMovePlayerToTargetP4 lo] [SP+0: MovePlayerToTarget hi (raw)]
           lda # <(MovePlayerToTarget-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterMovePlayerToTargetP4 hi (encoded)] [SP+2: AfterMovePlayerToTargetP4 lo] [SP+1: MovePlayerToTarget hi (raw)] [SP+0: MovePlayerToTarget lo]
+          ldx # 5
           jmp BS_jsr
 AfterMovePlayerToTargetP4:
           ;; Increment fallComplete if player reached target
@@ -358,30 +381,42 @@ UpdateSprites:
           ;; dynamically
           ;; Use dynamic sprite setting instead of relying on player
           ;; declarations
-          ;; Cross-bank call to SetSpritePositions in bank 6
-          lda # >(AfterSetSpritePositions-1)
+          ;; Cross-bank call to SetSpritePositions in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterSetSpritePositions-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetSpritePositions hi (encoded)]
           lda # <(AfterSetSpritePositions-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetSpritePositions hi (encoded)] [SP+0: AfterSetSpritePositions lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetSpritePositions-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetSpritePositions hi (encoded)] [SP+1: AfterSetSpritePositions lo] [SP+0: SetSpritePositions hi (raw)]
           lda # <(SetSpritePositions-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterSetSpritePositions hi (encoded)] [SP+2: AfterSetSpritePositions lo] [SP+1: SetSpritePositions hi (raw)] [SP+0: SetSpritePositions lo]
+          ldx # 5
           jmp BS_jsr
 AfterSetSpritePositions:
 
 
-          ;; Cross-bank call to SetPlayerSprites in bank 6
-          lda # >(AfterSetPlayerSpritesFalling-1)
+          ;; Cross-bank call to SetPlayerSprites in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterSetPlayerSpritesFalling-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerSpritesFalling hi (encoded)]
           lda # <(AfterSetPlayerSpritesFalling-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerSpritesFalling hi (encoded)] [SP+0: AfterSetPlayerSpritesFalling lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerSprites-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerSpritesFalling hi (encoded)] [SP+1: AfterSetPlayerSpritesFalling lo] [SP+0: SetPlayerSprites hi (raw)]
           lda # <(SetPlayerSprites-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerSpritesFalling hi (encoded)] [SP+2: AfterSetPlayerSpritesFalling lo] [SP+1: SetPlayerSprites hi (raw)] [SP+0: SetPlayerSprites lo]
+          ldx # 5
           jmp BS_jsr
 AfterSetPlayerSpritesFalling:
 
@@ -412,16 +447,22 @@ FallingComplete1 .proc
           ;; switching modes
           ;; Note: BeginGameLoop will use final positions from falling
           ;; animation
-          ;; Cross-bank call to BeginGameLoop in bank 11
-          lda # >(AfterBeginGameLoop-1)
+          ;; Cross-bank call to BeginGameLoop in bank 10
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterBeginGameLoop-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterBeginGameLoop hi (encoded)]
           lda # <(AfterBeginGameLoop-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterBeginGameLoop hi (encoded)] [SP+0: AfterBeginGameLoop lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(BeginGameLoop-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterBeginGameLoop hi (encoded)] [SP+1: AfterBeginGameLoop lo] [SP+0: BeginGameLoop hi (raw)]
           lda # <(BeginGameLoop-1)
           pha
-                    ldx # 10
+          ;; STACK PICTURE: [SP+3: AfterBeginGameLoop hi (encoded)] [SP+2: AfterBeginGameLoop lo] [SP+1: BeginGameLoop hi (raw)] [SP+0: BeginGameLoop lo]
+          ldx # 10
           jmp BS_jsr
 AfterBeginGameLoop:
 
@@ -429,16 +470,22 @@ AfterBeginGameLoop:
           ;; Transition to Game Mode
           lda ModeGame
           sta gameMode
-          ;; Cross-bank call to ChangeGameMode in bank 14
-          lda # >(AfterChangeGameModeFalling-1)
+          ;; Cross-bank call to ChangeGameMode in bank 13
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterChangeGameModeFalling-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterChangeGameModeFalling hi (encoded)]
           lda # <(AfterChangeGameModeFalling-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterChangeGameModeFalling hi (encoded)] [SP+0: AfterChangeGameModeFalling lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(ChangeGameMode-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterChangeGameModeFalling hi (encoded)] [SP+1: AfterChangeGameModeFalling lo] [SP+0: ChangeGameMode hi (raw)]
           lda # <(ChangeGameMode-1)
           pha
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterChangeGameModeFalling hi (encoded)] [SP+2: AfterChangeGameModeFalling lo] [SP+1: ChangeGameMode hi (raw)] [SP+0: ChangeGameMode lo]
+          ldx # 13
           jmp BS_jsr
 AfterChangeGameModeFalling:
 

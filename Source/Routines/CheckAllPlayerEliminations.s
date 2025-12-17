@@ -52,15 +52,21 @@ CheckAllPlayerEliminations:
           lda # 0
           sta currentPlayer
 CAPE_Loop:
-          ;; Cross-bank call to CheckPlayerElimination in bank 14
-          lda # >(CAPE_CheckPlayerEliminationReturn-1)
+          ;; Cross-bank call to CheckPlayerElimination in bank 13
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(CAPE_CheckPlayerEliminationReturn-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: CAPE_CheckPlayerEliminationReturn hi (encoded)]
           lda # <(CAPE_CheckPlayerEliminationReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: CAPE_CheckPlayerEliminationReturn hi (encoded)] [SP+0: CAPE_CheckPlayerEliminationReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckPlayerElimination-1)
           pha
+          ;; STACK PICTURE: [SP+2: CAPE_CheckPlayerEliminationReturn hi (encoded)] [SP+1: CAPE_CheckPlayerEliminationReturn lo] [SP+0: CheckPlayerElimination hi (raw)]
           lda # <(CheckPlayerElimination-1)
           pha
+          ;; STACK PICTURE: [SP+3: CAPE_CheckPlayerEliminationReturn hi (encoded)] [SP+2: CAPE_CheckPlayerEliminationReturn lo] [SP+1: CheckPlayerElimination hi (raw)] [SP+0: CheckPlayerElimination lo]
           ldx # 13
           jmp BS_jsr
 
@@ -77,14 +83,20 @@ CAPE_LoopDone:
           ;; CheckGameEndCondition)
           ;; Game ends when 1 or fewer players remain
           ;; Cross-bank call to CountRemainingPlayers in bank 13
-          lda # >(AfterCountRemainingPlayers-1)
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterCountRemainingPlayers-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCountRemainingPlayers hi (encoded)]
           lda # <(AfterCountRemainingPlayers-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCountRemainingPlayers hi (encoded)] [SP+0: AfterCountRemainingPlayers lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CountRemainingPlayers-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCountRemainingPlayers hi (encoded)] [SP+1: AfterCountRemainingPlayers lo] [SP+0: CountRemainingPlayers hi (raw)]
           lda # <(CountRemainingPlayers-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterCountRemainingPlayers hi (encoded)] [SP+2: AfterCountRemainingPlayers lo] [SP+1: CountRemainingPlayers hi (raw)] [SP+0: CountRemainingPlayers lo]
           ldx # 13
           jmp BS_jsr
 
@@ -103,14 +115,20 @@ CheckGameEndContinue:
 
 CheckGameEndFindWinner:
           ;; Cross-bank call to FindWinner in bank 13
-          lda # >(AfterFindWinner-1)
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterFindWinner-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterFindWinner hi (encoded)]
           lda # <(AfterFindWinner-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterFindWinner hi (encoded)] [SP+0: AfterFindWinner lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(FindWinner-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterFindWinner hi (encoded)] [SP+1: AfterFindWinner lo] [SP+0: FindWinner hi (raw)]
           lda # <(FindWinner-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterFindWinner hi (encoded)] [SP+2: AfterFindWinner lo] [SP+1: FindWinner hi (raw)] [SP+0: FindWinner lo]
           ldx # 13
           jmp BS_jsr
 

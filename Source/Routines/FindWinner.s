@@ -21,14 +21,20 @@ FindWinner .proc
           sta currentPlayer
 FW_Loop:
           ;; Cross-bank call to IsPlayerEliminated in bank 12
-          lda # ((>(AfterIsPlayerEliminated-1)) & $0f) | $d0  ; Encode bank 13 in high nybble
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterIsPlayerEliminated-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterIsPlayerEliminated hi (encoded)]
           lda # <(AfterIsPlayerEliminated-1)
           pha
-          lda # ((>(IsPlayerEliminated-1)) & $0f) | $c0  ; Encode bank 12 in high nybble
+          ;; STACK PICTURE: [SP+1: AfterIsPlayerEliminated hi (encoded)] [SP+0: AfterIsPlayerEliminated lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(IsPlayerEliminated-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterIsPlayerEliminated hi (encoded)] [SP+1: AfterIsPlayerEliminated lo] [SP+0: IsPlayerEliminated hi (raw)]
           lda # <(IsPlayerEliminated-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterIsPlayerEliminated hi (encoded)] [SP+2: AfterIsPlayerEliminated lo] [SP+1: IsPlayerEliminated hi (raw)] [SP+0: IsPlayerEliminated lo]
           ldx # 12  ; Target bank 12
           jmp BS_jsr
 

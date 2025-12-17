@@ -145,7 +145,6 @@ SpawnMissile .proc
           sta missileY_W,x + temp6
           ;; Facing left, spawn left
           lda temp4
-          cmp # 0
           bne CheckFacingRight
           ;; let missileX[temp1] = missileX[temp1] + CharacterMissileSpawnOffsetLeft[temp5]
 CheckFacingRight:
@@ -213,7 +212,6 @@ SpawnOffsetDone:
           sta temp6
           ;; Get base X velocity
           lda temp4
-          cmp # 0
           bne ApplyFacingDirectionDone
           ;; Set temp6 = 0 - temp6
           lda # 0
@@ -434,7 +432,6 @@ CheckGravityFlag:
 
           lda temp5
           and MissileFlagGravity
-          cmp # 0
           bne ApplyGravity
           jmp GravityDone
 ApplyGravity:
@@ -456,7 +453,6 @@ GravityDone
           ;; Consolidated friction calculation - handles both positive and negative velocities
           lda temp5
           and MissileFlagFriction
-          cmp # 0
           bne CheckVelocityNonZero
           jmp FrictionDone
 CheckVelocityNonZero:
@@ -470,7 +466,6 @@ CheckVelocityNonZero:
           sta missileVelocityXCalc
           ;; Zero velocity, no friction to apply
           lda missileVelocityXCalc
-          cmp # 0
           bne ApplyFriction
           jmp FrictionDone
 ApplyFriction:
@@ -769,21 +764,26 @@ BoundsCheckDone
           sta temp5
           lda temp5
           and MissileFlagHitBackground
-          cmp # 0
           bne CheckPlayfieldCollision
           jmp PlayfieldCollisionDone
 CheckPlayfieldCollision:
 
-          ;; Cross-bank call to MissileCollPF in bank 8
-          lda # >(return_point-1)
+          ;; Cross-bank call to MissileCollPF in bank 7
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterMissileCollPF-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterMissileCollPF hi (encoded)]
+          lda # <(AfterMissileCollPF-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterMissileCollPF hi (encoded)] [SP+0: AfterMissileCollPF lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(MissileCollPF-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterMissileCollPF hi (encoded)] [SP+1: AfterMissileCollPF lo] [SP+0: MissileCollPF hi (raw)]
           lda # <(MissileCollPF-1)
           pha
-                    ldx # 7
+          ;; STACK PICTURE: [SP+3: AfterMissileCollPF hi (encoded)] [SP+2: AfterMissileCollPF lo] [SP+1: MissileCollPF hi (raw)] [SP+0: MissileCollPF lo]
+          ldx # 7
           jmp BS_jsr
 AfterMissileCollPF:
 
@@ -801,16 +801,22 @@ PlayfieldCollisionDone
 
           ;; Check collision with players
           ;; This handles both visible missiles and AOE attacks
-          ;; Cross-bank call to CheckAllMissileCollisions in bank 8
-          lda # >(return_point-1)
+          ;; Cross-bank call to CheckAllMissileCollisions in bank 7
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterCheckAllMissileCollisions-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterCheckAllMissileCollisions hi (encoded)]
+          lda # <(AfterCheckAllMissileCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckAllMissileCollisions hi (encoded)] [SP+0: AfterCheckAllMissileCollisions lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckAllMissileCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckAllMissileCollisions hi (encoded)] [SP+1: AfterCheckAllMissileCollisions lo] [SP+0: CheckAllMissileCollisions hi (raw)]
           lda # <(CheckAllMissileCollisions-1)
           pha
-                    ldx # 7
+          ;; STACK PICTURE: [SP+3: AfterCheckAllMissileCollisions hi (encoded)] [SP+2: AfterCheckAllMissileCollisions lo] [SP+1: CheckAllMissileCollisions hi (raw)] [SP+0: CheckAllMissileCollisions lo]
+          ldx # 7
           jmp BS_jsr
 AfterCheckAllMissileCollisions:
 
@@ -831,7 +837,6 @@ CheckGuardStatus:
           sta temp6
           ;; Guarding - bounce instead of damage
           lda temp6
-          cmp # 0
           bne HandleGuardBounce
           jmp HandleMissileDamage
 HandleGuardBounce:
@@ -839,16 +844,22 @@ HandleGuardBounce:
           ;; Guard bounce: play sound, invert velocity, reduce by 25%
           lda SoundGuardBlock
           sta soundEffectID_W
-          ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(return_point-1)
+          ;; Cross-bank call to PlaySoundEffect in bank 14
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterPlaySoundEffectBounce-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterPlaySoundEffectBounce hi (encoded)]
+          lda # <(AfterPlaySoundEffectBounce-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlaySoundEffectBounce hi (encoded)] [SP+0: AfterPlaySoundEffectBounce lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlaySoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlaySoundEffectBounce hi (encoded)] [SP+1: AfterPlaySoundEffectBounce lo] [SP+0: PlaySoundEffect hi (raw)]
           lda # <(PlaySoundEffect-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterPlaySoundEffectBounce hi (encoded)] [SP+2: AfterPlaySoundEffectBounce lo] [SP+1: PlaySoundEffect hi (raw)] [SP+0: PlaySoundEffect lo]
+          ldx # 14
           jmp BS_jsr
 AfterPlaySoundEffectBounce:
 
@@ -913,7 +924,6 @@ DecrementLifetime:
 
           dec missileLifetimeValue
           lda missileLifetimeValue
-          cmp # 0
           beq DeactivateMissile
           bmi DeactivateMissile
           ;; Lifetime still valid, continue
@@ -1029,16 +1039,22 @@ ColumnInRange:
           sta temp1
           lda temp3
           sta temp2
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(return_point-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadMissile-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadMissile hi (encoded)]
+          lda # <(AfterPlayfieldReadMissile-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadMissile hi (encoded)] [SP+0: AfterPlayfieldReadMissile lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadMissile hi (encoded)] [SP+1: AfterPlayfieldReadMissile lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadMissile hi (encoded)] [SP+2: AfterPlayfieldReadMissile lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadMissile:
 
@@ -1308,7 +1324,6 @@ HarpyCheckDive .proc
           ;; Not diving, skip bonus
           lda characterStateFlags_R[temp1]
           and # 4
-          cmp # 0
           bne ApplyDiveBonus
           jmp DiveCheckDone
 ApplyDiveBonus:
@@ -1429,7 +1444,6 @@ CheckLightWeight:
           lda # 0
           sta impulseStrength
           lda impulseStrength
-          cmp # 0
           bne SetMinimumImpulse
           lda # 1
           sta impulseStrength
@@ -1479,16 +1493,22 @@ KnockbackDone
           ;; Play hit sound effect
           lda SoundAttackHit
           sta temp1
-          ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(return_point-1)
+          ;; Cross-bank call to PlaySoundEffect in bank 14
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterPlaySoundEffectHit-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
-          lda # <(return_point-1)
+          ;; STACK PICTURE: [SP+0: AfterPlaySoundEffectHit hi (encoded)]
+          lda # <(AfterPlaySoundEffectHit-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlaySoundEffectHit hi (encoded)] [SP+0: AfterPlaySoundEffectHit lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlaySoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlaySoundEffectHit hi (encoded)] [SP+1: AfterPlaySoundEffectHit lo] [SP+0: PlaySoundEffect hi (raw)]
           lda # <(PlaySoundEffect-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterPlaySoundEffectHit hi (encoded)] [SP+2: AfterPlaySoundEffectHit lo] [SP+1: PlaySoundEffect hi (raw)] [SP+0: PlaySoundEffect lo]
+          ldx # 14
           jmp BS_jsr
 AfterPlaySoundEffectHit:
 
@@ -1561,7 +1581,6 @@ HandleMissileBounce .proc
           ;; Reduce velocity by half (bit shift right by 1)
           lda temp5
           and MissileFlagFriction
-          cmp # 0
           bne ApplyFrictionDamping
           jmp BounceDone
 ApplyFrictionDamping:

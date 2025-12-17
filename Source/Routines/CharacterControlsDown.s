@@ -138,16 +138,22 @@ CheckRowBelowStandard:
           lda temp4
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadDownFirst-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadDownFirst-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadDownFirst hi (encoded)]
           lda # <(AfterPlayfieldReadDownFirst-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadDownFirst hi (encoded)] [SP+0: AfterPlayfieldReadDownFirst lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadDownFirst hi (encoded)] [SP+1: AfterPlayfieldReadDownFirst lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadDownFirst hi (encoded)] [SP+2: AfterPlayfieldReadDownFirst lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadDownFirst:
 
@@ -458,16 +464,22 @@ CheckRowBelow:
           lda temp4
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadHarpyDown-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadHarpyDown-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadHarpyDown hi (encoded)]
           lda # <(AfterPlayfieldReadHarpyDown-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadHarpyDown hi (encoded)] [SP+0: AfterPlayfieldReadHarpyDown lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadHarpyDown hi (encoded)] [SP+1: AfterPlayfieldReadHarpyDown lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadHarpyDown hi (encoded)] [SP+2: AfterPlayfieldReadHarpyDown lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadHarpyDown:
 
@@ -652,16 +664,22 @@ CheckRowBelowFrooty:
           lda temp4
           sta temp2
 
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadFrootyDown-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadFrootyDown-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadFrootyDown hi (encoded)]
           lda # <(AfterPlayfieldReadFrootyDown-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadFrootyDown hi (encoded)] [SP+0: AfterPlayfieldReadFrootyDown lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadFrootyDown hi (encoded)] [SP+1: AfterPlayfieldReadFrootyDown lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadFrootyDown hi (encoded)] [SP+2: AfterPlayfieldReadFrootyDown lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadFrootyDown:
 
@@ -732,7 +750,6 @@ RoboTitoDown .proc
 
           lda characterStateFlags_R[temp1]
           and # 1
-          cmp # 0
           bne RoboTitoInitiateDrop
 RoboTitoInitiateDrop:
 
@@ -910,16 +927,22 @@ StandardGuard = .StandardGuard
 
           ;; Check if guard is allowed (not in cooldown)
 
-          ;; Cross-bank call to CheckGuardCooldown in bank 6
-          lda # >(AfterCheckGuardCooldownStandard-1)
+          ;; Cross-bank call to CheckGuardCooldown in bank 5
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterCheckGuardCooldownStandard-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckGuardCooldownStandard hi (encoded)]
           lda # <(AfterCheckGuardCooldownStandard-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckGuardCooldownStandard hi (encoded)] [SP+0: AfterCheckGuardCooldownStandard lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckGuardCooldown-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckGuardCooldownStandard hi (encoded)] [SP+1: AfterCheckGuardCooldownStandard lo] [SP+0: CheckGuardCooldown hi (raw)]
           lda # <(CheckGuardCooldown-1)
           pha
-                    ldx # 5
+          ;; STACK PICTURE: [SP+3: AfterCheckGuardCooldownStandard hi (encoded)] [SP+2: AfterCheckGuardCooldownStandard lo] [SP+1: CheckGuardCooldown hi (raw)] [SP+0: CheckGuardCooldown lo]
+          ldx # 5
           jmp BS_jsr
 AfterCheckGuardCooldownStandard:
 

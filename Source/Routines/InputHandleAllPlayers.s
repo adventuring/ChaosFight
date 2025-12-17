@@ -77,7 +77,6 @@ HandlePlayers12:
 
           ;; Inlined IsPlayerAlive check for player 0
           lda temp2
-          cmp # 0
           bne CheckPlayer0State
           jmp InputDonePlayer0Input
 CheckPlayer0State:
@@ -120,7 +119,6 @@ InputDonePlayer0Input
           lda playerHealth,x
           sta temp2
           lda temp2
-          cmp # 0
           bne CheckPlayer1State
 InputDonePlayer1Input:
 CheckPlayer1State:
@@ -239,7 +237,6 @@ InputHandleQuadtariPlayers .proc
 
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer3Character
 
           jmp InputDonePlayer3InputDone
@@ -260,7 +257,6 @@ CheckPlayer3Character:
           lda playerHealth,x
           sta temp2
           lda temp2
-          cmp # 0
           bne CheckPlayer3State
           jmp InputDonePlayer3Input
 CheckPlayer3State:
@@ -294,7 +290,6 @@ InputDonePlayer3Input
           ;; Constraints: Must be colocated with InputHandleQuadtariPlayers
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer4Character
 
           jmp InputDonePlayer4Input
@@ -315,7 +310,6 @@ CheckPlayer4Character:
           lda playerHealth,x
           sta temp2
           lda temp2
-          cmp # 0
           bne CheckPlayer4State
           jmp InputDonePlayer4Input
 CheckPlayer4State:

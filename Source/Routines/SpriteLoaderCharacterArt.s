@@ -288,16 +288,22 @@ Bank3Dispatch
 
           ;; temp3=action, temp5=player
 
-          ;; Cross-bank call to SetPlayerCharacterArtBank3 in bank 3
-          lda # >(SLCAB3_return_point-1)
+          ;; Cross-bank call to SetPlayerCharacterArtBank3 in bank 2
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(SLCAB3_return_point-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: SLCAB3_return_point hi (encoded)]
           lda # <(SLCAB3_return_point-1)
           pha
+          ;; STACK PICTURE: [SP+1: SLCAB3_return_point hi (encoded)] [SP+0: SLCAB3_return_point lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerCharacterArtBank3-1)
           pha
+          ;; STACK PICTURE: [SP+2: SLCAB3_return_point hi (encoded)] [SP+1: SLCAB3_return_point lo] [SP+0: SetPlayerCharacterArtBank3 hi (raw)]
           lda # <(SetPlayerCharacterArtBank3-1)
           pha
-                    ldx # 2
+          ;; STACK PICTURE: [SP+3: SLCAB3_return_point hi (encoded)] [SP+2: SLCAB3_return_point lo] [SP+1: SetPlayerCharacterArtBank3 hi (raw)] [SP+0: SetPlayerCharacterArtBank3 lo]
+          ldx # 2
           jmp BS_jsr
 SLCAB3_return_point:
 
@@ -365,16 +371,22 @@ Bank4Dispatch
 
           ;; temp3=action, temp5=player
 
-          ;; Cross-bank call to SetPlayerCharacterArtBank4 in bank 4
-          lda # >(SLCAB4_return_point-1)
+          ;; Cross-bank call to SetPlayerCharacterArtBank4 in bank 3
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(SLCAB4_return_point-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: SLCAB4_return_point hi (encoded)]
           lda # <(SLCAB4_return_point-1)
           pha
+          ;; STACK PICTURE: [SP+1: SLCAB4_return_point hi (encoded)] [SP+0: SLCAB4_return_point lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerCharacterArtBank4-1)
           pha
+          ;; STACK PICTURE: [SP+2: SLCAB4_return_point hi (encoded)] [SP+1: SLCAB4_return_point lo] [SP+0: SetPlayerCharacterArtBank4 hi (raw)]
           lda # <(SetPlayerCharacterArtBank4-1)
           pha
-                    ldx # 3
+          ;; STACK PICTURE: [SP+3: SLCAB4_return_point hi (encoded)] [SP+2: SLCAB4_return_point lo] [SP+1: SetPlayerCharacterArtBank4 hi (raw)] [SP+0: SetPlayerCharacterArtBank4 lo]
+          ldx # 3
           jmp BS_jsr
 SLCAB4_return_point:
 

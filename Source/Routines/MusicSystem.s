@@ -117,30 +117,42 @@ LoadSongFromBank1:
 
           ;; Song in Bank 1
 
-          ;; Cross-bank call to LoadSongPointer in bank 1
-          lda # >(AfterLoadSongPointer-1)
+          ;; Cross-bank call to LoadSongPointer in bank 0
+          ;; Return address: ENCODED with caller bank 14 ($e0) for BS_return to decode
+          lda # ((>(AfterLoadSongPointer-1)) & $0f) | $e0  ;;; Encode bank 14 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadSongPointer hi (encoded)]
           lda # <(AfterLoadSongPointer-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadSongPointer hi (encoded)] [SP+0: AfterLoadSongPointer lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadSongPointer-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadSongPointer hi (encoded)] [SP+1: AfterLoadSongPointer lo] [SP+0: LoadSongPointer hi (raw)]
           lda # <(LoadSongPointer-1)
           pha
-                    ldx # 0
+          ;; STACK PICTURE: [SP+3: AfterLoadSongPointer hi (encoded)] [SP+2: AfterLoadSongPointer lo] [SP+1: LoadSongPointer hi (raw)] [SP+0: LoadSongPointer lo]
+          ldx # 0
           jmp BS_jsr
 AfterLoadSongPointer:
 
 
-          ;; Cross-bank call to LoadSongVoice1PointerBank1 in bank 1
-          lda # >(AfterLoadSongVoice1Pointer-1)
+          ;; Cross-bank call to LoadSongVoice1PointerBank1 in bank 0
+          ;; Return address: ENCODED with caller bank 14 ($e0) for BS_return to decode
+          lda # ((>(AfterLoadSongVoice1Pointer-1)) & $0f) | $e0  ;;; Encode bank 14 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadSongVoice1Pointer hi (encoded)]
           lda # <(AfterLoadSongVoice1Pointer-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadSongVoice1Pointer hi (encoded)] [SP+0: AfterLoadSongVoice1Pointer lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadSongVoice1PointerBank1-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadSongVoice1Pointer hi (encoded)] [SP+1: AfterLoadSongVoice1Pointer lo] [SP+0: LoadSongVoice1PointerBank1 hi (raw)]
           lda # <(LoadSongVoice1PointerBank1-1)
           pha
-                    ldx # 0
+          ;; STACK PICTURE: [SP+3: AfterLoadSongVoice1Pointer hi (encoded)] [SP+2: AfterLoadSongVoice1Pointer lo] [SP+1: LoadSongVoice1PointerBank1 hi (raw)] [SP+0: LoadSongVoice1PointerBank1 lo]
+          ldx # 0
           jmp BS_jsr
 AfterLoadSongVoice1Pointer:
 
@@ -385,7 +397,6 @@ CalculateMusicVoiceEnvelope .proc
           ;; Get voice-specific variables
 
           lda temp1
-          cmp # 0
           bne GetVoice1Vars
           jmp GetVoice0Vars
 GetVoice1Vars:
@@ -675,14 +686,20 @@ UpdateMusicVoice0 .proc
           beq LoadMusicNote0FromBank14
 
           ;; Song in Bank 0 - Cross-bank call to LoadMusicNote0 in bank 0
-          lda # >(AfterLoadMusicNote0Bank0-1)
+          ;; Return address: ENCODED with caller bank 14 ($e0) for BS_return to decode
+          lda # ((>(AfterLoadMusicNote0Bank0-1)) & $0f) | $e0  ;;; Encode bank 14 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadMusicNote0Bank0 hi (encoded)]
           lda # <(AfterLoadMusicNote0Bank0-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadMusicNote0Bank0 hi (encoded)] [SP+0: AfterLoadMusicNote0Bank0 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadMusicNote0-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadMusicNote0Bank0 hi (encoded)] [SP+1: AfterLoadMusicNote0Bank0 lo] [SP+0: LoadMusicNote0 hi (raw)]
           lda # <(LoadMusicNote0-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterLoadMusicNote0Bank0 hi (encoded)] [SP+2: AfterLoadMusicNote0Bank0 lo] [SP+1: LoadMusicNote0 hi (raw)] [SP+0: LoadMusicNote0 lo]
           ldx # 0
           jmp BS_jsr
 AfterLoadMusicNote0Bank0:
@@ -797,14 +814,20 @@ UpdateMusicVoice1 .proc
           beq LoadMusicNote1FromBank14
 
           ;; Song in Bank 0 - Cross-bank call to LoadMusicNote1 in bank 0
-          lda # >(AfterLoadMusicNote1Bank0-1)
+          ;; Return address: ENCODED with caller bank 14 ($e0) for BS_return to decode
+          lda # ((>(AfterLoadMusicNote1Bank0-1)) & $0f) | $e0  ;;; Encode bank 14 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterLoadMusicNote1Bank0 hi (encoded)]
           lda # <(AfterLoadMusicNote1Bank0-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterLoadMusicNote1Bank0 hi (encoded)] [SP+0: AfterLoadMusicNote1Bank0 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(LoadMusicNote1-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterLoadMusicNote1Bank0 hi (encoded)] [SP+1: AfterLoadMusicNote1Bank0 lo] [SP+0: LoadMusicNote1 hi (raw)]
           lda # <(LoadMusicNote1-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterLoadMusicNote1Bank0 hi (encoded)] [SP+2: AfterLoadMusicNote1Bank0 lo] [SP+1: LoadMusicNote1 hi (raw)] [SP+0: LoadMusicNote1 lo]
           ldx # 0
           jmp BS_jsr
 AfterLoadMusicNote1Bank0:

@@ -82,20 +82,22 @@ MainLoopModePublisherPrelude .proc
           ;; This leaves the 2-byte normal return address from on gameMode cross-bank call to on the sta
 
           ;; So we must use return thisbank (RTS) to pop that 2-byte normal address
-          ;; Cross-bank call to PublisherPreludeMain in bank 14
-          lda # >(AfterPublisherPreludeMain-1)
+          ;; Cross-bank call to PublisherPreludeMain in bank 13
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterPublisherPreludeMain-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
-          ;; STACK PICTURE: [SP+2: MainLoop ret hi] [SP+1: MainLoop ret lo] [SP+0: AfterPublisherPreludeMain hi]
+          ;; STACK PICTURE: [SP+0: AfterPublisherPreludeMain hi (encoded)]
           lda # <(AfterPublisherPreludeMain-1)
           pha
-          ;; STACK PICTURE: [SP+3: MainLoop ret hi] [SP+2: MainLoop ret lo] [SP+1: AfterPublisherPreludeMain hi] [SP+0: AfterPublisherPreludeMain lo]
+          ;; STACK PICTURE: [SP+1: AfterPublisherPreludeMain hi (encoded)] [SP+0: AfterPublisherPreludeMain lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PublisherPreludeMain-1)
           pha
-          ;; STACK PICTURE: [SP+4: MainLoop ret hi] [SP+3: MainLoop ret lo] [SP+2: AfterPublisherPreludeMain hi] [SP+1: AfterPublisherPreludeMain lo] [SP+0: PublisherPreludeMain hi]
+          ;; STACK PICTURE: [SP+2: AfterPublisherPreludeMain hi (encoded)] [SP+1: AfterPublisherPreludeMain lo] [SP+0: PublisherPreludeMain hi (raw)]
           lda # <(PublisherPreludeMain-1)
           pha
-          ;; STACK PICTURE: [SP+5: MainLoop ret hi] [SP+4: MainLoop ret lo] [SP+3: AfterPublisherPreludeMain hi] [SP+2: AfterPublisherPreludeMain lo] [SP+1: PublisherPreludeMain hi] [SP+0: PublisherPreludeMain lo]
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterPublisherPreludeMain hi (encoded)] [SP+2: AfterPublisherPreludeMain lo] [SP+1: PublisherPreludeMain hi (raw)] [SP+0: PublisherPreludeMain lo]
+          ldx # 13
           jmp BS_jsr
 AfterPublisherPreludeMain:
           ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (BS_return consumed 4 bytes, left 2-byte near return)
@@ -111,20 +113,22 @@ MainLoopModeAuthorPrelude .proc
           ;; Returns: Near (return thisbank)
           ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (from jsr MainLoopModeAuthorPrelude)
           ;; Must use return thisbank (RTS) to match the near call
-          ;; Cross-bank call to AuthorPrelude in bank 14
-          lda # >(AfterAuthorPrelude-1)
+          ;; Cross-bank call to AuthorPrelude in bank 13
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterAuthorPrelude-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
-          ;; STACK PICTURE: [SP+2: MainLoop ret hi] [SP+1: MainLoop ret lo] [SP+0: AfterAuthorPrelude hi]
+          ;; STACK PICTURE: [SP+0: AfterAuthorPrelude hi (encoded)]
           lda # <(AfterAuthorPrelude-1)
           pha
-          ;; STACK PICTURE: [SP+3: MainLoop ret hi] [SP+2: MainLoop ret lo] [SP+1: AfterAuthorPrelude hi] [SP+0: AfterAuthorPrelude lo]
+          ;; STACK PICTURE: [SP+1: AfterAuthorPrelude hi (encoded)] [SP+0: AfterAuthorPrelude lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(AuthorPrelude-1)
           pha
-          ;; STACK PICTURE: [SP+4: MainLoop ret hi] [SP+3: MainLoop ret lo] [SP+2: AfterAuthorPrelude hi] [SP+1: AfterAuthorPrelude lo] [SP+0: AuthorPrelude hi]
+          ;; STACK PICTURE: [SP+2: AfterAuthorPrelude hi (encoded)] [SP+1: AfterAuthorPrelude lo] [SP+0: AuthorPrelude hi (raw)]
           lda # <(AuthorPrelude-1)
           pha
-          ;; STACK PICTURE: [SP+5: MainLoop ret hi] [SP+4: MainLoop ret lo] [SP+3: AfterAuthorPrelude hi] [SP+2: AfterAuthorPrelude lo] [SP+1: AuthorPrelude hi] [SP+0: AuthorPrelude lo]
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterAuthorPrelude hi (encoded)] [SP+2: AfterAuthorPrelude lo] [SP+1: AuthorPrelude hi (raw)] [SP+0: AuthorPrelude lo]
+          ldx # 13
           jmp BS_jsr
 AfterAuthorPrelude:
           ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (BS_return consumed 4 bytes, left 2-byte near return)
@@ -140,20 +144,22 @@ MainLoopModeTitleScreen .proc
           ;; Returns: Near (return thisbank)
           ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (from jsr MainLoopModeTitleScreen)
           ;; Must use return thisbank (RTS) to match the near call
-          ;; Cross-bank call to TitleScreenMain in bank 14
-          lda # >(AfterTitleScreenMain-1)
+          ;; Cross-bank call to TitleScreenMain in bank 13
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterTitleScreenMain-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
-          ;; STACK PICTURE: [SP+2: MainLoop ret hi] [SP+1: MainLoop ret lo] [SP+0: AfterTitleScreenMain hi]
+          ;; STACK PICTURE: [SP+0: AfterTitleScreenMain hi (encoded)]
           lda # <(AfterTitleScreenMain-1)
           pha
-          ;; STACK PICTURE: [SP+3: MainLoop ret hi] [SP+2: MainLoop ret lo] [SP+1: AfterTitleScreenMain hi] [SP+0: AfterTitleScreenMain lo]
+          ;; STACK PICTURE: [SP+1: AfterTitleScreenMain hi (encoded)] [SP+0: AfterTitleScreenMain lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(TitleScreenMain-1)
           pha
-          ;; STACK PICTURE: [SP+4: MainLoop ret hi] [SP+3: MainLoop ret lo] [SP+2: AfterTitleScreenMain hi] [SP+1: AfterTitleScreenMain lo] [SP+0: TitleScreenMain hi]
+          ;; STACK PICTURE: [SP+2: AfterTitleScreenMain hi (encoded)] [SP+1: AfterTitleScreenMain lo] [SP+0: TitleScreenMain hi (raw)]
           lda # <(TitleScreenMain-1)
           pha
-          ;; STACK PICTURE: [SP+5: MainLoop ret hi] [SP+4: MainLoop ret lo] [SP+3: AfterTitleScreenMain hi] [SP+2: AfterTitleScreenMain lo] [SP+1: TitleScreenMain hi] [SP+0: TitleScreenMain lo]
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterTitleScreenMain hi (encoded)] [SP+2: AfterTitleScreenMain lo] [SP+1: TitleScreenMain hi (raw)] [SP+0: TitleScreenMain lo]
+          ldx # 13
           jmp BS_jsr
 AfterTitleScreenMain:
           ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (BS_return consumed 4 bytes, left 2-byte near return)
@@ -169,20 +175,22 @@ MainLoopModeCharacterSelect .proc
           ;; Returns: Near (return thisbank)
           ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (from jsr MainLoopModeCharacterSelect)
           ;; Must use return thisbank (RTS) to match the near call
-          ;; Cross-bank call to CharacterSelectInputEntry in bank 9
-          lda # >(AfterCharacterSelectInputEntry-1)
+          ;; Cross-bank call to CharacterSelectInputEntry in bank 8
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterCharacterSelectInputEntry-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
-          ;; STACK PICTURE: [SP+2: MainLoop ret hi] [SP+1: MainLoop ret lo] [SP+0: AfterCharacterSelectInputEntry hi]
+          ;; STACK PICTURE: [SP+0: AfterCharacterSelectInputEntry hi (encoded)]
           lda # <(AfterCharacterSelectInputEntry-1)
           pha
-          ;; STACK PICTURE: [SP+3: MainLoop ret hi] [SP+2: MainLoop ret lo] [SP+1: AfterCharacterSelectInputEntry hi] [SP+0: AfterCharacterSelectInputEntry lo]
+          ;; STACK PICTURE: [SP+1: AfterCharacterSelectInputEntry hi (encoded)] [SP+0: AfterCharacterSelectInputEntry lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CharacterSelectInputEntry-1)
           pha
-          ;; STACK PICTURE: [SP+4: MainLoop ret hi] [SP+3: MainLoop ret lo] [SP+2: AfterCharacterSelectInputEntry hi] [SP+1: AfterCharacterSelectInputEntry lo] [SP+0: CharacterSelectInputEntry hi]
+          ;; STACK PICTURE: [SP+2: AfterCharacterSelectInputEntry hi (encoded)] [SP+1: AfterCharacterSelectInputEntry lo] [SP+0: CharacterSelectInputEntry hi (raw)]
           lda # <(CharacterSelectInputEntry-1)
           pha
-          ;; STACK PICTURE: [SP+5: MainLoop ret hi] [SP+4: MainLoop ret lo] [SP+3: AfterCharacterSelectInputEntry hi] [SP+2: AfterCharacterSelectInputEntry lo] [SP+1: CharacterSelectInputEntry hi] [SP+0: CharacterSelectInputEntry lo]
-                    ldx # 8
+          ;; STACK PICTURE: [SP+3: AfterCharacterSelectInputEntry hi (encoded)] [SP+2: AfterCharacterSelectInputEntry lo] [SP+1: CharacterSelectInputEntry hi (raw)] [SP+0: CharacterSelectInputEntry lo]
+          ldx # 8
           jmp BS_jsr
 AfterCharacterSelectInputEntry:
           ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (BS_return consumed 4 bytes, left 2-byte near return)
@@ -196,20 +204,22 @@ MainLoopModeFallingAnimation
           ;; Returns: Near (return thisbank)
           ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (from jsr MainLoopModeFallingAnimation)
           ;; Must use return thisbank (RTS) to match the near call
-          ;; Cross-bank call to FallingAnimation1 in bank 11
-          lda # >(AfterFallingAnimation1-1)
+          ;; Cross-bank call to FallingAnimation1 in bank 10
+          ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
+          lda # ((>(AfterFallingAnimation1-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
           pha
-          ;; STACK PICTURE: [SP+2: MainLoop ret hi] [SP+1: MainLoop ret lo] [SP+0: AfterFallingAnimation1 hi]
+          ;; STACK PICTURE: [SP+0: AfterFallingAnimation1 hi (encoded)]
           lda # <(AfterFallingAnimation1-1)
           pha
-          ;; STACK PICTURE: [SP+3: MainLoop ret hi] [SP+2: MainLoop ret lo] [SP+1: AfterFallingAnimation1 hi] [SP+0: AfterFallingAnimation1 lo]
+          ;; STACK PICTURE: [SP+1: AfterFallingAnimation1 hi (encoded)] [SP+0: AfterFallingAnimation1 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(FallingAnimation1-1)
           pha
-          ;; STACK PICTURE: [SP+4: MainLoop ret hi] [SP+3: MainLoop ret lo] [SP+2: AfterFallingAnimation1 hi] [SP+1: AfterFallingAnimation1 lo] [SP+0: FallingAnimation1 hi]
+          ;; STACK PICTURE: [SP+2: AfterFallingAnimation1 hi (encoded)] [SP+1: AfterFallingAnimation1 lo] [SP+0: FallingAnimation1 hi (raw)]
           lda # <(FallingAnimation1-1)
           pha
-          ;; STACK PICTURE: [SP+5: MainLoop ret hi] [SP+4: MainLoop ret lo] [SP+3: AfterFallingAnimation1 hi] [SP+2: AfterFallingAnimation1 lo] [SP+1: FallingAnimation1 hi] [SP+0: FallingAnimation1 lo]
-                    ldx # 10
+          ;; STACK PICTURE: [SP+3: AfterFallingAnimation1 hi (encoded)] [SP+2: AfterFallingAnimation1 lo] [SP+1: FallingAnimation1 hi (raw)] [SP+0: FallingAnimation1 lo]
+          ldx # 10
           jmp BS_jsr
 AfterFallingAnimation1:
           ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (BS_return consumed 4 bytes, left 2-byte near return)

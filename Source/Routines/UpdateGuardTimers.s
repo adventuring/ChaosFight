@@ -16,15 +16,21 @@ UpdateGuardTimers .proc
           lda # 0
           sta temp1
 UGT_Loop:
-          ;; Cross-bank call to UpdateSingleGuardTimer in bank 6
-          lda # >(UpdateGuardTimersReturn-1)
+          ;; Cross-bank call to UpdateSingleGuardTimer in bank 5
+          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
+          lda # ((>(UpdateGuardTimersReturn-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: UpdateGuardTimersReturn hi (encoded)]
           lda # <(UpdateGuardTimersReturn-1)
           pha
+          ;; STACK PICTURE: [SP+1: UpdateGuardTimersReturn hi (encoded)] [SP+0: UpdateGuardTimersReturn lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdateSingleGuardTimer-1)
           pha
+          ;; STACK PICTURE: [SP+2: UpdateGuardTimersReturn hi (encoded)] [SP+1: UpdateGuardTimersReturn lo] [SP+0: UpdateSingleGuardTimer hi (raw)]
           lda # <(UpdateSingleGuardTimer-1)
           pha
+          ;; STACK PICTURE: [SP+3: UpdateGuardTimersReturn hi (encoded)] [SP+2: UpdateGuardTimersReturn lo] [SP+1: UpdateSingleGuardTimer hi (raw)] [SP+0: UpdateSingleGuardTimer lo]
           ldx # 5
           jmp BS_jsr
 

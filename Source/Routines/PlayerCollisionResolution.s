@@ -20,7 +20,6 @@ CheckAllPlayerCollisions .proc
 
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne Use4PlayerMode
 
           ;; Set temp6 = 2 for 2-player mode
@@ -52,7 +51,6 @@ SkipCheckP1Active:
 CheckP1ActiveCollision .proc
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckPlayer2Character
 
           jmp NextOuterCollisionCheck
@@ -153,7 +151,6 @@ CheckP2ActiveCollision .proc
 
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne CheckP2Character
           jmp NextInnerCollisionCheck
 CheckP2Character:

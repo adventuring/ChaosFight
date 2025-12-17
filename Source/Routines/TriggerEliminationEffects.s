@@ -22,15 +22,21 @@ TriggerEliminationEffects:
           lda temp5
           sta temp1
           ;; PlaySoundEffect expects temp1 = sound ID
-          ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(AfterPlaySoundEffect-1)
+          ;; Cross-bank call to PlaySoundEffect in bank 14
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterPlaySoundEffectElimination-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
-          lda # <(AfterPlaySoundEffect-1)
+          ;; STACK PICTURE: [SP+0: AfterPlaySoundEffectElimination hi (encoded)]
+          lda # <(AfterPlaySoundEffectElimination-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlaySoundEffectElimination hi (encoded)] [SP+0: AfterPlaySoundEffectElimination lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlaySoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlaySoundEffectElimination hi (encoded)] [SP+1: AfterPlaySoundEffectElimination lo] [SP+0: PlaySoundEffect hi (raw)]
           lda # <(PlaySoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterPlaySoundEffectElimination hi (encoded)] [SP+2: AfterPlaySoundEffectElimination lo] [SP+1: PlaySoundEffect hi (raw)] [SP+0: PlaySoundEffect lo]
           ldx # 14
           jmp BS_jsr
 
@@ -50,7 +56,6 @@ AfterPlaySoundEffectElimination:
           ;; Inline HideEliminatedPlayerSprite
           ;; Off-screen
           lda currentPlayer
-          cmp # 0
           bne CheckPlayer1Hide
 
           lda # 200
@@ -89,7 +94,6 @@ DeactivateMissiles:
           ;; Stop any active missiles for this player - inlined
           ;; Clear missile active bit for this player (DeactivatePlayerMissiles)
           lda currentPlayer
-          cmp # 0
           bne ClearMissileBit1
           lda missileActive
           and #$FE

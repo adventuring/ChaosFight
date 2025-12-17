@@ -19,7 +19,6 @@ BudgetedMissileCollisionCheck:
           ;; Use CheckAllMissileCollisions from MissileCollision.bas which checks one player missile
           lda controllerStatus
           and # SetQuadtariDetected
-          cmp # 0
           bne Use4PlayerMode
 
           jmp BudgetedMissileCollisionCheck2P
@@ -41,14 +40,20 @@ Use4PlayerMode:
           and temp6
           sta temp4
           ;; Cross-bank call to CheckAllMissileCollisions in bank 8
-          lda # >(AfterCheckAllMissileCollisions4P-1)
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterCheckAllMissileCollisions4P-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckAllMissileCollisions4P hi (encoded)]
           lda # <(AfterCheckAllMissileCollisions4P-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckAllMissileCollisions4P hi (encoded)] [SP+0: AfterCheckAllMissileCollisions4P lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckAllMissileCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckAllMissileCollisions4P hi (encoded)] [SP+1: AfterCheckAllMissileCollisions4P lo] [SP+0: CheckAllMissileCollisions hi (raw)]
           lda # <(CheckAllMissileCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterCheckAllMissileCollisions4P hi (encoded)] [SP+2: AfterCheckAllMissileCollisions4P lo] [SP+1: CheckAllMissileCollisions hi (raw)] [SP+0: CheckAllMissileCollisions lo]
           ldx # 7
           jmp BS_jsr
 
@@ -76,14 +81,20 @@ BudgetedMissileCollisionCheck2P:
           and temp6
           sta temp4
           ;; Cross-bank call to CheckAllMissileCollisions in bank 8
-          lda # >(AfterCheckAllMissileCollisions2P-1)
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterCheckAllMissileCollisions2P-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckAllMissileCollisions2P hi (encoded)]
           lda # <(AfterCheckAllMissileCollisions2P-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckAllMissileCollisions2P hi (encoded)] [SP+0: AfterCheckAllMissileCollisions2P lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckAllMissileCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckAllMissileCollisions2P hi (encoded)] [SP+1: AfterCheckAllMissileCollisions2P lo] [SP+0: CheckAllMissileCollisions hi (raw)]
           lda # <(CheckAllMissileCollisions-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterCheckAllMissileCollisions2P hi (encoded)] [SP+2: AfterCheckAllMissileCollisions2P lo] [SP+1: CheckAllMissileCollisions hi (raw)] [SP+0: CheckAllMissileCollisions lo]
           ldx # 7
           jmp BS_jsr
 

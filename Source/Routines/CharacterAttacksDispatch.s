@@ -228,7 +228,6 @@ CheckEnhancedJumpButton:
           ;; Players 2-3 (Quadtari players) cannot have enhanced controllers
 
           lda currentPlayer
-          cmp # 0
           bne CheckPlayer1Enhanced
           jsr CEJB_CheckPlayer0
           jmp CEJB_Done
@@ -302,7 +301,6 @@ CEJB_CheckPlayer2 .proc
 
           lda controllerStatus
           and # 4
-          cmp # 0
           bne CEJB_ReadButton2Label
 CEJB_ReadButton2Label:
 
@@ -314,7 +312,6 @@ CEJB_ReadButton2 .proc
 
           lda INPT2
           and # 128
-          cmp # 0
           bne CEJB_DonePlayer2
           lda # 1
           sta temp3
@@ -333,7 +330,6 @@ CEJB_CheckPlayer2Joy2bPlus .proc
 
           lda controllerStatus
           and # 8
-          cmp # 0
           bne CEJB_ReadButton2Label2
 CEJB_ReadButton2Label2:
 

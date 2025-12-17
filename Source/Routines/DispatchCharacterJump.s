@@ -41,7 +41,9 @@ DispatchCharacterJump .proc
 
           lda temp4
           cmp # CharacterRoboTito
-          beq DCJ_RoboTitoJump
+          bne DCJ_NotRoboTito
+          jmp DCJ_RoboTitoJump
+DCJ_NotRoboTito:
 
           ;; Default: StandardJump for all other characters
           jmp DCJ_StandardJump
@@ -50,11 +52,28 @@ DispatchCharacterJump .proc
 
 DCJ_StandardJump .proc
           ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call StandardJump
-          ;; Cross-bank call to StandardJump in bank 11
+          ;; Preserve the return address from DispatchCharacterJump's caller (ProcessUpAction in Bank 7)
+          ;; and re-encode it for BS_jsr
+          pla
+          sta temp6  ;;; Save low byte
+          pla
+          sta temp7  ;;; Save high byte (raw address in Bank 7)
+          ;; Encode return address with caller bank 7 ($70) for BS_return to decode
+          lda temp7
+          and # $0f  ;;; Get low nybble
+          ora # $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: return hi (encoded with bank 7)]
+          lda temp6
+          pha
+          ;; STACK PICTURE: [SP+1: return hi (encoded)] [SP+0: return lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(StandardJump-1)
           pha
+          ;; STACK PICTURE: [SP+2: return hi (encoded)] [SP+1: return lo] [SP+0: StandardJump hi (raw)]
           lda # <(StandardJump-1)
           pha
+          ;; STACK PICTURE: [SP+3: return hi (encoded)] [SP+2: return lo] [SP+1: StandardJump hi (raw)] [SP+0: StandardJump lo]
           ldx # 10
           jmp BS_jsr
 
@@ -62,11 +81,28 @@ DCJ_StandardJump .proc
 
 DCJ_BernieJump .proc
           ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call BernieJump
-          ;; Cross-bank call to BernieJump in bank 11
+          ;; Preserve the return address from DispatchCharacterJump's caller (ProcessUpAction in Bank 7)
+          ;; and re-encode it for BS_jsr
+          pla
+          sta temp6  ;;; Save low byte
+          pla
+          sta temp7  ;;; Save high byte (raw address in Bank 7)
+          ;; Encode return address with caller bank 7 ($70) for BS_return to decode
+          lda temp7
+          and # $0f  ;;; Get low nybble
+          ora # $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: return hi (encoded with bank 7)]
+          lda temp6
+          pha
+          ;; STACK PICTURE: [SP+1: return hi (encoded)] [SP+0: return lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(BernieJump-1)
           pha
+          ;; STACK PICTURE: [SP+2: return hi (encoded)] [SP+1: return lo] [SP+0: BernieJump hi (raw)]
           lda # <(BernieJump-1)
           pha
+          ;; STACK PICTURE: [SP+3: return hi (encoded)] [SP+2: return lo] [SP+1: BernieJump hi (raw)] [SP+0: BernieJump lo]
           ldx # 10
           jmp BS_jsr
 
@@ -75,44 +111,112 @@ DCJ_BernieJump .proc
 DCJ_DragonJump .proc
           ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call FreeFlightCharacterJump
           ;; DragonOfStormsJump is empty and should call FreeFlightCharacterJump
-          ;; Cross-bank call to FreeFlightCharacterJump in bank 11
+          ;; Preserve the return address from DispatchCharacterJump's caller (ProcessUpAction in Bank 7)
+          ;; and re-encode it for BS_jsr
+          pla
+          sta temp6  ;;; Save low byte
+          pla
+          sta temp7  ;;; Save high byte (raw address in Bank 7)
+          ;; Encode return address with caller bank 7 ($70) for BS_return to decode
+          lda temp7
+          and # $0f  ;;; Get low nybble
+          ora # $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: return hi (encoded with bank 7)]
+          lda temp6
+          pha
+          ;; STACK PICTURE: [SP+1: return hi (encoded)] [SP+0: return lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(FreeFlightCharacterJump-1)
           pha
+          ;; STACK PICTURE: [SP+2: return hi (encoded)] [SP+1: return lo] [SP+0: FreeFlightCharacterJump hi (raw)]
           lda # <(FreeFlightCharacterJump-1)
           pha
+          ;; STACK PICTURE: [SP+3: return hi (encoded)] [SP+2: return lo] [SP+1: FreeFlightCharacterJump hi (raw)] [SP+0: FreeFlightCharacterJump lo]
           ldx # 10
           jmp BS_jsr
 .pend
 
 DCJ_HarpyJump .proc
           ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call HarpyJump
-          ;; Cross-bank call to HarpyJump in bank 11
+          ;; Preserve the return address from DispatchCharacterJump's caller (ProcessUpAction in Bank 7)
+          ;; and re-encode it for BS_jsr
+          pla
+          sta temp6  ;;; Save low byte
+          pla
+          sta temp7  ;;; Save high byte (raw address in Bank 7)
+          ;; Encode return address with caller bank 7 ($70) for BS_return to decode
+          lda temp7
+          and # $0f  ;;; Get low nybble
+          ora # $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: return hi (encoded with bank 7)]
+          lda temp6
+          pha
+          ;; STACK PICTURE: [SP+1: return hi (encoded)] [SP+0: return lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(HarpyJump-1)
           pha
+          ;; STACK PICTURE: [SP+2: return hi (encoded)] [SP+1: return lo] [SP+0: HarpyJump hi (raw)]
           lda # <(HarpyJump-1)
           pha
+          ;; STACK PICTURE: [SP+3: return hi (encoded)] [SP+2: return lo] [SP+1: HarpyJump hi (raw)] [SP+0: HarpyJump lo]
           ldx # 10
           jmp BS_jsr
 .pend
 
 DCJ_FrootyJump .proc
           ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call FrootyJump
-          ;; Cross-bank call to FrootyJump in bank 11
+          ;; Preserve the return address from DispatchCharacterJump's caller (ProcessUpAction in Bank 7)
+          ;; and re-encode it for BS_jsr
+          pla
+          sta temp6  ;;; Save low byte
+          pla
+          sta temp7  ;;; Save high byte (raw address in Bank 7)
+          ;; Encode return address with caller bank 7 ($70) for BS_return to decode
+          lda temp7
+          and # $0f  ;;; Get low nybble
+          ora # $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: return hi (encoded with bank 7)]
+          lda temp6
+          pha
+          ;; STACK PICTURE: [SP+1: return hi (encoded)] [SP+0: return lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(FrootyJump-1)
           pha
+          ;; STACK PICTURE: [SP+2: return hi (encoded)] [SP+1: return lo] [SP+0: FrootyJump hi (raw)]
           lda # <(FrootyJump-1)
           pha
+          ;; STACK PICTURE: [SP+3: return hi (encoded)] [SP+2: return lo] [SP+1: FrootyJump hi (raw)] [SP+0: FrootyJump lo]
           ldx # 10
           jmp BS_jsr
 .pend
 
 DCJ_RoboTitoJump .proc
           ;; Tail call: ProcessUpAction tail-calls DispatchCharacterJump, so we can tail-call RoboTitoJump
-          ;; Cross-bank call to RoboTitoJump in bank 10
+          ;; Preserve the return address from DispatchCharacterJump's caller (ProcessUpAction in Bank 7)
+          ;; and re-encode it for BS_jsr
+          pla
+          sta temp6  ;;; Save low byte
+          pla
+          sta temp7  ;;; Save high byte (raw address in Bank 7)
+          ;; Encode return address with caller bank 7 ($70) for BS_return to decode
+          lda temp7
+          and # $0f  ;;; Get low nybble
+          ora # $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: return hi (encoded with bank 7)]
+          lda temp6
+          pha
+          ;; STACK PICTURE: [SP+1: return hi (encoded)] [SP+0: return lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(RoboTitoJump-1)
           pha
+          ;; STACK PICTURE: [SP+2: return hi (encoded)] [SP+1: return lo] [SP+0: RoboTitoJump hi (raw)]
           lda # <(RoboTitoJump-1)
           pha
+          ;; STACK PICTURE: [SP+3: return hi (encoded)] [SP+2: return lo] [SP+1: RoboTitoJump hi (raw)] [SP+0: RoboTitoJump lo]
           ldx # 9
           jmp BS_jsr
 .pend

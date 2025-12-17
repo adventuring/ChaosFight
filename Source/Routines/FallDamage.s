@@ -86,7 +86,6 @@ CheckFallDamageImmunity:
           lda WeightDividedBy20,x
           sta temp2
           lda temp2
-          cmp # 0
           bne CheckWeightMultiplier
           ;; Set temp4 = 0 jmp WeightMultDone
 CheckWeightMultiplier:
@@ -260,16 +259,22 @@ StoreRecoveryFrames:
                     let playerState[currentPlayer] = temp2 | MaskAnimationRecovering
           lda SoundLandingDamage
           sta temp1
-          ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(AfterPlaySoundEffectFallDamage-1)
+          ;; Cross-bank call to PlaySoundEffect in bank 14
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterPlaySoundEffectFallDamage-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlaySoundEffectFallDamage hi (encoded)]
           lda # <(AfterPlaySoundEffectFallDamage-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlaySoundEffectFallDamage hi (encoded)] [SP+0: AfterPlaySoundEffectFallDamage lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlaySoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlaySoundEffectFallDamage hi (encoded)] [SP+1: AfterPlaySoundEffectFallDamage lo] [SP+0: PlaySoundEffect hi (raw)]
           lda # <(PlaySoundEffect-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterPlaySoundEffectFallDamage hi (encoded)] [SP+2: AfterPlaySoundEffectFallDamage lo] [SP+1: PlaySoundEffect hi (raw)] [SP+0: PlaySoundEffect lo]
+          ldx # 14
           jmp BS_jsr
 AfterPlaySoundEffectFallDamage:
 
@@ -585,7 +590,6 @@ HarpyDive .proc
           ;; Vertical: 4 pixels/frame (downward)
           ;; Facing left: set negative momentum (252 = -4 in signed
           lda temp6
-          cmp # 0
           bne SetHorizontalMomentumRight
           jmp SetHorizontalMomentumRight
 SetHorizontalMomentumRight:
@@ -640,16 +644,22 @@ SetVerticalMomentum .proc
           ;; Spawn mêlée attack missile for swoop hit detection
           lda currentPlayer
           sta temp1
-          ;; Cross-bank call to SpawnMissile in bank 7
-          lda # >(AfterSpawnMissileHarpy-1)
+          ;; Cross-bank call to SpawnMissile in bank 6
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterSpawnMissileHarpy-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSpawnMissileHarpy hi (encoded)]
           lda # <(AfterSpawnMissileHarpy-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSpawnMissileHarpy hi (encoded)] [SP+0: AfterSpawnMissileHarpy lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SpawnMissile-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSpawnMissileHarpy hi (encoded)] [SP+1: AfterSpawnMissileHarpy lo] [SP+0: SpawnMissile hi (raw)]
           lda # <(SpawnMissile-1)
           pha
-                    ldx # 6
+          ;; STACK PICTURE: [SP+3: AfterSpawnMissileHarpy hi (encoded)] [SP+2: AfterSpawnMissileHarpy lo] [SP+1: SpawnMissile hi (raw)] [SP+0: SpawnMissile lo]
+          ldx # 6
           jmp BS_jsr
 AfterSpawnMissileHarpy:
 

@@ -81,5 +81,5 @@ LoadSoundPointerOutOfRange .proc
 .pend
 
 LoadSoundPointerReturn:
-          rts
+          jmp BS_return
 

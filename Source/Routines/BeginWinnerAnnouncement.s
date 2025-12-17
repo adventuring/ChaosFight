@@ -60,7 +60,6 @@ BeginWinnerAnnouncement .proc
           ;; Get winner’s character index
           lda winnerPlayerIndex_R
           sta temp1
-          cmp # 0
           bne CheckPlayer1Character
           ;; Set temp2 = playerCharacter[0]
           lda # 0
@@ -125,15 +124,21 @@ LookupThemeSong:
 
           ;; Start winner’s character theme song
           ;; Cross-bank call to StartMusic in bank 15
-          lda # >(AfterStartMusicWinner-1)
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterStartMusicWinner-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterStartMusicWinner hi (encoded)]
           lda # <(AfterStartMusicWinner-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterStartMusicWinner hi (encoded)] [SP+0: AfterStartMusicWinner lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(StartMusic-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterStartMusicWinner hi (encoded)] [SP+1: AfterStartMusicWinner lo] [SP+0: StartMusic hi (raw)]
           lda # <(StartMusic-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterStartMusicWinner hi (encoded)] [SP+2: AfterStartMusicWinner lo] [SP+1: StartMusic hi (raw)] [SP+0: StartMusic lo]
+          ldx # 14
           jmp BS_jsr
 AfterStartMusicWinner:
 

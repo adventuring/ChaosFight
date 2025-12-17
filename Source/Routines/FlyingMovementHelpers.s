@@ -53,15 +53,21 @@ ColumnInRange:
           sta temp1
           lda temp7
           sta temp2
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadMoveLeft1-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadMoveLeft1-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadMoveLeft1 hi (encoded)]
           lda # <(AfterPlayfieldReadMoveLeft1-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadMoveLeft1 hi (encoded)] [SP+0: AfterPlayfieldReadMoveLeft1 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadMoveLeft1 hi (encoded)] [SP+1: AfterPlayfieldReadMoveLeft1 lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadMoveLeft1 hi (encoded)] [SP+2: AfterPlayfieldReadMoveLeft1 lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
           ldx # 15
           jmp BS_jsr
 
@@ -92,15 +98,21 @@ RowInRange:
           sta temp1
           lda temp7
           sta temp2
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadMoveLeft2-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadMoveLeft2-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadMoveLeft2 hi (encoded)]
           lda # <(AfterPlayfieldReadMoveLeft2-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadMoveLeft2 hi (encoded)] [SP+0: AfterPlayfieldReadMoveLeft2 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadMoveLeft2 hi (encoded)] [SP+1: AfterPlayfieldReadMoveLeft2 lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadMoveLeft2 hi (encoded)] [SP+2: AfterPlayfieldReadMoveLeft2 lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
           ldx # 15
           jmp BS_jsr
 
@@ -203,16 +215,22 @@ HandleFlyingCharacterMovementLeftDirect .proc
 
 HandleFlyingCharacterMovementLeftFacing .proc
           jmp BS_return
-          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 13
-          lda # >(AfterGetPlayerAnimationStateLeft-1)
+          ;; Cross-bank call to GetPlayerAnimationStateFunction in bank 12
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterGetPlayerAnimationStateLeft-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerAnimationStateLeft hi (encoded)]
           lda # <(AfterGetPlayerAnimationStateLeft-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerAnimationStateLeft hi (encoded)] [SP+0: AfterGetPlayerAnimationStateLeft lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(GetPlayerAnimationStateFunction-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerAnimationStateLeft hi (encoded)] [SP+1: AfterGetPlayerAnimationStateLeft lo] [SP+0: GetPlayerAnimationStateFunction hi (raw)]
           lda # <(GetPlayerAnimationStateFunction-1)
           pha
-                    ldx # 12
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerAnimationStateLeft hi (encoded)] [SP+2: AfterGetPlayerAnimationStateLeft lo] [SP+1: GetPlayerAnimationStateFunction hi (raw)] [SP+0: GetPlayerAnimationStateFunction lo]
+          ldx # 12
           jmp BS_jsr
 AfterGetPlayerAnimationStateLeft:
 
@@ -302,16 +320,22 @@ ColumnInRangeRight:
           sta temp1
           lda temp7
           sta temp2
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadMoveRight1-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadMoveRight1-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadMoveRight1 hi (encoded)]
           lda # <(AfterPlayfieldReadMoveRight1-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadMoveRight1 hi (encoded)] [SP+0: AfterPlayfieldReadMoveRight1 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadMoveRight1 hi (encoded)] [SP+1: AfterPlayfieldReadMoveRight1 lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadMoveRight1 hi (encoded)] [SP+2: AfterPlayfieldReadMoveRight1 lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadMoveRight1:
 
@@ -339,16 +363,22 @@ AfterPlayfieldReadMoveRight1:
           sta temp1
           lda temp7
           sta temp2
-          ;; Cross-bank call to PlayfieldRead in bank 16
-          lda # >(AfterPlayfieldReadMoveRight2-1)
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadMoveRight2-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadMoveRight2 hi (encoded)]
           lda # <(AfterPlayfieldReadMoveRight2-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadMoveRight2 hi (encoded)] [SP+0: AfterPlayfieldReadMoveRight2 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlayfieldRead-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadMoveRight2 hi (encoded)] [SP+1: AfterPlayfieldReadMoveRight2 lo] [SP+0: PlayfieldRead hi (raw)]
           lda # <(PlayfieldRead-1)
           pha
-                    ldx # 15
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadMoveRight2 hi (encoded)] [SP+2: AfterPlayfieldReadMoveRight2 lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadMoveRight2:
 

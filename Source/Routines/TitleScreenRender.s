@@ -35,7 +35,6 @@ DrawTitleScreen .proc
           ;; CRITICAL: Window values must be set every frame (titlescreen kernel uses them)
           ;; gameMode 0 = Publisher Prelude, 1 = Author Prelude, 2 = Title Screen
           lda gameMode
-          cmp # 0
           bne CheckAuthorMode
 
           jmp DrawPublisherScreen
@@ -110,16 +109,22 @@ DrawTitleScreenOnly .proc
 
 DrawTitleScreenCommon .proc
           ;; Draw character parade if active (Title screen only)
-          ;; Cross-bank call to DrawParadeCharacter in bank 14
-          lda # >(AfterDrawParadeCharacter-1)
+          ;; Cross-bank call to DrawParadeCharacter in bank 13
+          ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
+          lda # ((>(AfterDrawParadeCharacter-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterDrawParadeCharacter hi (encoded)]
           lda # <(AfterDrawParadeCharacter-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterDrawParadeCharacter hi (encoded)] [SP+0: AfterDrawParadeCharacter lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(DrawParadeCharacter-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterDrawParadeCharacter hi (encoded)] [SP+1: AfterDrawParadeCharacter lo] [SP+0: DrawParadeCharacter hi (raw)]
           lda # <(DrawParadeCharacter-1)
           pha
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterDrawParadeCharacter hi (encoded)] [SP+2: AfterDrawParadeCharacter lo] [SP+1: DrawParadeCharacter hi (raw)] [SP+0: DrawParadeCharacter lo]
+          ldx # 13
           jmp BS_jsr
 AfterDrawParadeCharacter:
 

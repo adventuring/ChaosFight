@@ -67,15 +67,21 @@ PlayerEliminated:
           ;; Only clear flag if both players 3 and 4 are eliminated or
           ;; not selected
           ;; Use skip-over pattern to avoid complex || operator
-          ;; Cross-bank call to UpdatePlayers34ActiveFlag in bank 14
-          lda # >(AfterUpdatePlayers34ActiveFlag-1)
+          ;; Cross-bank call to UpdatePlayers34ActiveFlag in bank 13
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterUpdatePlayers34ActiveFlag-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterUpdatePlayers34ActiveFlag hi (encoded)]
           lda # <(AfterUpdatePlayers34ActiveFlag-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterUpdatePlayers34ActiveFlag hi (encoded)] [SP+0: AfterUpdatePlayers34ActiveFlag lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(UpdatePlayers34ActiveFlag-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterUpdatePlayers34ActiveFlag hi (encoded)] [SP+1: AfterUpdatePlayers34ActiveFlag lo] [SP+0: UpdatePlayers34ActiveFlag hi (raw)]
           lda # <(UpdatePlayers34ActiveFlag-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterUpdatePlayers34ActiveFlag hi (encoded)] [SP+2: AfterUpdatePlayers34ActiveFlag lo] [SP+1: UpdatePlayers34ActiveFlag hi (raw)] [SP+0: UpdatePlayers34ActiveFlag lo]
           ldx # 13
           jmp BS_jsr
 

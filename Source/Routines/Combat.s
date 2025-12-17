@@ -162,15 +162,21 @@ ApplyDamageToPlayer:
           sta currentPlayer
           lda # ActionHit
           sta temp2
-          ;; Cross-bank call to SetPlayerAnimation in bank 12
-          lda # >(AfterSetPlayerAnimation-1)
+          ;; Cross-bank call to SetPlayerAnimation in bank 11
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterSetPlayerAnimation-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterSetPlayerAnimation hi (encoded)]
           lda # <(AfterSetPlayerAnimation-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterSetPlayerAnimation hi (encoded)] [SP+0: AfterSetPlayerAnimation lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SetPlayerAnimation-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterSetPlayerAnimation hi (encoded)] [SP+1: AfterSetPlayerAnimation lo] [SP+0: SetPlayerAnimation hi (raw)]
           lda # <(SetPlayerAnimation-1)
           pha
+          ;; STACK PICTURE: [SP+3: AfterSetPlayerAnimation hi (encoded)] [SP+2: AfterSetPlayerAnimation lo] [SP+1: SetPlayerAnimation hi (raw)] [SP+0: SetPlayerAnimation lo]
           ldx # 11
           jmp BS_jsr
 
@@ -342,16 +348,22 @@ PlayerDies .proc
           ;; elimination effects
           lda defenderID
           sta currentPlayer
-          ;; Cross-bank call to CheckPlayerElimination in bank 14
-          lda # >(AfterCheckPlayerElimination-1)
+          ;; Cross-bank call to CheckPlayerElimination in bank 13
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterCheckPlayerElimination-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterCheckPlayerElimination hi (encoded)]
           lda # <(AfterCheckPlayerElimination-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterCheckPlayerElimination hi (encoded)] [SP+0: AfterCheckPlayerElimination lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(CheckPlayerElimination-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterCheckPlayerElimination hi (encoded)] [SP+1: AfterCheckPlayerElimination lo] [SP+0: CheckPlayerElimination hi (raw)]
           lda # <(CheckPlayerElimination-1)
           pha
-                    ldx # 13
+          ;; STACK PICTURE: [SP+3: AfterCheckPlayerElimination hi (encoded)] [SP+2: AfterCheckPlayerElimination lo] [SP+1: CheckPlayerElimination hi (raw)] [SP+0: CheckPlayerElimination lo]
+          ldx # 13
           jmp BS_jsr
 AfterCheckPlayerElimination:
 
@@ -509,7 +521,6 @@ CalculateAttackHitbox .proc
           tax
           lda playerAttackType_R,x
           sta temp1
-          cmp # 0
           bne CheckProjectileHitbox
           jmp MeleeHitbox
 CheckProjectileHitbox:
@@ -941,16 +952,22 @@ NextAttacker:
           ;; Constraints: None
           lda SoundAttackHit
           sta temp1
-          ;; Cross-bank call to PlaySoundEffect in bank 15
-          lda # >(AfterPlaySoundEffect-1)
+          ;; Cross-bank call to PlaySoundEffect in bank 14
+          ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
+          lda # ((>(AfterPlaySoundEffect-1)) & $0f) | $60  ;;; Encode bank 6 in high nybble
           pha
+          ;; STACK PICTURE: [SP+0: AfterPlaySoundEffect hi (encoded)]
           lda # <(AfterPlaySoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+1: AfterPlaySoundEffect hi (encoded)] [SP+0: AfterPlaySoundEffect lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlaySoundEffect-1)
           pha
+          ;; STACK PICTURE: [SP+2: AfterPlaySoundEffect hi (encoded)] [SP+1: AfterPlaySoundEffect lo] [SP+0: PlaySoundEffect hi (raw)]
           lda # <(PlaySoundEffect-1)
           pha
-                    ldx # 14
+          ;; STACK PICTURE: [SP+3: AfterPlaySoundEffect hi (encoded)] [SP+2: AfterPlaySoundEffect lo] [SP+1: PlaySoundEffect hi (raw)] [SP+0: PlaySoundEffect lo]
+          ldx # 14
           jmp BS_jsr
 AfterPlaySoundEffect:
 

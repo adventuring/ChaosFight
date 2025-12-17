@@ -100,6 +100,12 @@ pf48x2_X_codeend:
 	sta GRP1
 	sta VDELP0
 	sta VDELP1
+	
+	;; Clear playfield registers after bitmap drawing to prevent garbage
+	;; on subsequent scanlines or frames (fixes issue #1228)
+	sta PF0
+	sta PF1
+	sta PF2
 
           ldx temp7        ;;restore the stack pointer (use temp7, aux6 conflicts with pfScore2/lives at $c2)
           txs

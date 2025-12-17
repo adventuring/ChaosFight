@@ -8,6 +8,11 @@ draw_bmp_48x2_4:
           ldy titlescreenWindow4
           beq draw_bmp_48x2_4_done
           .fi
+          
+          ;; Clear PF0 to prevent garbage when this bitmap is active
+          ;; (PF1 and PF2 are set below, but PF0 is never set by bitmaps)
+          lda # 0
+          sta PF0
 
           lda # <(bmp_48x2_4_colors-1+bmp_48x2_4_height-bmp_48x2_4_window)
           .if  bmp_48x2_4_index

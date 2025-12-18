@@ -59,22 +59,27 @@ WarmStartClearAll:
           
           ;; Step 5: Perform input controller detection for Quadtari, Joy2b+, or MegaDrive controllers
           ;; DetectPads is in Bank 12 (same bank as WarmStart), uses jmp BS_return
-          ;; Use same-bank far call: push encoded return address, then jsr DetectPads
+          ;; Cross-bank call to DetectPads in bank 12 (same bank, but uses BS_return)
           ;; STACK PICTURE: [] (empty, WarmStart entry)
-          ;; Encode bank 12 ($c) in high nybble of return address high byte
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
           lda # ((>(AfterDetectPadsWarmStart-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
           pha
           ;; STACK PICTURE: [SP+0: AfterDetectPadsWarmStart hi (encoded)]
           lda # <(AfterDetectPadsWarmStart-1)
           pha
           ;; STACK PICTURE: [SP+1: AfterDetectPadsWarmStart hi (encoded)] [SP+0: AfterDetectPadsWarmStart lo]
-          jsr DetectPads
-          ;; STACK PICTURE: [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: jsr ret hi] [SP+0: jsr ret lo]
-          ;; DetectPads will jmp BS_return, which decodes the encoded return address (offset 2)
-          ;; and returns to AfterDetectPadsWarmStart
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(DetectPads-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterDetectPadsWarmStart hi (encoded)] [SP+1: AfterDetectPadsWarmStart lo] [SP+0: DetectPads hi (raw)]
+          lda # <(DetectPads-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterDetectPadsWarmStart hi (encoded)] [SP+2: AfterDetectPadsWarmStart lo] [SP+1: DetectPads hi (raw)] [SP+0: DetectPads lo]
+          ldx # 12
+          jmp BS_jsr
 
 AfterDetectPadsWarmStart:
-          ;; STACK PICTURE: [] (empty, BS_return consumed encoded return address)
+          ;; STACK PICTURE: [] (empty, BS_return consumed 4 bytes)
 
           ;; Step 6: Go to publisher prelude
           ;; Set game mode to Publisher Prelude

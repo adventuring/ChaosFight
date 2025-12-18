@@ -366,18 +366,22 @@ MainLoopDrawScreen .proc
 AfterDrawTitleScreen:
           ;; STACK PICTURE: [] (empty - BS_return consumed 4 bytes from DrawTitleScreen call)
 
-          ;; CRITICAL: drawscreen must be called every frame
-          ;; After DrawTitleScreen bank9 returns via BS_return, we’re back in bank 16
-          ;; MainLoopDrawScreen is in bank 16, and drawscreen is also in bank 16
-          ;; Use batariBASIC’s drawscreen statement which handles bank context correctly
-          ;; If gameMode >= 3, then drawscreen
+          ;; CRITICAL: drawscreen must be called every frame to establish VSYNC
+          ;; After DrawTitleScreen bank9 returns via BS_return, we're back in bank 15
+          ;; MainLoopDrawScreen is in bank 15, and drawscreen is also in bank 15 (MultiSpriteKernel.s)
+          ;; drawscreen will complete the 262-scanline cycle and jump back to MainLoop
+          ;; If gameMode >= 3, fall through to drawscreen for game modes (not title screens)
           lda gameMode
           cmp # 3
           bcc MainLoopSkipDrawScreen
-          ;; drawscreen is handled by MainLoopDrawScreen routine
-          jmp MainLoopDrawScreen
+          ;; Fall through to drawscreen (next instruction after this procedure ends)
+          ;; drawscreen is included in Bank15.s right after MainLoop routines
+          ;; CRITICAL: End the .proc here so drawscreen code follows immediately
+          .pend
+
 MainLoopSkipDrawScreen:
           jmp MainLoop
 
-.pend
+;; drawscreen is included here via Bank15.s → MultiSpriteKernel.s
+;; It will jump back to MainLoop after completing the frame
 

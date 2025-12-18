@@ -346,8 +346,16 @@ MainLoopDrawScreen .proc
           ;; CRITICAL: MainLoopDrawScreen is part of the infinite MainLoop cycle
           ;; It loops back to MainLoop, never returning
 
-          ;; Titlescreen graphics and kernel reside in bank9
-          ;; Cross-bank call to DrawTitleScreen in bank 9
+          ;; CRITICAL: Check gameMode FIRST to decide which kernel to use
+          ;; Modes 0-2: Title screens use titledrawscreen (bank 8)
+          ;; Modes 3+: Game modes use drawscreen (MultiSpriteKernel, bank 15)
+          lda gameMode
+          cmp # 3
+          bcs CallGameDrawscreen  ;; If >= 3, use game kernel
+
+          ;; Modes 0-2: Title screens
+          ;; Titlescreen graphics and kernel reside in bank8
+          ;; Cross-bank call to DrawTitleScreen in bank 8
           ;; STACK PICTURE: [] (empty)
           lda # >(AfterDrawTitleScreen-1)
           pha
@@ -361,23 +369,23 @@ MainLoopDrawScreen .proc
           lda # <(DrawTitleScreen-1)
           pha
           ;; STACK PICTURE: [SP+3: AfterDrawTitleScreen hi] [SP+2: AfterDrawTitleScreen lo] [SP+1: DrawTitleScreen hi] [SP+0: DrawTitleScreen lo]
-                    ldx # 8
+          ldx # 8
           jmp BS_jsr
 AfterDrawTitleScreen:
           ;; STACK PICTURE: [] (empty - BS_return consumed 4 bytes from DrawTitleScreen call)
+          ;; DrawTitleScreen → titledrawscreen completed ONE full frame
+          ;; Jump back to MainLoop to start next frame
+          jmp MainLoop
 
-          ;; CRITICAL: drawscreen must be called every frame to establish VSYNC
-          ;; After DrawTitleScreen bank9 returns via BS_return, we're back in bank 15
-          ;; MainLoopDrawScreen is in bank 15, and drawscreen is also in bank 15 (MultiSpriteKernel.s)
-          ;; drawscreen will complete the 262-scanline cycle and jump back to MainLoop
-          ;; If gameMode >= 3, jump to MainLoopCallDrawscreen (outside .proc)
-          lda gameMode
-          cmp # 3
-          bcc MainLoopSkipDrawScreen
+CallGameDrawscreen:
+          ;; Modes 3+: Game modes use drawscreen (MultiSpriteKernel)
+          ;; drawscreen is in same bank (15), no BS_jsr needed
           ;; Jump to MainLoopCallDrawscreen which is outside the .proc scope
           jmp MainLoopCallDrawscreen
 
-MainLoopSkipDrawScreen:
+MainLoopSkipDrawscreen:
+          ;; OBSOLETE: This label is no longer used
+          ;; Left here for compatibility
           jmp MainLoop
 
 .pend

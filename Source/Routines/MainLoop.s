@@ -47,19 +47,65 @@ MainLoop .proc
 SkipResetCheck:
           ;; STACK PICTURE: [] (empty)
 
-          ;; CRITICAL: Do NOT call mode handlers here!
-          ;; Mode handlers are called during VBLANK (VblankHandlerDispatcher)
-          ;; and OVERSCAN (OverscanRoutine), NOT before the frame starts!
+          ;; CRITICAL: Mode handlers run HERE during OVERSCAN period
+          ;; OverscanRoutine (end of previous frame) set TIM64T timer and jumped here
+          ;; Mode handlers execute game logic during overscan timing
+          ;; After mode handlers complete, MainLoopDrawScreen starts the next frame
           ;;
-          ;; MainLoop should immediately start the frame by calling drawscreen
-          ;; drawscreen will:
-          ;;   1. VSYNC (3 scanlines)
-          ;;   2. VBLANK (~37 scanlines) - calls VblankHandlerDispatcher
-          ;;   3. KERNEL (~192 scanlines) - displays graphics
-          ;;   4. OVERSCAN (~30 scanlines) - calls overscan handlers
-          ;;   5. Jump back to MainLoop for next frame
+          ;; Frame timing:
+          ;;   Previous frame OVERSCAN: Mode handlers run here (~30 scanlines)
+          ;;   VSYNC: 3 scanlines
+          ;;   VBLANK: ~37 scanlines (VblankHandlerDispatcher)
+          ;;   KERNEL: ~192 scanlines (display graphics)
+          ;;   OVERSCAN: ~30 scanlines (set timer, jump back to MainLoop)
           ;;
           ;; Total: 262 scanlines per frame (NTSC standard)
+          
+          ;; Dispatch to mode-specific handler based on gameMode
+          ;; Mode handlers contain game logic and must run every frame
+          lda gameMode
+          cmp # 0
+          bne CheckMode1Handler
+          jsr MainLoopModePublisherPrelude
+          jmp MainLoopContinue
+CheckMode1Handler:
+          cmp # 1
+          bne CheckMode2Handler
+          jsr MainLoopModeAuthorPrelude
+          jmp MainLoopContinue
+CheckMode2Handler:
+          cmp # 2
+          bne CheckMode3Handler
+          jsr MainLoopModeTitleScreen
+          jmp MainLoopContinue
+CheckMode3Handler:
+          cmp # 3
+          bne CheckMode4Handler
+          jsr MainLoopModeCharacterSelect
+          jmp MainLoopContinue
+CheckMode4Handler:
+          cmp # 4
+          bne CheckMode5Handler
+          jsr MainLoopModeFallingAnimation
+          jmp MainLoopContinue
+CheckMode5Handler:
+          cmp # 5
+          bne CheckMode6Handler
+          jsr MainLoopModeArenaSelect
+          jmp MainLoopContinue
+CheckMode6Handler:
+          cmp # 6
+          bne CheckMode7Handler
+          jsr MainLoopModeGameMain
+          jmp MainLoopContinue
+CheckMode7Handler:
+          cmp # 7
+          bne MainLoopContinue
+          jsr MainLoopModeWinnerAnnouncement
+          ;; Fall through to MainLoopContinue
+
+MainLoopContinue:
+          ;; Mode handler completed, now start the next frame
           jmp MainLoopDrawScreen
 
 .pend

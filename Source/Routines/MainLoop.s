@@ -237,7 +237,9 @@ AfterCharacterSelectInputEntry:
           ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (RTS will pop 2 bytes)
           rts
 
-MainLoopModeFallingAnimation
+.pend
+
+MainLoopModeFallingAnimation .proc
           ;; CRITICAL: on gameMode cross-bank call to is a NEAR call (pushes normal 2-byte return address)
           ;; Returns: Near (return thisbank)
           ;; STACK PICTURE: [SP+1: MainLoop ret hi] [SP+0: MainLoop ret lo] (from jsr MainLoopModeFallingAnimation)

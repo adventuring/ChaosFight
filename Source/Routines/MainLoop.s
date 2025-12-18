@@ -370,17 +370,22 @@ AfterDrawTitleScreen:
           ;; After DrawTitleScreen bank9 returns via BS_return, we're back in bank 15
           ;; MainLoopDrawScreen is in bank 15, and drawscreen is also in bank 15 (MultiSpriteKernel.s)
           ;; drawscreen will complete the 262-scanline cycle and jump back to MainLoop
-          ;; If gameMode >= 3, fall through to drawscreen for game modes (not title screens)
+          ;; If gameMode >= 3, jump to MainLoopCallDrawscreen (outside .proc)
           lda gameMode
           cmp # 3
           bcc MainLoopSkipDrawScreen
-          ;; Fall through to drawscreen (next instruction after this procedure ends)
-          ;; drawscreen is included in Bank15.s right after MainLoop routines
-          ;; CRITICAL: End the .proc here so drawscreen code follows immediately
-          .pend
+          ;; Jump to MainLoopCallDrawscreen which is outside the .proc scope
+          jmp MainLoopCallDrawscreen
 
 MainLoopSkipDrawScreen:
           jmp MainLoop
+
+.pend
+
+;; CRITICAL: This label must be OUTSIDE the .proc to access drawscreen
+;; drawscreen is now globally accessible (MultiSpriteKernel .block removed)
+MainLoopCallDrawscreen:
+          jmp drawscreen
 
 ;; drawscreen is included here via Bank15.s → MultiSpriteKernel.s
 ;; It will jump back to MainLoop after completing the frame

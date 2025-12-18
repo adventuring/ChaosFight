@@ -8,7 +8,8 @@
 
 
 MultiSpriteKernel:
-.block
+;; CRITICAL: Removed .block wrapper to allow drawscreen to be globally accessible
+;; This may cause symbol conflicts if labels are not unique
 
 PFStart:
           .byte 87,43,0,21,0,0,0,10
@@ -1137,5 +1138,5 @@ shiftdone:
 
           ;;.error "Multi-sprite kernel ends at ", *
 
-.bend
+;; CRITICAL: .block removed, so drawscreen is now globally accessible
 

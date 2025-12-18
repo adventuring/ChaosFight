@@ -5,19 +5,26 @@ WarmStart .proc
           ;; Warm Start / Reset Handler
           ;; Returns: Far (return otherbank) - jumps to BeginPublisherPrelude
           ;;
-          ;; Input: None (called from cold start procedure in Reset handler)
+          ;; Input: None (called from cold start procedure in Reset handler, or from BRK/IRQ vector)
           ;;
           ;; Output: All memory cleared, TIA registers initialized, PIA RIOT ports initialized,
           ;; controller detection performed, jumps to BeginPublisherPrelude
           ;;
           ;; Mutates: All RAM ($81-$FF), SCRAM (w000-w127 via $F000-$F07F), TIA registers, PIA RIOT ports,
-          ;; controllerStatus (via DetectPads)
+          ;; controllerStatus (via DetectPads), SP (stack pointer)
           ;;
           ;; Called Routines: DetectPads (bank13) - controller detection,
           ;; BeginPublisherPrelude (bank14) - publisher prelude entry
           ;;
-          ;; Constraints: Entry point for warm start (called from cold start procedure)
-          ;; Must clear memory before any stack operations
+          ;; Constraints: Entry point for warm start (called from cold start procedure or BRK/IRQ)
+          ;; Must initialize SP and clear memory before any stack operations
+          
+          ;; Step 0: Initialize stack pointer (in case we arrived via BRK/IRQ vector)
+          ;; CRITICAL: BRK/IRQ vector jumps to WarmStart, bypassing ColdStart's txs
+          ;; At power-on, SP may be floating (e.g., $f0) and never initialized
+          ;; We must ensure SP=$ff before any stack operations
+          ldx # $ff
+          txs                              ;;; Initialize stack pointer to $FF
           
           ;; Step 1: Save console7800Detected flag (will be overwritten by loop)
           lda console7800Detected

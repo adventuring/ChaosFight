@@ -12,8 +12,7 @@ missile0height = $A5
 ; rand16 is now defined in Variables.bas as rand16_W and rand16_R
 ; All code must use rand16_W for writes and rand16_R for reads - no aliases allowed
 
-#include "vcs.h"
-#include "macro.h"
+
 ; Issue #930: Ensure every SuperChip SCRAM port symbol is exported here so
 ; cross-bank routines rely on one authoritative header.
 ; CRITICAL: Define standard batariBASIC and multisprite symbols BEFORE redefs file

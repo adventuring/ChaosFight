@@ -1,9 +1,3 @@
-[submodule "Tools/batariBASIC"]
-	path = Tools/batariBASIC
-	url = git@github.com:adventuring/batari-Basic
-[submodule "Tools/dasm"]
-	path = Tools/dasm
-	url = https://github.com/dasm-assembler/dasm
 [submodule "SkylineTool"]
 	path = SkylineTool
 	url = git@github.com:brpocock/skyline-tool

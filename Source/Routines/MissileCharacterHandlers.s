@@ -371,7 +371,9 @@ KnightGuySetPosition
           ;; Apply swing offset in facing direction
           lda temp4
           bne KnightGuySwingRight
-          ;; TODO: #1311 KnightGuySwingLeft
+          jsr KnightGuySwingLeft
+          jmp KnightGuySetY
+
 KnightGuySwingRight:
 
 
@@ -383,7 +385,10 @@ KnightGuySwingRight:
 
 KnightGuySwingLeft .proc
           ;; Facing left: move left (negative offset)
-                    let temp2 = temp2 - velocityCalculation          lda temp2          sec          sbc velocityCalculation          sta temp2
+          lda temp2
+          sec
+          sbc velocityCalculation
+          sta temp2
 
 .pend
 

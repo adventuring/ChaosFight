@@ -17,14 +17,64 @@ VblankHandlerDispatcher .proc
           ;; Called from kernel during vblank period via jsr
           ;; vblank_bB_code constant points to this subroutine
 
-          ;; Optimized: Use on/cross-bank call to for space efficiency
           ;; CRITICAL: on gameMode cross-bank call to is a NEAR call (pushes normal 2-byte return address)
           ;; VblankHandlerDispatcher is called with cross-bank call (pushes 4-byte encoded return)
           ;; Mode handlers return with return thisbank (pops 2 bytes from near call)
           ;; VblankHandlerDispatcher must return with return otherbank (pops 4 bytes from cross-bank call)
+
+          ;; Dispatch based on gameMode
+          lda gameMode
+          bne CheckAuthorMode
           jsr VblankModePublisherPrelude
-          ;; Execution continues at ongosub0 label
           jmp VblankHandlerDone
+
+CheckAuthorMode:
+          ;; gameMode = 1 (ModeAuthorPrelude)
+          lda gameMode
+          cmp # 1
+          bne CheckTitleMode
+          jsr VblankModeAuthorPrelude
+          jmp VblankHandlerDone
+
+CheckTitleMode:
+          ;; gameMode = 2 (ModeTitle)
+          lda gameMode
+          cmp # 2
+          bne CheckCharacterSelectMode
+          jsr VblankModeTitleScreen
+          jmp VblankHandlerDone
+
+CheckCharacterSelectMode:
+          ;; gameMode = 3 (ModeCharacterSelect)
+          lda gameMode
+          cmp # 3
+          bne CheckArenaSelectMode
+          jsr VblankModeCharacterSelect
+          jmp VblankHandlerDone
+
+CheckArenaSelectMode:
+          ;; gameMode = 5 (ModeArenaSelect)
+          lda gameMode
+          cmp # 5
+          bne CheckGameMode
+          jsr VblankModeArenaSelect
+          jmp VblankHandlerDone
+
+CheckGameMode:
+          ;; gameMode = 6 (ModeGame)
+          lda gameMode
+          cmp # 6
+          bne CheckWinnerMode
+          jsr VblankModeGameMain
+          jmp VblankHandlerDone
+
+CheckWinnerMode:
+          ;; gameMode = 7 (ModeWinner)
+          lda gameMode
+          cmp # 7
+          bne VblankHandlerDone
+          jsr VblankModeWinnerAnnouncement
+          ;; Fall through to VblankHandlerDone
 
 .pend
 

@@ -898,16 +898,17 @@ ProcessAttackerLoop:
           asl
           tax
           lda playerState,x
+          and # MaskPlayerStateAnimation
           sta temp1
-                    if temp1 < ActionAttackWindupShifted then NextAttacker
-
-                    if temp1 > ActionAttackRecoveryShifted then NextAttacker
-          lda temp1
-          sec
-          sbc # ActionAttackRecoveryShifted
-          bcc ProcessAttackerAttacksLabel
+          ;; if temp1 < ActionAttackWindupShifted then NextAttacker
+          cmp # ActionAttackWindupShifted
+          bcc NextAttacker
+          ;; if temp1 > ActionAttackRecoveryShifted then NextAttacker
+          cmp # ActionAttackRecoveryShifted
           beq ProcessAttackerAttacksLabel
-          jmp NextAttacker
+          bcs NextAttacker
+          ;; Attack is in windup-through-recovery window, process it
+          jmp ProcessAttackerAttacksLabel
 ProcessAttackerAttacksLabel:
           jsr ProcessAttackerAttacks
 

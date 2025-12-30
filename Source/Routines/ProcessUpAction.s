@@ -28,8 +28,31 @@ ProcessUpAction:
           ;; Constraints: Must be colocated with helpers in same bank
 
           ;; Check Shamone form switching first (Shamone <-> MethHound)
-          ;; TODO: #1249 Implement Shamone <-> MethHound form switching
+          ;; Shamone (15) <-> MethHound (31) form switching with UP button
+          ;; Both forms use same attacks/jumps/guards, but Shamone jumps with attack buttons
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          cmp # CharacterShamone
+          beq ShamoneSwitchToMethHound
+          cmp # CharacterMethHound
+          beq MethHoundSwitchToShamone
+          jmp CheckRoboTitoUpAction
 
+ShamoneSwitchToMethHound:
+          ;; Switch Shamone (15) to MethHound (31)
+          lda # CharacterMethHound
+          sta playerCharacter,x
+          jmp ProcessUpActionDone
+
+MethHoundSwitchToShamone:
+          ;; Switch MethHound (31) to Shamone (15)
+          lda # CharacterShamone
+          sta playerCharacter,x
+          jmp ProcessUpActionDone
+
+CheckRoboTitoUpAction:
           ;; Robo Tito: Stretch (ascend toward ceiling; auto-latch on contact)
           ;; if playerCharacter[temp1] = CharacterRoboTito then jmp RoboTitoAscendUpAction
 

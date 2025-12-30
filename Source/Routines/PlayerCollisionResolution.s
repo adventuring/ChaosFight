@@ -241,8 +241,7 @@ CalculateXDistance:
 
           ;; ;; If temp3 < 0, set temp3 = 0 - temp3          lda 0          sec          sbc temp3          sta temp3
           lda temp3
-          cmp # 0
-          bcs CheckCollisionDistance
+          bpl CheckCollisionDistance
           lda # 0
           sec
           sbc temp3
@@ -250,8 +249,7 @@ CalculateXDistance:
 CheckCollisionDistance:
 
           lda temp3
-          cmp # 0
-          bcs CheckDistanceThreshold
+          bpl CheckDistanceThreshold
           lda # 0
           sec
           sbc temp3
@@ -259,8 +257,7 @@ CheckCollisionDistance:
 CheckDistanceThreshold:
 
           lda temp3
-          cmp # 0
-          bcs CalculateYDistance
+          bpl CalculateYDistance
           lda # 0
           sec
           sbc temp3
@@ -289,8 +286,7 @@ CalculateYDistance:
 
           ;; ;; If temp4 < 0, set temp4 = 0 - temp4          lda 0          sec          sbc temp4          sta temp4
           lda temp4
-          cmp # 0
-          bcs CheckTotalHeight
+          bpl CheckTotalHeight
           lda # 0
           sec
           sbc temp4
@@ -307,8 +303,7 @@ CheckTotalHeight:
 CheckHeightThreshold:
 
           lda temp4
-          cmp # 0
-          bcs CalculateWeights
+          bpl CalculateWeights
           lda # 0
           sec
           sbc temp4

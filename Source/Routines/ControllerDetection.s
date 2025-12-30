@@ -81,12 +81,49 @@ CDP_CheckGenesis .proc
           ;; If Quadtari was previously detected, skip all other
           ;; detection
           ;; If temp1 & SetQuadtariDetected, then jmp CDP_MergeStatus
+          lda temp1
+          and # SetQuadtariDetected
+          bne CDP_CheckGenesisDone
 
           ;; Genesis controllers pull INPT0 and INPT1 HIGH when idle
           ;; Method: Ground paddle ports via VBLANK, wait a frame,
           ;; check levels
-          ;; Detect Genesis/MegaDrive controllers using correct method
-          ;; TODO: #1251 Implement Genesis detection logic
+          ;; Set VBLANK to ground paddle capacitors (bit 6 = 1)
+          lda # $40
+          ora VBLANK
+          sta VBLANK
+
+          ;; Wait one frame for capacitors to discharge
+          ;; This gives us time for the capacitors to drain through joystick ports
+          lda INTIM
+          bmi .-3                    ; Wait for timer to expire (end of frame)
+
+          ;; Check left side (INPT0, INPT1) for Genesis controller
+          ;; Genesis controllers will pull these HIGH when idle
+          bit INPT0
+          bpl CheckGenesisRightSide
+          bit INPT1
+          bpl CheckGenesisRightSide
+
+          ;; Left side detected Genesis - set flag
+          lda temp2
+          ora # SetLeftPortGenesis
+          sta temp2
+
+CheckGenesisRightSide:
+          ;; Check right side (INPT2, INPT3) for Genesis controller
+          bit INPT2
+          bpl CDP_CheckGenesisDone
+          bit INPT3
+          bpl CDP_CheckGenesisDone
+
+          ;; Right side detected Genesis - set flag
+          lda temp2
+          ora # SetRightPortGenesis
+          sta temp2
+
+CDP_CheckGenesisDone:
+          jmp CDP_MergeStatus
 
 .pend
 

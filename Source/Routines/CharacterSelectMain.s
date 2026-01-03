@@ -541,7 +541,7 @@ CharacterSelectInputEntry .proc
 
 
 
-          ;; Cross-bank call to CharacterSelectCheckControllerRescan in bank 5
+          ;; Cross-bank call to CharacterSelectDoRescan in bank 5
           ;; Return address: ENCODED with caller bank 8 ($80) for BS_return to decode
           lda # ((>(AfterControllerRescan-1)) & $0f) | $80  ;;; Encode bank 8 in high nybble
           pha
@@ -550,10 +550,10 @@ CharacterSelectInputEntry .proc
           pha
           ;; STACK PICTURE: [SP+1: AfterControllerRescan hi (encoded)] [SP+0: AfterControllerRescan lo]
           ;; Target address: RAW (for RTS to jump to) - NOT encoded
-          lda # >(CharacterSelectCheckControllerRescan-1)
+          lda # >(CharacterSelectDoRescan-1)
           pha
-          ;; STACK PICTURE: [SP+2: AfterControllerRescan hi (encoded)] [SP+1: AfterControllerRescan lo] [SP+0: CharacterSelectCheckControllerRescan hi (raw)]
-          lda # <(CharacterSelectCheckControllerRescan-1)
+          ;; STACK PICTURE: [SP+2: AfterControllerRescan hi (encoded)] [SP+1: AfterControllerRescan lo] [SP+0: CharacterSelectDoRescan hi (raw)]
+          lda # <(CharacterSelectDoRescan-1)
           pha
           ;; STACK PICTURE: [SP+3: AfterControllerRescan hi (encoded)] [SP+2: AfterControllerRescan lo] [SP+1: CharacterSelectCheckControllerRescan hi (raw)] [SP+0: CharacterSelectCheckControllerRescan lo]
           ldx # 5
@@ -598,10 +598,6 @@ SetQtControllerZero:
           sta qtcontroller
           jmp CharacterSelectInputComplete
 
-
-
-CharacterSelectHandleTwoPlayers
-          ;; Returns: Far (return thisbank)
 
 
 CharacterSelectHandleTwoPlayers
@@ -767,14 +763,15 @@ AfterSetPlayerLockedJoy1Done:
           jmp BS_jsr
 AfterHandleCharacterSelectFireJoy1Done:
 
-
           rts
 
+.pend
 
 
 
 
-CharacterSelectInputComplete
+
+CharacterSelectInputComplete .proc
 
           ;; Handle random character re-rolls if any players need it
           ;; Returns: Far (return otherbank)
@@ -921,11 +918,11 @@ CharacterSelectRollRandomPlayerReroll .proc
 
           jmp BS_return
 
+.pend
+
 CharacterSelectRollsDone
 
           rts
-
-.pend
 
 CharacterSelectCheckReady .proc
 

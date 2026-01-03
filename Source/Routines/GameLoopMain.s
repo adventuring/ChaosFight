@@ -90,7 +90,7 @@ GameMainLoop .proc
           ;; frame - Frame counter
           ;; systemFlags - bit 4 (SystemFlagGameStatePaused):
           ;; 0=normal, 1=paused
-          bit 3 (SystemFlagGameStateEnding): 0=normal, 1=ending
+          ;; bit 3 (SystemFlagGameStateEnding): 0=normal, 1=ending
           ;; qtcontroller - Quadtari multiplexing sta
 
           ;; All Player arrays (X,y, State, Health, etc.)

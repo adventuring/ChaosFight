@@ -80,17 +80,14 @@ TitleScreenRandomizeNoEor:
           ;; Handle input - any button press goes to character select
           ;; Check standard controllers (Player 1 & 2)
           ;; Use skip-over pattern to avoid complex || operator issues
-          ;; If joy0fire, then TitleScreenComplete
-          lda joy0fire
-          beq CheckJoy1Fire
-          jmp TitleScreenComplete
+          ;; If P0 fire button pressed, then TitleScreenComplete
+          lda P0Fire
+          bmi TitleScreenComplete
 CheckJoy1Fire:
-          
 
-          ;; If joy1fire, then TitleScreenComplete
-          lda joy1fire
-          beq CheckQuadtariControllers
-          jmp TitleScreenComplete
+          ;; If P1 fire button pressed, then TitleScreenComplete
+          lda P1Fire
+          bmi TitleScreenComplete
 CheckQuadtariControllers:
           
 

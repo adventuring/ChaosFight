@@ -311,8 +311,9 @@ CheckEnhancedPause .proc
           sta temp1
 
           ;; Always check Game Select switch first (works with any controller)
-          ;; If switchselect is pressed, set temp1 = 1 and return
-          lda switchselect
+          ;; If select switch is pressed, set temp1 = 1 and return
+          lda SWCHB
+          and # SWCHBSelect
           beq CheckEnhancedPauseButtons
 
           lda # 1

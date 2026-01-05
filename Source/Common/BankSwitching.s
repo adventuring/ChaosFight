@@ -2,10 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 ;;; EFSC 64k bankswitch code and vectors
 
-          ;; Calculate actual size: BS_return (21 bytes) + BS_jsr (4 bytes) = 25 bytes ($19)
-          ;; BS_return: tsx(1) + lda 2,x(2) + tay(1) + lsr*4(4) + sta temp7(2) + tya(1) + ora #$f0(2) + sta 2,x(2) + ldx temp7(2) + nop $ffe0,x(3) + rts(1) = 21 bytes
-          ;; BS_jsr: nop $ffe0,x(3) + rts(1) = 4 bytes
-          BS_length = $19    ; = 25 bytes (BS_return: 21 bytes, BS_jsr: 4 bytes)
+          BS_length = $32    ; = 50 bytes (was 24, increased by 26 for additional stack comments)
           .if * > $ffe0 - BS_length
           .error format("Bank %d overflow: $%04x > $%04x", current_bank, *, $ffe0 - BS_length)
           .fi

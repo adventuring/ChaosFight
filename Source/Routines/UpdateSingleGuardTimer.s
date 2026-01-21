@@ -17,7 +17,7 @@ UpdateSingleGuardTimer .proc
           ;; bit
           ;;
           ;; Output: playerTimers_W[] decremented, playerState[] guard
-          bit cleared when expired,
+          ;; bit cleared when expired,
           ;; cooldown started when guard expires
           ;;
           ;; Mutates: temp1-temp3 (used for calculations),

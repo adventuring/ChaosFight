@@ -55,16 +55,14 @@ AuthorPrelude .proc
           ;; Check for button press on any controller to skip
           ;; Returns: Far (return otherbank)
           ;; Use skip-over pattern to avoid complex || operator issues
-          ;; If joy0fire, then AuthorPreludeComplete
-          lda joy0fire
-          beq CheckJoy1Fire
-
-          jmp AuthorPreludeComplete
+          ;; If P0 fire pressed, then AuthorPreludeComplete
+          lda P0Fire
+          bmi AuthorPreludeComplete
 
 CheckJoy1Fire:
 
-          ;; If joy1fire, then AuthorPreludeComplete
-          lda joy1fire
+          ;; If P1 fire pressed, then AuthorPreludeComplete
+          lda P1Fire
           beq CheckEnhancedControllers
 
           jmp AuthorPreludeComplete

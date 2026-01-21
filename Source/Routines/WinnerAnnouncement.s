@@ -18,22 +18,21 @@ WinnerAnnouncementLoop .proc
           ;;
           ;; Constraints: Must be colocated with WinnerAdvanceToCharacterSelect
           ;; Check for button press to advance immediately
-          ;; If joy0fire, then WinnerAdvanceToCharacterSelect
-          lda joy0fire
-          beq CheckJoy1Fire
-          jmp WinnerAdvanceToCharacterSelect
+          ;; If P0 fire pressed, then WinnerAdvanceToCharacterSelect
+          lda P0Fire
+          bmi WinnerAdvanceToCharacterSelect
 
 CheckJoy1Fire:
 
-          ;; If joy1fire, then WinnerAdvanceToCharacterSelect
-          lda joy1fire
-          beq CheckSelectSwitch
-          jmp WinnerAdvanceToCharacterSelect
+          ;; If P1 fire pressed, then WinnerAdvanceToCharacterSelect
+          lda P1Fire
+          bmi WinnerAdvanceToCharacterSelect
 
 CheckSelectSwitch:
 
-          ;; If switchselect, then WinnerAdvanceToCharacterSelect
-          lda switchselect
+          ;; If select switch pressed, then WinnerAdvanceToCharacterSelect
+          lda SWCHB
+          and # SWCHBSelect
           beq DisplayWinScreen
 
           jmp WinnerAdvanceToCharacterSelect

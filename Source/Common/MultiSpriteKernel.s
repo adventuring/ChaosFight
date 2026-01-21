@@ -7,8 +7,7 @@
 
 
 
-MultiSpriteKernel:
-.block
+MultiSpriteKernel .block
 
 PFStart:
           .byte 87,43,0,21,0,0,0,10
@@ -400,7 +399,7 @@ KernelRoutine:
                     .SLEEP 6
           .fi
           tsx
-          stx temp7  ;;; Save stack pointer (use temp7, temp6 is overwritten by setscorepointers in sixdigscore)
+          stx aux2  ;;; Save stack pointer (use aux2 instead of temp7 to avoid conflict with BS_return)
 
           ;; CRITICAL: During kernel rendering, stack is NOT used, so SP can be used as temporary storage
           ;; Original code sets SP to ENABL ($1f) for the GRP manipulation trick in the score loop
@@ -825,7 +824,7 @@ DoneWithKernel:
 BottomOfKernelLoop:
 
           sta WSYNC
-          ldx temp7  ;;; Restore stack pointer from temp7 (temp6 is overwritten by setscorepointers in sixdigscore)
+          ldx aux2  ;;; Restore stack pointer from aux2 (use aux2 instead of temp7 to avoid conflict with BS_return)
 
           txs
           jsr sixdigscore             ;;;; set up score
@@ -920,7 +919,7 @@ beginscore:
                     and #$FB          ;;;; Clear bit 2 (score mode)
                     sta CTRLPF
           .fi
-          ldx temp7  ;;; Restore stack pointer from temp7 (temp6 is overwritten by setscorepointers in sixdigscore)
+          ldx aux2  ;;; Restore stack pointer from aux2 (use aux2 instead of temp7 to avoid conflict with BS_return)
 
           txs
 
@@ -964,6 +963,25 @@ skipscore:
           .fi                           ;;;; qtcontroller
           sta WSYNC
           sta VBLANK                    ;;;;turn on VBLANK
+          
+          ;; CRITICAL: Set overscan timer BEFORE jumping to MainLoop
+          ;; MainLoop will call mode handlers (game logic) which run DURING overscan
+          ;; drawscreen will wait for this timer before starting VSYNC
+          ;; Overscan time: ~30 scanlines for NTSC (configurable via overscan_time)
+          .if  overscan_time
+                    lda # overscan_time+128
+          .else
+                    lda # 30+128        ;;;; Default: 30 scanlines * 76 cycles = 2280 cycles / 64 = ~36 TIM64T
+          .fi
+          sta TIM64T                    ;;;; Start overscan timer
+          
+          ;; CRITICAL: Jump back to MainLoop to start next frame
+          ;; This completes the 262-scanline cycle and begins the next frame
+          ;; MainLoop's mode handlers will execute during the overscan timer period
+          ;; MainLoop is in bank 15, we need to bankswitch
+          ldx # 15                      ;;;; Bank 15 = $ffe0 + 15
+          nop $ffe0, x                  ;;;; Switch to bank 15
+          jmp MainLoop                  ;;;; Jump to MainLoop for next frame
 
           ;;----------------------------End Main Routines----------------------------
 

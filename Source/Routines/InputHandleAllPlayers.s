@@ -81,12 +81,13 @@ HandlePlayers12:
           jmp InputDonePlayer0Input
 CheckPlayer0State:
 
-
-                    if (playerState[0] & 8) then InputDonePlayer0Input
+          lda playerState
+          and #PlayerStateBitFacing
+          bne InputDonePlayer0Input
 
           ;; Set temp1 = 0
           lda # 0
-          sta temp1 : cross-bank call to InputHandleLeftPortPlayerFunction
+          sta temp1                    ; cross-bank call to InputHandleLeftPortPlayerFunction
 
 
 
@@ -123,8 +124,9 @@ InputDonePlayer0Input
 InputDonePlayer1Input:
 CheckPlayer1State:
 
-
-                    if (playerState[1] & 8) then InputDonePlayer1Input
+          lda playerState+1
+          and #PlayerStateBitFacing
+          bne InputDonePlayer1Input
           jmp InputHandlePlayer1
 
 
@@ -239,7 +241,7 @@ InputHandleQuadtariPlayers .proc
           and # SetQuadtariDetected
           bne CheckPlayer3Character
 
-          jmp InputDonePlayer3InputDone
+          jmp InputDonePlayer3Input
 
 CheckPlayer3Character:
           ;; If playerCharacter[2] = NoCharacter, then InputDonePlayer3Input
@@ -261,12 +263,13 @@ CheckPlayer3Character:
           jmp InputDonePlayer3Input
 CheckPlayer3State:
 
-
-                    if (playerState[2] & 8) then InputDonePlayer3Input
+          lda playerState+2
+          and #PlayerStateBitFacing
+          bne InputDonePlayer3Input
 
           ;; Set temp1 = 2
           lda # 2
-          sta temp1 : cross-bank call to InputHandleLeftPortPlayerFunction
+          sta temp1                    ; cross-bank call to InputHandleLeftPortPlayerFunction
 
 
 
@@ -314,12 +317,13 @@ CheckPlayer4Character:
           jmp InputDonePlayer4Input
 CheckPlayer4State:
 
-
-                    if (playerState[3] & 8) then InputDonePlayer4Input
+          lda playerState+3
+          and #PlayerStateBitFacing
+          bne InputDonePlayer4Input
 
           ;; Set temp1 = 3
           lda # 3
-          sta temp1 : cross-bank call to InputHandleRightPortPlayerFunction
+          sta temp1                    ; cross-bank call to InputHandleRightPortPlayerFunction
 
 
 

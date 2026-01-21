@@ -369,6 +369,9 @@ SelectSetPlayerColorHandicap .proc
           lda SelectPlayerColorHandicap,x
           sta temp2
 
+.pend
+
+SelectUpdateAnimations .proc
 
           ;; Returns: Far (return otherbank)
           ;; Update character select animations for all players

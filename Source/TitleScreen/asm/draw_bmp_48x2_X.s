@@ -11,7 +11,7 @@ draw_bmp_48x2_X .proc
           sta NUSIZ1      ;; 7=Triplex (Player drawn three times)
 
           tsx
-          stx temp7        ;; save the stack pointer (use temp7, aux6 conflicts with pfScore2/lives at $c2)
+          stx spritesort   ;; save the stack pointer (use spritesort instead of temp7 to avoid conflict with BS_return)
 
           jsr position48
 
@@ -107,7 +107,7 @@ pf48x2_X_codeend:
 	sta PF1
 	sta PF2
 
-          ldx temp7        ;;restore the stack pointer (use temp7, aux6 conflicts with pfScore2/lives at $c2)
+          ldx spritesort   ;; restore the stack pointer (use spritesort instead of temp7 to avoid conflict with BS_return)
           txs
           rts
 .pend

@@ -1,5 +1,7 @@
 # ChaosFight 26 - Minimum Viable Product Requirements
 
+**Note**: This project uses **64tass** (Turbo Assembler for 65xx processors) for assembly code. All syntax and examples in this document reflect 64tass syntax requirements. Some legacy `.bas` files may still exist, but all new code should use `.s` assembly files.
+
 ## Cold Start Initialization
 
 Upon cold start:
@@ -18,18 +20,14 @@ Then continues into warm start:
 
 ## Naming Conventions
 
-- Built-in batariBasic identifiers (temp1-temp6, joy0up, frame, and
-  their hardware frenemies) stay lowercase because they were here before
-  we moved in.
 - User-defined variables flaunt camelCase (`gameState`, `playerX`,
   `playerCharacter[0]`) so we can spot our handiwork instantly.
 - Constants, enums, labels, and routines work the PascalCase runway
   (`MaxCharacter`, `ActionStanding`, `LoadCharacterSprite`) to telegraph
   their importance.
-- TIA registers (`player0x`, `COLUP0`, `pf0`-`pf2`, etc.) keep their
+- TIA registers (`COLUP0`, `PF0`-`PF2`, etc.) keep their
   canonical-case spellings—do not “improve” them.
-- Never `dim` a built-in variable; batariBasic already reserved their
-  seats and will throw shade if you double-book them.
+
 
 Stick to these rules and the codebase reads like a chic gossip column
 instead of an anonymized police report.
@@ -95,26 +93,28 @@ The CPU sees addresses in the range `$F000-$FFFF` (bank switching window). The a
 
 ## Bankswitch Return Semantics (Investigations 2025‑11‑26)
 
-- `return thisbank` compiles to a bare `RTS`. Only routines that are *never*
-  invoked through `gosub ... bankN` may use it. Treat it as a near return.
-- `return otherbank` expands to `JMP BS_return`, which expects the four-byte
-  encoded return sequence pushed by `BS_jsr`. Any cross-bank routine must end
-  with this form or we will corrupt the stack.
+- **Near returns**: Use `rts` for routines that are *never* invoked
+  cross-bank. Only routines called via same-bank `jsr` may use `rts`.
+- **Far returns**: Use `jmp BS_return` for cross-bank routines. This expects
+  the four-byte encoded return sequence pushed by `BS_jsr`. Any cross-bank
+  routine must end with this form or we will corrupt the stack.
+- **CRITICAL**: `BS_return` must be called with `jmp`, NOT `jsr`. Using `jsr
+  BS_return` pushes another return address on the stack, corrupting the
+  encoded return address that `BS_return` expects to decode.
 - The stack-underflow probe previously showed `MainLoopModePublisherPrelude`,
   `MainLoopModeAuthorPrelude`, `MainLoopModeTitleScreen`, and cousins in
-  `Source/Routines/MainLoop.bas` returning with `return thisbank` even though
-  the dispatcher had just performed `gosub ... bank14`. The resulting `RTS`
-  at `$f:faaf` is exactly where the stack dropped to `$FF`.
-- Remediation completed 2025‑11‑26: all mode handlers now issue
-  `return otherbank`, preventing the bare `RTS` that corrupted the encoded
-  far-return sequence. Rebuilds must still re-check the far-call trampoline at
-  `$f:fa5c` to confirm the stack returns to `$FD` after each trip through the
-  mode table.
-- `PlayMusic` is often tail-called (StartMusic uses `goto PlayMusic bank15`), so
-  any other caller MUST use `gosub ... bankN` to keep the encoded far-return
-  bytes on the stack. `MainLoop` previously used `goto PlayMusic bank1`, which
+  `Source/Routines/MainLoop.s` returning with `rts` even though the dispatcher
+  had just performed a cross-bank call. The resulting `RTS` at `$f:faaf` is
+  exactly where the stack dropped to `$FF`.
+- Remediation completed 2025‑11‑26: all mode handlers now issue `jmp BS_return`,
+  preventing the bare `RTS` that corrupted the encoded far-return sequence.
+  Rebuilds must still re-check the far-call trampoline at `$f:fa5c` to confirm
+  the stack returns to `$FD` after each trip through the mode table.
+- `PlayMusic` is often tail-called (StartMusic uses `jmp PlayMusic` with bank
+  switch), so any other caller MUST use `BS_jsr` to keep the encoded
+  far-return bytes on the stack. `MainLoop` previously used a tail call which
   meant `BS_return` tried to decode garbage and wrapped SP to `$FF`. The
-  dispatcher now uses `gosub` so the stack depth stays balanced regardless of
+  dispatcher now uses `BS_jsr` so the stack depth stays balanced regardless of
   how many nested music helpers fire inside bank 15.
 
 ---
@@ -177,7 +177,7 @@ simply jumps back to Publisher Prelude screen.
 
 ### Overview
 
-Players select their fighters from 16 available characters (0-15).
+Players select their fighters from 15 available characters (0-14).
 Supports 2-player (standard ports) and 4-player (Quadtari adapter)
 modes.
 Once all active players have locked in their selections, proceed to
@@ -248,7 +248,7 @@ Player 2: ? or 0 ↔ MaxCharacterID and
 
 ### Font and Special Sprites
 
-- Special UI glyphs ("?", "CPU", "No", blank, "C", "F") are sourced from the unified font `Source/Generated/Numbers.bas` (`FontData`):
+- Special UI glyphs ("?", "CPU", "No", blank, "C", "F") are sourced from the unified font `Source/Generated/Numbers.s` (`FontData`):
   - Indices 0–9: digits "0"–"9"
   - Indices 10–15: A="?", B="No", C="C", D="CPU", E=" " (blank), F="F"
 - Sprite loader and font renderer access these via bank 16 helpers (`ComputeFontOffset`, `SetPlayerGlyphFromFont`). No separate special-sprite data files are included.
@@ -380,8 +380,7 @@ brick" logic when he falls off the screen and resets at the top.
     players
 15. **Sprite Graphics**: Load character sprites based on animation state
     and facing
-16. **Health Display**: Show health bars, flash sprites when health is
-    low
+16. **Health Display**: Show health bars
 17. **Screen Draw**: Render complete frame
 
 ### Player Actions
@@ -471,7 +470,7 @@ brick" logic when he falls off the screen and resets at the top.
 ### Missile Spawn Offsets
 
 Per-character missile spawn offsets are defined in
-`CharacterDefinitions.bas`:
+`Source/Common/CharacterDefinitions.s`:
 
 - `CharacterMissileSpawnOffsetRight[]` – pixels added to `playerX` when
   the character faces right
@@ -917,29 +916,31 @@ errors.
 **CRITICAL**: Failure to comply with these rules *will* break the game every time.
 
 - **Labels** at left margin (first column)
-- **"end" markers** at left margin (first column)
-- **All other statements**, including "rem", start after 10 spaces
-- **data, asm, and for loops**: indent 2 additional spaces (12 spaces total)
+- **Directives** (`.proc`, `.pend`, `.block`, `.bend`, `.if`, `.fi`, etc.) at left margin or indented to match surrounding code
+- **All other statements**, including comments (`;;`), start after 10 spaces
+- **Data tables** (`.byte`, `.word`, etc.): indent 2 additional spaces (12 spaces total) for interior elements
 
-## Remarks and Quotation Marks
+## Comments and Quotation Marks
 
 **CRITICAL**: Failure to comply with these rules *will* break the game every time.
 
-- **Remarks must precede code**: Remarks always precede the code that they describe. Code statements must not be followed by remarks on the same line or have remarks appear after the code they describe.
+- **Comments must precede code**: Comments always precede the code that they describe. Code statements must not be followed by comments on the same line or have comments appear after the code they describe.
 
 ### Quotation Mark and Apostrophe Rules
 
 Different contexts require different quotation mark characters:
 
-- **`rem` statements**: **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes. U+0027 (straight apostrophe `'`) is **NEVER** allowed. Examples: use "don't" (U+2019) not "don't" (U+0027), use "doesn't" (U+2019) not "doesn't" (U+0027), use "they're" (U+2019) not "they're" (U+0027).
+- **`rem` statements** (in `.bas` files): **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes. U+0027 (straight apostrophe `'`) is **NEVER** allowed. Examples: use "don't" (U+2019) not "don't" (U+0027), use "doesn't" (U+2019) not "doesn't" (U+0027), use "they're" (U+2019) not "they're" (U+0027).
 
 - **`echo` statements**: **MUST** use U+0022 (straight double quotation mark `"`) for all string delimiters. U+2019, U+2018, U+201C, U+201D (typographic quotes) are **NEVER** allowed. Example: `echo "// Bank 14: ", [size]d, " bytes"`
 
-- **`#include` statements**: **MUST** use U+0022 (straight double quotation mark `"`) for all file paths. Example: `#include "Source/Routines/File.bas"`
+- **`#include` statements** (for `.bas` files): **MUST** use U+0022 (straight double quotation mark `"`) for all file paths. Example: `#include "Source/Common/Constants.bas"`
 
-- **`asm` block comments (`;;`)**: **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes, same as `rem` statements. The C preprocessor processes these comments, but U+2019 prevents it from misinterpreting apostrophes as string delimiters. Example: `;; They don't need EQU definitions - they're resolved by DASM`
+- **`.include` statements** (for `.s` files): **MUST** use U+0022 (straight double quotation mark `"`) for all file paths. Example: `.include "Source/Common/Preamble.s"`
 
-**Rationale**: The C preprocessor (used by batariBASIC) interprets straight apostrophes (`'`) as string delimiters, causing "missing terminating ' character" errors. Using U+2019 in `rem` statements and `asm` block comments prevents these errors while maintaining readability. `echo` and `#include` statements are processed differently and require straight double quotes.
+- **Assembly comments (`;;`)**: **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes. Example: `;; They don't need EQU definitions - they're resolved by 64tass`
+
+**Rationale**: The C preprocessor (used for `.bas` files) interprets straight apostrophes (`'`) as string delimiters, causing "missing terminating ' character" errors. Using U+2019 in comments prevents these errors while maintaining readability. `echo`, `#include`, and `.include` statements are processed differently and require straight double quotes.
 
 ## Calling Conventions
 
@@ -947,21 +948,23 @@ Different contexts require different quotation mark characters:
 
 ### The Fundamental Rule: Consistency is Mandatory
 
-**If a routine is EVER called cross-bank (via `gosub routine bankN`), it MUST ALWAYS use `return otherbank` for ALL return paths. If a routine is ONLY called same-bank, it MUST use `return` (near return) for efficiency.**
+**If a routine is EVER called cross-bank (via `BS_jsr`), it MUST ALWAYS use `jmp BS_return` for ALL return paths. If a routine is ONLY called same-bank, it MUST use `rts` (near return) for efficiency.**
 
 **Mixing calling conventions within a single routine is a critical bug that will cause stack corruption.**
 
 ### How Cross-Bank Calls Work
 
-When you call a routine cross-bank using `gosub routine bankN`:
-1. batariBASIC pushes an **encoded return address** onto the stack (high byte contains bank number in low nibble)
-2. batariBASIC calls `BS_jsr` which switches banks and does an `RTS` to the target routine
-3. The target routine **MUST** use `return otherbank` which:
-   - Calls `BS_return` to decode the encoded return address
+When you call a routine cross-bank using `BS_jsr`:
+1. Push the **encoded return address** onto the stack (4 bytes: high byte, low byte of return address, then high byte, low byte of target routine)
+2. Call `BS_jsr` which switches banks and does an `RTS` to the target routine
+3. The target routine **MUST** use `jmp BS_return` which:
+   - Decodes the encoded return address
    - Switches back to the original bank
    - Does an `RTS` to return to the caller
 
-If the target routine uses plain `return` instead of `return otherbank`:
+**CRITICAL**: `BS_return` must be called with `jmp`, NOT `jsr`. Using `jsr BS_return` pushes another return address on the stack, corrupting the encoded return address that `BS_return` expects to decode at stack offset 2.
+
+If the target routine uses plain `rts` instead of `jmp BS_return`:
 - An `RTS` instruction pops the encoded return address as a normal address
 - This causes a jump to uninitialized memory (typically $00 = BRK instruction)
 - The game crashes with a stack imbalance
@@ -969,61 +972,73 @@ If the target routine uses plain `return` instead of `return otherbank`:
 ### Rules
 
 - **Cross-bank calls**: 
-  - **Call site**: MUST use `gosub routine bankN` (far call) form
-  - **Return site**: MUST use `return otherbank` for **ALL** return paths in the routine
-  - **All return paths**: Every `return` statement in a cross-bank-called routine must be `return otherbank`, including early returns, error returns, and fall-through returns
+  - **Call site**: MUST push return address (4 bytes) then use `jmp BS_jsr` with target bank in X register
+  - **Return site**: MUST use `jmp BS_return` for **ALL** return paths in the routine
+  - **All return paths**: Every return in a cross-bank-called routine must be `jmp BS_return`, including early returns, error returns, and fall-through returns
+  - **CRITICAL**: `BS_return` must be called with `jmp`, NOT `jsr`. Using `jsr BS_return` corrupts the stack.
   
 - **Same-bank calls**: 
-  - **Call site**: Use `gosub routine` (near call) - strongly preferred for efficiency
-  - **Return site**: Use `return` (near return) - faster and smaller
+  - **Call site**: Use `jsr RoutineName` (near call) - strongly preferred for efficiency
+  - **Return site**: Use `rts` (near return) - faster and smaller
   - **Optimization**: If a routine is never called cross-bank, use near calls for better performance
 
 - **Routine Analysis**: 
   - Before writing or modifying a routine, determine if it will be called cross-bank
-  - If ANY call site uses `gosub routine bankN`, the routine MUST use `return otherbank`
-  - If ALL call sites use `gosub routine` (same-bank), the routine MUST use `return`
+  - If ANY call site uses `BS_jsr`, the routine MUST use `jmp BS_return`
+  - If ALL call sites use `jsr` (same-bank), the routine MUST use `rts`
 
 - **Variable verification**: Verify variable use of called routine (or routines that it calls) do not interfere with the caller's
 
-- **Call depth**: Verify that no sequence of "gosubs" will ever nest more than 3 subroutines deep
+- **Call depth**: Verify that no sequence of calls will ever nest more than 3 subroutines deep
 
 ### Examples
 
 **CORRECT - Cross-bank routine:**
-```basic
-ProcessAllAttacks
-  rem Called from GameLoopMain.bas with: gosub ProcessAllAttacks bank7
-  for attackerID = 0 to 3
-    if playerHealth[attackerID] <= 0 then NextAttacker
-    gosub ProcessAttackerAttacks
-NextAttacker
-    next
-  return otherbank  rem MUST use return otherbank - called cross-bank
+```assembly
+ProcessAllAttacks .proc
+          ;; Called from GameLoopMain.s with: BS_jsr (cross-bank)
+          ;; ... process attacks ...
+          jmp BS_return  ;; MUST use jmp BS_return - called cross-bank
+.pend
 ```
 
 **CORRECT - Same-bank routine:**
-```basic
-ProcessAttackerAttacks
-  rem Only called from ProcessAllAttacks (same bank)
-  rem Calculate hitbox, check collisions, apply damage
-  return  rem Use return - only called same-bank
+```assembly
+ProcessAttackerAttacks .proc
+          ;; Only called from ProcessAllAttacks (same bank)
+          ;; Calculate hitbox, check collisions, apply damage
+          rts  ;; Use rts - only called same-bank
+.pend
 ```
 
 **WRONG - Mixed conventions (CRITICAL BUG):**
-```basic
-HandleConsoleSwitches
-  rem Called from GameLoopMain.bas with: gosub HandleConsoleSwitches bank13
-  if switchselect then 
-    rem handle pause
-    return otherbank  rem Correct
-  endif
-  rem handle other switches
-  return  rem WRONG! Must be return otherbank - routine is called cross-bank
+```assembly
+HandleConsoleSwitches .proc
+          ;; Called from GameLoopMain.s with: BS_jsr (cross-bank)
+          lda switchselect
+          beq HandleOtherSwitches
+          ;; handle pause
+          jmp BS_return  ;; Correct
+HandleOtherSwitches:
+          ;; handle other switches
+          rts  ;; WRONG! Must be jmp BS_return - routine is called cross-bank
+.pend
+```
+
+**WRONG - Using jsr instead of jmp (CRITICAL BUG):**
+```assembly
+SomeRoutine .proc
+          ;; Called from another bank with: BS_jsr (cross-bank)
+          ;; ... do work ...
+          jsr BS_return  ;; WRONG! jsr pushes another return address, corrupting stack
+.pend
 ```
 
 ### Verification
 
 All routines must be verified to ensure:
-1. If called cross-bank, ALL return statements use `return otherbank`
-2. If only called same-bank, ALL return statements use `return`
+1. If called cross-bank, ALL return statements use `jmp BS_return` (NOT `jsr BS_return`)
+2. If only called same-bank, ALL return statements use `rts`
 3. No routine mixes the two conventions
+
+See `Source/StyleGuide.md` for detailed guidelines on calling conventions and assembly syntax.

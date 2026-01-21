@@ -1,104 +1,113 @@
-draw_bmp_48x2_X
+;;; ChaosFight - Source/TitleScreen/asm/draw_bmp_48x2_X.s
+;;; Copyright © 2025 Bruce-Robert Pocock.
 
-	lda #0
-	sta GRP0
-	sta GRP1
+draw_bmp_48x2_X .proc
+          lda # 0
+          sta GRP0
+          sta GRP1
 
-	lda #7
-	sta NUSIZ0	;7=Triplex (Player drawn three times)
-	sta NUSIZ1	;7=Triplex (Player drawn three times)
+          lda # 7
+          sta NUSIZ0      ;; 7=Triplex (Player drawn three times)
+          sta NUSIZ1      ;; 7=Triplex (Player drawn three times)
 
-	tsx
-	stx aux6 ;save the stack pointer
+          tsx
+          stx temp7        ;; save the stack pointer (use temp7, aux6 conflicts with pfScore2/lives at $c2)
 
-	jsr position48
+          jsr position48
 
-	lda #3		;2
-	sta VDELP0	;3
-	sta VDELP1	;3
+          lda # 3          ;; 2 cycles
+          sta VDELP0      ;; 3 cycles
+          sta VDELP1      ;; 3 cycles
 
-	;enough cycles have passed for the HMOV, so we can clear HMCLR
-	lda #0
-	sta HMCLR
-	sta WSYNC
+          ;; enough cycles have passed for the HMOV, so we can clear HMCLR
+          lda # 0
+          sta HMCLR
+          sta WSYNC
 
-	SLEEP 63
+          .SLEEP 63
 
-	jmp pf48x2_X_loop 	;3
+          jmp pf48x2_X_loop
 
- if >. != >[.+$52]
-	align 256
- endif
+          .if >* != >(* + $52)
+          .align 256
+          .fi
 
-pf48x2_X_loop
+pf48x2_X_loop:
 
-	lda (scorepointers+0),y 	;5
-	sta GRP0			;3
-	lda (scorepointers+2),y 	;5
-	sta GRP1			;3
-        lda (scorepointers+4),y         ;5
-        sta GRP0                        ;3
+	lda (scorePointers+0),y 	;;;5
+	sta GRP0			;;3
+	lda (scorePointers+2),y 	;;;5
+	sta GRP1			;;3
+        lda (scorePointers+4),y         ;;;5
+        sta GRP0                        ;;;3
 
-        lax (scorepointers+10),y        ;5
-        lda (scorepointers+8),y         ;5
-        sta aux3                        ;3
-        lda (scorepointers+6),y         ;5
-        ldy aux3                        ;3
+        lax (scorePointers+10),y        ;;;5
+        lda (scorePointers+8),y         ;;;5
+        sta aux3                        ;;;3
+        lda (scorePointers+6),y         ;;;5
+        ldy aux3                        ;;;3
 
-        sta GRP1                        ;3
-        sty GRP0                        ;3
-        stx GRP1                        ;3
-        sty GRP0                        ;3
+        sta GRP1                        ;;;3
+        sty GRP0                        ;;;3
+        stx GRP1                        ;;;3
+        sty GRP0                        ;;;3
 
-	ldy aux2			;3
+	ldy aux2			;;3
 
-	lda (aux5),y			;5
-	sta missile0y			;3
+	lda (aux5),y			;;;5
+	sta missile0y			;;;3
 
-	sleep 3
+	.SLEEP 3
 
-	dec aux2			;5
+	dec aux2			;;5
 
 
-	lda (scorepointers+0),y 	;5
-	sta GRP0			;3
-	lda (scorepointers+2),y 	;5
-	sta GRP1			;3
-        lda (scorepointers+4),y         ;5
-        sta GRP0                        ;3
+	lda (scorePointers+0),y 	;;;5
+	sta GRP0			;;3
+	lda (scorePointers+2),y 	;;;5
+	sta GRP1			;;3
+        lda (scorePointers+4),y         ;;;5
+        sta GRP0                        ;;;3
 
-        lax (scorepointers+10),y        ;5
-        lda (scorepointers+8),y         ;5
-        sta aux3                        ;3
-        lda (scorepointers+6),y         ;5
-        ldy aux3                        ;3
+        lax (scorePointers+10),y        ;;;5
+        lda (scorePointers+8),y         ;;;5
+        sta aux3                        ;;;3
+        lda (scorePointers+6),y         ;;;5
+        ldy aux3                        ;;;3
 
-        sta GRP1                        ;3
-        sty GRP0                        ;3
-        stx GRP1                        ;3
-        sty GRP0                        ;3
+        sta GRP1                        ;;;3
+        sty GRP0                        ;;;3
+        stx GRP1                        ;;;3
+        sty GRP0                        ;;;3
 
-	sleep 4
+	.SLEEP 4
 
 	lda missile0y
 	sta COLUP1
 	sta COLUP0
 
-	ldy aux2			;3
-	bpl pf48x2_X_loop		;2/3
+	ldy aux2			;;3
+	bpl pf48x2_X_loop		;;;2/3
 
 
-pf48x2_X_codeend
- ;echo "critical code in 48x2 is ",(pf48x2_X_codeend-pf48x2_X_loop), " bytes long."
+pf48x2_X_codeend:
+ ;;.error "critical code in 48x2 is ",(pf48x2_X_codeend-pf48x2_X_loop), " bytes long."
 
-	lda #0
+	lda # 0
 	sta GRP0
 	sta GRP1
 	sta GRP0
 	sta GRP1
 	sta VDELP0
 	sta VDELP1
+	
+	;; Clear playfield registers after bitmap drawing to prevent garbage
+	;; on subsequent scanlines or frames (fixes issue #1228)
+	sta PF0
+	sta PF1
+	sta PF2
 
-	ldx aux6 ;restore the stack pointer
-	txs
-	rts
+          ldx temp7        ;;restore the stack pointer (use temp7, aux6 conflicts with pfScore2/lives at $c2)
+          txs
+          rts
+.pend

@@ -7,7 +7,7 @@
     Original Game: Tito el robotito contra los fantasmas (jumpless platformer)
     Programming Error: Allergic to scary things (zombies, ghosts, bats, skulls)
     Purchase: @url{https://store.atariage.com/products/robo-tito-atari-2600,Robo Tito at AtariAge Store}
-    Forum: @url{https://forums.atariage.com/topic/,Robo Tito release thread}
+    Forum: @url{https://forums.atariage.com/topic/365608-robo-tito-aka-tito-el-robotito-contra-los-fantasmas/,Robo Tito release thread}
 @end group
 @end display
 

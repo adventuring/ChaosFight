@@ -1,0 +1,69 @@
+;;; ChaosFight - Source/Routines/FindWinner.bas
+;;; Copyright © 2025 Bruce-Robert Pocock.
+
+
+FindWinner .proc
+          ;;
+          ;; Returns: Far (return otherbank)
+          ;; Find Winner
+          ;; Identify the last standing player.
+          ;; Input: currentPlayer (loop), playerHealth[], eliminationOrder[]
+          ;; Output: winnerPlayerIndex (0-3, 255 if all eliminated)
+          ;; Mutates: temp2, currentPlayer, winnerPlayerIndex
+          ;; Calls: IsPlayerEliminated, FindLastEliminated (if needed)
+          ;; Find the player who is not eliminated
+          lda # 255
+          sta winnerPlayerIndex_W
+          ;; Invalid initially
+
+          ;; Issue #1254: Loop through currentPlayer = 0 to 3
+          lda # 0
+          sta currentPlayer
+FW_Loop:
+          ;; Cross-bank call to IsPlayerEliminated in bank 12
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterIsPlayerEliminated-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterIsPlayerEliminated hi (encoded)]
+          lda # <(AfterIsPlayerEliminated-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterIsPlayerEliminated hi (encoded)] [SP+0: AfterIsPlayerEliminated lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(IsPlayerEliminated-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterIsPlayerEliminated hi (encoded)] [SP+1: AfterIsPlayerEliminated lo] [SP+0: IsPlayerEliminated hi (raw)]
+          lda # <(IsPlayerEliminated-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterIsPlayerEliminated hi (encoded)] [SP+2: AfterIsPlayerEliminated lo] [SP+1: IsPlayerEliminated hi (raw)] [SP+0: IsPlayerEliminated lo]
+          ldx # 12  ; Target bank 12
+          jmp BS_jsr
+
+AfterIsPlayerEliminated:
+          ;; Check if this player is not eliminated (temp2 = 0 means not eliminated)
+          lda temp2
+          bne FindWinnerNextPlayer
+          ;; Player is not eliminated - set as winner
+          lda currentPlayer
+          sta winnerPlayerIndex_W
+
+FindWinnerNextPlayer:
+          ;; Issue #1254: Loop increment and check
+          inc currentPlayer
+          lda currentPlayer
+          cmp # 4
+          bcc FW_Loop  ; Continue loop if currentPlayer < 4
+          ;; Fall through when currentPlayer >= 4
+FW_LoopDone:
+          ;; Check if a winner was found (all players eliminated = winnerPlayerIndex == 255)
+          lda winnerPlayerIndex_R
+          cmp # 255
+          bne FindWinnerDone
+          ;; No winner found (all eliminated) - find last eliminated player
+          ;; Same-bank call (both in Bank 13) - use near call/return
+          jsr FindLastEliminated
+
+FindWinnerDone:
+          jmp BS_return
+
+.pend
+

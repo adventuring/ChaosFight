@@ -1,71 +1,108 @@
           rem ChaosFight - Source/Banks/Bank7.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
-          rem Missile system (tables, physics, collision) + combat system
-
+          rem Physics system (gravity, movement, special abilities, fall damage) + screen layout +
+          rem   health bars
           bank 7
-
+          rem Code segment
           asm
-CharacterMissileTablesStart
+CharacterPhysicsTablesStart
 end
-#include "Source/Data/CharacterMissileTables.bas"
+#include "Source/Data/CharacterPhysicsTables.bas"
           asm
-CharacterMissileTablesEnd
-            echo "// Bank 7: ", [CharacterMissileTablesEnd - CharacterMissileTablesStart]d, " bytes = CharacterMissileTables"
-CharacterMissileDataStart
-end
-#include "Source/Routines/CharacterMissileData.bas"
-          asm
-CharacterMissileDataEnd
-            echo "// Bank 7: ", [CharacterMissileDataEnd - CharacterMissileDataStart]d, " bytes = CharacterMissileData"
-CharacterDataTablesStart
-end
-#include "Source/Data/CharacterDataTables.bas"
-          asm
-CharacterDataTablesEnd
-            echo "// Bank 7: ", [CharacterDataTablesEnd - CharacterDataTablesStart]d, " bytes = CharacterDataTables"
-Bank7DataEnds
+CharacterPhysicsTablesEnd
+            echo "// Bank 7: ", [CharacterPhysicsTablesEnd - CharacterPhysicsTablesStart]d, " bytes = CharacterPhysicsTables"
+Bank8DataEnds
 end
 
           asm
-BudgetedMissileCollisionsStart
+ApplyMomentumAndRecoveryStart
 end
-#include "Source/Routines/BudgetedMissileCollisionCheck.bas"
+#include "Source/Routines/ApplyMomentumAndRecovery.bas"
           asm
-BudgetedMissileCollisionsEnd
-            echo "// Bank 7: ", [BudgetedMissileCollisionsEnd - BudgetedMissileCollisionsStart]d, " bytes = BudgetedMissileCollisions"
-          asm
-MissileSystemStart
+ApplyMomentumAndRecoveryEnd
+            echo "// Bank 7: ", [ApplyMomentumAndRecoveryEnd - ApplyMomentumAndRecoveryStart]d, " bytes = ApplyMomentumAndRecovery"
+InputHandleAllPlayersStart
 end
-#include "Source/Routines/MissileSystem.bas"
+#include "Source/Routines/InputHandleAllPlayers.bas"
           asm
-MissileSystemEnd
-            echo "// Bank 7: ", [MissileSystemEnd - MissileSystemStart]d, " bytes = MissileSystem"
-MissileCharacterHandlersStart
+InputHandleAllPlayersEnd
+            echo "// Bank 7: ", [InputHandleAllPlayersEnd - InputHandleAllPlayersStart]d, " bytes = InputHandleAllPlayers"
+HandleUpInputStart
 end
-#include "Source/Routines/MissileCharacterHandlers.bas"
+#include "Source/Routines/HandleUpInput.bas"
           asm
-MissileCharacterHandlersEnd
-            echo "// Bank 7: ", [MissileCharacterHandlersEnd - MissileCharacterHandlersStart]d, " bytes = MissileCharacterHandlers"
-CombatStart
+HandleUpInputEnd
+            echo "// Bank 7: ", [HandleUpInputEnd - HandleUpInputStart]d, " bytes = HandleUpInput"
+ProcessUpActionStart
 end
-#include "Source/Routines/Combat.bas"
+#include "Source/Routines/ProcessUpAction.bas"
           asm
-CombatEnd
-            echo "// Bank 7: ", [CombatEnd - CombatStart]d, " bytes = Combat"
-          asm
-PerformGenericAttackStart
+ProcessUpActionEnd
+            echo "// Bank 7: ", [ProcessUpActionEnd - ProcessUpActionStart]d, " bytes = ProcessUpAction"
+InputHandleLeftPortPlayerFunctionStart
 end
-#include "Source/Routines/PerformGenericAttack.bas"
+#include "Source/Routines/InputHandleLeftPortPlayerFunction.bas"
           asm
-PerformGenericAttackEnd
-            echo "// Bank 7: ", [PerformGenericAttackEnd - PerformGenericAttackStart]d, " bytes = PerformGenericAttack"
-FlyingMovementHelpersStart
+InputHandleLeftPortPlayerFunctionEnd
+            echo "// Bank 7: ", [InputHandleLeftPortPlayerFunctionEnd - InputHandleLeftPortPlayerFunctionStart]d, " bytes = InputHandleLeftPortPlayerFunction"
+InputHandleRightPortPlayerFunctionStart
 end
-#include "Source/Routines/FlyingMovementHelpers.bas"
+#include "Source/Routines/InputHandleRightPortPlayerFunction.bas"
           asm
-FlyingMovementHelpersEnd
-            echo "// Bank 7: ", [FlyingMovementHelpersEnd - FlyingMovementHelpersStart]d, " bytes = FlyingMovementHelpers"
-Bank7CodeEnds
+InputHandleRightPortPlayerFunctionEnd
+            echo "// Bank 7: ", [InputHandleRightPortPlayerFunctionEnd - InputHandleRightPortPlayerFunctionStart]d, " bytes = InputHandleRightPortPlayerFunction"
+UpdatePlayerMovementSingleStart
+end
+#include "Source/Routines/UpdatePlayerMovementSingle.bas"
+          asm
+UpdatePlayerMovementSingleEnd
+            echo "// Bank 7: ", [UpdatePlayerMovementSingleEnd - UpdatePlayerMovementSingleStart]d, " bytes = UpdatePlayerMovementSingle"
+UpdatePlayerMovementStart
+end
+#include "Source/Routines/UpdatePlayerMovement.bas"
+          asm
+UpdatePlayerMovementEnd
+            echo "// Bank 7: ", [UpdatePlayerMovementEnd - UpdatePlayerMovementStart]d, " bytes = UpdatePlayerMovement"
+FallDamageStart
+end
+#include "Source/Routines/FallDamage.bas"
+          asm
+FallDamageEnd
+            echo "// Bank 7: ", [FallDamageEnd - FallDamageStart]d, " bytes = FallDamage"
+ProcessJumpInputStart
+end
+#include "Source/Routines/ProcessJumpInput.bas"
+          asm
+ProcessJumpInputEnd
+            echo "// Bank 7: ", [ProcessJumpInputEnd - ProcessJumpInputStart]d, " bytes = ProcessJumpInput"
+          asm
+DispatchCharacterJumpStart
+end
+#include "Source/Routines/DispatchCharacterJump.bas"
+          asm
+DispatchCharacterJumpEnd
+            echo "// Bank 7: ", [DispatchCharacterJumpEnd - DispatchCharacterJumpStart]d, " bytes = DispatchCharacterJump"
+MissileCollisionStart
+end
+#include "Source/Routines/MissileCollision.bas"
+          asm
+MissileCollisionEnd
+            echo "// Bank 7: ", [MissileCollisionEnd - MissileCollisionStart]d, " bytes = MissileCollision"
+          asm
+BudgetedPlayerCollisionsStart
+end
+#include "Source/Routines/BudgetedPlayerCollisions.bas"
+          asm
+BudgetedPlayerCollisionsEnd
+            echo "// Bank 7: ", [BudgetedPlayerCollisionsEnd - BudgetedPlayerCollisionsStart]d, " bytes = BudgetedPlayerCollisions"
+          asm
+FrootyAttackStart
+end
+#include "Source/Routines/FrootyAttack.bas"
+          asm
+FrootyAttackEnd
+            echo "// Bank 7: ", [FrootyAttackEnd - FrootyAttackStart]d, " bytes = FrootyAttack"
+Bank8CodeEnds
 end

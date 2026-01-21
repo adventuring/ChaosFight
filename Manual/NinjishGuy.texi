@@ -8,7 +8,7 @@
     Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.games/,VHZC Games}
     Purchase: @url{https://store.atariage.com/products/ninjish-guy-in-low-res-world-atari-2600,Ninjish Guy in Low-Res World at AtariAge Store}
     Download: @url{https://vhzc.itch.io/ninjish-guy-in-low-res-world,Ninjish Guy free download}
-    Forum: @url{https://forums.atariage.com/topic/,Ninjish Guy release thread}
+    Forum: @url{https://forums.atariage.com/topic/318874-2021-harmony-games-round-2-ninjish-guy-in-low-res-world/,Ninjish Guy discussion thread}
 @end group
 @end display
 

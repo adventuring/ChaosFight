@@ -1,0 +1,161 @@
+;;; ChaosFight - Source/Routines/BernieAttack.bas
+
+;;; Copyright © 2025 Bruce-Robert Pocock.
+
+
+BernieAttack .proc
+          ;; Executes Bernies ground-thump area attack
+          ;; Returns: Far (return otherbank)
+
+          ;; Each character has a unique attack subroutine that:
+
+          ;; 1. Calls either PerformMeleeAttack or PerformRangedAttack
+
+          ;; 2. Sets the appropriate animation sta
+
+
+          ;; 3. Handles any character-specific attack logic
+
+          ;; Input for all attack routines:
+
+          ;; temp1 = attacker player index (0-3)
+
+          ;;
+          ;; All other needed data (X,y, facing direction, etc.) is
+
+          ;; looked up
+
+          ;; from the player arrays using temp1 as the index
+
+          ;; Bernie (character 0) - Ground Thump area-of-effect attack
+
+          ;;
+          ;; Input: temp1 = attacker player index (0-3)
+
+          ;; playerState[] (global array) = player state flags
+
+          ;; MaskPlayerStateFlags (constant) = bitmask to
+
+          ;; preserve state flags
+
+          ;; ActionAttackExecuteShifted (constant) = attack
+
+          ;; execution animation sta
+
+
+          ;; PlayerStateBitFacing (constant) = facing direction
+
+          ;; bit
+
+          ;;
+          ;; Output: Two mêlée attacks executed (left and right),
+
+          ;; facing direction restored
+
+          ;;
+          ;; Mutates: temp1, temp3 (used for calculations),
+
+          ;; playerState[] (animation state set, facing toggled and
+
+          ;; restored),
+
+          ;; missile state (via PerformMeleeAttack)
+
+          ;;
+          ;; Called Routines: PerformMeleeAttack (bank7) - executes mêlée
+
+          ;; attack via shared tables
+
+          ;; Constraints: None
+
+          ;; Area-of-effect attack: hits both left and right
+
+          ;; simultaneously
+
+          ;; Save original facing direction
+
+          ;; Set animation state (PerformMeleeAttack also sets it, but
+
+          ;; we need it set first)
+
+          ;; Set temp3 = playerState[temp1] & PlayerStateBitFacing
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # PlayerStateBitFacing
+          sta temp3
+
+          ;; Attack in facing direction (inline former PerformMeleeAttack)
+          ;; Set attack animation state
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # MaskPlayerStateFlags
+          ora # ActionAttackExecuteShifted
+          sta playerState,x
+
+          ;; Attack facing direction
+          ;; Cross-bank call to PerformGenericAttack in bank 7
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(AfterPerformGenericAttackFacing-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterPerformGenericAttackFacing hi (encoded)]
+          lda # <(AfterPerformGenericAttackFacing-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterPerformGenericAttackFacing hi (encoded)] [SP+0: AfterPerformGenericAttackFacing lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(PerformGenericAttack-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterPerformGenericAttackFacing hi (encoded)] [SP+1: AfterPerformGenericAttackFacing lo] [SP+0: PerformGenericAttack hi (raw)]
+          lda # <(PerformGenericAttack-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterPerformGenericAttackFacing hi (encoded)] [SP+2: AfterPerformGenericAttackFacing lo] [SP+1: PerformGenericAttack hi (raw)] [SP+0: PerformGenericAttack lo]
+          ldx # 6
+          jmp BS_jsr
+AfterPerformGenericAttackFacing:
+
+
+          ;; Attack opposite direction (toggle facing)
+          ;; Toggle facing direction bit
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          eor # PlayerStateBitFacing
+          sta playerState,x
+
+          ;; Cross-bank call to PerformGenericAttack in bank 7
+          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
+          lda # ((>(AfterPerformGenericAttackOpposite-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterPerformGenericAttackOpposite hi (encoded)]
+          lda # <(AfterPerformGenericAttackOpposite-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterPerformGenericAttackOpposite hi (encoded)] [SP+0: AfterPerformGenericAttackOpposite lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(PerformGenericAttack-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterPerformGenericAttackOpposite hi (encoded)] [SP+1: AfterPerformGenericAttackOpposite lo] [SP+0: PerformGenericAttack hi (raw)]
+          lda # <(PerformGenericAttack-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterPerformGenericAttackOpposite hi (encoded)] [SP+2: AfterPerformGenericAttackOpposite lo] [SP+1: PerformGenericAttack hi (raw)] [SP+0: PerformGenericAttack lo]
+          ldx # 6
+          jmp BS_jsr
+AfterPerformGenericAttackOpposite:
+
+
+          ;; Restore original facing direction
+          ;; Restore saved facing direction from temp3
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and # MaskPlayerStateFlags
+          ora temp3
+          sta playerState,x
+          jmp BS_return
+
+.pend
+

@@ -43,6 +43,11 @@ temp*
 include.bB
 dumper-*.lisp
 
+# Temporary analysis files
+*_ANALYSIS.md
+*_ANALYSIS.txt
+find-*.sh
+
 # TeX/LaTeX auxiliary files (should be in Object/)
 *.aux
 *.cp

@@ -1,105 +1,95 @@
-          ;; CRITICAL: Ensure ORG is set for bankswitch code placement
-          ;; batariBASIC sets ORG before include, but DASM may need it here too
-          ;; Define as constants (SET allows redefinition per bank, EQU does not)
-BS_return SET .
-          ;; OPTIMIZATION: Don’t save A/X - target routine is returning, so its A/X don’t matter
-          ;; Original caller’s A/X are already discarded 
-          ;; CRITICAL: Use zero-page variable instead of pha to avoid stack overflow
-          ;; temp7 is used by kernel for bankswitching, but we can use it here since we’re doing bank switching
+;;; ChaosFight - Source/Common/BankSwitching.s
+;;; Copyright © 2025 Bruce-Robert Pocock.
+;;; EFSC 64k bankswitch code and vectors
+
+          ;; Calculate actual size: BS_return (21 bytes) + BS_jsr (4 bytes) = 25 bytes ($19)
+          ;; BS_return: tsx(1) + lda 2,x(2) + tay(1) + lsr*4(4) + sta temp7(2) + tya(1) + ora #$f0(2) + sta 2,x(2) + ldx temp7(2) + nop $ffe0,x(3) + rts(1) = 21 bytes
+          ;; BS_jsr: nop $ffe0,x(3) + rts(1) = 4 bytes
+          BS_length = $19    ; = 25 bytes (BS_return: 21 bytes, BS_jsr: 4 bytes)
+          .if * > $ffe0 - BS_length
+          .error format("Bank %d overflow: $%04x > $%04x", current_bank, *, $ffe0 - BS_length)
+          .fi
+
+          * = $ffe0 - BS_length
+BS_return:
+          ;; STABLE VERSION - DO NOT ALTER
+          ;; This routine has been verified and must remain unchanged.
+          ;; Any bugs should be fixed at their source, not by modifying this routine.
+          ;;
+          ;; STACK PICTURE: [SP+1: encoded ret lo] [SP+2: encoded ret hi]
+          ;; Expected: 2 bytes on stack (encoded return address with bank info in high nybble of high byte)
+          ;; After BS_jsr's RTS consumed the target address, only the encoded return address remains
+          ;; On little-endian 6502: if X = SP (from tsx), SP points to next byte to be pushed
+          ;; Top of stack (most recently pushed byte) is at offset 1 = low byte
+          ;; High byte is at offset 2 (pushed before low byte)
+          ;; Use temp7 (zero-page) instead of stack to avoid overflow
           tsx
-          lda 2,x ; get encoded high byte of return address from stack (no A/X save, so offset is 2)
-          tay ; save encoded byte for restoration
-          lsr
-          lsr
-          lsr
-          lsr ; bank now in low nibble
-          sta temp7 ; save bank number in zero-page variable (saves 1 byte on stack vs pha)
-          tya ; get saved encoded byte
-          ora #$F0 ; restore to $Fx format
-          sta 2,x ; store restored address back to stack (X still has stack pointer)
-          ldx temp7 ; restore bank number from zero-page variable
-BS_jsr SET .
-          nop $ffe0,x ; bankswitch_hotspot + X where X is 0-based bank number
-          ;; No need to restore A/X - caller doesn’t use A/X after cross-bank call returns
-          ;; Stack now has return address at top, rts will return to original caller
+          ;; Encoded return address (offset 2 = high byte contains bank info in high nybble)
+          ;; High byte is at $0100+X+2 (offset 2 relative to X)
+          lda 2, x
+          tay
+          lsr a
+          lsr a
+          lsr a
+          ;; Extract bank number from high nybble
+          lsr a
+          sta temp7
+          tya
+          ;; Restore to $fx format (address in CPU space)
+          ora #$f0
+          sta 2, x
+          ;; DO NOT pop the encoded return address - leave it on stack for RTS
+          ;; RTS will pop the decoded return address and jump to it
+          ldx temp7
+          ;; STACK PICTURE: [SP+1: decoded ret lo] [SP+2: decoded ret hi] (encoded return decoded in place)
+          ;; Bankswitch: $ffe0 + X where X is 0-based bank number
+          nop $ffe0, x
+          ;; STACK PICTURE: [SP+1: decoded ret lo] [SP+2: decoded ret hi] (bankswitch doesn't affect stack)
+          ;; RTS will pop 2 bytes (decoded return address) and jump to caller
           rts
 
-          ;; EFSC 64k bankswitch hotspot is $FFE0 (not $FFF8 like other schemes)
-          ifnconst bankswitch_hotspot
-bankswitch_hotspot = $FFE0
-          endif
-          if (($fff & .) > ($fff & bankswitch_hotspot))
-          echo "WARNING: size parameter in BankSwitching.s too small - the program probably will not work."
-          echo "Change to ", [($fff & .) - ($fff & bankswitch_hotspot)]d, " and try again."
-          endif
+BS_jsr:
+          ;; STACK PICTURE: [SP+3: target hi] [SP+2: target lo] [SP+1: return hi] [SP+0: return lo]
+          ;; Expected: 4 bytes on stack (2-byte target address + 2-byte return address)
+          ;; Bankswitch: $ffe0 + X where X is 0-based bank number
+          nop $ffe0, x
+          ;; STACK PICTURE: [SP+1: return hi] [SP+0: return lo] (target address consumed by bankswitch)
+          ;; RTS will pop 2 bytes (return address) and jump to caller
+          rts
 
-          ;; -------------------------------------------------------------------
-          ;; EFSC identification header immediately after bankswitch code
-          ;; -------------------------------------------------------------------
-          ;;
-          ;; For EFSC 64k SuperChip carts we reserve 16 bytes starting at the
-          ;; CPU hotspot address ($FFE0) in each bank. The bankswitch stub
-          ;; is placed so that it ends just before $FFE0; the following 16 bytes
-          ;; at $FFE0-$FFEF contain:
-          ;;
-          ;;   "EFSC", 0, "BRPocock", 0, $25, $00
-          ;;
-          ;; Because the bankswitch hardware only cares about accesses to the
-          ;; hotspot address, not the data value, this identification header
-          ;; does not interfere with bankswitching. Emulators/multicarts can
-          ;; use it to detect EFSC ROMs and associate metadata.
-          ;;
-          ;; Use current_bank (0-based, 0-15) set by batariBASIC to calculate bank ORG (file offset)
-          ;; Bank base = current_bank * $1000 (Bank 0=$0000, Bank 1=$1000, etc.)
-          ifnconst current_bank
-          echo "ERROR: current_bank not defined! BankSwitching.s requires current_bank to be set."
-          err
-          endif
+          ;; Size check: verify bankswitch code ends before $FFE0
+.if (($fff & *) > ($fff & $ffe0))
+.error "WARNING: size parameter in BankSwitching.s too small - the program probably will not work."
+.error format("Change by %d and try again.", (($fff & *) - ($fff & $ffe0)))
+.fi
 
-          ;; batariBASIC has already set ORG to the bankswitch code location
-          ;; We just need to set RORG and place the EFSC header
-          ;; Do NOT set ORG here - batariBASIC handles all ORG positioning
-          ;; CRITICAL: EFSC header must be at $FFE0-$FFEF, not at bankswitch_hotspot ($FFF8)
-          RORG $ffe0
-          ORG ((current_bank * $1000) | $0fe0)
-EFSC_Header EQU .
-          byte "EFSC",0
-          byte "BRPocock",0
-          ;; Game year
-          byte 26, current_bank
+          ;; EFSC identification header at $ffe0-$ffef: "EFSC", 0, "BRPocock", 0, year, bank
+          ;; File offset set by bank file’s .offs before including this file
+          .enc "ascii"
+          .cdef "A", "Z", $41
+          .cdef "a", "z", $61
+          .cdef "0", "9", $30
+          * = $ffe0
+EFSC_Header:
+          .text "EFSC", 0
+          .text "BRPocock", 0
+          .byte 26, current_bank
 
-          ;; Reset code at $fff0 - must be identical in every bank
-          ;; CRITICAL: Set ORG to Bank N’s reset code location before setting RORG
-          ;; Calculate file offset: (current_bank * $1000) | $0FF0
-          ;; This ensures reset code is in Bank N’s file space, not Bank N+1’s
-          ;; File offset will be different for each bank, but CPU address ($fff0) is the same
-          ORG ((current_bank * $1000) | $0ff0)
-          RORG $fff0
-Reset EQU .
-          ;; CRITICAL: Switch to Bank 14 (1-based = 13, 0-based index) where startup code (ColdStart) is located
-          ;; ColdStart is in Bank 14 (1-based) per ColdStart.bas
-          ;; Bank switching occurs via accessing specific addresses
-          ;; Bank 1 (0-based index 0) = $FFE0
-          ;; Bank N (0-based index) = $FFE0 + N
-          ;; Bank 14 (0-based index 13) = $FFE0 + 13 = $FFED
-          ;; Use NOP to access the address (triggers hardware bank switch)
-          nop $ffed  ;; switch to Bank 14 (14, 1-based = 13, 0-based index) where ColdStart is located
+          * = $fff0
+Reset:
+          ;; Reset vector entry point
+          ;; Minimal handler: bankswitch to Bank 12 and jump to ColdStart
+          ;; Cold Start procedure is in Bank 12 (ColdStart.s)
+          ;; Bank 12 = $ffe0 + 12 = $ffec
+          nop $ffec
           jmp ColdStart
 
-BreakHandler EQU .
-          nop $ffed
+Break:
+          ;; Switch to Bank 12 where WarmStart is located
+          ;; Bank 12 = $ffe0 + 12
+          nop $ffec
           jmp WarmStart
 
-          ;; CPU vectors at $fffc-$ffff
-          ORG ((current_bank * $1000) | $0ffc)
-          RORG $fffc
-          ;; $fffc: Reset vector
-          .word Reset
-          ;; $fffe: IRQ/BRK vector
-          .word BreakHandler
-
-          ;; CPU address space check: should end at exactly $10000
-          IF . != $10000
-          echo "ERROR: BankSwitching.s CPU address overflow! Ends at ", ., " but should be $10000"
-          err
-          endif
+          * = $fffc
+          .word Reset                                  ; Reset vector
+          .word Break                                  ; IRQ/BRK vector

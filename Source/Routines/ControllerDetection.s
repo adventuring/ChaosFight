@@ -1,0 +1,139 @@
+;;; ControllerDetection.bas - Console and controller detection
+
+          ;; Include ConsoleDetection.s to get ConsoleDetHW
+          .include "ConsoleDetection.s"
+
+CtrlDetConsole:
+          ;; Console detection (7800 vs 2600) - calls ConsoleDetHW
+          ;; Returns: Far (return otherbank)
+          jsr ConsoleDetHW
+
+          ;;
+          ;; Fall through to controller detection
+
+DetectPads .proc
+          ;; Re-detect controllers (monotonic upgrade only)
+          ;; Returns: Far (return otherbank)
+          ;; Public entry point used by console handling and character select flows
+          ;; Input: controllerStatus (global) = existing capabilities, INPT0-5 = paddle port sta
+
+          ;; Output: controllerStatus updated with any newly detected capabilities
+          ;; Constraints: Upgrades only – never clears previously detected hardware
+          lda controllerStatus
+          sta temp1
+          lda # 0
+          sta temp2
+
+          ;; Clear system flags for NTSC/PAL (not SECAM)
+          .if TVStandard != SECAM
+          lda systemFlags
+          and # ClearSystemFlagColorBWOverride
+          sta systemFlags
+          lda systemFlags
+          and # ClearSystemFlagPauseButtonPrev
+          sta systemFlags
+          .fi
+          ;; Check for Quadtari
+          ;; If INPT0{7} is set, check right side
+          bit INPT0
+          bpl CDP_CheckRightSide
+
+          ;; If !INPT1{7}, check right side
+          bit INPT1
+          bmi CheckLeftSideQuadtari
+
+          jmp CDP_CheckRightSide
+
+CheckLeftSideQuadtari:
+
+          jmp CDP_QuadtariFound
+
+.pend
+
+CDP_QuadtariFound:
+          ;; Returns: Far (return otherbank)
+          lda temp2
+          ora # SetQuadtariDetected
+          sta temp2
+          jmp CDP_MergeStatus
+
+CDP_CheckRightSide .proc
+          ;; If INPT2{7} is set, check Genesis
+          bit INPT2
+          bpl CDP_CheckGenesis
+
+          ;; If !INPT3{7}, check Genesis
+          bit INPT3
+          bmi CheckRightSideQuadtari
+
+          jmp CDP_CheckGenesis
+
+CheckRightSideQuadtari:
+
+          jmp CDP_QuadtariFound
+
+.pend
+
+CDP_CheckGenesis .proc
+          ;; Check for Genesis controller (only if Quadtari not already
+          ;; Returns: Far (return otherbank)
+          ;; detected)
+          ;; If Quadtari was previously detected, skip all other
+          ;; detection
+          ;; If temp1 & SetQuadtariDetected, then jmp CDP_MergeStatus
+          lda temp1
+          and # SetQuadtariDetected
+          bne CDP_CheckGenesisDone
+
+          ;; Genesis controllers pull INPT0 and INPT1 HIGH when idle
+          ;; Method: Ground paddle ports via VBLANK, wait a frame,
+          ;; check levels
+          ;; Set VBLANK to ground paddle capacitors (bit 6 = 1)
+          lda # $40
+          ora VBLANK
+          sta VBLANK
+
+          ;; Wait one frame for capacitors to discharge
+          ;; This gives us time for the capacitors to drain through joystick ports
+          lda INTIM
+          bmi .-3                    ; Wait for timer to expire (end of frame)
+
+          ;; Check left side (INPT0, INPT1) for Genesis controller
+          ;; Genesis controllers will pull these HIGH when idle
+          bit INPT0
+          bpl CheckGenesisRightSide
+          bit INPT1
+          bpl CheckGenesisRightSide
+
+          ;; Left side detected Genesis - set flag
+          lda temp2
+          ora # SetLeftPortGenesis
+          sta temp2
+
+CheckGenesisRightSide:
+          ;; Check right side (INPT2, INPT3) for Genesis controller
+          bit INPT2
+          bpl CDP_CheckGenesisDone
+          bit INPT3
+          bpl CDP_CheckGenesisDone
+
+          ;; Right side detected Genesis - set flag
+          lda temp2
+          ora # SetRightPortGenesis
+          sta temp2
+
+CDP_CheckGenesisDone:
+          jmp CDP_MergeStatus
+
+.pend
+
+CDP_MergeStatus .proc
+          ;; Merge detected capabilities into controllerStatus
+          ;; Returns: Far (return otherbank)
+          lda controllerStatus
+          ora temp2
+          sta controllerStatus
+          jmp BS_return
+
+.pend
+

@@ -2,77 +2,67 @@
           rem Copyright © 2025 Bruce-Robert Pocock.
           rem
           rem ASSET BANK: Character Art Assets (separate memory budget)
-          rem Character sprites (0-7): Bernie, Curler, DragonOfStorms, ZoeRyen,
-          rem   FatTony, Megax, Harpy, KnightGuy + MissileCollision routine
-
+          rem Character sprites (8-15): Frooty, Nefertem, NinjishGuy, PorkChop,
+          rem   RadishGoblin, RoboTito, Ursulo, Shamone
           bank 2
-
           asm
-            ORG $1100
-            RORG $F100
+Bank3DataStart
+FrootyDataStart
 end
+#include "Source/Generated/Frooty.bas"
           asm
-            if . != $F100
-              echo "Bank 2 not starting at $f100"
-              err
-            endif
-Bank2DataStart
-BernieDataStart
+FrootyDataEnd
+            echo "// Bank 2: ", [FrootyDataEnd - FrootyDataStart]d, " bytes = Frooty data"
+NefertemDataStart
 end
-#include "Source/Generated/Bernie.bas"
+#include "Source/Generated/Nefertem.bas"
           asm
-BernieDataEnd
-            echo "// Bank 2: ", [BernieDataEnd - BernieDataStart]d, " bytes = Bernie data"
-CurlerDataStart
+NefertemDataEnd
+            echo "// Bank 2: ", [NefertemDataEnd - NefertemDataStart]d, " bytes = Nefertem data"
+NinjishGuyDataStart
 end
-#include "Source/Generated/Curler.bas"
+#include "Source/Generated/NinjishGuy.bas"
           asm
-CurlerDataEnd
-            echo "// Bank 2: ", [CurlerDataEnd - CurlerDataStart]d, " bytes = Curler data"
-DragonOfStormsDataStart
+NinjishGuyDataEnd
+            echo "// Bank 2: ", [NinjishGuyDataEnd - NinjishGuyDataStart]d, " bytes = NinjishGuy data"
+PorkChopDataStart
 end
-#include "Source/Generated/DragonOfStorms.bas"
+#include "Source/Generated/PorkChop.bas"
           asm
-DragonOfStormsDataEnd
-            echo "// Bank 2: ", [DragonOfStormsDataEnd - DragonOfStormsDataStart]d, " bytes = Dragon Of Storms data"
-ZoeRyenDataStart
+PorkChopDataEnd
+            echo "// Bank 2: ", [PorkChopDataEnd - PorkChopDataStart]d, " bytes = PorkChop data"
+RadishGoblinDataStart
 end
-#include "Source/Generated/ZoeRyen.bas"
+#include "Source/Generated/RadishGoblin.bas"
           asm
-ZoeRyenDataEnd
-            echo "// Bank 2: ", [ZoeRyenDataEnd - ZoeRyenDataStart]d, " bytes = Zoe Ryen data"
-FatTonyDataStart
+RadishGoblinDataEnd
+            echo "// Bank 2: ", [RadishGoblinDataEnd - RadishGoblinDataStart]d, " bytes = RadishGoblin data"
+RoboTitoDataStart
 end
-#include "Source/Generated/FatTony.bas"
+#include "Source/Generated/RoboTito.bas"
           asm
-FatTonyDataEnd
-            echo "// Bank 2: ", [FatTonyDataEnd - FatTonyDataStart]d, " bytes = Fat Tony data"
-MegaxDataStart
+RoboTitoDataEnd
+            echo "// Bank 2: ", [RoboTitoDataEnd - RoboTitoDataStart]d, " bytes = RoboTito data"
+UrsuloDataStart
 end
-#include "Source/Generated/Megax.bas"
+#include "Source/Generated/Ursulo.bas"
           asm
-MegaxDataEnd
-            echo "// Bank 2: ", [MegaxDataEnd - MegaxDataStart]d, " bytes = Megax data"
-HarpyDataStart
+UrsuloDataEnd
+            echo "// Bank 2: ", [UrsuloDataEnd - UrsuloDataStart]d, " bytes = Ursulo data"
+ShamoneDataStart
 end
-#include "Source/Generated/Harpy.bas"
+#include "Source/Generated/Shamone.bas"
           asm
-HarpyDataEnd
-            echo "// Bank 2: ", [HarpyDataEnd - HarpyDataStart]d, " bytes = Harpy data"
-KnightGuyDataStart
-end
-#include "Source/Generated/KnightGuy.bas"
-          asm
-KnightGuyDataEnd
-            echo "// Bank 2: ", [KnightGuyDataEnd - KnightGuyDataStart]d, " bytes = Knight Guy data"
-Bank2DataEnds
+ShamoneDataEnd
+            echo "// Bank 2: ", [ShamoneDataEnd - ShamoneDataStart]d, " bytes = Shamone data"
+Bank3DataEnds
 end
 
           asm
-            ;; Character art lookup routines for Bank 2 (characters 0-7)
-CharacterArtBank2Start
-            #include "Source/Routines/CharacterArtBank2.s"
-CharacterArtBank2End
-            echo "// Bank 2: ", [CharacterArtBank2End - CharacterArtBank2Start]d, " bytes = Character Art lookup routines"
-Bank2CodeEnds
+            ;; Character art lookup routines for Bank 2:(characters 8-15)
+CharacterArtBank3Start
+#include "Source/Routines/CharacterArtBank3.s"
+CharacterArtBank3End
+            echo "// Bank 2: ", [CharacterArtBank3End - CharacterArtBank3Start]d, " bytes = Character Art lookup routines"
+Bank3CodeEnds
 end

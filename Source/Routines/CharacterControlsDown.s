@@ -1,0 +1,966 @@
+;;; DOWN BUTTON HANDLERS (Called via on jmp from PlayerInput)
+
+DragonOfStormsDown:
+          ;; Returns: Far (return otherbank)
+          ;; DRAGON OF STORMS (2) - FLY DOWN (no guard action)
+          ;; Dragon of Storms flies down instead of guarding
+
+          ;;
+          ;; INPUT: temp1 = player index
+
+          ;; USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
+
+          ;; Dragon of Storms flies down with playfield collision check
+
+          ;;
+          ;; Input: temp1 = player index (0-3), playerX[], playerY[]
+
+          ;; (global arrays) = player positions, ScreenInsetX (global
+
+          ;; constant) = screen × inset
+
+          ;;
+          ;; Output: Downward velocity applied if clear below, guard
+
+          bit cleared
+
+          ;;
+          ;; Mutates: temp1-temp4 (used for calculations),
+
+          ;; playerVelocityY[], playerVelocityYL[] (global arrays) =
+
+          ;; vertical velocity, playerState[] (global array) = player
+
+          ;; states (guard bit cleared)
+
+          ;;
+          ;; Called Routines: None
+
+          ;;
+          ;; Constraints: Only moves down if row below is clear. Cannot
+
+          ;; move if already at bottom. Uses inline coordinate
+
+          ;; conversion (not shared subroutine)
+
+          ;; Fly down with playfield collision check
+
+          ;; Check collision before moving
+
+          ;; Set temp2 = playerX[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+
+          ;; Set temp2 = temp2 - ScreenInsetX
+          lda temp2
+          sec
+          sbc # ScreenInsetX
+          sta temp2
+
+          ;; pfColumn = playfield column (0-31)
+
+          ;; Set temp2 = temp2 / 4
+          lda temp2
+          lsr
+          lsr
+          sta temp2
+          lda temp2
+          lsr
+          lsr
+          sta temp2
+
+          lda temp2
+          lsr
+          lsr
+          sta temp2
+
+
+          ;; Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          ;; If temp2 & $80, set temp2 = 0
+          lda temp2
+          and # $80
+          beq CheckTemp2RangeCCDStandard
+          lda # 0
+          sta temp2
+CheckTemp2RangeCCDStandard:
+          lda temp2
+          cmp # 32
+          bcc CheckRowBelowStandard
+          lda # 31
+          sta temp2
+CheckRowBelowStandard:
+
+
+
+
+          ;; Check row below player (feet at bottom of sprite)
+
+          ;; Set temp3 = playerY[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp3
+
+          ;; pfrowheight is always 16, so divide by 16
+
+          lda temp3
+          clc
+          adc # 16
+          sta temp3
+
+          ;; feetY = feet Y position
+
+          ;; Set temp4 = temp3 / 16
+          ;; feetRow = row below feet
+
+          ;; Check if at or beyond bottom row
+
+          ;; At bottom, cannot move down
+          jmp BS_return
+
+          ;; Check if playfield pixel is clear
+
+          ;; Track pfread result (1 = blocked)
+
+          lda # 0
+          sta temp5
+
+          lda temp1
+          sta temp6
+
+          lda temp2
+          sta temp1
+
+          lda temp4
+          sta temp2
+
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadDownFirst-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadDownFirst hi (encoded)]
+          lda # <(AfterPlayfieldReadDownFirst-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadDownFirst hi (encoded)] [SP+0: AfterPlayfieldReadDownFirst lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(PlayfieldRead-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadDownFirst hi (encoded)] [SP+1: AfterPlayfieldReadDownFirst lo] [SP+0: PlayfieldRead hi (raw)]
+          lda # <(PlayfieldRead-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadDownFirst hi (encoded)] [SP+2: AfterPlayfieldReadDownFirst lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
+          jmp BS_jsr
+AfterPlayfieldReadDownFirst:
+
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq BlockedCannotMoveDownStandard
+          lda # 1
+          sta temp5
+BlockedCannotMoveDownStandard:
+          lda temp6
+          sta temp1
+
+          ;; Blocked, cannot move down
+
+          jmp BS_return
+
+
+
+          ;; Clear below - apply downward velocity impulse
+
+          lda temp1
+          asl
+          tax
+          lda # 2
+          sta playerVelocityY,x
+
+          ;; +2 pixels/frame downward
+
+          lda temp1
+          asl
+          tax
+          lda # 0
+          sta playerVelocityYL,x
+
+          ;; Ensure guard bit clear
+
+                    let playerState[temp1] = playerState[temp1] & !2
+          jmp BS_return
+
+
+
+
+HarpyDown .proc
+          ;; Returns: Far (return otherbank)
+
+          jmp BS_return
+
+          ;; HARPY (6) - FLY DOWN (no guard action)
+          ;; Returns: Far (return otherbank)
+
+          ;; Harpy flies down instead of guarding
+
+          ;;
+          ;; INPUT: temp1 = player index
+
+          ;; USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
+
+          ;; Harpy flies down with playfield collision check, sets dive
+
+          ;; mode if airborne
+
+          ;;
+          ;; Input: temp1 = player index (0-3), playerX[], playerY[]
+
+          ;; (global arrays) = player positions, playerState[] (global
+
+          ;; array) = player states, characterStateFlags_R[] (global
+
+          ;; SCRAM array) = character state flags, ScreenInsetX (global
+
+          ;; constant) = screen × inset
+
+          ;;
+          ;; Output: Downward velocity applied if clear below, dive
+
+          ;; mode set if airborne, guard bit cleared
+
+          ;;
+          ;; Mutates: temp1-temp4 (used for calculations),
+
+          ;; playerVelocityY[], playerVelocityYL[] (global arrays) =
+
+          ;; vertical velocity, playerState[] (global array) = player
+
+          ;; states (guard bit cleared), characterStateFlags_W[]
+
+          ;; (global SCRAM array) = character state flags (dive mode
+
+          ;; set if airborne)
+
+          ;;
+          ;; Called Routines: None
+
+          ;;
+          ;; Constraints: Only moves down if row below is clear. Cannot
+
+          ;; move if already at bottom. Sets dive mode if airborne
+
+          ;; (jumping flag set or Y < 60). Uses inline coordinate
+
+          ;; conversion (not shared subroutine)
+
+          ;; Check if Harpy is airborne and set dive mode
+
+                    if (playerState[temp1] & 4) then HarpySetDive
+
+          ;; Jumping bit set, airborne
+
+          ;; Set temp2 = playerY[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp2
+
+          ;; If temp2 < 60, then HarpySetDive
+          lda temp2
+          cmp # 60
+          bcs HarpyNormalDown
+          jmp HarpySetDive
+HarpyNormalDown:
+
+          lda temp2
+          cmp # 60
+          bcs HarpyNormalDownLabel
+          jmp HarpySetDive
+HarpyNormalDownLabel:
+
+
+
+          ;; Above ground level, airborne
+
+          jmp HarpyNormalDown
+
+.pend
+
+HarpySetDive .proc
+
+          ;; Helper: Sets dive mode flag for Harpy when airborne
+          ;; Returns: Far (return otherbank)
+
+          ;;
+          ;; Input: temp1 = player index, characterStateFlags_R[]
+
+          ;; (global SCRAM array) = character state flags
+
+          ;;
+          ;; Output: Dive mode flag set (bit 2)
+
+          ;;
+          ;; Mutates: temp5 (scratch), characterStateFlags_W[] (global
+
+          ;; SCRAM array) = character state flags (dive mode set)
+
+          ;;
+          ;; Called Routines: None
+
+          ;; Constraints: Internal helper for HarpyDown, only called when airborne
+
+          ;; Set dive mode flag for increased damage and normal gravity
+
+          dim HSD_stateFlags = temp5 (dim removed - variable definitions handled elsewhere)
+
+          ;; Fix RMW: Read from _R, modify, write to _W
+          ;; Set HSD_stateFlags = characterStateFlags_R[temp1] | 4
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          ora # 4
+          sta HSD_stateFlags
+
+          lda temp1
+          asl
+          tax
+          lda HSD_stateFlags
+          sta characterStateFlags_W,x
+
+.pend
+
+HarpyNormalDown .proc
+
+          ;; Set bit 2 (dive mode)
+          ;; Returns: Far (return otherbank)
+
+          ;; Helper: Handles Harpy flying down with collision check
+
+          ;;
+          ;; Input: temp1 = player index, playerX[], playerY[] (global
+
+          ;; arrays) = player positions, ScreenInsetX (global consta
+
+
+          ;; = screen × inset
+
+          ;;
+          ;; Output: Downward velocity applied if clear below, guard
+
+          bit cleared
+
+          ;;
+          ;; Mutates: temp1-temp4 (used for calculations),
+
+          ;; playerVelocityY[], playerVelocityYL[] (global arrays) =
+
+          ;; vertical velocity, playerState[] (global array) = player
+
+          ;; states (guard bit cleared)
+
+          ;;
+          ;; Called Routines: None
+
+          ;; Constraints: Internal helper for HarpyDown, handles downward movement
+
+          ;; Fly down with playfield collision check
+
+          ;; Check collision before moving
+
+          ;; Set temp2 = playerX[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc # ScreenInsetX          sta temp2
+          lda temp2
+          sec
+          sbc # ScreenInsetX
+          sta temp2
+
+          lda temp2
+          sec
+          sbc # ScreenInsetX
+          sta temp2
+
+
+          ;; pfColumn = playfield column (0-31)
+
+          ;; Set temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          lda temp2
+          lsr
+          lsr
+          sta temp2
+
+          lda temp2
+          lsr
+          lsr
+          sta temp2
+
+
+          ;; Check for wraparound: if subtraction wrapped negative, result ≥ 128
+
+                    if temp2 & $80 then let temp2 = 0
+          lda temp2
+          cmp # 32
+          bcc CheckRowBelow
+          lda # 31
+          sta temp2
+CheckRowBelow:
+
+
+
+
+          ;; Check row below player (feet at bottom of sprite)
+
+          ;; Set temp3 = playerY[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp3
+
+          ;; pfrowheight is always 16, so divide by 16
+
+          lda temp3
+          clc
+          adc # 16
+          sta temp3
+
+          ;; feetY = feet Y position
+
+          ;; Set temp4 = temp3 / 16
+          ;; feetRow = row below feet
+
+          ;; Check if at or beyond bottom row
+
+          ;; At bottom, cannot move down
+          jmp BS_return
+
+          ;; Check if playfield pixel is clear
+
+          ;; Track pfread result (1 = blocked)
+
+          lda # 0
+          sta temp5
+
+          lda temp1
+          sta temp6
+
+          lda temp2
+          sta temp1
+
+          lda temp4
+          sta temp2
+
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadHarpyDown-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadHarpyDown hi (encoded)]
+          lda # <(AfterPlayfieldReadHarpyDown-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadHarpyDown hi (encoded)] [SP+0: AfterPlayfieldReadHarpyDown lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(PlayfieldRead-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadHarpyDown hi (encoded)] [SP+1: AfterPlayfieldReadHarpyDown lo] [SP+0: PlayfieldRead hi (raw)]
+          lda # <(PlayfieldRead-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadHarpyDown hi (encoded)] [SP+2: AfterPlayfieldReadHarpyDown lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
+          jmp BS_jsr
+AfterPlayfieldReadHarpyDown:
+
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq BlockedCannotMoveDown
+          lda # 1
+          sta temp5
+BlockedCannotMoveDown:
+          lda temp6
+          sta temp1
+
+          ;; Blocked, cannot move down
+
+          jmp BS_return
+
+
+
+          ;; Clear below - apply downward velocity impulse
+
+          lda temp1
+          asl
+          tax
+          lda # 2
+          sta playerVelocityY,x
+
+          ;; +2 pixels/frame downward
+
+          lda temp1
+          asl
+          tax
+          lda # 0
+          sta playerVelocityYL,x
+
+          ;; Ensure guard bit clear
+
+                    let playerState[temp1] = playerState[temp1] & !2
+          jmp BS_return
+
+.pend
+
+FrootyDown .proc
+
+          jmp BS_return
+
+          ;; FROOTY (8) - FLY DOWN (no guard action)
+
+          ;; Frooty flies down instead of guarding
+
+          ;;
+          ;; INPUT: temp1 = player index
+
+          ;; USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
+
+          ;; Frooty flies down with playfield collision check
+
+          ;; (permanent flight)
+
+          ;;
+          ;; Input: temp1 = player index (0-3), playerX[], playerY[]
+
+          ;; (global arrays) = player positions, ScreenInsetX (global
+
+          ;; constant) = screen × inset
+
+          ;;
+          ;; Output: Downward velocity applied if clear below, guard
+
+          bit cleared
+
+          ;;
+          ;; Mutates: temp1-temp4 (used for calculations),
+
+          ;; playerVelocityY[], playerVelocityYL[] (global arrays) =
+
+          ;; vertical velocity, playerState[] (global array) = player
+
+          ;; states (guard bit cleared)
+
+          ;;
+          ;; Called Routines: None
+
+          ;;
+          ;; Constraints: Only moves down if row below is clear. Cannot
+
+          ;; move if already at bottom. Uses inline coordinate
+
+          ;; conversion (not shared subroutine)
+
+          ;; Fly down with playfield collision check
+
+          ;; Check collision before moving
+
+          ;; Set temp2 = playerX[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerX,x
+          sta temp2
+
+          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc # ScreenInsetX          sta temp2
+          lda temp2
+          sec
+          sbc # ScreenInsetX
+          sta temp2
+
+          lda temp2
+          sec
+          sbc # ScreenInsetX
+          sta temp2
+
+
+          ;; pfColumn = playfield column (0-31)
+
+          ;; Set temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
+          lda temp2
+          lsr
+          lsr
+          sta temp2
+
+          lda temp2
+          lsr
+          lsr
+          sta temp2
+
+
+          ;; result ≥ 128
+
+          ;; Check for wraparound: if subtraction wrapped negative,
+
+                    if temp2 & $80 then let temp2 = 0
+          lda temp2
+          cmp # 32
+          bcc CheckRowBelow
+          lda # 31
+          sta temp2
+CheckRowBelowFrooty:
+
+
+
+
+          ;; Check row below player (feet at bottom of sprite)
+
+          ;; Set temp3 = playerY[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerY,x
+          sta temp3
+
+          ;; pfrowheight is always 16, so divide by 16
+
+          ;; Set temp4 = temp3 / 16
+          ;; feetY = feet Y position
+
+          dec temp4
+
+          ;; feetRow = row below feet
+
+          ;; Check if at or beyond bottom row
+
+          ;; At bottom, cannot move down
+          jmp BS_return
+
+          ;; Check if playfield pixel is clear
+
+          ;; Track pfread result (1 = blocked)
+
+          lda # 0
+          sta temp5
+
+          lda temp1
+          sta temp6
+
+          lda temp2
+          sta temp1
+
+          lda temp4
+          sta temp2
+
+          ;; Cross-bank call to PlayfieldRead in bank 15
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterPlayfieldReadFrootyDown-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterPlayfieldReadFrootyDown hi (encoded)]
+          lda # <(AfterPlayfieldReadFrootyDown-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterPlayfieldReadFrootyDown hi (encoded)] [SP+0: AfterPlayfieldReadFrootyDown lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(PlayfieldRead-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterPlayfieldReadFrootyDown hi (encoded)] [SP+1: AfterPlayfieldReadFrootyDown lo] [SP+0: PlayfieldRead hi (raw)]
+          lda # <(PlayfieldRead-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterPlayfieldReadFrootyDown hi (encoded)] [SP+2: AfterPlayfieldReadFrootyDown lo] [SP+1: PlayfieldRead hi (raw)] [SP+0: PlayfieldRead lo]
+          ldx # 15
+          jmp BS_jsr
+AfterPlayfieldReadFrootyDown:
+
+          ;; If temp1, set temp5 = 1
+          lda temp1
+          beq BlockedCannotMoveDownFrooty
+          lda # 1
+          sta temp5
+BlockedCannotMoveDownFrooty:
+          lda temp6
+          sta temp1
+
+          ;; Blocked, cannot move down
+
+          jmp BS_return
+
+
+
+          ;; Clear below - apply downward velocity impulse
+
+          lda temp1
+          asl
+          tax
+          lda # 2
+          sta playerVelocityY,x
+
+          ;; +2 pixels/frame downward
+
+          lda temp1
+          asl
+          tax
+          lda # 0
+          sta playerVelocityYL,x
+
+          ;; Ensure guard bit clear
+
+                    let playerState[temp1] = playerState[temp1] & !2
+          jmp BS_return
+
+
+
+.pend
+
+RoboTitoDown .proc
+
+
+          ;; ROBO TITO (13) - DOWN: Drops if latched, else guards
+          ;; Returns: Far (return otherbank)
+
+          ;; Voluntary drop from ceiling if latched; otherwise standard guard
+
+          ;; Input: temp1 = player index
+
+          ;; Output: Drop (cleared latched bit, falling state) or guard
+
+          ;; Mutates: temp2 (drop flag), characterStateFlags_W[], playerState[],
+
+          ;; missileStretchHeight_W[]
+
+          ;; Calls: StandardGuard if not latched via dispatcher helper
+
+          If latched, drop; else guard
+
+          lda # 0
+          sta temp2
+
+          ;; Not latched, dispatcher will fall through to StandardGuard
+
+          lda characterStateFlags_R[temp1]
+          and # 1
+          bne RoboTitoInitiateDrop
+RoboTitoInitiateDrop:
+
+
+          jmp BS_return
+
+.pend
+
+RoboTitoInitiateDrop .proc
+
+          ;; Signal dispatcher to skip guard after voluntary drop
+          ;; Returns: Far (return otherbank)
+
+          lda # 1
+          sta temp2
+
+          ;; fall through to RoboTitoVoluntaryDrop
+
+
+
+.pend
+
+RoboTitoVoluntaryDrop .proc
+
+          ;; RoboTito drops from ceiling on DOWN; clears latched bit, sets falling, resets stretch height
+          ;; Returns: Far (return otherbank)
+
+          ;; Fix RMW: Read from _R, modify, write to _W
+          ;; Set characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & ($ff ^ PlayerStateBitFacing)
+          lda temp1
+          asl
+          tax
+          lda characterStateFlags_R,x
+          and # ($ff ^ PlayerStateBitFacing)
+          sta characterStateFlags_W,x
+
+          ;; Clear latched bit (bit 0)
+          ;; Set playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          and MaskPlayerStateFlags
+          ora # ActionFallingShifted
+          sta playerState,x
+
+          ;; Set falling animation
+
+          ;; Clear stretch missile height when dropping
+          lda temp1
+          asl
+          tax
+          lda # 0
+          sta missileStretchHeight_W,x
+
+          jmp BS_return
+
+
+
+          ;; StandardJump is defined in CharacterControlsJump.bas (bank 12)
+
+
+          ;; Apply upward velocity impulse (input applies impulse to
+
+          ;; rigid body)
+
+          lda temp1
+          asl
+          tax
+          lda # 246
+          sta playerVelocityY,x
+
+          ;; -10 in 8-bit two’s complement: 256 - 10 = 246
+
+          lda temp1
+          asl
+          tax
+          lda # 0
+          sta playerVelocityYL,x
+
+          ;; Set jumping bit
+          ;; Set playerState[temp1] = playerState[temp1] | 4
+          lda temp1
+          asl
+          tax
+          lda playerState,x
+          ora # 4
+          sta playerState,x
+          jmp BS_return
+
+.pend
+
+StandardGuard .proc
+
+          jmp BS_return
+
+
+StandardGuard = .StandardGuard
+
+
+          ;; Standard guard behavior
+
+          ;;
+          ;; INPUT: temp1 = player index
+
+          ;; USES: playerState[temp1], playerTimers[temp1]
+
+          ;; Used by: Bernie, Curler, Zoe Ryen, Fat Tony, Megax, Knight Guy,
+
+          ;; Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Ursulo,
+
+          ;; Shamone, MethHound, and placeholder characters (16-30)
+
+          ;; NOTE: Flying characters (Frooty, Dragon of Storms, Harpy)
+
+          ;; cannot guard
+
+          ;; Standard guard behavior used by most characters (blocks
+
+          ;; attacks, forces cyan guard tint)
+
+          ;;
+          ;; Input: temp1 = player index (0-3), playerCharacter[] (global
+
+          ;; array) = character types
+
+          ;;
+          ;; Output: Guard activated if allowed (not flying character,
+
+          ;; not in cooldown)
+
+          ;;
+          ;; Mutates: temp1-temp4 (used for calculations),
+
+          ;; playerState[], playerTimers[] (global arrays) = player
+
+          ;; states and timers (via StartGuard)
+
+          ;;
+          ;; Called Routines: CheckGuardCooldown (bank6) - checks
+
+          ;; guard cooldown, StartGuard (bank6) - activates guard
+
+          ;;
+          ;; Constraints: Flying characters (Frooty=8, Dragon of
+
+          Storms=2, Harpy=6) cannot guard. Guard blocked if in
+
+          ;; cooldown
+
+          ;; Flying characters cannot guard - DOWN is used for vertical
+
+          ;; movement
+
+          ;; Frooty (8): DOWN = fly down (no gravity)
+
+          ;; Dragon of Storms (2): DOWN = fly down (no gravity)
+
+          ;; Harpy (6): DOWN = fly down (reduced gravity)
+
+          ;; Set temp4 = playerCharacter[temp1]
+          lda temp1
+          asl
+          tax
+          lda playerCharacter,x
+          sta temp4
+
+          jmp BS_return
+
+          jmp BS_return
+
+          jmp BS_return
+
+
+
+          ;; Check if guard is allowed (not in cooldown)
+
+          ;; Cross-bank call to CheckGuardCooldown in bank 5
+          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
+          lda # ((>(AfterCheckGuardCooldownStandard-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterCheckGuardCooldownStandard hi (encoded)]
+          lda # <(AfterCheckGuardCooldownStandard-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterCheckGuardCooldownStandard hi (encoded)] [SP+0: AfterCheckGuardCooldownStandard lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(CheckGuardCooldown-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterCheckGuardCooldownStandard hi (encoded)] [SP+1: AfterCheckGuardCooldownStandard lo] [SP+0: CheckGuardCooldown hi (raw)]
+          lda # <(CheckGuardCooldown-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterCheckGuardCooldownStandard hi (encoded)] [SP+2: AfterCheckGuardCooldownStandard lo] [SP+1: CheckGuardCooldown hi (raw)] [SP+0: CheckGuardCooldown lo]
+          ldx # 5
+          jmp BS_jsr
+AfterCheckGuardCooldownStandard:
+
+
+          ;; Guard blocked by cooldown
+
+          jmp BS_return
+
+
+
+          ;; Activate guard state - inlined (StartGuard)
+
+          ;; Set guard bit in playerState
+
+                    let playerState[temp1] = playerState[temp1] | 2
+
+          ;; Set guard duration timer
+          lda temp1
+          asl
+          tax
+          lda GuardTimerMaxFrames
+          sta playerTimers_W,x
+
+          jmp BS_return
+
+
+
+.pend
+

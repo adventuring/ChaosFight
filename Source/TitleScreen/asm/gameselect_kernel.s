@@ -1,25 +1,24 @@
-
-draw_gameselect_display
-          lda #0
+.proc draw_gameselect_display
+          lda # 0
           sta GRP0
           sta GRP1
 
-          ldy #4
+          ldy # 4
           sty aux2
 
-          lda bmp_gameselect_color
+          lda bmpGameselectColor
           sta COLUP0
           sta COLUP1
 
-	;change gamenumber to a BCD number and stick it in temp5
+	;;change gamenumber to a BCD number and stick it in temp5
           lda gamenumber
-          sta temp3 
-          lda #0
+          sta temp3
+          lda # 0
           sta temp4
-          ldx #8
+          ldx # 8
           clc
           sed
-converttobcd
+converttobcd:
           asl temp3
           lda temp4
           adc temp4
@@ -34,10 +33,10 @@ converttobcd
           asl
           asl
           clc
-          adc temp3 ; *5
+          adc temp3 ;;; *5
           clc
-          adc #<(font_gameselect_img)
-          sta scorepointers+10
+          adc # <(font_gameselect_img)
+          sta scorePointers+10
 
           lda temp4
           and #$f0
@@ -47,34 +46,35 @@ converttobcd
           lsr
           lsr
           clc
-          adc temp3 ; *5
+          adc temp3 ;;; *5
           clc
-          adc #<(font_gameselect_img)
-          sta scorepointers+8
+          adc # <(font_gameselect_img)
+          sta scorePointers+8
 
 
-        ;setup score pointers to point at my bitmap slices instead
-          lda #<(bmp_gameselect_CHAR0)
-          sta scorepointers+0
-          lda #>(bmp_gameselect_CHAR0)
-          sta scorepointers+1
-          lda #<(bmp_gameselect_CHAR1)
-          sta scorepointers+2
-          lda #>(bmp_gameselect_CHAR1)
-          sta scorepointers+3
-          lda #<(bmp_gameselect_CHAR2)
-          sta scorepointers+4
-          lda #>(bmp_gameselect_CHAR2)
-          sta scorepointers+5
-          lda #<(bmp_gameselect_CHAR3)
-          sta scorepointers+6
-          lda #>(bmp_gameselect_CHAR3)
-          sta scorepointers+7
+        ;;setup score pointers to point at my bitmap slices instead
+          lda # <(bmp_gameselect_CHAR0)
+          sta scorePointers+0
+          lda # >(bmp_gameselect_CHAR0)
+          sta scorePointers+1
+          lda # <(bmp_gameselect_CHAR1)
+          sta scorePointers+2
+          lda # >(bmp_gameselect_CHAR1)
+          sta scorePointers+3
+          lda # <(bmp_gameselect_CHAR2)
+          sta scorePointers+4
+          lda # >(bmp_gameselect_CHAR2)
+          sta scorePointers+5
+          lda # <(bmp_gameselect_CHAR3)
+          sta scorePointers+6
+          lda # >(bmp_gameselect_CHAR3)
+          sta scorePointers+7
 
-          lda #>(font_gameselect_img)
-          sta scorepointers+9
+          lda # >(font_gameselect_img)
+          sta scorePointers+9
 
-          lda #>(font_gameselect_img)
-          sta scorepointers+11
+          lda # >(font_gameselect_img)
+          sta scorePointers+11
 
           jmp draw_bmp_48x1_X
+.pend

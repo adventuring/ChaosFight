@@ -1,0 +1,85 @@
+;;; ChaosFight - Source/Routines/LoadSoundPointer.bas
+
+;;; Copyright © 2025 Bruce-Robert Pocock.
+
+
+
+
+LoadSoundPointer .proc
+
+
+
+
+          ;; Lookup sound pointer from tables (Bank 15 sounds: 0-9)
+          ;; Returns: Far (return otherbank)
+
+          ;;
+          ;; Input: temp1 = sound ID (0-9), SoundPointersL[],
+
+          ;; SoundPointersH[] (global data tables) = sound pointer
+
+          ;; tables
+
+          ;;
+          ;; Output: soundEffectPointer = pointer to Sound_Voice0 stream
+
+          ;;
+          ;; Mutates: temp1 (used for sound ID), soundEffectPointer (var41.var42)
+
+          ;;
+          ;; Called Routines: None
+
+          ;;
+          ;; Constraints: Only 10 sounds (0-9) available. Returns
+
+          ;; soundEffectPointer = 0 if sound ID out of bounds
+
+          ;; Bounds check: only 10 sounds (0-9)
+
+          ;; Build 16-bit pointer: var41 = high byte, var42 = low byte
+
+          lda temp1
+          cmp # 10
+          bcc SoundIDInRange
+
+          jmp LoadSoundPointerOutOfRange
+
+SoundIDInRange:
+
+          ;; Set soundEffectPointerH = SoundPointersH[temp1]
+          lda temp1
+          asl
+          tax
+          lda SoundPointersH,x
+          sta soundEffectPointerH
+
+          ;; Set soundEffectPointer = SoundPointersL[temp1]
+          lda temp1
+          asl
+          tax
+          lda SoundPointersL,x
+          sta soundEffectPointer
+
+          jmp LoadSoundPointerReturn
+
+.pend
+
+LoadSoundPointerOutOfRange .proc
+          ;; Set pointer to 0 (soundEffectPointer = 0.0)
+          ;; Returns: Far (return otherbank)
+
+          lda # 0
+          sta soundEffectPointerH
+
+          ;; Out of range - mark sound pointer inactive
+
+          lda # 0
+          sta soundEffectPointer
+
+          jmp LoadSoundPointerReturn
+
+.pend
+
+LoadSoundPointerReturn:
+          jmp BS_return
+

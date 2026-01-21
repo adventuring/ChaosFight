@@ -1,0 +1,42 @@
+          .proc _wing0
+_wing0:
+player1:
+
+  %01111000
+  %10001100
+  %00011100
+  %10111000
+  %11110010
+  %11111100
+  %11001011
+  %01011101
+          .pend
+  return thisbank
+          .proc wing1
+wing1:
+;; player1: (duplicate)
+
+  %00111000
+  %01011100
+  %00111000
+  %01110000
+  %01110010
+  %01111100
+  %00101011
+  %00011101
+          .pend
+  ;; return thisbank (duplicate)
+          .proc wing2
+wing2:
+;; player1: (duplicate)
+
+  %01101110
+  %10111100
+  %00111000
+  %01111000
+  %01111110
+  %00111100
+  %00001011
+  %00011101
+          .pend
+  ;; return thisbank (duplicate)

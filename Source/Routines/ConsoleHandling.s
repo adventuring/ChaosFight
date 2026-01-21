@@ -1,0 +1,508 @@
+;;; ConsoleHandling.bas - Console switch handling
+
+
+WarmStart .proc
+          ;; Warm Start / Reset Handler
+          ;; Returns: Far (return otherbank) - jumps to BeginPublisherPrelude
+          ;;
+          ;; Input: None (called from cold start procedure in Reset handler)
+          ;;
+          ;; Output: All memory cleared, TIA registers initialized, PIA RIOT ports initialized,
+          ;; controller detection performed, jumps to BeginPublisherPrelude
+          ;;
+          ;; Mutates: All RAM ($81-$FF), SCRAM (w000-w127 via $F000-$F07F), TIA registers, PIA RIOT ports,
+          ;; controllerStatus (via DetectPads)
+          ;;
+          ;; Called Routines: DetectPads (bank13) - controller detection,
+          ;; BeginPublisherPrelude (bank14) - publisher prelude entry
+          ;;
+          ;; Constraints: Entry point for warm start (called from cold start procedure)
+          ;; Must clear memory before any stack operations
+          
+          ;; Step 1: Save console7800Detected flag (will be overwritten by loop)
+          lda console7800Detected
+          tay                              ;;; Save in Y register
+          
+          ;; Step 2: Clear TIA registers ($00-$2C), RAM ($81-$FF), and SCRAM ($F000-$F07F) in one loop
+          ;; SCRAM write ports are at $F000-$F07F (w000-w127)
+          ;; Loop clears: TIA $00-$7F, RAM $81-$FF, SCRAM $F000-$F07F
+          ;; Does NOT clear $80 (will restore console7800Detected after loop)
+          lda # 0
+          ldx # $7F                        ;;; Start at $7F, iterate down to $01
+WarmStartClearAll:
+          sta $00,x                        ;;; Clear TIA registers $00-$7F (only $00-$2C are TIA, rest ignored)
+          sta $80,x                        ;;; Clear zero-page RAM $81-$FF (skips $80 when X=0)
+          sta $F000,x                      ;;; Clear SCRAM write ports $F000-$F07F
+          dex                              ;;; Decrement X
+          bne WarmStartClearAll            ;;; Continue until X wraps from $01 to $00
+          
+          ;; X is now $00, clear final positions: TIA $00, SCRAM $F000
+          sta $00                          ;;; Clear TIA register at $00 (VSYNC)
+          sta $F000                        ;;; Clear SCRAM write port at $F000
+          
+          ;; Step 3: Restore console7800Detected flag from Y
+          sty console7800Detected          ;;; Restore preserved value
+          
+          ;; Step 4: Initialize PIA RIOT I/O ports and DDR
+          ;; RIOT (6532) I/O ports and Data Direction Registers:
+          ;; SWCHA ($0280) - Port A read
+          ;; SWACNT ($0281) - Port A DDR (0=input, 1=output)
+          ;; SWCHB ($0282) - Port B read  
+          ;; SWBCNT ($0283) - Port B DDR (0=input, 1=output)
+          ;; Set all pins as inputs (DDR = 0)
+          lda # 0
+          sta SWACNT                       ;;; Port A: all pins input
+          sta SWBCNT                       ;;; Port B: all pins input
+          
+          ;; Initialize timer to a known state (1 clock interval - will expire immediately)
+          sta TIM1T                        ;;; Set timer to 1 clock interval
+          
+          ;; Step 5: Perform input controller detection for Quadtari, Joy2b+, or MegaDrive controllers
+          ;; DetectPads is in Bank 12 (same bank as WarmStart), uses jmp BS_return
+          ;; Use same-bank far call: push encoded return address, then jsr DetectPads
+          ;; STACK PICTURE: [] (empty, WarmStart entry)
+          ;; Encode bank 12 ($c) in high nybble of return address high byte
+          lda # ((>(AfterDetectPadsWarmStart-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterDetectPadsWarmStart hi (encoded)]
+          lda # <(AfterDetectPadsWarmStart-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterDetectPadsWarmStart hi (encoded)] [SP+0: AfterDetectPadsWarmStart lo]
+          jsr DetectPads
+          ;; STACK PICTURE: [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: jsr ret hi] [SP+0: jsr ret lo]
+          ;; DetectPads will jmp BS_return, which decodes the encoded return address (offset 2)
+          ;; and returns to AfterDetectPadsWarmStart
+
+AfterDetectPadsWarmStart:
+          ;; STACK PICTURE: [] (empty, BS_return consumed encoded return address)
+
+          ;; Step 6: Go to publisher prelude
+          ;; Set game mode to Publisher Prelude
+          lda # ModePublisherPrelude
+          sta gameMode
+          
+          ;; Cross-bank call to BeginPublisherPrelude in bank 13
+          ;; STACK PICTURE: [] (empty, after previous BS_return)
+          lda # ((>(AfterBeginPublisherPreludeWarmStart-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterBeginPublisherPreludeWarmStart hi (encoded)]
+          lda # <(AfterBeginPublisherPreludeWarmStart-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterBeginPublisherPreludeWarmStart hi] [SP+0: AfterBeginPublisherPreludeWarmStart lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(BeginPublisherPrelude-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterBeginPublisherPreludeWarmStart hi] [SP+1: AfterBeginPublisherPreludeWarmStart lo] [SP+0: BeginPublisherPrelude hi (raw)]
+          lda # <(BeginPublisherPrelude-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterBeginPublisherPreludeWarmStart hi (encoded)] [SP+2: AfterBeginPublisherPreludeWarmStart lo] [SP+1: BeginPublisherPrelude hi (raw)] [SP+0: BeginPublisherPrelude lo]
+          ldx # 13                         ;;; Bank 13 = $ffe0 + 13, 0-based = 13
+          jmp BS_jsr
+
+AfterBeginPublisherPreludeWarmStart:
+          ;; STACK PICTURE: [] (empty, BS_return consumed 4 bytes)
+
+          ;; Jump to MainLoop in bank 15 without pushing to stack
+          ;; CRITICAL: MainLoop is in Bank 15, WarmStart is in Bank 12
+          ;; MainLoop is an infinite loop - it NEVER returns, so we must NOT push bytes to stack
+          ;; Switch banks directly using nop $ffe0, x then jump
+          ;; STACK PICTURE: [] (empty - no bytes pushed)
+          ldx # 14                         ;;; Bank 15 = $ffe0 + 14, 0-based = 14
+          nop $ffe0, x                     ;;; Switch to bank 15
+          jmp MainLoop                     ;;; Jump directly to MainLoop (no stack push)
+
+.pend
+
+HandleConsoleSwitches .proc
+
+          ;; Main console switch handler
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Game Select switch or Joy2B+ Button III - toggle pause
+          ;; mode
+          lda # 0
+          sta temp2
+          ;; Check Player 1 buttons
+          jsr CheckEnhancedPause
+
+          lda temp1
+          beq DonePlayer1Pause
+
+CheckSelectPressed:
+
+          ;; Re-detect controllers when Select is pressed
+          ;; Cross-bank call to DetectPads in bank 12 (same bank, but uses BS_return)
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterDetectPadsSelect-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterDetectPadsSelect hi (encoded)]
+          lda # <(AfterDetectPadsSelect-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterDetectPadsSelect hi (encoded)] [SP+0: AfterDetectPadsSelect lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(DetectPads-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterDetectPadsSelect hi (encoded)] [SP+1: AfterDetectPadsSelect lo] [SP+0: DetectPads hi (raw)]
+          lda # <(DetectPads-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterDetectPadsSelect hi (encoded)] [SP+2: AfterDetectPadsSelect lo] [SP+1: DetectPads hi (raw)] [SP+0: DetectPads lo]
+          ldx # 12
+          jmp BS_jsr
+AfterDetectPadsSelect:
+
+
+          lda systemFlags
+          and SystemFlagGameStatePaused
+          bne ClearPausedFlag
+          ;; Set systemFlags = systemFlags | SystemFlagGameStatePaused
+          lda systemFlags
+          ora # SystemFlagGameStatePaused
+          sta systemFlags
+          jmp Player1PauseDone
+
+ClearPausedFlag:
+          ;; Clear systemFlags = systemFlags & ClearSystemFlagGameStatePaused
+          lda systemFlags
+          and ClearSystemFlagGameStatePaused
+          sta systemFlags
+
+Player1PauseDone:
+          ;; Debounce - wait for button release (drawscreen called by
+          ;; Returns: Far (return otherbank)
+          ;; HandleConsoleSwitches is called cross-bank, so must use return otherbank
+          ;; MainLoop)
+          jmp BS_return
+
+DonePlayer1Pause:
+          lda # 1
+          sta temp2
+          ;; Check Player 2 buttons
+          jsr CheckEnhancedPause
+
+          lda temp1
+          beq DonePlayer2Pause
+
+CheckSelectPressedP2:
+
+          ;; Re-detect controllers when Select is pressed
+          ;; Cross-bank call to DetectPads in bank 12 (same bank, but uses BS_return)
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterDetectPadsSelectP2-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterDetectPadsSelectP2 hi (encoded)]
+          lda # <(AfterDetectPadsSelectP2-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterDetectPadsSelectP2 hi (encoded)] [SP+0: AfterDetectPadsSelectP2 lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(DetectPads-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterDetectPadsSelectP2 hi (encoded)] [SP+1: AfterDetectPadsSelectP2 lo] [SP+0: DetectPads hi (raw)]
+          lda # <(DetectPads-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterDetectPadsSelectP2 hi (encoded)] [SP+2: AfterDetectPadsSelectP2 lo] [SP+1: DetectPads hi (raw)] [SP+0: DetectPads lo]
+          ldx # 12
+          jmp BS_jsr
+AfterDetectPadsSelectP2:
+
+
+          lda systemFlags
+          and SystemFlagGameStatePaused
+          bne ClearPausedFlagP2
+          ;; Set systemFlags = systemFlags | SystemFlagGameStatePaused
+          lda systemFlags
+          ora # SystemFlagGameStatePaused
+          sta systemFlags
+          jmp Player2PauseDone
+
+ClearPausedFlagP2:
+          ;; Clear systemFlags = systemFlags & ClearSystemFlagGameStatePaused
+          lda systemFlags
+          and ClearSystemFlagGameStatePaused
+          sta systemFlags
+
+Player2PauseDone:
+          ;; Debounce - wait for button release (drawscreen called by
+          ;; Returns: Far (return otherbank)
+          ;; HandleConsoleSwitches is called cross-bank, so must use return otherbank
+          ;; MainLoop)
+          jmp BS_return
+
+DonePlayer2Pause:
+          ;; Color/B&W switch - re-detect controllers when toggled
+          ;; CRITICAL: Use bank12 even though same-bank to match return otherbank
+          ;; Cross-bank call to CheckColorBWToggle in bank 12
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterCheckColorBWToggle-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterCheckColorBWToggle hi (encoded)]
+          lda # <(AfterCheckColorBWToggle-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterCheckColorBWToggle hi (encoded)] [SP+0: AfterCheckColorBWToggle lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(CheckColorBWToggle-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterCheckColorBWToggle hi (encoded)] [SP+1: AfterCheckColorBWToggle lo] [SP+0: CheckColorBWToggle hi (raw)]
+          lda # <(CheckColorBWToggle-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterCheckColorBWToggle hi (encoded)] [SP+2: AfterCheckColorBWToggle lo] [SP+1: CheckColorBWToggle hi (raw)] [SP+0: CheckColorBWToggle lo]
+          ldx # 12
+          jmp BS_jsr
+AfterCheckColorBWToggle:
+
+
+          ;; 7800 Pause button - toggle Color/B&W mode (not in SECAM)
+          .if TVStandard != SECAM
+          ;; tail call
+          jmp Check7800Pause
+          .fi
+
+.pend
+
+Check7800Pause .proc
+          ;; 7800 pause button handler (uses same pin as Color/B&W switch)
+          ;; Returns: Far (return otherbank)
+          ;; HandleConsoleSwitches is called cross-bank, so must use return otherbank
+          ;;
+          ;; Note: 7800 pause button behavior is handled by CheckColorBWToggle
+          ;; which detects switchbw changes and toggles colorBWOverride.
+          ;; This function is a placeholder for future 7800-specific pause handling.
+          ;;
+          ;; Constraints: NTSC/PAL only (not SECAM)
+          jmp BS_return
+
+.pend
+
+CheckEnhancedPause .proc
+
+
+
+          ;; Check if pause buttons are pressed (console Game Select switch or enhanced controller buttons)
+          ;; Returns: Near (return thisbank)
+          ;; Called same-bank from HandlePauseButton, so use return thisbank
+          ;; Game Select switch (always) + Joy2B+ Button III (INPT1/INPT3) or Genesis Button C (INPT0/INPT2)
+          ;;
+          ;; Input: temp2 = player index (0=Player 1, 1=Player 2)
+          ;; controllerStatus (global) = controller capabilities
+          ;; switchselect (hardware) = Game Select switch
+          ;; INPT0-3 (hardware) = paddle port sta
+
+          ;;
+          ;; Output: temp1 = 1 if any pause button pressed, 0 otherwise
+          ;;
+          ;; Mutates: temp1
+          ;;
+          ;; Called Routines: None
+          ;;
+          ;; Constraints: None
+          ;; Default to no pause button pressed
+          lda # 0
+          sta temp1
+
+          ;; Always check Game Select switch first (works with any controller)
+          ;; If switchselect is pressed, set temp1 = 1 and return
+          lda switchselect
+          beq CheckEnhancedPauseButtons
+
+          lda # 1
+          sta temp1
+          rts
+
+CheckEnhancedPauseButtons:
+          ;; Then check enhanced pause buttons for the specified player
+          ;; Joy2B+ Button III uses different registers than Button II/C
+          lda temp2
+          bne CheckPlayer2Pause
+          jmp CheckPlayer1EnhancedPause
+CheckPlayer2Pause:
+
+
+          lda temp2
+          cmp # 1
+          bne CheckEnhancedPauseDone
+          jmp CheckPlayer2EnhancedPause
+CheckEnhancedPauseDone:
+
+          rts
+
+.pend
+
+CheckPlayer1EnhancedPause .proc
+          ;; Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
+          ;; Returns: Near (return thisbank)
+          ;; Called same-bank from CheckEnhancedPause, so use return thisbank
+          ;; If controllerStatus & SetLeftPortGenesis then if !INPT0{7}, set temp1 = 1
+          lda controllerStatus
+          and # SetLeftPortGenesis
+          beq CheckJoy2bPlus
+          bit INPT0
+          bmi CheckJoy2bPlus
+          lda # 1
+          sta temp1
+          jmp CheckPlayer1EnhancedPauseDone
+CheckJoy2bPlus:
+          ;; If controllerStatus & SetLeftPortJoy2bPlus and !INPT1{7}, set temp1 = 1
+          lda controllerStatus
+          and # SetLeftPortJoy2bPlus
+          beq CheckPlayer1EnhancedPauseDone
+          bit INPT1
+          bmi CheckPlayer1EnhancedPauseDone
+          lda # 1
+          sta temp1
+CheckPlayer1EnhancedPauseDone:
+          rts
+
+.pend
+
+CheckPlayer2EnhancedPause .proc
+          ;; Player 2: Check Genesis Button C (INPT2) or Joy2B+ Button III (INPT3)
+          ;; Returns: Near (return thisbank)
+          ;; Called same-bank from CheckEnhancedPause, so use return thisbank
+          lda INPT2
+          and # 128
+          bne CheckINPT3
+          lda # 1
+          sta temp1
+CheckINPT3:
+
+          lda INPT3
+          and # 128
+          bne CheckPlayer2EnhancedPauseDone
+          lda # 1
+          sta temp1
+CheckPlayer2EnhancedPauseDone:
+
+          rts
+          ;;
+          ;; Color/B&W switch change detection (triggers controller re-detect)
+
+.pend
+
+CheckColorBWToggle .proc
+
+          ;; Check switch state and trigger DetectPads when it flips
+          ;; Returns: Far (return otherbank)
+          ;; HandleConsoleSwitches is called cross-bank, so must use return otherbank
+          ;;
+          ;; Input: switchbw (hardware) = Color/B&W switch sta
+
+          ;; colorBWPrevious_R (global SCRAM) = previous
+          ;; Color/B&W switch sta
+
+          ;;
+          ;; Output: colorBWPrevious_W updated, DetectPads
+          ;; called if switch changed
+          ;;
+          ;; Mutates: temp1 (switch changed flag), temp6 (used for
+          ;; switchbw read),
+          ;; colorBWPrevious_W (updated if switch changed)
+          ;;
+          ;; Called Routines: DetectPads (bank13) - accesses
+          ;; controller detection sta
+
+          ;; Constraints: Must be colocated with DoneSwitchChange (called via jmp)
+          ;; Optimized: Check Color/B&W switch state change directly
+          lda # 0
+          sta temp6
+          ;; If switchbw, set temp6 = 1
+          lda switchbw
+          beq CheckSwitchChanged
+          lda # 1
+          sta temp6
+CheckSwitchChanged:
+          lda temp6
+          cmp colorBWPrevious_R
+          bne TriggerDetectPads
+          jmp DoneSwitchChange
+TriggerDetectPads:
+
+          ;; Cross-bank call to DetectPads in bank 12 (same bank, but uses BS_return)
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterDetectPadsColorBW-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterDetectPadsColorBW hi (encoded)]
+          lda # <(AfterDetectPadsColorBW-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterDetectPadsColorBW hi (encoded)] [SP+0: AfterDetectPadsColorBW lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(DetectPads-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterDetectPadsColorBW hi (encoded)] [SP+1: AfterDetectPadsColorBW lo] [SP+0: DetectPads hi (raw)]
+          lda # <(DetectPads-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterDetectPadsColorBW hi (encoded)] [SP+2: AfterDetectPadsColorBW lo] [SP+1: DetectPads hi (raw)] [SP+0: DetectPads lo]
+          ldx # 12
+          jmp BS_jsr
+AfterDetectPadsColorBW:
+
+
+          lda temp6
+          sta colorBWPrevious_W
+
+DoneSwitchChange:
+          ;; Color/B&W switch change check complete (label only, no
+          ;; Returns: Near (return thisbank)
+          ;; execution)
+          ;;
+          ;; Input: None (label only, no execution)
+          ;;
+          ;; Output: None (label only)
+          ;;
+          ;; Mutates: None
+          ;;
+          ;; Called Routines: None
+          ;;
+          ;; Constraints: Must be colocated with CheckColorBWToggle
+          ;; Check if colorBWOverride changed (7800 pause button)
+          ;; Note: colorBWOverride does not have a previous value
+          ;; stored,
+          ;; so we check it every frame (NTSC/PAL only, not SECAM).
+          ;; This is acceptable since it is only toggled by button
+          ;; press,
+          ;; not continuously. If needed, we could add a previous
+          ;; value
+          ;; variable.
+          ;; Reload arena colors if switch or override changed
+          ;; Note: colorBWOverride check handled in
+          ;; If temp1 is non-zero, reload arena colors now
+          lda temp1
+          beq CheckColorBWToggleDone
+          jmp ReloadArenaColorsNow
+CheckColorBWToggleDone:
+          
+          ;; Check7800PauseButton
+          ;; (NTSC/PAL only, not SECAM)
+          ;; CRITICAL: CheckColorBWToggle is called from HandleConsoleSwitches which is
+          ;; called cross-bank, so this return must be return otherbank
+          jmp BS_return
+
+.pend
+
+ReloadArenaColorsNow .proc
+          ;; Reload arena colors with current switch sta
+
+          ;; Returns: Far (return otherbank)
+          ;; CheckColorBWToggle is called cross-bank, so must use return otherbank
+          ;; Cross-bank call to ReloadArenaColors in bank 13
+          ;; Return address: ENCODED with caller bank 12 ($c0) for BS_return to decode
+          lda # ((>(AfterReloadArenaColors-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterReloadArenaColors hi (encoded)]
+          lda # <(AfterReloadArenaColors-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterReloadArenaColors hi (encoded)] [SP+0: AfterReloadArenaColors lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(ReloadArenaColors-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterReloadArenaColors hi (encoded)] [SP+1: AfterReloadArenaColors lo] [SP+0: ReloadArenaColors hi (raw)]
+          lda # <(ReloadArenaColors-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterReloadArenaColors hi (encoded)] [SP+2: AfterReloadArenaColors lo] [SP+1: ReloadArenaColors hi (raw)] [SP+0: ReloadArenaColors lo]
+          ldx # 13
+          jmp BS_jsr
+AfterReloadArenaColors:
+
+
+          jmp BS_return
+
+.pend
+

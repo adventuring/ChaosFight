@@ -9,7 +9,7 @@
     Original Game: Ducks Away
     Author: SmittyB
     Purchase: @url{https://store.atariage.com/products/ducks-away-atari-2600,Ducks Away at AtariAge Store}
-    Forum: @url{https://forums.atariage.com/topic/,Ducks Away release thread}
+    Forum: @url{https://forums.atariage.com/topic/358950-ducks-away-wip/,Ducks Away development thread}
 @end group
 @end display
 

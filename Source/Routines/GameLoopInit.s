@@ -1,0 +1,513 @@
+;;; ChaosFight - Source/Routines/GameLoopInit.bas
+;;; Copyright © 2025 Bruce-Robert Pocock.
+          ;;
+;;; Game Loop Initialization
+;;; Initializes all game state for the main gameplay loop.
+          ;; Called once when entering gameplay from character select.
+          INITIALIZES:
+          ;; - Player positions, states, health, momentum
+          ;; - Character types from selections
+          ;; - Missiles and projectiles
+          ;; - Frame counter and game sta
+
+          ;; - Arena data
+          ;; STATE FLAG DEFINITIONS (in playerState):
+          ;; bit 0: Facing (1 = right, 0 = left)
+          ;; bit 1: Guarding
+          ;; bit 2: Jumping
+          ;; bit 3: Recovery (hitstun)
+          ;; Bits 4-7: Animation state (0-15)
+          ;; ANIMATION STATES:
+          ;; 0=Standing right, 1=Idle, 2=Guarding, 3=Walking/running,
+          ;; 4=Coming to stop, 5=Taking hit, 6=Falling backwards,
+          ;; 7=Falling down, 8=Fallen down, 9=Recovering,
+          ;; 10=Jumping, 11=Falling, 12=Landing, 13-15=Reserved
+
+
+BeginGameLoop .proc
+          ;; Initialize all game state for the main gameplay loop
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: controllerStatus (global) = controller detection
+          ;; sta
+
+          ;; playerCharacter[] (global array) = character selections
+          ;; PlayerLocked[] (global array) = lock states for
+          ;; handicap calculation
+          ;;
+          ;; Output: All game state initialized for gameplay
+          ;;
+          ;; Mutates: playerX[], playerY[], playerState[],
+          ;; PlayerHealth[], playerCharacter[],
+          ;; PlayerTimers[], playerVelocityX[],
+          ;; playerVelocityXL[],
+          ;; playerVelocityYL[], playerSubpixelX[],
+          ;; playerSubpixelY[],
+          ;; PlayerDamage[], controllerStatus, missileActive,
+          ;; PlayersEliminated,
+          ;; PlayersRemaining, GameEndTimer,
+          ;; EliminationCounter, EliminationOrder[],
+          ;; WinnerPlayerIndex, DisplayRank,
+          ;; GameState,
+          ;; NUSIZ0, _NUSIZ1, nusiz2, nusiz3, frame, sprite
+          ;; pointers, screen layout
+          ;;
+          ;; Called Routines: InitializeSpritePointers (bank14) - sets
+          ;; sprite pointer addresses,
+          ;; SetGameScreenLayout (bank7) - sets screen layout,
+          ;; GetPlayerLocked (bank6) - accesses player lock sta
+
+          ;; InitializeHealthBars (bank6) - initializes health bar
+          ;; sta
+
+          ;; LoadArena (bank16) - loads arena data
+          ;;
+          ;; Constraints: Must be colocated with Init4PlayerPositions,
+          ;; InitPositionsDone,
+          ;; PlayerHealthSet (all called via goto)
+          ;; Entry point for game loop initialization
+          ;; Initialize sprite pointers to RAM addresses
+          ;; Ensure pointers are set before loading any sprite data
+          ;; Cross-bank call to InitializeSpritePointers in bank 13
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterInitializeSpritePointers-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterInitializeSpritePointers hi (encoded)]
+          lda # <(AfterInitializeSpritePointers-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterInitializeSpritePointers hi (encoded)] [SP+0: AfterInitializeSpritePointers lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(InitializeSpritePointers-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterInitializeSpritePointers hi (encoded)] [SP+1: AfterInitializeSpritePointers lo] [SP+0: InitializeSpritePointers hi (raw)]
+          lda # <(InitializeSpritePointers-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterInitializeSpritePointers hi (encoded)] [SP+2: AfterInitializeSpritePointers lo] [SP+1: InitializeSpritePointers hi (raw)] [SP+0: InitializeSpritePointers lo]
+          ldx # 13
+          jmp BS_jsr
+AfterInitializeSpritePointers:
+
+
+          ;; Set screen layout for gameplay (32×8 game layout) - inlined
+          lda # ScreenPfRowHeight
+          sta pfrowheight
+          ;; SuperChip variables var0-var15 available in gameplay
+          lda # ScreenPfRows
+          sta pfrows
+
+          ;; Initialize player positions
+          ;; 2-Player Game: P1 at 1/3 width (53), P2 at 2/3 width (107)
+          ;; 4-Player Game: P1 at 1/5 (32), P3 at 2/5 (64), P4 at 3/5
+          ;; (96), P2 at 4 ÷ 5 (128)
+          ;; All players start at second row from top (Y=24, center of
+          ;; row 1)
+          ;; Check if 4-player mode (Quadtari detected)
+          lda controllerStatus
+          and # SetQuadtariDetected
+          beq Init2PlayerPositions
+          jmp Init4PlayerPositions
+
+Init2PlayerPositions:
+          ;; 2-player mode positions
+          lda # 0
+          asl
+          tax
+          lda # 53
+          sta playerX,x
+          lda # 0
+          asl
+          tax
+          lda # 24
+          sta playerY,x
+          lda # 1
+          asl
+          tax
+          lda # 107
+          sta playerX,x
+          lda # 1
+          asl
+          tax
+          lda # 24
+          sta playerY,x
+          ;; Players 3 & 4 use same as P1/P2 if not in 4-player mode
+          lda # 2
+          asl
+          tax
+          lda # 53
+          sta playerX,x
+          lda # 2
+          asl
+          tax
+          lda # 24
+          sta playerY,x
+          lda # 3
+          asl
+          tax
+          lda # 107
+          sta playerX,x
+          lda # 3
+          asl
+          tax
+          lda # 24
+          sta playerY,x
+          jmp InitPositionsDone
+
+Init4PlayerPositions:
+          ;; Initialize player positions for 4-player mode
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: None (called from BeginGameLoop)
+          ;;
+          ;; Output: playerX[], playerY[] set for 4-player layout
+          ;;
+          ;; Mutates: playerX[], playerY[]
+          ;;
+          ;; Called Routines: None
+          ;;
+          ;; Constraints: Must be colocated with BeginGameLoop,
+          ;; InitPositionsDone
+          ;; 4-player mode positions
+          lda # 0
+          asl
+          tax
+          lda # 32
+          sta playerX,x
+          lda # 0
+          asl
+          tax
+          lda # 24
+          sta playerY,x
+          ;; Player 1: 1/5 width
+          lda # 2
+          asl
+          tax
+          lda # 64
+          sta playerX,x
+          lda # 2
+          asl
+          tax
+          lda # 24
+          sta playerY,x
+          ;; Player 3: 2/5 width
+          lda # 3
+          asl
+          tax
+          lda # 96
+          sta playerX,x
+          lda # 3
+          asl
+          tax
+          lda # 24
+          sta playerY,x
+          ;; Player 4: 3/5 width
+          lda # 1
+          asl
+          tax
+          lda # 128
+          sta playerX,x
+          lda # 1
+          asl
+          tax
+          lda # 24
+          sta playerY,x
+          ;; Player 2: 4/5 width
+
+InitPositionsDone:
+          ;; Player positions initialization complete
+          ;; Returns: Far (return otherbank)
+          ;;
+          ;; Input: None (label only, no execution)
+          ;;
+          ;; Output: None (label only)
+          ;;
+          ;; Mutates: None
+          ;;
+          ;; Called Routines: None
+          ;;
+          ;; Constraints: Must be colocated with BeginGameLoop
+          ;; Initialize player states (facing direction)
+          ;; Player 1 facing right
+          lda # 0
+          asl
+          tax
+          lda # 0
+          sta playerState,x
+          ;; Player 2 facing left
+          lda # 1
+          asl
+          tax
+          lda # 1
+          sta playerState,x
+          ;; Player 3 facing right
+          lda # 2
+          asl
+          tax
+          lda # 0
+          sta playerState,x
+          ;; Player 4 facing left
+          lda # 3
+          asl
+          tax
+          lda # 1
+          sta playerState,x
+
+          ;; Initialize player health (apply handicap if selected)
+          ;; PlayerLocked value: 0=unlocked, 1=normal (100% health),
+          ;; Optimized: Simplified player health initialization
+          ;; Issue #1254: Loop through currentPlayer = 3 downto 0
+          lda # 3
+          sta currentPlayer
+IPH_Loop:
+          lda currentPlayer
+          sta GPL_playerIndex
+          ;; Cross-bank call to GetPlayerLocked in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterGetPlayerLockedInit-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterGetPlayerLockedInit hi (encoded)]
+          lda # <(AfterGetPlayerLockedInit-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterGetPlayerLockedInit hi (encoded)] [SP+0: AfterGetPlayerLockedInit lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(GetPlayerLocked-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterGetPlayerLockedInit hi (encoded)] [SP+1: AfterGetPlayerLockedInit lo] [SP+0: GetPlayerLocked hi (raw)]
+          lda # <(GetPlayerLocked-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterGetPlayerLockedInit hi (encoded)] [SP+2: AfterGetPlayerLockedInit lo] [SP+1: GetPlayerLocked hi (raw)] [SP+0: GetPlayerLocked lo]
+          ldx # 5
+          jmp BS_jsr
+AfterGetPlayerLockedInit:
+
+
+          lda GPL_lockedState
+          cmp PlayerHandicapped
+          bne PlayerHealthInitDone
+          lda currentPlayer
+          asl
+          tax
+          lda PlayerHealthHandicap
+          sta playerHealth,x
+PlayerHealthInitDone:
+
+          lda currentPlayer
+          asl
+          tax
+          lda PlayerHealthMax
+          sta playerHealth,x
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec currentPlayer
+          bpl IPH_Loop
+
+.pend
+
+InitializePlayerTimers .proc
+
+          ;; Initialize player timers
+          ;; Issue #1254: Loop through currentPlayer = 3 downto 0
+          lda # 3
+          sta currentPlayer
+IPT_Loop:
+          lda currentPlayer
+          asl
+          tax
+          lda # 0
+          sta playerTimers_W,x
+          lda currentPlayer
+          asl
+          tax
+          lda # 0
+          sta playerVelocityX,x
+          lda currentPlayer
+          asl
+          tax
+          lda # 0
+          sta playerVelocityXL,x
+          lda currentPlayer
+          asl
+          tax
+          lda # 0
+          sta playerVelocityYL,x
+          lda currentPlayer
+          asl
+          tax
+          lda # 0
+          sta playerSubpixelX_W,x
+          lda currentPlayer
+          asl
+          tax
+          lda # 0
+          sta playerSubpixelY_W,x
+          ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
+          dec currentPlayer
+          bpl IPT_Loop
+.pend
+
+SetPlayers34ActiveFlag .proc
+
+          ;; Optimized: Set Players34Active flag based on character selections
+          lda controllerStatus
+          and ClearPlayers34Active
+          sta controllerStatus
+          ;; if playerCharacter[2] = NoCharacter then jmp SkipPlayer3Activation
+          lda controllerStatus
+          ora SetPlayers34Active
+          sta controllerStatus
+
+SkipPlayer3Activation:
+          ;; if playerCharacter[3] = NoCharacter then jmp SkipPlayer4Activation
+          lda controllerStatus
+          ora SetPlayers34Active
+          sta controllerStatus
+
+SkipPlayer4Activation:
+          ;; Initialize missiles
+          ;; missileActive uses bit flags: bit 0 = Player 0, bit 1 =
+          ;; Player 1, bit 2 = Player 2, bit 3 = Player 3
+          lda # 0
+          sta missileActive
+
+          ;; Initialize remaining players count
+          lda # 1
+          sta playersRemaining_W
+          ;; CharacterSelectCheckReady guarantees Player 1 is active; seed count with P1
+          ;; Will be calculated
+          lda # 0
+          sta gameEndTimer_W
+          ;; No game end countdown
+          lda # 0
+          sta eliminationCounter_W
+          ;; Reset elimination order counter
+
+          ;; Initialize elimination order tracking
+          lda # 0
+          asl
+          tax
+          lda # 0
+          sta eliminationOrder_W,x
+          lda # 1
+          asl
+          tax
+          lda # 0
+          sta eliminationOrder_W,x
+          lda # 2
+          asl
+          tax
+          lda # 0
+          sta eliminationOrder_W,x
+          lda # 3
+          asl
+          tax
+          lda # 0
+          sta eliminationOrder_W,x
+
+          ;; Initialize win screen variables
+          lda # 255
+          sta winnerPlayerIndex_W
+          ;; No winner yet
+          lda # 0
+          sta displayRank_W
+          ;; No rank being displayed
+          lda # 0
+          sta winScreenTimer_W
+          ;; Reset win screen timer
+
+          ;; Count additional human/CPU players beyond Player 1
+          ;; if playerCharacter[1] = NoCharacter then jmp GLI_SkipPlayer2
+          lda playersRemaining_R
+          clc
+          adc # 1
+          sta playersRemaining_W
+
+.pend
+
+GLI_SkipPlayer2 .proc
+          ;; if playerCharacter[2] = NoCharacter then jmp GLI_SkipPlayer3
+          lda playersRemaining_R
+          clc
+          adc # 1
+          sta playersRemaining_W
+
+.pend
+
+GLI_SkipPlayer3 .proc
+          ;; if playerCharacter[3] = NoCharacter then jmp SkipPlayer4
+          lda playersRemaining_R
+          clc
+          adc # 1
+          sta playersRemaining_W
+
+.pend
+
+SkipPlayer4 .proc
+          ;; Frame counter is automatically initialized and incremented
+          ;; by batariBASIC kernel
+
+          ;; Clear paused flag in systemFlags (initialize to normal play)
+          lda systemFlags
+          and # ClearSystemFlagGameStatePaused
+          sta systemFlags
+
+          ;; Initialize player sprite NUSIZ registers (double width)
+          ;; NUSIZ = 5: double width, single copy
+          ;; Player 0 (Player 1)
+          lda # 5
+          sta NUSIZ0
+          ;; Player 1 (Player 2) - multisprite kernel uses _NUSIZ1
+          lda # 5
+          sta _NUSIZ1
+          ;; Player 2 (Player 3) - multisprite kernel
+          lda # 5
+          sta nusiz2
+          ;; Player 3 (Player 4) - multisprite kernel
+          lda # 5
+          sta nusiz3
+
+          ;; Initialize health bars
+          ;; Cross-bank call to InitializeHealthBars in bank 5
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterInitializeHealthBars-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterInitializeHealthBars hi (encoded)]
+          lda # <(AfterInitializeHealthBars-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterInitializeHealthBars hi (encoded)] [SP+0: AfterInitializeHealthBars lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(InitializeHealthBars-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterInitializeHealthBars hi (encoded)] [SP+1: AfterInitializeHealthBars lo] [SP+0: InitializeHealthBars hi (raw)]
+          lda # <(InitializeHealthBars-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterInitializeHealthBars hi (encoded)] [SP+2: AfterInitializeHealthBars lo] [SP+1: InitializeHealthBars hi (raw)] [SP+0: InitializeHealthBars lo]
+          ldx # 5
+          jmp BS_jsr
+AfterInitializeHealthBars:
+
+
+          ;; Load arena data
+          ;; Cross-bank call to LoadArena in bank 15
+          ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode
+          lda # ((>(AfterLoadArena-1)) & $0f) | $a0  ;;; Encode bank 10 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterLoadArena hi (encoded)]
+          lda # <(AfterLoadArena-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterLoadArena hi (encoded)] [SP+0: AfterLoadArena lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(LoadArena-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterLoadArena hi (encoded)] [SP+1: AfterLoadArena lo] [SP+0: LoadArena hi (raw)]
+          lda # <(LoadArena-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterLoadArena hi (encoded)] [SP+2: AfterLoadArena lo] [SP+1: LoadArena hi (raw)] [SP+0: LoadArena lo]
+          ldx # 15
+          jmp BS_jsr
+AfterLoadArena:
+
+
+          jmp BS_return
+          ;; MainLoop will dispatch to GameMainLoop based on gameMode =
+          ;; ModeGame
+
+.pend
+

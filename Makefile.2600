@@ -33,7 +33,7 @@ ASFLAGS = -Wall -Wno-branch-page -C -a --m6502 -b --ascii \
 	-DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\"
 
 # Ready system
-READYDATE = 20251104
+READYDATE = 20260130
 READYFILE = .#ready.$(READYDATE)
 
 # SkylineTool build rules
@@ -65,18 +65,9 @@ bin/buildapp: SkylineTool/prepare-system.lisp | bin/
 # Output files
 PROJECT_JSON = Project.json
 GAME := $(shell jq -r '.Game' $(PROJECT_JSON))
-ifeq ($(strip $(GAME)),)
-$(error Game field missing in $(PROJECT_JSON))
-endif
 GAMEYEAR := $(shell jq -r '.GameYear' $(PROJECT_JSON))
-ifeq ($(strip $(GAMEYEAR)),)
-$(error GameYear field missing in $(PROJECT_JSON))
-endif
 ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 PROJECT_VERSION := $(shell jq -r '.Version' $(PROJECT_JSON))
-ifeq ($(strip $(PROJECT_VERSION)),)
-$(error Version field missing in $(PROJECT_JSON))
-endif
 RELEASE_TAG = v$(PROJECT_VERSION)
 
 # Assembly files (exclude preprocessed, generated files, and reference files)
@@ -198,16 +189,16 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 # Note: SkylineTool now generates 64tass assembly directly (.s files)
 Source/Generated/Song.%.NTSC.s: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting music $< to $@ for NTSC..."
-	bin/skyline-tool compile-midi "$<" "64tass" "60" "$@"
+	bin/skyline-tool compile-midi "$<" TIA "60" "$@"
 
 # Special rule: Title song is generated from Chaotica source files
 Source/Generated/Song.Title.NTSC.s: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting Chaotica music $< to Song.Title $@ for NTSC..."
-	bin/skyline-tool compile-midi "$<" "64tass" "60" "$@"
+	bin/skyline-tool compile-midi "$<" TIA "60" "$@"
 
 Source/Generated/Song.Title.PAL.s: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting Chaotica music $< to Song.Title $@ for PAL..."
-	bin/skyline-tool compile-midi "$<" "64tass" "50" "$@"
+	bin/skyline-tool compile-midi "$<" TIA "50" "$@"
 
 # SECAM music files are not generated - SECAM build uses PAL music files via conditional includes
 
@@ -216,7 +207,7 @@ Source/Generated/Song.Title.PAL.s: Source/Songs/Chaotica.midi Source/Songs/Chaot
 # Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
 Source/Generated/Song.%.PAL.s: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting music $< to $@ for PAL..."
-	bin/skyline-tool compile-midi "$<" "64tass" "50" "$@"
+	bin/skyline-tool compile-midi "$<" TIA "50" "$@"
 
 # SECAM music files are not generated - SECAM build uses PAL music files via conditional includes
 
@@ -226,14 +217,14 @@ Source/Generated/Song.%.PAL.s: Source/Songs/%.midi Source/Songs/%.mscz bin/skyli
 # Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
 Source/Generated/Sound.%.NTSC.s: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting sound $< to $@ for NTSC..."
-	bin/skyline-tool compile-midi "$<" "64tass" "60" "$@"
+	bin/skyline-tool compile-midi "$<" TIA "60" "$@"
 
 # Convert MIDI to 64tass assembly sound data for PAL (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 # Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
 Source/Generated/Sound.%.PAL.s: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting sound $< to $@ for PAL..."
-	bin/skyline-tool compile-midi "$<" "64tass" "50" "$@"
+	bin/skyline-tool compile-midi "$<" TIA "50" "$@"
 
 # SECAM sound files are not generated - SECAM build uses PAL sound files via conditional includes
 

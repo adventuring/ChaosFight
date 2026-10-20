@@ -170,7 +170,7 @@ TitleScreenComplete .proc
           ;; mode sta
 
           ;; Constraints: Must be colocated with TitleScreenMain
-          lda #ModeCharacterSelect
+          lda #ModeGame
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 13
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]

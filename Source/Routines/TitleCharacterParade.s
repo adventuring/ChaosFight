@@ -96,26 +96,33 @@ UpdateCharacterParade .proc
 
 
           ;; Start parade after ~4 seconds (TitleParadeDelayFrames frames)
-
-          jmp BS_return
-
-
-
-          ;; Check if we need to start a new character
-
+          lda titleParadeTimer
+          cmp # TitleParadeDelayFrames
+          bcc StartParadeNotYet
           lda titleParadeActive
           bne MoveParadeCharacter
           jmp StartNewParadeCharacter
+StartParadeNotYet:
+          jmp BS_return
+
 MoveParadeCharacter:
+          ;; Move 2 pixels per frame
+          lda titleParadeX
+          clc
+          adc # 2
+          sta titleParadeX
 
+          ;; Check if character has left screen
+          lda # 170
+          cmp titleParadeX
+          bcc ParadeCharacterLeft
+          jmp BS_return
 
-
-
-          ;; Move character across screen (if active)
-
-          jmp MoveParadeCharacter
-
-
+ParadeCharacterLeft:
+          ;; Deactivate parade; reset timer
+          lda # 0
+          sta titleParadeActive
+          jmp BS_return
 
 .pend
 

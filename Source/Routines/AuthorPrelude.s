@@ -52,6 +52,10 @@
           ;; bitmap display
 
 AuthorPrelude .proc
+          ;; Skip on fresh fire press
+          lda fireEdgeState
+          bmi AuthorPreludeComplete
+
           ;; Check for button press on any controller to skip
           ;; Returns: Far (return otherbank)
           ;; Use skip-over pattern to avoid complex || operator issues
@@ -116,8 +120,10 @@ CheckAutoAdvance:
           ;; Auto-advance after music completes + 0.5s
           ;; If preambleTimer > 30 && musicPlaying = 0, then AuthorPreludeComplete
           lda preambleTimer
-          cmp # 120
+          cmp # 31
           bcc IncrementTimer
+          lda musicPlaying
+          bne IncrementTimer
           jmp AuthorPreludeComplete
 IncrementTimer:
 

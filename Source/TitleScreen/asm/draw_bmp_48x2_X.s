@@ -63,8 +63,6 @@ pf48x2_X_loop:
 
 	lda (aux5),y			;;;5
 	sta missile0y			;;;3
-	sta COLUP0			;;;3
-	sta COLUP1			;;;3
 
 	.SLEEP 3
 
@@ -89,6 +87,10 @@ pf48x2_X_loop:
         sty GRP0                        ;;;3
 
 	.SLEEP 4
+
+	lda missile0y
+	sta COLUP1
+	sta COLUP0
 
 	ldy aux2                ;;;3  (reload once the second half has finished)
 	bpl pf48x2_X_loop      ; branch while aux2 >= 0

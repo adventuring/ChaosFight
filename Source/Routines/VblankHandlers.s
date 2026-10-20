@@ -127,6 +127,8 @@ WinnerModeAnnounce:
           jsr VblankModeWinnerAnnouncement
           ;; Fall through to VblankHandlerDone
 
+
+          rts
 .pend
 
 VblankModePublisherPrelude .proc
@@ -166,6 +168,8 @@ PlayPublisherPreludeMusic:
 AfterPlayMusicPublisherPrelude:
 
 
+
+          rts
 .pend
 
 VblankPublisherPreludeSkipMusic .proc
@@ -207,6 +211,8 @@ PlayAuthorPreludeMusic:
 AfterPlayMusicAuthorPrelude:
 
 
+
+          rts
 .pend
 
 VblankAuthorPreludeSkipMusic .proc
@@ -248,6 +254,8 @@ PlayTitleScreenMusic:
 AfterPlayMusicTitleScreen:
 
 
+
+          rts
 .pend
 
 VblankTitleScreenSkipMusic .proc
@@ -255,6 +263,8 @@ VblankTitleScreenSkipMusic .proc
           ;; CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on sta
 
 
+
+          rts
 .pend
 
 VblankModeCharacterSelect .proc
@@ -271,6 +281,8 @@ VblankModeFallingAnimation
           ;; CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on sta
 
 
+
+          rts
 .pend
 
 VblankModeArenaSelect .proc
@@ -280,6 +292,8 @@ VblankModeArenaSelect .proc
           ;; CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on sta
 
 
+
+          rts
 .pend
 
 VblankModeGameMain .proc
@@ -1549,12 +1563,16 @@ PlayWinnerAnnouncementMusic:
 AfterPlayMusicWinnerAnnouncement:
 
 
+
+          rts
 .pend
 
 VblankWinnerAnnouncementSkipMusic .proc
           ;; Update character animations for winner screen
           ;; CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on sta
 
+
+          rts
 .pend
 
 VblankHandlerDone:

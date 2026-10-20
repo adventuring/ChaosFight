@@ -65,6 +65,8 @@ bmp_48x2_4_background = 0
 bmp_48x2_4_PF1 = 0
 bmp_48x2_4_PF2 = 0
 
+;; Pad title kernel overscan by 1 line (261 -> 262)
+overscan_time = 31
 TitlescreenAsmStart:
 .include "Source/TitleScreen/asm/titlescreen.s"
 TitlescreenAsmEnd:

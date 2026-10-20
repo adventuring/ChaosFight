@@ -130,14 +130,12 @@ CheckPairCollision .block
 
           bcc CheckP2ActiveCollision
 
-          jmp CheckP2ActiveCollision
-
-          CheckP2ActiveCollision:
+          jmp NextOuterCollisionCheck
 
           lda temp2
           cmp # 2
           bcc CheckDistanceCollisionP1
-          jmp CheckP2ActiveCollision
+          ;; temp2 >= 2: fall through to the global CheckP2ActiveCollision block
 CheckDistanceCollisionP1:
 
 

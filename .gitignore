@@ -57,3 +57,4 @@ find-*.sh
 *.fdb_latexmk
 *.synctex.gz
 .cursor/plans
+.opencode.login.auth.token

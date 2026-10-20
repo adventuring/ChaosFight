@@ -127,31 +127,7 @@ ParadeCharacterLeft:
 .pend
 
 StartNewParadeCharacter .proc
-
-          ;; Start new character parade
-          ;; Returns: Far (return otherbank)
-
-          ;;
-          ;; Input: rand (global) = random number generator,
-
-          ;; MaxCharacter (constant) = maximum character index
-
-          ;;
-          ;; Output: titleParadeCharacter set to random character,
-
-          ;; titleParadeX set to 246, titleParadeActive set to 1
-
-          ;;
-          ;; Mutates: titleParadeCharacter (set to random 0-MaxCharacter),
-
-          ;; titleParadeX (set to 246),
-
-          ;; titleParadeActive (set to 1)
-
-          ;;
-          ;; Called Routines: None
-
-          ;; Constraints: Must be colocated with UpdateCharacterParade
+          jmp Roll
 
 .pend
 

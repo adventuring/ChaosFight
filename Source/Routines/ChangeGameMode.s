@@ -455,16 +455,20 @@ ThunkTitle .proc
 .pend
 
 ThunkCharacterSelect .proc
-          ;; Near thunk - same bank jump
+          ;; PLAN (B) bypass: skip character select, jump straight to game
           ;; Returns: Far (return otherbank)
-          jmp SetupCharacterSelect
+          lda #ModeGame
+          sta gameMode
+          jmp ThunkGame
 
 .pend
 
 ThunkFallingAnimation .proc
-          ;; Near thunk - same bank jump
+          ;; PLAN (B) bypass: skip falling animation, jump straight to game
           ;; Returns: Far (return otherbank)
-          jmp SetupFallingAnimation
+          lda #ModeGame
+          sta gameMode
+          jmp ThunkGame
 
 .pend
 

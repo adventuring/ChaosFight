@@ -577,9 +577,11 @@ Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GA
 Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s $(ALL_DEPS) | Dist/ Object/
 	cd Object && $(64TASS) $(ASFLAGS) -o ../Dist/$(GAME)$(GAMEYEAR).SECAM.a26 -L ../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -l ../Dist/$(GAME)$(GAMEYEAR).SECAM.sym ../$<
 
-# Run emulator
+# Run emulator (debugger mode).  Stella 8 needs an explicit 'run' command
+# in a startup script, otherwise the debugger opens and immediately exits.
 emu: $(ROM) Dist/$(GAME)$(GAMEYEAR).NTSC.pro
-	$(STELLA) -debug $(ROM)
+	@printf 'run\n' > /tmp/$(GAME).emu.script
+	$(STELLA) -debug -dbg.script /tmp/$(GAME).emu.script $(ROM)
 
 play: $(ROM) Dist/$(GAME)$(GAMEYEAR).NTSC.pro
 	$(STELLA) $(ROM)

@@ -138,7 +138,7 @@ VblankModePublisherPrelude .proc
           ;; musicVoice0Pointer = 0 means music not started yet (StartMusic sets it to songPointer)
           ;; On first frame, BeginPublisherPrelude hasn’t called StartMusic yet
           ;; Check if music is initialized before calling PlayMusic to prevent crash
-          lda musicVoice0Pointer + 1
+          lda musicVoice0Pointer
           bne PlayPublisherPreludeMusic
 
           jmp VblankPublisherPreludeSkipMusic
@@ -183,7 +183,7 @@ VblankModeAuthorPrelude .proc
           ;; Returns: Near (return thisbank)
           ;; CRITICAL: Guard PlayMusic call - only call if music is initialized
           ;; musicVoice0Pointer = 0 means music not started yet
-          lda musicVoice0Pointer + 1
+          lda musicVoice0Pointer
           bne PlayAuthorPreludeMusic
           jmp VblankAuthorPreludeSkipMusic
 PlayAuthorPreludeMusic:
@@ -226,7 +226,7 @@ VblankModeTitleScreen .proc
           ;; Returns: Near (return thisbank)
           ;; CRITICAL: Guard PlayMusic call - only call if music is initialized
           ;; musicVoice0Pointer = 0 means music not started yet
-          lda musicVoice0Pointer + 1
+          lda musicVoice0Pointer
           bne PlayTitleScreenMusic
           jmp VblankTitleScreenSkipMusic
 PlayTitleScreenMusic:
@@ -1541,7 +1541,7 @@ VblankModeWinnerAnnouncement .proc
           ;; Returns: Near (return thisbank)
           ;; CRITICAL: Guard PlayMusic call - only call if music is initialized
           ;; musicVoice0Pointer = 0 means music not started yet
-          lda musicVoice0Pointer + 1
+          lda musicVoice0Pointer
           bne PlayWinnerAnnouncementMusic
           jmp VblankWinnerAnnouncementSkipMusic
 PlayWinnerAnnouncementMusic:

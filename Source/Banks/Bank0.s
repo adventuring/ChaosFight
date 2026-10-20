@@ -228,6 +228,26 @@ MusicBankHelpersEnd:
           ;; MusicSystem moved to Bank 14 to fix cross-bank label resolution
 Bank0CodeEnds:
 
+          ;; Cold-start shim at $F960 for Bank 0.  If the EFSC reset trampoline's
+          ;; bank-switch read does not take effect, the CPU lands here instead of
+          ;; BRK'ing on zeros.  Replicate the essential ColdStart steps and then
+          ;; bank-switch to Bank 12 before jumping to WarmStart.
+          * = $F960
+Bank0ColdStartShim:
+          cld
+          ldx #$ff
+          txs
+          lda console7800Detected
+          cmp #$00
+          beq Bank0ColdStartShimProceed
+          cmp #$80
+          beq Bank0ColdStartShimProceed
+          lda #$00
+          sta console7800Detected
+Bank0ColdStartShimProceed:
+          nop $ffec
+          jmp WarmStart
+
           ;; Include BankSwitching.s in Bank 0
           ;; Wrap in .block to create namespace Bank0BS (avoids duplicate definitions)
 Bank0BS: .block

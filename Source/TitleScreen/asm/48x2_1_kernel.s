@@ -9,9 +9,9 @@ draw_bmp_48x2_1:
           beq draw_bmp_48x2_1_done
           dey
           sty aux2
-          lda # <(bmp_48x2_1_colors-1+bmp_48x2_1_height-bmp_48x2_1_window)
+          lda # <(bmp_48x2_1_colors+bmp_48x2_1_height-bmp_48x2_1_window)
           sta aux5+0
-          lda # >(bmp_48x2_1_colors-1+bmp_48x2_1_height-bmp_48x2_1_window)
+          lda # >(bmp_48x2_1_colors+bmp_48x2_1_height-bmp_48x2_1_window)
           sta aux5+1
 
           ldy # 11

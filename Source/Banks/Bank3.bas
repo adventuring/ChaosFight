@@ -6,12 +6,12 @@
           bank 3
           asm
 Bank4DataStart
-Character16DataStart
+JoannaDataStart
 end
-#include "Source/Generated/Character16.bas"
+#include "Source/Generated/Joanna.bas"
           asm
-Character16DataEnd
-            echo "// Bank 3: ", [Character16DataEnd - Character16DataStart]d, " bytes = Character16 data"
+JoannaDataEnd
+            echo "// Bank 3: ", [JoannaDataEnd - JoannaDataStart]d, " bytes = Joanna data"
 Character17DataStart
 end
 #include "Source/Generated/Character17.bas"

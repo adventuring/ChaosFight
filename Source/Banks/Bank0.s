@@ -3,7 +3,7 @@
 ;;;
 ;;; ASSET BANK: Music/Sound Assets (separate memory budget)
 ;;; Character theme songs (IDs 6-28): LowRes, RoboTito, SongOfTheBear,
-;;;   DucksAway, Character16-30 themes
+;;;   DucksAway, Joanna, Character17-30 themes
 
           BANK = 0
 
@@ -55,15 +55,15 @@ DucksAwaySongStart:
 .fi
 DucksAwaySongEnd:
             .warn format("// Bank 0: %d bytes = Song.DucksAway", [DucksAwaySongEnd - DucksAwaySongStart])
-Character16ThemeSongStart:
+JoannaThemeSongStart:
 
 .if TVStandard == NTSC
-.include "Song.Character16Theme.NTSC.s"
+.include "Song.JoannaTheme.NTSC.s"
 .else
-.include "Song.Character16Theme.PAL.s"
+.include "Song.JoannaTheme.PAL.s"
 .fi
-Character16ThemeSongEnd:
-            .warn format("// Bank 0: %d bytes = Song.Character16Theme", [Character16ThemeSongEnd - Character16ThemeSongStart])
+JoannaThemeSongEnd:
+            .warn format("// Bank 0: %d bytes = Song.JoannaTheme", [JoannaThemeSongEnd - JoannaThemeSongStart])
 Character17ThemeSongStart:
 
 .if TVStandard == NTSC

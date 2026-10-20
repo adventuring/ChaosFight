@@ -89,10 +89,6 @@ CheckQuadtariControllers:
 
           ;; Check Quadtari controllers (Players 3 & 4 if active)
           ;; If controllerStatus & SetQuadtariDetected is 0, skip Quadtari check
-          lda controllerStatus
-          and # SetQuadtariDetected
-          beq TitleDoneQuad
-
           ;; If !INPT0{7}, then TitleScreenComplete
           bit INPT0
           bmi CheckINPT2

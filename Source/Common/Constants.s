@@ -232,7 +232,7 @@
           ;; 3=EXO, 4=Grizzards,
           ;; 7=MagicalFairyForce, 9=Bolero, 10=LowRes, 13=RoboTito,
           ;; 14=SongOfTheBear,
-          ;; 15=DucksAway, 16-30=Character16Theme-Character30Theme
+          ;; 15=DucksAway, 16-30=JoannaTheme-Character30Theme
           ;; Song 26: Chaotica (Title screen - loops)
           ;; Song 27: AtariToday (Publisher prelude - plays once)
           ;; Song 28: Interworldly (Author prelude - plays once)
@@ -248,7 +248,7 @@
           SongRoboTito = 8
           SongSongOfTheBear = 9
           SongDucksAway = 10
-          SongCharacter16Theme = 11
+          SongJoannaTheme = 11
           SongCharacter17Theme = 12
           SongCharacter18Theme = 13
           SongCharacter19Theme = 14

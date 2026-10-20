@@ -1,0 +1,16 @@
+@subsection Joanna
+@display
+@group
+    Weight: TBD
+    Attack: Mêlée (sword) and sorcery
+    Special: Skilled swordsman and sorceress
+    Original Game: Black Forest
+    Author: Chris Wiese (dragonsbrethren)
+    Forum: @url{https://forums.atariage.com/topic/377834-black-forest-wip/,Black Forest development thread}
+@end group
+@end display
+
+Joanna is a skilled swordsman and sorceress who ventures through the Black
+Forest, facing hostile wildlife, strange monsters, and dark magic along the
+way. Her blend of blade and spellcraft makes her a versatile and dangerous
+fighter in any arena.

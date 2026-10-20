@@ -19,23 +19,23 @@
 ;;; Character sprite pointer tables (Bank 4 only)
 ;;; Low .byte pointers for each character base sprite data
 CharacterSpriteLBank4:
-.byte < Character16Frames, < Character17Frames, < Character18Frames, < Character19Frames
+.byte < JoannaFrames, < Character17Frames, < Character18Frames, < Character19Frames
 .byte < Character20Frames, < Character21Frames, < Character22Frames, < Character23Frames
 
 ;;; High .byte pointers for each character base sprite data  
 CharacterSpriteHBank4:
-.byte > Character16Frames, > Character17Frames, > Character18Frames, > Character19Frames
+.byte > JoannaFrames, > Character17Frames, > Character18Frames, > Character19Frames
 .byte > Character20Frames, > Character21Frames, > Character22Frames, > Character23Frames
 
 ;;; Character FrameMap pointer tables (Bank 4 only)
 ;;; Low .byte pointers for each character FrameMap
 CharacterFrameMapLBank4:
-.byte < Character16FrameMap, < Character17FrameMap, < Character18FrameMap, < Character19FrameMap
+.byte < JoannaFrameMap, < Character17FrameMap, < Character18FrameMap, < Character19FrameMap
 .byte < Character20FrameMap, < Character21FrameMap, < Character22FrameMap, < Character23FrameMap
 
 ;;; High .byte pointers for each character FrameMap
 CharacterFrameMapHBank4:
-.byte > Character16FrameMap, > Character17FrameMap, > Character18FrameMap, > Character19FrameMap
+.byte > JoannaFrameMap, > Character17FrameMap, > Character18FrameMap, > Character19FrameMap
 .byte > Character20FrameMap, > Character21FrameMap, > Character22FrameMap, > Character23FrameMap
 
 ;;; =================================================================

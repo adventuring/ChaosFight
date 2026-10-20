@@ -11,10 +11,10 @@
           .byte $ff
           .endrept
 Bank3DataStart:
-Character16DataStart:
-.include "Source/Generated/Character16.s"
-Character16DataEnd:
-            .warn format("// Bank 3: %d bytes = Character16 data", [Character16DataEnd - Character16DataStart])
+JoannaDataStart:
+.include "Source/Generated/Joanna.s"
+JoannaDataEnd:
+            .warn format("// Bank 3: %d bytes = Joanna data", [JoannaDataEnd - JoannaDataStart])
 Character17DataStart:
 .include "Source/Generated/Character17.s"
 Character17DataEnd:

@@ -137,7 +137,7 @@ WWW/26/manual/:
 CHARACTER_NAMES = \
 	Bernie Curler DragonOfStorms ZoeRyen FatTony Megax Harpy KnightGuy \
 	Frooty Nefertem NinjishGuy PorkChop RadishGoblin RoboTito Ursulo Shamone \
-	Character16 Character17 Character18 Character19 Character20 Character21 Character22 Character23 \
+	Joanna Character17 Character18 Character19 Character20 Character21 Character22 Character23 \
 	Character24 Character25 Character26 Character27 Character28 Character29 Character30 MethHound
 
 # TV architectures
@@ -162,12 +162,12 @@ MUSIC_NAMES = AtariToday Interworldly Chaotica
 #   FatTony→Grizzards, Megax→Grizzards, Harpy→Revontuli, KnightGuy→MagicalFairyForce,
 #   Frooty→MagicalFairyForce, Nefertem→Bolero, NinjishGuy→LowRes, PorkChop→MagicalFairyForce,
 #   RadishGoblin→Bolero, RoboTito→RoboTito, Ursulo→SongOfTheBear, Shamone→DucksAway
-# Character 16: Character16Theme (placeholder)
+# Character 16: JoannaTheme (placeholder)
 # Characters 17-30: Character*Theme (placeholders for future characters)
 # Character 31 (MethHound): DucksAway (reuses DucksAway from character 15)
 # Bank allocation: Bernie/OCascadia/Revontuli/EXO sit in Bank 14, the rest live in Bank 0
 GAME_THEME_SONGS = Bernie OCascadia Revontuli EXO Grizzards MagicalFairyForce Bolero LowRes RoboTito SongOfTheBear DucksAway \
-	Character16Theme Character17Theme Character18Theme Character19Theme Character20Theme Character21Theme Character22Theme Character23Theme \
+	JoannaTheme Character17Theme Character18Theme Character19Theme Character20Theme Character21Theme Character22Theme Character23Theme \
 	Character24Theme Character25Theme Character26Theme Character27Theme Character28Theme Character29Theme Character30Theme
 
 # Sound effect names (MIDI files)
@@ -410,7 +410,7 @@ Source/Banks/Bank1.s: Source/Generated/Bernie.s Source/Generated/Curler.s Source
 
 Source/Banks/Bank2.s: Source/Generated/Frooty.s Source/Generated/Nefertem.s Source/Generated/NinjishGuy.s Source/Generated/PorkChop.s Source/Generated/RadishGoblin.s Source/Generated/RoboTito.s Source/Generated/Ursulo.s Source/Generated/Shamone.s
 
-Source/Banks/Bank3.s: Source/Generated/Character16.s Source/Generated/Character17.s Source/Generated/Character18.s Source/Generated/Character19.s Source/Generated/Character20.s Source/Generated/Character21.s Source/Generated/Character22.s Source/Generated/Character23.s
+Source/Banks/Bank3.s: Source/Generated/Joanna.s Source/Generated/Character17.s Source/Generated/Character18.s Source/Generated/Character19.s Source/Generated/Character20.s Source/Generated/Character21.s Source/Generated/Character22.s Source/Generated/Character23.s
 
 Source/Banks/Bank4.s: Source/Generated/Character24.s Source/Generated/Character25.s Source/Generated/Character26.s Source/Generated/Character27.s Source/Generated/Character28.s Source/Generated/Character29.s Source/Generated/Character30.s Source/Generated/MethHound.s
 

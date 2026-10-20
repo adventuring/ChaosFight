@@ -449,6 +449,7 @@ Each character has unique properties affecting gameplay:
 
 @include Shamone.texi
 
+@include Joanna.texi
 @page
 
 @c ============================================================
@@ -664,6 +665,8 @@ Todd ``Revontuli'' Furmanski (Dragon's Cache, Dragon's Havoc, Dragon's Descent; 
 Lewis ``Muddyfunster'' Hill (EXO, Bernie and the Tower of Doom)
 @item
 Blake ``SmittyB'' Smith (Ducks Away)
+@item
+Chris Wiese (dragonsbrethren) (Black Forest)
 @item
 Ryan Witmer (Magical Fairy Force, Rob 'N' Banks, RealSports Curling; graphics from Magical Fairy Force and Ratcatcher)
 @item

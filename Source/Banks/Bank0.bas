@@ -3,7 +3,7 @@
           rem
           rem ASSET BANK: Music/Sound Assets (separate memory budget)
           rem Character theme songs (IDs 6-28): LowRes, RoboTito, SongOfTheBear,
-          rem   DucksAway, Character16-30 themes
+          rem   DucksAway, Joanna, Character17-30 themes
           bank 0
           asm
             ;; "Start of data" is at CPU space $F100 in Bank 0:            ;; Since RORG $F000 is active, Bank 0:file space $0000-$0FFF maps to CPU $F000-$FFFF
@@ -89,17 +89,17 @@ end
           asm
 DucksAwaySongEnd
             echo "// Bank 0: ", [DucksAwaySongEnd - DucksAwaySongStart]d, " bytes = Song.DucksAway"
-Character16ThemeSongStart
+JoannaThemeSongStart
 end
 
 #ifdef TV_NTSC
-#include "Source/Generated/Song.Character16Theme.NTSC.bas"
+#include "Source/Generated/Song.JoannaTheme.NTSC.bas"
 #else
-#include "Source/Generated/Song.Character16Theme.PAL.bas"
+#include "Source/Generated/Song.JoannaTheme.PAL.bas"
 #endif
           asm
-Character16ThemeSongEnd
-            echo "// Bank 0: ", [Character16ThemeSongEnd - Character16ThemeSongStart]d, " bytes = Song.Character16Theme"
+JoannaThemeSongEnd
+            echo "// Bank 0: ", [JoannaThemeSongEnd - JoannaThemeSongStart]d, " bytes = Song.JoannaTheme"
 Character17ThemeSongStart
 end
 

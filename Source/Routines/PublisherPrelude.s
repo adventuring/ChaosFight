@@ -128,7 +128,7 @@ CheckAutoAdvance:
           ;; If preambleTimer > 30 && musicPlaying = 0, then jmp PublisherPreludeComplete
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           lda preambleTimer
-          cmp # 31
+          cmp # 120
           bcc IncrementTimer
           goto_label:
 

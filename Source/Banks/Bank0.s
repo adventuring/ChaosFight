@@ -228,6 +228,26 @@ MusicBankHelpersEnd:
           ;; MusicSystem moved to Bank 14 to fix cross-bank label resolution
 Bank0CodeEnds:
 
+          ;; Cold-start shim for Bank 0.  EFSC power-on/reset may leave the
+          ;; CPU in Bank 0, whose $F960 was otherwise empty (BRK).  Replicate
+          ;; the ColdStart entry here so RESET works regardless of the active
+          ;; bank.  Bank-switch to Bank 12 before jumping to WarmStart.
+          * = $F950
+Bank0ColdStartShim:
+          cld
+          ldx #$ff
+          txs
+          lda console7800Detected
+          cmp #$00
+          beq Bank0ColdStartShimProceed
+          cmp #$80
+          beq Bank0ColdStartShimProceed
+          lda #$00
+          sta console7800Detected
+Bank0ColdStartShimProceed:
+          nop $ffec
+          jmp WarmStart
+
           ;; Include BankSwitching.s in Bank 0
           ;; Wrap in .block to create namespace Bank0BS (avoids duplicate definitions)
 Bank0BS: .block

@@ -116,7 +116,7 @@ CheckAutoAdvance:
           ;; Auto-advance after music completes + 0.5s
           ;; If preambleTimer > 30 && musicPlaying = 0, then AuthorPreludeComplete
           lda preambleTimer
-          cmp # 31
+          cmp # 120
           bcc IncrementTimer
           jmp AuthorPreludeComplete
 IncrementTimer:

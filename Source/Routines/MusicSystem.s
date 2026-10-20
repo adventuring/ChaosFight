@@ -136,6 +136,15 @@ LoadSongFromBank1:
           jmp BS_jsr
 AfterLoadSongPointer:
 
+          ;; Save Voice 0 pointer before Voice 1 loader overwrites songPointer
+          lda songPointer
+          sta musicVoice0Pointer
+          lda songPointer+1
+          sta musicVoice0Pointer+1
+          lda songPointer
+          sta musicVoice0StartPointer_W
+          lda songPointer+1
+          sta musicVoice0StartPointer_W+1
 
           ;; Cross-bank call to LoadSongVoice1PointerBank1 in bank 0
           ;; Return address: ENCODED with caller bank 14 ($e0) for BS_return to decode
@@ -166,6 +175,16 @@ LoadSongFromBank15
 
           jsr LoadSongPointerBank15
 
+          ;; Save Voice 0 pointer before Voice 1 loader overwrites songPointer
+          lda songPointer
+          sta musicVoice0Pointer
+          lda songPointerH
+          sta musicVoice0Pointer+1
+          lda songPointer
+          sta musicVoice0StartPointer_W
+          lda songPointerH
+          sta musicVoice0StartPointer_W+1
+
           jsr LoadSongVoice1PointerBank15
 
 LoadSongPointersDone
@@ -177,13 +196,7 @@ LoadSongPointersDone
 
           ;; Store initial pointers for looping (Chaotica only)
 
-          lda songPointer
-          sta musicVoice0Pointer
-
-          lda songPointer
-          sta musicVoice0StartPointer_W
-
-
+          ;; Voice 0 pointer already saved above; only store Voice 1 here
 
           ;; LoadSongVoice1PointerBank1/15 already called above
 

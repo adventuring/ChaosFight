@@ -1,94 +1,21 @@
 ;;; ChaosFight - Source/Routines/SetPlayerSprites.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-
 SetPlayerSprites .proc
-          ;;
-          ;; Returns: Far (return otherbank)
-          ;; Set Player Sprites
-          ;; Sets colors and graphics for all player sprites.
-          ;; Colors depend on hurt and guard state only (player-index palettes).
-          ;; Sets colors and graphics for all player sprites with hurt
-          ;; state and facing direction handling
-          ;;
-          ;; Input: playerCharacter[] (global array) = character types,
-          ;; playerRecoveryFrames[] (global array) = recovery frame
-          ;; counts, playerState[] (global array) = player sta
+          ldx # 0
+          stx currentPlayer
 
-          ;; controllerStatus (global) = controller sta
-
-          ;; playerHealth[] (global array) = player
-          ;; health, currentCharacter (global) = character index for
-          ;; sprite loading
-          ;;
-          ;; Output: All player sprite colors and graphics set, sprite
-          ;; reflections set based on facing direction
-          ;;
-          ;; Mutates: temp1-temp3 (color parameter packing), COLUP0,
-          ;; COLUP1, colup2, colup3 (TIA registers) = player colors,
-          ;; REFP0 (TIA register) = player 0 reflection, _NUSIZ1,
-          ;; newNUSIZ+2, newNUSIZ+3 (TIA registers) = player sprite
-          ;; reflections, player sprite pointers (via
-          ;; LoadCharacterSprite), currentPlayer + temp2-temp3 (LoadCharacterColors parameters) = color
-          ;; loading parameters (hurt flag, guard flag)
-          ;;
-          ;; Called Routines: LoadCharacterColors (bank14) - loads
-          ;; player colors, LoadCharacterSprite (bank10) - loads sprite
-          ;; graphics
-          ;;
-          ;; Constraints: Multisprite kernel requires _COLUP1 and
-          ;; _NUSIZ1 for Player 2 virtual sprite. Players 3/4 only
-          ;; rendered if Quadtari detected and selected
-          ;; Set Player 1 color and sprite
-          ;; Use LoadCharacterColors for consistent color handling
-          ;; Player index
-          ;; Hurt flag (non-zero = recovering)
-          lda # 0
-          sta currentPlayer
-          ;; Guard flag (non-zero = guarding)
-          ;; Set temp2 = playerRecoveryFrames[0]
-          lda # 0
-          asl
-          tax
-          lda playerRecoveryFrames,x
+          lda playerRecoveryFrames
           sta temp2
-          ;; Set temp3 = playerState[0]
-          lda # 0
-          asl
-          tax
-          lda playerState,x
-          sta temp3
-          and # PlayerStateBitGuarding
-          sta temp3
-          lda # 0
-          asl
-          tax
-          lda playerState,x
-          sta temp3
-          ;; Cross-bank call to LoadCharacterColors in bank 13
-          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
-          lda # ((>(AfterLoadCharacterColorsP0-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
-          pha
-          ;; STACK PICTURE: [SP+0: AfterLoadCharacterColorsP0 hi (encoded)]
-          lda # <(AfterLoadCharacterColorsP0-1)
-          pha
-          ;; STACK PICTURE: [SP+1: AfterLoadCharacterColorsP0 hi (encoded)] [SP+0: AfterLoadCharacterColorsP0 lo]
-          ;; Target address: RAW (for RTS to jump to) - NOT encoded
-          lda # >(LoadCharacterColors-1)
-          pha
-          ;; STACK PICTURE: [SP+2: AfterLoadCharacterColorsP0 hi (encoded)] [SP+1: AfterLoadCharacterColorsP0 lo] [SP+0: LoadCharacterColors hi (raw)]
-          lda # <(LoadCharacterColors-1)
-          pha
-          ;; STACK PICTURE: [SP+3: AfterLoadCharacterColorsP0 hi (encoded)] [SP+2: AfterLoadCharacterColorsP0 lo] [SP+1: LoadCharacterColors hi (raw)] [SP+0: LoadCharacterColors lo]
-          ldx # 13
-          jmp BS_jsr
 
-AfterLoadCharacterColorsP0:
+          lda playerState
+          sta temp3
+
+          .FarJSR BankControl, LoadCharacterColors
+
           lda temp6
           sta COLUP0
-
 Player1ColorDone:
-
           ;; Set sprite reflection based on facing direction (bit 3:
           ;; 0=left, 1=right) - matches REFP0 bit 3 for direct copy
           lda playerState
@@ -98,85 +25,34 @@ Player1ColorDone:
           ;; Load sprite data from character definition
           ;; Set currentCharacter = playerCharacter[0]
           lda # 0
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
-          ;; Animation frame (0 = idle)
-          lda # 0
-          sta temp2
-          ;; Animation action (0 = idle)
-          lda # 0
-          sta temp3
-          ;; Cross-bank call to LoadCharacterSprite in bank 15
-          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
-          lda # ((>(AfterLoadCharacterSpriteP0-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
-          pha
-          ;; STACK PICTURE: [SP+0: AfterLoadCharacterSpriteP0 hi (encoded)]
-          lda # <(AfterLoadCharacterSpriteP0-1)
-          pha
-          ;; STACK PICTURE: [SP+1: AfterLoadCharacterSpriteP0 hi (encoded)] [SP+0: AfterLoadCharacterSpriteP0 lo]
-          ;; Target address: RAW (for RTS to jump to) - NOT encoded
-          lda # >(LoadCharacterSprite-1)
-          pha
-          ;; STACK PICTURE: [SP+2: AfterLoadCharacterSpriteP0 hi (encoded)] [SP+1: AfterLoadCharacterSpriteP0 lo] [SP+0: LoadCharacterSprite hi (raw)]
-          lda # <(LoadCharacterSprite-1)
-          pha
-          ;; STACK PICTURE: [SP+3: AfterLoadCharacterSpriteP0 hi (encoded)] [SP+2: AfterLoadCharacterSpriteP0 lo] [SP+1: LoadCharacterSprite hi (raw)] [SP+0: LoadCharacterSprite lo]
-          ldx # 15
-          jmp BS_jsr
 
-AfterLoadCharacterSpriteP0:
+          .FarJSR BankDrawScreen, LoadCharacterSprite
 
           ;; Set Player 2 color and sprite
           ;; Use LoadCharacterColors for consistent color handling
           ;; NOTE: Multi-sprite kernel requires _COLUP1 (with
           ;; Player index
           ;; Hurt flag (non-zero = recovering)
-          lda # 1
+          ldx # 1
           sta currentPlayer
-          ;; Guard flag (non-zero = guarding)
-          ;; Set temp2 = playerRecoveryFrames[1]
-          lda # 1
-          asl
-          tax
-          lda playerRecoveryFrames,x
+          lda playerRecoveryFrames, x
           sta temp2
-          ;; Set temp3 = playerState[1]
-          lda # 1
-          asl
-          tax
-          lda playerState,x
+          lda playerState, x
           sta temp3
           and # PlayerStateBitGuarding
           sta temp3
           lda # 1
-          asl
           tax
           lda playerState,x
           sta temp3
-          ;; Cross-bank call to LoadCharacterColors in bank 13
-          ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
-          lda # ((>(AfterLoadCharacterColorsP1-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
-          pha
-          ;; STACK PICTURE: [SP+0: AfterLoadCharacterColorsP1 hi (encoded)]
-          lda # <(AfterLoadCharacterColorsP1-1)
-          pha
-          ;; STACK PICTURE: [SP+1: AfterLoadCharacterColorsP1 hi (encoded)] [SP+0: AfterLoadCharacterColorsP1 lo]
-          ;; Target address: RAW (for RTS to jump to) - NOT encoded
-          lda # >(LoadCharacterColors-1)
-          pha
-          ;; STACK PICTURE: [SP+2: AfterLoadCharacterColorsP1 hi (encoded)] [SP+1: AfterLoadCharacterColorsP1 lo] [SP+0: LoadCharacterColors hi (raw)]
-          lda # <(LoadCharacterColors-1)
-          pha
-          ;; STACK PICTURE: [SP+3: AfterLoadCharacterColorsP1 hi (encoded)] [SP+2: AfterLoadCharacterColorsP1 lo] [SP+1: LoadCharacterColors hi (raw)] [SP+0: LoadCharacterColors lo]
-          ldx # 13
-          jmp BS_jsr
-AfterLoadCharacterColorsP1:
+
+          .FarJSR BankControl, LoadCharacterColors
 
           lda temp6
-          sta newCOLUP1
-
+          sta NewCOLUP1
 Player2ColorDone
 
           ;; Set sprite reflection based on facing direction
@@ -200,7 +76,6 @@ Player2ReflectionDone:
           ;; Load sprite data from character definition
           ;; Set currentCharacter = playerCharacter[1]
           lda # 1
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
@@ -246,7 +121,6 @@ CheckPlayer3Health:
           ;; if playerCharacter[2] = NoCharacter then jmp DonePlayer3Sprite
           ;; if ! playerHealth[2] then jmp DonePlayer3Sprite
           lda # 2
-          asl
           tax
           lda playerHealth,x
           bne CheckPlayer3HealthThreshold
@@ -254,7 +128,6 @@ CheckPlayer3Health:
 CheckPlayer3HealthThreshold:
 
           lda # 2
-          asl
           tax
           lda playerHealth,x
           bne SetPlayer3Color
@@ -271,18 +144,15 @@ SetPlayer3Color:
           ;; Guard flag (non-zero = guarding)
           ;; Set temp2 = playerRecoveryFrames[2]
           lda # 2
-          asl
           tax
           lda playerRecoveryFrames,x
           sta temp2
           ;; Set temp3 = playerState[2]
           lda # 2
-          asl
           tax
           lda playerState,x
           sta temp3 & PlayerStateBitGuarding
           lda # 2
-          asl
           tax
           lda playerState,x
           sta temp3
@@ -330,7 +200,6 @@ Player3ReflectionDone:
           ;; Load sprite data from character definition
           ;; Set currentCharacter = playerCharacter[2]
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
@@ -373,7 +242,6 @@ CheckPlayer4Health:
           ;; if playerCharacter[3] = NoCharacter then jmp DonePlayer4Sprite
           ;; if ! playerHealth[3] then jmp DonePlayer4Sprite
           lda # 3
-          asl
           tax
           lda playerHealth,x
           bne CheckPlayer4HealthThreshold
@@ -381,7 +249,6 @@ CheckPlayer4Health:
 CheckPlayer4HealthThreshold:
 
           lda # 3
-          asl
           tax
           lda playerHealth,x
           bne SetPlayer4Color
@@ -399,18 +266,15 @@ SetPlayer4Color:
           ;; Guard flag (non-zero = guarding)
           ;; Set temp2 = playerRecoveryFrames[3]
           lda # 3
-          asl
           tax
           lda playerRecoveryFrames,x
           sta temp2
           ;; Set temp3 = playerState[3]
           lda # 3
-          asl
           tax
           lda playerState,x
           sta temp3 & PlayerStateBitGuarding
           lda # 3
-          asl
           tax
           lda playerState,x
           sta temp3
@@ -457,7 +321,6 @@ Player4ReflectionDone:
           ;; Load sprite data from character definition
           ;; Set currentCharacter = playerCharacter[3]
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter

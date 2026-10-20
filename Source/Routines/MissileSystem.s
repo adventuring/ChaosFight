@@ -1,3 +1,4 @@
+MSRoot .proc
 ;;; ChaosFight - Source/Routines/MissileSystem.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 ;;; MISSILE SYSTEM - 4-player MISSILE MANAGEMENT
@@ -7,7 +8,7 @@
           ;; can be:
 
 
-GetPlayerMissileBitFlag .proc
+GetPlayerMissileBitFlag:
           ;; - Ranged projectile (bullet, arrow, magic spell)
           ;; Returns: Near (return thisbank) - called same-bank
           ;; - Mêlée attack visual (sword, fist, kick sprite)
@@ -41,15 +42,12 @@ GetPlayerMissileBitFlag .proc
           ;; BitMask[playerIndex] (1, 2, 4, 8)
           ;; Set temp6 = BitMask[temp1]
           lda temp1
-          asl
           tax
           lda BitMask,x
           sta temp6
           rts
 
-.pend
-
-SpawnMissile .proc
+SpawnMissile:
           ;;
           ;; Returns: Far (return otherbank)
           ;; Spawn Missile
@@ -103,7 +101,6 @@ SpawnMissile .proc
           ;; Get character type for this player
           ;; Set temp5 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp5
@@ -111,12 +108,10 @@ SpawnMissile .proc
           ;; Read missile emission height from character data table
           ;; Set temp6 = CharacterMissileEmissionHeights[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMissileEmissionHeights,x
           sta temp6
           lda temp5
-          asl
           tax
           lda CharacterMissileEmissionHeights,x
           sta temp6
@@ -127,7 +122,6 @@ SpawnMissile .proc
           ;; Get facing direction
           ;; Set temp4 = playerState[temp1] & PlayerStateBitFacing
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp4
@@ -136,11 +130,9 @@ SpawnMissile .proc
           ;; ;; let missileX[temp1] = playerX[temp1]
           ;; ;; let missileY_W[temp1] = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           lda temp1
-          asl
           tax
           sta missileY_W,x + temp6
           ;; Facing left, spawn left
@@ -168,7 +160,6 @@ SpawnOffsetDone:
           ;; Initialize lifetime counter from character data table
           ;; Set missileLifetimeValue = CharacterMissileLifetime[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMissileLifetime,x
           sta missileLifetimeValue
@@ -177,7 +168,6 @@ SpawnOffsetDone:
           ;; Using individual variables for each player missile
           ;; lifetime
           lda temp1
-          asl
           tax
           lda missileLifetimeValue
           sta missileLifetime_W,x
@@ -186,13 +176,11 @@ SpawnOffsetDone:
           ;; Flags are immutable per character, so cache once at spawn
           ;; Set temp2 = CharacterMissileFlags[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMissileFlags,x
           sta temp2
           ;; Store flags for use in UpdateOneMissile
           lda temp1
-          asl
           tax
           lda temp2
           sta missileFlags_W,x
@@ -201,12 +189,10 @@ SpawnOffsetDone:
           ;; physics
           ;; Set temp6 = CharacterMissileMomentumX[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMissileMomentumX,x
           sta temp6
           lda temp5
-          asl
           tax
           lda CharacterMissileMomentumX,x
           sta temp6
@@ -228,7 +214,6 @@ ApplyFacingDirectionDone:
 
           ;; Apply facing direction (left = negative)
           lda temp1
-          asl
           tax
           lda temp6
           sta missileVelocityX,x
@@ -240,7 +225,6 @@ ApplyFacingDirectionDone:
           ;; Get Y velocity
           ;; Set temp6 = CharacterMissileMomentumY[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMissileMomentumY,x
           sta temp6
@@ -258,9 +242,7 @@ VelocityDone:
 
           jmp BS_return
 
-.pend
-
-UpdateAllMissiles .proc
+UpdateAllMissiles:
           ;;
           ;; Returns: Far (return otherbank)
           ;; Update All Missiles
@@ -288,9 +270,8 @@ UAM_Loop:
           ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
           dec temp1
           bpl UAM_Loop
-.pend
 
-UpdateMissilesDone .proc
+UpdateMissilesDone:
           jmp BS_return
 
 UpdateOneMissile:
@@ -301,7 +282,7 @@ UpdateOneMissile:
           ;; Updates a single player missile.
           ;; Handles movement, gravity, collisions, and lifetime.
           ;;
-          INPUT:
+          ;; INPUT:
           ;; temp1 = player index (0-3)
           ;; Updates a single player missile (movement, gravity,
           ;; friction, collisions, lifetime)
@@ -371,11 +352,13 @@ UpdateOneMissile:
 
           ;; Get current velocities from stored arrays
                     ;; Set temp2 = missileVelocityX[temp1]
-                    lda temp1          asl          tax          lda missileVelocityX,x          sta temp2
+          lda temp1
+          tax
+          lda missileVelocityX,x
+          sta temp2
           ;; X velocity (already facing-adjusted from spawn)
           ;; Set temp3 = missileVelocityY[temp1]
           lda temp1
-          asl
           tax
           lda missileVelocityY,x
           sta temp3
@@ -386,12 +369,10 @@ UpdateOneMissile:
           ;; Get cached flags (set at spawn time)
           ;; Set temp5 = missileFlags_R[temp1]
           lda temp1
-          asl
           tax
           lda missileFlags_R,x
           sta temp5
           lda temp1
-          asl
           tax
           lda missileFlags_R,x
           sta temp5
@@ -407,12 +388,11 @@ UpdateOneMissile:
           ;; Get character ID for handler dispatch
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           lda temp6
-          cmp CharacterMegax
+          cmp #CharacterMegax
           bne CheckKnightGuy
           jmp HandleMegaxMissile
 CheckKnightGuy:
@@ -422,7 +402,7 @@ CheckKnightGuy:
           ;; Knight Guy missile appears overlapping, moves away, returns, then vanishes
           ;; Handler extracted to MissileCharacterHandlers.bas
           lda temp6
-          cmp CharacterKnightGuy
+          cmp #CharacterKnightGuy
           bne CheckGravityFlag
           jmp HandleKnightGuyMissile
 CheckGravityFlag:
@@ -431,7 +411,7 @@ CheckGravityFlag:
           ;; Apply gravity if flag is set
 
           lda temp5
-          and MissileFlagGravity
+          and #MissileFlagGravity
           bne ApplyGravity
           jmp GravityDone
 ApplyGravity:
@@ -439,7 +419,6 @@ ApplyGravity:
           ;; Set temp3 = temp3 + GravityPerFrame
           ;; Add gravity (1 pixel/frame down)
           lda temp1
-          asl
           tax
           lda missileVelocityY,x
           clc
@@ -452,7 +431,7 @@ GravityDone
           ;; Issue #1188: Apply friction if flag is set (curling stone deceleration)
           ;; Consolidated friction calculation - handles both positive and negative velocities
           lda temp5
-          and MissileFlagFriction
+          and #MissileFlagFriction
           bne CheckVelocityNonZero
           jmp FrictionDone
 CheckVelocityNonZero:
@@ -460,7 +439,6 @@ CheckVelocityNonZero:
           ;; Get current X velocity
           ;; Set missileVelocityXCalc = missileVelocityX[temp1]
           lda temp1
-          asl
           tax
           lda missileVelocityX,x
           sta missileVelocityXCalc
@@ -472,7 +450,7 @@ ApplyFriction:
 
 
           ;; Apply ice-like friction: reduce by CurlingFrictionCoefficient/256 per frame
-          CurlingFrictionCoefficient = 4, so reduction = velocity / 64 (1.56% per frame)
+          ;; CurlingFrictionCoefficient = 4, so reduction = velocity / 64 (1.56% per frame)
           ;; Issue #1188: Consolidated calculation - works for both positive and negative
           ;; Calculate reduction amount (velocity / 64 using 6-bit shift)
           lda missileVelocityXCalc
@@ -510,7 +488,6 @@ FrictionSubtract:
 FrictionApplyDone:
 
           lda temp1
-          asl
           tax
           lda missileVelocityXCalc
           sta missileVelocityX,x
@@ -526,21 +503,17 @@ FrictionDone
           ;; Update Y position (Read-Modify-Write)
           ;; let missileX[temp1] = missileX[temp1]
           lda temp1
-          asl
           tax
           lda missileX,x
           lda temp1
-          asl
           tax
           sta missileX,x + temp2
           ;; Set temp4 = missileY_R[temp1] + temp3
           lda temp1
-          asl
           tax
           lda missileY_R,x
           sta temp4
           lda temp1
-          asl
           tax
           lda temp4
           sta missileY_W,x
@@ -549,12 +522,11 @@ FrictionDone
           ;; Frooty’s projectile bounces off arena bounds instead of wrapping/deactivating
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           lda temp6
-          cmp CharacterFrooty
+          cmp #CharacterFrooty
           bne CheckHorizontalWrap
           jmp FrootyRicochetCheck
 CheckHorizontalWrap:
@@ -563,23 +535,36 @@ CheckHorizontalWrap:
           ;; Wrap around horizontally using shared player thresholds
           ;; Set temp2 = missileX[temp1]
           lda temp1
-          asl
           tax
           lda missileX,x
           sta temp2
-                    if temp2 < PlayerLeftWrapThreshold then let missileX[temp1] = PlayerRightEdge : let temp2 = PlayerRightEdge
-                    if temp2 > PlayerRightWrapThreshold then let missileX[temp1] = PlayerLeftEdge : let temp2 = PlayerLeftEdge
+          lda temp2
+          cmp # PlayerLeftWrapThreshold
+          bcs MissileAfterLeftWrap
+          ldx temp1
+          lda # PlayerRightEdge
+          sta missileX,x
+          sta temp2
+MissileAfterLeftWrap:
+          lda temp2
+          cmp # PlayerRightWrapThreshold
+          bcc MissileAfterRightWrap
+          beq MissileAfterRightWrap
+          ldx temp1
+          lda # PlayerLeftEdge
+          sta missileX,x
+          sta temp2
+MissileAfterRightWrap:
           lda temp2
           sec
-          sbc PlayerRightWrapThreshold
+          sbc #PlayerRightWrapThreshold
           bcc CheckVerticalBounds
           beq CheckVerticalBounds
           lda temp1
-          asl
           tax
-          lda PlayerLeftEdge
+          lda # PlayerLeftEdge
           sta missileX,x
-          lda PlayerLeftEdge
+          lda # PlayerLeftEdge
           sta temp2
 CheckVerticalBounds:
 
@@ -589,7 +574,7 @@ CheckVerticalBounds:
           ;; if temp3 > ScreenBottom then jmp DeactivateMissile
           lda temp3
           sec
-          sbc ScreenBottom
+          sbc #ScreenBottom
           bcc CheckTopBound
           beq CheckTopBound
           jmp DeactivateMissile
@@ -597,7 +582,7 @@ CheckTopBound:
 
           lda temp3
           sec
-          sbc ScreenBottom
+          sbc #ScreenBottom
           bcc CheckTopWrapThreshold
           beq CheckTopWrapThreshold
           jmp DeactivateMissile
@@ -607,7 +592,7 @@ CheckTopWrapThreshold:
           ;; if temp3 > ScreenTopWrapThreshold then jmp DeactivateMissile
           lda temp3
           sec
-          sbc ScreenTopWrapThreshold
+          sbc #ScreenTopWrapThreshold
           bcc BoundsCheckDone
           beq BoundsCheckDone
           jmp DeactivateMissile
@@ -615,7 +600,7 @@ BoundsCheckDone:
 
           lda temp3
           sec
-          sbc ScreenTopWrapThreshold
+          sbc #ScreenTopWrapThreshold
           bcc BoundsCheckComplete
           beq BoundsCheckComplete
           jmp DeactivateMissile
@@ -624,21 +609,18 @@ BoundsCheckComplete:
 
           jmp BoundsCheckDone
 
-.pend
-
-FrootyRicochetCheck .proc
+FrootyRicochetCheck:
           ;; Issue #1177: Frooty lollipop ricochets off arena bounds
           ;; Returns: Far (return otherbank)
           ;; Check horizontal bounds and reverse X velocity
           ;; Set temp2 = missileX[temp1]
           lda temp1
-          asl
           tax
           lda missileX,x
           sta temp2
           ;; if temp2 < PlayerLeftWrapThreshold then jmp FrootyRicochetLeft
           lda temp2
-          cmp PlayerLeftWrapThreshold
+          cmp #PlayerLeftWrapThreshold
           bcs CheckRightRicochet
           jmp FrootyRicochetLeft
 CheckRightRicochet:
@@ -646,7 +628,7 @@ CheckRightRicochet:
           ;; if temp2 > PlayerRightWrapThreshold then jmp FrootyRicochetRight
           lda temp2
           sec
-          sbc PlayerRightWrapThreshold
+          sbc #PlayerRightWrapThreshold
           bcc FrootyRicochetVerticalCheck
           beq FrootyRicochetVerticalCheck
           jmp FrootyRicochetRight
@@ -654,7 +636,7 @@ FrootyRicochetVerticalCheck:
 
           lda temp2
           sec
-          sbc PlayerRightWrapThreshold
+          sbc #PlayerRightWrapThreshold
           bcc CheckVerticalRicochet
           beq CheckVerticalRicochet
           jmp FrootyRicochetRight
@@ -662,32 +644,27 @@ CheckVerticalRicochet:
 
 
           jmp FrootyRicochetVerticalCheck
-.pend
 
-FrootyRicochetLeft .proc
+FrootyRicochetLeft:
           ;; Hit left wall - reverse X velocity and clamp position
           ;; Returns: Far (return otherbank)
           lda temp1
-          asl
           tax
-          lda PlayerLeftWrapThreshold
+          lda #PlayerLeftWrapThreshold
           sta missileX,x
           ;; let missileVelocityX[temp1] = 0 - missileVelocityX[temp1]
           jmp FrootyRicochetVerticalCheck
-.pend
 
-FrootyRicochetRight .proc
+FrootyRicochetRight:
           ;; Hit right wall - reverse X velocity and clamp position
           ;; Returns: Far (return otherbank)
           lda temp1
-          asl
           tax
-          lda PlayerRightWrapThreshold
+          lda #PlayerRightWrapThreshold
           sta missileX,x
           ;; let missileVelocityX[temp1] = 0 - missileVelocityX[temp1]
-.pend
 
-FrootyRicochetVerticalCheck .proc
+
           ;; Check vertical bounds and reverse Y velocity
           ;; Returns: Far (return otherbank)
           ;; Screen top is around 20 (visible area), bottom is 192
@@ -696,23 +673,15 @@ FrootyRicochetVerticalCheck .proc
           ;; if temp3 < 20 then jmp FrootyRicochetTop          lda temp3          cmp 20          bcs .skip_6296          jmp
           lda temp3
           cmp # 20
-          bcs CheckBottomRicochet
-          goto_label:
-
-          jmp goto_label
-CheckBottomRicochet:
-
-          lda temp3
-          cmp # 20
           bcs CheckScreenBottom
-          jmp goto_label
+          jmp FrootyRicochetTop
 CheckScreenBottom:
 
           
           ;; if temp3 > ScreenBottom then jmp FrootyRicochetBottom
           lda temp3
           sec
-          sbc ScreenBottom
+          sbc #ScreenBottom
           bcc FrootyBoundsDone
           beq FrootyBoundsDone
           jmp FrootyRicochetBottom
@@ -720,7 +689,7 @@ FrootyBoundsDone:
 
           lda temp3
           sec
-          sbc ScreenBottom
+          sbc #ScreenBottom
           bcc FrootyRicochetComplete
           beq FrootyRicochetComplete
           jmp FrootyRicochetBottom
@@ -728,42 +697,36 @@ FrootyRicochetComplete:
 
 
           jmp BoundsCheckDone
-.pend
 
-FrootyRicochetTop .proc
+FrootyRicochetTop:
           ;; Hit top wall - reverse Y velocity and clamp position
           ;; Returns: Far (return otherbank)
           lda temp1
-          asl
           tax
           lda # 20
           sta missileY_W,x
           ;; let missileVelocityY[temp1] = 0 - missileVelocityY[temp1]
           jmp BoundsCheckDone
-.pend
 
-FrootyRicochetBottom .proc
+FrootyRicochetBottom:
           ;; Hit bottom wall - reverse Y velocity and clamp position
           ;; Returns: Far (return otherbank)
           lda temp1
-          asl
           tax
-          lda ScreenBottom
+          lda #ScreenBottom
           sta missileY_W,x
           ;; let missileVelocityY[temp1] = 0 - missileVelocityY[temp1]
-BoundsCheckDone
 
           ;; Check collision with playfield if flag is set
           ;; Reload cached missile flags (temp5 was overwritten with Y position above)
           ;; Get cached flags again (restore after temp5 was used for Y position)
           ;; Set temp5 = missileFlags_R[temp1]
           lda temp1
-          asl
           tax
           lda missileFlags_R,x
           sta temp5
           lda temp5
-          and MissileFlagHitBackground
+          and #MissileFlagHitBackground
           bne CheckPlayfieldCollision
           jmp PlayfieldCollisionDone
 CheckPlayfieldCollision:
@@ -822,7 +785,7 @@ AfterCheckAllMissileCollisions:
 
           ;; Check if hit was found (temp4 ≠ MissileHitNotFound)
           lda temp4
-          cmp MissileHitNotFound
+          cmp #MissileHitNotFound
           bne CheckGuardStatus
           jmp MissileSystemNoHit
 CheckGuardStatus:
@@ -831,7 +794,6 @@ CheckGuardStatus:
           ;; Issue #1188: Check if hit player is guarding before handling hit
           ;; Set temp6 = playerState[temp4] & 2
           lda temp4
-          asl
           tax
           lda playerState,x
           sta temp6
@@ -842,7 +804,7 @@ CheckGuardStatus:
 HandleGuardBounce:
 
           ;; Guard bounce: play sound, invert velocity, reduce by 25%
-          lda SoundGuardBlock
+          lda #SoundGuardBlock
           sta soundEffectID_W
           ;; Cross-bank call to PlaySoundEffect in bank 14
           ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
@@ -866,7 +828,6 @@ AfterPlaySoundEffectBounce:
           ;; Invert X velocity (bounce back)
           ;; Set temp6 = 0 - missileVelocityX[temp1]
           lda temp1
-          asl
           tax
           lda # 0
           sec
@@ -884,24 +845,20 @@ AfterPlaySoundEffectBounce:
           sbc velocityCalculation
           sta temp6
           lda temp1
-          asl
           tax
           lda temp6
           sta missileVelocityX,x
           ;; Continue without deactivating - missile bounces
           jmp MissileSystemNoHit
 
-.pend
-
-HandleMissileDamage .proc
+HandleMissileDamage:
           ;; HandleMissileHit applies damage and effects
           ;; Returns: Far (return otherbank)
           jsr HandleMissileHit
           ;; tail call
           jmp DeactivateMissile
-.pend
 
-MissileSystemNoHit .proc
+MissileSystemNoHit:
           ;; Missile disappears after hitting player
           ;; Returns: Far (return otherbank)
 
@@ -909,7 +866,6 @@ MissileSystemNoHit .proc
           ;; Retrieve current lifetime for this missile
           ;; Set missileLifetimeValue = missileLifetime_R[temp1]
           lda temp1
-          asl
           tax
           lda missileLifetime_R,x
           sta missileLifetimeValue
@@ -917,19 +873,22 @@ MissileSystemNoHit .proc
           ;; Decrement if not set to infinite (infinite until
           ;; collision)
           lda missileLifetimeValue
-          cmp MissileLifetimeInfinite
+          cmp #MissileLifetimeInfinite
           bne DecrementLifetime
                     jmp MissileUpdateComplete
 DecrementLifetime:
 
           dec missileLifetimeValue
           lda missileLifetimeValue
-          beq DeactivateMissile
-          bmi DeactivateMissile
+          beq MS_DoDeactivate
+          bmi MS_DoDeactivate
+          jmp MS_LifetimeStillValid
+MS_DoDeactivate:
+          jmp DeactivateMissile
+MS_LifetimeStillValid:
           ;; Lifetime still valid, continue
 
           lda temp1
-          asl
           tax
           lda missileLifetimeValue
           sta missileLifetime_W,x
@@ -938,19 +897,17 @@ MissileUpdateComplete
           rts
           ;; Character handlers extracted to MissileCharacterHandlers.bas
 
-.pend
-
-MissileSysPF .proc
+MissileSysPF:
           ;;
           ;; Returns: Far (return otherbank)
           ;; Check Missile-playfield Collision
           ;; Checks if missile hit the playfield (walls, obstacles).
           ;; Uses pfread to check playfield pixel at missile position.
           ;;
-          INPUT:
+          ;; INPUT:
           ;; temp1 = player index (0-3)
           ;;
-          OUTPUT:
+          ;; OUTPUT:
           ;; temp4 = 1 if hit playfield, 0 if clear
           ;; Checks if missile hit the playfield (walls, obsta
 
@@ -972,15 +929,16 @@ MissileSysPF .proc
           ;; (0-31) by subtracting ScreenInsetX and dividing by 4.
           ;; Get missile X/Y position (read from _R port)
                     ;; Set temp2 = missileX[temp1]
-                    lda temp1          asl          tax          lda missileX,x          sta temp2
+          lda temp1
+          tax
+          lda missileX,x
+          sta temp2
           ;; Set temp3 = missileY_R[temp1]
           lda temp1
-          asl
           tax
           lda missileY_R,x
           sta temp3
           lda temp1
-          asl
           tax
           lda missileY_R,x
           sta temp3
@@ -991,7 +949,7 @@ MissileSysPF .proc
           ;; pfread uses playfield coordinates: column (0-31), row
           ;; (0-7)
           ;; Convert × pixel to playfield column: subtract ScreenInsetX (16),
-          then divide by 4 (each quad-width pixel is 4 pixels wide)
+          ;; then divide by 4 (each quad-width pixel is 4 pixels wide)
           ;; Save original × in temp6 after removing screen inset
           lda temp2
           sta temp6
@@ -1021,7 +979,12 @@ MissileSysPF .proc
 
           ;; Clamp column to valid range
           ;; Check for wraparound: if subtraction wrapped negative, result ≥ 128
-                    if temp6 & $80 then let temp6 = 0
+          lda temp6
+          and # $80
+          beq ColumnSignDone
+          lda # 0
+          sta temp6
+ColumnSignDone:
           ;; temp3 is already in pixel coordinates, pfread will handle
           lda temp6
           cmp # 32
@@ -1067,10 +1030,10 @@ CheckMissilePlayerCollision
           ;; Checks if a missile hit any player (except the owner).
           ;; Uses axis-aligned bounding box (AABB) collision detection.
           ;;
-          INPUT:
+          ;; INPUT:
           ;; temp1 = missile owner player index (0-3)
           ;;
-          OUTPUT:
+          ;; OUTPUT:
           ;; temp4 = hit player index (0-3), or 255 if no hit
           ;; Checks if missile hit any player (except owner) using AABB
           ;; collision detection
@@ -1096,15 +1059,16 @@ CheckMissilePlayerCollision
           ;; collision detection
           ;; Get missile X/Y position (read from _R port)
                     ;; Set temp2 = missileX[temp1]
-                    lda temp1          asl          tax          lda missileX,x          sta temp2
+          lda temp1
+          tax
+          lda missileX,x
+          sta temp2
           ;; Set temp3 = missileY_R[temp1]
           lda temp1
-          asl
           tax
           lda missileY_R,x
           sta temp3
           lda temp1
-          asl
           tax
           lda missileY_R,x
           sta temp3
@@ -1116,7 +1080,7 @@ CheckMissilePlayerCollision
           ;; bottom
 
           ;; Check collision with each player (except owner)
-          lda MissileHitNotFound
+          lda #MissileHitNotFound
           sta temp4
           ;; Default: no hit
 
@@ -1136,7 +1100,6 @@ CheckPlayerHealth:
           ;; AABB collision check: missile vs player bounding box
           ;; if playerHealth[temp6] = 0 then jmp MissileCheckNextPlayer
           lda temp6
-          asl
           tax
           lda playerHealth,x
           bne CheckAABBCollision
@@ -1149,13 +1112,12 @@ CheckAABBCollision:
           sta temp7
           lda temp2
           clc
-          adc MissileAABBSize
+          adc #MissileAABBSize
           sta temp5
           ;; Restore loop counter
           lda temp7
           sta temp6
           lda temp6
-          asl
           tax
           lda playerX,x
           sec
@@ -1169,11 +1131,10 @@ CheckVerticalCollision:
           lda temp6
           sta temp7
           lda temp6
-          asl
           tax
           lda playerY,x
           clc
-          adc PlayerSpriteHeight
+          adc #PlayerSpriteHeight
           sta temp5
           ;; Restore loop counter
           lda temp7
@@ -1191,13 +1152,12 @@ CheckBottomCollision:
           sta temp7
           lda temp3
           clc
-          adc MissileAABBSize
+          adc #MissileAABBSize
           sta temp5
           ;; Restore loop counter
           lda temp7
           sta temp6
           lda temp6
-          asl
           tax
           lda playerY,x
           sec
@@ -1215,22 +1175,19 @@ MissileCheckNextPlayer:
           ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
           dec temp6
           bpl MCC_Loop
-.pend
 
-MissileCheckNextPlayer .proc
-.pend
 
 MissileCollisionReturn:
           jmp BS_return
 
-HandleMissileHit .proc
+HandleMissileHit:
           ;;
           ;; Returns: Near (return thisbank) - called same-bank
           ;; Handle Missile Hit
           ;; Processes a missile hitting a player.
           ;; Applies damage, knockback, and visual/audio feedback.
           ;;
-          INPUT:
+          ;; INPUT:
           ;; temp1 = attacker player index (0-3, missile owner)
           ;; temp4 = defender player index (0-3, hit player)
           ;; Processes missile hitting a player (damage, knockback,
@@ -1243,7 +1200,7 @@ HandleMissileHit .proc
           ;; state flags (for Harpy dive mode), missileX[] (global
           ;; array) = missile X positions, playerX[], playerY[] (global
           ;; arrays) = player positions, CharacterWeights[] (global
-          data table) = character weights, KnockbackImpulse,
+          ;; data table) = character weights, KnockbackImpulse,
           ;; HitstunFrames (global constants) = physics consta
 
           ;; SoundAttackHit (global constant) = sound effect ID
@@ -1270,7 +1227,10 @@ HandleMissileHit .proc
           ;; characters
           ;; Get character type for damage calculation
                     ;; Set temp5 = playerCharacter[temp1]
-                    lda temp1          asl          tax          lda playerCharacter,x          sta temp5
+          lda temp1
+          tax
+          lda playerCharacter,x
+          sta temp5
 
           ;; Apply damage from attacker to defender
           lda temp1
@@ -1280,17 +1240,21 @@ HandleMissileHit .proc
           sta temp1
           ;; Set temp3 = CharacterWeights[temp1]
           lda temp1
-          asl
           tax
           lda CharacterWeights,x
           sta temp3
           lda temp1
-          asl
           tax
           lda CharacterWeights,x
           sta temp3
-                    if temp3 <= 15 then let temp2 = 12 : jmp MissileDamageDone
-                    if temp3 <= 25 then let temp2 = 18 : jmp MissileDamageDone
+          lda temp3
+          cmp # 16
+          bcs MissileDamageOver15
+          lda # 12
+          sta temp2
+          jmp MissileDamageDone
+MissileDamageOver15:
+          ;; (16-25 handled by the generic weight fallback below)
           lda temp3
           cmp # 26
           bcs HeavyCharacterDamage
@@ -1316,13 +1280,13 @@ MissileDamageDone
 DiveCheckDone:
 
           jmp DiveCheckDone
-.pend
 
-HarpyCheckDive .proc
+HarpyCheckDive:
           ;; Check if Harpy is in dive mode
           ;; Returns: Far (return otherbank)
           ;; Not diving, skip bonus
-          lda characterStateFlags_R[temp1]
+          ldx temp1
+          lda characterStateFlags_R,x
           and # 4
           bne ApplyDiveBonus
           jmp DiveCheckDone
@@ -1336,7 +1300,6 @@ ApplyDiveBonus:
           lda temp2
           sta velocityCalculation
           ;; Set temp6 = temp6 + velocityCalculation
-DiveCheckDone
 
           ;; Guard check is handled before HandleMissileHit is called
           ;; This function only handles damage application
@@ -1344,14 +1307,12 @@ DiveCheckDone
           ;; Apply damage
           ;; Set oldHealthValue = playerHealth[temp4]
           lda temp4
-          asl
           tax
           lda playerHealth,x
           sta oldHealthValue
           ;; let playerHealth[temp4] = playerHealth[temp4] - temp6
-                    if playerHealth[temp4] > oldHealthValue then let playerHealth[temp4] = 0
+          ;; (underflow is handled by the subtraction below)
           lda temp4
-          asl
           tax
           lda playerHealth,x
           sec
@@ -1359,7 +1320,6 @@ DiveCheckDone
           bcc ApplyKnockback
           beq ApplyKnockback
           lda temp4
-          asl
           tax
           lda # 0
           sta playerHealth,x
@@ -1371,7 +1331,6 @@ ApplyKnockback:
           ;; defender right
           ;; Set temp2 = missileX[temp1]
           lda temp1
-          asl
           tax
           lda missileX,x
           sta temp2
@@ -1380,14 +1339,12 @@ ApplyKnockback:
           ;; Heavier characters resist knockback more (weight 5-100)
           ;; Set temp6 = playerCharacter[temp4]
           lda temp4
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           ;; Light characters (weight < 50): full knockback
           ;; Set characterWeight = CharacterWeights[temp6]
           lda temp6
-          asl
           tax
           lda CharacterWeights,x
           sta characterWeight
@@ -1400,12 +1357,11 @@ ApplyKnockback:
           jmp LightCharacterKnockback
 
           LightCharacterKnockback:
-          lda KnockbackImpulse
+          lda #KnockbackImpulse
           sta impulseStrength
           jmp WeightBasedKnockbackApply
-.pend
 
-WeightBasedKnockbackScale .proc
+WeightBasedKnockbackScale:
           ;; Heavy characters: reduced knockback (4 × (100-weight) / 100)
           ;; Returns: Far (return otherbank)
           ;; Set velocityCalculation = 100 - characterWeight
@@ -1449,40 +1405,33 @@ CheckLightWeight:
           sta impulseStrength
 SetMinimumImpulse:
 
-.pend
-
-WeightBasedKnockbackApply .proc
+WeightBasedKnockbackApply:
           ;; Apply knockback: missile from left pushes right, from right pushes left
           ;; Returns: Far (return otherbank)
           ;; if temp2 >= playerX[temp4] then jmp KnockbackRight
           ;; let playerVelocityX[temp4] = playerVelocityX[temp4]
           lda temp4
-          asl
           tax
           lda playerVelocityX,x
           lda temp4
-          asl
           tax
           sta playerVelocityX,x + impulseStrength
           jmp KnockbackDone
-.pend
 
-KnockbackRight .proc
+KnockbackRight:
           ;; let playerVelocityX[temp4] = playerVelocityX[temp4] - impulseStrength
 KnockbackDone
           ;; Zero subpixel when applying knockback impulse
           ;; Returns: Far (return otherbank)
           lda temp4
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
 
           ;; Set recovery/hitstun frames
           lda temp4
-          asl
           tax
-          lda HitstunFrames
+          lda #HitstunFrames
           sta playerRecoveryFrames,x
           ;; 10 frames of hitstun
 
@@ -1491,7 +1440,7 @@ KnockbackDone
           ;; Set bit 3 (recovery flag) when recovery frames are set
 
           ;; Play hit sound effect
-          lda SoundAttackHit
+          lda #SoundAttackHit
           sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 14
           ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
@@ -1516,16 +1465,14 @@ AfterPlaySoundEffectHit:
           ;; Spawn damage indicator visual (handled inline)
 
           rts
-.pend
 
-HandleMissileBounce .proc
-
+HandleMissileBounce:
           ;;
           ;; Returns: Near (return thisbank) - called same-bank
           ;; Handle Missile Bounce
           ;; Handles wall bounce for missiles with bounce flag set.
           ;;
-          INPUT:
+          ;; INPUT:
           ;; temp1 = player index (0-3)
           ;; temp5 = missile flags
           ;; Handles wall bounce for missiles with bounce flag set
@@ -1551,19 +1498,18 @@ HandleMissileBounce .proc
           ;; Get current X velocity
           ;; Set missileVelocityXCalc = missileVelocityX[temp1]
           lda temp1
-          asl
           tax
           lda missileVelocityX,x
           sta missileVelocityXCalc
           ;; Invert velocity (bounce back) using twos complement
           ;; Split calculation to avoid sbc #256 (256 > 255)
           ;; Set temp6 = MaxByteValue - missileVelocityXCalc          lda MaxByteValue          sec          sbc missileVelocityXCalc          sta temp6
-          lda MaxByteValue
+          lda #MaxByteValue
           sec
           sbc missileVelocityXCalc
           sta temp6
 
-          lda MaxByteValue
+          lda #MaxByteValue
           sec
           sbc missileVelocityXCalc
           sta temp6
@@ -1580,7 +1526,7 @@ HandleMissileBounce .proc
 
           ;; Reduce velocity by half (bit shift right by 1)
           lda temp5
-          and MissileFlagFriction
+          and #MissileFlagFriction
           bne ApplyFrictionDamping
           jmp BounceDone
 ApplyFrictionDamping:
@@ -1610,23 +1556,21 @@ ApplyFrictionDamping:
 
 BounceDone
           lda temp1
-          asl
           tax
           lda missileVelocityXCalc
           sta missileVelocityX,x
 
           ;; Continue bouncing (do not deactivate)
           rts
-.pend
 
-;; DeactivateMissile .proc (no matching .pend)
+DeactivateMissile:
           ;;
           ;; Returns: Far (return otherbank)
           ;; Deactivate Missile
           ;; Removes a missile from active sta
 
           ;;
-          INPUT:
+          ;; INPUT:
           ;; temp1 = player index (0-3)
           ;; Removes a missile from active status (clears active bit)
           ;;
@@ -1645,17 +1589,16 @@ BounceDone
           ;; Clear active bit for this player missile
           ;; Set temp6 = BitMask[temp1]
           lda temp1
-          asl
           tax
           lda BitMask,x
           sta temp6
           ;; Set temp6 = MaxByteValue - temp6          lda MaxByteValue          sec          sbc temp6          sta temp6
-          lda MaxByteValue
+          lda #MaxByteValue
           sec
           sbc temp6
           sta temp6
 
-          lda MaxByteValue
+          lda #MaxByteValue
           sec
           sbc temp6
           sta temp6
@@ -1665,4 +1608,15 @@ BounceDone
           and temp6
           sta missileActive
           jmp BS_return
+.pend
 
+SpawnMissile = MSRoot.SpawnMissile
+UpdateAllMissiles = MSRoot.UpdateAllMissiles
+UpdateOneMissile = MSRoot.UpdateOneMissile
+DeactivateMissile = MSRoot.DeactivateMissile
+GetPlayerMissileBitFlag = MSRoot.GetPlayerMissileBitFlag
+HandleMissileDamage = MSRoot.HandleMissileDamage
+HandleMissileHit = MSRoot.HandleMissileHit
+MissileSysPF = MSRoot.MissileSysPF
+HandleMissileBounce = MSRoot.HandleMissileBounce
+KnockbackRight = MSRoot.KnockbackRight

@@ -111,7 +111,6 @@ CheckPlayerBoundary .proc
           ;; Constraints: Uses temp1 as player index, temp2 as scratch.
           ;; Check left wrap threshold
           lda temp1
-          asl
           tax
           lda playerX,x
           cmp # PlayerLeftWrapThreshold
@@ -145,7 +144,6 @@ SkipRightWrap:
 CheckTopClamp:
           ;; Check top clamp (Y < 20, clamp to 20)
           lda temp1
-          asl
           tax
           lda playerY,x
           cmp # 20
@@ -161,7 +159,6 @@ CheckTopClamp:
 SkipTopClamp:
           ;; Zero vertical velocity at boundaries (prevent upward movement)
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityY,x
@@ -171,7 +168,6 @@ SkipTopClamp:
 
           ;; if playerCharacter[temp1] = CharacterBernie then jmp CheckPlayerBoundary_BernieWrap
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterBernie
@@ -182,7 +178,6 @@ SkipTopClamp:
 SkipBernieWrap:
           ;; Set player health to 0 and eliminate
           lda temp1
-          asl
           tax
           lda # 0
           sta playerHealth,x
@@ -214,7 +209,6 @@ AfterCheckPlayerEliminationBoundary:
 
 CheckPlayerBoundary_BernieWrap .proc
           lda temp1
-          asl
           tax
           lda # 0
           sta playerSubpixelY_WL,x

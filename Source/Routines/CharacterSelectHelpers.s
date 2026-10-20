@@ -15,13 +15,11 @@ SelectStickLeft .proc
           ;; Constraints: currentPlayer must be set by caller
           ;; let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
           lda currentPlayer
-          asl
           tax
           dec playerCharacter,x
 
           ;; If playerCharacter[currentPlayer] > MaxCharacter, then set playerCharacter[currentPlayer] = MaxCharacter
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           cmp # MaxCharacter
@@ -67,13 +65,11 @@ SelectStickRight .proc
           ;; Constraints: currentPlayer must be set by caller
           ;; let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
           lda currentPlayer
-          asl
           tax
           inc playerCharacter,x
 
           ;; If playerCharacter[currentPlayer] > MaxCharacter, then set playerCharacter[currentPlayer] = 0
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           cmp # MaxCharacter

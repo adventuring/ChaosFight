@@ -4,7 +4,7 @@
 
 
 
-CheckAllPlayerCollisions .proc
+CheckAllPlayerCollisions .block
           ;; Returns: Far (return otherbank)
 
           ;; Check Multi-player Collisions
@@ -46,9 +46,9 @@ SkipCheckP1Active:
 
           jmp InnerLoopCollisionCheck
 
-.pend
+.bend
 
-CheckP1ActiveCollision .proc
+CheckP1ActiveCollision .block
           lda controllerStatus
           and # SetQuadtariDetected
           bne CheckPlayer2Character
@@ -63,7 +63,6 @@ CheckPlayer2Character:
           bne CheckPlayer3Character
 
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -78,7 +77,6 @@ CheckPlayer3Character:
           bne CheckPlayer3Active
 
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -93,7 +91,6 @@ CheckPlayer3Active:
           cmp # 3
           bne InnerLoopCollisionCheck
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -105,7 +102,6 @@ InnerLoopCollisionCheck:
           cmp # 3
           bne CheckPairCollision
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -115,18 +111,18 @@ CheckPairCollision:
 
 
 
-.pend
+.bend
 
-InnerLoopCollisionCheck .proc
+InnerLoopCollisionCheck .block
 
           lda temp1
           clc
           adc # 1
           sta temp2
 
-.pend
+.bend
 
-CheckPairCollision .proc
+CheckPairCollision .block
 
           ;; if temp2 >= temp6 then jmp NextOuterCollisionCheck
           lda temp2
@@ -145,9 +141,9 @@ CheckPairCollision .proc
 CheckDistanceCollisionP1:
 
 
-.pend
+.bend
 
-CheckP2ActiveCollision .proc
+CheckP2ActiveCollision .block
 
           lda controllerStatus
           and # SetQuadtariDetected
@@ -161,7 +157,6 @@ CheckP2Character:
           cmp # 2
           bne CheckP2Character3
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -173,7 +168,6 @@ CheckP2Character3:
           cmp # 2
           bne CheckP2CharacterActive
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -188,7 +182,6 @@ CheckP2CharacterActive:
           cmp # 3
           bne CheckDistanceCollisionP2
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -200,7 +193,6 @@ CheckDistanceCollisionP2:
           cmp # 3
           bne CheckDistanceActive
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -210,13 +202,12 @@ CheckDistanceActive:
 
 
 
-.pend
+.bend
 
-CheckDistanceCollision .proc
+CheckDistanceCollision .block
 
           ;; if playerHealth[temp1] = 0 then jmp NextInnerCollisionCheck
           lda temp1
-          asl
           tax
           lda playerHealth,x
           bne CheckPlayer2Health
@@ -225,7 +216,6 @@ CheckPlayer2Health:
 
           ;; if playerHealth[temp2] = 0 then jmp NextInnerCollisionCheck
           lda temp2
-          asl
           tax
           lda playerHealth,x
           bne CalculateXDistance
@@ -234,7 +224,6 @@ CalculateXDistance:
 
           ;; Set temp3 = playerX[temp2] - playerX[temp1]
           lda temp2
-          asl
           tax
           lda playerX,x
           sta temp3
@@ -279,7 +268,6 @@ CalculateYDistance:
 
           ;; Set temp4 = playerY[temp2] - playerY[temp1]
           lda temp2
-          asl
           tax
           lda playerY,x
           sta temp4
@@ -316,7 +304,6 @@ CalculateWeights:
 
           ;; Set characterHeight = CharacterHeights[temp1]
           lda temp1
-          asl
           tax
           lda CharacterHeights,x
           sta characterHeight
@@ -333,12 +320,10 @@ CalculateWeights:
 
           ;; Set characterHeight = CharacterHeights[temp2]
           lda temp2
-          asl
           tax
           lda CharacterHeights,x
           sta characterHeight
           lda temp2
-          asl
           tax
           lda CharacterHeights,x
           sta characterHeight
@@ -369,7 +354,6 @@ CheckHeightCollision:
 CalculateWeightsLabel:
           ;; Set characterWeight = CharacterWeights[temp1]
           lda temp1
-          asl
           tax
           lda CharacterWeights,x
           sta characterWeight
@@ -379,12 +363,10 @@ CalculateWeightsLabel:
 
           ;; Set characterWeight = CharacterWeights[temp2]
           lda temp2
-          asl
           tax
           lda CharacterWeights,x
           sta characterWeight
           lda temp2
-          asl
           tax
           lda CharacterWeights,x
           sta characterWeight
@@ -481,96 +463,102 @@ CalculateWeightDifference:
 
           jmp PCR_ImpulseDone_1
 
-.pend
-
-Div32ImpulseStrength .proc
-          ;; Returns: Far (return otherbank)
-
-
-            lda impulseStrength
-
-            lsr
-
-            lsr
-
-            lsr
-
-            lsr
-
-            lsr
-
-            sta impulseStrength
-
-
-          jmp ImpulseDoneFirst
-
-.pend
-
-Div64ImpulseStrength .proc
-          ;; Returns: Far (return otherbank)
-
-
-            lda impulseStrength
-
-            lsr
-
-            lsr
-
-            lsr
-
-            lsr
-
-            lsr
-
-            lsr
-
-            sta impulseStrength
-
-
-          jmp ImpulseDoneFirst
-
-.pend
-
-Div128ImpulseStrength .proc
-          ;; Returns: Far (return otherbank)
-
-
-            lda impulseStrength
-
-            lsr
-
-            lsr
-
-            lsr
-
-            lsr
-
-            lsr
-
-            lsr
-
-            lsr
-
-            sta impulseStrength
-
-
-ImpulseDoneFirst
-
+PCR_ImpulseDone_1:
           lda # 1
           sta temp5
-
           jmp ApplyImpulseCollision
 
-.pend
+.bend
 
-ApplyImpulseRightCollision .proc
+Div32ImpulseStrength .block
+          ;; Returns: Far (return otherbank)
+
+
+            lda impulseStrength
+
+            lsr
+
+            lsr
+
+            lsr
+
+            lsr
+
+            lsr
+
+            sta impulseStrength
+
+
+          jmp Div128ImpulseStrength.ImpulseDoneFirst
+
+.bend
+
+Div64ImpulseStrength .block
+          ;; Returns: Far (return otherbank)
+
+
+            lda impulseStrength
+
+            lsr
+
+            lsr
+
+            lsr
+
+            lsr
+
+            lsr
+
+            lsr
+
+            sta impulseStrength
+
+
+          jmp Div128ImpulseStrength.ImpulseDoneFirst
+
+.bend
+
+Div128ImpulseStrength .block
+          ;; Returns: Far (return otherbank)
+
+
+            lda impulseStrength
+
+            lsr
+
+            lsr
+
+            lsr
+
+            lsr
+
+            lsr
+
+            lsr
+
+            lsr
+
+            sta impulseStrength
+
+
+          ;; end of div paths
+          jmp CheckDistanceCollision.PCR_ImpulseDone_1
+PCR_ImpulseDone_1a:
+ImpulseDoneFirst:
+          lda # 1
+          sta temp5
+          jmp ApplyImpulseCollision
+
+.bend
+
+ApplyImpulseRightCollision .block
 
           lda # 0
           sta temp5
 
-.pend
+.bend
 
-ApplyImpulseCollision .proc
+ApplyImpulseCollision .block
 
           lda impulseStrength
           bne CheckImpulseDirection
@@ -585,7 +573,6 @@ CheckImpulseDirection:
 ApplyImpulseLeft:
           ;; If playerVelocityX[temp1] < 4, then set playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           cmp # 4
@@ -597,20 +584,17 @@ ApplyImpulseLeft:
 ClampPlayer1VelocityMin:
           ;; If playerVelocityX[temp1] > 4, then set playerVelocityX[temp1] = 4
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
-          sec
-          sbc # 4
-          bcc skip_4706
+          cmp # 4
           beq ImpulseDoneCollision
+          bcc ImpulseDoneCollision
           lda # 4
           sta playerVelocityX,x
 ImpulseDoneCollision:
 
-                    if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
+          ;; if playerVelocityX[temp2] <= 252 then playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
           lda temp2
-          asl
           tax
           lda playerVelocityX,x
           cmp # 253
@@ -623,11 +607,9 @@ ClampPlayer2VelocityMax:
 
           ;; If playerVelocityX[temp2] > 252, then set playerVelocityX[temp2] = 252
           lda temp2
-          asl
           tax
           lda playerVelocityX,x
-          sec
-          sbc # 252
+          cmp # 252
           bcc ImpulseDoneCollisionLeft
           beq ImpulseDoneCollisionLeft
           lda # 252
@@ -635,12 +617,11 @@ ClampPlayer2VelocityMax:
 ImpulseDoneCollisionLeft:
           jmp NextInnerCollisionCheck
 
-.pend
+.bend
 
-ImpulseRightDirection .proc
+ImpulseRightDirection .block
           ;; If playerVelocityX[temp1] <= 252, then set playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           cmp # 253
@@ -652,7 +633,6 @@ ImpulseRightDirection .proc
 ClampPlayer1VelocityMaxRight:
           ;; If playerVelocityX[temp1] > 252, then set playerVelocityX[temp1] = 252
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           sec
@@ -665,7 +645,6 @@ ClampPlayer1VelocityMax:
 
           ;; If playerVelocityX[temp2] < 4, then set playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
           lda temp2
-          asl
           tax
           lda playerVelocityX,x
           cmp # 4
@@ -678,7 +657,6 @@ ClampPlayer2Velocity:
 
           ;; If playerVelocityX[temp2] > 4, then set playerVelocityX[temp2] = 4
           lda temp2
-          asl
           tax
           lda playerVelocityX,x
           sec
@@ -690,22 +668,20 @@ ClampPlayer2Velocity:
 ImpulseDoneCollisionRight:
 
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
 
           lda temp2
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
 
           jmp NextInnerCollisionCheck
 
-.pend
+.bend
 
-SepLeftCollision .proc
+SepLeftCollision .block
 
           ;; Set weightDifference = halfHeight1 - halfHeight2          lda halfHeight1          sec          sbc halfHeight2          sta weightDifference
           lda halfHeight1
@@ -785,11 +761,15 @@ SepLeftCollision .proc
             sta impulseStrength
 
 
-          jmp ImpulseDoneSecond
+ImpulseDoneSecond:
 
-.pend
+          lda # 0
+          sta temp5
+          jmp ApplyImpulseCollision
 
-Div32ImpulseStrength2 .proc
+.bend
+
+Div32ImpulseStrength2 .block
           ;; Returns: Far (return otherbank)
 
 
@@ -808,11 +788,16 @@ Div32ImpulseStrength2 .proc
             sta impulseStrength
 
 
-          jmp ImpulseDoneSecond
+          jmp Div128ImpulseStrength2.ImpulseDoneSecond
 
-.pend
+ImpulseDoneSecond2:
+          lda # 0
+          sta temp5
+          jmp ApplyImpulseCollision
 
-Div64ImpulseStrength2 .proc
+.bend
+
+Div64ImpulseStrength2 .block
           ;; Returns: Far (return otherbank)
 
 
@@ -833,11 +818,16 @@ Div64ImpulseStrength2 .proc
             sta impulseStrength
 
 
-          jmp ImpulseDoneSecond
+          jmp Div128ImpulseStrength2.ImpulseDoneSecond
 
-.pend
+ImpulseDoneSecond3:
+          lda # 0
+          sta temp5
+          jmp ApplyImpulseCollision
 
-Div128ImpulseStrength2 .proc
+.bend
+
+Div128ImpulseStrength2 .block
           ;; Returns: Far (return otherbank)
 
 
@@ -864,29 +854,28 @@ ImpulseDoneSecond:
 
           lda # 0
           sta temp5
-
           jmp ApplyImpulseCollision
 
-.pend
+.bend
 
-ApplyImpulseLeftCollision .proc
+ApplyImpulseLeftCollision .block
 
           lda # 1
           sta temp5
 
           jmp ApplyImpulseCollision
 
-.pend
+.bend
 
-NextInnerCollisionCheck .proc
+NextInnerCollisionCheck .block
 
           inc temp2
 
           jmp CheckPairCollision
 
-.pend
+.bend
 
-NextOuterCollisionCheck .proc
+NextOuterCollisionCheck .block
 
           inc temp1
 
@@ -894,12 +883,12 @@ NextOuterCollisionCheck .proc
           lda temp1
           cmp temp6
           bcs NextOuterCollisionCheckDone
-          jmp OuterLoopCollisionCheck
+          jmp CheckAllPlayerCollisions.OuterLoopCollisionCheck
 NextOuterCollisionCheckDone:
 
           
 
           jmp BS_return
 
-.pend
+.bend
 

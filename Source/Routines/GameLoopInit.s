@@ -110,43 +110,35 @@ AfterInitializeSpritePointers:
 Init2PlayerPositions:
           ;; 2-player mode positions
           lda # 0
-          asl
           tax
           lda # 53
           sta playerX,x
           lda # 0
-          asl
           tax
           lda # 24
           sta playerY,x
           lda # 1
-          asl
           tax
           lda # 107
           sta playerX,x
           lda # 1
-          asl
           tax
           lda # 24
           sta playerY,x
           ;; Players 3 & 4 use same as P1/P2 if not in 4-player mode
           lda # 2
-          asl
           tax
           lda # 53
           sta playerX,x
           lda # 2
-          asl
           tax
           lda # 24
           sta playerY,x
           lda # 3
-          asl
           tax
           lda # 107
           sta playerX,x
           lda # 3
-          asl
           tax
           lda # 24
           sta playerY,x
@@ -168,45 +160,37 @@ Init4PlayerPositions:
           ;; InitPositionsDone
           ;; 4-player mode positions
           lda # 0
-          asl
           tax
           lda # 32
           sta playerX,x
           lda # 0
-          asl
           tax
           lda # 24
           sta playerY,x
           ;; Player 1: 1/5 width
           lda # 2
-          asl
           tax
           lda # 64
           sta playerX,x
           lda # 2
-          asl
           tax
           lda # 24
           sta playerY,x
           ;; Player 3: 2/5 width
           lda # 3
-          asl
           tax
           lda # 96
           sta playerX,x
           lda # 3
-          asl
           tax
           lda # 24
           sta playerY,x
           ;; Player 4: 3/5 width
           lda # 1
-          asl
           tax
           lda # 128
           sta playerX,x
           lda # 1
-          asl
           tax
           lda # 24
           sta playerY,x
@@ -228,25 +212,21 @@ InitPositionsDone:
           ;; Initialize player states (facing direction)
           ;; Player 1 facing right
           lda # 0
-          asl
           tax
           lda # 0
           sta playerState,x
           ;; Player 2 facing left
           lda # 1
-          asl
           tax
           lda # 1
           sta playerState,x
           ;; Player 3 facing right
           lda # 2
-          asl
           tax
           lda # 0
           sta playerState,x
           ;; Player 4 facing left
           lda # 3
-          asl
           tax
           lda # 1
           sta playerState,x
@@ -280,20 +260,18 @@ IPH_Loop:
 AfterGetPlayerLockedInit:
 
 
-          lda GPL_lockedState
-          cmp PlayerHandicapped
+          lda lockedState
+          cmp #PlayerHandicapped
           bne PlayerHealthInitDone
           lda currentPlayer
-          asl
           tax
-          lda PlayerHealthHandicap
+          lda #PlayerHealthHandicap
           sta playerHealth,x
 PlayerHealthInitDone:
 
           lda currentPlayer
-          asl
           tax
-          lda PlayerHealthMax
+          lda #PlayerHealthMax
           sta playerHealth,x
           ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
           dec currentPlayer
@@ -309,32 +287,26 @@ InitializePlayerTimers .proc
           sta currentPlayer
 IPT_Loop:
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta playerTimers_W,x
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta playerVelocityX,x
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta playerSubpixelX_W,x
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta playerSubpixelY_W,x
@@ -347,17 +319,17 @@ SetPlayers34ActiveFlag .proc
 
           ;; Optimized: Set Players34Active flag based on character selections
           lda controllerStatus
-          and ClearPlayers34Active
+          and #ClearPlayers34Active
           sta controllerStatus
           ;; if playerCharacter[2] = NoCharacter then jmp SkipPlayer3Activation
           lda controllerStatus
-          ora SetPlayers34Active
+          ora #SetPlayers34Active
           sta controllerStatus
 
 SkipPlayer3Activation:
           ;; if playerCharacter[3] = NoCharacter then jmp SkipPlayer4Activation
           lda controllerStatus
-          ora SetPlayers34Active
+          ora #SetPlayers34Active
           sta controllerStatus
 
 SkipPlayer4Activation:
@@ -381,22 +353,18 @@ SkipPlayer4Activation:
 
           ;; Initialize elimination order tracking
           lda # 0
-          asl
           tax
           lda # 0
           sta eliminationOrder_W,x
           lda # 1
-          asl
           tax
           lda # 0
           sta eliminationOrder_W,x
           lda # 2
-          asl
           tax
           lda # 0
           sta eliminationOrder_W,x
           lda # 3
-          asl
           tax
           lda # 0
           sta eliminationOrder_W,x
@@ -455,7 +423,7 @@ SkipPlayer4 .proc
           sta NUSIZ0
           ;; Player 1 (Player 2) - multisprite kernel uses _NUSIZ1
           lda # 5
-          sta _NUSIZ1
+          sta newNUSIZ
           ;; Player 2 (Player 3) - multisprite kernel
           lda # 5
           sta nusiz2

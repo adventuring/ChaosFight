@@ -80,7 +80,6 @@ BernieAttack .proc
 
           ;; Set temp3 = playerState[temp1] & PlayerStateBitFacing
           lda temp1
-          asl
           tax
           lda playerState,x
           and # PlayerStateBitFacing
@@ -89,7 +88,6 @@ BernieAttack .proc
           ;; Attack in facing direction (inline former PerformMeleeAttack)
           ;; Set attack animation state
           lda temp1
-          asl
           tax
           lda playerState,x
           and # MaskPlayerStateFlags
@@ -120,7 +118,6 @@ AfterPerformGenericAttackFacing:
           ;; Attack opposite direction (toggle facing)
           ;; Toggle facing direction bit
           lda temp1
-          asl
           tax
           lda playerState,x
           eor # PlayerStateBitFacing
@@ -149,7 +146,6 @@ AfterPerformGenericAttackOpposite:
           ;; Restore original facing direction
           ;; Restore saved facing direction from temp3
           lda temp1
-          asl
           tax
           lda playerState,x
           and # MaskPlayerStateFlags

@@ -4,6 +4,7 @@
 ;;; See LICENSE file for full terms
 
 TVStandard = 0  ;;; NTSC
+FrameRate = 60  ;;; NTSC refresh rate
 
 ;; CRITICAL: Preamble.s is now included at the top of Banks.s
 ;; Do NOT include it here to prevent duplicate definitions

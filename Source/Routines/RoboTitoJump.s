@@ -13,7 +13,6 @@ RoboTitoJump .proc
 
           ;; if (playerState[temp1] & 4) then jmp RoboTitoCannotStretch
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 4
@@ -23,7 +22,6 @@ RoboTitoJump .proc
 RTJ_CheckSpecialAbility:
           ;; if characterSpecialAbility_R[temp1] = 0 then jmp RoboTitoCannotStretch
           lda temp1
-          asl
           tax
           lda characterSpecialAbility_R,x
           bne RTJ_CanStretch
@@ -42,7 +40,6 @@ RTJ_CannotStretch .proc
 
 RoboTitoCannotStretch .proc
           lda temp1
-          asl
           tax
           lda # 0
           sta missileStretchHeight_W,x
@@ -65,7 +62,6 @@ RoboTitoCanStretch .proc
 RoboTitoStretching .proc
           ;; playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
           lda temp1
-          asl
           tax
           lda playerState,x
           and # MaskPlayerStateFlags
@@ -74,7 +70,6 @@ RoboTitoStretching .proc
           ;; Inlined CCJ_ConvertPlayerXToPlayfieldColumn (FIXME #1250)
           ;; Convert player X to playfield column: (playerX[temp1] - ScreenInsetX) / 4
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -91,7 +86,6 @@ RoboTitoStretching .proc
           sta temp4
           ;; Set temp2 = playerY[temp1] + 16
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp2
@@ -166,7 +160,7 @@ GroundFound .proc
 .pend
 
 GroundSearchBottom .proc
-          lda ScreenBottom
+          lda #ScreenBottom
           sta temp2
 
 GroundSearchDone:
@@ -174,7 +168,6 @@ GroundSearchDone:
           ;; Continue with rest of routine
           ;; Set temp3 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp3
@@ -206,18 +199,15 @@ SetStretchHeight:
 
 
           lda temp1
-          asl
           tax
           lda temp3
           sta missileStretchHeight_W,x
           lda temp1
-          asl
           tax
           lda # 0
           sta characterSpecialAbility_W,x
           ;; if playerY[temp1] <= 5 then jmp RoboTitoCheckCeiling
           lda temp1
-          asl
           tax
           lda playerY,x
           cmp # 5
@@ -231,7 +221,6 @@ RoboTitoCheckCeiling .proc
           ;; Inlined CCJ_ConvertPlayerXToPlayfieldColumn (FIXME #1250)
           ;; Convert player X to playfield column: (playerX[temp1] - ScreenInsetX) / 4
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -246,7 +235,6 @@ RoboTitoCheckCeiling .proc
 
           ;; Set temp3 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp3
@@ -300,7 +288,6 @@ ContinueStretching:
           sta temp1
           ;; playerY[temp1] = playerY[temp1] - 3
           lda temp1
-          asl
           tax
           lda playerY,x
           sec
@@ -312,14 +299,12 @@ ContinueStretching:
 RoboTitoLatch .proc
           ;; RTL_stateFlags = characterStateFlags_R[temp1] | 1
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           ora # 1
           sta characterStateFlags_W,x
           ;; playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
           lda temp1
-          asl
           tax
           lda playerState,x
           and # MaskPlayerStateFlags
@@ -327,7 +312,6 @@ RoboTitoLatch .proc
           sta playerState,x
           ;; Set temp2 = missileStretchHeight_R[temp1]
           lda temp1
-          asl
           tax
           lda missileStretchHeight_R,x
           sta temp2
@@ -339,7 +323,6 @@ RoboTitoLatch .proc
 RTL_ReduceHeightZero:
 
           lda temp1
-          asl
           tax
           lda # 0
           sta missileStretchHeight_W,x
@@ -353,7 +336,6 @@ RTL_ReduceHeight:
           sta temp2
 
           lda temp1
-          asl
           tax
           lda temp2
           sta missileStretchHeight_W,x

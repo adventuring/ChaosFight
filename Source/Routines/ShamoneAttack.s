@@ -49,7 +49,6 @@ ShamoneAttack:
 
           ;; let playerY[temp1] = playerY[temp1] - 11
           lda temp1
-          asl
           tax
           lda playerY,x
           sec
@@ -59,7 +58,6 @@ ShamoneAttack:
           ;; Light character, good jump
           ;; Set jumping flag
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # PlayerStateBitJumping
@@ -90,7 +88,6 @@ ShamoneAttack:
 ShamoneAttackSpawnMissileReturn:
           ;; Set attack animation state
           lda temp1
-          asl
           tax
           lda playerState,x
           and # MaskPlayerStateFlags

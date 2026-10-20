@@ -32,7 +32,6 @@ Use4PlayerMode:
           ;; Calculate bit flag using O(1) array lookup: BitMask[playerIndex] (1, 2, 4, 8)
           ;; Set temp6 = BitMask[temp1]
           lda temp1
-          asl
           tax
           lda BitMask,x
           sta temp6
@@ -73,7 +72,6 @@ BudgetedMissileCollisionCheck2P:
           ;; Calculate bit flag using O(1) array lookup:
           ;; Set temp6 = BitMask[temp1]
           lda temp1
-          asl
           tax
           lda BitMask,x
           sta temp6

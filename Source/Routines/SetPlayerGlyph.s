@@ -65,7 +65,6 @@ UseLookupMode:
           ;; Look up glyph index from table (overwrites temp1)
           ;; Set temp1 = GlyphLookupTable[temp4]
           lda temp4
-          asl
           tax
           lda GlyphLookupTable,x
           sta temp1

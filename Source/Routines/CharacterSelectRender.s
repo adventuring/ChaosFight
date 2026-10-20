@@ -158,18 +158,15 @@ PlayerPreviewSetPosition
           ;; Position player preview sprites in the four select quadrants
           ;; Set temp2 = SelectPreviewX[temp1]
           lda temp1
-          asl
           tax
           lda SelectPreviewX,x
           sta temp2
           ;; Set temp3 = SelectPreviewY[temp1]
           lda temp1
-          asl
           tax
           lda SelectPreviewY,x
           sta temp3
           lda temp1
-          asl
           tax
           lda SelectPreviewY,x
           sta temp3
@@ -224,7 +221,6 @@ RenderPlayerPreview .proc
           sta currentPlayer
           ;; Set currentCharacter = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
@@ -239,7 +235,6 @@ RenderPlayerPreview .proc
 GetAnimationFrame:
           ;; Set temp4 = characterSelectPlayerAnimationFrame_R[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda characterSelectPlayerAnimationFrame_R,x
           sta temp4
@@ -270,7 +265,7 @@ AfterGetPlayerLockedPreview:
           lda # ActionIdle
           sta temp3
           lda temp5
-          cmp PlayerHandicapped
+          cmp #PlayerHandicapped
           bne RenderPlayerPreviewInvoke
           lda # ActionFallen
           sta temp3
@@ -303,7 +298,6 @@ AfterLoadCharacterSpritePreview:
 
           ;; Set temp2 = SelectPlayerColorNormal[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda SelectPlayerColorNormal,x
           sta temp2
@@ -331,7 +325,7 @@ SelectApplyPlayerColorP0 .proc
 
 SelectApplyPlayerColorP1 .proc
           lda temp2
-          sta _COLUP1
+          sta NewCOLUP1
           rts
 .pend
 
@@ -364,7 +358,6 @@ SelectSetPlayerColorHandicap .proc
           ;; Called same-bank from SelectRenderPlayerPreview, so use return thisbank
           ;; Set temp2 = SelectPlayerColorHandicap[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda SelectPlayerColorHandicap,x
           sta temp2
@@ -446,24 +439,20 @@ SelectUpdatePlayerAnimation
           ;; Constraints: Admin-only usage sharing SCRAM with game mode
           ;; Set temp2 = characterSelectPlayerAnimationTimer_R[temp1] + 1
           lda temp1
-          asl
           tax
           lda characterSelectPlayerAnimationTimer_R,x
           sta temp2
           lda temp1
-          asl
           tax
           lda temp2
           sta characterSelectPlayerAnimationTimer_W,x
 
           lda temp1
-          asl
           tax
           lda # 0
           sta characterSelectPlayerAnimationTimer_W,x
           ;; Set temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
           lda temp1
-          asl
           tax
           lda temp3
           sta characterSelectPlayerAnimationFrame_W,x
@@ -473,7 +462,7 @@ SelectUpdatePlayerAnimation
           ;; Returns: Far (return otherbank)
           ;; if switchselect then jmp CharacterSelectDoRescan
           lda INPT4
-          beq CheckColorBWToggle
+          bmi CheckColorBWToggle  ; bit 7 = 1 means not pressed
           jmp CharacterSelectDoRescan
 CheckColorBWToggle:
           lda switchbw
@@ -529,8 +518,9 @@ CharacterSelectDoRescan .proc
 AfterDetectPadsRescan:
 
 CharacterSelectRescanDone:
-
-
+          ;; Far-call return: the caller (CharacterSelectInputEntry in bank 8)
+          ;; pushed an encoded return address, so hand off to BS_return.
+          jmp BS_return
 
 .pend
 

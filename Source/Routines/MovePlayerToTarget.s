@@ -3,7 +3,7 @@
 ;;; Helper functions for falling animation player movement
 
 
-MovePlayerToTarget .proc
+MovePlayerToTarget .block
 
           ;; Move player toward target position (called from FallingAnimation1)
           ;; Returns: Far (return otherbank)
@@ -16,7 +16,6 @@ MovePlayerToTarget .proc
           ;; Update × axis (one pixel per frame)
           ;; Set temp4 = playerX[temp1]         
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp4
@@ -37,7 +36,6 @@ MovePlayerToTarget .proc
 MovePlayerXRight:
           ;; Set temp4 = playerY[temp1]         
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp4
@@ -60,22 +58,20 @@ MovePlayerYDown:
           jsr NudgePlayerFromPlayfield
           jmp BS_return
 
-.pend
+.bend
 
-NudgePlayerFromPlayfield .proc
+NudgePlayerFromPlayfield .block
           ;; Nudge player away from playfield collision
           ;; Returns: Near (return thisbank) - called same-bank from MovePlayerToTarget
           ;; Input: temp1 = player index
           ;; Output: Player position adjusted to avoid playfield
           ;; Set originalPlayerX_W = playerX[temp1]
           lda temp1
-          asl
           tax
           lda playerX,x
           sta originalPlayerX_W
           ;; Set originalPlayerY_W = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta originalPlayerY_W
@@ -85,9 +81,9 @@ NudgePlayerFromPlayfield .proc
 
           jmp BS_return
 
-.pend
+.bend
 
-NudgeRightMovePlayer .proc
+NudgeRightMovePlayer .block
           ;; let playerX[temp1] = originalPlayerX_R + 1
           jsr CheckCollisionMovePlayer
 
@@ -95,7 +91,6 @@ NudgeRightMovePlayer .proc
           cmp # 1
           bne NudgeRightMovePlayerDone
           lda temp1
-          asl
           tax
           lda originalPlayerX_R
           sta playerX,x
@@ -103,9 +98,9 @@ NudgeRightMovePlayerDone:
 
           rts
 
-.pend
+.bend
 
-NudgeLeftMovePlayer .proc
+NudgeLeftMovePlayer .block
           ;; let playerX[temp1] = originalPlayerX_R - 1
           jsr CheckCollisionMovePlayer
 
@@ -113,13 +108,12 @@ NudgeLeftMovePlayer .proc
           cmp # 1
           bne NudgeLeftMovePlayerDone
           lda temp1
-          asl
           tax
           lda originalPlayerX_R
           sta playerX,x
 NudgeLeftMovePlayerDone:
           rts
-.pend
+.bend
 
 CheckCollisionMovePlayer:
           ;; Returns: Near (return thisbank)
@@ -129,7 +123,6 @@ CheckCollisionMovePlayer:
           ;; Output: temp6 = 1 if collision, 0 if clear
           ;; Set temp2 = playerX[temp1] - ScreenInsetX         
           lda temp1
-          asl
           tax
           lda playerX,x
           sec

@@ -5,7 +5,7 @@
 ;;; duplicate .MomentumRecoveryNext labels trying to walk past $10000. One copy
           ;; is plenty; see Issue #875 if you are tempted to clone it again.
 
-ApplyMomentumAndRecovery .proc
+ApplyMomentumAndRecovery .block
           ;; Returns: Far (return otherbank)
           ;; Apply Momentum and Recovery
           ;; Updates recovery frames and applies velocity during
@@ -37,9 +37,9 @@ ApplyMomentumAndRecovery .proc
           lda # 0
           sta temp1
 
-.pend
+.bend
 
-MomentumRecoveryLoop .proc
+MomentumRecoveryLoop .block
           ;; Check if player is active (P1/P2 always active, P3/P4 need
           ;; Quadtari)
           ;; Players 0-1 always active
@@ -66,7 +66,6 @@ CheckPlayer2NoCharacter:
           bne CheckPlayer3Character
 
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -80,7 +79,6 @@ CheckPlayer3Character:
           cmp # 2
           bne CheckPlayer3NoCharacter
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -94,7 +92,6 @@ CheckPlayer3NoCharacter:
           cmp # 3
           bne MomentumRecoveryProcess
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -106,7 +103,6 @@ MomentumRecoveryProcess:
           cmp # 3
           bne ProcessRecoveryFrames
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -116,14 +112,13 @@ ProcessRecoveryFrames:
 
 
 
-.pend
+.bend
 
-MomentumRecoveryProcess .proc
+MomentumRecoveryProcess .block
           ;; Decrement recovery frames (velocity is applied by
           ;; UpdatePlayerMovement)
           ;; if playerRecoveryFrames[temp1] > 0 then let playerRecoveryFrames[temp1] = playerRecoveryFrames[temp1] - 1
           lda temp1
-          asl
           tax
           lda playerRecoveryFrames,x
           beq SyncRecoveryFlag
@@ -131,7 +126,6 @@ MomentumRecoveryProcess .proc
 SyncRecoveryFlag:
 
           lda temp1
-          asl
           tax
           lda playerRecoveryFrames,x
           beq SetRecoveryFlag
@@ -142,7 +136,6 @@ SetRecoveryFlag:
           ;; Synchronize playerState bit 3 with recovery frames
           ;; Set bit 3 (recovery flag) when recovery frames > 0
           lda temp1
-          asl
           tax
           lda playerRecoveryFrames,x
           beq ClearRecoveryFlag
@@ -153,24 +146,20 @@ ClearRecoveryFlag:
           ;; Clear bit 3 (recovery flag) when recovery frames = 0
           ;; if ! playerRecoveryFrames[temp1] then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitRecovery)
           lda temp1
-          asl
           tax
           lda playerRecoveryFrames,x
           bne CheckVelocityDecay
           lda temp1
-          asl
           tax
           lda playerState
           sta playerState,x
 CheckVelocityDecay:
 
           lda temp1
-          asl
           tax
           lda playerRecoveryFrames,x
           bne DecayVelocity
           lda temp1
-          asl
           tax
           lda playerState
           sta playerState,x
@@ -181,7 +170,6 @@ DecayVelocity:
           ;; Velocity decay during recovery (knockback slows down over
           ;; if ! playerRecoveryFrames[temp1] then jmp MomentumRecoveryNext
           lda temp1
-          asl
           tax
           lda playerRecoveryFrames,x
           bne CheckVelocitySign
@@ -189,7 +177,6 @@ DecayVelocity:
 CheckVelocitySign:
 
           lda temp1
-          asl
           tax
           lda playerRecoveryFrames,x
           bne DecayPositiveVelocity
@@ -200,7 +187,6 @@ DecayPositiveVelocity:
           ;; time)
           ;; If playerVelocityX[temp1] <= 0, then MomentumRecoveryDecayNegative
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           beq DecayPositiveVelocity
@@ -209,7 +195,6 @@ DecayPositiveVelocity:
 DecayPositiveVelocityCheck:
 
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           beq DecayPositiveVelocityApply
@@ -221,19 +206,16 @@ DecayPositiveVelocityApply:
           ;; Positive velocity: decay by 1
           ;; let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
           lda temp1
-          asl
           tax
           dec playerVelocityX,x
 
           lda temp1
-          asl
           tax
           dec playerVelocityX,x
 
           ;; Also decay subpixel if integer velocity is zero
           ;; If playerVelocityX[temp1] = 0, then set playerVelocityXL[temp1] = 0
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           bne MomentumRecoveryNextPositive
@@ -241,13 +223,12 @@ DecayPositiveVelocityApply:
           sta playerVelocityXL,x
 MomentumRecoveryNextPositive:
 
-.pend
+.bend
 
-MomentumRecoveryDecayNegative .proc
+MomentumRecoveryDecayNegative .block
           ;; Negative velocity: decay by 1 (add 1 to make less
           ;; if playerVelocityX[temp1] >= 0 then jmp MomentumRecoveryNext
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           bmi DecayNegativeVelocity
@@ -255,7 +236,6 @@ MomentumRecoveryDecayNegative .proc
 DecayNegativeVelocity:
 
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           bmi DecayNegativeVelocityLabel
@@ -266,19 +246,16 @@ DecayNegativeVelocityLabel:
           ;; negative)
           ;; let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
           lda temp1
-          asl
           tax
           inc playerVelocityX,x
 
           lda temp1
-          asl
           tax
           inc playerVelocityX,x
 
           ;; Also decay subpixel if integer velocity is zero
           ;; If playerVelocityX[temp1] = 0, then set playerVelocityXL[temp1] = 0
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           bne MomentumRecoveryNextNegative
@@ -286,9 +263,9 @@ DecayNegativeVelocityLabel:
           sta playerVelocityXL,x
 MomentumRecoveryNextNegative:
 
-.pend
+.bend
 
-MomentumRecoveryNext .proc
+MomentumRecoveryNext .block
           ;; Next player
           inc temp1
           ;; if temp1 < 4 then jmp MomentumRecoveryLoop          lda temp1          cmp 4          bcs .skip_9998          jmp
@@ -311,5 +288,5 @@ ApplyMomentumAndRecoveryComplete:
           ;; smartbranching on
           jmp BS_return
 
-.pend
+.bend
 

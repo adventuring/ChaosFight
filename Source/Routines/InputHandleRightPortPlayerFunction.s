@@ -14,7 +14,6 @@ InputHandleRightPortPlayerFunction:
           ;; block movement during attack animations (states 13-15)
           ;; Set temp2 = playerState[temp1] / 16
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -34,7 +33,6 @@ IHRP_CheckGuardStatus:
           ;; Check if player is guarding - guard blocks movement
           ;; Set temp6 = playerState[temp1] & 2
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp6
@@ -51,7 +49,6 @@ IHRP_CheckFlyingCharacter:
           ;; for horizontal movement
           ;; Set temp5 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp5
@@ -128,7 +125,6 @@ IHRP_HandleDownPressed .proc
           ;; DOWN pressed - dispatch to character-specific down handler
           ;; Set temp4 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -203,7 +199,6 @@ IHRP_CheckGuardRelease .proc
           ;; DOWN released - check for early guard release (inlined to save 2 bytes)
           ;; Set temp6 = playerState[temp1] & PlayerStateBitGuarding
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp6
@@ -217,9 +212,8 @@ StopGuardEarly:
           ;; let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           ;; Start cooldown timer
           lda temp1
-          asl
           tax
-          lda GuardTimerMaxFrames
+          lda #GuardTimerMaxFrames
           sta playerTimers_W,x
 
 .pend

@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-RestoreNormalPlayerColor .proc
+RestoreNormalPlayerColor .block
           ;; Provide shared entry point for restoring normal player colors
           ;; after guard tinting. Color reload executed by rendering code.
           ;;
@@ -13,11 +13,10 @@ RestoreNormalPlayerColor .proc
           ;; Mutates: temp4 (loads character index for downstream routines)
           ;; Set temp4 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
           rts
 
-.pend
+.bend
 

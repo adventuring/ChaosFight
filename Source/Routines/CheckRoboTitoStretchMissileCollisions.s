@@ -20,7 +20,6 @@ PlayerLoopStretchMissileCheck .proc
           ;; Check if player is RoboTito and stretching
           ;; If playerCharacter[temp1] = CharacterRoboTito, then IsRoboTitoStretchCheck
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterRoboTito
@@ -41,7 +40,6 @@ IsRoboTitoStretchCheck .proc
           ;; Latched to ceiling, no stretch missile
           ;; Set temp5 = characterStateFlags_R[temp1] & 1
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           sta temp5
@@ -56,7 +54,6 @@ CheckStretchingAnimation:
 
           ;; Set playerStateTemp = playerState[temp1]
           lda temp1
-          asl
           tax
           lda playerState,x
           sta playerStateTemp
@@ -80,7 +77,6 @@ IsStretchingAnimation .proc
           ;; Check if stretch missile has height > 0
           ;; Set temp2 = missileStretchHeight_R[temp1]
           lda temp1
-          asl
           tax
           lda missileStretchHeight_R,x
           sta temp2
@@ -93,7 +89,6 @@ CalculateMissilePosition:
 
           ;; Set temp3 = playerX[temp1] + 7
           lda temp1
-          asl
           tax
           lda playerX,x
           clc
@@ -101,7 +96,6 @@ CalculateMissilePosition:
           sta temp3
           ;; Set temp4 = playerY[temp1] + 16
           lda temp1
-          asl
           tax
           lda playerY,x
           clc
@@ -128,7 +122,6 @@ CheckPlayerHealth:
           ;; Skip eliminated players
           ;; If !playerHealth[temp6], then DoneSelfStretchCheck
           lda temp6
-          asl
           tax
           lda playerHealth,x
           beq DoneSelfStretchCheck
@@ -143,7 +136,6 @@ CheckPlayerHealth:
           ;; Missile left edge >= player right edge, no collision
           ;; If temp3 >= playerX[temp6] + PlayerSpriteHalfWidth, then DoneSelfStretchCheck
           lda temp6
-          asl
           tax
           lda playerX,x
           clc
@@ -163,7 +155,6 @@ CheckMissileRightEdge:
           adc # 1
           sta temp4  ;;; Missile right edge
           lda temp6
-          asl
           tax
           lda playerX,x
           sec
@@ -175,7 +166,6 @@ CheckMissileTopEdge:
           ;; Missile top edge >= player bottom edge, no collision
           ;; If temp4 >= playerY[temp6] + PlayerSpriteHeight, then DoneSelfStretchCheck
           lda temp6
-          asl
           tax
           lda playerY,x
           clc
@@ -195,7 +185,6 @@ CheckMissileBottomEdge:
           adc temp2
           sta temp5  ;;; Missile bottom edge
           lda temp6
-          asl
           tax
           lda playerY,x
           sec
@@ -279,7 +268,6 @@ HandleRoboTitoStretchMissileHit .proc
           ;; Constraints: None
           ;; Vanish stretch missile (set height to 0)
           lda temp1
-          asl
           tax
           lda # 0
           sta missileStretchHeight_W,x
@@ -298,7 +286,6 @@ HandleRoboTitoStretchMissileHit .proc
           ;; Optimized: Simple array assignment instead of bit manipulation
           ;; Clear stretch permission
           lda temp1
-          asl
           tax
           lda # 0
           sta characterSpecialAbility_W,x
@@ -306,7 +293,6 @@ HandleRoboTitoStretchMissileHit .proc
           ;; Clear latched flag if set (falling from ceiling)
           ;; Set temp3 = characterStateFlags_R[temp1]
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           sta temp3
@@ -317,7 +303,6 @@ HandleRoboTitoStretchMissileHit .proc
 
           ;; Clear bit 0 (latched flag)
           lda temp1
-          asl
           tax
           lda temp3
           sta characterStateFlags_W,x

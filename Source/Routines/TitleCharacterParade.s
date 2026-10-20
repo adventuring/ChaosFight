@@ -251,12 +251,12 @@ ParadeCharacterLeft .proc
           ;; Set titleParadeTimer = titleParadeTimer - FramesPerSecond          lda titleParadeTimer          sec          sbc FramesPerSecond          sta titleParadeTimer
           lda titleParadeTimer
           sec
-          sbc FramesPerSecond
+          sbc #FramesPerSecond
           sta titleParadeTimer
 
           lda titleParadeTimer
           sec
-          sbc FramesPerSecond
+          sbc #FramesPerSecond
           sta titleParadeTimer
 
 
@@ -264,7 +264,7 @@ ParadeCharacterLeft .proc
 
 .pend
 
-DrawParadeCharacter .proc
+DrawParadeCharacter .block
 
 
 
@@ -316,9 +316,9 @@ DrawParadeCharacter .proc
 
 
 
-.pend
+.bend
 
-DrawParadeCharacterSprite .proc
+DrawParadeCharacterSprite .block
 
           ;;
           ;; Returns: Far (return otherbank)
@@ -352,7 +352,7 @@ DrawParadeCharacterSprite .proc
           sta temp2
 
 
-          lda ActionWalking
+          lda #ActionWalking
           sta temp3
 
           ;; Cross-bank call to LoadCharacterSprite in bank 15
@@ -377,5 +377,5 @@ AfterLoadCharacterSpriteParade:
 
           jmp BS_return
 
-.pend
+.bend
 

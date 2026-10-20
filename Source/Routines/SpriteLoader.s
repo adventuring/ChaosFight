@@ -139,7 +139,6 @@ LoadPlayerSprite .proc
           ;; Use currentPlayer global variable (set by caller)
           ;; Set currentCharacter = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter

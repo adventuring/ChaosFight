@@ -1,5 +1,5 @@
 
-SetGameScreenLayout .proc
+SetGameScreenLayout .block
           ;; Set screen layout for all screens (32×8) with health bar
           ;; Returns: Far (return otherbank)
           ;; space
@@ -18,5 +18,5 @@ SetGameScreenLayout .proc
           sta pfrows
           jmp BS_return
 
-.pend
+.bend
 

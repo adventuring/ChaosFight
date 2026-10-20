@@ -29,7 +29,48 @@ ChangeGameMode .proc
           ;; Note: on...jmp pushes 2 bytes then immediately pops them (net zero stack change)
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           ;; Expected: 4 bytes on stack from BS_jsr call (cross-bank call)
+          ;;
+          ;; This replaces the original Basic "on gameMode goto ..." construct.
+          ;; Each case jumps (not calls) to its near thunk, so the thunk and the
+          ;; Setup* routine preserve the incoming 4-byte return address and the
+          ;; eventual BS_return unwinds straight back to the caller.
+          lda gameMode
+          cmp # ModePublisherPrelude
+          bne CGM_NotPublisherPrelude
           jmp ThunkPublisherPrelude
+CGM_NotPublisherPrelude
+          cmp # ModeAuthorPrelude
+          bne CGM_NotAuthorPrelude
+          jmp ThunkAuthorPrelude
+CGM_NotAuthorPrelude
+          cmp # ModeTitle
+          bne CGM_NotTitle
+          jmp ThunkTitle
+CGM_NotTitle
+          cmp # ModeCharacterSelect
+          bne CGM_NotCharacterSelect
+          jmp ThunkCharacterSelect
+CGM_NotCharacterSelect
+          cmp # ModeFallingAnimation
+          bne CGM_NotFallingAnimation
+          jmp ThunkFallingAnimation
+CGM_NotFallingAnimation
+          cmp # ModeArenaSelect
+          bne CGM_NotArenaSelect
+          jmp ThunkArenaSelect
+CGM_NotArenaSelect
+          cmp # ModeGame
+          bne CGM_NotGame
+          jmp ThunkGame
+CGM_NotGame
+          cmp # ModeWinner
+          bne CGM_NotWinner
+          jmp ThunkWinner
+CGM_NotWinner
+          cmp # ModeAttract
+          bne CGM_NotAttract
+          jmp ThunkAttract
+CGM_NotAttract
 
           ;; Safety exit if gameMode is invalid
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
@@ -130,9 +171,35 @@ SetupCharacterSelect .proc
           ;; ChangeGameMode is called cross-bank, so all return otherbank paths must use return otherbank
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           ;; Expected: 4 bytes on stack from BS_jsr call
+          ;;
+          ;; CharacterSelectEntry lives in bank 5, so this is a far call; the
+          ;; entry routine returns via BS_return and then we return to our own
+          ;; caller.
+
+          ;; Cross-bank call to CharacterSelectEntry in bank 5
+          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
+          lda # ((>(AfterCharacterSelectEntry-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
+          pha
+          ;; STACK PICTURE: [SP+0: AfterCharacterSelectEntry hi (encoded)]
+          lda # <(AfterCharacterSelectEntry-1)
+          pha
+          ;; STACK PICTURE: [SP+1: AfterCharacterSelectEntry hi (encoded)] [SP+0: AfterCharacterSelectEntry lo]
+          ;; Target address: RAW (for RTS to jump to) - NOT encoded
+          lda # >(CharacterSelectEntry-1)
+          pha
+          ;; STACK PICTURE: [SP+2: AfterCharacterSelectEntry hi (encoded)] [SP+1: AfterCharacterSelectEntry lo] [SP+0: CharacterSelectEntry hi (raw)]
+          lda # <(CharacterSelectEntry-1)
+          pha
+          ;; STACK PICTURE: [SP+3: AfterCharacterSelectEntry hi (encoded)] [SP+2: AfterCharacterSelectEntry lo] [SP+1: CharacterSelectEntry hi (raw)] [SP+0: CharacterSelectEntry lo]
+          ldx # 5                          ;;; Bank 5
+          jmp BS_jsr
+AfterCharacterSelectEntry:
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           jmp BS_return
 
-SetupFallingAnimation
+.pend
+
+SetupFallingAnimation .proc
           ;; Character select uses its own internal flow
           ;; Returns: Far (return otherbank)
           ;; No separate Begin function needed - setup is handled
@@ -392,7 +459,9 @@ ThunkCharacterSelect .proc
           ;; Returns: Far (return otherbank)
           jmp SetupCharacterSelect
 
-ThunkFallingAnimation
+.pend
+
+ThunkFallingAnimation .proc
           ;; Near thunk - same bank jump
           ;; Returns: Far (return otherbank)
           jmp SetupFallingAnimation

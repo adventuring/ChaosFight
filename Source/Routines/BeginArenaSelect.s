@@ -1,5 +1,5 @@
 
-BeginArenaSelect .proc
+BeginArenaSelect .block
           ;;
           ;; Returns: Far (return otherbank)
           ;; ChaosFight - Source/Routines/BeginArenaSelect.bas
@@ -57,5 +57,5 @@ BeginArenaSelect .proc
           ;; Playfield layout is static; ArenaSelect renders via playfield data
           jmp BS_return
 
-.pend
+.bend
 

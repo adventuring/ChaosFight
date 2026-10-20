@@ -47,28 +47,24 @@ CheckPlayfieldCollisionAllDirections:
 
           ;; temp2 = playerX[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerX,x
           sta temp2
 
           ;; temp3 = playerY[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta temp3
 
           ;; temp4 = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta temp4
 
           ;; temp5 = CharacterHeights[temp4]
           lda temp4
-          asl
           tax
           lda CharacterHeights,x
           sta temp5
@@ -258,7 +254,6 @@ PFBlockUp .proc
 
           ;; if playerCharacter[currentPlayer] = CharacterRadishGoblin then jmp PFBlockUpClamp
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterRadishGoblin
@@ -266,7 +261,6 @@ PFBlockUp .proc
 
           ;; if playerVelocityY[currentPlayer] & $80 then playerVelocityY[currentPlayer] = 0 : playerVelocityYL[currentPlayer] = 0
           lda currentPlayer
-          asl
           tax
           lda playerVelocityY,x
           and #$80
@@ -274,7 +268,6 @@ PFBlockUp .proc
           lda # 0
           sta playerVelocityY,x
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
@@ -298,7 +291,6 @@ PFBlockUpClamp .proc
 
           ;; if playerY[currentPlayer] < rowYPosition then playerY[currentPlayer] = rowYPosition
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           cmp rowYPosition
@@ -309,7 +301,6 @@ ClampSubpixelY:
 
           ;; if playerY[currentPlayer] < rowYPosition then playerSubpixelY_W[currentPlayer] = rowYPosition
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           cmp rowYPosition
@@ -320,7 +311,6 @@ ClampSubpixelYL:
 
           ;; if playerY[currentPlayer] < rowYPosition then playerSubpixelY_WL[currentPlayer] = 0
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           cmp rowYPosition
@@ -337,7 +327,6 @@ PFBlockDown .proc
           ;; Returns: Far (return otherbank)
           ;; if playerCharacter[currentPlayer] = CharacterRadishGoblin then skip velocity zeroing
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterRadishGoblin
@@ -345,14 +334,12 @@ PFBlockDown .proc
 
           ;; if playerVelocityY[currentPlayer] > 0 then playerVelocityY[currentPlayer] = 0 : playerVelocityYL[currentPlayer] = 0
           lda currentPlayer
-          asl
           tax
           lda playerVelocityY,x
           bpl PFBlockDownDone
           lda # 0
           sta playerVelocityY,x
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
@@ -648,7 +635,6 @@ AfterCheckColumnSpan:
 
           ;; if playerCharacter[temp1] = CharacterRadishGoblin then jmp PHC_ClampOnly
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterRadishGoblin
@@ -662,7 +648,6 @@ CheckLeftVelocity:
 
           ;; if playerVelocityX[temp1] & $80 then playerVelocityX[temp1] = 0 : playerVelocityXL[temp1] = 0
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           and #$80
@@ -670,7 +655,6 @@ CheckLeftVelocity:
           lda # 0
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -691,14 +675,12 @@ PHC_CheckRightVelocity .proc
 
           ;; if playerVelocityX[temp1] > 0 then playerVelocityX[temp1] = 0 : playerVelocityXL[temp1] = 0
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           bpl PHC_ClampOnlyRight
           lda # 0
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -729,7 +711,6 @@ ClampLeftPositionSecond:
 
           ;; if playerX[temp1] < rowYPosition then playerX[temp1] = rowYPosition
           lda temp1
-          asl
           tax
           lda playerX,x
           cmp rowYPosition
@@ -740,7 +721,6 @@ ClampSubpixelXLeft:
 
           ;; if playerX[temp1] < rowYPosition then playerSubpixelX_W[temp1] = rowYPosition
           lda temp1
-          asl
           tax
           lda playerX,x
           cmp rowYPosition
@@ -751,7 +731,6 @@ ClampSubpixelXLLeft:
 
           ;; if playerX[temp1] < rowYPosition then playerSubpixelX_WL[temp1] = 0
           lda temp1
-          asl
           tax
           lda playerX,x
           cmp rowYPosition
@@ -781,7 +760,6 @@ PHC_ClampRight .proc
 
           ;; if playerX[temp1] > rowYPosition then playerX[temp1] = rowYPosition
           lda temp1
-          asl
           tax
           lda playerX,x
           sec
@@ -794,7 +772,6 @@ ClampSubpixelXRight:
 
           ;; if playerX[temp1] > rowYPosition then playerSubpixelX_W[temp1] = rowYPosition
           lda temp1
-          asl
           tax
           lda playerX,x
           sec
@@ -807,7 +784,6 @@ ClampSubpixelXLRight:
 
           ;; if playerX[temp1] > rowYPosition then playerSubpixelX_WL[temp1] = 0
           lda temp1
-          asl
           tax
           lda playerX,x
           sec
@@ -815,7 +791,6 @@ ClampSubpixelXLRight:
           bcc PHC_ClampRightDone
           beq PHC_ClampRightDone
           lda temp1
-          asl
           tax
           lda # 0
           sta playerSubpixelX_WL,x

@@ -1,8 +1,7 @@
 ;;; ChaosFight - Source/Routines/CharacterSelectEntry.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-
-CharacterSelectEntry .proc
+CharacterSelectEntry .block
           ;; Initializes character select screen sta
 
           ;; Notes: PlayerLockedHelpers.bas resides in Bank 6
@@ -30,25 +29,21 @@ CharacterSelectEntry .proc
           ;; Player 1: RandomCharacter (not locked)
           ;; Player 2: CPUCharacter (locked)
           lda # 0
-          asl
           tax
           lda # RandomCharacter
           sta playerCharacter,x
           ;; Player 3: NoCharacter (locked)
           lda # 1
-          asl
           tax
           lda # CPUCharacter
           sta playerCharacter,x
           ;; Player 4: NoCharacter (locked)
           lda # 2
-          asl
           tax
           lda # NoCharacter
           sta playerCharacter,x
           ;; Initialize playerLocked (bit-packed)
           lda # 3
-          asl
           tax
           lda # NoCharacter
           sta playerCharacter,x
@@ -173,20 +168,22 @@ CheckINPT3:
           ;; All checks passed - Quadtari detected
           ;; If !INPT3{7}, Quadtari absent
           bit INPT3
-          bmi SetQuadtariDetected
+          bmi CharacterSelectQuadtariPresent
           jmp CharacterSelectQuadtariAbsent
-SetQuadtariDetected:
+CharacterSelectQuadtariPresent:
           lda controllerStatus
           ora # SetQuadtariDetected
           sta controllerStatus
 
-.pend
+.bend
 
-CharacterSelectQuadtariAbsent .proc
+CharacterSelectQuadtariAbsent .block
           ;; Background: black (COLUBK starts black, no need to set)
 
           ;; Initialization complete - per-frame loop handled by CharacterSelectInputEntry
-          rts
+          ;; Far-call return: SetupCharacterSelect enters this routine with an
+          ;; encoded return address, so it must exit through BS_return.
+          jmp BS_return
 
-.pend
+.bend
 

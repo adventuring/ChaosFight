@@ -5,6 +5,52 @@
 ;;; Called from kernel vblank_bB_code hook via jsr
           ;; vblank_bB_code constant (defined after label) points to this subroutine
 
+          ;; VblankUCA_quadtariActive is temp5 (no separate storage needed)
+VblankUCA_quadtariActive = temp5
+
+
+UpdateJoystickState .proc
+          ;; Returns: Near (return thisbank)
+          ;; Samples SWCHA and the fire-button inputs into the joyNxxx SCRAM
+          ;; variables once per frame. The raw SWCHA and INPT4/INPT5 inputs are
+          ;; active-low, so invert them first; the resulting direction bit is
+          ;; set (nonzero) when pressed, matching batariBASIC joyNxxx semantics.
+          lda SWCHA
+          eor # $ff
+          tax
+          and # $80
+          sta joy0right_W
+          txa
+          and # $40
+          sta joy0left_W
+          txa
+          and # $20
+          sta joy0down_W
+          txa
+          and # $10
+          sta joy0up_W
+          txa
+          and # $08
+          sta joy1right_W
+          txa
+          and # $04
+          sta joy1left_W
+          txa
+          and # $02
+          sta joy1down_W
+          txa
+          and # $01
+          sta joy1up_W
+          lda INPT4
+          eor # $80
+          and # $80
+          sta joy0fire_W
+          lda INPT5
+          eor # $80
+          and # $80
+          sta joy1fire_W
+          rts
+.pend
 
 VblankHandlerDispatcher .proc
           ;; Vblank handler dispatcher - routes to mode-specific vblank handlers
@@ -21,6 +67,9 @@ VblankHandlerDispatcher .proc
           ;; VblankHandlerDispatcher is called with cross-bank call (pushes 4-byte encoded return)
           ;; Mode handlers return with return thisbank (pops 2 bytes from near call)
           ;; VblankHandlerDispatcher must return with return otherbank (pops 4 bytes from cross-bank call)
+
+          ;; Sample joystick state for every mode before dispatching
+          jsr UpdateJoystickState
 
           ;; Dispatch based on gameMode
           lda gameMode
@@ -72,7 +121,9 @@ CheckWinnerMode:
           ;; gameMode = 7 (ModeWinner)
           lda gameMode
           cmp # 7
-          bne VblankHandlerDone
+          beq WinnerModeAnnounce
+          jmp VblankHandlerDone
+WinnerModeAnnounce:
           jsr VblankModeWinnerAnnouncement
           ;; Fall through to VblankHandlerDone
 
@@ -236,7 +287,7 @@ VblankModeGameMain .proc
           ;; Returns: Near (return thisbank)
           ;; CRITICAL: Guard against being called when not in game mode
           lda gameMode
-          cmp ModeGame
+          cmp #ModeGame
           bne VblankModeGameMainDone
           jmp VblankModeGameMainContinue
 VblankModeGameMainDone:
@@ -260,7 +311,11 @@ VblankModeGameMainContinue
           ;; Constraints: Must be colocated with VblankModeGameMain
 
           ;; Check if game is paused - skip all movement/physics/animation if so
+          lda systemFlags
+          and # SystemFlagGameStatePaused
+          beq VblankGameMainNotPaused
           rts
+VblankGameMainNotPaused:
 
           ;; CRITICAL: Inlined UpdateCharacterAnimations to save 4 bytes on sta
 
@@ -274,8 +329,12 @@ VblankSharedUpdateCharacterAnimations
           ;; VblankModeArenaSelect, VblankModeGameMain, VblankModeWinnerAnnouncement
           ;; Saves 4 bytes on stack by avoiding cross-bank call to UpdateCharacterAnimations bank12
           ;; CRITICAL: Skip sprite loading in Publisher Prelude and Author Prelude modes (no characters)
-          rts
-          rts
+          lda gameMode
+          cmp # ModePublisherPrelude
+          beq VblankSharedUpdateCharacterAnimationsDone
+          lda gameMode
+          cmp # ModeAuthorPrelude
+          beq VblankSharedUpdateCharacterAnimationsDone
 
           ;; VblankUCA_quadtariActive uses temp5 directly (no dim needed)
           lda controllerStatus
@@ -285,13 +344,13 @@ VblankSharedUpdateCharacterAnimations
           lda # 3
           sta currentPlayer
 VUCA_Loop:
-          ;; if currentPlayer >= 2 && !VblankUCA_quadtariActive then jmp VblankAnimationNextPlayer
+          ;; if currentPlayer >= 2 && !VblankUCA_quadtariActive then jmp VblankUpdateSprite.VblankAnimationNextPlayer
           lda currentPlayer
           cmp # 3
           bcc CheckPlayerHealth
           lda VblankUCA_quadtariActive
           bne CheckPlayerHealth
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 CheckPlayerHealth:
 
           lda currentPlayer
@@ -299,49 +358,50 @@ CheckPlayerHealth:
           bcc UpdateAnimationCounter
           lda VblankUCA_quadtariActive
           bne UpdateAnimationCounter
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 UpdateAnimationCounter:
 
 
 
           ;; Skip if player is eliminated (health = 0)
-          ;; if playerHealth[currentPlayer] = 0 then jmp VblankAnimationNextPlayer
+          ;; if playerHealth[currentPlayer] = 0 then jmp VblankUpdateSprite.VblankAnimationNextPlayer
           lda currentPlayer
-          asl
           tax
           lda playerHealth,x
           bne AdvanceAnimationFrame
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 AdvanceAnimationFrame:
 
           ;; Increment this sprite 10fps animation counter (NOT global frame counter)
           ;; SCRAM read-modify-write: animationCounter_R → animationCounter_W
           ;; Set temp4 = animationCounter_R[currentPlayer] + 1
           lda currentPlayer
-          asl
           tax
           lda animationCounter_R,x
           sta temp4
           lda currentPlayer
-          asl
           tax
           lda temp4
           sta animationCounter_W,x
 
           ;; Check if time to advance animation frame (every AnimationFrameDelay frames)
-          ;; if temp4 < AnimationFrameDelay then jmp VblankDoneAdvanceInlined
+          ;; if temp4 < AnimationFrameDelay then jmp VblankAdvanceFrame.VblankDoneAdvanceInlined
           lda temp4
           cmp # AnimationFrameDelay
           bcs VblankAdvanceFrame
-          jmp VblankDoneAdvanceInlined
-VblankAdvanceFrame:
-          
+          jmp VblankAdvanceFrame.VblankDoneAdvanceInlined
+
+          ;; Return point for the prelude modes, which skip the animation loop.
+          ;; This label must live in this procedure's scope because the
+          ;; loop itself lives here even though its "next player" tail is in
+          ;; VblankUpdateSprite.
+VblankSharedUpdateCharacterAnimationsDone:
+          rts
 
 .pend
 
 VblankAdvanceFrame .proc
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta animationCounter_W,x
@@ -349,7 +409,6 @@ VblankAdvanceFrame .proc
           ;; SCRAM read-modify-write: currentAnimationFrame_R → currentAnimationFrame_W
           ;; Set temp4 = currentAnimationFrame_R[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda currentAnimationFrame_R,x
           sta temp4
@@ -359,7 +418,6 @@ VblankAdvanceFrame .proc
           adc # 1
           sta temp4
           lda currentPlayer
-          asl
           tax
           lda temp4
           sta currentAnimationFrame_W,x
@@ -368,17 +426,10 @@ VblankAdvanceFrame .proc
           ;; if temp4 >= FramesPerSequence then jmp VblankHandleFrame7Transition
           lda temp4
           cmp # FramesPerSequence
-
-          bcc VblankUpdateSprite
-
-          jmp VblankUpdateSprite
-
-          VblankUpdateSprite:
-
-          jmp VblankUpdateSprite
-
-VblankDoneAdvanceInlined
-          jmp VblankAnimationNextPlayer
+          bcc VblankDoneAdvanceInlined
+          jmp VblankHandleFrame7Transition
+VblankDoneAdvanceInlined:
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 
 VblankHandleFrame7Transition
           ;; Frame 7 completed, handle action-specific transitions
@@ -387,7 +438,6 @@ VblankHandleFrame7Transition
           ;; (was: cross-bank call to HandleAnimationTransition bank12)
           ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
@@ -403,7 +453,6 @@ TransitionToLoopAnimation:
 
 VblankTransitionLoopAnimation
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta currentAnimationFrame_W,x
@@ -427,7 +476,6 @@ VblankTransitionHandleJump
           ;; Stay on frame 7 until Y velocity goes negative
           ;; If 0 < playerVelocityY[currentPlayer], then VblankTransitionHandleJumpTransitionToFalling
           lda currentPlayer
-          asl
           tax
           lda playerVelocityY,x
           cmp # 1
@@ -456,7 +504,10 @@ VblankTransitionHandleFallBack
           ;; Check wall collision using pfread
           ;; Convert player X position to playfield column (0-31)
                     ;; Set temp5 = playerX[currentPlayer]
-                    lda currentPlayer          asl          tax          lda playerX,x          sta temp5
+                    lda currentPlayer
+                    tax
+                    lda playerX,x
+                    sta temp5
           ;; Set temp5 = temp5 - ScreenInsetX          lda temp5          sec          sbc # ScreenInsetX          sta temp5
           lda temp5
           sec
@@ -482,12 +533,10 @@ VblankTransitionHandleFallBack
           ;; Convert player Y position to playfield row (0-7)
           ;; Set temp6 = playerY[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta temp6
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta temp6
@@ -532,7 +581,7 @@ AfterPlayfieldReadVblank:
 
           lda temp3
           sta temp2
-          if temp1 then VblankTransitionHandleFallBackHitWall
+          ;; if temp1 then VblankTransitionHandleFallBackHitWall
           lda temp1
           beq TransitionToFallen
           jmp VblankTransitionHandleFallBackHitWall
@@ -570,20 +619,17 @@ VblankSetPlayerAnimationInlined
 
           ;; SCRAM write to currentAnimationSeq_W
           lda currentPlayer
-          asl
           tax
           lda temp2
           sta currentAnimationSeq_W,x
           ;; Start at first frame
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta currentAnimationFrame_W,x
           ;; SCRAM write to animationCounter_W
           ;; Reset animation counter
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta animationCounter_W,x
@@ -592,7 +638,10 @@ VblankSetPlayerAnimationInlined
           lda # 0
           sta temp2
                     ;; Set temp3 = currentAnimationSeq_R[currentPlayer]
-                    lda currentPlayer          asl          tax          lda currentAnimationSeq_R,x          sta temp3
+                    lda currentPlayer
+                    tax
+                    lda currentAnimationSeq_R,x
+                    sta temp3
           lda currentPlayer
           sta temp4
           ;; Fall through to VblankUpdateSprite which has inlined LoadPlayerSprite logic
@@ -600,12 +649,10 @@ VblankSetPlayerAnimationInlined
 VblankHandleAttackTransition
           ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
@@ -627,12 +674,10 @@ HandleWindupEnd:
 VblankHandleWindupEnd
           ;; Set temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta temp1
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta temp1
@@ -652,15 +697,9 @@ VblankHandleWindupEnd
           lda # 0
           sta temp1
 GetWindupNextActionCheck:
-
-          lda # 0
-
-          sta .GetWindupNextAction
-
 GetWindupNextAction:
           ;; Set temp2 = CharacterWindupNextAction[temp1]
           lda temp1
-          asl
           tax
           lda CharacterWindupNextAction,x
           sta temp2
@@ -678,7 +717,6 @@ SetWindupAnimation:
 VblankHandleExecuteEnd
           ;; Set temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta temp1
@@ -699,20 +737,15 @@ VblankHandleExecuteEnd
 GetExecuteNextActionCheck:
 
 
-          if temp1 >= 16 then let temp1 = 0
+          ;; if temp1 >= 16 then let temp1 = 0
           lda temp1
-          cmp # 17
-
-          bcc skip_6145
-
+          cmp # 16
+          bcc GetExecuteNextAction
           lda # 0
-
-          sta .skip_6145
-
+          sta temp1
 GetExecuteNextAction:
           ;; Set temp2 = CharacterExecuteNextAction[temp1]
           lda temp1
-          asl
           tax
           lda CharacterExecuteNextAction,x
           sta temp2
@@ -735,37 +768,31 @@ VblankHarpyExecute .proc
           lda currentPlayer
           sta temp1
           ;; Clear dive flag (bit 4 in characterStateFlags)
-          let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
+          ;; let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           and # 239
           sta C6E_stateFlags
           lda temp1
-          asl
           tax
           lda C6E_stateFlags
           sta characterStateFlags_W,x
           ;; Stop horizontal velocity (zero X velocity)
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
           ;; Apply upward wing flap momentum after swoop attack
           lda temp1
-          asl
           tax
           lda # 254
           sta playerVelocityY,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
@@ -774,7 +801,7 @@ VblankHarpyExecute .proc
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          jmp VblankSetPlayerAnimationInlined
+          jmp VblankAdvanceFrame.VblankSetPlayerAnimationInlined
 
 VblankHandleRecoveryEnd
           ;; All characters: Recovery → Idle
@@ -782,7 +809,7 @@ VblankHandleRecoveryEnd
           sta temp2
           ;; CRITICAL: Inlined SetPlayerAnimation to save 4 bytes on sta
 
-          jmp VblankSetPlayerAnimationInlined
+          jmp VblankAdvanceFrame.VblankSetPlayerAnimationInlined
 
 .pend
 
@@ -791,37 +818,36 @@ VblankUpdateSprite .proc
           ;; CRITICAL: Guard against calling bank 2 when no characters on screen
           ;; Set currentCharacter = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
           lda currentCharacter
           cmp # NoCharacter
           bne CheckCPUCharacter
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 CheckCPUCharacter:
 
           lda currentCharacter
           cmp # CPUCharacter
           bne CheckRandomCharacter
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 CheckRandomCharacter:
 
           lda currentCharacter
           cmp # RandomCharacter
           bne ValidateCharacterRange
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 ValidateCharacterRange:
 
           ;; CRITICAL: Validate character index is within valid range (0-MaxCharacter)
           ;; Uninitialized playerCharacter (0) is valid (Bernie), but values > MaxCharacter are invalid
-          ;; if currentCharacter > MaxCharacter then jmp VblankAnimationNextPlayer
+          ;; if currentCharacter > MaxCharacter then jmp VblankUpdateSprite.VblankAnimationNextPlayer
           lda currentCharacter
           sec
           sbc # MaxCharacter
           bcc LoadSpriteFrame
           beq LoadSpriteFrame
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 LoadSpriteFrame:
 
           lda currentCharacter
@@ -829,20 +855,21 @@ LoadSpriteFrame:
           sbc # MaxCharacter
           bcc DetermineSpriteBank
           beq DetermineSpriteBank
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 DetermineSpriteBank:
 
 
                     ;; Set temp2 = currentAnimationFrame_R[currentPlayer]
-                    lda currentPlayer          asl          tax          lda currentAnimationFrame_R,x          sta temp2
+                    lda currentPlayer
+                    tax
+                    lda currentAnimationFrame_R,x
+                    sta temp2
           ;; Set temp3 = currentAnimationSeq_R[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp3
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp3
@@ -929,7 +956,7 @@ VblankUpdateSpriteBank2Dispatch
 AfterSetPlayerCharacterArtBank2Vblank:
 
 
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 
 VblankUpdateSpriteBank3Dispatch
           ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc # 8          sta temp6
@@ -965,7 +992,7 @@ VblankUpdateSpriteBank3Dispatch
 AfterSetPlayerCharacterArtBank3Vblank:
 
 
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 
 VblankUpdateSpriteBank4Dispatch
           ;; Set temp6 = temp1 - 16          lda temp1          sec          sbc 16          sta temp6
@@ -1001,7 +1028,7 @@ VblankUpdateSpriteBank4Dispatch
 AfterSetPlayerCharacterArtBank4Vblank:
 
 
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 
 VblankUpdateSpriteBank5Dispatch
           ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc # 24          sta temp6
@@ -1037,12 +1064,19 @@ VblankUpdateSpriteBank5Dispatch
 AfterSetPlayerCharacterArtBank5Vblank:
 
 
-          jmp VblankAnimationNextPlayer
+          jmp VblankUpdateSprite.VblankAnimationNextPlayer
 
 VblankAnimationNextPlayer:
           ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
           dec currentPlayer
-          bpl VUCA_Loop
+          bmi VUCA_NextDone
+          jmp VblankModeGameMain.VUCA_Loop
+VUCA_NextDone:
+          ;; Tutorial: 64tass drops unreferenced .proc bodies, and a plain
+          ;; fallthrough into the next .proc would land in unrelated code,
+          ;; so chain explicitly.
+          jmp VblankGameModeCheck
+
 .pend
 
 VblankGameModeCheck .proc
@@ -1221,13 +1255,17 @@ AfterRadishGoblinCheckGroundBounce:
           jmp BS_jsr
 AfterRadishGoblinCheckWallBounce:
 
+          ;; End of the per-player movement chain: advance to the next
+          ;; player, then run the post-movement game logic.
+          jmp VblankGameMainQuadtariCheckDone
 
 .pend
 
 VblankGameMainQuadtariCheckDone .proc
           ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
           dec currentPlayer
-          bpl VPC_Loop
+          bpl VblankGameModeCheck.VPC_Loop
+          jmp VblankGameMainQuadtariSkip
 
 .pend
 
@@ -1322,7 +1360,6 @@ AfterUpdateAllMissiles:
           and # SystemFlagGameStateEnding
           beq VblankGameEndCheckDone
           jmp VblankCheckGameEndTransition
-VblankGameEndCheckDone:
 
 VblankCheckGameEndTransition
           ;; Check if game end timer should transition to winner screen
@@ -1330,8 +1367,7 @@ VblankCheckGameEndTransition
           ;; When timer reaches 0, transition to winner announcement
           lda gameEndTimer_R
           bne DecrementGameEndTimer
-          jsr VblankTransitionToWinner
-          jmp VblankGameEndCheckDone
+          jmp VblankTransitionToWinner
 DecrementGameEndTimer:
 
 
@@ -1433,8 +1469,18 @@ AfterCheckRoboTitoStretchMissileCollisions:
 AfterSetPlayerSprites:
 
 
-          ;; Health display is handled by UpdatePlayer12HealthBars and
-
+          ;; Display health information (in Bank 11)
+          lda # ((>(AfterDisplayHealthVblank-1)) & $0f) | $a0
+          pha
+          lda # <(AfterDisplayHealthVblank-1)
+          pha
+          lda # >(DisplayHealth-1)
+          pha
+          lda # <(DisplayHealth-1)
+          pha
+          ldx # 10
+          jmp BS_jsr
+AfterDisplayHealthVblank:
 
           ;; Update P1/P2 health bars using pfscore system
           ;; Cross-bank call to UpdatePlayer12HealthBars in bank 11

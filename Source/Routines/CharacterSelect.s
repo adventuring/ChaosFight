@@ -28,22 +28,18 @@ CharacterSelectEntry .proc
           ;; via goto)
           ;; Initialize character selections
           lda # 0
-          asl
           tax
           lda # CharacterBernie
           sta playerCharacter,x
           lda # 1
-          asl
           tax
           lda # CharacterBernie
           sta playerCharacter,x
           lda # 2
-          asl
           tax
           lda # CharacterBernie
           sta playerCharacter,x
           lda # 3
-          asl
           tax
           lda # CharacterBernie
           sta playerCharacter,x
@@ -202,18 +198,15 @@ SelectStickLeft .proc
           ;; Constraints: currentPlayer must be set by caller
           ;; let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
           lda currentPlayer
-          asl
           tax
           dec playerCharacter,x
 
           lda currentPlayer
-          asl
           tax
           dec playerCharacter,x
 
           ;; If playerCharacter[currentPlayer] > MaxCharacter, then set playerCharacter[currentPlayer] = MaxCharacter
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           cmp # MaxCharacter
@@ -259,12 +252,10 @@ SelectStickRight .proc
           ;; Constraints: currentPlayer must be set by caller
           ;; let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
           lda currentPlayer
-          asl
           tax
           inc playerCharacter,x
 
           lda currentPlayer
-          asl
           tax
           inc playerCharacter,x
 
@@ -586,18 +577,15 @@ CharacterSelectCompleted
 
                     let playerState[0] = playerState[0]
           lda # 0
-          asl
           tax
           lda playerState,x
           lda # 0
-          asl
           tax
           sta playerState,x | 1
 
 DoneCharacter1FacingSel
                     if playerCharacter[1] = NoCharacter then DoneCharacter2FacingSel
           lda # 1
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -607,18 +595,15 @@ SetPlayer2Facing:
 
                     let playerState[1] = playerState[1]
           lda # 1
-          asl
           tax
           lda playerState,x
           lda # 1
-          asl
           tax
           sta playerState,x | 1
 
 DoneCharacter2FacingSel
                     if playerCharacter[2] = NoCharacter then DoneCharacter3FacingSel
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -628,18 +613,15 @@ SetPlayer3Facing:
 
                     let playerState[2] = playerState[2]
           lda # 2
-          asl
           tax
           lda playerState,x
           lda # 2
-          asl
           tax
           sta playerState,x | 1
 
 DoneCharacter3FacingSel
                     if playerCharacter[3] = NoCharacter then DoneCharacter4FacingSel
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -649,11 +631,9 @@ SetPlayer4Facing:
 
                     let playerState[3] = playerState[3]
           lda # 3
-          asl
           tax
           lda playerState,x
           lda # 3
-          asl
           tax
           sta playerState,x | 1
 

@@ -2,11 +2,11 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-ArenaSelect1 .proc
+ArenaSelect1 .block
 
-.pend
+.bend
 
-ArenaSelect1Loop .proc
+ArenaSelect1Loop .block
           ;; Arena Select - Per-frame Loop
           ;; Returns: Far (return otherbank)
           ;; Handles the arena carousel (1-32 plus random) each frame.
@@ -79,10 +79,12 @@ AfterSelectUpdateAnimations:
 
           ;; Check Game Select switch - return to Character Select
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
-          lda switchselect
+          lda SWCHB
+          eor # SWCHBSelect
+          and # SWCHBSelect
           bne SkipReturnToCharacterSelect
 
-          jmp ReturnToCharacterSelect
+          jmp DisplayRandomArena.ReturnToCharacterSelect
 
 SkipReturnToCharacterSelect:
 
@@ -116,11 +118,11 @@ CheckQuadtariFire:
           lda controllerStatus
           and # SetQuadtariDetected
           beq CheckQuadtariFireHoldSkip
-          jmp CheckQuadtariFireHold
+          jmp DisplayRandomArena.CheckQuadtariFireHold
 CheckQuadtariFireHoldSkip:
           beq CheckFireHoldTimer
 
-          jmp CheckQuadtariFireHold
+          jmp DisplayRandomArena.CheckQuadtariFireHold
 
 CheckFireHoldTimer:
 
@@ -152,7 +154,7 @@ IncrementFireHold:
 
           bcc ArenaSelectNavigation
 
-          jmp ReturnToCharacterSelect
+          jmp DisplayRandomArena.ReturnToCharacterSelect
 
 ArenaSelectNavigation:
 
@@ -165,9 +167,9 @@ ArenaSelectNavigation:
 
 ArenaSelectDoneLeft:
 
-.pend
+.bend
 
-ArenaSelectLeft .proc
+ArenaSelectLeft .block
           ;; Decrement arena, wrap from 0 to RandomArena (255)
           lda selectedArena_R
           bne CheckRandomArenaLeft
@@ -191,11 +193,11 @@ DecrementArena:
           lda temp2
           sta selectedArena_W
 
-.pend
+.bend
 
-ArenaSelectLeftSound .proc
+ArenaSelectLeftSound .block
           ;; Play navigation sound
-          lda SoundMenuNavigate
+          lda #SoundMenuNavigate
           sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 14
           ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
@@ -225,9 +227,9 @@ AfterPlaySoundEffectLeft:
 
 ArenaSelectDoneLeftSecond:
 
-.pend
+.bend
 
-ArenaSelectRight .proc
+ArenaSelectRight .block
           ;; Increment arena, wrap from MaxArenaID to 0, then to
           ;; RandomArena
           lda selectedArena_R
@@ -258,11 +260,15 @@ IncrementArena:
           ;; Wrap from 255 to 0 if needed
           lda temp2
           sta selectedArena_W
-          if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0
+          cmp # (MaxArenaID + 1)
+          bcc ArenaRightWrapDone
+          lda # 0
+          sta selectedArena_W
+ArenaRightWrapDone
 
-.pend
+.bend
 
-ArenaSelectRightSound .proc
+ArenaSelectRightSound .block
           ;; Play navigation sound
           lda # SoundMenuNavigate
           sta temp1
@@ -355,9 +361,9 @@ FastBCDDone:
 
 SkipTens:
 
-.pend
+.bend
 
-DrawTensDigit .proc
+DrawTensDigit .block
           ;; Set P4 fixed position and color (arena digits)
           lda temp2
           sta temp1
@@ -365,7 +371,7 @@ DrawTensDigit .proc
           sta player4x
           lda # 20
           sta player4y
-          lda $0E(14)
+          lda # $0E
           sta colup4
           ;; Use player4 for tens digit
           lda # 4
@@ -391,9 +397,9 @@ DrawTensDigit .proc
 AfterSetGlyphTens:
 
 
-.pend
+.bend
 
-SkipTens .proc
+SkipTens .block
           ;; Draw ones digit (player5)
           lda temp4
           sta temp1
@@ -402,7 +408,7 @@ SkipTens .proc
           sta player5x
           lda # 20
           sta player5y
-          lda $0E(14)
+          lda # $0E
           sta colup5
           ;; Use player5 for ones digit
           lda # 5
@@ -427,11 +433,11 @@ SkipTens .proc
 AfterSetGlyphOnes:
 
 
-          jmp DisplayDone
+          jmp DisplayRandomArena.DisplayDone
 
-.pend
+.bend
 
-DisplayRandomArena .proc
+DisplayRandomArena .block
           ;; Display ?? for random arena
           ;; Use player4 and player5 for two question marks
           ;; Question mark is digit 10 (hex A) in font
@@ -501,17 +507,13 @@ AfterSetGlyphRandom2:
 
 DisplayDone
           ;; Handle fire button press (confirm selection, start game)
-          ;; if joy0fire then jmp ArenaSelectConfirm
           lda joy0fire
           beq ArenaSelectDoneConfirm
           jmp ArenaSelectConfirm
-ArenaSelectDoneConfirm:
-
-          jmp ArenaSelectDoneConfirm
 
 ArenaSelectConfirm
           ;; Play selection sound
-          lda SoundMenuSelect
+          lda #SoundMenuSelect
           sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 14
           ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
@@ -536,7 +538,7 @@ AfterPlaySoundEffectConfirm:
           ;; tail call
           jmp StartGame1
 
-ArenaSelectDoneConfirm
+ArenaSelectDoneConfirm:
           ;; Update sound effects (active sound effects need per-frame updates)
           ;; Cross-bank call to UpdateSoundEffect in bank 15
           ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
@@ -595,7 +597,7 @@ CheckQuadtariFireHoldDone:
           jmp BS_return
 
 ReturnToCharacterSelect
-          Return to Character Select screen
+          ;; Return to Character Select screen
           ;;
           ;; Input: None (called from ArenaSelect1)
           ;;
@@ -610,7 +612,7 @@ ReturnToCharacterSelect
           ;; Constraints: Must be colocated with ArenaSelect1
           lda # 0
           sta fireHoldTimer_W
-          lda ModeCharacterSelect
+          lda #ModeCharacterSelect
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 13
           ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
@@ -634,9 +636,9 @@ AfterChangeGameModeReturnToCharacterSelect:
 
           jmp BS_return
 
-.pend
+.bend
 
-StartGame1 .proc
+StartGame1 .block
           ;; Start game with selected arena
           ;;
           ;; Input: None (called from ArenaSelect1)
@@ -649,7 +651,7 @@ StartGame1 .proc
           ;; mode sta
 
           ;; Constraints: Must be colocated with ArenaSelect1
-          lda ModeGame
+          lda #ModeGame
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 13
           ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
@@ -675,9 +677,9 @@ AfterChangeGameModeStartGame:
           ;;
           ;; Character Display and Animation
 
-.pend
+.bend
 
-ArenaSelectDrawCharacters .proc
+ArenaSelectDrawCharacters .block
           ;; Draw all selected characters at their character select
           ;; positions
           ;;
@@ -716,7 +718,6 @@ ArenaSelectDrawCharacters .proc
 
           ;; if playerCharacter[0] = CPUCharacter then jmp ArenaSelectDoneDrawP0
           lda # 0
-          asl
           tax
           lda playerCharacter,x
           cmp # CPUCharacter
@@ -726,7 +727,6 @@ CheckRandomCharacterP0:
 
           ;; if playerCharacter[0] = RandomCharacter then jmp ArenaSelectDoneDrawP0
           lda # 0
-          asl
           tax
           lda playerCharacter,x
           cmp # RandomCharacter
@@ -744,10 +744,10 @@ DrawPlayer0Character:
           pha
           ;; STACK PICTURE: [SP+1: AfterPlayerPreviewSetPositionP0 hi (encoded)] [SP+0: AfterPlayerPreviewSetPositionP0 lo]
           ;; Target address: RAW (for RTS to jump to) - NOT encoded
-          lda # >(PlayerPreviewSetPosition-1)
+          lda # >(SelectRenderPlayerPreview.PlayerPreviewSetPosition-1)
           pha
           ;; STACK PICTURE: [SP+2: AfterPlayerPreviewSetPositionP0 hi (encoded)] [SP+1: AfterPlayerPreviewSetPositionP0 lo] [SP+0: PlayerPreviewSetPosition hi (raw)]
-          lda # <(PlayerPreviewSetPosition-1)
+          lda # <(SelectRenderPlayerPreview.PlayerPreviewSetPosition-1)
           pha
           ;; STACK PICTURE: [SP+3: AfterPlayerPreviewSetPositionP0 hi (encoded)] [SP+2: AfterPlayerPreviewSetPositionP0 lo] [SP+1: PlayerPreviewSetPosition hi (raw)] [SP+0: PlayerPreviewSetPosition lo]
           ldx # 5
@@ -793,7 +793,6 @@ ArenaSelectDoneDrawP0
 
           ;; if playerCharacter[1] = CPUCharacter then jmp ArenaSelectDoneDrawP1
           lda # 1
-          asl
           tax
           lda playerCharacter,x
           cmp # CPUCharacter
@@ -803,7 +802,6 @@ CheckRandomCharacterP1:
 
           ;; if playerCharacter[1] = RandomCharacter then jmp ArenaSelectDoneDrawP1
           lda # 1
-          asl
           tax
           lda playerCharacter,x
           cmp # RandomCharacter
@@ -821,10 +819,10 @@ DrawPlayer1Character:
           pha
           ;; STACK PICTURE: [SP+1: AfterPlayerPreviewSetPositionP1 hi (encoded)] [SP+0: AfterPlayerPreviewSetPositionP1 lo]
           ;; Target address: RAW (for RTS to jump to) - NOT encoded
-          lda # >(PlayerPreviewSetPosition-1)
+          lda # >(SelectRenderPlayerPreview.PlayerPreviewSetPosition-1)
           pha
           ;; STACK PICTURE: [SP+2: AfterPlayerPreviewSetPositionP1 hi (encoded)] [SP+1: AfterPlayerPreviewSetPositionP1 lo] [SP+0: PlayerPreviewSetPosition hi (raw)]
-          lda # <(PlayerPreviewSetPosition-1)
+          lda # <(SelectRenderPlayerPreview.PlayerPreviewSetPosition-1)
           pha
           ;; STACK PICTURE: [SP+3: AfterPlayerPreviewSetPositionP1 hi (encoded)] [SP+2: AfterPlayerPreviewSetPositionP1 lo] [SP+1: PlayerPreviewSetPosition hi (raw)] [SP+0: PlayerPreviewSetPosition lo]
           ldx # 5
@@ -892,7 +890,6 @@ AfterSelectHideLowerPlayerPreviews:
 
           ;; if playerCharacter[2] = CPUCharacter then jmp ArenaSelectDoneDrawP2
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # CPUCharacter
@@ -902,7 +899,6 @@ CheckRandomCharacterP2:
 
           ;; if playerCharacter[2] = RandomCharacter then jmp ArenaSelectDoneDrawP2
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # RandomCharacter
@@ -920,10 +916,10 @@ DrawPlayer2Character:
           pha
           ;; STACK PICTURE: [SP+1: AfterPlayerPreviewSetPositionP2 hi (encoded)] [SP+0: AfterPlayerPreviewSetPositionP2 lo]
           ;; Target address: RAW (for RTS to jump to) - NOT encoded
-          lda # >(PlayerPreviewSetPosition-1)
+          lda # >(SelectRenderPlayerPreview.PlayerPreviewSetPosition-1)
           pha
           ;; STACK PICTURE: [SP+2: AfterPlayerPreviewSetPositionP2 hi (encoded)] [SP+1: AfterPlayerPreviewSetPositionP2 lo] [SP+0: PlayerPreviewSetPosition hi (raw)]
-          lda # <(PlayerPreviewSetPosition-1)
+          lda # <(SelectRenderPlayerPreview.PlayerPreviewSetPosition-1)
           pha
           ;; STACK PICTURE: [SP+3: AfterPlayerPreviewSetPositionP2 hi (encoded)] [SP+2: AfterPlayerPreviewSetPositionP2 lo] [SP+1: PlayerPreviewSetPosition hi (raw)] [SP+0: PlayerPreviewSetPosition lo]
           ldx # 5
@@ -979,7 +975,6 @@ CheckPlayer3Character:
 
           ;; if playerCharacter[3] = CPUCharacter then jmp ArenaSelectDoneDrawP23
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # CPUCharacter
@@ -989,7 +984,6 @@ CheckRandomCharacterP3:
 
           ;; if playerCharacter[3] = RandomCharacter then jmp ArenaSelectDoneDrawP23
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # RandomCharacter
@@ -1007,10 +1001,10 @@ DrawPlayer3Character:
           pha
           ;; STACK PICTURE: [SP+1: AfterPlayerPreviewSetPositionP3 hi (encoded)] [SP+0: AfterPlayerPreviewSetPositionP3 lo]
           ;; Target address: RAW (for RTS to jump to) - NOT encoded
-          lda # >(PlayerPreviewSetPosition-1)
+          lda # >(SelectRenderPlayerPreview.PlayerPreviewSetPosition-1)
           pha
           ;; STACK PICTURE: [SP+2: AfterPlayerPreviewSetPositionP3 hi (encoded)] [SP+1: AfterPlayerPreviewSetPositionP3 lo] [SP+0: PlayerPreviewSetPosition hi (raw)]
-          lda # <(PlayerPreviewSetPosition-1)
+          lda # <(SelectRenderPlayerPreview.PlayerPreviewSetPosition-1)
           pha
           ;; STACK PICTURE: [SP+3: AfterPlayerPreviewSetPositionP3 hi (encoded)] [SP+2: AfterPlayerPreviewSetPositionP3 lo] [SP+1: PlayerPreviewSetPosition hi (raw)] [SP+0: PlayerPreviewSetPosition lo]
           ldx # 5
@@ -1043,5 +1037,5 @@ ArenaSelectDoneDrawP23
           ;; not selected)
           jmp BS_return
 
-.pend
+.bend
 

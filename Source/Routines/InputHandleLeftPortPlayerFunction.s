@@ -14,7 +14,6 @@ InputHandleLeftPortPlayerFunction:
           ;; block movement during attack animations (states 13-15)
           ;; Set temp2 = playerState[temp1] / 16
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -35,7 +34,6 @@ CheckGuardStatus:
           ;; for horizontal movement
           ;; Set temp5 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp5

@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-StandardGuard .proc
+StandardGuard .block
           ;; Standard guard behavior
           ;;
           ;; INPUT: temp1 = player index
@@ -38,7 +38,6 @@ StandardGuard .proc
           ;; Harpy (6): DOWN = fly down (reduced gravity)
           ;; Set temp4 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -78,7 +77,6 @@ ActivateGuard:
           ;; Set guard bit in playerState
           ;; Set playerState[temp1] = playerState[temp1] | 2
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 2
@@ -86,12 +84,11 @@ ActivateGuard:
 
           ;; Set guard duration timer
           lda temp1
-          asl
           tax
           lda # GuardTimerMaxFrames
           sta playerTimers_W,x
 
           jmp BS_return
 
-.pend
+.bend
 

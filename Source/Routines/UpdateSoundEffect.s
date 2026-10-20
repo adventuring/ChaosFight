@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-UpdateSoundEffect .proc
+UpdateSoundEffect .block
           ;; UpdateSoundEffect - Update sound effect playback each
           ;; Returns: Far (return otherbank)
           ;; frame
@@ -70,5 +70,5 @@ AfterUpdateSoundEffectVoice1:
 
           jmp BS_return
 
-.pend
+.bend
 

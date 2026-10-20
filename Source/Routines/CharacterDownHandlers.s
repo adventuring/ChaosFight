@@ -1,5 +1,8 @@
 ;;; DOWN BUTTON HANDLERS (Called via on jmp from PlayerInput)
 
+          ;; HSD_stateFlags is temp5 (no separate storage needed)
+HSD_stateFlags = temp5
+
 DragonOfStormsDown:
           ;; Returns: Far (return otherbank)
           ;; DRAGON OF STORMS (2) - FLY DOWN (no guard action)
@@ -49,7 +52,6 @@ DragonOfStormsDown:
 
           ;; Set temp2 = playerX[temp1]
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -93,7 +95,6 @@ CheckRowBelow:
 
           ;; Set temp3 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp3
@@ -169,7 +170,6 @@ BlockedCannotMoveDownStandard:
           ;; Clear below - apply downward velocity impulse
 
           lda temp1
-          asl
           tax
           lda # 2
           sta playerVelocityY,x
@@ -177,7 +177,6 @@ BlockedCannotMoveDownStandard:
           ;; +2 pixels/frame downward
 
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
@@ -185,7 +184,6 @@ BlockedCannotMoveDownStandard:
           ;; Ensure guard bit clear
           ;; let playerState[temp1] = playerState[temp1] & !2
           lda temp1
-          asl
           tax
           lda playerState,x
           and # $FD
@@ -253,7 +251,6 @@ HarpyDown .proc
           ;; Check if Harpy is airborne and set dive mode
           ;; If (playerState[temp1] & 4), then HarpySetDive
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 4
@@ -265,7 +262,6 @@ CheckHarpyYPosition:
 
           ;; Set temp2 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp2
@@ -312,19 +308,16 @@ HarpySetDive .proc
           ;; Fix RMW: Read from _R, modify, write to _W
           ;; Set HSD_stateFlags = characterStateFlags_R[temp1] | 4
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           ora # 4
           sta HSD_stateFlags
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           sta HSD_stateFlags
 
           lda temp1
-          asl
           tax
           lda HSD_stateFlags
           sta characterStateFlags_W,x
@@ -368,7 +361,6 @@ HarpyNormalDown .proc
 
           ;; Set temp2 = playerX[temp1]
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -412,7 +404,6 @@ CheckRowBelowHarpy:
 
           ;; Set temp3 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp3
@@ -486,7 +477,6 @@ AfterPlayfieldReadHarpy:
           ;; Clear below - apply downward velocity impulse
 
           lda temp1
-          asl
           tax
           lda # 2
           sta playerVelocityY,x
@@ -494,7 +484,6 @@ AfterPlayfieldReadHarpy:
           ;; +2 pixels/frame downward
 
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
@@ -503,7 +492,6 @@ AfterPlayfieldReadHarpy:
 
           ;; let playerState[temp1] = playerState[temp1] & !2
           lda temp1
-          asl
           tax
           lda playerState,x
           and # $FD
@@ -570,7 +558,6 @@ FrootyDown .proc
 
           ;; Set temp2 = playerX[temp1]
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -615,7 +602,6 @@ CheckRowBelowFrooty:
 
           ;; Set temp3 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp3
@@ -687,7 +673,6 @@ BlockedCannotMoveDown:
           ;; Clear below - apply downward velocity impulse
 
           lda temp1
-          asl
           tax
           lda # 2
           sta playerVelocityY,x
@@ -695,7 +680,6 @@ BlockedCannotMoveDown:
           ;; +2 pixels/frame downward
 
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
@@ -703,7 +687,6 @@ BlockedCannotMoveDown:
           ;; Ensure guard bit clear
           ;; let playerState[temp1] = playerState[temp1] & !2
           lda temp1
-          asl
           tax
           lda playerState,x
           and # $FD
@@ -732,14 +715,16 @@ RoboTitoDown .proc
 
           ;; Calls: StandardGuard if not latched via dispatcher helper
 
-          If latched, drop; else guard
+          ;; If latched, drop; else guard
 
           lda # 0
           sta temp2
 
           ;; Not latched, dispatcher will fall through to StandardGuard
 
-          lda characterStateFlags_R[temp1]
+          lda temp1
+          tax
+          lda characterStateFlags_R,x
           and # 1
           bne RoboTitoInitiateDrop
 RoboTitoInitiateDrop:
@@ -771,7 +756,6 @@ RoboTitoVoluntaryDrop .proc
           ;; Fix RMW: Read from _R, modify, write to _W
           ;; Set characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & ($ff ^ PlayerStateBitFacing)
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           and # ($ff ^ PlayerStateBitFacing)
@@ -781,17 +765,15 @@ RoboTitoVoluntaryDrop .proc
 
           ;; Set playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
           lda temp1
-          asl
           tax
           lda playerState,x
           and # MaskPlayerStateFlags
           ora # ActionFallingShifted
           sta playerState,x
           lda temp1
-          asl
           tax
           lda playerState,x
-          and MaskPlayerStateFlags
+          and #MaskPlayerStateFlags
           ora # ActionFallingShifted
           sta playerState,x
 
@@ -799,7 +781,6 @@ RoboTitoVoluntaryDrop .proc
 
           ;; Clear stretch missile height when dropping
           lda temp1
-          asl
           tax
           lda # 0
           sta missileStretchHeight_W,x
@@ -816,7 +797,6 @@ RoboTitoVoluntaryDrop .proc
           ;; rigid body)
 
           lda temp1
-          asl
           tax
           lda # 246
           sta playerVelocityY,x
@@ -824,7 +804,6 @@ RoboTitoVoluntaryDrop .proc
           ;; -10 in 8-bit two’s complement: 256 - 10 = 246
 
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
@@ -833,7 +812,6 @@ RoboTitoVoluntaryDrop .proc
 
           ;; let playerState[temp1] = playerState[temp1] | 4
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 4

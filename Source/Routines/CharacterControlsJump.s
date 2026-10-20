@@ -16,29 +16,24 @@ StandardJump .proc
           ;; Output: Upward velocity applied, jumping flag set
           ;; Set temp2 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp2
           ;; Set temp2 = CharacterJumpVelocities[temp2]
           lda temp2
-          asl
           tax
           lda CharacterJumpVelocities,x
           sta temp2
           lda temp1
-          asl
           tax
           lda temp2
           sta playerVelocityY,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
           ;; let playerState[temp1] = playerState[temp1] | 4
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 4
@@ -58,7 +53,6 @@ BernieJump .proc
           ;; Inlined CCJ_ConvertPlayerXToPlayfieldColumn (FIXME #1250)
           ;; Convert player X to playfield column: (playerX[temp1] - ScreenInsetX) / 4
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -74,7 +68,6 @@ BernieJump .proc
 
           ;; Set temp3 = playerY[temp1]         
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp3
@@ -166,12 +159,10 @@ BernieCheckBottomWrapSecond:
 
           ;; let playerY[temp1] = playerY[temp1] + 1
           lda temp1
-          asl
           tax
           inc playerY,x
 
           lda temp1
-          asl
           tax
           inc playerY,x
 
@@ -223,7 +214,6 @@ BernieCheckBottomWrapFreeFlight1:
           jmp BS_return
 
           lda temp1
-          asl
           tax
           lda # 0
           sta playerY,x
@@ -239,7 +229,6 @@ FreeFlightUp .proc
           ;; Mutates: temp3-temp6, playerVelocityY[], playerVelocityYL[], playerState[]
           ;; Set temp3 = playerY[temp1]         
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp3
@@ -287,18 +276,15 @@ BernieCheckBottomWrapFreeFlight2:
           lda temp6
           sta temp1
           lda temp1
-          asl
           tax
           lda # 254
           sta playerVelocityY,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
           ;; let playerState[temp1] = playerState[temp1] | 4
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 4
@@ -346,24 +332,20 @@ CheckCooldownExpired:
 
           ;; If playerY[temp1] <= 5, then jmp HarpyFlapRecord
           lda temp1
-          asl
           tax
           lda # 254
           sta playerVelocityY,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
           ;; let playerState[temp1] = playerState[temp1] | 4
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 4
           sta playerState,x
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           ora # 2                    ; Set bit 1
@@ -375,7 +357,6 @@ HarpyFlapRecord .proc
           ;; Returns: Far (return otherbank)
           ;; If characterSpecialAbility_R[temp1] > 0, then set characterSpecialAbility_W[temp1] = characterSpecialAbility_R[temp1] - 1
           lda temp1
-          asl
           tax
           lda characterSpecialAbility_R,x
           beq HarpyFlapRecordDone
@@ -385,7 +366,6 @@ HarpyFlapRecord .proc
           sta characterSpecialAbility_W,x
 HarpyFlapRecordDone:
           lda temp1
-          asl
           tax
           lda frame
           sta harpyLastFlapFrame_W,x
@@ -404,7 +384,6 @@ FreeFlightCharacterJump .proc
           ;; Inlined ConvertPlayerXToPlayfieldColumn (FIXME #1250)
           ;; Convert player X to playfield column: (playerX[temp1] - ScreenInsetX) / 4
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2

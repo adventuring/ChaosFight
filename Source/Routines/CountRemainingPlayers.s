@@ -15,7 +15,6 @@ CountRemainingPlayers:
           ;; Check each player
           ;; If playerHealth[0] > 0, increment temp1
           lda # 0
-          asl
           tax
           lda playerHealth,x
           beq SkipIncrementPlayer0
@@ -26,7 +25,6 @@ CountRemainingPlayers:
 SkipIncrementPlayer0:
           ;; If playerHealth[1] > 0, increment temp1
           lda # 1
-          asl
           tax
           lda playerHealth,x
           beq SkipIncrementPlayer1
@@ -40,7 +38,6 @@ SkipIncrementPlayer1:
 
           ;; If playerHealth[2] > 0, increment temp1
           lda # 2
-          asl
           tax
           lda playerHealth,x
           beq SkipIncrementPlayer2
@@ -54,7 +51,6 @@ SkipIncrementPlayer2:
 
           ;; If playerHealth[3] > 0, increment temp1
           lda # 3
-          asl
           tax
           lda playerHealth,x
           beq SkipIncrementPlayer3

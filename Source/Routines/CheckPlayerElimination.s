@@ -50,7 +50,6 @@ CheckPlayerElimination:
           ;; Check if health has reached 0
           ;; Set temp2 = playerHealth[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerHealth,x
           sta temp2
@@ -99,7 +98,6 @@ UpdatePlayers34Done:
           lda temp2
           sta eliminationCounter_W
           lda currentPlayer
-          asl
           tax
           lda temp2
           sta eliminationOrder_W,x

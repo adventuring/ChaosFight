@@ -100,7 +100,7 @@ CheckFrooty:
           ;; Frooty: charge-and-bounce lollipop projectile (Issue #1177)
 
           lda temp4
-          cmp CharacterFrooty
+          cmp #CharacterFrooty
           bne CheckNefertem
           jmp FrootyAttack
 CheckNefertem:
@@ -127,7 +127,7 @@ CheckPorkChop:
           ;; Pork Chop: mêlée
 
           lda temp4
-          cmp CharacterPorkChop
+          cmp #CharacterPorkChop
           bne CheckRadishGoblin
           jmp PerformGenericAttack
 CheckRadishGoblin:
@@ -145,7 +145,7 @@ CheckRoboTito:
           ;; Robo Tito: mêlée trunk slam
 
           lda temp4
-          cmp CharacterRoboTito
+          cmp #CharacterRoboTito
           bne CheckUrsulo
           jmp PerformGenericAttack
 CheckUrsulo:
@@ -154,7 +154,7 @@ CheckUrsulo:
           ;; Ursulo: claw swipe with mêlée tables
 
           lda temp4
-          cmp CharacterUrsulo
+          cmp #CharacterUrsulo
           bne CheckShamone
           jmp UrsuloAttack
 CheckShamone:
@@ -163,7 +163,7 @@ CheckShamone:
           ;; Shamone: jump + mêlée special
 
           lda temp4
-          cmp CharacterShamone
+          cmp #CharacterShamone
           bne CheckMethHound
           jmp ShamoneAttack
 CheckMethHound:
@@ -179,7 +179,7 @@ CheckMethHound:
 
           ;; MethHound uses ShamoneAttack handler
           lda temp4
-          cmp CharacterMethHound
+          cmp #CharacterMethHound
           bne DispatchCharacterAttackDone
           jmp ShamoneAttack
 DispatchCharacterAttackDone:

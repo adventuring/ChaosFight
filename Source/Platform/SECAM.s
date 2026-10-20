@@ -4,6 +4,7 @@
 ;;; See LICENSE file for full terms
 
 TVStandard = 2  ;;; SECAM
+FrameRate = 50  ;;; SECAM refresh rate
 
 ;; CRITICAL: Preamble.s is now included at the top of Banks.s
 ;; Do NOT include it here to prevent duplicate definitions

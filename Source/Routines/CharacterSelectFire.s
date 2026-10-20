@@ -5,7 +5,7 @@
 
 
 
-HandleCharacterSelectFire .proc
+HandleCharacterSelectFire .block
 
 
 
@@ -67,14 +67,13 @@ CheckPlayer2Joy:
           jmp HCSF_CheckJoy0
 CheckJoy1:
 
-
-          jmp BS_return
-
           lda # 1
           sta temp2
 
           ;; If joy1down, set temp4 = 1 and jmp HCSF_HandleFire
-          lda joy1down
+          lda SWCHA
+          eor # $ff
+          and # (1 << SWCHA_BitP1Down)
           beq SetNormalLock
 
           lda # 1
@@ -87,9 +86,9 @@ SetNormalLock:
 
           jmp HCSF_HandleFire
 
-.pend
+.bend
 
-HCSF_CheckJoy0 .proc
+HCSF_CheckJoy0 .block
           ;; Check joy0 for players 0,2
           ;; Returns: Far (return otherbank)
 
@@ -121,7 +120,9 @@ HCSF_CheckJoy0 .proc
           sta temp2
 
           ;; If joy0down, set temp4 = 1 and jmp HCSF_HandleFire
-          lda joy0down
+          lda SWCHA
+          eor # $ff
+          and # (1 << SWCHA_BitP0Down)
           beq SetNormalLockJoy0
 
           lda # 1
@@ -136,9 +137,9 @@ SetNormalLockJoy0:
           lda # 0
           sta temp4
 
-.pend
+.bend
 
-HCSF_HandleFire .proc
+HCSF_HandleFire .block
 
           ;; Handle fire button press
           ;; Returns: Far (return otherbank)
@@ -179,6 +180,13 @@ HCSF_HandleFire .proc
           ;; If playerCharacter[temp1] = RandomCharacter then jmp HCSF_HandleRandom
 
           ;; If temp4, then HCSF_HandleHandicap
+          lda temp1
+          tax
+          lda playerCharacter,x
+          cmp # RandomCharacter
+          bne HCSF_CheckHandicapFlag
+          jmp HCSF_HandleRandom
+HCSF_CheckHandicapFlag:
           lda temp4
           beq SetNormalLockHandleFire
           jmp HCSF_HandleHandicap
@@ -191,7 +199,7 @@ SetNormalLockHandleFire:
           lda temp3
           sta temp1
 
-          lda PlayerLockedNormal
+          lda #PlayerLockedNormal
           sta temp2
 
           ;; Cross-bank call to SetPlayerLocked in bank 5
@@ -216,7 +224,7 @@ AfterSetPlayerLockedNormal:
 
           ;; Play selection sound
 
-          lda SoundMenuSelect
+          lda #SoundMenuSelect
           sta temp1
 
           ;; Cross-bank call to PlaySoundEffect in bank 14
@@ -241,9 +249,9 @@ AfterPlaySoundEffectNormal:
 
           jmp BS_return
 
-.pend
+.bend
 
-HCSF_HandleHandicap .proc
+HCSF_HandleHandicap .block
 
           ;; Handle handicap mode selection (75% health)
           ;; Returns: Far (return otherbank)
@@ -270,7 +278,7 @@ HCSF_HandleHandicap .proc
           lda temp3
           sta temp1
 
-          lda PlayerHandicapped
+          lda #PlayerHandicapped
           sta temp2
 
           ;; Cross-bank call to SetPlayerLocked in bank 5
@@ -295,7 +303,7 @@ AfterSetPlayerLockedHandicap:
 
           ;; Play selection sound
 
-          lda SoundMenuSelect
+          lda #SoundMenuSelect
           sta temp1
 
           ;; Cross-bank call to PlaySoundEffect in bank 14
@@ -320,9 +328,9 @@ AfterPlaySoundEffectHandicap:
 
           jmp BS_return
 
-.pend
+.bend
 
-HCSF_HandleRandom .proc
+HCSF_HandleRandom .block
 
           ;; Handle random character selection
           ;; Returns: Far (return otherbank)
@@ -344,7 +352,7 @@ HCSF_HandleRandom .proc
           ;;
           ;; Mutates: randomSelectFlags[temp1] (set to $80
 
-          if handicap, 0 otherwise)
+          ;; if handicap, 0 otherwise)
 
           ;;
           ;; Called Routines: PlaySoundEffect (bank15)
@@ -361,28 +369,26 @@ HCSF_HandleRandom .proc
           ;; Store handicap flag if down was held
           ;; If temp4, set randomSelectFlags_W[temp1] = TRUE and jmp HCSF_HandleRandomSound
           lda temp4
-          beq HCSF_HandleRandomSound
+          beq HCSF_HandleRandomZero
           lda temp1
-          asl
           tax
           lda # TRUE
           sta randomSelectFlags_W,x
-HCSF_HandleRandomSound:
           jmp HCSF_HandleRandomSound
+HCSF_HandleRandomZero:
           lda temp1
-          asl
           tax
           lda # 0
           sta randomSelectFlags_W,x
 
-.pend
+.bend
 
-HCSF_HandleRandomSound .proc
+HCSF_HandleRandomSound .block
 
           ;; Play selection sound
           ;; Returns: Far (return otherbank)
 
-          lda SoundMenuSelect
+          lda #SoundMenuSelect
           sta temp1
 
           ;; Fall through - character will stay as RandomCharacter
@@ -411,5 +417,5 @@ AfterPlaySoundEffectRandom:
 
           jmp BS_return
 
-.pend
+.bend
 

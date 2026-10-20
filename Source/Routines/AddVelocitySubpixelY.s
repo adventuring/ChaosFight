@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-AddVelocitySubpixelY .proc
+AddVelocitySubpixelY .block
           ;; Add fractional gravity to Y velocity (subpixel component).
           ;; Input: temp1 = player index (0-3), temp2 = subpixel amount (0-255)
           ;; Output: playerVelocityYL[] incremented; playerVelocityY[] increments on carry
@@ -15,7 +15,6 @@ AddVelocitySubpixelY .proc
           ;; Use saved amount in accumulator
           ;; Set subpixelAccumulator = playerVelocityYL[temp1] + temp4
           lda temp1
-          asl
           tax
           lda playerVelocityYL,x
           clc
@@ -27,7 +26,6 @@ AddVelocitySubpixelY .proc
           bcc NoCarryToInteger
           ;; Carry occurred - increment integer component
           lda temp1
-          asl
           tax
           lda playerVelocityY,x
           clc
@@ -36,15 +34,14 @@ AddVelocitySubpixelY .proc
 NoCarryToInteger:
 
           lda temp1
-          asl
           tax
           lda temp2
           sta playerVelocityYL,x
           rts
 
-.pend
+.bend
 
-VelocityYCarry .proc
+VelocityYCarry .block
           ;; Helper: Handles carry from subpixel to integer part
           ;;
           ;; Input: temp2 = wrapped low byte, temp1 = player
@@ -62,16 +59,14 @@ VelocityYCarry .proc
           ;; only called when carry detected
           ;; Carry detected: temp3 > 0, extract wrapped low byte
           lda temp1
-          asl
           tax
           lda temp2
           sta playerVelocityYL,x
           ;; Set playerVelocityY[temp1] = playerVelocityY[temp1] + 1
           lda temp1
-          asl
           tax
           inc playerVelocityY,x
           rts
 
-.pend
+.bend
 

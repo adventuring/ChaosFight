@@ -134,7 +134,6 @@ GetEliminationOrder:
           ;; Get this player’s elimination order (SCRAM read)
           ;; Set winScreenCandidateOrder = eliminationOrder_R[temp1]
           lda temp1
-          asl
           tax
           lda eliminationOrder_R,x
           sta winScreenCandidateOrder
@@ -303,19 +302,16 @@ Position1PlayerWinScreen .proc
           ;; character sprite
           ;; Constraints: Must be colocated with DisplayWinScreen
           lda # 0
-          asl
           tax
           lda # 80
           sta playerX,x
           lda # 0
-          asl
           tax
           lda # 192
           sta playerY,x
           ;; Load winner sprite
           ;; Set currentCharacter = playerCharacter[temp2]
           lda temp2
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
@@ -352,18 +348,15 @@ Position2PlayersWinScreen:
           ;; DWS_Hide2Player, DWS_Hide2PlayerDone
           ;; Winner (P0)
           lda # 0
-          asl
           tax
           lda # 80
           sta playerX,x
           lda # 0
-          asl
           tax
           lda # 192
           sta playerY,x
           ;; Set currentCharacter = playerCharacter[temp2]
           lda temp2
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
@@ -380,18 +373,15 @@ PositionRunnerUp:
 
 
           lda # 1
-          asl
           tax
           lda # 40
           sta playerX,x
           lda # 1
-          asl
           tax
           lda # 192
           sta playerY,x
           ;; Set currentCharacter = playerCharacter[temp3]
           lda temp3
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
@@ -431,7 +421,6 @@ Hide2PlayerWinScreen:
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; Position2PlayersWinScreen:, Hide2PlayerWinScreenDone
           lda # 1
-          asl
           tax
           lda # 0
           sta playerX,x
@@ -461,19 +450,16 @@ Position3PlayersWinScreen:
           ;; Hide3Player3WinScreen, Hide3Player3WinScreenDone
           ;; Winner (P0) - higher platform
           lda # 0
-          asl
           tax
           lda # 80
           sta playerX,x
           ;; Row 16 = 128 pixels (16 × 8)
           lda # 0
-          asl
           tax
           lda # 128
           sta playerY,x
           ;; Set currentCharacter = playerCharacter[temp2]
           lda temp2
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
@@ -490,18 +476,15 @@ PositionSecondPlace:
 
 
           lda # 1
-          asl
           tax
           lda # 40
           sta playerX,x
           lda # 1
-          asl
           tax
           lda # 192
           sta playerY,x
           ;; Set currentCharacter = playerCharacter[temp3]
           lda temp3
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
@@ -526,7 +509,6 @@ Hide3Player2WinScreen:
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; Position3PlayersWinScreen:, Hide3Player2WinScreenDone
           lda # 1
-          asl
           tax
           lda # 0
           sta playerX,x
@@ -556,18 +538,15 @@ PositionThirdPlace:
 
 
           lda # 2
-          asl
           tax
           lda # 120
           sta playerX,x
           lda # 2
-          asl
           tax
           lda # 192
           sta playerY,x
           ;; Set currentCharacter = playerCharacter[temp4]
           lda temp4
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
@@ -592,7 +571,6 @@ Hide3Player3WinScreen:
           ;; Constraints: Must be colocated with DisplayWinScreen,
           ;; Position3PlayersWinScreen:, Hide3Player3WinScreenDone
           lda # 2
-          asl
           tax
           lda # 0
           sta playerX,x
@@ -614,7 +592,6 @@ Hide3Player3WinScreenDone:
           ;; Constraints: Must be colocated with DisplayWinScreen
           ;; Hide unused player
           lda # 3
-          asl
           tax
           lda # 0
           sta playerX,x
@@ -625,17 +602,14 @@ HidePlayers123WinScreen .proc
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from DisplayWinScreen, so use return thisbank
           lda # 1
-          asl
           tax
           lda # 0
           sta playerX,x
           lda # 2
-          asl
           tax
           lda # 0
           sta playerX,x
           lda # 3
-          asl
           tax
           lda # 0
           sta playerX,x

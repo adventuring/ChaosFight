@@ -48,14 +48,12 @@ SoundIDInRange:
 
           ;; Set soundEffectPointerH = SoundPointersH[temp1]
           lda temp1
-          asl
           tax
           lda SoundPointersH,x
           sta soundEffectPointerH
 
           ;; Set soundEffectPointer = SoundPointersL[temp1]
           lda temp1
-          asl
           tax
           lda SoundPointersL,x
           sta soundEffectPointer

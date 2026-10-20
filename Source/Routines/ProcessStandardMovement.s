@@ -40,20 +40,17 @@ PSM_ApplyLeftJoy1Label:
 PSM_ApplyLeftJoy1:
           ;; Check if playerCharacter[temp1] = CharacterFrooty
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterFrooty
           beq PSM_LeftMomentum1
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
@@ -66,12 +63,10 @@ PSM_ApplyLeftJoy1:
           sta temp2
 
           lda temp1
-          asl
           tax
           lda temp2
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -82,31 +77,26 @@ PSM_ApplyLeftJoy1:
 PSM_LeftMomentum1 .proc
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           sec
           sbc temp6
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -118,7 +108,6 @@ PSM_AfterLeftSet1 .proc
           ;; Returns: Far (return otherbank)
           ;; Check if (playerState[temp1] & 8) then PSM_InlineYesLeft
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 8
@@ -126,7 +115,6 @@ PSM_AfterLeftSet1 .proc
           jmp PSM_InlineYesLeft
           ;; Set temp2 = playerState[temp1] / 16
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -173,7 +161,6 @@ PSM_InlineDoneLeftCheck
 PSM_InlineDoneLeftApply:
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           lda temp1
-          asl
           tax
           lda playerState,x
           and # (255 - PlayerStateBitFacing)
@@ -187,30 +174,25 @@ PSM_CheckRightJoy1 .proc
           ;; Returns: Far (return otherbank)
           ;; Check if playerCharacter[temp1] = CharacterFrooty
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterFrooty
           beq PSM_RightMomentum1
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp1
-          asl
           tax
           lda temp6
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -221,31 +203,26 @@ PSM_CheckRightJoy1 .proc
 PSM_RightMomentum1 .proc
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           clc
           adc temp6
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -257,7 +234,6 @@ PSM_AfterRightSet1 .proc
           ;; Returns: Far (return otherbank)
           ;; Check if (playerState[temp1] & 8) then PSM_InlineYesRight1
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 8
@@ -265,7 +241,6 @@ PSM_AfterRightSet1 .proc
           jmp PSM_InlineYesRight1
           ;; Set temp2 = playerState[temp1] / 16
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -310,7 +285,6 @@ PSM_InlineDoneRight1Check
 PSM_InlineDoneRight1Apply:
           ;; Set playerState[temp1] = playerState[temp1] | 1
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 1
@@ -333,20 +307,17 @@ PSM_ApplyLeftJoy0:
 
           ;; Check if playerCharacter[temp1] = CharacterFrooty
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterFrooty
           beq PSM_LeftMomentum0
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
@@ -368,12 +339,10 @@ PSM_ApplyLeftJoy0:
           sta temp2
 
           lda temp1
-          asl
           tax
           lda temp2
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -384,31 +353,26 @@ PSM_ApplyLeftJoy0:
 PSM_LeftMomentum0 .proc
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           sec
           sbc temp6
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -420,7 +384,6 @@ PSM_AfterLeftSet0 .proc
           ;; Returns: Far (return otherbank)
           ;; Check if (playerState[temp1] & 8) then PSM_InlineYesLeft0
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 8
@@ -428,7 +391,6 @@ PSM_AfterLeftSet0 .proc
           jmp PSM_InlineYesLeft0
           ;; Set temp2 = playerState[temp1] / 16
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -473,7 +435,6 @@ PSM_InlineDoneLeft0Check
 PSM_InlineDoneLeft0Apply:
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           lda temp1
-          asl
           tax
           lda playerState,x
           and # (255 - PlayerStateBitFacing)
@@ -487,30 +448,25 @@ PSM_CheckRightJoy0 .proc
           ;; Returns: Far (return otherbank)
           ;; Check if playerCharacter[temp1] = CharacterFrooty
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterFrooty
           beq PSM_RightMomentum0
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp1
-          asl
           tax
           lda temp6
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -521,31 +477,26 @@ PSM_CheckRightJoy0 .proc
 PSM_RightMomentum0 .proc
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           clc
           adc temp6
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -557,7 +508,6 @@ PSM_AfterRightSet0 .proc
           ;; Returns: Far (return otherbank)
           ;; Check if (playerState[temp1] & 8) then PSM_InlineYesRight0
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 8
@@ -565,7 +515,6 @@ PSM_AfterRightSet0 .proc
           jmp PSM_InlineYesRight0
           ;; Set temp2 = playerState[temp1] / 16
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -610,7 +559,6 @@ PSM_InlineDoneRight0Check
 PSM_InlineDoneRight0Apply:
           ;; Set playerState[temp1] = playerState[temp1] | 1
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 1

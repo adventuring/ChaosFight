@@ -11,7 +11,6 @@ DeactivatePlayerMissiles .proc
           ;; Clear missile active bit for this player
           ;; Set missileActive = missileActive & PlayerANDMask[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda PlayerANDMask,x
           and missileActive

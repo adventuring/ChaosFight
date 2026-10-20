@@ -80,13 +80,9 @@ TitleScreenRandomizeNoEor:
           ;; Handle input - any button press goes to character select
           ;; Check standard controllers (Player 1 & 2)
           ;; Use skip-over pattern to avoid complex || operator issues
-          ;; If P0 fire button pressed, then TitleScreenComplete
-          lda P0Fire
-          bmi TitleScreenComplete
-CheckJoy1Fire:
-
-          ;; If P1 fire button pressed, then TitleScreenComplete
-          lda P1Fire
+          ;; Advance only on a *fresh* press (MainLoop sets newFirePress on
+          ;; the frame either fire button goes down).
+          lda fireEdgeState
           bmi TitleScreenComplete
 CheckQuadtariControllers:
           
@@ -174,7 +170,7 @@ TitleScreenComplete .proc
           ;; mode sta
 
           ;; Constraints: Must be colocated with TitleScreenMain
-          lda ModeCharacterSelect
+          lda #ModeCharacterSelect
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 13
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]

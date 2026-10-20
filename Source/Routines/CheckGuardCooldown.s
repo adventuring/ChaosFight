@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-CheckGuardCooldown .proc
+CheckGuardCooldown .block
           ;;
           ;; Returns: Far (return otherbank)
           ;; Check guard cooldown (1 second lockout after guard ends).
@@ -21,7 +21,6 @@ CheckGuardCooldown .proc
           ;; Check if player is currently guarding
           ;; Set temp3 = playerState[temp1] & 2
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp3
@@ -37,7 +36,6 @@ CheckCooldownTimer:
           ;; playerTimers stores frames remaining in cooldown
           ;; Set temp3 = playerTimers_R[temp1]
           lda temp1
-          asl
           tax
           lda playerTimers_R,x
           sta temp3
@@ -58,9 +56,9 @@ CooldownExpired:
           sta temp2
           jmp BS_return
 
-.pend
+.bend
 
-GuardCooldownBlocked .proc
+GuardCooldownBlocked .block
           ;; Currently guarding or in cooldown - not allowed to sta
 
           ;; Returns: Far (return otherbank)
@@ -81,5 +79,5 @@ GuardCooldownBlocked .proc
           sta temp2
           jmp BS_return
 
-.pend
+.bend
 

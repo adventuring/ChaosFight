@@ -10,22 +10,18 @@ SetPlayerVelocity:
           ;; Mutates: playerVelocityX[], playerVelocityXL[], playerVelocityY[], playerVelocityYL[]
           ;; Constraints: None
           lda temp1
-          asl
           tax
           lda temp2
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
           lda temp1
-          asl
           tax
           lda temp3
           sta playerVelocityY,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x

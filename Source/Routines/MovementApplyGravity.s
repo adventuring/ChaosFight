@@ -10,7 +10,6 @@ MovementApplyGravity .proc
           ;; Constraints: For subpixel gravity, call AddVelocitySubpixelY separately
           ;; Set playerVelocityY[temp1] = playerVelocityY[temp1] + temp2
           lda temp1
-          asl
           tax
           lda playerVelocityY,x
           clc

@@ -29,9 +29,9 @@ GetPlayerLocked .proc
           ;; Input: temp1 = player index (0-3), playerLocked (bit-packed)
 
           ;; Output: temp2 = locked state (0=unlocked, 1=normal, 2=handicap)
-          ;; GPL_lockedState = same as temp2
+          ;; lockedState = same as temp2
 
-          ;; Mutates: temp2, GPL_lockedState
+          ;; Mutates: temp2, lockedState
 
           ;;
           ;; Called Routines: None
@@ -59,7 +59,7 @@ GetPlayerLockedP0 .proc
           lda playerLocked
           and # 3
           sta temp2
-          sta GPL_lockedState
+          sta lockedState
 
           rts
 
@@ -72,7 +72,7 @@ GetPlayerLockedP1 .proc
           lsr
           and # 3
           sta temp2
-          sta GPL_lockedState
+          sta lockedState
 
           rts
 
@@ -87,7 +87,7 @@ GetPlayerLockedP2 .proc
           lsr
           and # 3
           sta temp2
-          sta GPL_lockedState
+          sta lockedState
 
           rts
 
@@ -104,7 +104,7 @@ GetPlayerLockedP3 .proc
           lsr
           and # 3
           sta temp2
-          sta GPL_lockedState
+          sta lockedState
 
           rts
 

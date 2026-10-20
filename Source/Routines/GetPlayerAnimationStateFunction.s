@@ -13,7 +13,6 @@ GetPlayerAnimationStateFunction:
 
           ;; Set temp2 = playerState[temp1] / 16
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2

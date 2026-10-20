@@ -18,7 +18,6 @@ ApplyGuardColor .proc
           ;; Check if player is guarding
           ;; Set temp2 = playerState[temp1] & 2
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2

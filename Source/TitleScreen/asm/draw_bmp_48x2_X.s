@@ -6,9 +6,9 @@ draw_bmp_48x2_X .proc
           sta GRP0
           sta GRP1
 
-          lda # 7
-          sta NUSIZ0      ;; 7=Triplex (Player drawn three times)
-          sta NUSIZ1      ;; 7=Triplex (Player drawn three times)
+          lda # 3
+          sta NUSIZ0      ;; 3=three copies, 16 pixels apart (the 48x2 kernel needs this)
+          sta NUSIZ1      ;; 3=three copies, 16 pixels apart (the 48x2 kernel needs this)
 
           tsx
           stx spritesort   ;; save the stack pointer (use spritesort instead of temp7 to avoid conflict with BS_return)
@@ -24,7 +24,14 @@ draw_bmp_48x2_X .proc
           sta HMCLR
           sta WSYNC
 
-          .SLEEP 63
+          ;; The canonical kernel spends 63 cycles here and then another 6
+          ;; cycles on `lda aux4 / sta COLUPF` before falling into the loop.
+          ;; aux4 is dead in this port (and aliases preambleTimer), so keep
+          ;; its 6 cycles as pure padding: the loop's GRP writes must land
+          ;; on the same colour clocks as in the canonical kernel or the
+          ;; re-loads of the three copies are misaligned and the bitmap is
+          ;; smeared diagonally across the screen.
+          .SLEEP 69
 
           jmp pf48x2_X_loop
 
@@ -59,8 +66,7 @@ pf48x2_X_loop:
 
 	.SLEEP 3
 
-	dec aux2			;;5
-
+	dec aux2                        ;;;5  (next row: count down from titlescreenWindowN)
 
 	lda (scorePointers+0),y 	;;;5
 	sta GRP0			;;3
@@ -86,8 +92,8 @@ pf48x2_X_loop:
 	sta COLUP1
 	sta COLUP0
 
-	ldy aux2			;;3
-	bpl pf48x2_X_loop		;;;2/3
+	ldy aux2                ;;;3  (reload once the second half has finished)
+	bpl pf48x2_X_loop      ; branch while aux2 >= 0
 
 
 pf48x2_X_codeend:

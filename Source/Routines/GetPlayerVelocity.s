@@ -12,19 +12,16 @@ GetPlayerVelocity:
           ;; Constraints: Callers should use the values immediately; temps are volatile.
           ;; Set temp2 = playerVelocityX[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerVelocityX,x
           sta temp2
           ;; Set temp3 = playerVelocityY[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerVelocityY,x
           sta temp3
 
           lda currentPlayer
-          asl
           tax
           lda playerVelocityY,x
           sta temp3

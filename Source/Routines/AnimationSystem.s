@@ -43,7 +43,6 @@ UCA_CheckQuadtari:
           ;; Skip if player is eliminated (health = 0)
           ;; If playerHealth[currentPlayer] = 0, then jmp AnimationNextPlayer
           lda currentPlayer
-          asl
           tax
           lda playerHealth,x
           bne UCA_CheckCharacter
@@ -58,7 +57,6 @@ UCA_CheckCharacter:
           ;; SCRAM read-modify-write: animationCounter_R → animationCounter_W
           ;; Set temp4 = animationCounter_R[currentPlayer] + 1
           lda currentPlayer
-          asl
           tax
           lda animationCounter_R,x
           clc
@@ -66,14 +64,12 @@ UCA_CheckCharacter:
           sta temp4
 
           lda currentPlayer
-          asl
           tax
           lda animationCounter_R,x
           clc
           adc # 1
           sta temp4
           lda currentPlayer
-          asl
           tax
           lda temp4
           sta animationCounter_W,x
@@ -111,7 +107,6 @@ AdvanceFrame .proc
           ;; DoneAdvance, HandleFrame7Transition,
           ;; UpdateSprite
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta animationCounter_W,x
@@ -123,7 +118,6 @@ AdvanceFrame .proc
           ;; Set temp4 = currentAnimationFrame_R[currentPlayer]
          
           lda currentPlayer
-          asl
           tax
           lda currentAnimationFrame_R,x
           sta temp4
@@ -137,7 +131,6 @@ AdvanceFrame .proc
           adc # 1
           sta temp4
           lda currentPlayer
-          asl
           tax
           lda temp4
           sta currentAnimationFrame_W,x
@@ -182,7 +175,6 @@ HandleFrame7Transition:
           ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
@@ -199,7 +191,6 @@ AnimationTransitionLoopAnimation:
 
 AnimationTransitionLoopAnimation:
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta currentAnimationFrame_W,x
@@ -223,13 +214,11 @@ AnimationTransitionHandleJump:
           ;; Stay on frame 7 until Y velocity goes negative
           ;; If 0 < playerVelocityY[currentPlayer], then AnimationTransitionHandleJump_TransitionToFalling
           lda currentPlayer
-          asl
           tax
           lda playerVelocityY,x
           bmi AnimationTransitionHandleJump_TransitionToFalling
           beq AnimationTransitionHandleJump_TransitionToFalling
           lda currentPlayer
-          asl
 
           tax
 
@@ -260,7 +249,6 @@ AnimationTransitionHandleFallBack:
           ;; Convert player X position to playfield column (0-31)
           ;; Set temp5 = playerX[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerX,x
           sta temp5
@@ -289,13 +277,11 @@ AnimationTransitionHandleFallBack:
           ;; Convert player Y position to playfield row (0-7)
           ;; Set temp6 = playerY[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta temp6
          
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta temp6
@@ -367,7 +353,6 @@ AnimationHandleAttackTransition:
           ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
@@ -389,13 +374,11 @@ HandleWindupEnd:
 AnimationHandleWindupEnd
           ;; Set temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta temp1
          
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta temp1
@@ -418,7 +401,6 @@ AnimationHandleWindupEnd
           label_unknown:
           ;; Set temp2 = CharacterWindupNextAction[temp1]         
           lda temp1
-          asl
           tax
           lda CharacterWindupNextAction,x
           sta temp2
@@ -436,7 +418,6 @@ AnimationHandleExecuteEnd:
           ;; Set temp1 = playerCharacter[currentPlayer]
          
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta temp1
@@ -465,7 +446,6 @@ GetExecuteNextAction:
           label_unknown:
           ;; Set temp2 = CharacterExecuteNextAction[temp1]
           lda temp1
-          asl
           tax
           lda CharacterExecuteNextAction,x
           sta temp2
@@ -487,41 +467,34 @@ AnimationHarpyExecute:
           ;; Clear dive flag (bit 4 in characterStateFlags)
           ;; Set C6E_stateFlags = 239 & characterStateFlags_R[temp1]
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           and # 239
           sta C6E_stateFlags
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           and # 239
           sta C6E_stateFlags
           lda temp1
-          asl
           tax
           lda C6E_stateFlags
           sta characterStateFlags_W,x
           ;; Stop horizontal velocity (zero X velocity)
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
           ;; Apply upward wing flap momentum after swoop attack
           lda temp1
-          asl
           tax
           lda # 254
           sta playerVelocityY,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
@@ -555,20 +528,17 @@ AnimationSetPlayerAnimationInlined:
           SetAnimationSequence:
           ;; SCRAM write to currentAnimationSeq_W
           lda currentPlayer
-          asl
           tax
           lda temp2
           sta currentAnimationSeq_W,x
           ;; Start at first frame
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta currentAnimationFrame_W,x
           ;; SCRAM write to animationCounter_W
           ;; Reset animation counter
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta animationCounter_W,x
@@ -579,7 +549,6 @@ AnimationSetPlayerAnimationInlined:
           ;; Set temp3 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp3
@@ -587,6 +556,70 @@ AnimationSetPlayerAnimationInlined:
           sta temp4
           ;; Fall through to UpdateSprite which has inlined LoadPlayerSprite logic
 
+.pend
+
+SetPlayerAnimation .proc
+          ;; Set animation action for a player (far-callable entry point).
+          ;;
+          ;; Input: currentPlayer = player index (0-3)
+          ;;        temp2 = animation action (0-15)
+          ;; Output: currentAnimationSeq[] updated, frame/counter reset,
+          ;;         sprite graphics refreshed.
+          ;; Returns: Far (return otherbank)
+          lda temp2
+          cmp # AnimationSequenceCount
+          bcc SetPlayerAnimationApply
+          jmp BS_return
+SetPlayerAnimationApply:
+
+          lda currentPlayer
+          tax
+          lda temp2
+          sta currentAnimationSeq_W,x
+
+          lda currentPlayer
+          tax
+          lda # 0
+          sta currentAnimationFrame_W,x
+          sta animationCounter_W,x
+
+          ;; Guard against loading sprites when no character is on screen.
+          lda currentPlayer
+          tax
+          lda playerCharacter,x
+          sta temp1
+          cmp # NoCharacter
+          beq SetPlayerAnimationDone
+          cmp # CPUCharacter
+          beq SetPlayerAnimationDone
+          cmp # RandomCharacter
+          beq SetPlayerAnimationDone
+
+          ;; Prepare LoadPlayerSprite(frame = 0,
+          ;; action = currentAnimationSeq_R[currentPlayer],
+          ;; player = currentPlayer).
+          lda # 0
+          sta temp2
+          lda currentPlayer
+          tax
+          lda currentAnimationSeq_R,x
+          sta temp3
+          lda currentPlayer
+          sta temp4
+
+          lda # ((>(SetPlayerAnimationAfterLoad-1)) & $0f) | $b0
+          pha
+          lda # <(SetPlayerAnimationAfterLoad-1)
+          pha
+          lda # >(LoadPlayerSprite-1)
+          pha
+          lda # <(LoadPlayerSprite-1)
+          pha
+          ldx # 15
+          jmp BS_jsr
+SetPlayerAnimationAfterLoad:
+SetPlayerAnimationDone:
+          jmp BS_return
 .pend
 
 UpdateSprite .proc
@@ -632,19 +665,16 @@ UpdateSprite .proc
 
           ;; Set temp2 = currentAnimationFrame_R[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda currentAnimationFrame_R,x
           sta temp2
           ;; Set temp3 = currentAnimationSeq_R[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp3
          
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp3
@@ -656,7 +686,6 @@ UpdateSprite .proc
           ;; Set currentCharacter = playerCharacter[currentPlayer]
          
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
@@ -888,7 +917,9 @@ DoneAdvanceInlinedLabel:
 AnimationNextPlayerLabel:
           ;; Issue #1254: Loop decrement and check (count down from 3 to 0)
           dec currentPlayer
-          bpl UCA_Loop
+          bmi AnimationNextPlayerDone
+          jmp UCA_Loop
+AnimationNextPlayerDone:
           jmp BS_return
 
 AnimationNextLabel1 .proc
@@ -935,20 +966,17 @@ SetPlayerAnimation:
 
           ;; SCRAM write to currentAnimationFrame_W
           lda currentPlayer
-          asl
           tax
           lda temp2
           sta currentAnimationSeq_W,x
           ;; Start at first frame
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta currentAnimationFrame_W,x
           ;; SCRAM write to animationCounter_W
           ;; Reset animation counter
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta animationCounter_W,x
@@ -961,7 +989,6 @@ SetPlayerAnimation:
           ;; Set temp1 = playerCharacter[currentPlayer]
          
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta temp1
@@ -975,7 +1002,6 @@ SetPlayerAnimation:
           ;; Set temp3 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp3
@@ -1053,7 +1079,6 @@ HandleAnimationTransition .proc
           ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
          
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
@@ -1072,7 +1097,6 @@ TransitionLoopAnimation
           ;; SCRAM write to currentAnimationFrame_W
           ;; Returns: Far (return otherbank)
           lda currentPlayer
-          asl
           tax
           lda # 0
           sta currentAnimationFrame_W,x
@@ -1100,13 +1124,11 @@ TransitionHandleJump:
           ;; Still ascending (negative or zero Y velocity), stay in jump
           ;; If 0 < playerVelocityY[currentPlayer], then TransitionHandleJump_TransitionToFalling
           lda currentPlayer
-          asl
           tax
           lda playerVelocityY,x
           bmi TransitionHandleJump_TransitionToFalling
           beq TransitionHandleJump_TransitionToFalling
           lda currentPlayer
-          asl
 
           tax
 
@@ -1137,7 +1159,6 @@ TransitionHandleFallBack:
           ;; Convert player X position to playfield column (0-31)
           ;; Set temp5 = playerX[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerX,x
           sta temp5
@@ -1166,13 +1187,11 @@ TransitionHandleFallBack:
           ;; Convert player Y position to playfield row (0-7)
           ;; Set temp6 = playerY[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta temp6
          
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta temp6
@@ -1244,7 +1263,6 @@ HandleAttackTransition:
           ;; Returns: Far (return otherbank)
           ;; Set temp1 = currentAnimationSeq_R[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda currentAnimationSeq_R,x
           sta temp1
@@ -1258,7 +1276,6 @@ HandleAttackTransition:
 HandleWindupEndAttack:
           ;; Set temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta temp1
@@ -1280,7 +1297,6 @@ HandleWindupEndAttack:
           label_unknown:
           ;; Set temp2 = CharacterWindupNextAction[temp1]         
           lda temp1
-          asl
           tax
           lda CharacterWindupNextAction,x
           sta temp2
@@ -1290,7 +1306,6 @@ HandleExecuteEnd:
           ;; Returns: Far (return otherbank)
           ;; Set temp1 = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta temp1
@@ -1311,7 +1326,6 @@ GetExecuteNextActionHandle:
           label_unknown:
           ;; Set temp2 = CharacterExecuteNextAction[temp1]
           lda temp1
-          asl
           tax
           lda CharacterExecuteNextAction,x
           sta temp2
@@ -1332,32 +1346,27 @@ HarpyExecute .proc
           ;; Fix RMW: Read from _R, modify, write to _W
           ;; Set C6E_stateFlags = 239 & characterStateFlags_R[temp1]
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           and # 239
           sta C6E_stateFlags
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           and # 239
           sta C6E_stateFlags
           ;; Clear bit 4 (239 = 0xEF = ~0x10)
           lda temp1
-          asl
           tax
           lda C6E_stateFlags
           sta characterStateFlags_W,x
           ;; Stop horizontal velocity (zero X velocity)
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityX,x
           ;; Apply upward wing flap momentum after swoop attack
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -1365,14 +1374,12 @@ HarpyExecute .proc
           ;; Same as normal flap: -2 pixels/frame upward (254 in twos
           ;; complement)
           lda temp1
-          asl
           tax
           lda # 254
           sta playerVelocityY,x
           ;; -2 in 8-bit twos complement: 256 - 2 = 254
           ;; Keep jumping flag set to allow vertical movement
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x

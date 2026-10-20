@@ -255,7 +255,6 @@ HandleCharacterSelectCycle .proc
 
           ;; Set temp1 = playerCharacter[temp4]
           lda temp4
-          asl
           tax
           lda playerCharacter,x
           sta temp1
@@ -476,12 +475,11 @@ CycleDoneCharacterSelect
           ;; PlaySoundEffect (bank15)
 
           lda temp3
-          asl
           tax
           lda temp1
           sta playerCharacter,x
 
-          lda PlayerLockedUnlocked
+          lda #PlayerLockedUnlocked
           sta temp2
 
           lda temp3
@@ -644,15 +642,16 @@ ProcessPlayerInput:
           lda temp3
           cmp # 2
           bcs ProcessPlayerInputDone
-          goto_label:
-
-          jmp goto_label
+          jsr ProcessPlayerInput
 ProcessPlayerInputDone:
 
           lda temp3
           cmp # 2
           bcs CharacterSelectHandleTwoPlayersDone
-          jmp goto_label
+          lda controllerStatus
+          and # SetQuadtariDetected
+          beq CharacterSelectHandleTwoPlayersDone
+          jsr ProcessPlayerInput
 CharacterSelectHandleTwoPlayersDone:
 
           
@@ -911,7 +910,6 @@ CharacterSelectRollRandomPlayerReroll .proc
           jmp BS_return
 
           lda currentPlayer
-          asl
           tax
           lda temp2
           sta playerCharacter,x
@@ -958,7 +956,9 @@ CharacterSelectCheckReady .proc
           ;; STACK PICTURE: [SP+3: AfterGetPlayerLockedP0 hi (encoded)] [SP+2: AfterGetPlayerLockedP0 lo] [SP+1: GetPlayerLocked hi (raw)] [SP+0: GetPlayerLocked lo]
           ldx # 5
           jmp BS_jsr
-AfterGetPlayerLockedP0: : if !temp2 then jmp CharacterSelectReadyDone
+AfterGetPlayerLockedP0:
+          lda temp2
+          beq CharacterSelectReadyDone
 
           ;; P2 not locked, check if on CPU
 
@@ -990,7 +990,6 @@ AfterGetPlayerLockedP1:
 CheckPlayer2CPU:
           ;; If playerCharacter[1] = CPUCharacter then jmp CharacterSelectFinish
           lda # 1
-          asl
           tax
           lda playerCharacter,x
           cmp # CPUCharacter
@@ -1048,7 +1047,6 @@ CheckCPUCharacterQuadtari:
 
           ;; Set temp4 = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -1153,14 +1151,12 @@ CharacterSelectFinish .proc
 CSF_Loop:
           ;; If playerCharacter[currentPlayer] = NoCharacter, then jmp CharacterSelectSkipFacing
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
           beq CharacterSelectSkipFacing
           ;; Set playerState[currentPlayer] = playerState[currentPlayer] | PlayerStateBitFacing
           lda currentPlayer
-          asl
           tax
           lda playerState,x
           ora # PlayerStateBitFacing
@@ -1202,7 +1198,7 @@ UpdateSoundEffectsReturn:
 
           ;; Transition to falling animation
 
-          lda ModeFallingAnimation
+          lda #ModeFallingAnimation
           sta gameMode
 
           ;; Cross-bank call to ChangeGameMode in bank 13

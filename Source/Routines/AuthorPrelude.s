@@ -55,17 +55,11 @@ AuthorPrelude .proc
           ;; Check for button press on any controller to skip
           ;; Returns: Far (return otherbank)
           ;; Use skip-over pattern to avoid complex || operator issues
-          ;; If P0 fire pressed, then AuthorPreludeComplete
-          lda P0Fire
+          ;; Advance only on a *fresh* press (MainLoop sets newFirePress on
+          ;; the frame either fire button goes down); a held button must not
+          ;; race through the remaining screens.
+          lda fireEdgeState
           bmi AuthorPreludeComplete
-
-CheckJoy1Fire:
-
-          ;; If P1 fire pressed, then AuthorPreludeComplete
-          lda P1Fire
-          beq CheckEnhancedControllers
-
-          jmp AuthorPreludeComplete
 
 CheckEnhancedControllers:
 
@@ -124,8 +118,6 @@ CheckAutoAdvance:
           lda preambleTimer
           cmp # 31
           bcc IncrementTimer
-          lda musicPlaying
-          bne IncrementTimer
           jmp AuthorPreludeComplete
 IncrementTimer:
 
@@ -146,7 +138,7 @@ AuthorPreludeComplete
           ;; mode sta
 
           ;; Constraints: Must be colocated with AuthorPrelude
-          lda ModeTitle
+          lda #ModeTitle
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 14
           ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode

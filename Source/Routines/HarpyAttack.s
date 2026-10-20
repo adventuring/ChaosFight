@@ -43,7 +43,6 @@ HarpyAttack .proc
           ;; Set animation state 14 (attack execution)
           ;; playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           lda temp1
-          asl
           tax
           lda playerState,x
           and # MaskPlayerStateFlags
@@ -53,7 +52,6 @@ HarpyAttack .proc
           ;; Get facing direction (bit 0: 0=left, 1=right)
           ;; Set temp2 = playerState[temp1] & PlayerStateBitFacing         
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -112,22 +110,18 @@ HarpySetVerticalVelocity .proc
           ;; Use temp1 directly for indexed addressing (batariBASIC
           ;; does not resolve dim aliases)
           lda temp1
-          asl
           tax
           lda temp4
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
           lda temp1
-          asl
           tax
           lda temp3
           sta playerVelocityY,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
@@ -140,7 +134,6 @@ HarpySetVerticalVelocity .proc
           ;; Set bit 2 (jumping flag)
           ;; Set playerState[temp1] = playerState[temp1] | 4
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 4
@@ -156,12 +149,10 @@ HarpySetVerticalVelocity .proc
           ;; does not resolve dim aliases)
           ;; Set temp5 = characterStateFlags_R[temp1] | 4         
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           sta temp5
           lda temp1
-          asl
           tax
           lda temp5
           sta characterStateFlags_W,x

@@ -84,7 +84,6 @@ GetPlayerAnimationStateFunction:
 
           ;; Set temp2 = playerState[temp1] & 240         
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -175,7 +174,6 @@ HandlePlayers12:
 
           ;; Inlined IsPlayerAlive check for player 0
           lda # 0
-          asl
           tax
           lda playerHealth,x
           sta temp2
@@ -186,7 +184,6 @@ CheckPlayer0State:
 
           ;; If (playerState[0] & 8), then jmp InputDonePlayer0Input
           lda # 0
-          asl
           tax
           lda playerState,x
           and # 8
@@ -224,7 +221,6 @@ InputDonePlayer0Input:
 
           ;; Inlined IsPlayerAlive check for player 1
           lda # 1
-          asl
           tax
           lda playerHealth,x
           sta temp2
@@ -234,7 +230,6 @@ InputDonePlayer0Input:
 CheckPlayer1State:
           ;; If (playerState[1] & 8), then jmp InputDonePlayer1Input
           lda # 1
-          asl
           tax
           lda playerState,x
           and # 8
@@ -364,7 +359,6 @@ CheckPlayer3Character:
 
           ;; Inlined IsPlayerAlive check for player 2
           lda # 2
-          asl
           tax
           lda playerHealth,x
           sta temp2
@@ -374,7 +368,6 @@ CheckPlayer3Character:
 CheckPlayer3State:
           ;; If (playerState[2] & 8), then jmp InputDonePlayer3Input
           lda # 2
-          asl
           tax
           lda playerState,x
           and # 8
@@ -419,7 +412,6 @@ CheckPlayer4Character:
 
           ;; Inlined IsPlayerAlive check for player 3
           lda # 3
-          asl
           tax
           lda playerHealth,x
           sta temp2
@@ -430,7 +422,6 @@ CheckPlayer4State:
 
           ;; If (playerState[3] & 8), then jmp InputDonePlayer4Input
           lda # 3
-          asl
           tax
           lda playerState,x
           and # 8
@@ -547,7 +538,6 @@ HandleGuardInputHandleDownPressed .proc
 
           ;; Set temp4 = playerCharacter[temp1]         
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -555,28 +545,28 @@ HandleGuardInputHandleDownPressed .proc
           jmp BS_return
 
           lda temp4
-          cmp CharacterDragonOfStorms
+          cmp #CharacterDragonOfStorms
           bne CheckHarpy
           jmp DragonOfStormsDown
 CheckHarpy:
 
 
           lda temp4
-          cmp CharacterHarpy
+          cmp #CharacterHarpy
           bne CheckFrooty
           jmp HarpyDown
 CheckFrooty:
 
 
           lda temp4
-          cmp CharacterFrooty
+          cmp #CharacterFrooty
           bne CheckRoboTito
           jmp FrootyDown
 CheckRoboTito:
 
 
           lda temp4
-          cmp CharacterRoboTito
+          cmp #CharacterRoboTito
           bne UseStandardGuard
           jmp DCD_HandleRoboTitoDown
 UseStandardGuard:
@@ -621,7 +611,6 @@ HandleGuardInputCheckGuardRelease .proc
 
           ;; Set temp2 = playerState[temp1] & 2         
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -633,7 +622,6 @@ HandleGuardInputCheckGuardRelease .proc
           ;; Stop guard early and start cooldown
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           lda temp1
-          asl
           tax
           lda playerState,x
           and # (255 - PlayerStateBitGuarding)
@@ -641,9 +629,8 @@ HandleGuardInputCheckGuardRelease .proc
 
           ;; Start cooldown timer
           lda temp1
-          asl
           tax
-          lda GuardTimerMaxFrames
+          lda #GuardTimerMaxFrames
           sta playerTimers_W,x
 
           jmp BS_return
@@ -737,10 +724,9 @@ HandleUpInputEnhancedButtonHandleUp .proc
 
           ;; if playerCharacter[temp1] = CharacterBernie, then jmp HandleUpInputEnhancedButtonBernieFallThrough
           lda temp1
-          asl
           tax
           lda playerCharacter,x
-          cmp CharacterBernie
+          cmp #CharacterBernie
           bne CheckHarpyFlap
           jmp HandleUpInputEnhancedButtonBernieFallThrough
 CheckHarpyFlap:
@@ -749,10 +735,9 @@ CheckHarpyFlap:
 
           ;; If playerCharacter[temp1] = CharacterHarpy, then jmp HandleUpInputEnhancedButtonHarpyFlap
           lda temp1
-          asl
           tax
           lda playerCharacter,x
-          cmp CharacterHarpy
+          cmp #CharacterHarpy
           bne HandleUpInputEnhancedButtonStandardJump
           jmp HandleUpInputEnhancedButtonHarpyFlap
 HandleUpInputEnhancedButtonStandardJump:
@@ -776,12 +761,10 @@ HandleUpInputEnhancedButtonRoboTitoAscend:
 
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
@@ -789,7 +772,6 @@ HandleUpInputEnhancedButtonRoboTitoAscend:
           ;; Compute playfield column
           ;; Set playerY[temp1] = playerY[temp1] - temp6
           lda temp1
-          asl
           tax
           lda playerY,x
           sec
@@ -798,7 +780,6 @@ HandleUpInputEnhancedButtonRoboTitoAscend:
 
           ;; Set temp4 = playerX[temp1]
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp4
@@ -840,7 +821,6 @@ CheckTemp4RangeSecond:
 
           ;; Set temp3 = playerY[temp1]         
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp3
@@ -925,7 +905,6 @@ CheckJoy1Down:
           lda joy1down
           beq HandleUpInputEnhancedButtonRoboTitoDoneJoy1
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           and # (255 - 1)
@@ -941,7 +920,6 @@ HandleUpInputEnhancedButtonRoboTitoCheckJoy0 .proc
           lda joy0down
           beq HandleUpInputEnhancedButtonRoboTitoDoneJoy0
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           and # (255 - 1)
@@ -968,7 +946,6 @@ HandleUpInputEnhancedButtonRoboTitoLatch .proc
 
           ;; Set characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           ora # 1
@@ -1059,20 +1036,18 @@ HandleUpInputEnhancedButtonCheckEnhanced .proc
 
           ;; if playerCharacter[temp1] = CharacterMethHound, then jmp HandleUpInputEnhancedButtonEnhancedCheck
           lda temp1
-          asl
           tax
           lda playerCharacter,x
-          cmp CharacterMethHound
+          cmp #CharacterMethHound
           bne CheckBernie
           jmp HandleUpInputEnhancedButtonEnhancedCheck
 CheckBernie:
 
           ;; If playerCharacter[temp1] = CharacterBernie, then jmp HandleUpInputEnhancedButtonEnhancedCheck
           lda temp1
-          asl
           tax
           lda playerCharacter,x
-          cmp CharacterBernie
+          cmp #CharacterBernie
           bne CheckHarpyEnhanced
           jmp HandleUpInputEnhancedButtonEnhancedCheck
 CheckHarpyEnhanced:
@@ -1081,10 +1056,9 @@ CheckHarpyEnhanced:
 
           ;; If playerCharacter[temp1] = CharacterHarpy, then jmp HandleUpInputEnhancedButtonEnhancedCheck
           lda temp1
-          asl
           tax
           lda playerCharacter,x
-          cmp CharacterHarpy
+          cmp #CharacterHarpy
           bne HandleUpInputEnhancedButtonStandardEnhancedCheck
           jmp HandleUpInputEnhancedButtonEnhancedCheck
 HandleUpInputEnhancedButtonStandardEnhancedCheck:
@@ -1199,7 +1173,6 @@ HandleUpInputEnhancedButtonJumpProceed .proc
 
           ;; Set temp4 = playerCharacter[temp1]         
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -1215,7 +1188,6 @@ HandleUpInputEnhancedButtonJumpDoneLabel:
           bne HandleUpInputEnhancedButtonJumpDoneCheck
           ;; Set characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           ora # 8
@@ -1293,10 +1265,9 @@ HandleStandardHorizontalMovementHandleLeft .proc
 
           ;; if playerCharacter[temp1] = CharacterDragonOfStorms, then jmp HandleStandardHorizontalMovementLeftDirectSubpixel
           lda temp1
-          asl
           tax
           lda playerCharacter,x
-          cmp CharacterDragonOfStorms
+          cmp #CharacterDragonOfStorms
           bne HandleStandardHorizontalMovementLeftStandard
           jmp HandleStandardHorizontalMovementLeftDirectSubpixel
 HandleStandardHorizontalMovementLeftStandard:
@@ -1306,12 +1277,10 @@ HandleStandardHorizontalMovementLeftStandard:
 
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
@@ -1332,13 +1301,11 @@ HandleStandardHorizontalMovementLeftStandard:
 
 
           lda temp1
-          asl
           tax
           lda temp2
           sta playerVelocityX,x
 
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -1357,12 +1324,10 @@ HandleStandardHorizontalMovementLeftDirectSubpixel .proc
 
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
@@ -1383,13 +1348,11 @@ HandleStandardHorizontalMovementLeftDirectSubpixel .proc
 
 
           lda temp1
-          asl
           tax
           lda temp2
           sta playerVelocityX,x
 
           lda temp1
-          asl
           tax
           lda # 1
           sta playerVelocityXL,x
@@ -1407,26 +1370,22 @@ HandleStandardHorizontalMovementLeftMomentum .proc
 
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
 
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           sec
           sbc temp6
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -1439,7 +1398,6 @@ HandleStandardHorizontalMovementAfterLeftSet .proc
           ;; Returns: Far (return otherbank)
           ;; If (playerState[temp1] & 8), then jmp HandleStandardHorizontalMovementShouldPreserveFacingYes1
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 8
@@ -1513,7 +1471,6 @@ HandleStandardHorizontalMovementShouldPreserveFacingDone1:
           bne HandleStandardHorizontalMovementAfterLeftSetDone
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           lda temp1
-          asl
           tax
           lda playerState,x
           and # (255 - PlayerStateBitFacing)
@@ -1566,10 +1523,9 @@ HandleStandardHorizontalMovementHandleRight .proc
 
           ;; if playerCharacter[temp1] = CharacterDragonOfStorms, then jmp HandleStandardHorizontalMovementRightDirectSubpixel
           lda temp1
-          asl
           tax
           lda playerCharacter,x
-          cmp CharacterDragonOfStorms
+          cmp #CharacterDragonOfStorms
           bne HandleStandardHorizontalMovementRightStandard
           jmp HandleStandardHorizontalMovementRightDirectSubpixel
 HandleStandardHorizontalMovementRightStandard:
@@ -1579,24 +1535,20 @@ HandleStandardHorizontalMovementRightStandard:
 
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
 
           lda temp1
-          asl
           tax
           lda temp6
           sta playerVelocityX,x
 
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -1615,24 +1567,20 @@ HandleStandardHorizontalMovementRightDirectSubpixel .proc
 
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
 
           lda temp1
-          asl
           tax
           lda temp6
           sta playerVelocityX,x
 
           lda temp1
-          asl
           tax
           lda # 1
           sta playerVelocityXL,x
@@ -1650,26 +1598,22 @@ HandleStandardHorizontalMovementRightMomentum .proc
 
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
 
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           clc
           adc temp6
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -1682,7 +1626,6 @@ HandleStandardHorizontalMovementAfterRightSet .proc
           ;; Returns: Far (return otherbank)
           ;; If (playerState[temp1] & 8), then jmp HandleStandardHorizontalMovementShouldPreserveFacingYes2
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 8
@@ -1754,7 +1697,6 @@ HandleStandardHorizontalMovementShouldPreserveFacingDone2:
           bne HandleStandardHorizontalMovementAfterRightSetDoneFirst
           ;; Set playerState[temp1] = playerState[temp1] | 1
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 1
@@ -1792,7 +1734,6 @@ HandleFlyingCharacterMovement .proc
 
           ;; Set temp5 = playerCharacter[temp1]         
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp5
@@ -1833,7 +1774,6 @@ HandleFlyingCharacterMovementCheckLeftCollision:
 
           ;; Set temp2 = playerX[temp1]         
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -1899,7 +1839,6 @@ CheckColumnLeft:
 
           ;; Set temp4 = playerY[temp1]         
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp4
@@ -2066,12 +2005,10 @@ CheckDragonOfStormsLeft:
 HandleFlyingCharacterMovementLeftStandard:
           ;; Set playerVelocityX[temp1] = $ff
           lda temp1
-          asl
           tax
           lda # $ff
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -2084,19 +2021,16 @@ HandleFlyingCharacterMovementLeftMomentumApply .proc
 
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - CharacterMovementSpeed[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           sec
           sbc temp6
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -2108,12 +2042,10 @@ HandleFlyingCharacterMovementLeftMomentumApply .proc
 HandleFlyingCharacterMovementLeftDirectApply .proc
           ;; Set playerX[temp1] = playerX[temp1] - CharacterMovementSpeed[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp1
-          asl
           tax
           lda playerX,x
           sec
@@ -2128,7 +2060,6 @@ HandleFlyingCharacterMovementLeftApplyDone:
           ;; Inline ShouldPreserveFacing logic
           ;; If (playerState[temp1] & 8), then jmp ShouldPreserveFacingInlineYes1
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 8
@@ -2136,7 +2067,6 @@ HandleFlyingCharacterMovementLeftApplyDone:
           jmp ShouldPreserveFacingInlineYes1
 ShouldPreserveFacingInlineNo1:
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 8
@@ -2208,7 +2138,6 @@ ShouldPreserveFacingInlineDone1:
           bne HandleStandardHorizontalMovementAfterLeftSetDoneHandleFlyingCharacterMovement
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           lda temp1
-          asl
           tax
           lda playerState,x
           and # (255 - PlayerStateBitFacing)
@@ -2264,7 +2193,6 @@ HandleFlyingCharacterMovementDoRightMovement .proc
 
           ;; Set temp2 = playerX[temp1]         
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -2325,7 +2253,6 @@ CheckTemp2RangeLeftThird:
 
           ;; Set temp4 = playerY[temp1]         
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp4
@@ -2487,13 +2414,11 @@ CheckDragonOfStormsRight:
           jmp HandleFlyingCharacterMovementRightDirectApply
 HandleFlyingCharacterMovementRightStandard:
           lda temp1
-          asl
           tax
           lda # 1
           sta playerVelocityX,x
 
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -2506,19 +2431,16 @@ HandleFlyingCharacterMovementRightMomentumApply .proc
 
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + CharacterMovementSpeed[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           clc
           adc temp6
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -2531,12 +2453,10 @@ HandleFlyingCharacterMovementRightDirectApply .proc
 
           ;; Set playerX[temp1] = playerX[temp1] + CharacterMovementSpeed[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp1
-          asl
           tax
           lda playerX,x
           clc
@@ -2551,7 +2471,6 @@ HandleFlyingCharacterMovementRightApplyDone:
           ;; Inline ShouldPreserveFacing logic
           ;; If (playerState[temp1] & 8), then jmp ShouldPreserveFacingInlineYes2
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 8
@@ -2559,7 +2478,6 @@ HandleFlyingCharacterMovementRightApplyDone:
           jmp ShouldPreserveFacingInlineYes2
 ShouldPreserveFacingInlineNo2:
           lda temp1
-          asl
           tax
           lda playerState,x
           and # 8
@@ -2634,7 +2552,6 @@ ShouldPreserveFacingInlineDone2:
           bne HandleStandardHorizontalMovementAfterRightSetDoneSecond
           ;; Set playerState[temp1] = playerState[temp1] | 1
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 1
@@ -2763,7 +2680,6 @@ AfterGetPlayerAnimationStateLeftPort:
 
           ;; Set temp5 = playerCharacter[temp1]         
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp5
@@ -2787,7 +2703,7 @@ CheckRadishGoblin:
 
 
           lda temp5
-          cmp CharacterRadishGoblin
+          cmp #CharacterRadishGoblin
           bne HandleStandardHorizontalMovementLabel
           jmp IHLP_RadishGoblinMovement
 HandleStandardHorizontalMovementLabel:
@@ -2915,7 +2831,6 @@ HandleGuardInputHandleDownPressedLeftPort .proc
 
           ;; Set temp4 = playerCharacter[temp1]         
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -2931,35 +2846,35 @@ HandleGuardInputHandleDownPressedLeftPort .proc
           CheckDragonOfStormsDown1:
 
           lda temp4
-          cmp CharacterDragonOfStorms
+          cmp #CharacterDragonOfStorms
           bne CheckHarpyDown1
           jmp DragonOfStormsDown
 CheckHarpyDown1:
 
 
           lda temp4
-          cmp CharacterHarpy
+          cmp #CharacterHarpy
           bne CheckFrootyDown1
           jmp HarpyDown
 CheckFrootyDown1:
 
 
           lda temp4
-          cmp CharacterFrooty
+          cmp #CharacterFrooty
           bne CheckRoboTitoDown1
           jmp FrootyDown
 CheckRoboTitoDown1:
 
 
           lda temp4
-          cmp CharacterRoboTito
+          cmp #CharacterRoboTito
           bne CheckRadishGoblinDown1
           jmp DCD_HandleRoboTitoDown1
 CheckRadishGoblinDown1:
 
 
           lda temp4
-          cmp CharacterRadishGoblin
+          cmp #CharacterRadishGoblin
           bne UseStandardGuard1
           jmp HGI_HandleRadishGoblinDown1
 UseStandardGuard1:
@@ -3032,7 +2947,6 @@ HandleGuardInputCheckGuardReleaseLeftPort .proc
 
           ;; Set temp2 = playerState[temp1] & 2         
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -3048,7 +2962,6 @@ StopGuardEarly1:
           ;; Stop guard early and start cooldown
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           lda temp1
-          asl
           tax
           lda playerState,x
           and # (255 - PlayerStateBitGuarding)
@@ -3056,9 +2969,8 @@ StopGuardEarly1:
 
           ;; Start cooldown timer
           lda temp1
-          asl
           tax
-          lda GuardTimerMaxFrames
+          lda #GuardTimerMaxFrames
           sta playerTimers_W,x
 
 .pend
@@ -3112,7 +3024,6 @@ HandleGuardInputDoneLeftPort:
 
           ;; Set temp2 = playerState[temp1] & 2         
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -3132,7 +3043,6 @@ DispatchAttack:
 
           ;; If (playerState[temp1] & PlayerStateBitFacing), then jmp InputDoneLeftPortAttack
           lda temp1
-          asl
           tax
           lda playerState,x
           and # PlayerStateBitFacing
@@ -3142,7 +3052,6 @@ InputDoneLeftPortAttackSkipSecond:
 
           ;; Set temp4 = playerCharacter[temp1]         
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -3231,7 +3140,6 @@ AfterGetPlayerAnimationStateRightPort:
 
           ;; Set temp6 = playerState[temp1] & 2         
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp6
@@ -3254,7 +3162,6 @@ CheckFlyingCharacter2:
 
           ;; Set temp5 = playerCharacter[temp1]         
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp5
@@ -3262,7 +3169,7 @@ CheckFlyingCharacter2:
           ;; Use jmp to avoid branch out of range (target is 302+ bytes away)
 
           lda temp5
-          cmp CharacterFrooty
+          cmp #CharacterFrooty
           bne CheckDragonOfStorms2
           jmp IHRP_FlyingMovement
 CheckDragonOfStorms2:
@@ -3271,14 +3178,14 @@ CheckDragonOfStorms2:
           ;; Radish Goblin (12) uses bounce movement system
 
           lda temp5
-          cmp CharacterDragonOfStorms
+          cmp #CharacterDragonOfStorms
           bne CheckRadishGoblin2
           jmp IHRP_FlyingMovement
 CheckRadishGoblin2:
 
 
           lda temp5
-          cmp CharacterRadishGoblin
+          cmp #CharacterRadishGoblin
           bne HandleStandardHorizontalMovement2
           jmp IHRP_RadishGoblinMovement
 HandleStandardHorizontalMovement2:
@@ -3394,7 +3301,6 @@ HandleGuardInputHandleDownPressedRightPort .proc
 
           ;; Set temp4 = playerCharacter[temp1]         
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -3410,35 +3316,35 @@ HandleGuardInputHandleDownPressedRightPort .proc
           CheckDragonOfStormsDown2:
 
           lda temp4
-          cmp CharacterDragonOfStorms
+          cmp #CharacterDragonOfStorms
           bne CheckHarpyDown2
           jmp DragonOfStormsDown
 CheckHarpyDown2:
 
 
           lda temp4
-          cmp CharacterHarpy
+          cmp #CharacterHarpy
           bne CheckFrootyDown2
           jmp HarpyDown
 CheckFrootyDown2:
 
 
           lda temp4
-          cmp CharacterFrooty
+          cmp #CharacterFrooty
           bne CheckRoboTitoDown2
           jmp FrootyDown
 CheckRoboTitoDown2:
 
 
           lda temp4
-          cmp CharacterRoboTito
+          cmp #CharacterRoboTito
           bne CheckRadishGoblinDown2
           jmp DCD_HandleRoboTitoDown2
 CheckRadishGoblinDown2:
 
 
           lda temp4
-          cmp CharacterRadishGoblin
+          cmp #CharacterRadishGoblin
           bne UseStandardGuard2
           jmp HGI_HandleRadishGoblinDown2
 UseStandardGuard2:
@@ -3517,7 +3423,6 @@ HandleGuardInputCheckGuardReleaseRightPort .proc
 
           ;; Set temp2 = playerState[temp1] & 2         
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -3533,7 +3438,6 @@ StopGuardEarly2:
           ;; Stop guard early and start cooldown
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           lda temp1
-          asl
           tax
           lda playerState,x
           and # (255 - PlayerStateBitGuarding)
@@ -3541,9 +3445,8 @@ StopGuardEarly2:
 
           ;; Start cooldown timer
           lda temp1
-          asl
           tax
-          lda GuardTimerMaxFrames
+          lda #GuardTimerMaxFrames
           sta playerTimers_W,x
 
 .pend
@@ -3593,7 +3496,6 @@ HandleGuardInputDoneRightPort:
 
           ;; Set temp2 = playerState[temp1] & 2 PlayerStateBitGuarding         
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -3612,7 +3514,6 @@ CheckJoy1Fire:
 DispatchAttack2:
           ;; If (playerState[temp1] & PlayerStateBitFacing), then jmp InputDoneRightPortAttack
           lda temp1
-          asl
           tax
           lda playerState,x
           and # PlayerStateBitFacing
@@ -3622,7 +3523,6 @@ InputDoneRightPortAttackSkip:
 
           ;; Set temp4 = playerCharacter[temp1]         
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -3678,7 +3578,7 @@ CheckJoy2bPlus:
 
           ;; Player 2)
           ;; If LeftPortJoy2bPlus and !INPT1{7}, set temp1 = 1
-          lda LeftPortJoy2bPlus
+          lda #LeftPortJoy2bPlus
           beq CheckRightPortJoy2bPlus
           bit INPT1
           bmi CheckRightPortJoy2bPlus
@@ -3686,7 +3586,7 @@ CheckJoy2bPlus:
           sta temp1
 CheckRightPortJoy2bPlus:
           ;; If RightPortJoy2bPlus and !INPT3{7}, set temp1 = 1
-          lda RightPortJoy2bPlus
+          lda #RightPortJoy2bPlus
           beq Joy2bPauseDone
           bit INPT3
           bmi Joy2bPauseDone
@@ -3750,7 +3650,7 @@ DonePauseToggle:
           jmp PauseButtonPrevUpdateDone
 ClearPauseButtonPrev:
           lda systemFlags
-          and ClearSystemFlagPauseButtonPrev
+          and #ClearSystemFlagPauseButtonPrev
           sta systemFlags
 PauseButtonPrevUpdateDone:
 

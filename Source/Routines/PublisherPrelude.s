@@ -56,19 +56,11 @@ PublisherPreludeMain .proc
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           ;; Expected: 4 bytes on stack from BS_jsr call (cross-bank call from MainLoop)
           ;; Check for button press on any controller to skip
-          ;; if joy0fire then jmp PublisherPreludeComplete
-          ;; Player 0 fire button is INPT4 bit 7 (bit sets N flag, bpl = button pressed)
-          bit INPT4
-          bmi CheckJoy1Fire  ; Button not pressed (bit 7 = 1), continue
-          jmp PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
-
-CheckJoy1Fire:
-
-          ;; if joy1fire then jmp PublisherPreludeComplete
-          ;; Player 1 fire button is INPT5 bit 7 (bit sets N flag, bpl = button pressed)
-          bit INPT5
-          bmi CheckEnhancedControllers  ; Button not pressed (bit 7 = 1), continue
-          jmp PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
+          ;; Advance only on a *fresh* press (MainLoop sets newFirePress on
+          ;; the frame either fire button goes down), so that a single press
+          ;; cannot race through several screens while it is held.
+          lda fireEdgeState
+          bmi PublisherPreludeComplete
 
 CheckEnhancedControllers:
 
@@ -138,8 +130,6 @@ CheckAutoAdvance:
           lda preambleTimer
           cmp # 31
           bcc IncrementTimer
-          lda musicPlaying
-          bne IncrementTimer
           goto_label:
 
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
@@ -171,7 +161,7 @@ PublisherPreludeComplete
           ;; Called Routines: BeginAuthorPrelude (bank14) - sets up author prelude
           ;; Constraints: Must be colocated with PublisherPreludeMain
           ;; OPTIMIZATION: Call BeginAuthorPrelude directly to save 4 bytes (skip ChangeGameMode)
-          lda ModeAuthorPrelude
+          lda #ModeAuthorPrelude
           sta gameMode
           ;; Cross-bank call to BeginAuthorPrelude in bank 14
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]

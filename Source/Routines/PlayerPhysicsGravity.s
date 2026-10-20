@@ -5,96 +5,42 @@
 ;;; smartbranching off
 
 
-PhysicsApplyGravity .proc
-          ;; Player Physics - Gravity and Momentum
-          ;; Returns: Far (return otherbank)
-          ;; Handles gravity, momentum, and recovery for all players.
-          ;; Split from PlayerPhysics.bas to reduce bank size.
-          ;; AVAILABLE VARIABLES:
-          ;; playerX[0-3], playerY[0-3] - Positions
-          ;; playerState[0-3] - State flags
-          ;; playerVelocityX[0-3] - Horizontal velocity (8.8
-          ;; fixed-point)
-          ;; playerVelocityY[0-3] - Vertical velocity (8.8 fixed-point)
-          ;; playerRecoveryFrames[0-3] - Recovery (hitstun) frames
-          ;; remaining
-          ;; QuadtariDetected - Whether 4-player mode active
-          ;; playerCharacter[] - Player 3/4 selections
-          ;; playerCharacter[0-3] - Character type indices
-          ;; Apply Gravity
-          ;; Applies gravity acceleration to jumping players.
-          ;; Certain characters (Frooty=8, Dragon of Storms=2) are not
-          ;; affected by gravity.
-          ;; Players land when they are atop a playfield pixel (ground
-          ;; detection).
-          ;; Gravity accelerates downward using tunable consta
-
-          ;; (Constants.bas):
-          ;; GravityNormal (0.1px/frame²), GravityReduced
-          ;; (0.05px/frame²), TerminalVelocity (8px/frame)
-          ;; Applies gravity acceleration to jumping players and
-          ;; handles ground detection
-          ;; Input: playerCharacter[] (global array) = character types,
-          ;; playerState[] (global array) = player states, playerX[],
-          ;; playerY[] (global arrays) = player positions,
-          ;; playerVelocityY[], playerVelocityYL[] (global arrays) =
-          ;; vertical velocity, controllerStatus (global) = controller
-          ;; state, playerCharacter[] (global array) =
-          ;; player 3/4 selections, characterStateFlags_R[] (global
-          ;; SCRAM array) = character state flags, gravityRate (global)
-          ;; = gravity acceleration rate, GravityNormal,
-          ;; GravityReduced, TerminalVelocity (global constants) =
-          ;; gravity constants, characterSpecialAbility_R[] (global SCRAM
-          ;; array) = stretch permission (for RoboTito)
-          ;; Output: Gravity applied to jumping players, ground
-          ;; detection performed, players clamped to ground on landing
-          ;; Mutates: temp1-temp6 (used for calculations),
-          ;; playerVelocityY[], playerVelocityYL[] (global arrays) =
-          ;; vertical velocity, playerY[] (global array) = player Y
-          ;; positions, playerSubpixelY[], playerSubpixelYL[] (global
-          ;; arrays) = subpixel Y positions, playerState[] (global
-          ;; array) = player states (jumping flag cleared on landing),
-          ;; characterSpecialAbility_W[] (global SCRAM array) = stretch
-          ;; permission (via SetRoboTitoStretchPermission),
-          ;; missileStretchHeight_W[] (global SCRAM array) = stretch
-          ;; missile heights (via SetRoboTitoStretchPermission),
-          ;; rowYPosition, rowCounter (global) = calculation
-          ;; temporaries
-          ;; Called Routines: AddVelocitySubpixelY (bank8) - adds
-          ;; gravity to vertical velocity,
-          ;; CCJ_ConvertPlayerXToPlayfieldColumn (inlined) - converts player
-          ;; × to playfield column,y divided by 16 (pfrowheight is always 16)
-          ;; row height, SetRoboTitoStretchPermission - sets
-          ;; RoboTito stretch permission on landing
-          ;; Constraints: Frooty (8) and Dragon of Storms (2) skip
-          ;; gravity entirely. RoboTito (13) skips gravity when latched
-          ;; to ceiling
-          ;; Loop through all players (0-3)
+PhysicsApplyGravity .block
           lda # 0
           sta temp1
+.bend
 
-.pend
-
-GravityLoop .proc
+GravityLoop .block
           ;; Check if player is active (P1/P2 always active, P3/P4 need
           ;; Quadtari)
           ;; if temp1 >= 2 then jmp GravityPlayerCheck
           lda temp1
           cmp # 2
-
           bcc GravityCheckCharacter
-
           jmp GravityCheckCharacter
+.bend
 
-          GravityCheckCharacter:
-          jmp GravityCheckCharacter
+GravityCheckCharacter .block
+          ;; Set temp6 = playerCharacter[temp1]
+          lda temp1
+          tax
+          lda playerCharacter,x
+          sta temp6
+.bend
 
-.pend
+GravityNextPlayer .block
+          ;; placeholder
+.bend
 
-GravityPlayerCheck .proc
+GravityPlayerCheck .block
           ;; Players 0-1 always active
+.bend
+
+GravityPlayerCheck2 .block
           lda controllerStatus
           and # SetQuadtariDetected
+.bend
+
           bne CheckPlayer2Character
 
           jmp GravityNextPlayer
@@ -105,7 +51,6 @@ CheckPlayer2Character:
           cmp # 2
           bne CheckPlayer3Character
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -117,7 +62,6 @@ CheckPlayer3Character:
           cmp # 2
           bne CheckPlayer3Active
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -131,19 +75,17 @@ CheckPlayer3Active:
           cmp # 3
           bne GravityCheckCharacter
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
           bne GravityCheckCharacter
           jmp GravityNextPlayer
-GravityCheckCharacter:
+;; GravityCheckCharacter (file-scope alias)
 
           lda temp1
           cmp # 3
           bne CheckCharacterType
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -151,82 +93,53 @@ GravityCheckCharacter:
           jmp GravityNextPlayer
 CheckCharacterType:
 
+;; .bend
 
-
-.pend
-
-GravityCheckCharacter .proc
-          ;; Set temp6 = playerCharacter[temp1]
-          lda temp1
-          asl
-          tax
-          lda playerCharacter,x
-          sta temp6
-          ;; Skip gravity for characters that do not have it
-          ;; Frooty (8): Permanent flight, no gravity
-          ;; Dragon of Storms (2): Permanent flight, no gravity
-          lda temp6
-          cmp CharacterFrooty
-          bne CheckDragonOfStorms
-          jmp GravityNextPlayer
-CheckDragonOfStorms:
 
           ;; (hovering/flying like Frooty)
           lda temp6
-          cmp CharacterDragonOfStorms
+          cmp #CharacterDragonOfStorms
           bne CheckJumpingState
           jmp GravityNextPlayer
 CheckJumpingState:
 
           ;; RoboTito (13): Skip gravity when latched to ceiling
           ;; if temp6 = CharacterRoboTito && (characterStateFlags_R[temp1] & 1) then jmp GravityNextPlayer
-          If NOT jumping, skip gravity (player is on ground)
-          lda playerState[temp1]
+          ;; If NOT jumping, skip gravity (player is on ground)
+          ldx temp1
+          lda playerState,x
           and # PlayerStateBitJumping
           bne ApplyGravityAcceleration
           jmp GravityNextPlayer
 ApplyGravityAcceleration:
 
           ;; Vertical velocity is persistently tracked using playerVelocityY[]
-          and playerVelocityYL[] arrays (8.8 fixed-point format).
+          ;; and playerVelocityYL[] arrays (8.8 fixed-point format).
           ;; Gravity acceleration is applied to the stored velocity each frame.
           ;; Determine gravity acceleration rate based on character
           ;; (8.8 fixed-point subpixel)
           ;; Uses tunable constants from Constants.bas for easy
           ;; adjustment
-          lda GravityNormal
+          lda # GravityNormal
           sta gravityRate
           ;; Default gravity acceleration (normal rate)
           ;; Harpy: reduced gravity rate
           lda temp6
-          cmp CharacterHarpy
+          cmp # CharacterHarpy
           bne ApplyGravityToVelocity
+
           lda GravityReduced
           sta gravityRate
 ApplyGravityToVelocity:
-
-          ;; Apply gravity acceleration to velocity subpixel part
-          ;; Use optimized inline addition instead of subroutine call
-          ;; Set subpixelAccumulator = playerVelocityYL[temp1] + gravityRate
-          lda temp1
-          asl
-          tax
+          ;; Apply gravity  acceleration to  velocity subpixel  part Use
+          ;; optimized inline  addition instead  of subroutine  call Set
+          ;; subpixelAccumulator = playerVelocityYL[temp1] + gravityRate
+          ldx temp1
           lda playerVelocityYL,x
           clc
           adc gravityRate
-          sta subpixelAccumulator
-          lda temp1
-          asl
-          tax
-          lda temp2
           sta playerVelocityYL,x
-          lda temp3
-          cmp # 1
           bcc CheckTerminalVelocity
-          ;; let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
-          lda temp1
-          asl
-          tax
           inc playerVelocityY,x
 CheckTerminalVelocity:
 
@@ -234,53 +147,49 @@ CheckTerminalVelocity:
           ;; acceleration)
           ;; Check if velocity exceeds terminal velocity (positive =
           ;; downward)
-                    if playerVelocityY[temp1] > TerminalVelocity then let playerVelocityY[temp1] = TerminalVelocity : let playerVelocityYL[temp1] = 0
-          ;; Check playfield collision for ground detection (downward)
-          ;; Convert player X position to playfield column (0-31)
-          ;; CRITICAL: Inlined CCJ_ConvertPlayerXToPlayfieldColumn to avoid cross-bank call and stack imbalance
-          ;; Input: temp1 = player index
-          ;; Output: temp2 = playfield column (saved to temp6)
-                    ;; Set temp2 = playerX[temp1]
-                    lda temp1          asl          tax          lda playerX,x          sta temp2
-          ;; Set temp2 = temp2 - ScreenInsetX          lda temp2          sec          sbc # ScreenInsetX          sta temp2
-          lda temp2
+          lda playerVelocityY, x
+          cmp # >TerminalVelocity
+          blt DoneTerminalVelocity
+
+          bne OverTerminalVelocity
+
+          lda playerVelocityYL,x
+          cmp # <TerminalVelocity
+          blt DoneTerminalVelocity
+
+OverTerminalVelocity:
+          lda # <TerminalVelocity
+          sta playerVelocityYL,x
+
+          lda # >TerminalVelocity
+          sta playerVelocityY,x
+
+DoneTerminalVelocity:
+          ;; Check playfield  collision for ground  detection (downward)
+          ;; Convert  player  X  position  to  playfield  column  (0-31)
+          ;; CRITICAL:  Inlined  CCJ_ConvertPlayerXToPlayfieldColumn  to
+          ;; avoid cross-bank  call and  stack imbalance Input:  temp1 =
+          ;; player  index Output:  temp2 =  playfield column  (saved to
+          ;; temp6) 
+          ldx temp1
+          lda playerX, x
           sec
           sbc # ScreenInsetX
-          sta temp2
-
-          lda temp2
-          sec
-          sbc # ScreenInsetX
-          sta temp2
-
-          ;; Set temp2 = temp2 / 4          lda temp2          lsr          lsr          sta temp2
-          lda temp2
-          lsr
-          lsr
-          sta temp2
-
-          lda temp2
-          lsr
-          lsr
-          sta temp2
-
+          lsr a
+          lsr a
           ;; Save playfield column (temp2 will be overwritten)
-          lda temp2
           sta temp6
           ;; Calculate row where player feet are (bottom of sprite)
           ;; Feet are at playerY + PlayerSpriteHeight (16 pixels)
           ;; Set temp3 = playerY[temp1]
-          lda temp1
-          asl
-          tax
-          lda playerY,x
-          sta temp3 + PlayerSpriteHeight
-          lda temp1
-          asl
-          tax
-          lda playerY,x
+          ldx temp1
+          lda playerY, x
+          clc
+          adc # PlayerSpriteHeight
+          ldx temp1
+          lda playerY, x
           sta temp3
-          ;; Divide by pfrowheight (16) using 4 right shifts
+          ;; Divide by PFRowHeight (16) using 4 right shifts
           lda temp3
           sta temp2
             lsr temp2
@@ -292,11 +201,11 @@ CheckTerminalVelocity:
           sta temp4
           ;; Check if there is a playfield pixel in the row below the
           ;; feet
-          If feet are in row N, check row N+1 for ground
+          ;; If feet are in row N, check row N+1 for ground
           ;; Feet are at or below bottom of playfield, continue falling
-          ;; if temp4 >= pfrows then jmp GravityNextPlayer
+          ;; if temp4 >= PFRows then jmp GravityNextPlayer
           lda temp4
-          cmp pfrows
+          cmp #PFRows
 
           bcc CalculateRowBelow
 
@@ -309,9 +218,9 @@ CheckTerminalVelocity:
           adc # 1
           sta temp5
           ;; Beyond playfield bounds, check if at bottom
-          ;; if temp5 >= pfrows then jmp GravityCheckBottom
+          ;; if temp5 >= PFRows then jmp GravityCheckBottom
           lda temp5
-          cmp pfrows
+          cmp #PFRows
 
           bcc CheckGroundPixel
 
@@ -346,8 +255,10 @@ CheckTerminalVelocity:
           ldx # 15
           jmp BS_jsr
 AfterPlayfieldReadGravity:
-
-                    if temp1 then let temp3 = 1          lda temp1          beq CheckGroundDetected
+          lda temp1
+          beq CheckGroundDetected
+          lda # 1
+          sta temp3
 CheckGroundDetected:
           jmp CheckGroundDetected
           lda temp4
@@ -360,7 +271,7 @@ CheckRadishGoblin:
 
           ;; Radish Goblin uses bounce movement system, skip standard landing
           lda temp6
-          cmp CharacterRadishGoblin
+          cmp #CharacterRadishGoblin
           bne StandardLandingLogic
           jmp GravityNextPlayer
 StandardLandingLogic:
@@ -368,79 +279,66 @@ StandardLandingLogic:
           ;; Standard landing logic for all other characters
           ;; Zero Y velocity (stop falling)
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityY,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
           ;; Calculate Y position for top of ground row using repeated
           ;; addition
-          ;; Loop to add pfrowheight to rowYPosition, rowBelow times
+          ;; Loop to add PFRowHeight to rowYPosition, rowBelow times
           lda # 0
           sta rowYPosition
           lda temp5
           sta rowCounter
           lda rowCounter
-          bne GravityRowCalcLoop
-          jmp GravityRowCalcDone
+          beq GravityRowCalcDone
 GravityRowCalcLoop:
-
-
-.pend
-
-GravityRowCalcLoop .proc
-          ;; Set rowYPosition = rowYPosition + pfrowheight
+          lda rowYPosition
+          clc
+          adc # PFRowHeight
+          sta rowYPosition
           dec rowCounter
           lda rowCounter
-          cmp # 1
-          bcc GravityRowCalcDoneLabel
-GravityRowCalcDoneLabel:
-
-
-GravityRowCalcDone
-          ;; rowYPosition now contains rowBelow × pfrowheight (Y
+          bne GravityRowCalcLoop
+GravityRowCalcDone:
+          ;; rowYPosition now contains rowBelow × PFRowHeight (Y
           ;; position of top of ground row)
           ;; Clamp playerY so feet are at top of ground row
-                    let playerY[temp1] = rowYPosition - PlayerSpriteHeight
+          ;; playerY[temp1] = rowYPosition - PlayerSpriteHeight
           ;; Also sync subpixel position
-                    let playerSubpixelY_W[temp1] = playerY[temp1]
+          ;; playerSubpixelY_W[temp1] = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           lda temp1
-          asl
           tax
           sta playerSubpixelY_W,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerSubpixelY_WL,x
           ;; Clear jumping flag (bit 2, not bit 4 - fix bit number)
-                    let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitJumping)
+          ;; playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitJumping)
           ;; Clear bit 2 (jumping flag)
           ;; Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
           lda temp6
           cmp # 3
           bne CheckRoboTitoLanding
-                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
+          ;; characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
 CheckRoboTitoLanding:
 
-          If RoboTito, set stretch permission on landing
+          ;; If RoboTito, set stretch permission on landing
           lda temp6
-          cmp CharacterRoboTito
-          bne GravityNextPlayer
+          cmp # CharacterRoboTito
+          bne GravityNextPlayerSkip
           jmp SetRoboTitoStretchPermission
-GravityNextPlayer:
-
+GravityNextPlayerSkip:
           jmp GravityNextPlayer
 
-SetRoboTitoStretchPermission
+SetRoboTitoStretchPermission .block
           ;; Set RoboTito stretch permission on landing (allows
           ;; stretching again)
           ;; Input: temp1 (temp1) = player index (0-3),
@@ -458,13 +356,11 @@ SetRoboTitoStretchPermission
           ;; Set stretch permission for this player (simple array assignment)
           ;; Grant stretch permission on landing
           lda temp1
-          asl
           tax
           lda # 1
           sta characterSpecialAbility_W,x
           ;; Clear stretch missile height on landing (not stretching)
           lda temp1
-          asl
           tax
           lda # 0
           sta missileStretchHeight_W,x
@@ -472,27 +368,27 @@ SetRoboTitoStretchPermission
           ;; Do not return - use jmp to continue the loop
           jmp GravityNextPlayer
 
-.pend
+.bend
 
-GravityCheckBottom .proc
+GravityCheckBottom .block
           ;; At bottom of playfield - treat as ground if feet are at
           ;; bottom row
           ;; Not at bottom row yet
-          ;; if temp4 < pfrows - 1 then jmp GravityNextPlayer
+          ;; if temp4 < PFRows - 1 then jmp GravityNextPlayer
           ;; Skip standard landing logic for Radish Goblin (bounce system handles it)
           ;; Radish Goblin uses bounce movement system, skip standard landing
           lda temp6
-          cmp CharacterRadishGoblin
+          cmp #CharacterRadishGoblin
           bne ClampToBottom
           jmp GravityNextPlayer
 ClampToBottom:
 
           ;; Bottom row is always ground - clamp to bottom
-          ;; Calculate (pfrows - 1) × pfrowheight using repeated
+          ;; Calculate (PFRows - 1) × PFRowHeight using repeated
           ;; addition
           lda # 0
           sta rowYPosition
-          lda pfrows
+          lda #PFRows
           sec
           sbc # 1
           sta rowCounter
@@ -502,46 +398,38 @@ ClampToBottom:
 GravityBottomCalcLoopLabel:
 
 
-.pend
+.bend
 
-GravityBottomCalcLoop .proc
-          ;; Set rowYPosition = rowYPosition + pfrowheight
+GravityBottomCalcLoop .block
+          ;; Set rowYPosition = rowYPosition + PFRowHeight
           dec rowCounter
           lda rowCounter
-          cmp # 1
-          bcc GravityBottomCalcDone
-GravityBottomCalcDone:
+          bne GravityBottomCalcDone
+          jmp GravityBottomCalcDone
 
+.bend
 
-GravityBottomCalcDone
-                    let playerY[temp1] = rowYPosition - PlayerSpriteHeight
+GravityBottomCalcDone .block
           ;; Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
-                    let playerState[temp1] = playerState[temp1]
-          lda temp1
-          asl
-          tax
-          lda playerState,x
-          lda temp1
-          asl
-          tax
-          sta playerState,x & ($FF ^ 4)
+          ldx temp1
+          lda playerState, x
+          and # $ff ^ 4
+          sta playerState, x
           lda temp6
           cmp # 3
           bne CheckRoboTitoBottomLanding
-                    let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
+
 CheckRoboTitoBottomLanding:
-
-          If RoboTito, set stretch permission on landing at bottom
           lda temp6
-          cmp CharacterRoboTito
-          bne GravityNextPlayerLabel
+          cmp #CharacterRoboTito
+          bne GravityNextPlayerSkip2
           jmp SetRoboTitoStretchPermission
-GravityNextPlayerLabel:
+GravityNextPlayerSkip2:
+          jmp GravityNextPlayer
 
+.bend
 
-.pend
-
-GravityNextPlayer .proc
+;; GravityNextPlayer:
           ;; Move to next player
           inc temp1
           ;; if temp1 < 4 then jmp GravityLoop          lda temp1          cmp 4          bcs .skip_5570          jmp
@@ -562,5 +450,5 @@ PhysicsApplyGravityDone:
           
           jmp BS_return
 
-.pend
+;; .bend
 

@@ -4,6 +4,7 @@
 ;;; See LICENSE file for full terms
 
 TVStandard = 1  ;;; PAL
+FrameRate = 50  ;;; PAL refresh rate
 
 ;; CRITICAL: Preamble.s is now included at the top of Banks.s
 ;; Do NOT include it here to prevent duplicate definitions

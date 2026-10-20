@@ -43,7 +43,6 @@ UpdateSingleGuardTimer .proc
           ;; Check if player is guarding
           ;; Set temp2 = playerState[temp1] & 2
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -57,7 +56,6 @@ UpdateCooldownTimer:
           ;; Fix RMW: Read from _R, modify, write to _W
           ;; Set temp3 = playerTimers_R[temp1]
           lda temp1
-          asl
           tax
           lda playerTimers_R,x
           sta temp3
@@ -65,7 +63,6 @@ UpdateCooldownTimer:
 
           dec temp3
           lda temp1
-          asl
           tax
           lda temp3
           sta playerTimers_W,x
@@ -93,7 +90,6 @@ UpdateGuardTimerActive .proc
           ;; Player is guarding - decrement guard duration timer
           ;; Set temp3 = playerTimers_R[temp1]
           lda temp1
-          asl
           tax
           lda playerTimers_R,x
           sta temp3
@@ -107,7 +103,6 @@ SkipExpiredCheck:
           ;; Decrement guard duration timer
           dec temp3
           lda temp1
-          asl
           tax
           lda temp3
           sta playerTimers_W,x
@@ -140,12 +135,11 @@ GuardTimerExpired .proc
           ;; Start cooldown timer (same duration as guard)
           ;; Set playerState[temp1] = playerState[temp1] & MaskClearGuard
           lda temp1
-          asl
           tax
           lda playerState,x
           and # MaskClearGuard
           sta playerState,x
-          lda GuardTimerMaxFrames
+          lda #GuardTimerMaxFrames
           sta playerTimers_W,x
           jmp BS_return
 

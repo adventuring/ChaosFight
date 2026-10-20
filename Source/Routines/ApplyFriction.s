@@ -13,7 +13,6 @@ ApplyFriction
           ;; Check for negative velocity using twos complement (values
           ;; if playerVelocityX[temp1] > 0 then let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           beq CheckNegativeVelocity
@@ -21,7 +20,6 @@ ApplyFriction
 CheckNegativeVelocity:
 
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           beq CheckNegativeVelocityLabel
@@ -33,7 +31,6 @@ CheckNegativeVelocityLabel:
           ;; Also zero subpixel if velocity reaches zero
           ;; if playerVelocityX[temp1] & $80 then let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           and #$80
@@ -45,7 +42,6 @@ ClearSubpixel:
 
           ;; If playerVelocityX[temp1] = 0, then set playerVelocityXL[temp1] = 0
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           bne ApplyFrictionDone

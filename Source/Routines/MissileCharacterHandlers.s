@@ -25,7 +25,6 @@ HarpyCheckDiveVelocity .proc
           ;; for Harpy (character 6)
           ;; If (characterStateFlags_R[temp1] & 4),, then HarpyBoostDiveVelocity
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           and # 4
@@ -66,7 +65,6 @@ HarpyBoostDiveVelocity .proc
 
 VelocityDoneHarpy:
           lda temp1
-          asl
           tax
           lda temp6
           sta missileVelocityY,x
@@ -80,7 +78,7 @@ HandleMegaxMissile .proc
           ;; Megax missile stays adjacent to player, no movement.
           ;; Missile appears when attack starts, stays during attack
           ;; phase,
-          and vanishes when attack animation completes.
+          ;; and vanishes when attack animation completes.
           ;; Handles Megax stationary fire breath visual (locked to
           ;; player position)
           ;;
@@ -92,7 +90,7 @@ HandleMegaxMissile .proc
           ;; CharacterMissileSpawnOffsetLeft[],
           ;; CharacterMissileSpawnOffsetRight[] = spawn
           ;; offsets, PlayerStateBitFacing (global constant) = facing
-          bit mask, ActionAttackExecute (global constant) = attack
+          ;; bit mask, ActionAttackExecute (global constant) = attack
           ;; animation state (14)
           ;;
           ;; Output: Missile position locked to player, missile
@@ -112,12 +110,15 @@ HandleMegaxMissile .proc
           ;; ActionAttackExecute (14)
 
           ;; Get facing direction (bit 0: 0=left, 1=right)
-                    let temp4 = playerState[temp1] & PlayerStateBitFacing          lda temp1          asl          tax          lda playerState,x          sta temp4
+          lda temp1
+          tax
+          lda playerState,x
+          and # PlayerStateBitFacing
+          sta temp4
 
           ;; Get emission height from character data
           ;; Set temp5 = CharacterMissileEmissionHeights[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMissileEmissionHeights,x
           sta temp5
@@ -127,12 +128,10 @@ HandleMegaxMissile .proc
           ;; Calculate X position based on player position and facing
           ;; Set temp2 = playerX[temp1]
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -152,44 +151,43 @@ CalculateYPosition:
 
 
           ;; Calculate Y position (player Y + emission height)
-                    let temp3 = playerY[temp1] + temp5          lda temp1          asl          tax          lda playerY,x          sta temp3
+          lda temp1
+          tax
+          lda playerY,x
+          clc
+          adc temp5
+          sta temp3
 
           ;; Update missile position (locked to player)
           lda temp1
-          asl
           tax
           lda temp2
           sta missileX,x
           lda temp1
-          asl
           tax
           lda temp3
           sta missileY_W,x
 
           ;; Zero velocities to prevent any movement
           lda temp1
-          asl
           tax
           lda # 0
           sta missileVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta missileVelocityY,x
 
           ;; Check if attack animation is complete
           ;; Animation state is in bits 4-7 of playerState
-          ActionAttackExecute = 14 (0xE)
+          ;; ActionAttackExecute = 14 (0xE)
           ;; Extract animation state (bits 4-7)
           ;; Set temp6 = playerState[temp1]
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp6
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp6
@@ -198,10 +196,10 @@ CalculateYPosition:
             lsr temp6
             lsr temp6
             lsr temp6
-          If animation state is not ActionAttackExecute (14), attack
+          ;; If animation state is not ActionAttackExecute (14), attack
           ;; is complete
           ;; deactivate
-          ActionAttackExecute = 14, so if animationState ≠ 14,
+          ;; ActionAttackExecute = 14, so if animationState ≠ 14,
           lda temp6
           cmp # 14
           bne DeactivateMissile
@@ -259,12 +257,15 @@ HandleKnightGuyMissile .proc
           ;; animation state ≠ ActionAttackExecute (14)
 
           ;; Get facing direction (bit 0: 0=left, 1=right)
-                    let temp4 = playerState[temp1] & PlayerStateBitFacing          lda temp1          asl          tax          lda playerState,x          sta temp4
+          lda temp1
+          tax
+          lda playerState,x
+          and # PlayerStateBitFacing
+          sta temp4
 
           ;; Get emission height from character data
           ;; Set temp5 = CharacterMissileEmissionHeights[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMissileEmissionHeights,x
           sta temp5
@@ -273,12 +274,10 @@ HandleKnightGuyMissile .proc
           ;; Extract animation state (bits 4-7)
           ;; Set temp6 = playerState[temp1]
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp6
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp6
@@ -287,7 +286,7 @@ HandleKnightGuyMissile .proc
             lsr temp6
             lsr temp6
             lsr temp6
-          If animation state is not ActionAttackExecute (14), attack is complete
+          ;; If animation state is not ActionAttackExecute (14), attack is complete
           lda temp6
           cmp # 14
           bne DeactivateMissileKnightGuy
@@ -305,7 +304,6 @@ KnightGuyAttackActive .proc
           ;; Read from SCRAM and calculate offset immediately
           ;; Set velocityCalculation = currentAnimationFrame_R[temp1]         
           lda temp1
-          asl
           tax
           lda currentAnimationFrame_R,x
           sta velocityCalculation
@@ -334,7 +332,7 @@ KnightGuySwingReturnLabel:
           ;; Calculate return offset: (7 - frame) pixels
           ;; Frame 4: 3 pixels away, Frame 5: 2 pixels, Frame 6: 1
           ;; pixel, Frame 7: 0 pixels
-          ;; Set velocityCalculation = 7 - velocityCalculation          lda # 7          sec          sbc velocityCalculation          sta velocityCalculation
+          ;; Set velocityCalculation = 7 - velocityCalculation
           lda # 7
           sec
           sbc velocityCalculation
@@ -362,7 +360,6 @@ KnightGuySetPosition
           Then apply swing offset in facing direction
           ;; Set temp2 = playerX[temp1] + 8         
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -396,24 +393,20 @@ KnightGuySetY .proc
           ;; Calculate Y position (player Y + emission height)
           ;; Set temp3 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp3 + temp5
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp3
 
           ;; Update missile position
           lda temp1
-          asl
           tax
           lda temp2
           sta missileX,x
           lda temp1
-          asl
           tax
           lda temp3
           sta missileY_W,x
@@ -422,12 +415,10 @@ KnightGuySetY .proc
           ;; frame
           ;; Position is updated directly each frame based on animation
           lda temp1
-          asl
           tax
           lda # 0
           sta missileVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta missileVelocityY,x

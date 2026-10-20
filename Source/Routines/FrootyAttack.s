@@ -111,7 +111,6 @@ FrootyCheckJoy0 .proc
 
           ;; Set temp3 = frootyChargeState_R[temp1]
           lda temp1
-          asl
           tax
           lda frootyChargeState_R,x
           sta temp3
@@ -143,7 +142,6 @@ IncrementChargeTimer:
 
           ;; At max charge, don't increment further, but still update frame counter
           lda temp1
-          asl
           tax
           lda frootyChargeTimer_R,x
           cmp # 30
@@ -175,7 +173,6 @@ FrootyUpdateFrameCounter .proc
           sta temp3
 
           lda temp1
-          asl
           tax
           lda temp3
           sta frootyChargeState_W,x
@@ -191,7 +188,6 @@ FrootyUpdateFrameCounter .proc
 
           ;; Set temp3 = frootyChargeState_R[temp1]
           lda temp1
-          asl
           tax
           lda frootyChargeState_R,x
           sta temp3
@@ -222,13 +218,11 @@ SpawnProjectile:
 
           ;; Set temp2 = frootyChargeTimer_R[temp1]
           lda temp1
-          asl
           tax
           lda frootyChargeTimer_R,x
           sta temp2
 
           lda temp1
-          asl
           tax
           lda # 0
           sta frootyChargeState_W,x
@@ -236,7 +230,6 @@ SpawnProjectile:
           ;; Spawn projectile with ricochet physics
 
           lda temp1
-          asl
           tax
           lda # 0
           sta frootyChargeTimer_W,x
@@ -298,7 +291,6 @@ SetMissileLifetime:
           ;; Set ricochet velocity - Frooty’s missile will bounce off bounds
 
           lda temp1
-          asl
           tax
           lda temp3
           sta missileLifetime_W,x

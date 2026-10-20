@@ -1,5 +1,5 @@
 
-AttractMode .proc
+AttractMode .block
           ;;
 ;;; ChaosFight - Source/Routines/AttractMode.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
@@ -57,5 +57,5 @@ AfterChangeGameModeAttract:
 
           rts
 
-.pend
+.bend
 

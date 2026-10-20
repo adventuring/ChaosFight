@@ -38,7 +38,6 @@ HandleFlyingCharacterMovement .proc
 
           ;; Set temp5 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp5
@@ -185,19 +184,16 @@ HandleFlyingCharacterMovementCheckVertical .proc
 
           ;; Set temp5 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp5
 
           ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta characterMovementSpeed
           lda temp5
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta characterMovementSpeed

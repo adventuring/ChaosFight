@@ -53,7 +53,6 @@ ProcessAttackInput .proc
 
           ;; Set temp2 = playerState[temp1] & 2
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -100,7 +99,6 @@ PAI_ExecuteAttack .proc
 
           ;; Set temp4 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4

@@ -62,7 +62,6 @@ MovePlayer1:
           ;; playerIndex = 0 (player index), targetX = target X
           ;; Check if player 1 is active
           lda # 0
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -155,7 +154,6 @@ DonePlayer1Move:
           ;; Move Player 2 from quadrant to target (if active)
           ;; Check if player 2 is active
           lda # 1
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -255,7 +253,6 @@ DonePlayer2Move:
 MovePlayer3:
           ;; Check if player 3 is active
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -318,7 +315,6 @@ MovePlayer4:
 
 
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -468,7 +464,7 @@ AfterBeginGameLoop:
 
 
           ;; Transition to Game Mode
-          lda ModeGame
+          lda #ModeGame
           sta gameMode
           ;; Cross-bank call to ChangeGameMode in bank 13
           ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode

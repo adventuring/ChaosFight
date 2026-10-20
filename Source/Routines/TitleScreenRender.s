@@ -35,21 +35,18 @@ DrawTitleScreen .proc
           ;; CRITICAL: Window values must be set every frame (titlescreen kernel uses them)
           ;; gameMode 0 = Publisher Prelude, 1 = Author Prelude, 2 = Title Screen
           lda gameMode
-          bne CheckAuthorMode
+          bne TitleScreenCheckAuthor
 
           jmp DrawPublisherScreen
 
-CheckAuthorMode:
+TitleScreenCheckAuthor:
 
           lda gameMode
           cmp # 1
-          bne DrawTitleScreenOnly
+          beq DrawAuthorScreen
 
-          jmp DrawAuthorScreen
-
-DrawTitleScreenOnly:
           ;; Default: Title screen (gameMode = 2)
-          ;; Fall through to DrawTitleScreenOnly proc (defined below)
+          jmp DrawTitleOnlyScreen
 
 .pend
 
@@ -89,7 +86,7 @@ DrawAuthorScreen .proc
 
 .pend
 
-DrawTitleScreenOnly .proc
+DrawTitleOnlyScreen .proc
           ;; Title Screen: Show ChaosFight title only
           ;; Set titlescreenWindow1 = 0   ; AtariAge logo hidden
           ;; Set titlescreenWindow2 = 0  ; AtariAgeText hidden

@@ -37,13 +37,11 @@ XDistanceCheckCollision:
           ;; Load player Y positions into temporaries
           ;; Set temp4 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp4
           ;; Set temp5 = playerY[temp2]
           lda temp2
-          asl
           tax
           lda playerY,x
           sta temp5
@@ -103,10 +101,8 @@ YDistanceDone:
           ;;
           ;; If temp6 >= CharacterHeights[playerCharacter[temp1]],, then NoCollision
           lda temp1
-          asl
           tax
           lda playerCharacter,x
-          asl
           tax
           lda CharacterHeights,x
           cmp temp6
@@ -165,13 +161,11 @@ CheckPlayerCollision:
           ;; Load player X positions into temporaries
           ;; Set temp4 = playerX[temp1]
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp4
           ;; Set temp5 = playerX[temp2]
           lda temp2
-          asl
           tax
           lda playerX,x
           sta temp5
@@ -210,14 +204,12 @@ CalcYDistanceDown .proc
           ;; Fetch character half-height values using shared SCRAM scratch variables
           ;; Set characterIndex = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta characterIndex
           ;; Use bit shift instead of division (optimized for Atari 2600)
           ;; Set characterHeight = CharacterHeights[characterIndex]
           lda characterIndex
-          asl
           tax
           lda CharacterHeights,x
           sta characterHeight
@@ -227,19 +219,16 @@ CalcYDistanceDown .proc
 
           ;; Set characterIndex = playerCharacter[temp2]
           lda temp2
-          asl
           tax
           lda playerCharacter,x
           sta characterIndex
           ;; Use bit shift instead of division (optimized for Atari 2600)
           ;; Set characterHeight = CharacterHeights[characterIndex]
           lda characterIndex
-          asl
           tax
           lda CharacterHeights,x
           sta characterHeight
           lda characterIndex
-          asl
           tax
           lda CharacterHeights,x
           sta characterHeight

@@ -20,7 +20,6 @@ GetWeightBasedDamage .proc
           ;; Weight tiers: <=15 = 12 damage, <=25 = 18 damage, >25 = 22 damage
           ;; Set temp3 = CharacterWeights[temp1]
           lda temp1
-          asl
           tax
           lda CharacterWeights,x
           sta temp3
@@ -86,7 +85,6 @@ ApplyDamage .proc
           ;; Issue #1149: Use shared helper instead of duplicated logic
           ;; Set temp1 = playerCharacter[attackerID]
           lda attackerID
-          asl
           tax
           lda playerCharacter,x
           sta temp1
@@ -96,7 +94,6 @@ ApplyDamage .proc
           sta temp4
           ;; Set temp1 = playerCharacter[defenderID]
           lda defenderID
-          asl
           tax
           lda playerCharacter,x
           sta temp1
@@ -124,7 +121,6 @@ CheckPlayerWillDie:
           ;; Check if player will die from this damage
           ;; Set temp2 = playerHealth[defenderID]
           lda defenderID
-          asl
           tax
           lda playerHealth,x
           sta temp2
@@ -150,7 +146,6 @@ ApplyDamageToPlayer:
           ;; Player survives - apply damage and enter hurt sta
           ;; Set playerHealth[defenderID] = temp2 - temp1
           lda defenderID
-          asl
           tax
           lda temp2
           sec
@@ -208,7 +203,6 @@ CheckMaximumRecovery:
 StoreRecoveryFrames:
 
           lda defenderID
-          asl
           tax
           lda temp4
           sta playerRecoveryFrames,x
@@ -216,7 +210,6 @@ StoreRecoveryFrames:
           ;; Set playerState bit 3 (recovery flag) when recovery frames are set
           ;; Set playerState[defenderID] = playerState[defenderID] | 8
           lda defenderID
-          asl
           tax
           lda playerState,x
           ora # 8
@@ -227,12 +220,11 @@ StoreRecoveryFrames:
           ;; Lighter characters travel higher than heavyweights
           ;; Set temp1 = playerCharacter[attackerID]
           lda attackerID
-          asl
           tax
           lda playerCharacter,x
           sta temp1
           lda temp1
-          cmp CharacterUrsulo
+          cmp #CharacterUrsulo
           bne PlayDamageSound
           jmp ApplyUrsuloKnockUp
 PlayDamageSound:
@@ -264,7 +256,6 @@ ApplyUrsuloKnockUp .proc
           ;; Weight values range 5-100 (lightest to heaviest)
           ;; Set temp1 = playerCharacter[defenderID]
           lda defenderID
-          asl
           tax
           lda playerCharacter,x
           sta temp1
@@ -277,7 +268,6 @@ ApplyUrsuloKnockUp .proc
           ;; Values already clamped to 0-8 range in lookup table
           ;; Set temp3 = CharacterWeightDiv12[temp1]
           lda temp1
-          asl
           tax
           lda CharacterWeightDiv12,x
           sta temp3
@@ -294,20 +284,17 @@ ApplyUrsuloKnockUp .proc
 ApplyUpwardVelocity:
 
           lda defenderID
-          asl
           tax
           lda temp4
           sta playerVelocityY,x
           ;; Set jumping flag so gravity applies correctly and animation system handles airborne sta
 
           lda defenderID
-          asl
           tax
           lda # 0
           sta playerVelocityYL,x
           ;; Set playerState[defenderID] = playerState[defenderID] | PlayerStateBitJumping
           lda defenderID
-          asl
           tax
           lda playerState,x
           ora # PlayerStateBitJumping
@@ -338,7 +325,6 @@ PlayerDies .proc
           ;; PlayDamageSound - plays damage sound effect
           ;; Constraints: Must be colocated with ApplyDamage, PlayDamageSound
           lda defenderID
-          asl
           tax
           lda # 0
           sta playerHealth,x
@@ -415,12 +401,9 @@ CheckAttackHit .proc
           ;; cachedHitboxBottom]
           ;; Overlap occurs when: defender_right > cachedHitboxLeft_R and
           ;; defender_left < cachedHitboxRight_R
-          and defender_bottom > hitboxTop and defender_top <
-          ;; hitboxBottom
           ;; Defender right edge <= hitbox left edge (no overlap)
           ;; If playerX[defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R, then NoHit
           lda defenderID
-          asl
           tax
           lda playerX,x
           clc
@@ -430,9 +413,7 @@ CheckAttackHit .proc
           beq NoHit
 
           ;; Defender left edge >= hitbox right edge (no overlap)
-                    if playerX[defenderID] >= cachedHitboxRight_R then NoHit
           lda defenderID
-          asl
           tax
           lda playerX,x
           sec
@@ -442,13 +423,11 @@ CheckAttackHit .proc
 CheckVerticalOverlap:
 
           ;; Defender bottom edge <= hitbox top edge (no overlap)
-                    if playerY[defenderID] + PlayerSpriteHeight <= cachedHitboxTop_R then NoHit
           lda defenderID
-          asl
           tax
           lda playerY,x
           clc
-          adc PlayerSpriteHeight
+          adc #PlayerSpriteHeight
           sta temp6
           lda temp6
           sec
@@ -459,9 +438,7 @@ CheckVerticalOverlap:
 CheckBottomOverlap:
 
           ;; Defender top edge >= hitbox bottom edge (no overlap)
-                    if playerY[defenderID] >= cachedHitboxBottom_R then NoHit
           lda defenderID
-          asl
           tax
           lda playerY,x
           sec
@@ -517,7 +494,6 @@ CalculateAttackHitbox .proc
 
           ;; Set temp1 = playerAttackType_R[attackerID]
           lda attackerID
-          asl
           tax
           lda playerAttackType_R,x
           sta temp1
@@ -563,7 +539,6 @@ MeleeHitbox .proc
           ;; Extract facing from playerState bit 3: 1=right (jmp FacingRight), 0=left (jmp FacingLeft)
           ;; Set temp2 = playerState[attackerID] & PlayerStateBitFacing
           lda attackerID
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -597,7 +572,6 @@ FacingRight .proc
           ;; Hitbox: [playerX+16, playerX+32] × [playerY, playerY+16]
           ;; Set cachedHitboxLeft_W = playerX[attackerID] + PlayerSpriteWidth
           lda attackerID
-          asl
           tax
           lda playerX,x
           clc
@@ -612,7 +586,6 @@ FacingRight .proc
           sta cachedHitboxRight_W
           ;; Set cachedHitboxTop_W = playerY[attackerID]
           lda attackerID
-          asl
           tax
           lda playerY,x
           sta cachedHitboxTop_W
@@ -646,7 +619,6 @@ FacingLeft .proc
           ;; Hitbox: [playerX-16, playerX] × [playerY, playerY+16]
           ;; Set cachedHitboxLeft_W = playerX[attackerID] - PlayerSpriteWidth
           lda attackerID
-          asl
           tax
           lda playerX,x
           sec
@@ -657,7 +629,6 @@ FacingLeft .proc
           sta cachedHitboxRight_W
           ;; Set cachedHitboxTop_W = playerY[attackerID]
           lda attackerID
-          asl
           tax
           lda playerY,x
           sta cachedHitboxTop_W
@@ -723,7 +694,6 @@ AreaHitbox .proc
           ;; Center × = playerX + half sprite width
           ;; Set temp2 = playerX[attackerID] + 8
           lda attackerID
-          asl
           tax
           lda playerX,x
           clc
@@ -744,7 +714,6 @@ AreaHitbox .proc
           ;; Center Y = playerY + half sprite height
           ;; Set temp2 = playerY[attackerID] + 8
           lda attackerID
-          asl
           tax
           lda playerY,x
           clc
@@ -798,7 +767,6 @@ ProcessAttackerAttacks .proc
           ;; Issue #1148: Skip ranged attackers (handled by missile system)
           ;; Set temp1 = playerAttackType_R[attackerID]
           lda attackerID
-          asl
           tax
           lda playerAttackType_R,x
           sta temp1
@@ -824,7 +792,6 @@ CheckDefenderHealth:
           ;; Skip if defender is dead
           ;; If playerHealth[defenderID] <= 0, then NextDefender
           lda defenderID
-          asl
           tax
           lda playerHealth,x
           beq NextDefender
@@ -883,7 +850,6 @@ ProcessAttackerLoop:
           ;; Skip if attacker is dead
           ;; If playerHealth[attackerID] <= 0, then NextAttacker
           lda attackerID
-          asl
           tax
           lda playerHealth,x
           beq NextAttacker
@@ -895,7 +861,6 @@ ProcessAttackerLoop:
           ;; Issue #1147: Only evaluate live attacks (windup-through-recovery window)
           ;; Set temp1 = playerState[attackerID] & MaskPlayerStateAnimation
           lda attackerID
-          asl
           tax
           lda playerState,x
           and # MaskPlayerStateAnimation
@@ -927,7 +892,7 @@ NextAttacker:
           ;; Returns: Far (return otherbank)
           jmp BS_return
 
-;; PlayDamageSound .proc (no matching .pend)
+PlayDamageSound .proc
           ;; Damage sound effect handler
           ;; Returns: Far (return otherbank)
           ;;
@@ -951,7 +916,7 @@ NextAttacker:
           ;; Called Routines: PlaySoundEffect (bank15) - plays sound
           ;; effect
           ;; Constraints: None
-          lda SoundAttackHit
+          lda #SoundAttackHit
           sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 14
           ;; Return address: ENCODED with caller bank 6 ($60) for BS_return to decode
@@ -975,3 +940,4 @@ AfterPlaySoundEffect:
 
           jmp BS_return
 
+.pend

@@ -4,115 +4,56 @@
           GameVersionMajor = 0
           GameVersionMinor = 1
 
-          ;; Build year (4 digits, e.g. 2025, set by Makefile)
-          BuildYear = BUILD_YEAR
-          ;; Build day in julian day format (1-366, set by Makefile)
-          BuildDay = BUILD_DAY
-
-          ;; TV Standard constants (matches TVStandard enum values)
-          ;; These match the TVStandard values set by platform files:
-          ;; NTSC.s: TVStandard = 0
-          ;; PAL.s: TVStandard = 1
-          ;; SECAM.s: TVStandard = 2
-          ;; Note: These are batariBASIC constants. For assembly .if directives,
-          ;; use TVStandard == NTSC, TVStandard == PAL, TVStandard == SECAM
           NTSC = 0
           PAL = 1
           SECAM = 2
 
-          ;; Game URL: https://interworldly.com/games/ChaosFight
           NumArenas = 16
           MaxArenaID = 1
-          RandomArena = 255
-          RecoveryFrameCount = 8
-          KnockbackDistance = 12
-          ;; Minimum horizontal separation distance (in pixels) between players
-          ;; If players are this distance or more apart, skip collision separation
-          ;; Characters are 8px wide, so 16px provides 2x sprite width separation
-          ;; Matches hardcoded value used in other collision checks (P1vsP3, P1vsP4, etc.)
-          CollisionSeparationDistance = 16
+          RandomArena = $ff
+          ;; RecoveryFrameCount = 8 — should be physics
+          ;; KnockbackDistance = 12 — should be physics
 
-          ;;
-          ;; PHYSICS CONSTANTS - Gravity and Terminal Velocity
-          ;; Scale: 16px = 2m (character height), so 1px = 0.125m =
-          ;;
-          ;; 12.5cm
-          ;; Gravity values are in 8.8 fixed-point subpixel units (low
-          ;; byte)
-          ;; Realistic Earth gravity would be 4410 px/frame² (too high
-          ;; for gameplay!)
-          ;; Normal gravity acceleration (0.1 px/frame²)
-          ;; Value: 0.1 × 256 = 25.6 ≈ 26 (in low byte of 8.8 fixed-point)
-          GravityNormal = 26
+          CharacterWidth = 16
 
-          ;; Reduced gravity acceleration (0.05 px/frame²) for Harpy
-          ;; Value: 0.05 × 256 = 12.8 ≈ 13 (in low byte of 8.8 fixed-point)
-          GravityReduced = 13
+          ;; 1px = 12.5cm
+          ;;
+          ;; 9.8m/s² ÷ 12.5cm/px = 1.225px/s²
+          Gravity = ((1.225 / FrameRate) * $100) & $ffff
+          GravityReduced = Gravity / 2
 
           ;; Terminal velocity cap (maximum downward fall speed in px/frame)
           ;; Prevents infinite acceleration from gravity
-          TerminalVelocity = 8
+          TerminalVelocity = 4
 
-          ;; Radish Goblin bounce movement consta
+          ;; Radish Goblin bounce movement constants
 
           ;; Bounce height values in pixels (converted to velocity in movement system)
-          RadishGoblinBounceNormal = 10
           ;; Normal bounce height (10 pixels upward)
-          RadishGoblinBounceHighSpeed = 5
+          RadishGoblinBounceNormal = 10
           ;; High-speed bounce height (5 pixels upward, when falling at TerminalVelocity or greater)
-          RadishGoblinBounceShort = 5
+          RadishGoblinBounceHighSpeed = 15
           ;; Short bounce height (5 pixels upward, from stick down release)
+          RadishGoblinBounceShort = 5
 
-          ;; Character system consta
-
-          ;; Only 16 characters are selectable (0-15), but code handles up to 32 entries (0-31)
-          ;; Number of character slots in generated data
-          NumCharacters = 16
+          NumCharacters = 32
           ;; Maximum selectable character ID (NumCharacters - 1)
           MaxCharacter = 15
-          RandomCharacter = 253
-          ;; Sentinel for “no character selected” sta
-
-          NoCharacter = 255
-          ;; Sentinel for CPU-controlled selection
-          CPUCharacter = 254
-
-          ;; Sentinel and special value consta
+          RandomCharacter = $fd
+          NoCharacter = $ff
+          CPUCharacter = $fe
 
           ;; Missile lifetime value for infinite (until collision, no decrement)
-          MissileLifetimeInfinite = 255
+          MissileLifetimeInfinite = $ff
           ;; Sentinel value indicating no hit found in collision checks
-          MissileHitNotFound = 255
-          ;; Maximum 8-bit value ($FF), used for twos complement operations
-          MaxByteValue = 255
+          MissileHitNotFound = $ff
           ;; Fall distance value for infinite (characters immune to fall damage)
-          InfiniteFallDistance = 255
+          InfiniteFallDistance = $ff
 
           ;; Highest song ID stored in Bank 15 music bank
           Bank14MaxSongID = 6
-          ;; Lowest song ID stored in Bank 1 music bank
-          Bank0MinSongID = 7
-          ;; Bank0MinSongID = Bank14MaxSongID + 1
+          Bank0MinSongID = Bank14MaxSongID + 1
 
-          ;; Character ID consta
-
-          CharacterBernie = 0
-          CharacterCurler = 1
-          CharacterDragonOfStorms = 2
-          CharacterZoeRyen = 3
-          CharacterFatTony = 4
-          CharacterMegax = 5
-          CharacterHarpy = 6
-          CharacterKnightGuy = 7
-          CharacterFrooty = 8
-          CharacterNefertem = 9
-          CharacterNinjishGuy = 10
-          CharacterPorkChop = 11
-          CharacterRadishGoblin = 12
-          CharacterRoboTito = 13
-          CharacterUrsulo = 14
-          CharacterShamone = 15
-          CharacterMethHound = 31
 
           ;; Special sprite constants for SpecialSpritePointers table
           SpriteQuestionMark = 0
@@ -166,42 +107,6 @@
           ;; bit mask for bit 0 (PlayerStateRecovery)
           ;; bit mask for bit 4 (PlayerStateAttacking)
 
-          ;; Mask to clear guard bit (bit 1): 255 - 2 = 253 ($FD)
-          MaskClearGuard = 253
-
-          ;; bit mask for preserving playerState flags (bits 0-3) while
-          ;; clearing animation state (bits 4-7)
-          MaskPlayerStateFlags = 15
-          MaskPlayerStateLower = 31
-          MaskPlayerStateAnimation = 240
-          ;; Mask to preserve bits 0-3 (flags) and clear bits 4-7
-          ;; (animation state): $0F = %00001111
-          ;; Mask to preserve bits 4-7 (animation state): $F0 = %11110000
-          ;; Use: playerState[index] = (playerState[index] &
-          ;; MaskPlayerStateFlags) | (animationState <<
-          ;; ShiftAnimationState)
-
-          ShiftAnimationState = 4
-          ;; bit shift constants for playerState bit operations
-          ;; Shift amount for animation state (bits 4-7):
-          ;; ActionAttackExecute << 4
-          ;; Animation state is stored in bits 4-7 of playerState byte
-
-          ;; Pre-calculated shifted animation state values (to avoid
-          ;; bit shift
-          ;; expressions that generate invalid assembly)
-          ActionAttackWindupShifted = 208
-          ;; ActionAttackWindup (13) << 4 = 208 (0xD0)
-          ActionAttackExecuteShifted = 224
-          ;; ActionAttackExecute (14) << 4 = 224 (0xE0)
-          ActionAttackRecoveryShifted = 240
-          ;; ActionAttackRecovery (15) << 4 = 240 (0xF0)
-
-          ;; Suppress pointer-setting code for arena playfield data
-          ;; This maintains 24-byte alignment required by LoadArenaByIndex routine
-          ;; LoadArenaByIndex calculates pointers dynamically, so pointer-setting code is redundant
-_suppress_pf_pointer_code = 1
-
           ;; ECHOFIRST is generated by batariBASIC compiler (2600bas.c)
           ;; Its a forward reference that resolves when the compiler generates it
           ;; Define it here as a placeholder if referenced before compiler generates it
@@ -219,162 +124,84 @@ _suppress_pf_pointer_code = 1
           MaskAnimationFalling = 176
           ;; Alias for ActionFallingShifted (0xB0) for clarity in masks
 
-          HighBit = $80
           TRUE = $80
-          ;; High bit constants for input testing
-          ;; Boolean TRUE value (high bit set)
-          PaddleLeftButton = 0
-          ;; bit 7: high bit for testing input sta
-
-          PaddleRightButton = 2
-          ;; INPT0: Left paddle button
-          ;; INPT2: Right paddle button
 
           VBlankGroundINPT0123 = $C0
           ;; VBLANK constants for controller detection
           ;; VBLANK with paddle ground enabled for controller detection
 
 
-          QuadtariDetected = 7
+          QuadtariDetected = $80
           ;; Controller status bit constants (packed into single byte)
-          Players34Active = 6
+          Players34Active = $40
           ;; bit 7: Quadtari adapter detected
           ;; bit 6: Players 3 or 4 are active (selected and not
-          LeftPortGenesis = 0
+          LeftPortGenesis = $20
           ;; eliminated) - used for missile multiplexing
-          LeftPortJoy2bPlus = 1
+          LeftPortJoy2bPlus = $10
           ;; bit 0: Genesis or Joy2b+ on left port
-          RightPortGenesis = 2
+          RightPortGenesis = $02
           ;; bit 1: Joy2b+ on left port (subset of LeftPortGenesis)
-          RightPortJoy2bPlus = 3
+          RightPortJoy2bPlus = $01
           ;; bit 2: Genesis or Joy2b+ on right port
           ;; bit 3: Joy2b+ on right port (subset of RightPortGenesis)
 
           ;; bit accessor aliases for controllerStatus
           ;; Use bit masks directly (accessor aliases not available)
 
-          SystemFlag7800 = $80
           ;; Console detection consta
 
-          SystemFlagColorBWOverride = $40
           ;; bit 7: 1=7800 console, 0=2600 console
-          SystemFlagPauseButtonPrev = $20
+          SystemFlag7800 = $80
           ;; bit 6: 1=Color/B&W override active (7800 only)
+          SystemFlagColorBWOverride = $40
           ;; bit 5: 1=Pause button was pressed previous frame
-          SystemFlagGameStatePaused = $10
-          SystemFlagGameStateEnding = $08
+          SystemFlagPauseButtonPrev = $20
           ;; bit 4: 1=Game paused (0=normal play)
+          SystemFlagGameStatePaused = $10
           ;; bit 3: 1=Game ending (transition to winner screen)
+          SystemFlagGameStateEnding = $08
+
           ConsoleDetectD0 = $2C
-          ;; Bits 0-2: Reserved for future use
           ConsoleDetectD1 = $A9
           ;; $D0 value for 7800 detection
           ;; $D1 value for 7800 detection
 
-          ClearQuadtariDetected = $7F
-          ;; bit mask constants for clearing bits
-          ClearPlayers34Active = $BF
-          ;; $FF - $80: Clear bit 7 (QuadtariDetected)
-          ClearSystemFlag7800 = $7F
-          ;; $FF - $40: Clear bit 6 (Players34Active)
-          ClearSystemFlagColorBWOverride = $BF
-          ;; $FF - $80: Clear bit 7 (SystemFlag7800)
-          ClearSystemFlagPauseButtonPrev = $DF
-          ;; $FF - $40: Clear bit 6 (ColorBWOverride)
-          ClearSystemFlagGameStatePaused = $EF
-          ;; $FF - $20: Clear bit 5 (PauseButtonPrev)
-          ClearSystemFlagGameStateEnding = $F7
-          ;; $FF - $10: Clear bit 4 (GameStatePaused)
-          ;; $FF - $08: Clear bit 3 (GameStateEnding)
-          SetQuadtariDetected = $80
-          ;; bit mask constants for setting bits
-          SetSystemFlag7800 = $80
-          ;; Set bit 7 (QuadtariDetected)
-          SetSystemFlagColorBWOverride = $40
-          ;; Set bit 7 (SystemFlag7800)
-          SetSystemFlagPauseButtonPrev = $20
-          ;; Set bit 6 (ColorBWOverride)
-          SetSystemFlagGameStatePaused = $10
-          ;; Set bit 5 (PauseButtonPrev)
-          SetSystemFlagGameStateEnding = $08
-          ;; Set bit 4 (GameStatePaused)
-          ;; Set bit 3 (GameStateEnding)
-
           ;; PlayerLocked value constants (for bit-packed playerLocked
           ;; byte)
           PlayerLockedUnlocked = 0
-          ;; 0 = Unlocked (still browsing)
           PlayerLockedNormal = 1
-          ;; 1 = Locked normal (100% health)
           PlayerHandicapped = 2
-          ;; 2 = Locked handicap (75% health)
-          ;; 3 = Reserved (unused)
+          PlayerLockedHandicapped = 3
 
           PlayerHealthMax = 100
-          ;; Player health consta
-
-
-          ;; Animation system consta
-
-          US_SEPARATOR = 0
-          ;; Workaround for compiler bug with dim/const concatenation
-          ;; Maximum player health (100% = full health, range 0-100)
-          HealthBarMaxLength = 8
-          ;; Maximum health bar length in pixels (100 ÷ 12½ = 8)
           PlayerHealthHandicap = 75
-          ;; Handicap player health (75% of max = 75 ÷ 100)
-          SetPlayers34Active = $40
-          ;; Set bit 6 (Players34Active)
-          SetLeftPortGenesis = $01
-          ;; bit mask constants for controller port detections
-          SetLeftPortJoy2bPlus = $02
-          SetRightPortGenesis = $04
-          SetRightPortJoy2bPlus = $08
-          ClearLeftPortGenesis = $FE
-          ClearLeftPortJoy2bPlus = $FD
-          ClearRightPortGenesis = $FB
-          ClearRightPortJoy2bPlus = $F7
 
-          ;;
-          GravityPerFrame = 1
+          HealthBarMaxLength = 8
+
           ;; Physics Tunables
           ;; Pixels/frame added to vertical velocity when gravity
           BounceDampenDivisor = 2
           ;; applies
           ;; Divisor applied to velocity on bounce reflect (for minimal
-          CurlingFrictionCoefficient = 4
-          ;; velocity reduction)
-          ;; Ice-like friction coefficient (Q8 fixed-point: 4 ÷ 256 =
-          ;; 1.56% per frame reduction)
-          ;; Used for curling stone near-perfect momentum (very low
-          ;; friction, similar to ice)
-          KnockbackImpulse = 4
-          HitstunFrames = 10
-          ;; Frames of hitstun after a missile hit
-          MissileAABBSize = 4
-          ;; Missile bounding box size (square)
-          PlayerSpriteHalfWidth = 8
-          ;; Half-width of player sprite used in AABB checks
+          CurlingFrictionCoefficient = $04 ; low byte of $00.04
+
           PlayerSpriteHeight = 16
-          ;; Player sprite height used in AABB checks
           PlayerSpriteWidth = 16
-          ;; Player sprite width used in AABB checks
+
           ScreenWidth = 160
-          ;; Total hardware screen width in pixels
           ScreenLeftMargin = 16
-          ;; Left margin reserved for off-playfield area
           ScreenRightMargin = 16
-          ;; Right margin reserved for off-playfield area
-          PlayerLeftEdge = 16
-          ;; Leftmost X position for a player sprite (ScreenLeftMargin)
-          PlayerRightEdge = 128
-          ;; Rightmost X position for a player sprite (ScreenWidth - ScreenRightMargin - PlayerSpriteWidth = 160 - 16 - 16)
+          PlayerLeftEdge = ScreenLeftMargin
+          PlayerRightEdge = ScreenWidth - ScreenLeftMargin - ScreenRightMargin
           PlayerWrapOvershoot = 8
           ;; Allow sprites to move partially off-screen before wrapping (PlayerSpriteHalfWidth)
           PlayerLeftWrapThreshold = 8
-          ;; × value that triggers wrap-around from left edge (PlayerLeftEdge - PlayerWrapOvershoot = 16 - 8)
+          ;; ×   value  that   triggers  wrap-around   from  left   edge
+          ;; (PlayerLeftEdge - PlayerWrapOvershoot = 16 - 8)
           PlayerRightWrapThreshold = 136
-          ;; × value that triggers wrap-around from right edge (PlayerRightEdge + PlayerWrapOvershoot = 128 + 8)
+          ;; ×  value   that  triggers   wrap-around  from   right  edge
+          ;; (PlayerRightEdge + PlayerWrapOvershoot = 128 + 8)
           PlayerCollisionDistance = 16
           ;; Collision detection distance (sprite width in pixels)
           MissileDefaultHeight = 1
@@ -535,37 +362,88 @@ _suppress_pf_pointer_code = 1
           ;;
           ;; 2^8 = 256 subpixel units per pixel
 
-          ;; PLAYFIELD CONSTANTS (runtime Variables, Not Compile-time)
-          ;; NOTE: pfrowheight and pfrows are set at runtime by
-          ;; ScreenLayout.bas
-          ;; These are NOT constants - they are runtime variables
-          ;; pfrowheight: pixels per row (always 16)
-          ;; pfrows: number of rows (always 8)
-          ;; pfread: built-in batariBASIC function to read playfield
-          ;; pixel
-          ;; These are documented here for reference but cannot be
-          ;; consted
+          PFRowHeight = 16
+          PFRows = 8
 
-          ;; SCREEN LAYOUT CONSTANTS
-          ScreenPfRowHeight = 16
-          ScreenPfRows = 8
+          ;; Screen-layout aliases (callers still reference the ScreenPf* names)
+          ScreenPfRowHeight = PFRowHeight
+          ScreenPfRows = PFRows
+
+          ;; Build stamp (provided on the command line by the Makefile)
+          BuildYear = BUILD_YEAR
+          BuildDay = BUILD_DAY
+
+          ;; --------------------------------------------------------------
+          ;; Restored constants that were dropped during the 64tass port.
+          ;; These are referenced throughout the Routines and Data tables.
+          ;; --------------------------------------------------------------
+
+          ;; Sentinel / range helpers
+          HighBit = $80
+          MaxByteValue = 255
+
+          ;; Physics / combat tuning
+          CollisionSeparationDistance = 16
+          RecoveryFrameCount = 8
+          KnockbackDistance = 12
+          KnockbackImpulse = 4
+          HitstunFrames = 10
+          GravityNormal = 26
+          GravityPerFrame = 1
+          PlayerSpriteHalfWidth = 8
+          MissileAABBSize = 4
+
+          ;; Player-state bit masks and shift amounts
+          MaskClearGuard = $FD
+          MaskPlayerStateFlags = $0F
+          MaskPlayerStateLower = $1F
+          MaskPlayerStateAnimation = $F0
+          ShiftAnimationState = 4
+          ActionAttackWindupShifted = 208
+          ActionAttackExecuteShifted = 224
+          ActionAttackRecoveryShifted = 240
+
+          ;; systemFlags bit set/clear masks
+          SetQuadtariDetected = $80
+          ClearQuadtariDetected = $7F
+          SetPlayers34Active = $40
+          ClearPlayers34Active = $BF
+          SetSystemFlag7800 = $80
+          ClearSystemFlag7800 = $7F
+          SetSystemFlagColorBWOverride = $40
+          ClearSystemFlagColorBWOverride = $BF
+          SetSystemFlagPauseButtonPrev = $20
+          ClearSystemFlagPauseButtonPrev = $DF
+          SetSystemFlagGameStatePaused = $10
+          ClearSystemFlagGameStatePaused = $EF
+          SetSystemFlagGameStateEnding = $08
+          ClearSystemFlagGameStateEnding = $F7
+
+          ;; Controller-port detection bit masks
+          SetLeftPortGenesis = $01
+          ClearLeftPortGenesis = $FE
+          SetLeftPortJoy2bPlus = $02
+          ClearLeftPortJoy2bPlus = $FD
+          SetRightPortGenesis = $04
+          ClearRightPortGenesis = $FB
+          SetRightPortJoy2bPlus = $08
+          ClearRightPortJoy2bPlus = $F7
+
+          ;; SWCHA bit indices (use with the BitMask table)
+          SWCHA_BitP0Right = 7
+          SWCHA_BitP0Left = 6
+          SWCHA_BitP0Down = 5
+          SWCHA_BitP0Up = 4
+          SWCHA_BitP1Right = 3
+          SWCHA_BitP1Left = 2
+          SWCHA_BitP1Down = 1
+          SWCHA_BitP1Up = 0
+
+          ;; paddle button numbers
+          PaddleLeftButton = 0
+          PaddleRightButton = 2
+
+          ;; compiler work-around sentinel for dim/const concatenation
+          US_SEPARATOR = 0
 
 
-;;; Forward declarations for undefined symbols
-;;; Additional constants for MultiSpriteSuperChip
-;;; Forward declarations for song symbols (defined in generated music files)
-;;; TIA/RIOT Hardware Registers (Atari 2600)
-;;; NOTE: All TIA and RIOT register definitions are now in VCS.s
-;;; Only ChaosFight-specific constants are defined here
-          ;; SWCHA bit indices for BitMask table (0-7)
-          ;; Use with: lda SWCHA / bit BitMask + SWCHA_Bit*
-          SWCHA_BitP0Right = 7  ;;; P0 joystick right (bit 7)
-          SWCHA_BitP0Left = 6   ;;; P0 joystick left (bit 6)
-          SWCHA_BitP0Down = 5   ;;; P0 joystick down (bit 5)
-          SWCHA_BitP0Up = 4     ;;; P0 joystick up (bit 4)
-          SWCHA_BitP1Right = 3  ;;; P1 joystick right (bit 3)
-          SWCHA_BitP1Left = 2   ;;; P1 joystick left (bit 2)
-          SWCHA_BitP1Down = 1   ;;; P1 joystick down (bit 1)
-          SWCHA_BitP1Up = 0     ;;; P1 joystick up (bit 0)
-
-;;; Forward declarations for sound symbols

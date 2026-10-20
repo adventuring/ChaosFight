@@ -58,7 +58,9 @@ In any mode, pressing Game Reset causes an instant hard reboot:
 
 ## Address Mapping (Bank Prefixes, CPU Addresses, File Offsets)
 
-When debugging with addresses from Stella or listing files, it's critical to understand the relationship between bank-prefixed addresses, CPU addresses, and file offsets.
+When debugging with addresses from Stella or listing files, it's critical to
+understand the relationship between bank-prefixed addresses, CPU addresses,
+and file offsets.
 
 ### Bank-Prefixed Address Format
 
@@ -87,19 +89,25 @@ When searching for addresses in `.lst` files:
 
 ### CPU Address Mapping
 
-The CPU sees addresses in the range `$F000-$FFFF` (bank switching window). The actual bank content is mapped into this window based on the current bank selection register. File offsets map directly to positions within each bank's 4kiB space.
+The CPU sees addresses in the range `$F000-$FFFF` (bank switching window). 
+The actual bank content is mapped into this window based on the current bank
+selection register.  File offsets map directly to positions within each
+bank's 4kiB space.
 
 ---
 
 ## Bankswitch Return Semantics (Investigations 2025‑11‑26)
 
-- **Near returns**: Use `rts` for routines that are *never* invoked
+- **Near returns**: 
+  Use `rts` for routines that are *never* invoked
   cross-bank. Only routines called via same-bank `jsr` may use `rts`.
-- **Far returns**: Use `jmp BS_return` for cross-bank routines. This expects
+- **Far returns**: 
+  Use `jmp BS_return` for cross-bank routines. This expects
   the four-byte encoded return sequence pushed by `BS_jsr`. Any cross-bank
   routine must end with this form or we will corrupt the stack.
-- **CRITICAL**: `BS_return` must be called with `jmp`, NOT `jsr`. Using `jsr
-  BS_return` pushes another return address on the stack, corrupting the
+- **CRITICAL**: 
+  Always `BS_return` must be called with `jmp`, NOT `jsr`. Using
+  a `jsr BS_return` pushes another return address on the stack, corrupting the
   encoded return address that `BS_return` expects to decode.
 - The stack-underflow probe previously showed `MainLoopModePublisherPrelude`,
   `MainLoopModeAuthorPrelude`, `MainLoopModeTitleScreen`, and cousins in

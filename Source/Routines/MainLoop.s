@@ -45,6 +45,49 @@ MainLoop .proc
           jmp WarmStart                    ;;; Jump directly to WarmStart (no stack push)
 
 SkipResetCheck:
+          ;; Reset the TIA input latch-enable once per frame.  VBLANK bit 6
+          ;; must be written as 0 or INPT4/INPT5 stay latched at their last
+          ;; "pressed" value forever, which reads as a permanently held fire
+          ;; button on every screen.  Bit 1 keeps bB's blanking value.
+          ;; This lives in MainLoop (not the kernel's vblank hook) because it
+          ;; must run even on frames where the kernel bails out early.
+          ;; ControllerDetection may set bit 6 again later to ground the
+          ;; paddle ports for its own measurement.
+          lda # 2
+          sta VBLANK
+
+          ;; Fresh fire-press edge detection.  INPT4/INPT5 bit 7 reads 0
+          ;; while either fire button is held, so a held button would
+          ;; otherwise advance one screen on every single frame.  Screens
+          ;; test newFirePress_R and only react on the frame the button
+          ;; goes down, which lets one press advance exactly one screen.
+          ;; Track each port separately: bit 7 = player 0 fire down,
+          ;; bit 6 = player 1 fire down.  An unplugged port reads as
+          ;; permanently down, so an "either button" AND/OR test would
+          ;; wedge; one bit per port stays correct in both cases.
+          lda # 0
+          sta temp1
+          lda P0Fire
+          bmi NoP0Press
+          lda # $40
+          sta temp1
+NoP0Press:
+          lda P1Fire
+          bmi NoP1Press
+          lda temp1
+          ora # $20
+          sta temp1
+NoP1Press:
+          lda fireEdgeState
+          and # $60            ; held-state bits from last frame
+          eor temp1            ; bits that changed
+          and temp1            ; keep only bits that just went down
+          beq NoNewFirePress
+          lda # $80
+NoNewFirePress:
+          ora temp1
+          sta fireEdgeState
+
           ;; STACK PICTURE: [] (empty)
 
           ;; CRITICAL: Mode handlers run HERE during OVERSCAN period
@@ -306,7 +349,7 @@ MainLoopModeGameMain .proc
           ;; This prevents crashes when gameMode is corrupted or incorrectly set
           ;; Only call GameMainLoop when actually in game mode (ModeGame = 6)
           lda gameMode
-          cmp ModeGame
+          cmp #ModeGame
           bne MainLoopModeDispatch
           jmp MainLoopModeGameMainContinue
 MainLoopModeDispatch:
@@ -428,3 +471,12 @@ CallGameDrawscreen:
 ;; drawscreen is included here via Bank15.s → MultiSpriteKernel.s
 ;; It will jump back to MainLoop after completing the frame
 
+;; ---------------------------------------------------------------------------
+;; Far-callable wrapper for the multi-sprite kernel's one-time setup.
+;; MultiSpriteSetup is a near routine (it ends with rts, exactly like
+;; batariBASIC's multisprite_setup), so a BS_jsr caller must land here and we
+;; hand the far return to BS_return ourselves.
+MainLoopMultiSpriteSetup .proc
+          jsr MultiSpriteKernel.MultiSpriteSetup
+          jmp BS_return
+.pend

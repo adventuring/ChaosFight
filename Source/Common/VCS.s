@@ -163,20 +163,27 @@ CXCLR       = $2C	;   ---- ----   Clear Collision Latches
           		* = TIABASEREADADDRESS
 
                     ;											bit 7   bit 6
-CXM0P       = $00	;       xx00 0000       Read Collision  M0-P1   M0-P0
-CXM1P       = $01	;       xx00 0000                       M1-P0   M1-P1
-CXP0FB      = $02	;       xx00 0000                       P0-PF   P0-BL
-CXP1FB      = $03	;       xx00 0000                       P1-PF   P1-BL
-CXM0FB      = $04	;       xx00 0000                       M0-PF   M0-BL
-CXM1FB      = $05	;       xx00 0000                       M1-PF   M1-BL
-CXBLPF      = $06	;       x000 0000                       BL-PF   -----
-CXPPMM      = $07	;       xx00 0000                       P0-P1   M0-M1
-INPT0       = $08	;       x000 0000       Read Pot Port 0
-INPT1       = $09	;       x000 0000       Read Pot Port 1
-INPT2       = $0A	;       x000 0000       Read Pot Port 2
-INPT3       = $0B	;       x000 0000       Read Pot Port 3
-INPT4       = $0C	;		x000 0000       Read Input (Trigger) 0
-INPT5       = $0D	;		x000 0000       Read Input (Trigger) 1
+;;; CRITICAL: the TIA has *separate* read and write address spaces.
+;;; Read registers live at $30-$3D (there is no read decode below $30);
+;;; $00-$0C are the VSYNC/NUSIZ/COLUP/PF2 *write* registers.  These
+;;; constants used to be $00-$0D, which made every collision test read
+;;; VSYNC/NUSIZ/COLUPx/PF2 and made INPT4/INPT5 read PF2/REFP0 - so the
+;;; fire buttons never worked and no collision was ever detected.
+;;; Reference: Stella Programmer's Guide, "TIA Read Registers".
+CXM0P       = $30	;       xx00 0000       Read Collision  M0-P1   M0-P0
+CXM1P       = $31	;       xx00 0000                       M1-P0   M1-P1
+CXP0FB      = $32	;       xx00 0000                       P0-PF   P0-BL
+CXP1FB      = $33	;       xx00 0000                       P1-PF   P1-BL
+CXM0FB      = $34	;       xx00 0000                       M0-PF   M0-BL
+CXM1FB      = $35	;       xx00 0000                       M1-PF   M1-BL
+CXBLPF      = $36	;       x000 0000                       BL-PF   -----
+CXPPMM      = $37	;       xx00 0000                       P0-P1   M0-M1
+INPT0       = $38	;       x000 0000       Read Pot Port 0
+INPT1       = $39	;       x000 0000       Read Pot Port 1
+INPT2       = $3A	;       x000 0000       Read Pot Port 2
+INPT3       = $3B	;       x000 0000       Read Pot Port 3
+INPT4       = $3C	;		x000 0000       Read Input (Trigger) 0
+INPT5       = $3D	;		x000 0000       Read Input (Trigger) 1
 
 ;
 

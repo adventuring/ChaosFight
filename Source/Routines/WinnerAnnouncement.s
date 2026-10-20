@@ -18,14 +18,9 @@ WinnerAnnouncementLoop .proc
           ;;
           ;; Constraints: Must be colocated with WinnerAdvanceToCharacterSelect
           ;; Check for button press to advance immediately
-          ;; If P0 fire pressed, then WinnerAdvanceToCharacterSelect
-          lda P0Fire
-          bmi WinnerAdvanceToCharacterSelect
-
-CheckJoy1Fire:
-
-          ;; If P1 fire pressed, then WinnerAdvanceToCharacterSelect
-          lda P1Fire
+          ;; Advance only on a *fresh* press (MainLoop sets newFirePress on
+          ;; the frame either fire button goes down).
+          lda fireEdgeState
           bmi WinnerAdvanceToCharacterSelect
 
 CheckSelectSwitch:

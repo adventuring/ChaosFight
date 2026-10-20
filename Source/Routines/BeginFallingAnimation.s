@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 ;;; Begin Falling Animation
 
-BeginFallingAnimation:
+BeginFallingAnimation .block
           ;; Returns: Far (return otherbank)
           ;; Setup routine for Falling In animation.
           ;; Sets players in quadrant starting positions and
@@ -69,19 +69,16 @@ BeginFallingAnimation:
           ;; Player 1: Top-left quadrant (unless NO)
           ;; if playerCharacter[0] = NoCharacter then DonePlayer1Init
           lda # 0
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
           beq DonePlayer1Init
           lda # 0
-          asl
           tax
           lda # 16
           sta playerX,x
           ;; Top-left X position
           lda # 0
-          asl
           tax
           lda # 8
           sta playerY,x
@@ -105,19 +102,16 @@ DonePlayer1Init:
           ;; Player 2: Top-right quadrant (unless NO)
           ;; if playerCharacter[1] = NoCharacter then DonePlayer2Init
           lda # 1
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
           beq DonePlayer2Init
           lda # 1
-          asl
           tax
           lda # 144
           sta playerX,x
           ;; Top-right X position
           lda # 1
-          asl
           tax
           lda # 8
           sta playerY,x
@@ -149,19 +143,16 @@ CheckPlayer3Character:
 
           ;; if playerCharacter[2] = NoCharacter then DonePlayer3Init
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
           beq DonePlayer3Init
           lda # 2
-          asl
           tax
           lda # 16
           sta playerX,x
           ;; Bottom-left X position
           lda # 2
-          asl
           tax
           lda # 80
           sta playerY,x
@@ -194,19 +185,16 @@ CheckPlayer4Character:
 
           ;; if playerCharacter[3] = NoCharacter then DonePlayer4Init
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
           beq DonePlayer4Init
           lda # 3
-          asl
           tax
           lda # 144
           sta playerX,x
           ;; Bottom-right X position
           lda # 3
-          asl
           tax
           lda # 80
           sta playerY,x
@@ -229,4 +217,5 @@ DonePlayer4Init:
           ;; Constraints: Must be colocated with BeginFallingAnimation
           jmp BS_return
 
+.bend
 

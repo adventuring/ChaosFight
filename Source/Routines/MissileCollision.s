@@ -71,7 +71,6 @@ CheckAllMissileCollisions:
 
           ;; Set temp6 = BitMask[temp1]
           lda temp1
-          asl
           tax
           lda BitMask,x
           sta temp6
@@ -90,7 +89,6 @@ CheckAllMissileCollisions:
 
           ;; Set characterIndex = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta characterIndex
@@ -101,12 +99,10 @@ CheckAllMissileCollisions:
 
           ;; Set temp6 = CharacterMissileWidths[characterIndex]
           lda characterIndex
-          asl
           tax
           lda CharacterMissileWidths,x
           sta temp6
           lda characterIndex
-          asl
           tax
           lda CharacterMissileWidths,x
           sta temp6
@@ -188,7 +184,6 @@ CheckVisibleMissileCollision
                     ;; Set characterIndex = playerCharacter[temp1]
           ;; Set characterIndex = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta characterIndex
@@ -197,14 +192,12 @@ CheckVisibleMissileCollision
 
           ;; Set cachedHitboxLeft_W = missileX[temp1]
           lda temp1
-          asl
           tax
           lda missileX,x
           sta cachedHitboxLeft_W
 
           ;; Set cachedHitboxTop_W = missileY_R[temp1]
           lda temp1
-          asl
           tax
           lda missileY_R,x
           sta cachedHitboxTop_W
@@ -215,12 +208,10 @@ CheckVisibleMissileCollision
 
           ;; Set temp6 = CharacterMissileWidths[characterIndex]
           lda characterIndex
-          asl
           tax
           lda CharacterMissileWidths,x
           sta temp6
           lda characterIndex
-          asl
           tax
           lda CharacterMissileWidths,x
           sta temp6
@@ -228,7 +219,6 @@ CheckVisibleMissileCollision
           ;; Set cachedHitboxRight_W = cachedHitboxLeft_R + temp6
           ;; Set temp6 = CharacterMissileHeights[characterIndex]
           lda characterIndex
-          asl
           tax
           lda CharacterMissileHeights,x
           sta temp6
@@ -313,7 +303,6 @@ CheckAOECollision
 
           ;; Set characterIndex = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta characterIndex
@@ -332,7 +321,7 @@ CheckAOECollision
           ;; directions
 
           lda temp5
-          cmp CharacterBernie
+          cmp #CharacterBernie
           bne CheckFacingDirection
           jmp CheckBernieAOE
 CheckFacingDirection:
@@ -344,7 +333,6 @@ CheckFacingDirection:
 
           ;; Set temp6 = playerState[temp1] & PlayerStateBitFacing
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp6
@@ -525,14 +513,12 @@ CacheAOERightHitbox .proc
 
                     ;; Set aoeOffset = CharacterAOEOffsets[characterIndex]
           lda characterIndex
-          asl
           tax
           lda CharacterAOEOffsets,x
           sta aoeOffset
 
           ;; Set cachedHitboxLeft_W = playerX[temp1]
           lda temp1
-          asl
           tax
           lda playerX,x
           clc
@@ -547,7 +533,6 @@ CacheAOERightHitbox .proc
 
           ;; Set cachedHitboxTop_W = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta cachedHitboxTop_W
@@ -574,14 +559,12 @@ CacheAOELeftHitbox .proc
 
                     ;; Set aoeOffset = CharacterAOEOffsets[characterIndex]
           lda characterIndex
-          asl
           tax
           lda CharacterAOEOffsets,x
           sta aoeOffset
 
           ;; Set cachedHitboxRight_W = playerX[temp1] + PlayerSpriteWidth - 1 - aoeOffset
           lda temp1
-          asl
           tax
           lda playerX,x
           sta cachedHitboxRight_W
@@ -594,7 +577,6 @@ CacheAOELeftHitbox .proc
 
           ;; Set cachedHitboxTop_W = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta cachedHitboxTop_W
@@ -617,7 +599,7 @@ CheckPlayersAgainstCachedHitbox .proc
           ;; Input: temp1 = attacker index, cachedHitbox* = attacker bounds
 
           ;; Output: temp4 = hit player index or MissileHitNotFound
-          lda MissileHitNotFound
+          lda #MissileHitNotFound
           sta temp4
 
           ;; Issue #1254: Loop through temp2 = 3 downto 0
@@ -634,11 +616,10 @@ CheckPlayerHealth:
           ;; If playerHealth[temp2] = 0, then CPB_NextPlayer
           ;; If playerX[temp2] + PlayerSpriteWidth <= cachedHitboxLeft_R, then CPB_NextPlayer
           lda temp2
-          asl
           tax
           lda playerX,x
           clc
-          adc PlayerSpriteWidth
+          adc #PlayerSpriteWidth
           sta temp6
           lda temp6
           sec
@@ -651,7 +632,6 @@ CheckRightEdge:
 
           ;; If playerX[temp2] >= cachedHitboxRight_R, then CPB_NextPlayer
           lda temp2
-          asl
           tax
           lda playerX,x
           sec
@@ -662,11 +642,10 @@ CheckVerticalOverlap:
 
           ;; If playerY[temp2] + PlayerSpriteHeight <= cachedHitboxTop_R, then CPB_NextPlayer
           lda temp2
-          asl
           tax
           lda playerY,x
           clc
-          adc PlayerSpriteHeight
+          adc #PlayerSpriteHeight
           sta temp6
           lda temp6
           sec
@@ -679,7 +658,6 @@ CheckBottomEdge:
 
           ;; If playerY[temp2] >= cachedHitboxBottom_R, then CPB_NextPlayer
           lda temp2
-          asl
           tax
           lda playerY,x
           sec
@@ -706,7 +684,7 @@ CheckPlayersAgainstCachedHitboxDone .proc
 
 .pend
 
-;; MissileCollPF .proc (no matching .pend)
+MissileCollPF .proc
 
 
           ;;
@@ -760,19 +738,16 @@ CheckPlayersAgainstCachedHitboxDone .proc
 
                     ;; Set temp2 = missileX[temp1]
                     lda temp1
-                    asl
                     tax
                     lda missileX,x
                     sta temp2
 
           ;; Set temp3 = missileY_R[temp1]
           lda temp1
-          asl
           tax
           lda missileY_R,x
           sta temp3
           lda temp1
-          asl
           tax
           lda missileY_R,x
           sta temp3
@@ -854,6 +829,4 @@ MissileCollisionPlayfieldReadReturn:
 
           jmp BS_return
 
-
-
-
+.pend

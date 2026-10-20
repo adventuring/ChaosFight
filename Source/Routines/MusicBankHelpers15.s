@@ -46,13 +46,11 @@ SongIDInRange:
           ;; Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
           ;; Set var40 = SongPointers2H[temp2]
           lda temp2
-          asl
           tax
           lda SongPointers2H,x
           sta songPointerH
           ;; Set songPointer = SongPointers2L[temp2]
           lda temp2
-          asl
           tax
           lda SongPointers2L,x
           sta songPointer
@@ -89,13 +87,11 @@ LoadSongVoice1PointerBank15:
           ;; Fix: Assign directly to high/low bytes instead of broken × 256 multiplication
           ;; Set songPointerH = SongPointers2SecondH[temp2]
           lda temp2
-          asl
           tax
           lda SongPointers2SecondH,x
           sta songPointerH
           ;; Set songPointer = SongPointers2SecondL[temp2]
           lda temp2
-          asl
           tax
           lda SongPointers2SecondL,x
           sta songPointer

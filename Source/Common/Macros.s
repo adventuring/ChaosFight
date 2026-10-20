@@ -208,34 +208,24 @@ WaitScreenBottomTail:      .macro
           jmp WaitScreenBottomSub
           .endm
 ;;; 
-KillMusic:          .macro
-          lda # 0
-          sta AUDC1
-          sta AUDV1
-          sta AUDF1
-          sta NoteTimer
-          .endm
-;;; 
 FarJSR:   .macro bank, service
-          .proff
-          .if \bank == BANK
-            .error "Don't do FarJSR for the local bank for ", \service
-          .fi
-          .pron
-          ldy #\service
-          ldx #\bank
-          jsr FarCall
+          .block
+          lda # ((>(returnLabel - 1)) & $0f) | (BANK << 4)
+          pha
+          lda # <(returnLabel - 1)
+          pha
+          .FarJMP \bank, \service
+returnLabel:
+          .bend
           .endm
 
 FarJMP:   .macro bank, service
-          .proff
-          .if \bank == BANK
-            .error "Don't do FarJMP for the local bank for ", \service
-          .fi
-          .pron
-          ldy #\service
-          ldx #\bank
-          jmp FarCall
+          lda # >(\service - 1)
+          pha
+          lda # <(\service - 1)
+          pha
+          ldx # \bank
+          jmp BS_jsr
           .endm
 ;;; 
 Move16: .macro dest, src

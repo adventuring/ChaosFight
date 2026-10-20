@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-UpdatePlayerMovementSingle .proc
+UpdatePlayerMovementSingle .block
           ;; Move one player using 8.8 fixed-point velocity integration.
           ;; Returns: Far (return otherbank)
           ;; Input: currentPlayer (global) = player index (0-3)
@@ -15,7 +15,6 @@ UpdatePlayerMovementSingle .proc
           ;; 16-bit accumulator for proper carry detection
           ;; Skip if player is eliminated - check if playerHealth[currentPlayer] <= 0
           lda currentPlayer
-          asl
           tax
           lda playerHealth,x
           beq UpdatePlayerMovementSkip  ; Health = 0, skip
@@ -25,14 +24,12 @@ UpdatePlayerMovementSingle .proc
           ;; Use batariBASIC’s built-in 16-bit addition for carry detection
           ;; Set subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerSubpixelX_RL,x
           clc
           adc playerVelocityXL,x
           sta subpixelAccumulator
           lda currentPlayer
-          asl
           tax
           lda temp2
           sta playerSubpixelX_WL,x
@@ -42,7 +39,6 @@ UpdatePlayerMovementSingle .proc
 
           ;; Set playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
           lda currentPlayer
-          asl
           tax
           lda playerSubpixelX_R,x
           clc
@@ -54,7 +50,6 @@ NoXCarry:
           ;; Apply integer velocity component
           ;; Set playerX[currentPlayer] = playerX[currentPlayer] + playerVelocityX[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerX,x
           sta temp6
@@ -66,14 +61,12 @@ NoXCarry:
           ;; Use batariBASIC’s built-in 16-bit addition for carry detection
           ;; Set subpixelAccumulator = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerSubpixelY_RL,x
           clc
           adc playerVelocityYL,x
           sta subpixelAccumulator
           lda currentPlayer
-          asl
           tax
           lda temp2
           sta playerSubpixelY_WL,x
@@ -82,7 +75,6 @@ NoXCarry:
           bcc NoYCarry
           ;; Carry occurred - increment integer component
           lda currentPlayer
-          asl
           tax
           lda playerSubpixelY_R,x
           clc
@@ -94,7 +86,6 @@ NoYCarry:
           ;; Apply integer velocity component
           ;; Set playerY[currentPlayer] = playerY[currentPlayer] + playerVelocityY[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta temp6
@@ -108,5 +99,5 @@ UpdatePlayerMovementSkip:
           ;; Player is eliminated, skip movement update
           jmp BS_return
 
-.pend
+.bend
 

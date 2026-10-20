@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-BudgetedHealthBarUpdate .proc
+BudgetedHealthBarUpdate .block
           ;; Budget Health Bar Rendering
           ;; Draw only one player health bar per frame (down from four) to cut pfpixel work by 75%.
           ;; Uses framePhase (0-3) to determine which player health bar to refresh each frame.
@@ -49,14 +49,13 @@ CheckPlayer3HealthUpdate:
 
           jmp CheckPlayer3HealthUpdate
 
-.pend
+.bend
 
-BudgetedHealthBarPlayer0 .proc
+BudgetedHealthBarPlayer0 .block
           ;; Local trampoline so branch stays in range; tail-calls target
           ;; Update Player 0 health bar (inline from UpdatePlayer1HealthBar pattern)
           ;; Set temp6 = playerHealth[0]
           lda # 0
-          asl
           tax
           lda playerHealth,x
           sta temp6
@@ -88,14 +87,13 @@ BudgetedHealthBarPlayer0 .proc
 BudgetedHealthBarPlayer0Done:
           rts
 
-.pend
+.bend
 
-BudgetedHealthBarPlayer1 .proc
+BudgetedHealthBarPlayer1 .block
           ;; Local trampoline so branch stays in range; tail-calls target
           ;; Update Player 1 health bar (inline from UpdatePlayer1HealthBar pattern)
           ;; Set temp6 = playerHealth[1]
           lda # 1
-          asl
           tax
           lda playerHealth,x
           sta temp6
@@ -127,9 +125,9 @@ BudgetedHealthBarPlayer1 .proc
 BudgetedHealthBarPlayer1DoneSecond:
           rts
 
-.pend
+.bend
 
-CheckPlayer2HealthUpdate .proc
+CheckPlayer2HealthUpdate .block
           ;; Check if Player 3 health bar should be updated (4-player mode, active player)
           ;;
           ;; Input: controllerStatus (global), playerCharacter[] (global array)
@@ -151,7 +149,6 @@ CheckPlayer2Character:
           ;; Update Player 3 health bar (inlined from UpdateHealthBarPlayer2)
           ;; If playerCharacter[2] = NoCharacter, then DonePlayer2HealthUpdate
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -204,9 +201,9 @@ DonePlayer2HealthUpdate:
           ;; Constraints: Must be colocated with BudgetedHealthBarUpdate
           jmp DonePlayer3HealthUpdate
 
-.pend
+.bend
 
-CheckPlayer3HealthUpdate .proc
+CheckPlayer3HealthUpdate .block
           ;; Check if Player 4 health bar should be updated (4-player mode, active player)
           ;;
           ;; Input: controllerStatus (global), playerCharacter[] (global array)
@@ -228,7 +225,6 @@ CheckPlayer3Character:
           ;; Update Player 4 health bar (inlined from UpdateHealthBarPlayer3)
           ;; If playerCharacter[3] = NoCharacter, then DonePlayer3HealthUpdate
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -268,8 +264,11 @@ CheckPlayer3Character:
 BudgetedHealthBarUpdateDone:
           rts
 
+.bend
+
 DonePlayer3HealthUpdate:
-          ;; Player 3 health update check complete (label only)
+          ;; Player 3 health update check complete (shared exit)
+          ;; Returns: Near (return thisbank)
           ;;
           ;; Input: None (label only, no execution)
           ;;
@@ -279,6 +278,5 @@ DonePlayer3HealthUpdate:
           ;;
           ;; Called Routines: None
           ;; Constraints: Must be colocated with BudgetedHealthBarUpdate
-
-.pend
+          rts
 

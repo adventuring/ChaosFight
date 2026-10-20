@@ -1,1140 +1,993 @@
-;;;; ChaosFight - Source/Common/MultiSpriteKernel.s
-;;;; Copyright © 2025 Bruce-Robert Pocock.
-;;;; Derived from Tools/batariBASIC/includes/multisprite_kernel.asm (CC0)
-
-;;;;.error "Multi-sprite kernel starts at ", *
-
-
-
+; Provided under the CC0 license. See the included LICENSE.txt for details.
+;
+; ---------------------------------------------------------------------------
+; Per-instruction cycle annotations (;c=N) follow the standard NMOS 6502
+; timing table:
+;   * "N"      : fixed cycle cost
+;   * "2/3"    : relative branch (2 cycles not taken, 3 taken; +1 on page cross)
+;   * "N+1*"   : read instruction that costs one extra cycle on a page crossing
+;   * .Sleep N : expands to exactly N cycles (see Source/Common/Macros.s)
+;
+; NOTE: the legacy ";\tNN" / ";+N\tNN" position comments inherited verbatim
+; from batari Basic's includes/multisprite_kernel.asm are inaccurate — the
+; upstream author and the AtariAge "Modifying the Multisprite Kernel" thread
+; both confirm the cycle-count comments in this kernel are off.  The ;c=
+; values added here are authoritative.  On the no-page-cross path the main
+; scanline loop body (KernelLoopb -> KernelLoopa) totals 152 cycles = 2
+; scanlines per iteration.
+; ---------------------------------------------------------------------------
 
 MultiSpriteKernel .block
 
+FineAdjustTableBegin:
+          .byte range(6, 0) << 4
+          .byte range(15, 8, -1) << 4
+FineAdjustTableEnd = FineAdjustTableBegin - 241
+
 PFStart:
-          .byte 87,43,0,21,0,0,0,10
-          .if  screenheight
+          .byte 87, 43, 0, 21, 0, 0, 0, 10
+BlankPF:
+          .byte 0, 0, 0, 0, 0, 0, 0, 5
 pfsub:
-          .byte 8,4,2,2,1,0,0,1,0
-          .fi
+          .byte 8, 4, 2, 2, 1, 0, 0, 1, 0
 
-;; Initial sprite color and height data tables (5 sprites: indices 0-4)
-CopyColorData:
-          .byte $0E, $0E, $0E, $0E, $0E
-SpriteHeightTable:
-          .byte 16, 16, 16, 16, 16
+	;; set initial P1 positions
+MultiSpriteSetup:
+          lda # 15 ;c=2
+          sta pfHeight ;c=3
 
-          ;;--set initial P1 positions
-multisprite_setup:
-          lda # 15
-          sta pfHeight
-
-          ldx # 4
-          stx temp3
+	ldx #4 ;c=2
 SetCopyHeight:
-          lda # 76
-          sta newSpriteX,x
-          lda CopyColorData,x
-          sta newCOLUP1,x
-          lda SpriteHeightTable,x
-          sta spriteHeight,x
-          txa
-          sta spriteGfxIndex,x
-          sta spritesort,x
-          dex
-          bpl SetCopyHeight
+	txa ;c=2
+	sta SpriteGfxIndex, x ;c=4
+	sta spritesort, x ;c=4
+	dex ;c=2
+	bpl SetCopyHeight ;c=2/3
 
-          ;; since we cannot turn off pf, point PF to BlankPlayfield in Bank 16
-          lda # >BlankPlayfield
-          sta pf2Pointer+1
-          sta pf1Pointer+1
-          lda # <BlankPlayfield
-          sta pf2Pointer
-          sta pf1Pointer
-          rts
+          ;; since we can't turn off pf, point PF to zeros here
+          lda # > BlankPF ;c=2
+          sta pf2Pointer + 1 ;c=3
+          sta pf1Pointer + 1 ;c=3
+          lda # < BlankPF ;c=2
+          sta pf2Pointer ;c=3
+          sta pf1Pointer ;c=3
+          rts ;c=6
 
 drawscreen:
 WaitForOverscanEnd:
-          lda INTIM
-          bmi WaitForOverscanEnd
+	lda INTIM ;c=3
+	bmi WaitForOverscanEnd ;c=2/3
 
-          lda # 2
-          sta WSYNC
-          sta VSYNC
-          sta WSYNC
-          sta WSYNC
-          lsr
-          sta VDELBL
-          sta VDELP0
-          sta WSYNC
-          sta VSYNC          ;;;;turn off VSYNC
-          .if  overscan_time
-                    lda # overscan_time+5+128
-          .else
-                    lda # 42+128
-          .fi
-          sta TIM64T
+	lda # 2 ;c=2
+	stx WSYNC ;c=3
+	sta VSYNC ;c=3
+	stx WSYNC ;c=3
+	stx WSYNC ;c=3
+	lsr a ;c=2
+	sta VDELBL ;c=3
+	sta VDELP0 ;c=3
+	stx WSYNC ;c=3
+	sta VSYNC ;c=3 ;turn off VSYNC
+          lda #overscan_time+5 + 128 ;c=2
+	sta TIM64T ;c=3
 
-          ;; run possible vblank bB code
-          ;; batariBASIC code will be placed at this label via vblank sta
-
-          ;; The vblank code must return (return thisbank for bankswitching)
-          ;; vblank_bB_code constant is defined in VblankHandlers.bas (or $0000 if not used)
-          ;; MultiSpriteSuperChip.s sets it to $0000 if not defined, so we can always call it
-          lda vblank_bB_code
-          ora vblank_bB_code + 1
-          beq SkipVblankCall
-
-          jsr vblank_bB_code
-
+          ;; Run optional vblank batariBASIC code (defined by the project).
+          lda vblank_bB_code ;c=4
+          ora vblank_bB_code + 1 ;c=4
+          beq SkipVblankCall ;c=2/3
+          jsr vblank_bB_code ;c=6
 SkipVblankCall:
 
-          jsr setscorepointers
+          	jsr setscorePointers ;c=6
+	jsr SetupP1Subroutine ;c=6
 
-          jsr SetupP1Subroutine
+	;-------------
 
-          ;;-------------
 
-          ;;--position P0, M0, M1, BL
 
-          jsr PrePositionAllObjects
 
-          ;;--set up player 0 pointer
 
-          dec player0y
-          lda player0pointer          ;;;; player0: must be run every frame!
-          sec
-          sbc player0y
-          clc
-          adc player0Height
-          sta player0pointer
+	;--position P0, M0, M1, BL
 
-          lda player0y
-          sta p0Top
-          sec
-          sbc player0Height
-          clc
-          adc #$80
-          sta p0Bottom
+	jsr PrePositionAllObjects ;c=6
 
-          ;;--some final setup
+	;--set up player 0 pointer
 
-          ldx # 4
-          lda #$80
+          dec player0y ;c=5
+	lda player0pointer ;c=3 ; player0: must be run every frame!
+	sec ;c=2
+	sbc player0y ;c=3
+	clc ;c=2
+	adc player0Height ;c=3
+	sta player0pointer ;c=3
+
+	lda player0y ;c=3
+	sta p0Top ;c=3
+	sec ;c=2
+	sbc player0Height ;c=3
+	clc ;c=2
+	adc #$80 ;c=2
+	sta p0Bottom ;c=3
+	
+
+	;--some final setup
+
+          ldx #4 ;c=2
+          lda #$80 ;c=2
 cycle74_HMCLR:
-          sta HMP0,x
-          dex
-          bpl cycle74_HMCLR
+          sta HMP0, x ;c=4
+          dex ;c=2
+          bpl cycle74_HMCLR ;c=2/3
+;	sta HMCLR
 
-          sta HMCLR
 
-          lda # 0
-          sta PF1
-          sta PF2
-          sta GRP0
-          sta GRP1
+	lda # 0 ;c=2
+	sta PF1 ;c=3
+	sta PF2 ;c=3
+	sta GRP0 ;c=3
+	sta GRP1 ;c=3
 
-          jsr KernelSetupSubroutine
+
+	jsr KernelSetupSubroutine ;c=6
 
 WaitForVblankEnd:
-          lda INTIM
-          bmi WaitForVblankEnd
-
-          lda # 0
-          sta WSYNC
-          sta VBLANK          ;;;;turn off VBLANK - it was turned on by overscan
-          sta CXCLR
-
-          jmp KernelRoutine
+	lda INTIM ;c=3
+	bmi WaitForVblankEnd ;c=2/3
+          lda # 0 ;c=2
+	stx WSYNC ;c=3
+	sta VBLANK ;c=3 ;turn off VBLANK - it was turned on by overscan
+	sta CXCLR ;c=3
 
 
-PositionASpriteSubroutine:          ;;;;call this function with A == horizontal position (0-159)
-          ;;and X == the object to be positioned (0= P0, 1= P1, 2= M0, etc.)
-          ;;if you do not wish to write to P1 during this function, make
-          ;;sure Y==0 before you call it.  This function will change Y, and A
-          ;;will be the value put into HMxx when returned.
-          ;;Call this function with at least 11 cycles left in the scanline 
-          ;;(jsr + sec + sta WSYNC = 11); it will return 9 cycles
-          ;;into the second scanline
-          sec
-          sta WSYNC                  ;;;;begin line 1
-          sta HMCLR                  ;;;;+4     4
+	jmp KernelRoutine ;c=3
+
+
+PositionASpriteSubroutine	;call this function with A == horizontal position (0-159)
+				;and X == the object to be positioned (0=P0, 1=P1, 2=M0, etc.)
+				;if you do not wish to write to P1 during this function, make
+				;sure Y==0 before you call it. This function will change Y, and A
+				;will be the value put into HMxx when returned.
+				;Call this function with at least 11 cycles left in the scanline 
+				;(jsr + sec + stx WSYNC = 11); it will return 9 cycles
+				;into the second scanline
+	sec ;c=2
+	stx WSYNC ;c=3 ;begin line 1
+	sta @w HMCLR ;c=4 ;+4	 4
 DivideBy15Loop:
-          sbc # 15
-          bcs DivideBy15Loop         ;;;;+4/5   8/13.../58
+	sbc #15 ;c=2
+	bcs DivideBy15Loop ;c=2/3 ;+4/5	8/13.../58
 
-          tay                        ;;;;+2     10/15/...60
-          lda FineAdjustTableEnd,y   ;;;;+5     15/20/...65
+	tay ;c=2 ;+2	10/15/...60
+	lda FineAdjustTableEnd, y ;c=4+1* ;+5	15/20/...65
 
-          ;;     15
-          sta HMP0,x                 ;;;;+4     19/24/...69
-          sta RESP0,x                ;;;;+4     23/28/33/38/43/48/53/58/63/68/73
-          sta WSYNC                  ;;;;+3     0       begin line 2
-          sta HMOVE                  ;;;;+3
-          rts                        ;;;;+6     9
+			;	15
+	sta HMP0, x ;c=4 ;+4	19/24/...69
+	sta RESP0, x ;c=4 ;+4	23/28/33/38/43/48/53/58/63/68/73
+	stx WSYNC ;c=3 ; + 3	 0	begin line 2
+	sta HMOVE ;c=3 ; + 3
+	rts ;c=6 ;+6	 9
+
+;-------------------------------------------------------------------------
 
 PrePositionAllObjects:
 
-          ldx # 4
-          lda ballx
-          jsr PositionASpriteSubroutine
+	ldx #4 ;c=2
+	lda ballx ;c=3
+	jsr PositionASpriteSubroutine ;c=6
+	
+	dex ;c=2
+	lda missile1x ;c=3
+	jsr PositionASpriteSubroutine ;c=6
+	
+	dex ;c=2
+	lda missile0x ;c=3
+	jsr PositionASpriteSubroutine ;c=6
 
-          dex
-          lda missile1x
-          jsr PositionASpriteSubroutine
+	dex ;c=2
+	dex ;c=2
+	lda player0x ;c=3
+	jsr PositionASpriteSubroutine ;c=6
 
-          dex
-          lda missile0x
-          jsr PositionASpriteSubroutine
+	rts ;c=6
 
-          dex
-          dex
-          lda player0x
-          jsr PositionASpriteSubroutine
 
-          rts
+;-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+;-------------------------------------------------------------------------
+
 
 KernelSetupSubroutine:
 
-          ldx # 4
+	ldx #4 ;c=2
 AdjustYValuesUpLoop:
-          lda newSpriteY,x
-          clc
-          adc # 2
-          sta newSpriteY,x
-          dex
-          bpl AdjustYValuesUpLoop
+	lda newSpriteY, x ;c=4
+	clc ;c=2
+	adc #2 ;c=2
+	sta newSpriteY, x ;c=4
+	dex ;c=2
+	bpl AdjustYValuesUpLoop ;c=2/3
 
-          ldx temp3                   ;;;; first sprite displayed
 
-          lda spriteGfxIndex,x
-          tay
-          lda newSpriteY,y
-          sta repoLine
+	ldx temp3 ;c=3 ; first sprite displayed
 
-          lda spriteGfxIndex-1,x
-          tay
-          lda newSpriteY,y
-          sta temp6
+	lda SpriteGfxIndex, x ;c=4
+	tay ;c=2
+	lda newSpriteY, y ;c=4+1*
+	sta repoLine ;c=3
 
-          stx spriteIndex
+	lda SpriteGfxIndex-1, x ;c=4
+	tay ;c=2
+	lda newSpriteY, y ;c=4+1*
+	sta temp6 ;c=3
 
-          lda # 255
-          sta p1Bottom
+	stx spriteIndex ;c=3
 
-          lda player0y
-          .if  screenheight
-                    cmp # screenheight+1
-          .else
-                    cmp #$59
-          .fi
-          bcc nottoohigh
 
-          lda p0Bottom
-          sta p0Top
+
+	lda #255 ;c=2
+	sta p1Bottom ;c=3
+
+	lda player0y ;c=3
+	cmp #screenheight + 1 ;c=2
+	bcc nottoohigh ;c=2/3
+	lda p0Bottom ;c=3
+	sta p0Top ;c=3
+
+          
 
 nottoohigh:
-          rts
+	rts ;c=6
 
-;;-------------------------------------------------------------------------
-
-
+;-------------------------------------------------------------------------
 
 
 
-;;*************************************************************************
 
-          ;;-------------------------Data Below--------------------------------------
+
+;*************************************************************************
+
+;-------------------------------------------------------------------------
+;-------------------------Data Below--------------------------------------
+;-------------------------------------------------------------------------
 
 MaskTable:
-          .byte 1,3,7,15,31
+	.byte 1, 3, 7, 15, 31
 
-          ;; shove 6-digit score routine here
+          ; shove 6-digit score routine here
 
 sixdigscore:
-          lda # 0
-          sta COLUBK
-          sta PF0
-          sta PF1
-          sta PF2
-          sta ENABL
-          sta ENAM0
-          sta ENAM1
-          ;;end of kernel here
+	lda # 0 ;c=2
+;	sta COLUBK
+	sta PF0 ;c=3
+	sta PF1 ;c=3
+	sta PF2 ;c=3
+	sta ENABL ;c=3
+	sta ENAM0 ;c=3
+	sta ENAM1 ;c=3
+	;end of kernel here
 
-          ;; 6 digit score routine
-          lda # 0
-          sta PF1
-          sta PF2
-          ;; tax
 
-          sta WSYNC                  ;;;;,x
+          ; 6 digit score routine
+; lda # 0
+; sta PF1
+; sta PF2
+; tax
 
-          sta WSYNC                  ;first one, need one more
-          sta REFP0
-          sta REFP1
-          sta GRP0
-          sta GRP1
-          sta HMCLR
+          stx WSYNC ;c=3 ;, x
 
-          ;; restore P0pointer
+; stx WSYNC ;first one, need one more
+          sta REFP0 ;c=3
+          sta REFP1 ;c=3
+          sta GRP0 ;c=3
+          sta GRP1 ;c=3
+          sta HMCLR ;c=3
 
-          lda player0pointer
-          clc
-          adc player0y
-          sec
-          sbc player0Height
-          sta player0pointer
-          inc player0y
+          ; restore P0pointer
 
-          .if  vblank_time
-                    .if  screenheight
-                              .if  screenheight == 84
-                                        lda  # vblank_time+9+128+10
-                              .else
-                                        lda  # vblank_time+9+128+19
-                              .fi
-                    .else
-                              lda  # vblank_time+9+128
-                    .fi
+	lda player0pointer ;c=3
+	clc ;c=2
+	adc player0y ;c=3
+	sec ;c=2
+	sbc player0Height ;c=3
+	sta player0pointer ;c=3
+          inc player0y ;c=5
+
+          .if screenheight == 84
+          	 lda #vblank_time+9 + 128 + 10 ;c=2
           .else
-                    .if  screenheight
-                              .if  screenheight == 84
-                                        lda  # 52+128+10
-                              .else
-                                        lda  # 52+128+19
-                              .fi
-                    .else
-                              lda  # 52+128
-                    .fi
+	 lda #vblank_time+9 + 128 + 19 ;c=2
+          .endif
+
+	sta TIM64T ;c=3
+          .if minikernel
+                    jsr minikernel ;c=6
           .fi
 
-          sta  TIM64T
-          .if  minikernel
-                    jsr minikernel
+; score pointers contain:
+; score1-5: lo1, lo2, lo3, lo4, lo5, lo6
+; swap lo2->temp1
+; swap lo4->temp3
+; swap lo6->temp5
 
-          .fi
-          .if  noscore
-                    pla
-                    pla
-                    jmp skipscore
+          lda scorePointers+5 ;c=3
+          sta temp5 ;c=3
+          lda scorePointers + 1 ;c=3
+          sta temp1 ;c=3
+          lda scorePointers + 3 ;c=3
+          sta temp3 ;c=3
 
-          .fi
+          lda #>FontData ;c=2
+          sta scorePointers + 1 ;c=3
+          sta scorePointers + 3 ;c=3
+          sta scorePointers+5 ;c=3
+          sta temp2 ;c=3
+          sta temp4 ;c=3
+          sta temp6 ;c=3
 
-          ;; score pointers contain:
-          ;; score1-5: lo1,lo2,lo3,lo4,lo5,lo6
-          ;; swap lo2->temp1
-          ;; swap lo4->temp3
-          ;; swap lo6->temp5
-
-          lda scorePointers+5
-          sta temp5
-          lda scorePointers+1
-          sta temp1
-          lda scorePointers+3
-          sta temp3
-
-          lda # >SetFontNumbers
-          sta scorePointers+1
-          sta scorePointers+3
-          sta scorePointers+5
-          sta temp2
-          sta temp4
-          sta temp6
-
-          rts
-
-          ;;-- FineAdjustTable - HMove table
-          ;;--
-          ;;-- NOTE:  This table needs to be here to prevent interference with
-          ;;--        the superchip due to the forced page-crossing used when
-          ;;--        accessing this table.
-
-FineAdjustTableBegin:
-          .byte %01100000           ;;;;left 6
-          .byte %01010000
-          .byte %01000000
-          .byte %00110000
-          .byte %00100000
-          .byte %00010000
-          .byte %00000000           ;;;;left 0
-          .byte %11110000
-          .byte %11100000
-          .byte %11010000
-          .byte %11000000
-          .byte %10110000
-          .byte %10100000
-          .byte %10010000
-          .byte %10000000           ;;;;right 8
-          FineAdjustTableEnd = FineAdjustTableBegin - 241
-
-          ;;--- DEBUG: use the following .error statements to make sure page-crossing occurs
-          ;;.error "FineAdjustTable at      ", FineAdjustTableBegin
-          ;;.error " but is referenced from ", FineAdjustTableEnd
-
-          ;;----------------------Kernel Routine-------------------------------------
+          rts ;c=6
 
 
-          ;; .rept $f147-*
-          ;; brk
-          ;; .next
-          ;;     org $F240
 
-SwitchDrawP0K1:                      ;;;;    72
-          lda p0Bottom
-          sta p0Top                   ;;;;+6   2
-          jmp BackFromSwitchDrawP0K1
+;-------------------------------------------------------------------------
+;----------------------Kernel Routine-------------------------------------
+;-------------------------------------------------------------------------
 
-WaitDrawP0K1:                        ;;;;    74
-          .SLEEP 4                    ;;;;+4   2
-          jmp BackFromSwitchDrawP0K1
 
-SkipDrawP1K1:                        ;;;;    11
-          lda # 0
-          sta GRP1                    ;;;;+5   16      so Ball gets drawn
-          jmp BackFromSkipDrawP1
+;-------------------------------------------------------------------------
+; repeat $f147-*
+; brk
+; repend
+;	org $F240
+
+SwitchDrawP0K1				;	72
+	lda p0Bottom ;c=3
+	sta p0Top ;c=3 ;+6	 2
+	jmp BackFromSwitchDrawP0K1 ;c=3 ; + 3	 5
+
+WaitDrawP0K1				;	74
+	.Sleep 4 ;c=4 ;+4	 2
+	jmp BackFromSwitchDrawP0K1 ;c=3 ; + 3	 5
+
+SkipDrawP1K1				;	11
+	lda # 0 ;c=2
+	sta GRP1 ;c=3 ;+5	16	so Ball gets drawn
+	jmp BackFromSkipDrawP1 ;c=3 ; + 3	19
+
+;-------------------------------------------------------------------------
 
 KernelRoutine:
-          .if ! screenheight
-                    .SLEEP 12
+          .Sleep 6 ;c=6
+	tsx ;c=2
+	stx aux2 ;c=3
+	ldx #ENABL ;c=2
+	txs ;c=2 ;+9	 9
+
+          ldx # 0 ;c=2
+          lda pfHeight ;c=3
+          bpl + ;c=2/3
+
+          .byte $24 ;c=3
++
+          tax ;c=2
+
+          lda PFStart, x ;c=4+1* ; get pf pixel resolution for heights 15, 7, 3, 1, 0
+
+          .if screenheight == 84
+          sbc pfsub + 1, x ;c=4+1*
           .else
-                    .SLEEP 6
-          .fi
-          tsx
-          stx aux2  ;;; Save stack pointer (use aux2 instead of temp7 to avoid conflict with BS_return)
+          sbc pfsub, x ;c=4+1*
+          .endif
+          
+          sta pfPixelHeight ;c=3
 
-          ;; CRITICAL: During kernel rendering, stack is NOT used, so SP can be used as temporary storage
-          ;; Original code sets SP to ENABL ($1f) for the GRP manipulation trick in the score loop
-          ;; This is safe because the stack isn't used during kernel rendering
-          ;; We'll restore the real SP from temp7 after the score rendering is done
-          ;; For now, we keep the original SP value (already in X from tsx above)
-          ;; SP will be set to ENABL during score rendering, then restored from temp7 at lines 828/921
+          ldy #screenheight ;c=2
+          
+;	lda #$02
+;	sta COLUBK		;+5	18
 
-          ldx # 0
-          lda pfHeight
-          bpl asdhj
+; sleep 25
+          .Sleep 2 ;c=2
+KernelLoopa			;	50
+	.Sleep 7 ;c=7 ;+4	54
+KernelLoopb			;	54
+	.Sleep 2 ;c=2 ; + 12	66
+	cpy p0Top ;c=3 ; + 3	69
+	beq SwitchDrawP0K1 ;c=2/3 ;+2	71
 
-          .byte $24
+	bpl WaitDrawP0K1 ;c=2/3 ;+2	73
 
-asdhj:
-          tax
-
-          ldx pfHeight
-          lda PFStart,x               ;;;; get pf pixel resolution for heights 15,7,3,1,0
-
-          .if  screenheight
-                    sec
-                    .if screenheight == 84
-                              sbc pfsub+1,x
-                    .else
-                              sbc pfsub,x
-                    .fi
-          .fi
-
-          sta pfPixelHeight
-
-          .if  screenheight
-                    ldy # screenheight
-          .else
-                    ldy # 88
-          .fi
-
-          lda #$02
-          sta COLUBK                  ;+5     18
-
-          ;; .SLEEP 25
-          .SLEEP 2
-KernelLoopa:                         ;;;;    50
-          .SLEEP 7                    ;;;;+4   54
-KernelLoopb:                         ;;;;    54
-          .SLEEP 2                    ;;;;+12  66
-          cpy p0Top                   ;;;;+3   69
-          beq SwitchDrawP0K1         ;;;;+2   71
-
-          bpl WaitDrawP0K1            ;;;;+2   73
-
-          lda (player0pointer),y      ;;;;+5   2
-          sta GRP0                    ;;;;+3   5       VDEL because of repokernel
-
+	lda (player0pointer), y ;c=5+1* ;+5	 2
+	sta GRP0 ;c=3 ; + 3	 5	VDEL because of repokernel
 BackFromSwitchDrawP0K1:
+	cpy p1Bottom ;c=3 ; + 3	 8	unless we mean to draw immediately, this should be set
+				;		to a value greater than maximum Y value initially
+	bcc SkipDrawP1K1 ;c=2/3 ;+2	10
 
-          cpy p1Bottom                ;;;;+3   8       unless we mean to draw immediately, this should be set
-          ;;                          to a value greater than maximum Y value initially
-          bcc SkipDrawP1K1             ;;;;+2   10
-
-          lda (p1Display),y           ;;;;+5   15
-          sta GRP1                    ;;;;+4   19
-
+	lda (p1Display), y ;c=5+1* ;+5	15
+	sta @w GRP1 ;c=4 ;+4	19
 BackFromSkipDrawP1:
 
-          sty temp1
-          ldy pfPixelHeight
-          lax (pf1Pointer),y
-          stx PF1                     ;;;;+7   26
-          lda (pf2Pointer),y
-          sta PF2                     ;;;;+7   33
-          ;;SLEEP 6
-          stx pf1Temp2
-          sta pf2Temp2
-          dey
-          bmi pagewraphandler
-
-          lda (pf1Pointer),y
-
+;fuck	
+          sty temp1 ;c=3
+          ldy pfPixelHeight ;c=3
+	lax (pf1Pointer), y ;c=5+1*
+	stx PF1 ;c=3 ;+7	26
+	lda (pf2Pointer), y ;c=5+1*
+	sta PF2 ;c=3 ;+7	33
+          ;sleep 6
+	stx pf1Temp2 ;c=3
+	sta pf2Temp2 ;c=3
+	dey ;c=2
+          bmi pagewraphandler ;c=2/3
+	lda (pf1Pointer), y ;c=5+1*
 cyclebalance:
-          sta pf1Temp1
-          lda (pf2Pointer),y
-          sta pf2Temp1
-          ;; CRITICAL: During kernel rendering, stack is NOT used, so SP can be used as temporary storage
-          ;; Original code sets SP to ENABL ($1f) for the GRP manipulation trick in the score loop
-          ;; This is safe because the stack isn't used during kernel rendering
-          ;; Original: ldy temp1 (3) + ldx #ENABL (2) + txs (2) = 7 cycles
-          ;; FIX: We can't do it in 4 cycles for ldx+txs with a variable. We must remove 1 cycle.
-          ;; Solution: Pre-load temp7 into X before ldy, then use txs after ldy
-          ;; This changes the order but maintains the same total cycle count
-          ;; Original sequence: ldy temp1 (3) + ldx #ENABL (2) + txs (2) = 7 cycles
-          ;; New sequence: ldx temp7 (3) + ldy temp1 (3) + txs (2) = 8 cycles (still +1!)
-          ;; Actually, we need to remove 1 cycle. Let me check if we can optimize ldy temp1...
-          ;; No, ldy zp is already 3 cycles (optimal).
-          ;; The only way to get 4 cycles for the SP restore is immediate load, which we can't do.
-          ;; Best fix: Use ldx temp7 + txs, then remove 1 cycle from a later instruction.
-          ;; OR: Use a different approach - what if we use lda temp7 + tax + txs?
-          ;; That's 3+2+2=7 cycles, same as original ldy+ldx+txs, but we still need ldy!
-          ;; So that's 3+3+2+2=10 cycles, way too slow.
-          ;; Actually, I think the real solution is to find where to remove 1 cycle in the kernel.
-          ;; But the user said a 1-cycle error is visible, so we MUST fix it.
-          ;; Final solution: Use ldx temp7 + txs, then remove 1 cycle from a later instruction.
-          ;; Let me check if we can optimize the cpy bally - no, it's already optimal.
-          ;; The only way: Use a different approach that's exactly 4 cycles for the SP restore.
-          ;; Since we can't do that with a variable, we must remove 1 cycle elsewhere.
-          ;; Best: Remove 1 cycle from a later instruction that has padding.
-          ;; CRITICAL: Do NOT set SP to ENABL ($1f) - restore from temp7 instead
-          ;; Original: ldy temp1 (3) + ldx #ENABL (2) + txs (2) = 7 cycles
-          ;; Replacement: ldy temp1 (3) + ldx temp7 (3) + txs (2) = 8 cycles (+1 cycle error!)
-          ;; FIX: We can't do it in 4 cycles for ldx+txs with a variable. We must remove 1 cycle.
-          ;; Solution: Remove 1 cycle by optimizing the sequence. Since ldy zp is 3 cycles and can't be optimized,
-          ;; and ldx zp is 3 cycles (can't be 2), we must remove 1 cycle from a later instruction.
-          ;; Best: Remove 1 cycle from php by using a different approach, OR remove from a later instruction.
-          ;; Actually, we can use lda temp7 + tax + txs, but that's 3+2+2=7 cycles, same as original!
-          ;; But we still need ldy temp1, so that's 3+3+2+2=10 cycles, way too slow.
-          ;; The real solution: Use ldx temp7 + txs, then remove 1 cycle from a later instruction.
-          ;; Let me check if we can optimize php - no, it's already optimal (3 cycles).
-          ;; The only way: Remove 1 cycle from a later instruction that has padding.
-          ;; OR: Use a different approach that's exactly 4 cycles for the SP restore.
-          ;; Since we can't do that with a variable, we must remove 1 cycle elsewhere.
-          ;; Final solution: Use ldx temp7 + txs, document the +1 cycle, and remove 1 cycle from a later instruction.
-          ;; CRITICAL: During kernel rendering, stack is NOT used, so SP can be used as temporary storage
-          ;; Original code sets SP to ENABL ($1f) for the GRP manipulation trick in the score loop
-          ;; This is safe because the stack isn't used during kernel rendering
-          ldy temp1
-          ldx # ENABL  ;;; 2 cycles - set SP to $1f for GRP manipulation trick (safe during kernel rendering)
-          txs          ;;; 2 cycles
-          ;; Total: 4 cycles (matches original timing)
-          cpy bally
-          php                         ;;;;+6   39      VDEL ball
+	sta pf1Temp1 ;c=3
+	lda (pf2Pointer), y ;c=5+1*
+	sta pf2Temp1 ;c=3
+          ldy temp1 ;c=3
 
-          cpy missile1y
-          php                         ;;;;+6   71
+          ldx #ENABL ;c=2
+          txs ;c=2
+	cpy bally ;c=3
+	php ;c=3 ;+6	39	VDEL ball
 
-          cpy missile0y
-          php                         ;;;;+6   1
 
-          dey                         ;;;;+2   15
+	cpy missile1y ;c=3
+	php ;c=3 ;+6	71
 
-          cpy repoLine                ;;;;+3   18
-          beq RepoKernel              ;;;;+2   20
+	cpy missile0y ;c=3
+	php ;c=3 ;+6	 1
+	
 
-          ;;      .SLEEP 20           ;+23    43
-          .SLEEP 6
+	dey ;c=2 ;+2	15
 
-newrepo:                              ;; since we have time here, store next repoline
-          ;; CRITICAL: Cannot use temp6 here (used for SP save/restore at line 403)
-          ;; Use repoLine directly instead of temp6 intermediate storage
-          ldx spriteIndex
-          lda spriteGfxIndex-1,x
-          tax
-          lda newSpriteY,x
-          sta repoLine  ;;; Store directly to repoLine (was temp6, conflicts with SP save/restore)
-          .SLEEP 4
+	cpy repoLine ;c=3 ; + 3	18
+	beq RepoKernel ;c=2/3 ;+2	20
+;	.Sleep 20		;+23	43
+          .Sleep 6 ;c=6
+
+newrepo ; since we have time here, store next repoline
+          ldx spriteIndex ;c=3
+          lda SpriteGfxIndex-1, x ;c=4
+          tax ;c=2
+          lda newSpriteY, x ;c=4
+          sta temp6 ;c=3
+          .Sleep 4 ;c=4
 
 BackFromRepoKernel:
-          tya                         ;;;;+2   45
-          and pfHeight                ;;;;+2   47
-          bne KernelLoopa             ;;;;+2   49
-
-          dec pfPixelHeight
-          bpl KernelLoopb             ;;;;+3   54
-
-          bmi donewkernel             ;+3     54
-
-          bne KernelLoopb+1           ;+3     54
+	tya ;c=2 ;+2	45
+	and pfHeight ;c=3 ;+2	47
+	bne KernelLoopa ;c=2/3 ;+2	49
+	dec pfPixelHeight ;c=5
+	bpl KernelLoopb ;c=2/3 ; + 3	54
+;	bmi donewkernel		; + 3	54
+;	bne KernelLoopb + 1		; + 3	54
 
 donewkernel:
-          jmp DoneWithKernel
+	jmp DoneWithKernel ;c=3 ; + 3	56
 
 pagewraphandler:
-          jmp cyclebalance
+          jmp cyclebalance ;c=3
 
-          ;; room here for score?
+;-------------------------------------------------------------------------
+          
+          ; room here for score?
 
-setscorepointers:
-          lax score+2
-          jsr scorepointerset
-
-          sty scorePointers+5
-          stx scorePointers+2
-          lax score+1
-          jsr scorepointerset
-
-          sty scorePointers+4
-          stx scorePointers+1
-          lax score
-          jsr scorepointerset
-
-          sty scorePointers+3
-          stx scorePointers
-
+setscorePointers:
+          lax score+2 ;c=3
+          jsr scorePointerset ;c=6
+          sty scorePointers+5 ;c=3
+          stx scorePointers+2 ;c=3
+          lax score + 1 ;c=3
+          jsr scorePointerset ;c=6
+          sty scorePointers+4 ;c=3
+          stx scorePointers + 1 ;c=3
+          lax score ;c=3
+          jsr scorePointerset ;c=6
+          sty scorePointers + 3 ;c=3
+          stx scorePointers ;c=3
 wastetime:
-          rts
+          rts ;c=6
 
-scorepointerset:
-          and #$0F
-          asl
-          asl
-          asl
-          asl
-          adc # <SetFontNumbers
-          tay
-          txa
-          and #$F0
-          lsr
-          asl
-          asl
-          asl
-          adc # <SetFontNumbers
-          tax
-          rts
-          ;;     align 256
+scorePointerset:
+          and #$0f ;c=2
+          asl a ;c=2
+          asl a ;c=2
+          asl a ;c=2
+          asl a ;c=2
+          adc #<FontData ;c=2
+          tay ;c=2
+          txa ;c=2
+          and #$f0 ;c=2
+          lsr a ;c=2
+          asl a ;c=2
+          asl a ;c=2
+          asl a ;c=2
+          adc #<FontData ;c=2
+          tax ;c=2
+          rts ;c=6
+;	align 256
 
-SwitchDrawP0KR:                      ;;;;    45
-          lda p0Bottom
-          sta p0Top                   ;;;;+6   51
-          jmp BackFromSwitchDrawP0KR
+SwitchDrawP0KR				;	45
+	lda p0Bottom ;c=3
+	sta p0Top ;c=3 ;+6	51
+	jmp BackFromSwitchDrawP0KR ;c=3 ; + 3	54
 
-WaitDrawP0KR:                        ;;;;    47
-          .SLEEP 4                    ;;;;+4   51
-          jmp BackFromSwitchDrawP0KR
+WaitDrawP0KR				;	47
+	.Sleep 4 ;c=4 ;+4	51
+	jmp BackFromSwitchDrawP0KR ;c=3 ; + 3	54
+
+;-----------------------------------------------------------
 
 noUpdateXKR:
-          ldx # 1
-          cpy p0Top
-          jmp retXKR
+          ldx #1 ;c=2
+          cpy @w p0Top ;c=4
+          jmp retXKR ;c=3
 
 skipthis:
-          ldx # 1
-          jmp goback
+          ldx #1 ;c=2
+          jmp goback ;c=3
 
-RepoKernel:                          ;;;;    22      crosses page boundary
-          tya
-          and pfHeight                ;;;;+2   26
-          bne noUpdateXKR            ;;;;+2   28
+RepoKernel			;	22	crosses page boundary
+	tya ;c=2
+	and pfHeight ;c=3 ;+2	26
+	bne noUpdateXKR ;c=2/3 ;+2	28
+          tax ;c=2
+;	dex			;+2	30
+	dec pfPixelHeight ;c=5
+;	stx Temp		; + 3	35
+;	.Sleep 3
 
-          tax
-          dex                         ;+2     30
-          dec pfPixelHeight
-          stx temp1                   ;+3     35 (use temp1 instead of undefined Temp)
-          ;;      .SLEEP 3
-
-          cpy p0Top                   ;;;;+3   42
-
+	cpy p0Top ;c=3 ; + 3	42
 retXKR:
-          beq SwitchDrawP0KR         ;;;;+2   44
-
-          bpl WaitDrawP0KR            ;;;;+2   46
-
-          lda (player0pointer),y      ;;;;+5   51
-          sta GRP0                    ;;;;+3   54      VDEL
-
+	beq SwitchDrawP0KR ;c=2/3 ;+2	44
+	bpl WaitDrawP0KR ;c=2/3 ;+2	46
+	lda (player0pointer), y ;c=5+1* ;+5	51
+	sta GRP0 ;c=3 ; + 3	54	VDEL
 BackFromSwitchDrawP0KR:
-          sec                         ;;;;+2   56
+	sec ;c=2 ;+2	56
+          
 
-          lda pf2Temp1,x
-          ldy pf1Temp1,x
 
-          ldx spriteIndex             ;;;;+3   2
+	lda pf2Temp1, x ;c=4
+	ldy pf1Temp1, x ;c=4
 
-          sta PF2                     ;;;;+7   63
+	ldx spriteIndex ;c=3 ; + 3	 2
 
-          lda spriteGfxIndex,x
-          sty PF1                     ;;;;+7   70      too early?
-          tax
-          lda # 0
-          sta GRP1                    ;;;;+5   75      to display player 0
-          lda newSpriteX,x            ;;;;+4   6
+	sta PF2 ;c=3 ;+7	63
 
-DivideBy15LoopK:                      ;;;;    6       (carry set above)
-          sbc # 15
-          bcs DivideBy15LoopK         ;;;;+4/5 10/15.../60
+	lda SpriteGfxIndex, x ;c=4
+	sty PF1 ;c=3 ;+7	70	too early?
+	tax ;c=2
+	lda # 0 ;c=2
+	sta GRP1 ;c=3 ;+5	75	to display player 0
+	lda newSpriteX, x ;c=4 ;+4	 6
+          
+DivideBy15LoopK				;	 6	(carry set above)
+	sbc #15 ;c=2
+	bcs DivideBy15LoopK ;c=2/3 ;+4/5	10/15.../60
 
-          tax                         ;;;;+2   12/17/...62
-          lda FineAdjustTableEnd,x     ;;;;+5   17/22/...67
+	tax ;c=2 ;+2	12/17/...62
+	lda FineAdjustTableEnd, x ;c=4+1* ;+5	17/22/...67
 
-          sta HMP1                    ;;;;+3   20/25/...70
-          sta RESP1                   ;;;;+3   23/28/33/38/43/48/53/58/63/68/73
-          sta WSYNC                   ;;;;+3   0       begin line 2
-          ;;sta HMOVE                 ;+3     3
+	sta HMP1 ;c=3 ; + 3	20/25/...70
+	sta RESP1 ;c=3 ; + 3	23/28/33/38/43/48/53/58/63/68/73
+	stx WSYNC ;c=3 ; + 3	 0	begin line 2
+	;sta HMOVE			; + 3	 3
 
-          ;; CRITICAL: During kernel rendering, stack is NOT used, so SP can be used as temporary storage
-          ;; Original code sets SP to ENABL ($1f) for the GRP manipulation trick in the score loop
-          ;; This is safe because the stack isn't used during kernel rendering
-          ldx # ENABL  ;;; 2 cycles - set SP to $1f for GRP manipulation trick (safe during kernel rendering)
-          txs                         ;;;;+4   25
-          ldy repoLine                ;;;; restore y
-          cpy bally
-          php                         ;;;;+6   9       VDEL ball
+	ldx #ENABL ;c=2
+	txs ;c=2 ;+4	25
+	ldy repoLine ;c=3 ; restore y
+	cpy bally ;c=3
+	php ;c=3 ;+6	 9	VDEL ball
 
-          cpy missile1y
-          php                         ;;;;+6   15
+	cpy missile1y ;c=3
+	php ;c=3 ;+6	15
 
-          cpy missile0y
-          php                         ;;;;+6   21
+	cpy missile0y ;c=3
+	php ;c=3 ;+6	21
+;15 cycles
+	tya ;c=2
+	and pfHeight ;c=3
+          ;eor #1
+	and #$FE ;c=2
+	bne skipthis ;c=2/3
 
-          ;;15 cycles
-          tya
-          and pfHeight
-          ;;eor #1
-          and #$FE
-          bne skipthis
-
-          tax
-          .SLEEP 4
-          ;;      .SLEEP 2
-
+          tax ;c=2
+          .Sleep 4 ;c=4
 goback:
+	dey ;c=2
+	cpy p0Top ;c=3 ; + 3	52
+	beq SwitchDrawP0KV ;c=2/3 ;+2	54
 
-          dey
-          cpy p0Top                   ;;;;+3   52
-          beq SwitchDrawP0KV          ;;;;+2   54
+	bpl WaitDrawP0KV ;c=2/3 ;+2	56
 
-          bpl WaitDrawP0KV            ;;;;+2   56
-
-          lda (player0pointer),y      ;;;;+5   61
-          sta GRP0                    ;;;;+3   64      VDEL
-
+	lda (player0pointer), y ;c=5+1* ;+5	61
+	sta GRP0 ;c=3 ; + 3	64	VDEL
 BackFromSwitchDrawP0KV:
 
-          ;; .SLEEP 3
+; .Sleep 3
 
-          lda pf2Temp1,x
-          sta PF2                     ;;;;+7   5
-          lda pf1Temp1,x
-          sta PF1                     ;;;;+7   74
-          sta HMOVE
+	lda pf2Temp1, x ;c=4
+	sta PF2 ;c=3 ;+7	 5
+	lda pf1Temp1, x ;c=4
+	sta PF1 ;c=3 ;+7	74 
+          sta HMOVE ;c=3
 
-          lda # 0
-          sta GRP1                    ;;;;+5   10      to display GRP0
+	lda # 0 ;c=2
+	sta GRP1 ;c=3 ;+5	10	to display GRP0
 
-          ;; CRITICAL: During kernel rendering, stack is NOT used, so SP can be used as temporary storage
-          ;; Original code sets SP to ENABL ($1f) for the GRP manipulation trick in the score loop
-          ;; This is safe because the stack isn't used during kernel rendering
-          ldx # ENABL  ;;; 2 cycles - set SP to $1f for GRP manipulation trick (safe during kernel rendering)
-          txs                         ;;;;+4   8
+	ldx #ENABL ;c=2
+	txs ;c=2 ;+4	 8
 
-          ldx spriteIndex             ;;;;+3   13      restore index into new sprite vars
-          ;;--now, set all new variables and return to main kernel loop
+	ldx spriteIndex ;c=3 ; + 3	13	restore index into new sprite vars
+	;--now, set all new variables and return to main kernel loop
 
-          lda spriteGfxIndex,x        ;;;;+4   31
-          tax                         ;;;;+2   33
 
-          lda newNUSIZ,x
-          sta NUSIZ1                  ;;;;+7   20
-          sta REFP1
-          lda newCOLUP1,x
-          sta COLUP1                  ;;;;+7   27
+;
+	lda SpriteGfxIndex, x ;c=4 ;+4	31
+	tax ;c=2 ;+2	33
+;
 
-          lda spriteGfxIndex,x        ;+4     31
-          tax                         ;+2     33
-          lda newSpriteY,x            ;;;;+4   46
-          sec                         ;;;;+2   38
-          sbc spriteHeight,x          ;;;;+4   42
-          sta p1Bottom                ;;;;+3   45
 
-          .SLEEP 6
-          lda player1PointerLo,x     ;;;;+4   49
-          sbc p1Bottom                ;;;;+3   52      carry should still be set
-          sta p1Display               ;;;;+3   55
-          lda player1PointerHi,x
-          sta p1Display+1             ;;;;+7   62
 
-          cpy bally
-          php                         ;;;;+6   68      VDELed
+	lda newNUSIZ, x ;c=4
+	sta NUSIZ1 ;c=3 ;+7	20
+          sta REFP1 ;c=3
+	lda NewCOLUP1, x ;c=4
+	sta COLUP1 ;c=3 ;+7	27
 
-          cpy missile1y
-          php                         ;;;;+6   74
+;	lda SpriteGfxIndex, x	;+4	31
+;	tax				;+2	33
+;fuck2
+	lda newSpriteY, x ;c=4 ;+4	46
+	sec ;c=2 ;+2	38
+	sbc spriteHeight, x ;c=4 ;+4	42
+	sta p1Bottom ;c=3 ; + 3	45
 
-          cpy missile0y
-          php                         ;;;;+6   4
+          .Sleep 6 ;c=6
+	lda player1PointerLo, x ;c=4 ;+4	49
+	sbc p1Bottom ;c=3 ; + 3	52	carry should still be set
+	sta p1Display ;c=3 ; + 3	55
+	lda player1PointerHi, x ;c=4
+	sta p1Display + 1 ;c=3 ;+7	62
 
-          lda spriteGfxIndex-1,x
-          ;; .SLEEP 3
-          dec spriteIndex             ;;;;+5   13
-          ;; tax
-          lda newSpriteY,x
-          sta repoLine
 
-          ;; 10 cycles below...
-          bpl SetNextLine
+	cpy bally ;c=3
+	php ;c=3 ;+6	68	VDELed
 
-          lda # 255
-          jmp SetLastLine
+	cpy missile1y ;c=3
+	php ;c=3 ;+6	74
 
+	cpy missile0y ;c=3
+	php ;c=3 ;+6	 4
+
+
+
+; lda SpriteGfxIndex-1, x
+; .Sleep 3
+	dec spriteIndex ;c=5 ;+5	13
+; tax
+; lda newSpriteY, x
+; sta repoLine
+
+; 10 cycles below...
+	bpl SetNextLine ;c=2/3
+	lda #255 ;c=2
+	jmp SetLastLine ;c=3
 SetNextLine:
-          ;; CRITICAL: Cannot use temp6 here (used for SP save/restore)
-          ;; repoLine already contains value from newrepo (line 509), use it directly
-          lda repoLine  ;;; Use repoLine directly (was temp6, conflicts with SP save/restore)
-
+;	lda newSpriteY-1, x
+	lda @w temp6 ;c=4
 SetLastLine:
-          sta repoLine
+	sta repoLine ;c=3
 
-          tya
-          and pfHeight
-          bne nodec
+          tya ;c=2
+          and pfHeight ;c=3
+          bne nodec ;c=2/3
+          dec pfPixelHeight ;c=5
+	dey ;c=2 ;+2	30
 
-          dec pfPixelHeight
-          dey                         ;;;;+2   30
+; 10 cycles 
+          
 
-          ;; 10 cycles
-
-          jmp BackFromRepoKernel
+	jmp BackFromRepoKernel ;c=3 ; + 3	43
 
 nodec:
-          .SLEEP 4
-          dey
-          jmp BackFromRepoKernel
+          .Sleep 4 ;c=4
+          dey ;c=2
+          jmp BackFromRepoKernel ;c=3
 
-SwitchDrawP0KV:                      ;;;;    69
-          lda p0Bottom
-          sta p0Top                   ;;;;+6   75
-          jmp BackFromSwitchDrawP0KV
+;-------------------------------------------------------------------------
 
-WaitDrawP0KV:                        ;;;;    71
-          .SLEEP 4                    ;;;;+4   75
-          jmp BackFromSwitchDrawP0KV
+
+SwitchDrawP0KV				;	69
+	lda p0Bottom ;c=3
+	sta p0Top ;c=3 ;+6	75
+	jmp BackFromSwitchDrawP0KV ;c=3 ; + 3	 2
+
+WaitDrawP0KV				;	71
+	.Sleep 4 ;c=4 ;+4	75
+	jmp BackFromSwitchDrawP0KV ;c=3 ; + 3	 2
+
+;-------------------------------------------------------------------------
 
 DoneWithKernel:
 
 BottomOfKernelLoop:
+          lda # CTRLPFSCORE | CTRLPFREF ;c=2
+          sta CTRLPF ;c=3
 
-          sta WSYNC
-          ldx aux2  ;;; Restore stack pointer from aux2 (use aux2 instead of temp7 to avoid conflict with BS_return)
+	stx WSYNC ;c=3
+          ldx aux2 ;c=3
+          txs ;c=2
+          jsr sixdigscore ;c=6 ; set up score
 
-          txs
-          jsr sixdigscore             ;;;; set up score
 
-          sta WSYNC
-          ldx # 0
-          sta HMCLR
-          stx GRP0
-          stx GRP1                    ;;;; seems to be needed because of vdel
+          stx WSYNC ;c=3
+          ldx # 0 ;c=2
+          sta HMCLR ;c=3
+          stx GRP0 ;c=3
+          stx GRP1 ;c=3 ; seems to be needed because of vdel
 
-          ldy # 15
-          sty VDELP0
-          sty VDELP1
-          lda #$10
-          sta HMP1
-          lda scorecolor
-          sta COLUP0
-          sta COLUP1
-          ;; Set score color mode: COLUP0 = ColIndigo(12), COLUP1 = ColRed(12)
-          ;; CTRLPF bit 2 ($04) enables score mode (left half uses COLUP0, right half uses COLUP1)
-          .if  pfscore
-                    lda #$8C          ;;;; ColIndigo(12) = $80 (base) + $0C (brightness 12)
-                    sta COLUP0
-                    lda #$4C          ;;;; ColRed(12) = $40 (base) + $0C (brightness 12)
-                    sta COLUP1
-                    lda CTRLPF
-                    ora #$04          ;;;; Set bit 2 for score mode
-                    sta CTRLPF
-          .fi
+          ldy #7 ;c=2
+          sty VDELP0 ;c=3
+          sty VDELP1 ;c=3
+          lda #$10 ;c=2
+          sta HMP1 ;c=3
+          lda scorecolor ;c=3
+          sta COLUP0 ;c=3
+          sta COLUP1 ;c=3
+          
+          lda #$03 ;c=2
+          sta NUSIZ0 ;c=3
+          sta NUSIZ1 ;c=3
 
-          lda #$03
-          sta NUSIZ0
-          sta NUSIZ1
+          sta RESP0 ;c=3
+          sta RESP1 ;c=3
 
-          sta RESP0
-          sta RESP1
+          .Sleep 9 ;c=9
+          lda (scorePointers), y ;c=5+1*
+          sta GRP0 ;c=3
+          .Sleep 6 ;c=6
 
-          .SLEEP 9
-          lda  (scorePointers),y
-          sta  GRP0
-          .if  pfscore
-                    lda pfScoreColor
-                    sta COLUPF
-          .else
-                    .SLEEP 6
-          .fi
+          sta HMOVE ;c=3
+          lda (scorePointers + 8), y ;c=5+1*
+          jmp beginscore ;c=3
 
-          sta HMOVE
-          lda  (scorePointers+8),y
-          sta WSYNC
-          ;;SLEEP 2
-          jmp beginscore
 
 loop2:
-          lda  (scorePointers),y     ;;;;+5  68  204
-          sta  GRP0                  ;;;;+3  71  213      D1     --      --     --
-          .if  pfscore
-                    lda pfScore1
-                    sta PF1
-          .else
-                    .SLEEP 7
-          .fi
-          ;; cycle 0
-          lda  (scorePointers+$8),y  ;;;;+5   5   15
-
+          lda (scorePointers), y ;c=5+1* ;+5 68 204
+          sta GRP0 ;c=3 ; + 3 71 213 D1 -- -- --
+          lda @w pfScore1 ;c=4
+          sta PF1 ;c=3
+          ; cycle 0
+          lda (scorePointers + $8), y ;c=5+1* ;+5 5 15
 beginscore:
-          sta  GRP1                 ;;;;+3   8   24      D1     D1      D2     --
-          lda  (scorePointers+$6),y  ;;;;+5  13   39
-          sta  GRP0                  ;;;;+3  16   48      D3     D1      D2     D2
-          lax  (scorePointers+$2),y  ;;;;+5  29   87
-          txs
-          lax  (scorePointers+$4),y  ;;;;+5  36  108
-          .SLEEP 3
-          .if  pfscore
-                    lda pfScore2
-                    sta PF1
-          .else
-                    .SLEEP 6
-          .fi
-          lda  (scorePointers+$A),y  ;;;;+5  21   63
-          stx  GRP1                 ;;;;+3  44  132      D3     D3      D4     D2!
-          tsx
-          stx  GRP0                  ;;;;+3  47  141      D5     D3!     D4     D4
-          sta  GRP1                 ;;;;+3  50  150      D5     D5      D6     D4!
-          sty  GRP0                  ;;;;+3  53  159      D4*    D5!     D6     D6
-          dey
-          bpl  loop2                 ;;;;+2  60  180
-
-          ;; Reset CTRLPF score mode after score kernel
-          .if  pfscore
-                    lda CTRLPF
-                    and #$FB          ;;;; Clear bit 2 (score mode)
-                    sta CTRLPF
-          .fi
-          ldx aux2  ;;; Restore stack pointer from aux2 (use aux2 instead of temp7 to avoid conflict with BS_return)
-
-          txs
-
-          lda scorePointers+1
-          ldy temp1
-          sta temp1
-          sty scorePointers+1
-
-          lda # 0
-          sta GRP0
-          sta GRP1
-          sta PF1
-          sta VDELP0
-          sta VDELP1                 ;;;;do we need these
-          sta NUSIZ0
-          sta NUSIZ1
-
-          lda scorePointers+3
-          ldy temp3
-          sta temp3
-          sty scorePointers+3
-
-          lda scorePointers+5
-          ldy temp5
-          sta temp5
-          sty scorePointers+5
+          sta GRP1 ;c=3 ; + 3 8 24 D1 D1 D2 --
+          lda (scorePointers + $6), y ;c=5+1* ;+5 13 39
+          sta GRP0 ;c=3 ; + 3 16 48 D3 D1 D2 D2
+          lax (scorePointers + $2), y ;c=5+1* ;+5 29 87
+          txs ;c=2
+          lax (scorePointers + $4), y ;c=5+1* ;+5 36 108
+          .Sleep 3 ;c=3
+          lda pfScore2 ;c=3
+          sta PF1 ;c=3
+          lda (scorePointers + $A), y ;c=5+1* ;+5 21 63
+          stx GRP1 ;c=3 ; + 3 44 132 D3 D3 D4 D2!
+          tsx ;c=2
+          stx GRP0 ;c=3 ; + 3 47 141 D5 D3! D4 D4
+          sta GRP1 ;c=3 ; + 3 50 150 D5 D5 D6 D4!
+          sty GRP0 ;c=3 ; + 3 53 159 D4* D5! D6 D6
+          dey ;c=2
+          bpl loop2 ;c=2/3 ;+2 60 180
+          	ldx aux2 ;c=3
+	txs ;c=2
 
 
-          ;;------------------------Overscan Routine---------------------------------
+; lda scorePointers + 1
+          ldy temp1 ;c=3
+; sta temp1
+          sty scorePointers + 1 ;c=3
+
+          lda # 0 ;c=2
+          sta GRP0 ;c=3
+          sta GRP1 ;c=3
+          sta PF1 ;c=3
+          sta VDELP0 ;c=3
+          sta VDELP1 ;c=3 ; do we need these?
+          sta NUSIZ0 ;c=3
+          sta NUSIZ1 ;c=3
+
+          ldy temp3 ;c=3
+          sty scorePointers + 3 ;c=3
+
+          ldy temp5 ;c=3
+          sty scorePointers + 5 ;c=3
+
+;------------------------Overscan Routine---------------------------------
 
 OverscanRoutine:
-
-skipscore:
-          .if  qtcontroller
-                    lda qtcontroller
-                    lsr                 ;;;; bit 0 in carry
-                    lda # 4
-                    ror                 ;;;; carry into top of A
+SkipScore:
+          .if qtcontroller
+                    lda qtcontroller ;c=3
+                    lsr a ;c=2 ; bit 0 in carry
+                    lda # 4 ;c=2 ; will be 2 after ror
+                    ror a ;c=2 ; carry into top of A
           .else
-                    lda # 2
-          .fi                           ;;;; qtcontroller
-          sta WSYNC
-          sta VBLANK                    ;;;;turn on VBLANK
-          
-          ;; CRITICAL: Set overscan timer BEFORE jumping to MainLoop
-          ;; MainLoop will call mode handlers (game logic) which run DURING overscan
-          ;; drawscreen will wait for this timer before starting VSYNC
-          ;; Overscan time: ~30 scanlines for NTSC (configurable via overscan_time)
-          .if  overscan_time
-                    lda # overscan_time+128
-          .else
-                    lda # 30+128        ;;;; Default: 30 scanlines * 76 cycles = 2280 cycles / 64 = ~36 TIM64T
+                    lda # 2 ;c=2
           .fi
-          sta TIM64T                    ;;;; Start overscan timer
-          
-          ;; CRITICAL: Jump back to MainLoop to start next frame
-          ;; This completes the 262-scanline cycle and begins the next frame
-          ;; MainLoop's mode handlers will execute during the overscan timer period
-          ;; MainLoop is in bank 15, we need to bankswitch
-          ldx # 15                      ;;;; Bank 15 = $ffe0 + 15
-          nop $ffe0, x                  ;;;; Switch to bank 15
-          jmp MainLoop                  ;;;; Jump to MainLoop for next frame
+	sta WSYNC ;c=3
+	sta VBLANK ;c=3 ;turn on VBLANK
 
-          ;;----------------------------End Main Routines----------------------------
+          ; Set overscan timer before returning to MainLoop, which runs
+          ; the mode handlers during overscan.
+          .if overscan_time
+                    lda #overscan_time+128 ;c=2
+          .else
+                    lda #30+128 ;c=2
+          .fi
+          sta TIM64T ;c=3
 
-          ;;----------------------Begin Subroutines----------------------------------
+          ldx #15 ;c=2
+          nop $ffe0, x ;c=4+1*
+          jmp MainLoop ;c=3
+
+;----------------------Begin Subroutines----------------------------------
 
 KernelCleanupSubroutine:
 
-          ldx # 4
+	ldx #4 ;c=2
 AdjustYValuesDownLoop:
-          lda newSpriteY,x
-          sec
-          sbc # 2
-          sta newSpriteY,x
-          dex
-          bpl AdjustYValuesDownLoop
+	lda newSpriteY, x ;c=4
+	sec ;c=2
+	sbc #2 ;c=2
+	sta newSpriteY, x ;c=4
+	dex ;c=2
+	bpl AdjustYValuesDownLoop ;c=2/3
 
-          ;; RETURN: (duplicate - macro defined in MultiSpriteSuperChip.s)
-
-          ;;rts
+          rts ;c=6
 
 SetupP1Subroutine:
-          ;; flickersort algorithm
-          ;; count 4-0
-          ;; table2= table1 (?)
-          ;; detect overlap of sprites in table 2
-          ;;if overlap, do regular sort in table2, then place one sprite at top of table 1, decrement # displayed
-          ;;if no overlap, do regular sort in table 2 and table 1
-
+; flickersort algorithm
+; count 4-0
+; table2=table1 (?)
+; detect overlap of sprites in table 2
+; if overlap, do regular sort in table2, then place one sprite at top of table 1, decrement # displayed
+; if no overlap, do regular sort in table 2 and table 1
 fsstart:
-          ldx # 255
-
+          ldx #255 ;c=2
 copytable:
-          inx
-          lda spritesort,x
-          sta spriteGfxIndex,x
-          cpx # 4
-          bne copytable
+          inx ;c=2
+          lda spritesort, x ;c=4
+          sta SpriteGfxIndex, x ;c=4
+          cpx #4 ;c=2
+          bne copytable ;c=2/3
 
-          stx temp3                     ;;;; highest displayed sprite
-          dex
-          stx temp2
-
+          stx temp3 ;c=3 ; highest displayed sprite
+          dex ;c=2
+          stx temp2 ;c=3
 sortloop:
-          ldx temp2
-          lda spritesort,x
-          tax
-          lda newSpriteY,x
-          sta temp1
+          ldx temp2 ;c=3
+          lda spritesort, x ;c=4
+          tax ;c=2
+          lda newSpriteY, x ;c=4
+          sta temp1 ;c=3
 
-          ldx temp2
-          lda spritesort+1,x
-          tax
-          lda newSpriteY,x
-          sec
-          clc
-          sbc temp1
-          bcc largerXislower
+          ldx temp2 ;c=3
+          lda spritesort + 1, x ;c=4
+          tax ;c=2
+          lda newSpriteY, x ;c=4
+          sec ;c=2
+          clc ;c=2
+          sbc temp1 ;c=3
+          bcc largerXislower ;c=2/3
 
-          ;; larger x is higher (A>= temp1)
-          cmp spriteHeight,x
-          bcs countdown
-
-          ;; overlap with x+1>x
-          ;; 
-          ;; stick x at end of gfxtable, dec counter
-
+; larger x is higher (A>=temp1)
+          cmp spriteHeight, x ;c=4
+          bcs countdown ;c=2/3
+; overlap with x + 1>x
+; 
+; stick x at end of gfxtable, dec counter
 overlapping:
-          dec temp3
-          ldx temp2
-          ;; inx
-          jsr shiftnumbers
+          dec temp3 ;c=5
+          ldx temp2 ;c=3
+; inx
+          jsr ShiftNumbers ;c=6
+          jmp SkipSwapGfxTable ;c=3
 
-          jmp skipswapGfxtable
+largerXislower ; (temp1>A)
+          tay ;c=2
+          ldx temp2 ;c=3
+          lda spritesort, x ;c=4
+          tax ;c=2
+          tya ;c=2
+          eor #$FF ;c=2
+          sbc #1 ;c=2
+          bcc overlapping ;c=2/3
+          cmp spriteHeight, x ;c=4
+          bcs notoverlapping ;c=2/3
 
-largerXislower:                        ;;;; (temp1>A)
-          tay
-          ldx temp2
-          lda spritesort,x
-          tax
-          tya
-          eor #$FF
-          sbc # 1
-          bcc overlapping
-
-          cmp spriteHeight,x
-          bcs notoverlapping
-
-          dec temp3
-          ldx temp2
-          ;; inx
-          jsr shiftnumbers
-
-          jmp skipswapGfxtable
-
+          dec temp3 ;c=5
+          ldx temp2 ;c=3
+; inx
+          jsr ShiftNumbers ;c=6
+          jmp SkipSwapGfxTable ;c=3
 notoverlapping:
-          ldx temp2                    ; swap display table
-          ldy spriteGfxIndex+1,x
-          lda spriteGfxIndex,x
-          sty spriteGfxIndex,x
-          sta spriteGfxIndex+1,x
+; ldx temp2 ; swap display table
+; ldy SpriteGfxIndex + 1, x
+; lda SpriteGfxIndex, x
+; sty SpriteGfxIndex, x
+; sta SpriteGfxIndex + 1, x 
 
-skipswapGfxtable:
-          ldx temp2                     ;;;; swap sort table
-          ldy spritesort+1,x
-          lda spritesort,x
-          sty spritesort,x
-          sta spritesort+1,x
+SkipSwapGfxTable:
+          ldx temp2 ;c=3 ; swap sort table
+          ldy spritesort + 1, x ;c=4
+          lda spritesort, x ;c=4
+          sty spritesort, x ;c=4
+          sta spritesort + 1, x ;c=4
 
 countdown:
-          dec temp2
-          bpl sortloop
+          dec temp2 ;c=5
+          bpl sortloop ;c=2/3
 
-checktoohigh:
-          ldx temp3
-          lda spriteGfxIndex,x
-          tax
-          lda newSpriteY,x
-          .if  screenheight
-                    cmp # screenheight-3
-          .else
-                    cmp #$55
-          .fi
-          bcc nonetoohigh
+CheckTooHigh:
+          ldx temp3 ;c=3
+          lda SpriteGfxIndex, x ;c=4
+          tax ;c=2
+          lda newSpriteY, x ;c=4
+          cmp # screenheight - 3 ;c=2
+          bcc NoneTooHigh ;c=2/3
 
-          dec temp3
-          bne checktoohigh
+          dec temp3 ;c=5
+          bne CheckTooHigh ;c=2/3
 
-nonetoohigh:
-          rts
+NoneTooHigh:
+          rts ;c=6
 
-shiftnumbers:
-          ;; stick current x at end, shift others down
-          ;; if x=4: do not do anything
-          ;; if x=3: swap 3 and 4
-          ;; if x=2: 2=3, 3=4, 4=2
-          ;; if x=1: 1=2, 2=3, 3=4, 4=1
-          ;; if x=0: 0=1, 1=2, 2=3, 3=4, 4=0
-          ldy spriteGfxIndex,x
+ShiftNumbers:
+SwapLoop:
+          cpx # 4 ;c=2
+          bge ShiftDone ;c=2/3
 
-swaploop:
-          cpx # 4
-          beq shiftdone
+          lda SpriteGfxIndex + 1, x ;c=4
+          sta SpriteGfxIndex, x ;c=4
+          inx ;c=2
+          jmp SwapLoop ;c=3
 
-          lda spriteGfxIndex+1,x
-          sta spriteGfxIndex,x
-          inx
-          jmp swaploop
+ShiftDone:
+          rts ;c=6
 
-shiftdone:
-          sty spriteGfxIndex,x
-          rts
+          bmi CyclesLeft ;c=2/3
 
-          ;;.error "Multi-sprite kernel ends at ", *
+          ldx # 64 ;c=2
+          eor #$ff ;c=2 ;make negative
+CyclesLeft:
+          stx scorecolor ;c=3
+          and #$7f ;c=2 ; clear sign bit
+          tax ;c=2
+          lda ScoreBCD, x ;c=4+1*
+          sta score+2 ;c=3
+          lda ScoreBCD1, x ;c=4+1*
+          sta score + 1 ;c=3
+          rts ;c=6
 
-.bend
+ScoreBCD:
+          .byte $00, $64, $28, $92, $56, $20, $84, $48, $12, $76, $40
+          .byte $04, $68, $32, $96, $60, $24, $88, $52, $16, $80, $44
+          .byte $08, $72, $36, $00, $64, $28, $92, $56, $20, $84, $48
+          .byte $12, $76, $40, $04, $68, $32, $96, $60, $24, $88
+ScoreBCD1:
+          .byte 0, 0, 1, 1, 2, 3, 3, 4, 5, 5, 6
+          .byte 7, 7, 8, 8, 9, $10, $10, $11, $12, $12, $13
+          .byte $14, $14, $15, $16, $16, $17, $17, $18, $19, $19, $20
+          .byte $21, $21, $22, $23, $23, $24, $24, $25, $26, $26
+
+          .bend
 

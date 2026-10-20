@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-StopSoundEffects .proc
+StopSoundEffects .block
           ;;
           ;; Stopsoundeffects - Stop All Sound Effects
           ;; Stop all sound effects (zeroes TIA volumes, clears
@@ -40,5 +40,5 @@ StopSoundEffects .proc
           sta soundEffectFrame1_W
           rts
 
-.pend
+.bend
 

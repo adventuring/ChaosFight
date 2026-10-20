@@ -31,7 +31,6 @@ ProcessUpAction:
           ;; Shamone (15) <-> MethHound (31) form switching with UP button
           ;; Both forms use same attacks/jumps/guards, but Shamone jumps with attack buttons
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterShamone
@@ -59,7 +58,6 @@ CheckRoboTitoUpAction:
           ;; Bernie: Drop (fall through thin floors)
           ;; if playerCharacter[temp1] = CharacterBernie then jmp BernieFallThroughUpAction
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterBernie
@@ -72,7 +70,6 @@ CheckHarpy:
           ;; Harpy: Flap (fly)
           ;; if playerCharacter[temp1] = CharacterHarpy then jmp HarpyFlapUpAction
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterHarpy
@@ -86,7 +83,6 @@ CheckZoeRyen:
           ;; Check Zoe Ryen for double-jump capability
           ;; if playerCharacter[temp1] = CharacterZoeRyen then jmp ZoeJumpCheckUpAction
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterZoeRyen
@@ -101,7 +97,6 @@ PUA_StandardJump:
           ;; Tail call to DispatchCharacterJump - it returns directly to our caller
           ;; Set temp4 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -168,18 +163,15 @@ RoboTitoAscendUpAction:
           ;; Ascend toward ceiling
           ;; Set temp6 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp6
           ;; Set temp6 = CharacterMovementSpeed[temp6]
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
           lda temp6
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta temp6
@@ -187,7 +179,6 @@ RoboTitoAscendUpAction:
           ;; let playerY[temp1] = playerY[temp1] - temp6
           ;; Set temp2 = playerX[temp1]
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -220,7 +211,6 @@ ColumnInRange:
           ;; Compute head row and check ceiling contact
           ;; Set temp2 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp2
@@ -281,7 +271,6 @@ CheckDownPressed:
           beq ProcessUpActionDone
 
           lda temp1
-          asl
           tax
           lda characterStateFlags_R,x
           and # 254
@@ -327,7 +316,6 @@ ZoeJumpCheckUpAction .proc
 
           ;; Set temp4 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4

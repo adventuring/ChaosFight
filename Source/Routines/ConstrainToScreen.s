@@ -12,7 +12,6 @@ ConstrainToScreen:
           ;; SCRAM write to playerSubpixelX_W
           ;; if playerX[temp1] < PlayerLeftEdge then let playerX[temp1] = PlayerLeftEdge
           lda temp1
-          asl
           tax
           lda playerX,x
           cmp # PlayerLeftEdge
@@ -24,7 +23,6 @@ ConstrainToScreen:
 CheckRightEdge:
           ;; if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_W[temp1] = PlayerLeftEdge
           lda temp1
-          asl
           tax
           lda playerX,x
           cmp # PlayerLeftEdge
@@ -36,7 +34,6 @@ CheckRightEdge:
 CheckRightEdgeSubpixel:
           ;; if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_WL[temp1] = 0
           lda temp1
-          asl
           tax
           lda playerX,x
           cmp # PlayerLeftEdge
@@ -48,7 +45,6 @@ CheckRightEdgeSubpixel:
 CheckRightEdgeClamp:
           ;; if playerX[temp1] > PlayerRightEdge then let playerX[temp1] = PlayerRightEdge
           lda temp1
-          asl
           tax
           lda playerX,x
           sec
@@ -62,7 +58,6 @@ CheckRightEdgeClamp:
 CheckTopEdge:
           ;; if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_W[temp1] = PlayerRightEdge
           lda temp1
-          asl
           tax
           lda playerX,x
           sec
@@ -76,7 +71,6 @@ CheckTopEdge:
 CheckTopEdgeSubpixel:
           ;; if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_WL[temp1] = 0
           lda temp1
-          asl
           tax
           lda playerX,x
           sec
@@ -85,7 +79,6 @@ CheckTopEdgeSubpixel:
           beq CheckTopEdgeClamp
 
           lda temp1
-          asl
           tax
           lda # 0
           sta playerSubpixelX_WL,x
@@ -95,7 +88,6 @@ CheckTopEdgeClamp:
           ;; SCRAM write to playerSubpixelY_W
           ;; if playerY[temp1] < 20 then let playerY[temp1] = 20
           lda temp1
-          asl
           tax
           lda playerY,x
           cmp # 20
@@ -105,7 +97,6 @@ CheckTopEdgeClamp:
 CheckBottomEdge:
           ;; if playerY[temp1] < 20 then let playerSubpixelY_W[temp1] = 20
           lda temp1
-          asl
           tax
           lda playerY,x
           cmp # 20
@@ -115,7 +106,6 @@ CheckBottomEdge:
 CheckBottomEdgeSubpixel:
           ;; if playerY[temp1] < 20 then let playerSubpixelY_WL[temp1] = 0
           lda temp1
-          asl
           tax
           lda playerY,x
           cmp # 20
@@ -125,7 +115,6 @@ CheckBottomEdgeSubpixel:
 CheckBottomEdgeClamp:
           ;; if playerY[temp1] > 80 then let playerY[temp1] = 80
           lda temp1
-          asl
           tax
           lda playerY,x
           sec
@@ -137,7 +126,6 @@ CheckBottomEdgeClamp:
 ConstrainToScreenDone:
           ;; if playerY[temp1] > 80 then let playerSubpixelY_W[temp1] = 80
           lda temp1
-          asl
           tax
           lda playerY,x
           sec
@@ -149,7 +137,6 @@ ConstrainToScreenDone:
 ConstrainToScreenDoneSubpixel:
           ;; if playerY[temp1] > 80 then let playerSubpixelY_WL[temp1] = 0
           lda temp1
-          asl
           tax
           lda playerY,x
           sec
@@ -157,7 +144,6 @@ ConstrainToScreenDoneSubpixel:
           bcc ConstrainToScreenDoneClamp
           beq ConstrainToScreenDoneClamp
           lda temp1
-          asl
           tax
           lda # 0
           sta playerSubpixelY_WL,x

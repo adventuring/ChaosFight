@@ -96,7 +96,7 @@ CDP_CheckGenesis .proc
           ;; Wait one frame for capacitors to discharge
           ;; This gives us time for the capacitors to drain through joystick ports
           lda INTIM
-          bmi .-3                    ; Wait for timer to expire (end of frame)
+          bmi *-3                    ; Wait for timer to expire (end of frame)
 
           ;; Check left side (INPT0, INPT1) for Genesis controller
           ;; Genesis controllers will pull these HIGH when idle

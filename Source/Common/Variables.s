@@ -114,6 +114,10 @@
           ;; Frame counter (increments every frame in MainLoop)
           ;; Used for frame budgeting, animation timing, and other per-frame logic
           frame  = $eb
+          ;; Port-only bytes carved out of the otherwise unused $9E-$A1 gap
+          ;; between the multisprite kernel's shadows and bB's var block.
+          fireEdgeState  = $9E
+          lockedState  = $A1
 
           ;; Current player index (0-3) for iteration loops
           ;; Set before calling per-player routines such as AnimationSystem or PlayerElimination
@@ -148,7 +152,7 @@
           ;; bit 3: Game state ending (SystemFlagGameStateEnding = $08, 0=normal, 1=ending)
           ;; Bits 0-2, 7: Reserved for future use
           ;; NOTE: 7800 console detection is in console7800Detected ($80), not systemFlags
-          gameMode  = $eb
+          gameMode  = $A0   ; moved out of bB slot p ($EB) so frame can live there
           systemFlags  = $e1
           ;; Packed controller status bits (controller hardware detection):
           ;; bit 7: Quadtari adapter detected ($80)
@@ -1090,3 +1094,26 @@
           ;; • SCRAM below w064 is reserved exclusively for PlayerFrameBuffer
           ;; batariBASIC automatically handles carry operations for 8.8
           ;; fixed-point arithmetic
+          ;; Port-only joystick state, sampled once per frame by
+          ;; UpdateJoystickState.  Each value is written through the low
+          ;; SCRAM port and read back through the corresponding r-port.
+          joy0right_W  = $F04F
+          joy0left_W   = $F053
+          joy0up_W     = $F054
+          joy0down_W   = $F057
+          joy0fire_W   = $F058
+          joy1right_W  = $F05B
+          joy1left_W   = $F05E
+          joy1up_W     = $F070
+          joy1down_W   = $F071
+          joy1fire_W   = $F073
+          joy0right    = $F0CF
+          joy0left     = $F0D3
+          joy0up       = $F0D4
+          joy0down     = $F0D7
+          joy0fire     = $F0D8
+          joy1right    = $F0DB
+          joy1left     = $F0DE
+          joy1up       = $F0F0
+          joy1down     = $F0F1
+          joy1fire     = $F0F3

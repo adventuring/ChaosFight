@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-HandlePauseInput .proc
+HandlePauseInput .block
           ;;
           ;; Pause Button Handling With Debouncing
           ;; Handles SELECT switch and Joy2b+ Button III with proper
@@ -11,32 +11,29 @@ HandlePauseInput .proc
           ;; Check SELECT switch (always available)
           lda # 0
           sta temp1
-          if switchselect then let temp1 = 1
-          lda switchselect
+          lda SWCHB
+          eor # SWCHBSelect
+          and # SWCHBSelect
           beq SkipSelectSwitch
+          lda # 1
+          sta temp1
 
 SkipSelectSwitch:
 
           ;; Check Joy2b+ Button III (INPT1 for Player 1, INPT3 for
           ;; Player 2)
-          if LeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
           lda # LeftPortJoy2bPlus
           beq SkipLeftPortJoy2bPause
-
           bit INPT1
           bmi SkipLeftPortJoy2bPause
-
           lda # 1
           sta temp1
 
 SkipLeftPortJoy2bPause:
-          if RightPortJoy2bPlus then if !INPT3{7} then let temp1 = 1
           lda # RightPortJoy2bPlus
           beq SkipRightPortJoy2bPause
-
           bit INPT3
           bmi SkipRightPortJoy2bPause
-
           lda # 1
           sta temp1
 
@@ -63,7 +60,6 @@ CheckPauseButtonPrev:
           jmp DonePauseToggle
 
 TogglePauseState:
-          if systemFlags & SystemFlagGameStatePaused then let systemFlags = systemFlags & ClearSystemFlagGameStatePaused else systemFlags = systemFlags | SystemFlagGameStatePaused
           lda systemFlags
           and # SystemFlagGameStatePaused
           beq SetPauseFlag
@@ -85,7 +81,6 @@ DonePauseToggle:
 
           ;; Update pause button previous state in systemFlags
           ;; Update previous button state for next frame
-          if temp1 then let systemFlags = systemFlags | SystemFlagPauseButtonPrev else systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
           lda temp1
           beq ClearPauseButtonPrev
 
@@ -103,5 +98,5 @@ UpdatePauseButtonPrevDone:
 
           rts
 
-.pend
+.bend
 

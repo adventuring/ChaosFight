@@ -48,7 +48,6 @@ AfterPlaySoundEffectElimination:
           sta temp2
           ;; 30 frames of elimination effect
           lda currentPlayer
-          asl
           tax
           lda temp2
           sta eliminationEffectTimer_W,x

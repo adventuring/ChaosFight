@@ -8,10 +8,10 @@
 ;; Optional bitmap index offsets - data (.byte 0) moved to Bank9.bas data segment
 ;; Symbol definitions only (no data) - these are compile-time consta
 
-bmp_48x2_1_index = bmp_48x2_1_index_value
-bmp_48x2_2_index = bmp_48x2_2_index_value
-bmp_48x2_3_index = bmp_48x2_3_index_value
-bmp_48x2_4_index = bmp_48x2_4_index_value
+bmp_48x2_1_index = 0
+bmp_48x2_2_index = 0
+bmp_48x2_3_index = 0
+bmp_48x2_4_index = 0
 scorefade_1:= 0
 scoreKernelFade = 0
 
@@ -106,6 +106,10 @@ draw_48x2_3_1:
 
 draw_48x2_4_1:
 
+          jsr draw_bmp_48x2_1   ;; draw AtariAge logo bitmap if enabled
+          jsr draw_bmp_48x2_2   ;; draw AtariAge text bitmap if enabled
+          jsr draw_bmp_48x2_3   ;; draw ChaosFight title bitmap if enabled
+          jsr draw_bmp_48x2_4   ;; draw BRP signature bitmap if enabled
 
           jmp PFWAIT ;;; kernel is done. Finish off the screen
 
@@ -149,7 +153,7 @@ gamenumber_titlescreen:
 
 PFWAIT:
           lda INTIM
-          bmi PFWAIT
+          bne PFWAIT
           sta WSYNC
 
 OVERSCAN:

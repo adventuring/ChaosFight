@@ -29,6 +29,7 @@ GIMP = xvfb-run -a --server-args="-screen 0 1920x1080x24" gimp --batch-interpret
 # Common 64tass assembly flags
 ASFLAGS = -Wall -Wno-branch-page -C -a --m6502 -b --ascii \
 	-I.. -I. -I../Source -I../Source/Common -I../Source/Routines \
+	-I../Source/Data -I../Source/Generated -I../Source/Banks \
 	-DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) \
 	-DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\"
 
@@ -72,6 +73,11 @@ RELEASE_TAG = v$(PROJECT_VERSION)
 
 # Assembly files (exclude preprocessed, generated files, and reference files)
 ALL_SOURCES = $(shell find Source -name \*.s -not -path "Source/Generated/*" -not -path "Source/Reference/*")
+
+# Everything 64tass can pull in via .include while assembling the combined
+# source.  Without this the ROM rules go stale whenever an included .s file
+# (for example anything under Source/TitleScreen/asm/) is edited.
+ALL_DEPS = $(shell find Source -name \*.s -o -name \*.inc | grep -v '^Source/Reference/')
 
 .PHONY: all clean emu game help doc nowready ready web
 
@@ -313,23 +319,12 @@ Source/Generated/Art.ChaosFight.s Source/Generated/Art.ChaosFight.colors.s: Sour
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.ChaosFight.s" "t" "NTSC"
 
-# Generate titlescreen kernel image files from Art.*.s and Art.*.colors.s files
-# These are used by the titlescreen kernel minikernels
-Source/TitleScreen/48x2_1_image.s: Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAge.colors.s Tools/generate-48x2-image.sh | Source/TitleScreen/
-	@echo "Generating titlescreen image file $@ from $<..."
-	Tools/generate-48x2-image.sh "Source/Generated/Art.AtariAge.s" "Source/Generated/Art.AtariAge.colors.s" "$@" "1"
-
-Source/TitleScreen/48x2_2_image.s: Source/Generated/Art.AtariAgeText.s Source/Generated/Art.AtariAgeText.colors.s Tools/generate-48x2-image.sh | Source/TitleScreen/
-	@echo "Generating titlescreen image file $@ from $<..."
-	Tools/generate-48x2-image.sh "Source/Generated/Art.AtariAgeText.s" "Source/Generated/Art.AtariAgeText.colors.s" "$@" "2"
-
-Source/TitleScreen/48x2_3_image.s: Source/Generated/Art.ChaosFight.s Source/Generated/Art.ChaosFight.colors.s Tools/generate-48x2-image.sh | Source/TitleScreen/
-	@echo "Generating titlescreen image file $@ from $<..."
-	Tools/generate-48x2-image.sh "Source/Generated/Art.ChaosFight.s" "Source/Generated/Art.ChaosFight.colors.s" "$@" "3"
-
-Source/TitleScreen/48x2_4_image.s: Source/Generated/Art.Author.s Source/Generated/Art.Author.colors.s Tools/generate-48x2-image.sh | Source/TitleScreen/
-	@echo "Generating titlescreen image file $@ from $<..."
-	Tools/generate-48x2-image.sh "Source/Generated/Art.Author.s" "Source/Generated/Art.Author.colors.s" "$@" "4"
+# NOTE: The four Source/TitleScreen/48x2_N_image.s files are *not* part of the
+# build (their .include statements in Source/TitleScreen/asm/titlescreen.s are
+# commented out; the bitmap data comes from Source/Generated/Art.*.s instead).
+# Their old generation rules referenced Tools/generate-48x2-image.sh, which does
+# not exist on this branch, so `make` refused to build any target that listed
+# those files as prerequisites.  The rules are removed rather than left broken.
 
 # Color files are generated automatically when bitmap files are generated
 # Combine all titlescreen color tables, PF1, PF2, and background into a single file at $f500
@@ -573,13 +568,13 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 
 # Assemble combined .s file → ARCH.a26 + ARCH.lst + ARCH.sym
 # Using 64tass directly on the assembly file with build-time defines
-Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s | Dist/ Object/
+Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s $(ALL_DEPS) | Dist/ Object/
 	cd Object && $(64TASS) $(ASFLAGS) -o ../Dist/$(GAME)$(GAMEYEAR).NTSC.a26 -L ../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -l ../Dist/$(GAME)$(GAMEYEAR).NTSC.sym ../$<
 
-Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s | Dist/ Object/
+Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s $(ALL_DEPS) | Dist/ Object/
 	cd Object && $(64TASS) $(ASFLAGS) -o ../Dist/$(GAME)$(GAMEYEAR).PAL.a26 -L ../Dist/$(GAME)$(GAMEYEAR).PAL.lst -l ../Dist/$(GAME)$(GAMEYEAR).PAL.sym ../$<
 
-Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s | Dist/ Object/
+Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s $(ALL_DEPS) | Dist/ Object/
 	cd Object && $(64TASS) $(ASFLAGS) -o ../Dist/$(GAME)$(GAMEYEAR).SECAM.a26 -L ../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -l ../Dist/$(GAME)$(GAMEYEAR).SECAM.sym ../$<
 
 # Run emulator

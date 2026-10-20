@@ -130,7 +130,7 @@ GameMainLoop .proc
           ;; This prevents crashes when gameMode is corrupted or incorrectly set
           ;; Only run game logic when actually in game mode (ModeGame = 6)
           lda gameMode
-          cmp ModeGame
+          cmp #ModeGame
           bne GameMainLoopPaused
           jmp GameMainLoopContinue
 GameMainLoopPaused:
@@ -251,7 +251,6 @@ FCS_Loop:
 FrootyChargeUpdate:
           ;; Check if current player is Frooty
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterFrooty

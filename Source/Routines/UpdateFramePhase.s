@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-UpdateFramePhase .proc
+UpdateFramePhase .block
           ;; Frame Budgeting System
           ;; Manages expensive operations across multiple frames to
           ;; ensure game logic never exceeds the overscan period.
@@ -24,5 +24,5 @@ UpdateFramePhase .proc
 
           rts
 
-.pend
+.bend
 

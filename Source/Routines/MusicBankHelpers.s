@@ -60,19 +60,16 @@ CalculateIndex:
 
           ;; Set var40 = SongPointers1H[temp2]
           lda temp2
-          asl
           tax
           lda SongPointers1H,x
           sta songPointer+1
 
           ;; Set songPointer = SongPointers1L[temp2]
           lda temp2
-          asl
           tax
           lda SongPointers1L,x
           sta songPointer
           lda temp2
-          asl
           tax
           lda SongPointers1L,x
           sta songPointer
@@ -163,19 +160,16 @@ CalculateIndexVoice1:
 
           ;; Set var40 = SongPointers1SecondH[temp2]
           lda temp2
-          asl
           tax
           lda SongPointers1SecondH,x
           sta songPointer+1
 
           ;; Set songPointer = SongPointers1SecondL[temp2]
           lda temp2
-          asl
           tax
           lda SongPointers1SecondL,x
           sta songPointer
           lda temp2
-          asl
           tax
           lda SongPointers1SecondL,x
           sta songPointer

@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-StartGuard .proc
+StartGuard .block
           ;;
           ;; Start Guard
           ;; Activate guard state for the specified player.
@@ -21,7 +21,6 @@ StartGuard .proc
           ;; Set guard bit in playerState
           ;; Set playerState[temp1] = playerState[temp1] | 2
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 2
@@ -31,11 +30,10 @@ StartGuard .proc
           ;; Store guard duration timer in playerTimers array
           ;; This timer will be decremented each frame until it reaches 0
           lda temp1
-          asl
           tax
           lda # GuardTimerMaxFrames
           sta playerTimers_W,x
           rts
 
-.pend
+.bend
 

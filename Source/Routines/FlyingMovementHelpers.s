@@ -7,7 +7,6 @@ HandleFlyingCharacterMovementAttemptMoveLeft .proc
           sta temp1
           ;; Set temp2 = playerX[temp1]
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -37,7 +36,6 @@ ColumnInRange:
           sta temp3
           ;; Set temp4 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp4
@@ -126,7 +124,6 @@ HandleFlyingCharacterMovementApplyLeft .proc
           sta temp1
           ;; Set temp5 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp5
@@ -144,12 +141,10 @@ HandleFlyingCharacterMovementLeftStandard:
 
           ;; Set playerVelocityX[temp1] = $ff
           lda temp1
-          asl
           tax
           lda # $ff
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -159,20 +154,17 @@ HandleFlyingCharacterMovementLeftStandard:
 HandleFlyingCharacterMovementLeftMomentum .proc
           ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta characterMovementSpeed
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] - characterMovementSpeed
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           sec
           sbc characterMovementSpeed
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -183,7 +175,6 @@ HandleFlyingCharacterMovementLeftDirect .proc
           ;; Dragon of Storms: direct velocity with subpixel accuracy
           ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta characterMovementSpeed
@@ -201,12 +192,10 @@ HandleFlyingCharacterMovementLeftDirect .proc
           sta temp2
 
           lda temp1
-          asl
           tax
           lda temp2
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 1
           sta playerVelocityXL,x
@@ -259,7 +248,6 @@ HandleFlyingCharacterMovementLeftFacingDone:
 HandleFlyingCharacterMovementSetFacingLeft .proc
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           lda temp1
-          asl
           tax
           lda playerState,x
           and # (255 - PlayerStateBitFacing)
@@ -272,7 +260,6 @@ HandleFlyingCharacterMovementAttemptMoveRight .proc
           sta temp1
           ;; Set temp2 = playerX[temp1]
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -304,7 +291,6 @@ ColumnInRangeRight:
           sta temp3
           ;; Set temp4 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp4
@@ -390,7 +376,6 @@ HandleFlyingCharacterMovementApplyRight .proc
           sta temp1
           ;; Set temp5 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp5
@@ -407,12 +392,10 @@ CheckDragonOfStormsRight:
 HandleFlyingCharacterMovementRightStandard:
 
           lda temp1
-          asl
           tax
           lda # 1
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -422,20 +405,17 @@ HandleFlyingCharacterMovementRightStandard:
 HandleFlyingCharacterMovementRightMomentum .proc
           ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta characterMovementSpeed
           ;; Set playerVelocityX[temp1] = playerVelocityX[temp1] + characterMovementSpeed
           lda temp1
-          asl
           tax
           lda playerVelocityX,x
           clc
           adc characterMovementSpeed
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 0
           sta playerVelocityXL,x
@@ -446,17 +426,14 @@ HandleFlyingCharacterMovementRightDirect .proc
           ;; Dragon of Storms: direct velocity with subpixel accuracy
           ;; Set characterMovementSpeed = CharacterMovementSpeed[temp5]
           lda temp5
-          asl
           tax
           lda CharacterMovementSpeed,x
           sta characterMovementSpeed
           lda temp1
-          asl
           tax
           lda characterMovementSpeed
           sta playerVelocityX,x
           lda temp1
-          asl
           tax
           lda # 1
           sta playerVelocityXL,x
@@ -503,7 +480,6 @@ HandleFlyingCharacterMovementRightFacingDone:
 HandleFlyingCharacterMovementSetFacingRight .proc
           ;; Set playerState[temp1] = playerState[temp1] | 1
           lda temp1
-          asl
           tax
           lda playerState,x
           ora # 1

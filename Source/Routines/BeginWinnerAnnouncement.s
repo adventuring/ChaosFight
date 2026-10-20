@@ -1,5 +1,5 @@
 
-BeginWinnerAnnouncement .proc
+BeginWinnerAnnouncement .block
 
           ;;
           ;; Returns: Far (return otherbank)
@@ -63,7 +63,6 @@ BeginWinnerAnnouncement .proc
           bne CheckPlayer1Character
           ;; Set temp2 = playerCharacter[0]
           lda # 0
-          asl
           tax
           lda playerCharacter,x
           sta temp2
@@ -77,7 +76,6 @@ CheckPlayer1Character:
 
           ;; Set temp2 = playerCharacter[1]
           lda # 1
-          asl
           tax
           lda playerCharacter,x
           sta temp2
@@ -91,7 +89,6 @@ CheckPlayer2Character:
 
           ;; Set temp2 = playerCharacter[2]
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           sta temp2
@@ -105,7 +102,6 @@ CheckPlayer3Character:
 
           ;; Set temp2 = playerCharacter[3]
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           sta temp2
@@ -117,7 +113,6 @@ LookupThemeSong:
 
           ;; Set temp1 = CharacterThemeSongIndices[temp2]
           lda temp2
-          asl
           tax
           lda CharacterThemeSongIndices,x
           sta temp1
@@ -145,5 +140,5 @@ AfterStartMusicWinner:
 
           jmp BS_return
 
-.pend
+.bend
 

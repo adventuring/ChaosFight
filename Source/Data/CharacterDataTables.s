@@ -17,7 +17,7 @@ CharacterHeights_end:
 
           ;; Issue #1194: Extended to 32 entries, entry 31 (Meth Hound) duplicates entry 15 (Shamone)
 CharacterAttackTypes:
-          .byte MeleeAttack, RangedAttack, RangedAttack, RangedAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, RangedAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
+          .byte AttackMelee, AttackRanged, AttackRanged, AttackRanged, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackRanged, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee
 CharacterAttackTypes_end:
 
           ;; Global label for cross-bank access to CharacterAttackTypes data table

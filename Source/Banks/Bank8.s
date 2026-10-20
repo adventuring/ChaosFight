@@ -50,6 +50,21 @@ bmp_48x2_4_index_value:
           .byte 0
 Bank8DataEnds:
 
+          ; The current art generator does not emit dedicated PF1/PF2/background
+          ; color bytes per bitmap; define them off so the kernel guards resolve.
+bmp_48x2_1_background = 0
+bmp_48x2_1_PF1 = 0
+bmp_48x2_1_PF2 = 0
+bmp_48x2_2_background = 0
+bmp_48x2_2_PF1 = 0
+bmp_48x2_2_PF2 = 0
+bmp_48x2_3_background = 0
+bmp_48x2_3_PF1 = 0
+bmp_48x2_3_PF2 = 0
+bmp_48x2_4_background = 0
+bmp_48x2_4_PF1 = 0
+bmp_48x2_4_PF2 = 0
+
 TitlescreenAsmStart:
 .include "Source/TitleScreen/asm/titlescreen.s"
 TitlescreenAsmEnd:

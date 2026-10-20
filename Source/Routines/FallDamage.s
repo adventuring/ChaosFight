@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-CheckFallDamage .proc
+CheckFallDamage .block
           ;; Applies character-specific fall damage when players land
           ;; Returns: Far (return otherbank)
           ;; Inputs: currentPlayer (global) = player index (0-3), temp2 = landing velocity (positive downward)
@@ -14,24 +14,40 @@ CheckFallDamage .proc
           ;; Constraints: Must remain colocated with fall-damage helpers that reuse temp scratch bytes
 
           ;; Get character type for this player
-          ;; Set currentCharacter = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
 
           ;; Issue #1178: Bernie post-fall stun - check before immunity
-          ;; Bernie is immune to fall damage but still gets stunned from high falls
           lda currentCharacter
           cmp # CharacterBernie
           bne CheckFallDamageImmunity
-
           jmp CheckBernieStun
 
 CheckFallDamageImmunity:
-
           ;; Check for fall damage immunity (Frooty, DragonOfStorms)
+          lda currentCharacter
+          cmp # CharacterFrooty
+          beq _ret_fd1
+          lda currentCharacter
+          cmp # CharacterDragonOfStorms
+          beq _ret_fd1
+_ret_fd1:
+          jmp BS_return
+
+          ;; Calculate safe fall velocity threshold
+          lda currentCharacter
+          tax
+          lda SafeFallVelocityThresholds,x
+          sta temp3
+
+          ;; Check if fall velocity exceeds safe threshold
+          lda temp2
+          cmp temp3
+          bcc _ret_fd2
+          beq _ret_fd2
+_ret_fd2:
           jmp BS_return
 
           ;; Calculate safe fall velocity threshold
@@ -40,7 +56,6 @@ CheckFallDamageImmunity:
           ;; Pre-computed values in SafeFallVelocityThresholds table
           ;; Set temp3 = SafeFallVelocityThresholds[currentCharacter]
           lda currentCharacter
-          asl
           tax
           lda SafeFallVelocityThresholds,x
           sta temp3
@@ -69,221 +84,174 @@ CheckFallDamageImmunity:
           sta temp4
 
           ;; Multiply by 2 to double the base damage
-          ;; Set temp4 = temp4 * 2
-          ;; Apply weight-based damage multiplier: the bigger they
-          ;; are, the harder they fall
-          ;; Heavy characters take more damage for the same impact
-          ;; velocity
-          ;; Formula: damage_multiplier = weight / 20 (average weight)
-          ;; Using integer math: damage = damage × (weight / 20)
-          ;; Use lookup table for weight/20, then multiply by damage
-          ;; temp2 = weight / 20 from lookup table
-          ;; Apply weight-based damage multiplier (temp2 = 0-5)
-          ;; Set temp2 = WeightDividedBy20[currentCharacter]
-          lda currentCharacter
+          lda temp4
           asl
+          sta temp4
+
+          ;; Apply weight-based damage multiplier
+          lda currentCharacter
           tax
           lda WeightDividedBy20,x
           sta temp2
           lda temp2
-          bne CheckWeightMultiplier
-          ;; Set temp4 = 0 jmp WeightMultDone
-CheckWeightMultiplier:
-
-
-          ;; temp2 is 2-5: multiply temp4 by temp2 using compact ASM
-          lda temp2
+          beq _zero_weight
           cmp # 1
-          bne ApplyWeightMultiplier
+          beq WeightMultDone
+          jmp ApplyWeightMultiplier
+
+_zero_weight:
+          lda # 0
+          sta temp4
           jmp WeightMultDone
+
 ApplyWeightMultiplier:
+          lda temp4
+          ldx temp2
+          dex
+          dex
+          beq MultiplyBy2
+          dex
+          beq MultiplyBy3
+          dex
+          beq MultiplyBy4
+          dex
+          beq MultiplyBy5
+          sta temp4
+          jmp MultiplyDone
 
-
-            lda temp4
-                    ldx temp2
-            dex
-            dex
-            beq MultiplyBy2
-            dex
-            beq MultiplyBy3
-            dex
-            beq MultiplyBy4
-            dex
-            beq MultiplyBy5
-            sta temp4
-            jmp MultiplyDone
 MultiplyBy2:
-
           asl
+          sta temp4
+          jmp MultiplyDone
 
-            sta temp4
-            jmp MultiplyDone
 MultiplyBy3:
-
-          sta
-
-            asl
-            clc
-            adc temp3
-            sta temp4
-            jmp MultiplyDone
-MultiplyBy4:
-
-          asl
-
-            asl
-            sta temp4
-            jmp MultiplyDone
-MultiplyBy5:
-
           sta temp3
+          asl
+          clc
+          adc temp3
+          sta temp4
+          jmp MultiplyDone
 
-            asl
-            asl
-            clc
-            adc temp3
-            sta temp4
+MultiplyBy4:
+          asl
+          asl
+          sta temp4
+          jmp MultiplyDone
+
+MultiplyBy5:
+          sta temp3
+          asl
+          asl
+          clc
+          adc temp3
+          sta temp4
 MultiplyDone:
 
 WeightMultDone:
-          ;; temp4 = damage × (weight / 20) (weight-based multiplier applied)
-          ;; Returns: Far (return otherbank)
-
           ;; Apply damage reduction (NinjishGuy, RoboTito: half damage)
           lda currentCharacter
-          cmp CharacterNinjishGuy
+          cmp # CharacterNinjishGuy
           bne CheckRoboTitoReduction
-          ;; Set temp4 = temp4 / 2
           lda temp4
           lsr
           sta temp4
 
 CheckRoboTitoReduction:
-
-
           lda currentCharacter
-          cmp CharacterRoboTito
+          cmp # CharacterRoboTito
           bne CapMaximumDamage
-          ;; Set temp4 = temp4 / 2
           lda temp4
           lsr
           sta temp4
 
 CapMaximumDamage:
-
-
           ;; Cap maximum fall damage at 50
           lda temp4
           cmp # 51
           bcc ApplyFallDamage
           lda # 50
           sta temp4
+
 ApplyFallDamage:
 
 
           ;; Apply fall damage (byte-safe clamp)
-          ;; Use oldHealthValue for byte-safe clamp check
-          ;; Set oldHealthValue = playerHealth[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerHealth,x
           sta oldHealthValue
-                    let playerHealth[currentPlayer] = playerHealth[currentPlayer] - temp4
-                    if playerHealth[currentPlayer] > oldHealthValue then let playerHealth[currentPlayer] = 0
-          lda currentPlayer
-          asl
-          tax
-          lda playerHealth,x
+          ;; Subtract damage
           sec
-          sbc oldHealthValue
-          bcc SetRecoveryFrames
-          beq SetRecoveryFrames
-          lda currentPlayer
-          asl
-          tax
+          sbc temp4
+          bcc _damage_overflow
+          sta playerHealth,x
+          jmp SetRecoveryFrames
+_damage_overflow:
           lda # 0
           sta playerHealth,x
 SetRecoveryFrames:
 
           ;; Set recovery frames (damage/2, clamped 10-30)
-          ;; Set temp2 = temp4 / 2          lda temp4          lsr          sta temp2
           lda temp4
           lsr
           sta temp2
 
-          lda temp4
-          lsr
-          sta temp2
-
-          ;; If temp2 < 10, set temp2 = 10
           lda temp2
           cmp # 10
           bcs CheckMaximumRecovery
-          jmp let_label
+          lda # 10
+          sta temp2
+          jmp ClampRecoveryFrames
+
 CheckMaximumRecovery:
-
-          lda temp2
-          cmp # 10
-          bcs ClampRecoveryFrames
-          jmp let_label
-ClampRecoveryFrames:
-
-
-
           lda temp2
           cmp # 31
           bcc StoreRecoveryFrames
           lda # 30
           sta temp2
+
+ClampRecoveryFrames:
 StoreRecoveryFrames:
-
-
           lda currentPlayer
-          asl
           tax
           lda temp2
           sta playerRecoveryFrames,x
 
           ;; Synchronize playerState bit 3 with recovery frames
-                    let playerState[currentPlayer] = playerState[currentPlayer] | 8
-          ;; Set bit 3 (recovery flag) when recovery frames are set
-
-          ;; Set animation state to recovering (state 9)
-          ;; Set temp2 = playerState[currentPlayer] & MaskPlayerStateLower
           lda currentPlayer
-          asl
           tax
           lda playerState,x
-          sta temp2
-                    let playerState[currentPlayer] = temp2 | MaskAnimationRecovering
-          lda SoundLandingDamage
+          ora # 8
+          sta playerState,x
+
+          ;; Set animation state to recovering (state 9)
+          lda currentPlayer
+          tax
+          lda playerState,x
+          and #MaskPlayerStateLower
+          ora #MaskAnimationRecovering
+          sta playerState,x
+          lda # SoundLandingDamage
           sta temp1
           ;; Cross-bank call to PlaySoundEffect in bank 14
-          ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
-          lda # ((>(AfterPlaySoundEffectFallDamage-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
+          lda # ((>(AfterPlaySoundEffectFallDamage-1)) & $0f) | $70
           pha
-          ;; STACK PICTURE: [SP+0: AfterPlaySoundEffectFallDamage hi (encoded)]
           lda # <(AfterPlaySoundEffectFallDamage-1)
           pha
-          ;; STACK PICTURE: [SP+1: AfterPlaySoundEffectFallDamage hi (encoded)] [SP+0: AfterPlaySoundEffectFallDamage lo]
-          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(PlaySoundEffect-1)
           pha
-          ;; STACK PICTURE: [SP+2: AfterPlaySoundEffectFallDamage hi (encoded)] [SP+1: AfterPlaySoundEffectFallDamage lo] [SP+0: PlaySoundEffect hi (raw)]
           lda # <(PlaySoundEffect-1)
           pha
-          ;; STACK PICTURE: [SP+3: AfterPlaySoundEffectFallDamage hi (encoded)] [SP+2: AfterPlaySoundEffectFallDamage lo] [SP+1: PlaySoundEffect hi (raw)] [SP+0: PlaySoundEffect lo]
           ldx # 14
           jmp BS_jsr
 AfterPlaySoundEffectFallDamage:
-
-
           jmp BS_return
 
-.pend
 
-CheckBernieStun .proc
+
+.bend
+
+CheckBernieStun .block
           ;; Issue #1178: Bernie post-fall stun animation
           ;; Returns: Far (return otherbank)
           ;; Bernie should enter stunned state after falling far enough to trigger fall damage threshold
@@ -303,38 +271,47 @@ CheckBernieStun .proc
           ;; Constraints: Must be colocated with CheckFallDamage
           ;; Check if fall velocity exceeds safe threshold (would trigger fall damage)
           ;; Bernie’s safe fall velocity threshold
-          ;; Set temp3 = SafeFallVelocityThresholds[CharacterBernie]
-          lda CharacterBernie
-          asl
+          lda # CharacterBernie
           tax
           lda SafeFallVelocityThresholds,x
           sta temp3
           ;; Safe landing, no stun needed
+          lda temp2
+          cmp temp3
+          bcc _bernie_return
+          beq _bernie_return
+          jmp _bernie_stun
+
+_bernie_return:
           jmp BS_return
+
+_bernie_stun:
 
           ;; Fall velocity exceeds threshold - trigger stun
           ;; Set stun timer to 1 second (frame-rate independent: 60fps NTSC, 50fps PAL/SECAM)
           ;; Set recovery flag to prevent movement during stun
           lda currentPlayer
-          asl
           tax
-          lda FramesPerSecond
+          lda #FramesPerSecond
           sta playerRecoveryFrames,x
           ;; Set animation state to ’Fallen down’ (state 8, shifted = 128)
-                    let playerState[currentPlayer] = playerState[currentPlayer] | PlayerStateBitRecovery
-          ;; Set temp3 = playerState[currentPlayer] & MaskPlayerStateFlags
           lda currentPlayer
-          asl
           tax
           lda playerState,x
-          sta temp3
-          ;; Animation state 8 (Fallen down) << 4 = 128
-                    let playerState[currentPlayer] = temp3 | ActionFallenDownShifted
+          ora # PlayerStateBitRecovery
+          sta playerState,x
+          ;; Set temp3 = playerState[currentPlayer] & MaskPlayerStateFlags
+          lda currentPlayer
+          tax
+          lda playerState,x
+          and # MaskPlayerStateFlags
+          ora # ActionFallenDownShifted
+          sta playerState,x
           jmp BS_return
 
-.pend
+.bend
 
-FallDamageApplyGravity .proc
+FallDamageApplyGravity .block
           ;;
           ;; Returns: Far (return otherbank)
           ;; Apply Gravity
@@ -365,7 +342,6 @@ FallDamageApplyGravity .proc
           ;; Get character type
           ;; Set currentCharacter = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
@@ -379,19 +355,16 @@ FallDamageApplyGravity .proc
           lda # 2
           sta temp6
           lda currentCharacter
-          cmp CharacterHarpy
+          cmp # CharacterHarpy
           bne ApplyGravityAcceleration
           lda # 1
           sta temp6
 ApplyGravityAcceleration:
-
-
-          ;; Apply gravity acceleration
-          ;; Set temp2 = temp2 + temp6
-                    if temp2 > TerminalVelocity then let temp2 = TerminalVelocity
+          clc
           lda temp2
-          sec
-          sbc # TerminalVelocity
+          adc temp6
+          sta temp2
+          cmp # TerminalVelocity
           bcc FallDamageApplyGravityDone
           beq FallDamageApplyGravityDone
           lda # TerminalVelocity
@@ -405,48 +378,14 @@ CheckGroundCollision:
           ;; Check Ground Collision
           ;; Checks if player has landed on ground or platform.
           ;; Calls CheckFallDamage if landing detected.
-          ;;
-          INPUT:
-          ;; currentPlayer (global) = player index (0-3)
-          ;; temp2 = vertical momentum before position update
-          ;; This routine should be called AFTER vertical position
-          ;; update
-          ;; but BEFORE momentum is cleared, so we can detect the
-          ;; landing
-          ;; velocity for fall damage calculation.
-          ;; Checks if player has landed on ground or platform
-          ;;
-          ;; Input: currentPlayer (global) = player index (0-3)
-          ;; temp2 = vertical momentum before position update
-          ;; playerY[] (global array) = player Y positions
-          ;;
-          ;; Output: playerY[] clamped to ground if landed,
-          ;; CheckFallDamage called if moving downward
-          ;;
-          ;; Mutates: temp2, temp3 (used for calculations),
-          ;; playerY[] (clamped to 176 if landed), currentCharacter
-          ;;
-          ;; Called Routines: CheckFallDamage - accesses currentPlayer, temp2,
-          ;; playerCharacter[], playerHealth[],
-          ;; playerRecoveryFrames[], playerState[], PlaySoundEffect
-          ;; (bank15)
-          ;;
-          ;; Constraints: Tail call to CheckFallDamage
-          ;; Should be called AFTER vertical position
-          ;; update but BEFORE momentum is cleared
           lda temp1
           sta currentPlayer
-                    ;; Set currentCharacter = playerCharacter[currentPlayer]
-                    lda currentPlayer          asl          tax          lda playerCharacter,x          sta currentCharacter
-          ;; Get player Y position
-          ;; Set temp3 = playerY[currentPlayer]
           lda currentPlayer
-          asl
           tax
-          lda playerY,x
-          sta temp3
+          lda playerCharacter,x
+          sta currentCharacter
+          ;; Get player Y position
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta temp3
@@ -454,7 +393,6 @@ CheckGroundCollision:
           jmp BS_return
 
           lda currentPlayer
-          asl
           tax
           lda # 176
           sta playerY,x
@@ -462,9 +400,9 @@ CheckGroundCollision:
 
           jmp CheckFallDamage
 
-.pend
+.bend
 
-HandleFrootyVertical .proc
+HandleFrootyVertical .block
           ;;
           ;; Returns: Far (return otherbank)
           ;; Handle Frooty Vertical Control
@@ -481,12 +419,11 @@ HandleFrootyVertical .proc
           ;; Check character type to confirm
           ;; Set currentCharacter = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
           lda currentCharacter
-          cmp CharacterFrooty
+          cmp # CharacterFrooty
           bne HandleFrootyVerticalDone
           jmp FrootyFallDamage
 HandleFrootyVerticalDone:
@@ -494,53 +431,36 @@ HandleFrootyVerticalDone:
 
           jmp BS_return
 
-.pend
+.bend
 
-FrootyFallDamage .proc
+FrootyFallDamage .block
           ;; Frooty fall damage
           ;; Returns: Far (return otherbank)
-
-          ;; Get joystick sta
-
-          ;; This needs to be integrated with PlayerInput.bas
-          ;; Fall damage calculation based on character weight
-
-          If joyup pressed: move up
-          ;; playerY[currentPlayer] = playerY[currentPlayer] - 2
-
-          If joydown pressed: move down (replaces guard action)
-          ;; playerY[currentPlayer] = playerY[currentPlayer] + 2
 
           ;; Clamp to screen bounds
           ;; Byte-safe clamp: if wrapped below 0, the new value will
           ;; exceed the old
-          ;; Set oldHealthValue = playerY[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta oldHealthValue
-          ;; Reuse oldHealthValue for byte-safe clamp check (not
-          ;; actually health, but same pattern)
-                    if playerY[currentPlayer] > oldHealthValue then let playerY[currentPlayer] = 0
-
-                    if playerY[currentPlayer] > 176 then let playerY[currentPlayer] = 176
+          ;; Handle vertical movement if needed (from input context) - simplified
+          ;; Clamp to screen bounds
           lda currentPlayer
-          asl
           tax
           lda playerY,x
-          sec
-          sbc # 176
-          bcc FrootyFallDamageDone
-          beq FrootyFallDamageDone
+          cmp # 176
+          bcc _frooty_ok_upper
           lda # 176
           sta playerY,x
+_frooty_ok_upper:
+          ;; already clamped above if needed
 FrootyFallDamageDone:
           jmp BS_return
 
-.pend
+.bend
 
-HandleHarpySwoopAttack .proc
+HandleHarpySwoopAttack .block
           ;;
           ;; Returns: Far (return otherbank)
           ;; Handle Harpy Swoop Attack
@@ -558,12 +478,11 @@ HandleHarpySwoopAttack .proc
           ;; Check character type to confirm
           ;; Set currentCharacter = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
           lda currentCharacter
-          cmp CharacterHarpy
+          cmp # CharacterHarpy
           bne HandleHarpySwoopAttackDone
           jmp HarpyDive
 HandleHarpySwoopAttackDone:
@@ -571,16 +490,15 @@ HandleHarpySwoopAttackDone:
 
           jmp BS_return
 
-.pend
+.bend
 
-HarpyDive .proc
+HarpyDive .block
           ;; Harpy dive
           ;; Returns: Far (return otherbank)
 
           ;; Get facing direction from playerState bit 0
           ;; Set temp6 = playerState[currentPlayer] & PlayerStateBitFacing
           lda currentPlayer
-          asl
           tax
           lda playerState,x
           sta temp6
@@ -591,30 +509,23 @@ HarpyDive .proc
           ;; Facing left: set negative momentum (252 = -4 in signed
           lda temp6
           bne SetHorizontalMomentumRight
-          jmp SetHorizontalMomentumRight
-SetHorizontalMomentumRight:
-
-
-          ;; 8-bit)
+          ;; Facing left
           lda currentPlayer
-          asl
           tax
           lda # 252
           sta playerVelocityX,x
           jmp SetVerticalMomentum
 
 SetHorizontalMomentumRight:
-          ;; Facing right: set positive momentum
-          ;; Returns: Far (return otherbank)
+          ;; Facing right
           lda currentPlayer
-          asl
           tax
           lda # 4
           sta playerVelocityX,x
 
-.pend
+.bend
 
-SetVerticalMomentum .proc
+SetVerticalMomentum .block
           ;; Set downward momentum (using temp variable for now)
           ;; Returns: Far (return otherbank)
           ;; Integrate with vertical momentum system
@@ -627,16 +538,14 @@ SetVerticalMomentum .proc
           ;; animation
           ;; Set temp6 = playerState[currentPlayer] & MaskPlayerStateLower
           lda currentPlayer
-          asl
           tax
           lda playerState,x
           sta temp6
           lda temp6
-          ora MaskAnimationFalling
+          ora #MaskAnimationFalling
           sta temp6
           ;; Animation state 10
           lda currentPlayer
-          asl
           tax
           lda temp6
           sta playerState,x
@@ -646,19 +555,14 @@ SetVerticalMomentum .proc
           sta temp1
           ;; Cross-bank call to SpawnMissile in bank 6
           ;; Return address: ENCODED with caller bank 7 ($70) for BS_return to decode
-          lda # ((>(AfterSpawnMissileHarpy-1)) & $0f) | $70  ;;; Encode bank 7 in high nybble
+          lda # ((>(AfterSpawnMissileHarpy-1)) & $0f) | $70
           pha
-          ;; STACK PICTURE: [SP+0: AfterSpawnMissileHarpy hi (encoded)]
           lda # <(AfterSpawnMissileHarpy-1)
           pha
-          ;; STACK PICTURE: [SP+1: AfterSpawnMissileHarpy hi (encoded)] [SP+0: AfterSpawnMissileHarpy lo]
-          ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(SpawnMissile-1)
           pha
-          ;; STACK PICTURE: [SP+2: AfterSpawnMissileHarpy hi (encoded)] [SP+1: AfterSpawnMissileHarpy lo] [SP+0: SpawnMissile hi (raw)]
           lda # <(SpawnMissile-1)
           pha
-          ;; STACK PICTURE: [SP+3: AfterSpawnMissileHarpy hi (encoded)] [SP+2: AfterSpawnMissileHarpy lo] [SP+1: SpawnMissile hi (raw)] [SP+0: SpawnMissile lo]
           ldx # 6
           jmp BS_jsr
 AfterSpawnMissileHarpy:
@@ -666,9 +570,9 @@ AfterSpawnMissileHarpy:
 
           jmp BS_return
 
-.pend
+.bend
 
-DivideBy20 .proc
+DivideBy20 .block
           ;;
           ;; Returns: Far (return otherbank)
           ;; Division/multiplication HELPERS (no Mul/div Support)
@@ -704,9 +608,9 @@ DivideBy20 .proc
             sta temp2
           jmp BS_return
 
-.pend
+.bend
 
-CalculateSafeFallDistance .proc
+CalculateSafeFallDistance .block
           ;;
           ;; Returns: Far (return otherbank)
           ;; Calculate Safe Fall Dista
@@ -725,83 +629,69 @@ CalculateSafeFallDistance .proc
           sta currentPlayer
           ;; Set currentCharacter = playerCharacter[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerCharacter,x
           sta currentCharacter
 
           ;; Check for fall damage immunity
           lda currentCharacter
-          cmp CharacterBernie
+          cmp # CharacterBernie
           bne CheckRoboTitoImmunity
-          jmp SetInfiniteFallDista
+          jmp SetInfiniteFallDistance
 
 CheckRoboTitoImmunity:
-
-
           lda currentCharacter
-          cmp CharacterRoboTito
+          cmp # CharacterRoboTito
           bne CheckFrootyImmunity
-          jmp SetInfiniteFallDista
+          jmp SetInfiniteFallDistance
 
 CheckFrootyImmunity:
-
-
           lda currentCharacter
-          cmp CharacterFrooty
+          cmp # CharacterFrooty
           bne CheckDragonOfStormsImmunity
-          jmp SetInfiniteFallDista
+          jmp SetInfiniteFallDistance
 
 CheckDragonOfStormsImmunity:
-
-
           lda currentCharacter
-          cmp CharacterDragonOfStorms
+          cmp # CharacterDragonOfStorms
           bne CalculateFallDistanceNormal
-          jmp SetInfiniteFallDista
+          jmp SetInfiniteFallDistance
 
 CalculateFallDistanceNormal:
 
 
           jmp CalculateFallDistanceNormal
 
-.pend
+.bend
 
-SetInfiniteFallDistance .proc
-          lda InfiniteFallDista
-
+SetInfiniteFallDistance .block
+          lda # InfiniteFallDistance
           sta temp2
           jmp BS_return
 
-.pend
+.bend
 
-CalculateFallDistanceNormal .proc
-                    ;; Set temp3 = SafeFallVelocityThresholds[currentCharacter]
-                    lda currentCharacter          asl          tax          lda SafeFallVelocityThresholds,x          sta temp3
+CalculateFallDistanceNormal .block
+          lda currentCharacter
+          tax
+          lda SafeFallVelocityThresholds,x
+          sta temp3
           lda temp3
           sec
           sbc # 1
           sta temp4
-          ;; Set temp2 = SquareTable[temp4]
           lda temp4
-          asl
           tax
           lda SquareTable,x
           sta temp2
-          lda temp4
-          asl
-          tax
-          lda SquareTable,x
-          sta temp2
-            lsr temp2
-            lsr temp2
+          lsr temp2
+          lsr temp2
           lda currentCharacter
-          cmp CharacterNinjishGuy
+          cmp # CharacterNinjishGuy
           bne CalculateFallDistanceNormalDone
-          ;; Set temp2 = temp2 * 2
+          asl temp2
 CalculateFallDistanceNormalDone:
-
           jmp BS_return
 
-.pend
+.bend
 

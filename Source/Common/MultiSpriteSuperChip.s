@@ -61,6 +61,14 @@ COLUP2 = $99
 COLUP3 = $9A
 COLUP4 = $9B
 COLUP5 = $9C
+;; Camel-case aliases used by game logic (case-sensitive assembler keeps these distinct)
+newCOLUP1 = NewCOLUP1
+colup2 = COLUP2
+colup3 = COLUP3
+colup4 = COLUP4
+colup5 = COLUP5
+nusiz2 = NUSIZ2
+nusiz3 = NUSIZ3
 SpriteGfxIndex = $9D
 ; aux2 and pfcolortable moved to safe zero-page locations (see below)
 player0pointer = $A2

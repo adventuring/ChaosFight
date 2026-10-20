@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-HandleGuardInput .proc
+HandleGuardInput .block
 
           ;; Shared Guard Input Handling (inlined version)
           ;; Handles down/guard input for both ports
@@ -12,9 +12,9 @@ HandleGuardInput .proc
           ;; Frooty (8) cannot guard
           ;; Players 0,2 use joy0; Players 1,3 use joy1
 
-.pend
+.bend
 
-CheckJoy0GuardInput .proc
+CheckJoy0GuardInput .block
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
           lda joy0down
@@ -24,14 +24,13 @@ CheckJoy0GuardInput .proc
 
 HandleDownPressed:
 
-.pend
+.bend
 
-HandleDownPressedGuardInput .proc
+HandleDownPressedGuardInput .block
           ;; DOWN pressed - dispatch to character-specific down handler (inlined for performance)
           ;; Returns: Far (return otherbank)
           ;; Set temp4 = playerCharacter[temp1]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -74,9 +73,9 @@ UseStandardGuard:
           ;; Same-bank call (both in Bank 12) - saves 2 bytes vs cross-bank
           jmp StandardGuard
 
-.pend
+.bend
 
-HandleRoboTitoDownGuardInput .proc
+HandleRoboTitoDownGuardInput .block
           ;; Tail call optimization: jmp instead of cross-bank call to to save 2 bytes on sta
 
           ;; Note: RoboTitoDown may return early, so we need to handle that case
@@ -105,14 +104,13 @@ AfterRoboTitoDownGuard:
           ;; Same-bank call (both in Bank 12) - saves 2 bytes vs cross-bank
           jmp StandardGuard
 
-.pend
+.bend
 
-CheckGuardReleaseGuardInput .proc
+CheckGuardReleaseGuardInput .block
           ;; DOWN released - check for early guard release
           ;; Returns: Far (return otherbank)
           ;; Set temp2 = playerState[temp1] & 2
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp2
@@ -122,18 +120,16 @@ CheckGuardReleaseGuardInput .proc
           ;; Stop guard early and start cooldown
           ;; Set playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           lda temp1
-          asl
           tax
           lda playerState,x
           and # (255 - PlayerStateBitGuarding)
           sta playerState,x
           ;; Start cooldown timer
           lda temp1
-          asl
           tax
           lda # GuardTimerMaxFrames
           sta playerTimers_W,x
           jmp BS_return
 
-.pend
+.bend
 

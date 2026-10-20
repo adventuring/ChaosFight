@@ -88,6 +88,25 @@ WarmStartClearAll:
 AfterDetectPadsWarmStart:
           ;; STACK PICTURE: [] (empty, BS_return consumed 4 bytes)
 
+          ;; One-time multi-sprite kernel setup.  batariBASIC's startup.asm
+          ;; calls multisprite_setup once before the program starts; it sets
+          ;; pfHeight, the sprite copy/sort tables and points the playfield
+          ;; pointers at the blank playfield.  Without it the game kernel
+          ;; renders garbage playfields and unsorted sprites.
+          ;; Cross-bank call to MultiSpriteSetup in bank 15
+          lda # ((>(AfterMultiSpriteSetupWarmStart-1)) & $0f) | $c0  ;;; Encode bank 12 in high nybble
+          pha
+          lda # <(AfterMultiSpriteSetupWarmStart-1)
+          pha
+          lda # >(MainLoopMultiSpriteSetup-1)
+          pha
+          lda # <(MainLoopMultiSpriteSetup-1)
+          pha
+          ldx # 15                         ;;; Bank 15
+          jmp BS_jsr
+AfterMultiSpriteSetupWarmStart:
+          ;; STACK PICTURE: [] (empty, BS_return consumed 4 bytes)
+
           ;; Step 6: Go to publisher prelude
           ;; Set game mode to Publisher Prelude
           lda # ModePublisherPrelude
@@ -114,14 +133,17 @@ AfterDetectPadsWarmStart:
 AfterBeginPublisherPreludeWarmStart:
           ;; STACK PICTURE: [] (empty, BS_return consumed 4 bytes)
 
-          ;; Jump to MainLoop in bank 15 without pushing to stack
+          ;; Jump to MainLoop in BankDrawScreen (15)
           ;; CRITICAL: MainLoop is in Bank 15, WarmStart is in Bank 12
-          ;; MainLoop is an infinite loop - it NEVER returns, so we must NOT push bytes to stack
-          ;; Switch banks directly using nop $ffe0, x then jump
-          ;; STACK PICTURE: [] (empty - no bytes pushed)
-          ldx # 14                         ;;; Bank 15 = $ffe0 + 14, 0-based = 14
-          nop $ffe0, x                     ;;; Switch to bank 15
-          jmp MainLoop                     ;;; Jump directly to MainLoop (no stack push)
+          ;; MainLoop is an infinite loop - it NEVER returns
+          ;; CRITICAL: never hand-roll `nop $ffe0, x` followed by `jmp service`:
+          ;;   the bank switch takes effect immediately, so the `jmp` opcode itself
+          ;;   is fetched from the *newly selected* bank, where the bytes at that
+          ;;   address are not a jump at all. Use the standard far jump: it pushes
+          ;;   (service - 1) and enters BS_jsr, whose RTS consumes exactly those
+          ;;   two pushed bytes, so the net stack effect is zero.
+          ;; STACK PICTURE: [] (empty - the push and the RTS balance out)
+          .FarJMP BankDrawScreen, MainLoop ;;; Switch to bank 15, jump to MainLoop
 
 .pend
 
@@ -164,7 +186,7 @@ AfterDetectPadsSelect:
 
 
           lda systemFlags
-          and SystemFlagGameStatePaused
+          and #SystemFlagGameStatePaused
           bne ClearPausedFlag
           ;; Set systemFlags = systemFlags | SystemFlagGameStatePaused
           lda systemFlags
@@ -175,7 +197,7 @@ AfterDetectPadsSelect:
 ClearPausedFlag:
           ;; Clear systemFlags = systemFlags & ClearSystemFlagGameStatePaused
           lda systemFlags
-          and ClearSystemFlagGameStatePaused
+          and #ClearSystemFlagGameStatePaused
           sta systemFlags
 
 Player1PauseDone:
@@ -218,7 +240,7 @@ AfterDetectPadsSelectP2:
 
 
           lda systemFlags
-          and SystemFlagGameStatePaused
+          and #SystemFlagGameStatePaused
           bne ClearPausedFlagP2
           ;; Set systemFlags = systemFlags | SystemFlagGameStatePaused
           lda systemFlags
@@ -229,7 +251,7 @@ AfterDetectPadsSelectP2:
 ClearPausedFlagP2:
           ;; Clear systemFlags = systemFlags & ClearSystemFlagGameStatePaused
           lda systemFlags
-          and ClearSystemFlagGameStatePaused
+          and #ClearSystemFlagGameStatePaused
           sta systemFlags
 
 Player2PauseDone:

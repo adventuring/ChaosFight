@@ -15,19 +15,16 @@ UpdatePlayers34ActiveFlag .proc
           ;; Check if Player 3 is active (selected and not eliminated)
           ;; If playerCharacter[2] = NoCharacter, then CheckPlayer4ActiveFlag
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
           beq CheckPlayer4ActiveFlag
           ;; If playerHealth[2] = 0, then CheckPlayer4ActiveFlag
           lda # 2
-          asl
           tax
           lda playerHealth,x
           beq CheckPlayer4ActiveFlag
           lda # 2
-          asl
           tax
           lda playerHealth,x
           bne SetPlayer3Active
@@ -47,14 +44,12 @@ CheckPlayer4ActiveFlag .proc
           ;; Returns: Far (return otherbank)
           ;; If playerCharacter[3] = NoCharacter, then UpdatePlayers34ActiveDone
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
           beq UpdatePlayers34ActiveDone
           ;; If playerHealth[3] = 0, then UpdatePlayers34ActiveDone
           lda # 3
-          asl
           tax
           lda playerHealth,x
           bne SetPlayer4Active

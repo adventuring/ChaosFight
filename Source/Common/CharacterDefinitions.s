@@ -48,8 +48,7 @@ GetCharacterWeightSub
           ;; 6 = Falling backwards
           ;; 7 = Falling down
           ;; 8 = Fallen down
-          ;; 9 = Recovering to sta
-
+          ;; 9 = Recovering to stand
           ;; 10 = Jumping
           ;; 11 = Falling after jump
           ;; 12 = Landing

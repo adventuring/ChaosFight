@@ -7,8 +7,8 @@
           ;; accessed through these optimized lookup routines.
 
 
-GetCharacterWeightValue .proc
-          Return the character’s weight.
+GetCharacterWeightValue .block
+          ;; Return the character’s weight.
           ;; Input: temp1 = character index (0-MaxCharacter)
           ;; Output: temp2 = character weight
           ;; Mutates: temp2 (return value)
@@ -16,15 +16,14 @@ GetCharacterWeightValue .proc
           ;; Use direct array access for O(1) lookup
           ;; Set temp2 = CharacterWeights[temp1]
           lda temp1
-          asl
           tax
           lda CharacterWeights,x
           sta temp2
           rts
 
-.pend
+.bend
 
-GetCharacterMissileHeight .proc
+GetCharacterMissileHeight .block
           ;; Return missile height slot (0 = none, 1-2 = height).
           ;; Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileHeights lookup)
           ;; Output: temp2 = missile height slot
@@ -33,15 +32,14 @@ GetCharacterMissileHeight .proc
           ;; Use direct array access for O(1) lookup
           ;; Set temp2 = CharacterMissileHeights[temp1]
           lda temp1
-          asl
           tax
           lda CharacterMissileHeights,x
           sta temp2
           rts
 
-.pend
+.bend
 
-GetCharacterMissileMaxX .proc
+GetCharacterMissileMaxX .block
           ;; Return missile maximum × range.
           ;; Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMaxX lookup)
           ;; Output: temp2 = missile max × range
@@ -50,15 +48,14 @@ GetCharacterMissileMaxX .proc
           ;; Use direct array access for O(1) lookup
           ;; Set temp2 = CharacterMissileMaxX[temp1]
           lda temp1
-          asl
           tax
           lda CharacterMissileMaxX,x
           sta temp2
           rts
-.pend
+.bend
 
-GetCharacterMissileMaxY .proc
-          Return missile maximum Y range.
+GetCharacterMissileMaxY .block
+          ;; Return missile maximum Y range.
           ;; Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMaxY lookup)
           ;; Output: temp2 = missile max Y range
           ;; Mutates: temp2 (result register - missile max Y)
@@ -66,15 +63,14 @@ GetCharacterMissileMaxY .proc
           ;; Use direct array access for O(1) lookup
           ;; Set temp2 = CharacterMissileMaxY[temp1]
           lda temp1
-          asl
           tax
           lda CharacterMissileMaxY,x
           sta temp2
           rts
 
-.pend
+.bend
 
-GetMissileWidth .proc
+GetMissileWidth .block
           ;; Return missile width (stub - use CharacterMissileWidths[] directly)
           ;; Input: temp1 = character index (0-MaxCharacter)
           ;; Output: temp2 = missile width
@@ -83,15 +79,14 @@ GetMissileWidth .proc
           ;; Use direct array access for O(1) lookup
           ;; Set temp2 = CharacterMissileWidths[temp1]
           lda temp1
-          asl
           tax
           lda CharacterMissileWidths,x
           sta temp2
           rts
 
-.pend
+.bend
 
-GetMissileHeight .proc
+GetMissileHeight .block
           ;; Return missile height (stub - use CharacterMissileHeights[] directly)
           ;; Input: temp1 = character index (0-MaxCharacter)
           ;; Output: temp2 = missile height
@@ -100,15 +95,14 @@ GetMissileHeight .proc
           ;; Use direct array access for O(1) lookup
           ;; Set temp2 = CharacterMissileHeights[temp1]
           lda temp1
-          asl
           tax
           lda CharacterMissileHeights,x
           sta temp2
           rts
 
-.pend
+.bend
 
-GetMissileFlags .proc
+GetMissileFlags .block
           ;; Return missile flags (stub - use CharacterMissileFlags[] directly)
           ;; Input: temp1 = character index (0-MaxCharacter)
           ;; Output: temp2 = missile flags
@@ -117,15 +111,14 @@ GetMissileFlags .proc
           ;; Use direct array access for O(1) lookup
           ;; Set temp2 = CharacterMissileFlags[temp1]
           lda temp1
-          asl
           tax
           lda CharacterMissileFlags,x
           sta temp2
           rts
 
-.pend
+.bend
 
-GetMissileMomentumX .proc
+GetMissileMomentumX .block
           ;; Return missile horizontal momentum from CharacterMissileMomentumX[temp1].
           ;; Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMomentumY lookup)
           ;; Output: temp2 = missile momentum X
@@ -133,15 +126,14 @@ GetMissileMomentumX .proc
           ;; Constraints: None (table lookup - missile momentum X)
           ;; Set temp2 = CharacterMissileMomentumX[temp1]
           lda temp1
-          asl
           tax
           lda CharacterMissileMomentumX,x
           sta temp2
           rts
 
-.pend
+.bend
 
-GetMissileMomentumY .proc
+GetMissileMomentumY .block
           ;; Return missile vertical momentum from CharacterMissileMomentumY[temp1].
           ;; Parameters: temp1 = character index (0-MaxCharacter)
           ;; Output: temp2 = missile momentum Y
@@ -149,10 +141,9 @@ GetMissileMomentumY .proc
           ;; Constraints: None (table lookup - missile momentum Y)
           ;; Set temp2 = CharacterMissileMomentumY[temp1]
           lda temp1
-          asl
           tax
           lda CharacterMissileMomentumY,x
           sta temp2
           rts
-.pend
+.bend
 

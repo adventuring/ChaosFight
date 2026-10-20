@@ -18,7 +18,6 @@ UpdateAttackCooldowns .proc
 UAC_Loop:
           ;; Set temp2 = playerAttackCooldown_R[temp1]
           lda temp1
-          asl
           tax
           lda playerAttackCooldown_R,x
           sta temp2
@@ -31,7 +30,6 @@ DecrementCooldown:
 
           dec temp2
           lda temp1
-          asl
           tax
           lda temp2
           sta playerAttackCooldown_W,x

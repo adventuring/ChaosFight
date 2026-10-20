@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
-UpdatePlayerMovement .proc
+UpdatePlayerMovement .block
           ;; 8.8 fixed-point movement system using batariBASIC built-in
           ;; Returns: Far (return otherbank)
           ;; support
@@ -72,9 +72,9 @@ UPM_Players01LoopDone:
 
           ;; Players 2-3 only if Quadtari detected
 
-.pend
+.bend
 
-UpdatePlayerMovementQuadtariCheck .proc
+UpdatePlayerMovementQuadtariCheck .block
           lda controllerStatus
           and # SetQuadtariDetected
           bne UpdatePlayerMovementQuadtari
@@ -114,10 +114,10 @@ AfterUpdatePlayerMovementSingleQuadtari:
           jmp UPM_Players23Loop
 UPM_Players23LoopDone:
 
-.pend
+.bend
 
-UpdatePlayerMovementQuadtariSkip .proc
+UpdatePlayerMovementQuadtariSkip .block
           jmp BS_return
 
-.pend
+.bend
 

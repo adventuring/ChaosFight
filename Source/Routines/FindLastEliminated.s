@@ -25,7 +25,6 @@ FindLastEliminated .proc
 FLE_Loop:
           ;; Load current player's elimination order
           lda currentPlayer
-          asl
           tax
           lda eliminationOrder_R,x
           ;; Compare to highest found so far (temp4)
@@ -34,7 +33,6 @@ FLE_Loop:
           bcc SkipUpdateWinner
           ;; Current player has higher (or equal) elimination order - update winner
           lda currentPlayer
-          asl
           tax
           lda eliminationOrder_R,x
           sta temp4

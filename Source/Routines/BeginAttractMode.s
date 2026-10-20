@@ -1,5 +1,5 @@
 
-BeginAttractMode .proc
+BeginAttractMode .block
 
           ;;
           ;; ChaosFight - Source/Routines/BeginAttractMode.bas
@@ -41,5 +41,5 @@ BeginAttractMode .proc
           ;; Prelude
           ;; This is handled in the AttractMode loop
 
-.pend
+.bend
 

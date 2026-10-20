@@ -115,7 +115,6 @@ InputDonePlayer0Input
 
           ;; Inlined IsPlayerAlive check for player 1
           lda # 1
-          asl
           tax
           lda playerHealth,x
           sta temp2
@@ -246,7 +245,6 @@ InputHandleQuadtariPlayers .proc
 CheckPlayer3Character:
           ;; If playerCharacter[2] = NoCharacter, then InputDonePlayer3Input
           lda # 2
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -254,7 +252,6 @@ CheckPlayer3Character:
 
           ;; Inlined IsPlayerAlive check for player 2
           lda # 2
-          asl
           tax
           lda playerHealth,x
           sta temp2
@@ -300,7 +297,6 @@ InputDonePlayer3Input
 CheckPlayer4Character:
           ;; If playerCharacter[3] = NoCharacter, then InputDonePlayer4Input
           lda # 3
-          asl
           tax
           lda playerCharacter,x
           cmp # NoCharacter
@@ -308,7 +304,6 @@ CheckPlayer4Character:
 
           ;; Inlined IsPlayerAlive check for player 3
           lda # 3
-          asl
           tax
           lda playerHealth,x
           sta temp2

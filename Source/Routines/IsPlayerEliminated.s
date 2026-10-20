@@ -11,7 +11,6 @@ IsPlayerEliminated .proc
           ;; Mutates: temp2
           ;; Set temp2 = playerHealth[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerHealth,x
           sta temp2

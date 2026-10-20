@@ -16,7 +16,6 @@ CopyParticipantSpritePosition:
           ;;
           ;; Unified sprite position assignment (temp1 = 2 → player2, temp1 = 3 → player3)
           lda temp1
-          asl
           tax
           lda playerX,x
           sta temp2
@@ -258,7 +257,6 @@ RenderMissileForParticipant:
 
           ;; Set RMF_mask = SetSpriteMissileMask[RMF_participant]
           lda temp1
-          asl
           tax
           lda SetSpriteMissileMask,x
           sta temp3
@@ -302,7 +300,6 @@ RMF_MissileActive .proc
           ;; Returns: Far (return otherbank)
           ;; Set RMF_character = playerCharacter[RMF_participant]
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           sta temp4
@@ -321,27 +318,23 @@ SSP_WriteMissileRegisters .proc
           ;; temp2 = Y position
           ;; Set temp6 = missileX[temp1]
           lda temp1
-          asl
           tax
           lda missileX,x
           sta temp6
           ;; temp3 = NUSIZ value
           ;; Set temp2 = missileY_R[temp1]
           lda temp1
-          asl
           tax
           lda missileY_R,x
           sta temp2
           ;; temp4 = height (overwrite character after reading it)
           ;; Set temp3 = missileNUSIZ_R[temp1]
           lda temp1
-          asl
           tax
           lda missileNUSIZ_R,x
           sta temp3
           ;; Set temp4 = CharacterMissileHeights[temp4]
           lda temp4
-          asl
           tax
           lda CharacterMissileHeights,x
           sta temp4
@@ -409,7 +402,6 @@ RenderRoboTitoStretchMissile .proc
           ;; routine does not perform frame-parity dispatch.
           ;; If playerCharacter[temp1] = CharacterRoboTito, then RRTM_CheckStretch
           lda temp1
-          asl
           tax
           lda playerCharacter,x
           cmp # CharacterRoboTito
@@ -425,7 +417,6 @@ RRTM_CheckStretch .proc
           jmp BS_return
           ;; Set temp3 = playerState[temp1]
           lda temp1
-          asl
           tax
           lda playerState,x
           sta temp3
@@ -451,7 +442,6 @@ RRTM_CheckStretchActive:
 RRTM_ReadStretchHeight .proc
           ;; Set temp4 = missileStretchHeight_R[temp1]
           lda temp1
-          asl
           tax
           lda missileStretchHeight_R,x
           sta temp4
@@ -471,12 +461,10 @@ SSP_WriteStretchMissile .proc
                     lda temp1          asl          tax          lda playerX,x          sta temp6
           ;; Set temp2 = playerY[temp1]
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp2
           lda temp1
-          asl
           tax
           lda playerY,x
           sta temp2

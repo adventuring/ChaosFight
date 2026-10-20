@@ -9,19 +9,16 @@ GetPlayerPosition:
           ;; Constraints: Callers should consume the values immediately; temps are volatile.
           ;; Set temp2 = playerX[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerX,x
           sta temp2
           ;; Set temp3 = playerY[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta temp3
          
           lda currentPlayer
-          asl
           tax
           lda playerY,x
           sta temp3

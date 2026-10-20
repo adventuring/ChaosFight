@@ -14,97 +14,88 @@
           ModeWinner = 7
           ModeAttract = 8
 
+          CharacterBernie = 0
+          CharacterCurler = 1
+          CharacterDragonOfStorms = 2
+          CharacterZoeRyen = 3
+          CharacterFatTony = 4
+          CharacterMegax = 5
+          CharacterHarpy = 6
+          CharacterKnightGuy = 7
+          CharacterFrooty = 8
+          CharacterNefertem = 9
+          CharacterNinjishGuy = 10
+          CharacterPorkChop = 11
+          CharacterRadishGoblin = 12
+          CharacterRoboTito = 13
+          CharacterUrsulo = 14
+          CharacterShamone = 15
+
+
+
+
+
+
+          CharacterMethHound = 31
+
           ;;
           ;; Animation Action Enums
           ;; 16 animation actions (0-15) stored in playerState bits 4-7
           ;; Used for character animation sequences
           ;; Each action has up to 8 frames (0-7)
 
-          ;; Standing still (facing right)
           ActionStanding = 0
-
-          ;; Idle (resting)
           ActionIdle = 1
-
-          ;; Standing still guarding
           ActionGuarding = 2
-
-          ;; Walking/running
           ActionWalking = 3
-
-          ;; Coming to stop
           ActionStopping = 4
-
-          ;; Taking a hit
-          ActionHit = 5
-
-          ;; Falling backwards
-          ActionFallBack = 6
-
-          ;; Falling down
-          ActionFallDown = 7
-
-          ;; Fallen down
-          ActionFallen = 8
-
-          ;; Recovering to sta
-
-          ActionRecovering = 9
-
-          ;; Jumping
+          ActionHit = 5         ; being hit
+          ActionFallBack = 6    ; knockback
+          ActionFallDown = 7    ; starting to fall from no floor
+          ActionFallen = 8      ; hit ground too hard
+          ActionRecovering = 9  ; standing back up
           ActionJumping = 10
-
-          ;; Falling after jump
           ActionFalling = 11
-
-          ;; Landing
-          ActionLanding = 12
-
-          ;; Attack windup
+          ActionLanding = 12    ; hit ground normal hard
           ActionAttackWindup = 13
-
-          ;; Attack execution
           ActionAttackExecute = 14
-
-          ;; Attack recovery
           ActionAttackRecovery = 15
 
-          ;; NOTE: RoboTito repurposes existing animation states:
-          ;;
-          ;; ActionJumping (10) = Stretching upward
-          ;; ActionFalling (11) = Latched to ceiling
-          ;; ActionLanding (12) = Retracting trunk
+          ActionRoboTitoStretch = ActionJumping
+          ActionRoboTitoLatched = ActionFallDown
+          ActionRoboTitoRetract = ActionRecovering
 
           ;; Missile Flags Bitfield Encoding
           ;; bit flags for missile behavior (CharacterMissileFlags)
           ;; Used for checking missile interaction properties
 
-          ;; bit 0: Hit background (1=hit and disappear, 0=pass through)
-          MissileFlagHitBackground = 1
+          MissileFlagHitBackground = 1 ; vanish if hit playfield
+          MissileFlagHitPlayer = 2     ; vanish if hit character
+          MissileFlagGravity = 4       ; arc with gravity
+          MissileFlagBounce = 8        ; bounce off playfield
+          MissileFlagFriction = $10    ; curling stone friction
 
-          ;; bit 1: Hit player (2=hit and disappear, 0=pass through)
-          MissileFlagHitPlayer = 2
-
-          ;; bit 2: Apply gravity (4=affected by gravity, 0=no gravity)
-          MissileFlagGravity = 4
-
-          ;; bit 3: Bounce off walls (8=bounce, 0=stop/hit)
-          MissileFlagBounce = 8
-
-          ;; bit 4: Apply friction physics (curling stone deceleration)
-          MissileFlagFriction = 16
-
-          ;; Combined flags for common combinations (bits 0-1)
-          MissileFlagHitBoth = 3
-
-          ;; Bits 0 and 2 set: HitBackground|Gravity = 1+4 = 5 (%00000101)
-          MissileFlagHitBackgroundAndGravity = 5
-
-          ;; Bits 0-4 set: HitBackground|HitPlayer|Gravity|Bounce|Friction
+          MissileFlagHitBoth = MissileFlagHitBackground | MissileFlagHitPlayer
+          MissileFlagHitBackgroundAndGravity = MissileFlagHitBackground | MissileFlagGravity
+          MissileFlagCurler = MissileFlagFriction | MissileFlagHitBackground | MissileFlagHitPlayer | MissileFlagBounce
           MissileFlagCurlerFull = 31
 
           ;; Attack Type Constants (for CharacterAttackTypes data table and PlayerAttackType array)
-          MeleeAttack = 0
-          RangedAttack = 1
-          AreaAttack = 2
+          AttackMelee = 0
+          AttackRanged = 1
+          AttackArea = 2
 
+
+          BankMusic = 0
+          BankCharacterArt = 1  ; 1, 2, 3, 4
+          BankCharSelect = 5
+          BankCombat = 6
+          BankPhysics = 7
+          BankTitleScreen = 8
+          BankSprites = 9
+          BankGamePlay = 10
+          BankCharacterInfo = 11
+          BankInput = 12
+          BankControl = 13
+          BankMoreMusic = 14
+          BankDrawScreen = 15

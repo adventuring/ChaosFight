@@ -71,7 +71,6 @@ ApplyHurtColor:
           .else
           ;; Set temp6 = PlayerColors6[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda PlayerColors6,x
           sta temp6
@@ -91,7 +90,6 @@ NormalColorState .proc
 
           ;; Set temp6 = PlayerColors12[currentPlayer]
           lda currentPlayer
-          asl
           tax
           lda PlayerColors12,x
           sta temp6

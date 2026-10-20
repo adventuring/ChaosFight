@@ -3,7 +3,7 @@
 ;;;; Random number generator routine
 ;;;; Local implementation - do not use std_routines.asm
 
-randomize .proc
+randomize .block
           lda rand
           lsr
 .if  rand16_W
@@ -26,4 +26,4 @@ noeor:
           ;;; jmp BS_return when bankswitch is defined, which is incorrect for
           ;;; same-bank calls.
           rts
-.pend
+.bend

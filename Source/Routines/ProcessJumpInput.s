@@ -46,7 +46,7 @@ PJI_CheckPlayer0Enhanced:
           lda controllerStatus
           and # SetLeftPortGenesis
           beq PJI_CheckPlayer0Joy2bPlus
-          bit INPT0
+          lda INPT0
           bmi PJI_CheckPlayer0Joy2bPlus
           lda # 1
           sta temp3
@@ -56,7 +56,7 @@ PJI_CheckPlayer0Joy2bPlus:
           lda controllerStatus
           and # SetLeftPortJoy2bPlus
           beq ProcessJumpInputReturn
-          bit INPT0
+          lda INPT0
           bmi ProcessJumpInputReturn
           lda # 1
           sta temp3
@@ -66,7 +66,7 @@ PJI_CheckPlayer1Enhanced:
           lda controllerStatus
           and # SetRightPortGenesis
           beq PJI_CheckPlayer1Joy2bPlus
-          bit INPT2
+          lda INPT2
           bmi PJI_CheckPlayer1Joy2bPlus
           lda # 1
           sta temp3
@@ -76,7 +76,7 @@ PJI_CheckPlayer1Joy2bPlus:
           lda controllerStatus
           and # SetRightPortJoy2bPlus
           beq ProcessJumpInputReturn
-          bit INPT2
+          lda INPT2
           bmi ProcessJumpInputReturn
           lda # 1
           sta temp3

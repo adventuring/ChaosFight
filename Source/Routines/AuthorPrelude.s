@@ -82,14 +82,14 @@ CheckEnhancedControllers:
           ;; Player 1: Genesis Button C (INPT0) or Joy2b+ Button C/II (INPT0)
           lda temp1
           beq CheckPlayer1Joy2bPlusButton3
-          bit INPT0
+          lda INPT0
           bpl AuthorPreludeComplete  ; Button pressed (bit 7 = 0)
 CheckPlayer1Joy2bPlusButton3:
           ;; Check Joy2b+ Button III (INPT1) for Player 1
           lda controllerStatus
           and # SetLeftPortJoy2bPlus
           beq CheckPlayer2Enhanced
-          bit INPT1
+          lda INPT1
           bpl AuthorPreludeComplete  ; Button pressed (bit 7 = 0)
 CheckPlayer2Enhanced:
 
@@ -105,14 +105,14 @@ CheckPlayer2Enhanced:
           ;; If temp1 is non-zero and !INPT2{7}, then AuthorPreludeComplete
           lda temp1
           beq CheckPlayer2Joy2bPlusButton3
-          bit INPT2
+          lda INPT2
           bpl AuthorPreludeComplete  ; Button pressed (bit 7 = 0)
 CheckPlayer2Joy2bPlusButton3:
           ;; Check Joy2b+ Button III (INPT3) for Player 2
           lda controllerStatus
           and # SetRightPortJoy2bPlus
           beq CheckAutoAdvance
-          bit INPT3
+          lda INPT3
           bpl AuthorPreludeComplete  ; Button pressed (bit 7 = 0)
 CheckAutoAdvance:
 

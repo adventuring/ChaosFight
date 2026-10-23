@@ -19,8 +19,11 @@ MainLoop .proc
 
           ;; Entry point for entire game loop
           ;; STACK PICTURE: [] (empty - MainLoop entered via direct jump from WarmStart, no stack push)
+          inc $9f                ; TEMP debug: count MainLoop top entries
           ;; Increment frame counter (used for frame budgeting and timing)
           inc frame
+          lda frame              ; TEMP debug: sample frame right after inc
+          sta $ff                ; TEMP debug: -> titleParadeTimer
           ;; CRITICAL: Skip reset check on first frame after cold start to prevent stack overflow
           ;; During cold start, switchreset may read as true, causing WarmStart to be called
           ;; before the stack is fully initialized, leading to stack overflow
@@ -78,15 +81,100 @@ NoP0Press:
           ora # $20
           sta temp1
 NoP1Press:
+          ;; Include enhanced controller buttons (INPT0-3) for "any button to advance"
+          ;;
+          ;; INPT0-3 are the 2600's paddle ports.  They are active-low: bit 7
+          ;; reads 0 while the associated button is held and 1 when released,
+          ;; so the branch below must be bmi (skip when bit 7 = 1 = released).
+          ;;
+          ;; CRITICAL: this must be "lda INPTx", never "bit INPTx".  The 6502
+          ;; "bit" instruction ANDs the operand into A and sets N/Z from the
+          ;; *result*, so "bit INPTx" only ever tests bit 7 of (A & INPTx).
+          ;; A's bit 7 is clear here, so the branch was never taken and every
+          ;; screen treated the enhanced buttons as permanently held - which
+          ;; made the publisher prelude skip itself on the very first frame.
+          ;;
+          ;; A paddle port with nothing plugged into it is only pulled low
+          ;; while the TIA grounds the inputs (VBLANK bit 6 = 1), so an
+          ;; unclaimed port is not read at all: only ports that
+          ;; controllerDetection has actually claimed are sampled.
+          ;;   SetLeftPortGenesis  ($01) -> INPT0
+          ;;   SetLeftPortJoy2bPlus ($02) -> INPT0, INPT1
+          ;;   SetRightPortGenesis  ($04) -> INPT2
+          ;;   SetRightPortJoy2bPlus ($08)-> INPT2, INPT3
+          lda # 0
+          sta temp2
+          lda controllerStatus
+          and # (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
+          beq NoINPT0
+          lda INPT0
+          bmi NoINPT0
+          lda # $10
+          sta temp2
+NoINPT0:
+          lda controllerStatus
+          and # SetLeftPortJoy2bPlus
+          beq NoINPT1
+          lda INPT1
+          bmi NoINPT1
+          lda temp2
+          ora # $08
+          sta temp2
+NoINPT1:
+          lda controllerStatus
+          and # (SetRightPortGenesis | SetRightPortJoy2bPlus)
+          beq NoINPT2
+          lda INPT2
+          bmi NoINPT2
+          lda temp2
+          ora # $04
+          sta temp2
+NoINPT2:
+          lda controllerStatus
+          and # SetRightPortJoy2bPlus
+          beq NoINPT3
+          lda INPT3
+          bmi NoINPT3
+          lda temp2
+          ora # $02
+          sta temp2
+NoINPT3:
+          lda temp2
+          ora temp1
+          sta temp1
+          ;; Compare this frame's held-state bits with last frame's to find
+          ;; buttons that newly went down.  Bit 7 of fireEdgeState is the
+          ;; "a fresh press happened" latch that the prelude screens test.
           lda fireEdgeState
-          and # $60            ; held-state bits from last frame
+          and # $7E            ; held-state bits from last frame (all ports)
           eor temp1            ; bits that changed
           and temp1            ; keep only bits that just went down
           beq NoNewFirePress
+          ;; New button press this frame: latch bit 7 alongside held state
           lda # $80
+          jmp SetFireEdge
 NoNewFirePress:
+          ;; No new press this frame: keep held-state bits, clear latch
+          lda # 0
+SetFireEdge:
           ora temp1
           sta fireEdgeState
+
+          ;; Refresh consolidated player input for all modes
+          ;; (title kernel has no vblank hook)
+          ;; Cross-bank call to ConsolidatedPlayerInput (now in Bank 14)
+          ;; Encode return to AfterCPI-1; target = ConsolidatedPlayerInput
+          lda # ((>(AfterCPI-1)) & $0f) | $f0
+          pha
+          lda # <(AfterCPI-1)
+          pha
+          lda # >(ConsolidatedPlayerInput-1)
+          pha
+          lda # <(ConsolidatedPlayerInput-1)
+          pha
+          ldx # 14
+          jmp BS_jsr
+AfterCPI:
 
           ;; STACK PICTURE: [] (empty)
 

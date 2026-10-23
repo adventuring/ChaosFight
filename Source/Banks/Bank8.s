@@ -65,8 +65,9 @@ bmp_48x2_4_background = 0
 bmp_48x2_4_PF1 = 0
 bmp_48x2_4_PF2 = 0
 
-;; Pad title kernel overscan by 1 line (261 -> 262)
-overscan_time = 31
+;; Titlescreen overscan. Canonical batariBasic NTSC titlescreen value is 30.
+;; (Note: this is NOT the same as the multi-sprite game kernel's overscan.)
+overscan_time = 30
 TitlescreenAsmStart:
 .include "Source/TitleScreen/asm/titlescreen.s"
 TitlescreenAsmEnd:

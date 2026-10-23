@@ -24,7 +24,7 @@ SkipSelectSwitch:
           ;; Player 2)
           lda # LeftPortJoy2bPlus
           beq SkipLeftPortJoy2bPause
-          bit INPT1
+          lda INPT1
           bmi SkipLeftPortJoy2bPause
           lda # 1
           sta temp1
@@ -32,7 +32,7 @@ SkipSelectSwitch:
 SkipLeftPortJoy2bPause:
           lda # RightPortJoy2bPlus
           beq SkipRightPortJoy2bPause
-          bit INPT3
+          lda INPT3
           bmi SkipRightPortJoy2bPause
           lda # 1
           sta temp1

@@ -581,7 +581,7 @@ CheckQuadtariFireHold
           ;; Check Player 3 and 4 fire buttons (Quadtari)
           ;; Player 3 fire button (left port, odd frame)
           ;; If !INPT0{7}, then set temp1 = 1
-          bit INPT0
+          lda INPT0
           bmi CheckINPT2Fire
           lda # 1
           sta temp1
@@ -589,7 +589,7 @@ CheckINPT2Fire:
 
           ;; Player 4 fire button (right port, odd frame)
           ;; If !INPT2{7}, then set temp1 = 1
-          bit INPT2
+          lda INPT2
           bmi CheckQuadtariFireHoldDone
           lda # 1
           sta temp1

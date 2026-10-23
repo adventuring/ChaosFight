@@ -245,6 +245,10 @@ MusicSystemStart:
 .include "Source/Routines/MusicSystem.s"
 MusicSystemEnd:
             .warn format("// Bank 14: %d bytes = MusicSystem", [MusicSystemEnd - MusicSystemStart])
+Bank14BeforeCPI:
+.include "Source/Routines/ConsolidatedPlayerInput.s"
+Bank14AfterCPI:
+
 Bank14CodeEnds:
 
           ;; Include BankSwitching.s in Bank 14

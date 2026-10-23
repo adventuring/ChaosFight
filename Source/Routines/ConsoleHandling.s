@@ -19,6 +19,8 @@ WarmStart .proc
           ;; Constraints: Entry point for warm start (called from cold start procedure or BRK/IRQ)
           ;; Must initialize SP and clear memory before any stack operations
           
+          inc $80                ; TEMP debug: count WarmStart entries (preserved by clear loop)
+
           ;; Step 0: Initialize stack pointer (in case we arrived via BRK/IRQ vector)
           ;; CRITICAL: BRK/IRQ vector jumps to WarmStart, bypassing ColdStart's txs
           ;; At power-on, SP may be floating (e.g., $f0) and never initialized
@@ -369,7 +371,7 @@ CheckPlayer1EnhancedPause .proc
           lda controllerStatus
           and # SetLeftPortGenesis
           beq CheckJoy2bPlus
-          bit INPT0
+          lda INPT0
           bmi CheckJoy2bPlus
           lda # 1
           sta temp1
@@ -379,7 +381,7 @@ CheckJoy2bPlus:
           lda controllerStatus
           and # SetLeftPortJoy2bPlus
           beq CheckPlayer1EnhancedPauseDone
-          bit INPT1
+          lda INPT1
           bmi CheckPlayer1EnhancedPauseDone
           lda # 1
           sta temp1

@@ -1,0 +1,4 @@
+frame 30
+saveSnap
+print *eb
+exitRom

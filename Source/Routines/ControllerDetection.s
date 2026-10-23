@@ -35,11 +35,11 @@ DetectPads .proc
           .fi
           ;; Check for Quadtari
           ;; If INPT0{7} is set, check right side
-          bit INPT0
+          lda INPT0
           bpl CDP_CheckRightSide
 
           ;; If !INPT1{7}, check right side
-          bit INPT1
+          lda INPT1
           bmi CheckLeftSideQuadtari
 
           jmp CDP_CheckRightSide
@@ -59,11 +59,11 @@ CDP_QuadtariFound:
 
 CDP_CheckRightSide .proc
           ;; If INPT2{7} is set, check Genesis
-          bit INPT2
+          lda INPT2
           bpl CDP_CheckGenesis
 
           ;; If !INPT3{7}, check Genesis
-          bit INPT3
+          lda INPT3
           bmi CheckRightSideQuadtari
 
           jmp CDP_CheckGenesis
@@ -100,9 +100,9 @@ CDP_CheckGenesis .proc
 
           ;; Check left side (INPT0, INPT1) for Genesis controller
           ;; Genesis controllers will pull these HIGH when idle
-          bit INPT0
+          lda INPT0
           bpl CheckGenesisRightSide
-          bit INPT1
+          lda INPT1
           bpl CheckGenesisRightSide
 
           ;; Left side detected Genesis - set flag
@@ -112,9 +112,9 @@ CDP_CheckGenesis .proc
 
 CheckGenesisRightSide:
           ;; Check right side (INPT2, INPT3) for Genesis controller
-          bit INPT2
+          lda INPT2
           bpl CDP_CheckGenesisDone
-          bit INPT3
+          lda INPT3
           bpl CDP_CheckGenesisDone
 
           ;; Right side detected Genesis - set flag

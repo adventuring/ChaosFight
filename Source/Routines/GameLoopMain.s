@@ -43,7 +43,7 @@ GLM_CheckJoy2bPlus:
           and # SetLeftPortJoy2bPlus
           beq CheckPlayer2Enhanced
 
-          bit INPT0
+          lda INPT0
           bmi CheckPlayer2Enhanced
 
           lda temp1

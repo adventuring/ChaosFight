@@ -134,7 +134,8 @@ LoadMusicNote0Bank15:
             sta temp5
 
           ;; Check for end of track (Duration = 0)
-          rts
+          lda temp4
+          beq LoadMusicNote0EndOfTrack
 
           ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
           ;; Set temp6 = temp2 & %11110000

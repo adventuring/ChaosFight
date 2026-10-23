@@ -686,7 +686,9 @@ UpdateMusicVoice0 .proc
           lda temp4
           sta musicVoice0Frame_W
 
-          ;; Frame counter reached 0 - load next note from appropriate bank
+                    ;; Frame counter reached 0 - load next note from appropriate bank
+          lda temp4
+          bne UpdateMusicVoice0Done
 
           ;; Check which bank this song is in (Bank 14: songs 0-Bank14MaxSongID, Bank
 
@@ -814,7 +816,9 @@ UpdateMusicVoice1 .proc
           lda temp5
           sta musicVoice1Frame_W
 
-          ;; Frame counter reached 0 - load next note from appropriate bank
+                    ;; Frame counter reached 0 - load next note from appropriate bank
+          lda temp4
+          bne UpdateMusicVoice1Done
 
           ;; Check which bank this song is in (Bank 14: songs 0-Bank14MaxSongID, Bank
 

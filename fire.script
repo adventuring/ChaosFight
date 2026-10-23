@@ -1,0 +1,6 @@
+frame 10
+saveSnap
+print *eb
+print *c0
+print *a0
+exitRom

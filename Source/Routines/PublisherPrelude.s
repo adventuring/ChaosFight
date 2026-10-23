@@ -80,7 +80,7 @@ CheckEnhancedControllers:
           lda temp1
           beq CheckPlayer1Joy2bPlusButton3
 
-          bit INPT0
+          lda INPT0
           bpl PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
 
 CheckPlayer1Joy2bPlusButton3:
@@ -90,7 +90,7 @@ CheckPlayer1Joy2bPlusButton3:
           and # SetLeftPortJoy2bPlus
           beq CheckPlayer2Enhanced
 
-          bit INPT1
+          lda INPT1
           bpl PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
 
 CheckPlayer2Enhanced:
@@ -108,7 +108,7 @@ CheckPlayer2Enhanced:
           lda temp1
           beq CheckPlayer2Joy2bPlusButton3
 
-          bit INPT2
+          lda INPT2
           bpl PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
 
 CheckPlayer2Joy2bPlusButton3:
@@ -118,7 +118,7 @@ CheckPlayer2Joy2bPlusButton3:
           and # SetRightPortJoy2bPlus
           beq CheckAutoAdvance
 
-          bit INPT3
+          lda INPT3
           bpl PublisherPreludeComplete  ; Button pressed (bit 7 = 0)
 
 CheckAutoAdvance:

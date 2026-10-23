@@ -148,26 +148,26 @@ AfterSetPlayerLockedP3Second:
           ;; CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
           ;; Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) and Right (INPT2 LOW, INPT3 HIGH)
           ;; If INPT0{7} is set, Quadtari absent
-          bit INPT0
+          lda INPT0
           bpl CheckINPT1
           jmp CharacterSelectQuadtariAbsent
 CheckINPT1:
 
           ;; If !INPT1{7}, Quadtari absent
-          bit INPT1
+          lda INPT1
           bmi CheckINPT2
           jmp CharacterSelectQuadtariAbsent
 CheckINPT2:
 
           ;; If INPT2{7} is set, Quadtari absent
-          bit INPT2
+          lda INPT2
           bpl CheckINPT3
           jmp CharacterSelectQuadtariAbsent
 CheckINPT3:
 
           ;; All checks passed - Quadtari detected
           ;; If !INPT3{7}, Quadtari absent
-          bit INPT3
+          lda INPT3
           bmi CharacterSelectQuadtariPresent
           jmp CharacterSelectQuadtariAbsent
 CharacterSelectQuadtariPresent:

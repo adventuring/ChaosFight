@@ -3580,7 +3580,7 @@ CheckJoy2bPlus:
           ;; If LeftPortJoy2bPlus and !INPT1{7}, set temp1 = 1
           lda #LeftPortJoy2bPlus
           beq CheckRightPortJoy2bPlus
-          bit INPT1
+          lda INPT1
           bmi CheckRightPortJoy2bPlus
           lda # 1
           sta temp1
@@ -3588,7 +3588,7 @@ CheckRightPortJoy2bPlus:
           ;; If RightPortJoy2bPlus and !INPT3{7}, set temp1 = 1
           lda #RightPortJoy2bPlus
           beq Joy2bPauseDone
-          bit INPT3
+          lda INPT3
           bmi Joy2bPauseDone
           lda # 1
           sta temp1

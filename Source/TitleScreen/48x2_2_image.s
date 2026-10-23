@@ -15,11 +15,11 @@ bmp_48x2_2_height = 42
 
  ;;*** The color of each line in the bitmap, in reverse order...
 bmp_48x2_2_colors:
-          .byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-          .byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-          .byte $00, $00, $00, $3B, $3B, $3B, $3B, $3B, $00, $00
-          .byte $00, $07, $07, $07, $07, $07, $07, $07, $07, $07
-          .byte $07, $07
+          .byte $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A
+          .byte $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A
+          .byte $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A
+          .byte $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A, $7A
+          .byte $7A, $7A
 
           .if ! bmp_48x2_2_PF1
 bmp_48x2_2_PF1:

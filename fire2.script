@@ -1,0 +1,27 @@
+frame 20
+print *eb
+print *a0
+print *c0
+print *fb
+print *fc
+joy0Fire 1
+frame 1
+print *eb
+print *a0
+print *c0
+print *fb
+print *fc
+joy0Fire 0
+frame 1
+print *eb
+print *a0
+print *c0
+print *fb
+print *fc
+frame 1
+print *eb
+print *a0
+print *c0
+print *fb
+print *fc
+exitRom

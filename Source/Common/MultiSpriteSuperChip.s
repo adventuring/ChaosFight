@@ -15,8 +15,12 @@
 missile1height = $A4
 missile0height = $A5
 ;; playfieldRow is defined via dim in Variables.s
-;; rand16 is in SCRAM (w120/r120) to avoid stack area ($f0-$ff)
-;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
+;; rand16 is in SCRAM (w120/r120)
+;; CRITICAL: $f0-$ff now holds the persistent variable block (music
+;; pointers, musicPlaying, playerCharacter[], consolidated player
+;; input) - see Variables.s.  batariBasic reserves $f0-$ff for its
+;; BASIC runtime stack, but this ROM is hand assembled and has no
+;; BASIC runtime, so nothing else uses that area.
 ;; rand16 is defined in Variables.s as rand16_W and rand16_R
 ;; All code must use rand16_W for writes and rand16_R for reads - no aliases allowed
 
@@ -142,9 +146,13 @@ rand = $DB
 ;; Memory addresses: $dc-$ef (20 bytes for a-z variables)
 ;; Note: qtcontroller uses $e7 (same as L/l would have used)
 qtcontroller = $e7
-;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
+;; CRITICAL: $f0-$ff now holds the persistent variable block (music
+;; pointers, musicPlaying, playerCharacter[], consolidated player
+;; input) - see Variables.s.  batariBasic reserves $f0-$ff for its
+;; BASIC runtime stack, but this ROM is hand assembled and has no
+;; BASIC runtime, so nothing else uses that area.
 ;; Z/z not available - use SCRAM for any variables that were using z
-;; DO NOT define variables in stack space ($f0-$ff) - use zero-page or SCRAM instead
+;; $f0-$ff is allocated to persistent variables - see Variables.s
           ;; Compile-time constants (from MS_ASSIGN macros, but defined unconditionally here)
           player9height = $BC
           pfscore = 1
@@ -431,9 +439,13 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           x = $EE
 ;;           Y = $EF
 ;;           y = $EF
-;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
+;; CRITICAL: $f0-$ff now holds the persistent variable block (music
+;; pointers, musicPlaying, playerCharacter[], consolidated player
+;; input) - see Variables.s.  batariBasic reserves $f0-$ff for its
+;; BASIC runtime stack, but this ROM is hand assembled and has no
+;; BASIC runtime, so nothing else uses that area.
 ;; Z/z not available - use SCRAM for any variables that were using z
-;; DO NOT define variables in stack space ($f0-$ff) - use zero-page or SCRAM instead
+;; $f0-$ff is allocated to persistent variables - see Variables.s
 
 ;; --- Zero-page utility aliases ------------------------------------------------
           ;; NOTE: missile1height, missile0height are now defined at the top of this file
@@ -496,7 +508,11 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;; X = $EE
 ;; y = $EF
 ;; Y = $EF
-;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
+;; CRITICAL: $f0-$ff now holds the persistent variable block (music
+;; pointers, musicPlaying, playerCharacter[], consolidated player
+;; input) - see Variables.s.  batariBasic reserves $f0-$ff for its
+;; BASIC runtime stack, but this ROM is hand assembled and has no
+;; BASIC runtime, so nothing else uses that area.
 ;; var48-var127 don’t exist in multisprite - SuperChip RAM is accessed via r000-r127/w000-w127
 ;; Variable aliases - ensure batariBASIC variable aliases are also assembly labels
 ;; These are defined in Variables.s as dim aliases, but assembler needs labels
@@ -578,7 +594,9 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
   
           interlaced = 0
           shakescreen = 0
-          ;;; vblank_time is conditionally defined based on TVStandard
+          ;;; vblank_time is the *multi-sprite game kernel's* vblank period.
+          ;;; It is NOT the titlescreen's vblank period (which the titlescreen
+          ;;; code hard-codes as 37 on NTSC, matching canonical batariBasic).
           .if TVStandard == PAL
                     vblank_time = 58
           .elsif TVStandard == SECAM

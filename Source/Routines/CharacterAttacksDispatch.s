@@ -264,7 +264,7 @@ CEJB_ReadButton0:
           ;; Returns: Far (return otherbank)
 
           ;; If !INPT0{7}, set temp3 = 1
-          bit INPT0
+          lda INPT0
           bmi CEJB_DonePlayer0
           lda # 1
           sta temp3
@@ -285,7 +285,7 @@ CEJB_CheckPlayer0Joy2bPlus .proc
           jmp CEJB_DonePlayer0
 CEJB_ReadButton0Label2:
           ;; Read button for Joy2b+ (same as enhanced controller)
-          bit INPT0
+          lda INPT0
           bmi CEJB_DonePlayer0
           lda # 1
           sta temp3

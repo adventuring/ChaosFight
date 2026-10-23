@@ -248,16 +248,19 @@ LoadMusicNote0 .proc
 
 
           ;; Check for end of track (Duration = 0)
-
-          jmp BS_return
+          lda temp4
+          beq LoadMusicNote0EndOfTrack
 
 
 
           ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
 
+          ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
+
           ;; Set temp6 = temp2 & %11110000
           ;; Set temp6 = temp6 / 16
-          lda temp6
+          lda temp2
+          and # $f0
           lsr
           lsr
           lsr
@@ -316,6 +319,8 @@ LoadMusicNote0 .proc
 
 
 .pend
+LoadMusicNote0EndOfTrack:
+          jmp BS_return
 
 LoadMusicNote1 .proc
 
@@ -383,14 +388,8 @@ LoadMusicNote1 .proc
 
 
           ;; Check for end of track (Duration = 0)
-
-          jmp BS_return
-
-
-
-          ;; Extract AUDC and AUDV
-
-          ;; Set temp6 = temp2 & %11110000
+          lda temp4
+          beq LoadMusicNote1EndOfTrack
           ;; Set temp6 = temp6 / 16
           lda temp6
           lsr
@@ -446,6 +445,9 @@ LoadMusicNote1 .proc
 
 
 
+          jmp BS_return
+
+LoadMusicNote1EndOfTrack:
           jmp BS_return
 
 .pend

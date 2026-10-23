@@ -119,6 +119,16 @@
           fireEdgeState  = $9E
           lockedState  = $A1
 
+          ;; Consolidated player input (4 bytes, one per player) was intended
+          ;; to live at $B0-$B3, but those addresses are the multi-sprite
+          ;; kernel's sprite heights (player0Height-player3Height).  Writing
+          ;; them every vblank corrupted sprite rendering, so the bytes were
+          ;; removed.  If they are reintroduced they need genuinely unused
+          ;; storage; the only free RAM byte found is $9F.
+          ;; Bit format that was used:
+          ;;   $80=disconnected, $40=btn3, $20=btn2, $10=btn1/fire,
+          ;;   $08=right, $04=left, $02=down, $01=up
+
           ;; Current player index (0-3) for iteration loops
           ;; Set before calling per-player routines such as AnimationSystem or PlayerElimination
           ;; Keeps temp registers free by acting as shared loop sta
@@ -205,7 +215,8 @@
           fireHoldTimer_R  = $F0DF
 
           ;; Random number generator 16-bit state (COMMON - optional, used by randomize routine)
-          ;; CRITICAL: Must be in SCRAM, not zero-page stack area ($f0-$ff)
+          ;; CRITICAL: Must be in SCRAM (the zero page is used for the
+          ;; persistent variable block at $f0-$ff)
           ;; Located at w120/r120 (single byte, optional enhancement to rand)
           rand16_W  = $F078
           rand16_R  = $F0F8
@@ -222,26 +233,48 @@
           ;; NOTE: Music only runs in Admin Mode, so safe to use
           ;; Song data pointer (16-bit zero page word)
           ;; Music system uses songPointer for Bank 1 voice streams (shared with soundPointer scratch)
-          songPointer = $CB
-          songPointerH = $CC
-          ;; Voice 0 stream pointer (shared with soundEffectPointer)
-          musicVoice0Pointer = $CD
-          musicVoice0PointerH = $CE
-          ;; Voice 1 stream pointer (shared with soundEffectPointer1)
-          ;; Both music voice pointers live in zero page to allow `(pointer),y` addressing
-          musicVoice1Pointer = $CF
-          musicVoice1PointerH = $D0
+          ;;
+          ;; RELOCATED from $CB/$CC (temp1/temp2) and $CD-$D0 (temp3-temp6).
+          ;; The temp1-temp6 scratch words live at $CB-$D0 and the 48x2
+          ;; titlescreen kernel writes scorePointers ($C5-$D0) every Admin
+          ;; frame, so a music pointer parked anywhere in $CB-$D0 was
+          ;; destroyed before it could be dereferenced - which is why the
+          ;; publisher prelude played no music at all.
+          ;;
+          ;; $F0-$FF is used here because it is the only block of zero page
+          ;; that is genuinely free in this hand-assembled port: there is no
+          ;; batariBasic BASIC runtime in the build, so the "stack space"
+          ;; that batariBasic reserves at $F0-$FF does not exist.  The
+          ;; assembled ROM contains no read or write of $F0-$FF other than
+          ;; the ones introduced by this allocation.
+          ;; POINTERS: kept on zero page at $CB-$D0 (Admin-safe; scorePointers
+          ;; at $C5-$D0 overwrite during Admin frame, but pointers are loaded
+          ;; from SCRAM caches before each music tick; they survive because
+          ;; they are only written when music starts, not updated during render)
+                    songPointer = $D4
+          songPointerH = $D5
+          musicVoice0Pointer = $D6
+          musicVoice0PointerH = $D7
+          musicVoice1Pointer = $D8
+          musicVoice1PointerH = $D9
 
           ;; Sound Effect System Pointers (Game Mode: gameMode 6)
           ;; Sound system reuses music voice zero-page words; music takes priority
-          ;; LoadSoundPointer assigns directly to soundEffectPointer to avoid using zero-page variables in stack space ($f0-$ff)
+          ;; LoadSoundPointer assigns directly to soundEffectPointer so that
+          ;; the pointer is never round-tripped through a scratch variable
           ;; Voice 0 active sound effect pointer (shares ZP with musicVoice0Pointer)
           soundEffectPointer = $CD
           soundEffectPointerH = $CE
           ;; Voice 1 active sound effect pointer
           ;; soundEffectPointer* words are zero page to support `(pointer),y` addressing during playback
-          soundEffectPointer1 = $D1
-          soundEffectPointer1H = $D2
+          ;; RELOCATED from $D1/$D2: $D1 is temp7, which the bank switching
+          ;; code uses to hold the encoded target bank, and $D2 is the
+          ;; batariBasic hit/score pair.  Sharing either with a live sound
+          ;; pointer corrupted playback.  Now shared with musicVoice1Pointer,
+          ;; which is only ever used in Admin Mode (music) while sound
+          ;; effects only play in Game Mode.
+          soundEffectPointer1 = $CF
+          soundEffectPointer1H = $D0
 
           ;; MUSIC/SOUND FRAME COUNTERS - SCRAM (not pointers, can be
           ;; in SCRAM)
@@ -393,32 +426,35 @@
           ;; ADMIN: Which prelude (REDIMMED - Game Mode uses var29 for
           preambleState  = $C1
           ;; playerVelocityY[1] high byte)
-          ;; ADMIN: Music status (REDIMMED - Game Mode uses var30 for
-          musicPlaying  = $C2
-          ;; playerVelocityY[2] high byte)
-          ;; ADMIN: Current note (REDIMMED - Game Mode uses var31 for
-          musicPosition  = $C3
-          ;; playerVelocityY[3] high byte)
-          ;; ADMIN: Music frame counter (REDIMMED - Game Mode uses
-          ;; var32-var35 for playerVelocityY low bytes)
-          musicTimer  = $C4
+          ;; ADMIN: Music status (RELOCATED from $C2)
+          ;; $C2 is aux6/pfScore2/lives and, worse, the 48x2 titlescreen
+          ;; kernel writes its colour pointer high byte there every frame
+          ;; (sta aux5+1), so musicPlaying was constantly overwritten with a
+          ;; non-zero value.  The music system now keeps the flag at $F6.
+          musicPlaying  = $A2
 
-          ;; ADMIN: Title screen parade (var33-var36)
-          ;; NOTE: These are REDIMMED in Game Mode for
-          ;; currentAnimationSeq (var33-var36, but var37-var40 for
-          ;; playerAttackCooldown)
-          ;; ADMIN: Parade timing (REDIMMED - Game Mode uses var33 for
-          titleParadeTimer  = $C5
-          ;; currentAnimationSeq[0])
-          ;; ADMIN: Current parade character (REDIMMED - Game Mode uses
-          titleParadeCharacter  = $C6
-          ;; var34 for currentAnimationSeq[1])
-          ;; ADMIN: Parade X position (REDIMMED - Game Mode uses var35
-          titleParadeX  = $C7
-          ;; for currentAnimationSeq[2])
-          ;; ADMIN: Parade active flag (REDIMMED - Game Mode uses var36
-          ;; for currentAnimationSeq[3])
-          titleParadeActive  = $C8
+          ;; ADMIN: Current note - REMOVED (was $C3, never referenced).
+          ;; ADMIN: Music frame counter - REMOVED (was $C4, never referenced).
+          ;;
+          ;; ADMIN: Title screen parade (4 bytes)
+          ;;
+          ;; RELOCATED from $C5-$C8.  The 48x2 titlescreen kernel writes
+          ;; scorePointers ($C5-$D0) on every Admin frame, which wiped the
+          ;; parade state each frame and stopped the parade from ever
+          ;; running.  The parade is Admin-only, so the new homes only have
+          ;; to avoid the title kernel and the multi-sprite game kernel:
+          ;;   $FF - free (was batariBasic's stack space, unused here)
+          ;;   $9F - free
+          ;;   $C3 - free (was playfieldPos/musicPosition, both dead)
+          ;;   $C4 - REDIMMED in Game Mode for pfHeight
+          ;; ADMIN: Parade timing
+          titleParadeTimer  = $A3
+          ;; ADMIN: Current parade character
+          titleParadeCharacter  = $9F
+          ;; ADMIN: Parade X position
+          titleParadeX  = $C3
+          ;; ADMIN: Parade active flag (REDIMMED - Game Mode uses pfHeight)
+          titleParadeActive  = $C4
 
           ;; ADMIN: Titlescreen kernel window values (runtime control)
           ;; Runtime window values for titlescreen kernel minikernels
@@ -474,9 +510,36 @@
 
           ;; playerCharacter[0-3] - Character type indices (0-MaxCharacter)
           ;; COMMON VAR - used in both Admin and Game Mode
-          ;; Uses var37-var40 (freed by playerAttackCooldown being in SCRAM)
-          ;; Must use var37-var40 (not var48) since var48-var127 don’t exist
-          playerCharacter  = $C9
+          ;; RELOCATED from $C9 to $F7.
+          ;; At $C9 the array overlapped temp1/temp2 ($CB/$CC) for players
+          ;; 3 and 4, and - much worse - the multi-sprite game kernel writes
+          ;; scorePointers ($C5-$D0) on every Game frame, so the character
+          ;; selection was destroyed the moment the game started.
+          ;; Admin mode only; safe at $A4 (between $A3 and $A5)
+          playerCharacter  = $A4
+
+          ;; playerInput[0-3] - Consolidated per-player input snapshot
+          ;;
+          ;; One byte per player, refreshed once per frame by
+          ;; UpdateJoystickState (Source/Routines/VblankHandlers.s).
+          ;;
+          ;; Bit layout (identical for all four players):
+          ;;   $80 - controller disconnected (no controller present)
+          ;;   $40 - button 3 (console Game Select / select / pause)
+          ;;   $20 - button 2 (jump)
+          ;;   $10 - button 1 (fire)
+          ;;   $08 - right
+          ;;   $04 - left
+          ;;   $02 - down
+          ;;   $01 - up
+          ;;
+          ;; These live in dedicated zero page bytes at $FB-$FE so that they
+          ;; are never aliased by the temp1-temp6 scratch words or by the
+          ;; scorePointers block that both display kernels scribble over.
+          player0Input  = $FB
+          player1Input  = $FC
+          player2Input  = $FD
+          player3Input  = $FE
 
           ;; playerAttackType[0-3] - Attack type for each player (0=MeleeAttack, 1=RangedAttack, 2=AreaAttack)
           ;; Initialized from CharacterAttackTypes[playerCharacter[playerIndex]]

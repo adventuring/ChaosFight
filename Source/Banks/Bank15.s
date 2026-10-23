@@ -57,7 +57,11 @@ Bank15AfterSpriteLoader:
 Bank15AfterPlayfieldRead:
 .include "Source/Routines/SetPlayerGlyph.s"
 Bank15AfterSetPlayerGlyph:
+
 .include "Source/Routines/DisplayWinScreen.s"
+
+;; Consolidated player input snapshot — near-called from MainLoop
+
           ;; None of these modules above may be moved to other banks.
 Bank15CodeEnds:
            .warn format("// Bank 15: %d bytes = MultiSpriteKernel", [Bank15AfterMultiSpriteKernel - Bank15DataEnds])

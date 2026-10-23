@@ -34,6 +34,10 @@ title_do_vertical_sync:
           sta VSYNC ;;;turn off VSYNC
 
           ;; VBLANK: Use Reference cycle-exact timing
+          ;; The title screen uses its OWN vblank period, which is not the
+          ;; same as the multi-sprite *game* kernel's vblank_time (43 on
+          ;; NTSC).  Canonical batariBasic titlescreen hard-codes 37+128 on
+          ;; NTSC; reusing vblank_time here inflates the frame by 6 lines.
           .if ! vblank_time
           .if TVStandard == PAL
           lda # 42+128
@@ -48,8 +52,18 @@ title_do_vertical_sync:
           .fi
           .fi
           .else
-          lda # vblank_time+128
+          .if TVStandard == PAL
+          lda # 42+128
           sta TIM64T
+          .else
+          .if TVStandard == SECAM
+          lda # 42+128
+          sta TIM64T
+          .else
+          lda # 37+128
+          sta TIM64T
+          .fi
+          .fi
           .fi
 
 titleframe = missile0x
@@ -111,6 +125,15 @@ draw_48x2_4_1:
           jsr draw_bmp_48x2_3   ;; draw ChaosFight title bitmap if enabled
           jsr draw_bmp_48x2_4   ;; draw BRP signature bitmap if enabled
 
+          ;; Fill remaining visible scanlines (target 192 total playfield).
+          ;; Bitmaps draw 168 lines for 2-window screens; add 30 blank lines
+          ;; to reach ~198 visible, making total ~262 NTSC.
+          ldx #30
+BlankLineFill:
+          sta WSYNC
+          dex
+          bne BlankLineFill
+
           jmp PFWAIT ;;; kernel is done. Finish off the screen
 
           .include "TitleScreen/asm/position48.s"
@@ -152,12 +175,20 @@ gamenumber_titlescreen:
           .byte $00
 
 PFWAIT:
+          ;; Wait for the display timer to expire. The timer counts down
+          ;; through $00 and wraps to $FF, so test the sign bit (bit 7):
+          ;; it is set once the timer has passed zero. Testing for zero
+          ;; instead waits for the *second* pass through $00, adding a
+          ;; whole extra timer period to every frame.
           lda INTIM
           bne PFWAIT
           sta WSYNC
 
 OVERSCAN:
           ;; Overscan: Use Reference cycle-exact timing
+          ;; Canonical batariBasic titlescreen overscan is 30 lines on NTSC.
+          ;; The `-5` compensates for the cycles already spent before the
+          ;; timer is written.
           .if ! overscan_time
           .if TVStandard == PAL
           lda # 34+128
@@ -177,17 +208,22 @@ OVERSCAN:
           .fi
 
 	;;fix height variables we borrowed
+          ;; The multi-sprite kernel's sprite heights live at player0Height
+          ;; ($B0) through player5Height ($B5).  This loop restores only
+          ;; those.  It MUST NOT run past $B7: the titlescreen kernel's
+          ;; window values live at $B8-$BB and the kernel's own scratch
+          ;; registers at $B6-$B7, and clearing them blanked the prelude
+          ;; screens (which is why the publisher/author screens came up
+          ;; black).
           .if  player9height
-          ldy # 8
           lda # 0
           sta player0Height
+          ldy # 4                ;;; player5Height ($B5) down to player1Height ($B1)
 TitleScreenFixPlayerHeights:
 playerheightfixloop:
           sta player1Height,y
-          ;; .if _NUSIZ1 != 0  ;;; Commented out - code inside is duplicate
           dey
           bpl playerheightfixloop
-          ;; .fi  ;;; Commented out
           .fi  ;;; Close .if player9height
 
           lda # %11000010

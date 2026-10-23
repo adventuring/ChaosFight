@@ -44,8 +44,13 @@
 ;; CRITICAL: Base variables (var0-var47, a-z) are defined in MultiSpriteSuperChip.s
 ;; which is included above. Do NOT redefine them here as that causes = value mismatch errors.
 ;; var48-var127 don't exist - SuperChip RAM accessed via r000-r127/w000-w127 only
-;; playerCharacter is in SCRAM (w111-w114), defined in Variables.s
-;; CRITICAL: $f0-$ff is 100% reserved for stack - NO variables allowed
+;; playerCharacter is in zero page at $F7, defined in Variables.s
+;; CRITICAL: $f0-$ff now holds the persistent variable block (the music
+;; pointers, musicPlaying, playerCharacter[] and the consolidated player
+;; input bytes) - see Variables.s.  batariBasic reserves $f0-$ff for its
+;; BASIC runtime stack, but this ROM is hand assembled and contains no
+;; BASIC runtime, so nothing else touches that area.  The assembled ROM
+;; contains no read or write of $f0-$ff beyond those variables.
 ;; Z/z - use SCRAM for any variables that were using z 
 .include "Source/Common/Colors.s"
 .include "Source/Common/Constants.s"

@@ -23,7 +23,7 @@ BS_return:
           tsx
           ;; Encoded return address (offset 2 = high byte contains bank info in high nybble)
           ;; High byte is at $0100+X+2 (offset 2 relative to X)
-          lda 2,x
+          lda $0102, x
           tay
           lsr a
           lsr a
@@ -34,7 +34,7 @@ BS_return:
           tya
           ;; Restore to $fx format (address in CPU space)
           ora #$f0
-          sta 2, x
+          sta $0102, x
           ;; DO NOT pop the encoded return address - leave it on stack for RTS
           ;; RTS will pop the decoded return address and jump to it
           ldx temp7

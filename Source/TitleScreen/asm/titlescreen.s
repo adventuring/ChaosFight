@@ -125,14 +125,12 @@ draw_48x2_4_1:
           jsr draw_bmp_48x2_3   ;; draw ChaosFight title bitmap if enabled
           jsr draw_bmp_48x2_4   ;; draw BRP signature bitmap if enabled
 
-          ;; Fill remaining visible scanlines (target 192 total playfield).
-          ;; Bitmaps draw 168 lines for 2-window screens; add 30 blank lines
-          ;; to reach ~198 visible, making total ~262 NTSC.
-          ldx #30
-BlankLineFill:
-          sta WSYNC
-          dex
-          bne BlankLineFill
+          ;; Fill remaining visible scanlines using timer for consistent 192 playfield lines
+          lda #108+128
+          sta TIM64T
+FillTimers:
+          lda INTIM
+          bmi FillTimers
 
           jmp PFWAIT ;;; kernel is done. Finish off the screen
 
@@ -181,7 +179,7 @@ PFWAIT:
           ;; instead waits for the *second* pass through $00, adding a
           ;; whole extra timer period to every frame.
           lda INTIM
-          bne PFWAIT
+          bmi PFWAIT
           sta WSYNC
 
 OVERSCAN:

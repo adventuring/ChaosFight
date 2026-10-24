@@ -975,8 +975,10 @@
           ;; NOTE: var20-23 used by playerVelocityX (core gameplay, cannot redim)
 
           ;; GAME: Subpixel position and velocity system - IMPLEMENTED
-          ;; using batariBASIC 8.8 fixed-point
-          ;; NOTE: Using batariBASIC built-in 8.8 fixed-point support:
+          ;; using manual 6502 8.8 fixed-point arithmetic (clc/adc/sbc
+          ;; with manual high-byte / low-byte handling; no batariBASIC
+          ;; runtime). playerVelocityX/Y arrays use ZPRAM pages; subpixel
+          ;; offsets (playerSubpixelX/Y) use SCRAM w049-w064.
           ;; playerVelocityX: high bytes in ZPRAM (var20-var23), low
           ;; bytes in ZPRAM (var24-var27)
           ;; playerVelocityY: both high and low bytes in ZPRAM
@@ -1155,8 +1157,8 @@
           ;; Scratch relocation summary:
           ;; • Zero page now hosts the temp7+ replacements above
           ;; • SCRAM below w064 is reserved exclusively for PlayerFrameBuffer
-          ;; batariBASIC automatically handles carry operations for 8.8
-          ;; fixed-point arithmetic
+          ;; (w000-w063); all other SCRAM addresses are read-only for
+          ;; playerSubpixelX/Y calculations in Admin Mode
           ;; Port-only joystick state, sampled once per frame by
           ;; UpdateJoystickState.  Each value is written through the low
           ;; SCRAM port and read back through the corresponding r-port.

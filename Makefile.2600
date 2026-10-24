@@ -369,7 +369,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Source/Platform/NTSC.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.s) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.s) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.s) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
+	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.Author.s Source/Generated/Art.ChaosFight.s | Source/Generated/
 	@echo "Generating final assembly file from NTSC platform entry point..."
 	cp $< $@
 
@@ -383,7 +383,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Source/Platform/PAL.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.s) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.s) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.s) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) | Source/Generated/
 	@echo "Generating final assembly file from PAL platform entry point..."
 	cp $< $@
 
@@ -398,7 +398,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Source/Platform/SECAM.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.s) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.s) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.s) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) | Source/Generated/
 	@echo "Generating final assembly file from SECAM platform entry point..."
 	cp $< $@
 

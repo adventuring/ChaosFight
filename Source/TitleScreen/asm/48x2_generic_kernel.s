@@ -3,9 +3,9 @@
 
 draw_bmp_48x2_3:
 	;; Hardcoded to ChaosFight bitmap (index 3)
-          lda # <(bmp_48x2_3_colors-1+bmp_48x2_3_height-bmp_48x2_3_window)
+          lda # <(bmp_48x2_3_colors+bmp_48x2_3_height-bmp_48x2_3_window)
           sta aux5+0
-          lda # >(bmp_48x2_3_colors-1+bmp_48x2_3_height-bmp_48x2_3_window)
+          lda # >(bmp_48x2_3_colors+bmp_48x2_3_height-bmp_48x2_3_window)
           sta aux5+1
 
           ldy # 11

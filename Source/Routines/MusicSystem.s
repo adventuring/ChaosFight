@@ -817,7 +817,7 @@ UpdateMusicVoice1 .proc
           sta musicVoice1Frame_W
 
                     ;; Frame counter reached 0 - load next note from appropriate bank
-          lda temp4
+          lda temp5
           bne UpdateMusicVoice1Done
 
           ;; Check which bank this song is in (Bank 14: songs 0-Bank14MaxSongID, Bank

@@ -259,9 +259,9 @@ $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Sou
 # PNG files are generated from XCF via %.png: %.xcf pattern rule or explicit rules above
 # Explicitly depend on both PNG and XCF to ensure proper build ordering in parallel builds
 # Note: SkylineTool now generates 64tass assembly directly (.s files)
-$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).s): Source/Generated/%.s: Source/Art/%.png Source/Art/%.xcf bin/skyline-tool | Source/Generated/
+Source/Generated/%.s: Source/Art/%.png Source/Art/%.xcf bin/skyline-tool | Source/Generated/
 	@echo "Generating character sprite data for $*..."
-	bin/skyline-tool compile-chaos-character "$@" "$(filter %.png,$^)"
+	bin/skyline-tool compile-chaos-character "$@" "$<"
 
 # Convert Numbers PNG to 64tass assembly data using SkylineTool
 # PNG files are generated from XCF via %.png: %.xcf pattern rule

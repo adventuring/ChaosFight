@@ -1,10 +1,6 @@
 
 draw_bmp_48x2_3:
-          ;; Early exit if window is 0 (bitmap disabled)
-          .if ! titlescreenWindow3
-          ldy # bmp_48x2_3_window
-          beq draw_bmp_48x2_3_done
-          .else
+          ;; Runtime check: exit if window variable at $BA is 0
           ldy titlescreenWindow3
           beq draw_bmp_48x2_3_done
           dey
@@ -26,7 +22,6 @@ bmp_48x2_3_pointersetup:
 
           ldy aux2
           lda (aux5),y
-          .fi
           sta COLUP0              ;;;3
           sta COLUP1              ;;;3
           sta HMCLR               ;;;3

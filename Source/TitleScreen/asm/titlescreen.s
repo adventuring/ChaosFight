@@ -126,7 +126,7 @@ draw_48x2_4_1:
           jsr draw_bmp_48x2_4   ;; draw BRP signature bitmap if enabled
 
           ;; Fill remaining visible scanlines using timer for consistent 192 playfield lines
-          lda #108+128
+          lda # 24+128
           sta TIM64T
 FillTimers:
           lda INTIM

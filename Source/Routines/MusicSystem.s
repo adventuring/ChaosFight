@@ -563,8 +563,15 @@ ClampAUDV:
           lda # 15
           sta temp6
 SetAUDV:
-
-
+          lda temp1
+          bne SetAUDV1
+          lda temp6
+          sta AUDV0
+          jmp AUDVWritten
+SetAUDV1:
+          lda temp6
+          sta AUDV1
+AUDVWritten:
           rts
 
 .pend
@@ -629,8 +636,15 @@ ClampAUDVCheck:
           lda # 15
           sta temp6
 SetAUDVCheck:
-
-
+          lda temp1
+          bne SetAUDVCheck1
+          lda temp6
+          sta AUDV0
+          jmp AUDVDone
+SetAUDVCheck1:
+          lda temp6
+          sta AUDV1
+AUDVDone:
           rts
 
 .pend

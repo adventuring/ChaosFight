@@ -484,8 +484,16 @@ CheckDecayPhase:
 ApplyDecayEnvelope:
 ApplySustainEnvelope:
 
-          ;; Sustain phase - use target AUDV (already set)
-
+          ;; Sustain phase - write target AUDV directly
+          lda temp1
+          bne ApplySustainEnv1
+          lda musicVoice0TargetAUDV_R  ; voice 0 target
+          sta AUDV0
+          jmp SustainDone
+ApplySustainEnv1:
+          lda musicVoice1TargetAUDV_R  ; voice 1 target
+          sta AUDV1
+SustainDone:
           rts
 
 .pend

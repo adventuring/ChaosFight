@@ -297,20 +297,28 @@ Source/Art/Numbers.png: Source/Art/Numbers.xcf | Source/Art/
 	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
-# PNG files are generated from XCF via %.png: %.xcf pattern rule
-# Explicitly depend on XCF to ensure proper build ordering in parallel builds
-# SkylineTool generates both .s and .colors.s files in one call
+# Uses compile-batari-48px with titlescreen-kernel-p flag for color-per-line + double-height
+# These are bitmaps for the titlescreen kernel minikernels, not playfield data
+# PNG files are built from XCF via the %.png: %.xcf pattern rule
 Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAge.colors.s: Source/Art/AtariAge.png Source/Art/AtariAge.xcf bin/skyline-tool | Source/Generated/
-	@bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.Author.s" "t" "NTSC"
+	bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.AtariAge.s" "t" "NTSC"
+
+Source/Generated/Art.AtariAgeText.s Source/Generated/Art.AtariAgeText.colors.s: Source/Art/AtariAgeText.png Source/Art/AtariAgeText.xcf bin/skyline-tool | Source/Generated/
+	bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.AtariAgeText.s" "t" "NTSC"
 
 Source/Generated/Art.ChaosFight.s Source/Generated/Art.ChaosFight.colors.s: Source/Art/ChaosFight.png Source/Art/ChaosFight.xcf bin/skyline-tool | Source/Generated/
-	@bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.ChaosFight.s" "t" "NTSC"
+	bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.ChaosFight.s" "t" "NTSC"
+
+Source/Generated/Art.Author.s Source/Generated/Art.Author.colors.s: Source/Art/BRP.png Source/Art/BRP.xcf bin/skyline-tool | Source/Generated/
+	bin/skyline-tool compile-batari-48px "$<" "Source/Generated/Art.Author.s" "t" "NTSC"
 
 # NOTE: The four Source/TitleScreen/48x2_N_image.s files are *not* part of the
+# build (their .include statements in Source/TitleScreen/asm/titlescreen.s are
 # commented out; the bitmap data comes from Source/Generated/Art.*.s instead).
 # Their old generation rules referenced Tools/generate-48x2-image.sh, which does
 # not exist on this branch, so `make` refused to build any target that listed
 # those files as prerequisites.  The rules are removed rather than left broken.
+
 
 # Color files are generated automatically when bitmap files are generated
 # Combine all titlescreen color tables, PF1, PF2, and background into a single file at $f500

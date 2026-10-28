@@ -126,17 +126,7 @@ draw_48x2_4_1:
           jsr draw_bmp_48x2_4   ;; draw BRP signature bitmap if enabled
 
           ;; Fill remaining visible scanlines using timer for consistent 192 playfield lines
-          ;; NTSC: 28+128 = 156 timer cycles (~156 lines) after 84 bitmap lines + 18 VBlank
-          ;; PAL/SECAM: 76+128 = 204 timer cycles after 96 bitmap lines + 12 VBlank
-          .if TVStandard == PAL
-          lda #76+128
-          .else
-          .if TVStandard == SECAM
-          lda #76+128
-          .else
-          lda #28+128
-          .fi
-          .fi
+          lda #108+128
           sta TIM64T
 FillTimers:
           lda INTIM

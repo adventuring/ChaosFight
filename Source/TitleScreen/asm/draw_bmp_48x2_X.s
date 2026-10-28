@@ -15,9 +15,9 @@ draw_bmp_48x2_X .proc
 
           jsr position48
 
-          lda # 0
-          sta VDELP0
-          sta VDELP1
+          lda # 3          ;; 2 cycles
+          sta VDELP0      ;; 3 cycles
+          sta VDELP1      ;; 3 cycles
 
           ;; enough cycles have passed for the HMOV, so we can clear HMCLR
           lda # 0
@@ -33,13 +33,6 @@ draw_bmp_48x2_X .proc
           ;; smeared diagonally across the screen.
           .SLEEP 69
 
-          ;; Load color for first row BEFORE loop starts (aux2 pre-initialized by caller)
-          ldy aux2
-          lda (aux5),y
-          sta COLUP0
-          sta COLUP1
-          sta HMCLR
-
           jmp pf48x2_X_loop
 
           .if >* != >(* + $52)
@@ -48,10 +41,10 @@ draw_bmp_48x2_X .proc
 
 pf48x2_X_loop:
 
-        lda (scorePointers+0),y 	;;;5
-        sta GRP0			;;3
-        lda (scorePointers+2),y 	;;;5
-        sta GRP1			;;3
+	lda (scorePointers+0),y 	;;;5
+	sta GRP0			;;3
+	lda (scorePointers+2),y 	;;;5
+	sta GRP1			;;3
         lda (scorePointers+4),y         ;;;5
         sta GRP0                        ;;;3
 
@@ -68,14 +61,17 @@ pf48x2_X_loop:
 
 	ldy aux2			;;3
 
+	lda (aux5),y			;;;5
+	sta missile0y			;;;3
+
 	.SLEEP 3
 
-        dec aux2                        ;;;5  (next row: count down from titlescreenWindowN)
+	dec aux2                        ;;;5  (next row: count down from titlescreenWindowN)
 
-        lda (scorePointers+0),y 	;;;5
-        sta GRP0			;;3
-        lda (scorePointers+2),y 	;;;5
-        sta GRP1			;;3
+	lda (scorePointers+0),y 	;;;5
+	sta GRP0			;;3
+	lda (scorePointers+2),y 	;;;5
+	sta GRP1			;;3
         lda (scorePointers+4),y         ;;;5
         sta GRP0                        ;;;3
 
@@ -90,35 +86,34 @@ pf48x2_X_loop:
         stx GRP1                        ;;;3
         sty GRP0                        ;;;3
 
-        .SLEEP 4
+	.SLEEP 4
 
-        ldy aux2                ;;;3  (next row index)
-        lda (aux5),y            ;;;5  (load next row's color)
-        sta COLUP0              ;;;3  (apply BEFORE next iteration draws)
-        sta COLUP1
-        sta HMCLR
+	lda missile0y
+	sta COLUP1
+	sta COLUP0
 
-        bpl pf48x2_X_loop      ; branch while aux2 >= 0
+	ldy aux2                ;;;3  (reload once the second half has finished)
+	bpl pf48x2_X_loop      ; branch while aux2 >= 0
 
 
 pf48x2_X_codeend:
-        ;;.error "critical code in 48x2 is ",(pf48x2_X_codeend-pf48x2_X_loop), " bytes long."
+ ;;.error "critical code in 48x2 is ",(pf48x2_X_codeend-pf48x2_X_loop), " bytes long."
 
-        lda # 0
-        sta GRP0
-        sta GRP1
-        sta GRP0
-        sta GRP1
-        sta VDELP0
-        sta VDELP1
+	lda # 0
+	sta GRP0
+	sta GRP1
+	sta GRP0
+	sta GRP1
+	sta VDELP0
+	sta VDELP1
+	
+	;; Clear playfield registers after bitmap drawing to prevent garbage
+	;; on subsequent scanlines or frames (fixes issue #1228)
+	sta PF0
+	sta PF1
+	sta PF2
 
-        ;; Clear playfield registers after bitmap drawing to prevent garbage
-        ;; on subsequent scanlines or frames (fixes issue #1228)
-        sta PF0
-        sta PF1
-        sta PF2
-
-        ldx spritesort   ;; restore the stack pointer (use spritesort instead of temp7 to avoid conflict with BS_return)
-        txs
-        rts
+          ldx spritesort   ;; restore the stack pointer (use spritesort instead of temp7 to avoid conflict with BS_return)
+          txs
+          rts
 .pend

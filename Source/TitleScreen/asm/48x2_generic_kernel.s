@@ -27,7 +27,9 @@ bmp_48x2_3_pointersetup:
           .fi
           sty aux2
 
+          iny
           lda (aux5),y
+          dey
 
           sta COLUP0
           sta COLUP1

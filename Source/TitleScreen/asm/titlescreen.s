@@ -131,8 +131,8 @@ draw_48x2_4_1:
 FillTimers:
           lda INTIM
           bmi FillTimers
-
-          jmp PFWAIT ;;; kernel is done. Finish off the screen
+          sta WSYNC
+          jmp OVERSCAN
 
           .include "TitleScreen/asm/position48.s"
           .include "TitleScreen/titlescreen_color.s"

@@ -105,9 +105,10 @@ CDP_CheckGenesis .proc
           lda INPT1
           bpl CheckGenesisRightSide
 
-          ;; Left side detected Genesis - set flag
+          ;; Left side detected Genesis - set flag + Joy2b+ enabled for INPT0-1
           lda temp2
           ora # SetLeftPortGenesis
+          ora # SetLeftPortJoy2bPlus
           sta temp2
 
 CheckGenesisRightSide:
@@ -117,9 +118,10 @@ CheckGenesisRightSide:
           lda INPT3
           bpl CDP_CheckGenesisDone
 
-          ;; Right side detected Genesis - set flag
+          ;; Right side detected Genesis - set flag + Joy2b+ enabled for INPT2-3
           lda temp2
           ora # SetRightPortGenesis
+          ora # SetRightPortJoy2bPlus
           sta temp2
 
 CDP_CheckGenesisDone:

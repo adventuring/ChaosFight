@@ -154,10 +154,7 @@ VblankModePublisherPrelude .proc
 
           jmp VblankPublisherPreludeSkipMusic
 
-PublisherPreludeComplete:
-          ;; No heavy logic needed - all handled in overscan
-          rts
-
+PlayPublisherPreludeMusic:
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           ;; When called from Vblank, stack is shallower than when called from MainLoop
           ;; Cross-bank call to PlayMusic in bank 14
@@ -179,9 +176,10 @@ PublisherPreludeComplete:
           jmp BS_jsr
 
 AfterPlayMusicPublisherPrelude:
+          rts
 
-
-
+PublisherPreludeComplete:
+          ;; No heavy logic needed - all handled in overscan
           rts
 .pend
 

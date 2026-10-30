@@ -4,6 +4,8 @@ draw_bmp_48x2_2:
           ldy titlescreenWindow2
           beq draw_bmp_48x2_2_done
 
+          dey
+          sty aux2
           lda # <(bmp_48x2_2_colors+bmp_48x2_2_height-bmp_48x2_2_window)
           sta aux5+0
           lda # >(bmp_48x2_2_colors+bmp_48x2_2_height-bmp_48x2_2_window)

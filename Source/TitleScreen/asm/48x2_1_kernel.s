@@ -3,7 +3,8 @@ draw_bmp_48x2_1:
           ;; Runtime check: exit if window variable at $B8 is 0
           ldy titlescreenWindow1
           beq draw_bmp_48x2_1_done
-          sty aux2           ;;; NO dey - color index = aux2 (not aux2-1)
+          dey
+          sty aux2
           lda # <(bmp_48x2_1_colors+bmp_48x2_1_height-bmp_48x2_1_window)
           sta aux5+0
           lda # >(bmp_48x2_1_colors+bmp_48x2_1_height-bmp_48x2_1_window)

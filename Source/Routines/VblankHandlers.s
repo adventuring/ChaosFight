@@ -144,14 +144,19 @@ VblankModePublisherPrelude .proc
           ;; Returns: Near (return thisbank)
           ;; CRITICAL: Guard PlayMusic call - only call if music is initialized
           ;; musicVoice0Pointer = 0 means music not started yet (StartMusic sets it to songPointer)
-          ;; On first frame, BeginPublisherPrelude hasn’t called StartMusic yet
+          ;; On first frame, BeginPublisherPrelude hasn't called StartMusic yet
           ;; Check if music is initialized before calling PlayMusic to prevent crash
+          lda fireEdgeState
+          bmi PublisherPreludeComplete
+
           lda musicVoice0Pointer
           bne PlayPublisherPreludeMusic
 
           jmp VblankPublisherPreludeSkipMusic
 
-PlayPublisherPreludeMusic:
+PublisherPreludeComplete:
+          ;; No heavy logic needed - all handled in overscan
+          rts
 
           ;; CRITICAL: Call PlayMusic here (earlier in frame) to reduce stack depth
           ;; When called from Vblank, stack is shallower than when called from MainLoop

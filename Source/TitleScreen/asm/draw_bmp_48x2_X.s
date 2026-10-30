@@ -63,6 +63,7 @@ pf48x2_X_loop:
 
 	lda (aux5),y			;;;5
 	sta missile0y			;;;3
+	dec aux2                ;;;5  (next row: count down from titlescreenWindowN)
 
 	.SLEEP 3
 
@@ -89,8 +90,6 @@ pf48x2_X_loop:
 	lda missile0y
 	sta COLUP1
 	sta COLUP0
-
-	dec aux2                ;;;5  (next row: count down from titlescreenWindowN)
 
 	ldy aux2                ;;;3  (reload once the second half has finished)
 	bpl pf48x2_X_loop      ; branch while aux2 >= 0

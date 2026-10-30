@@ -66,6 +66,8 @@ pf48x2_X_loop:
 
 	.SLEEP 3
 
+	dec aux2                        ;;;5  (next row: count down from titlescreenWindowN)
+
 	lda (scorePointers+0),y 	;;;5
 	sta GRP0			;;3
 	lda (scorePointers+2),y 	;;;5
@@ -89,8 +91,6 @@ pf48x2_X_loop:
 	lda missile0y
 	sta COLUP1
 	sta COLUP0
-
-	dec aux2                ;;;5  (next row: count down from titlescreenWindowN)
 
 	ldy aux2                ;;;3  (reload once the second half has finished)
 	bpl pf48x2_X_loop      ; branch while aux2 >= 0

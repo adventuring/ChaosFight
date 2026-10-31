@@ -90,13 +90,13 @@ CheckQuadtariControllers:
           ;; Check Quadtari controllers (Players 3 & 4 if active)
           ;; If controllerStatus & SetQuadtariDetected is 0, skip Quadtari check
           ;; If !INPT0{7}, then TitleScreenComplete
-          lda INPT0
+          lda player1Input_R
           bmi CheckINPT2
           jmp TitleScreenComplete
 CheckINPT2:
 
           ;; If !INPT2{7}, then TitleScreenComplete
-          lda INPT2
+          lda player2Input_R
           bmi TitleDoneQuad
           jmp TitleScreenComplete
 TitleDoneQuad:

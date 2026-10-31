@@ -38,33 +38,6 @@ title_do_vertical_sync:
           ;; same as the multi-sprite *game* kernel's vblank_time (43 on
           ;; NTSC).  Canonical batariBasic titlescreen hard-codes 37+128 on
           ;; NTSC; reusing vblank_time here inflates the frame by 6 lines.
-          .if ! vblank_time
-          .if TVStandard == PAL
-          lda # 42+128
-          sta TIM64T
-          .else
-          .if TVStandard == SECAM
-          lda # 42+128
-          sta TIM64T
-          .else
-          lda # 37+128
-          sta TIM64T
-          .fi
-          .fi
-          .else
-          .if TVStandard == PAL
-          lda # 42+128
-          sta TIM64T
-          .else
-          .if TVStandard == SECAM
-          lda # 42+128
-          sta TIM64T
-          .else
-          lda # 37+128
-          sta TIM64T
-          .fi
-          .fi
-          .fi
 
 titleframe = missile0x
           inc titleframe ;;; increment the frame counter

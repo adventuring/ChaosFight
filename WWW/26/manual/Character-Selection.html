@@ -334,6 +334,7 @@ the available characters.
 <li><a href="#Selection-Controls" accesskey="2">Selection Controls</a></li>
 <li><a href="#Starting-the-Game" accesskey="3">Starting the Game</a></li>
 <li><a href="#Handicapping-for-Advanced-Players" accesskey="4">Handicapping for Advanced Players</a></li>
+<li><a href="#Artendo-_0028NES-Controller-Adapter_0029" accesskey="5">Artendo (NES Controller Adapter)</a></li>
 </ul>
 <div class="section-level-extent" id="The-Character-Selection-Screen">
 <h3 class="section"><span>4.1 The Character Selection Screen<a class="copiable-link" href="#The-Character-Selection-Screen"> &para;</a></span></h3>
@@ -421,6 +422,55 @@ handicapping is enabled.
 </p>
 <p>Starting health: 75% instead of 100%
 </p>
+</div>
+<div class="section-level-extent" id="Artendo-_0028NES-Controller-Adapter_0029">
+<h3 class="section"><span>4.5 Artendo (NES Controller Adapter)<a class="copiable-link" href="#Artendo-_0028NES-Controller-Adapter_0029"> &para;</a></span></h3>
+
+<p>Artendo is an adapter allowing a NES controller or compatible controller to be
+connected to the system&rsquo;s left or right controller port(s), or to any of the
+four ports of a Quadtari. The adapter functions like a CX-40 from a software
+perspective (no special detection needed), but maps NES buttons natively:
+</p>
+<ul class="itemize mark-bullet">
+<li>A or B button
+<strong class="strong">Fire</strong> / Attack
+</li><li>SELECT button
+<strong class="strong">Jump</strong> (alternative to UP)
+</li><li>START button
+<strong class="strong">Defend</strong> (alternative to DOWN / Guard)
+</li><li>D-Pad
+Functions exactly as the joystick (LEFT/RIGHT for movement, UP for Jump,
+DOWN for Guard)
+</li></ul>
+
+<p><strong class="strong">Quadtari Note:</strong>
+Artendo passes through all NES buttons (A/B/SELECT/START/D-Pad) through Quadtari ports,
+unlike Genesis/Mega Drive and Joy2b+ controllers which lose extra buttons through Quadtari.
+</p>
+<p><strong class="strong">Important:</strong>
+Artendo sends controls natively — it does not affect Joy2b+ or Genesis/Mega Drive
+detection, and requires no special setup beyond connecting to the port.
+</p>
+<p><strong class="strong">Button Mapping Reference:</strong>
+</p>
+<dl class="table">
+<dt><strong class="strong">A / B</strong></dt>
+<dd><p>Fire / Attack (character/arena selection)
+</p></dd>
+<dt><strong class="strong">SELECT</strong></dt>
+<dd><p>Jump (alternative to UP on D-Pad)
+</p></dd>
+<dt><strong class="strong">START</strong></dt>
+<dd><p>Defend / Guard (alternative to DOWN on D-Pad)
+</p></dd>
+<dt><strong class="strong">D-Pad UP</strong></dt>
+<dd><p>Jump
+</p></dd>
+<dt><strong class="strong">D-Pad DOWN</strong></dt>
+<dd><p>Guard
+</p></dd>
+</dl>
+
 
 </div>
 </div>

@@ -78,7 +78,7 @@ FrootyAttack .proc
 CheckJoy1Fire:
 
 
-          lda INPT4
+          lda player1Input_R
           bne FrootyButtonHeld
           jmp FrootyButtonReleased
 
@@ -94,7 +94,7 @@ FrootyCheckJoy0 .proc
 
           ;; Button is held - continue charging
 
-          lda INPT0
+          lda player1Input_R
           bne FrootyButtonHeld
           jmp FrootyButtonReleased
 

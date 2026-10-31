@@ -23,10 +23,9 @@ ProcessAttackInput .proc
           ;; INPUT: temp1 = player index (0-3), temp2 = cached animation sta
 
 
-          ;; Uses: joy0fire for players 0,2; joy1fire for players 1,3
-
-          ;;
-          ;; OUTPUT: Attack executed if conditions met
+          ;; NOTE: Uses consolidated playerXInput bytes ($FB-$FE), NOT joy*
+          ;; hardware variables.  Attack/fire = bit 7 ($80) of each byte, testable via N flag.
+          ;; Jump sources ($01 UP D-pad, $20 Button-2) are identical; do NOT split paths.
 
           ;;
           ;; Mutates: temp2, temp4, playerCharacter[]

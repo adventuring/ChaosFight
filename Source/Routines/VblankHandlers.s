@@ -50,8 +50,8 @@ UpdateJoystickState .proc
           and # $80
           sta joy1fire_W
 
-          ;; The consolidated per-player input snapshot (player0Input ..
-          ;; player3Input, $FB-$FE) is NOT built here.  It is refreshed by
+          ;; The consolidated per-player input snapshot (player1Input_W ..
+          ;; player4Input_W, $d060-$d063) is NOT built here.  It is refreshed by
           ;; ConsolidatedPlayerInput (Source/Routines/ConsolidatedPlayerInput.s,
           ;; bank 15) which MainLoop calls on every frame, because the 48x2
           ;; title kernel has no vblank hook and this dispatcher therefore

@@ -10,7 +10,7 @@ rem_label_2:
           ;; Issue #1194: Extended to 32 entries, entry 31 (Meth Hound) duplicates entry 15 (Shamone)
 CharacterWeights:
           .byte 5, 53, 100, 48, 57, 100, 23, 57, 45, 66, 47, 57, 31, 60, 55, 35
-          .byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35
+          .byte 0, 66, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35
 CharacterWeights_end:
 
           ;; Character weight divided by 12 (precomputed for Atari 2600 optimization)

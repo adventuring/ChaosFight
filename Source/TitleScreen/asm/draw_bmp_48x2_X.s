@@ -1,7 +1,7 @@
 ;;; ChaosFight - Source/TitleScreen/asm/draw_bmp_48x2_X.s
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-draw_bmp_48x2_X .proc
+draw_bmp_48x2_X:    .proc
           lda # 0
           sta GRP0
           sta GRP1

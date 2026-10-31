@@ -2,6 +2,10 @@
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 
+;; NOTE: UP ($01 D-pad) and Button-2 ($20) are both jump sources in the
+;; consolidated byte and MUST share the same code path (jump dispatch).
+;; Do not maintain separate HandleUp / HandleButton2 jump routines.
+
 HandleUpInput .proc
           ;;
           ;; Shared UP Input Handler

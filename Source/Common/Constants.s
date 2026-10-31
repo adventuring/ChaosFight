@@ -38,7 +38,7 @@
 
           NumCharacters = 32
           ;; Maximum selectable character ID (NumCharacters - 1)
-          MaxCharacter = 15
+          MaxCharacter = 16
           RandomCharacter = $fd
           NoCharacter = $ff
           CPUCharacter = $fe

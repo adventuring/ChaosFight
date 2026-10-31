@@ -108,7 +108,7 @@ Gopher2600 emulator@footnote{Gopher2600 is an open-source Atari VCS emulator dev
 and any other fully Atari Video Computer System compatible console.
 
 @item
-Supports Atari CX-40 joysticks@footnote{CX-40 is a trademark of Atari Interactive, Inc.}, Sega Genesis/Mega Drive 3-button controllers@footnote{Genesis and Mega Drive are trademarks of Sega Corporation.}, Joy2b+ enhanced controllers@footnote{Joy2b+ is a trademark of Classic Gaming Creations.}, and Quadtari 4-player adapters@footnote{Quadtari is a trademark of RetroHQ Ltd.}
+Supports Atari CX-40 joysticks@footnote{CX-40 is a trademark of Atari Interactive, Inc.}, Sega Genesis/Mega Drive 3-button controllers@footnote{Genesis and Mega Drive are trademarks of Sega Corporation.}, Joy2b+ enhanced controllers@footnote{Joy2b+ is a trademark of Classic Gaming Creations.}, NES/Artendo adapters@footnote{Artendo is a trademark of Artendo, LLC.}, and Quadtari 4-player adapters@footnote{Quadtari is a trademark of RetroHQ Ltd.}
 
 @item
 Three- or Four-player mode requires a Quadtari adapter and only supports
@@ -345,6 +345,48 @@ A character will appear "kneeling" (or similar) to indicate the
 handicapping is enabled.
 
 Starting health: 75% instead of 100%
+
+@section Artendo (NES Controller Adapter)
+
+Artendo is an adapter allowing a NES controller or compatible controller to be
+connected to the system's left or right controller port(s), or to any of the
+four ports of a Quadtari. The adapter functions like a CX-40 from a software
+perspective (no special detection needed), but maps NES buttons natively:
+
+@itemize @bullet
+@item A or B button
+@strong{Fire} / Attack
+@item SELECT button
+@strong{Jump} (alternative to UP)
+@item START button
+@strong{Defend} (alternative to DOWN / Guard)
+@item D-Pad
+Functions exactly as the joystick (LEFT/RIGHT for movement, UP for Jump,
+DOWN for Guard)
+@end itemize
+
+@strong{Quadtari Note:}
+Artendo passes through all NES buttons (A/B/SELECT/START/D-Pad) through Quadtari ports,
+unlike Genesis/Mega Drive and Joy2b+ controllers which lose extra buttons through Quadtari.
+
+@strong{Important:}
+Artendo sends controls natively — it does not affect Joy2b+ or Genesis/Mega Drive
+detection, and requires no special setup beyond connecting to the port.
+
+@strong{Button Mapping Reference:}
+
+@table @strong
+@item A / B
+Fire / Attack (character/arena selection)
+@item SELECT
+Jump (alternative to UP on D-Pad)
+@item START
+Defend / Guard (alternative to DOWN on D-Pad)
+@item D-Pad UP
+Jump
+@item D-Pad DOWN
+Guard
+@end table
 
 @page
 

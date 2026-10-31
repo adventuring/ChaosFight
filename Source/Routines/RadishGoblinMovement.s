@@ -24,11 +24,11 @@ NotJumpingRGHI:
           and # 2
           beq RGHI_Joy0
           ;; Player uses joy1
-          lda joy1left
+          lda joy1left_R
           beq RGHI_CheckRight
           jmp RGHI_MoveLeft
 RGHI_Joy0:
-          lda joy0left
+          lda joy0left_R
           beq RGHI_CheckRight
           jmp RGHI_MoveLeft
 .bend
@@ -90,11 +90,11 @@ RGHI_CheckRight .block
           lda temp1
           and # 2
           beq RGHI_CheckRightJoy0
-          lda joy1right
+          lda joy1right_R
           beq RGHI_NoRight
           jmp RGHI_MoveRight
 RGHI_CheckRightJoy0:
-          lda joy0right
+          lda joy0right_R
           beq RGHI_NoRight
           jmp RGHI_MoveRight
 RGHI_NoRight:
@@ -355,13 +355,13 @@ RGBGB_CheckStick:
           lda temp1
           and # 2
           beq RGBGB_StickJoy0
-          lda joy1up
+          lda joy1up_R
           beq RGBGB_Apply
           lda # 1
           sta temp3
           jmp RGBGB_Apply
 RGBGB_StickJoy0:
-          lda joy0up
+          lda joy0up_R
           beq RGBGB_Apply
           lda # 1
           sta temp3

@@ -17,9 +17,16 @@ HandleGuardInput .block
 CheckJoy0GuardInput .block
           ;; Players 0,2 use joy0
           ;; Returns: Far (return otherbank)
-          lda joy0down
-          bne HandleDownPressed
-
+          ; Input: joy0down_R for players 0,2; joy1down_R for players 1,3
+          ; Use consolidated player2Input_W and player3Input_W instead of hardware reads
+          lda player2Input_R
+          and # $02
+          beq NoJoy0Down
+          lda player4Input_R
+          and # $02
+          beq NoJoy0Down
+          jmp HandleDownPressed
+NoJoy0Down:
           jmp CheckGuardReleaseGuardInput
 
 HandleDownPressed:

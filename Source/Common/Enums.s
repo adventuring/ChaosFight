@@ -30,6 +30,7 @@
           CharacterRoboTito = 13
           CharacterUrsulo = 14
           CharacterShamone = 15
+           CharacterJoanna = 16
 
 
 

@@ -540,8 +540,8 @@
           ;; No variables are permitted in $F0-$FF (stack space).
           player1Input_W  = $d060
           player2Input_W  = $d061
-          player3Input_W  = $d062
-          player4Input_W  = $d063
+          player3Input_W  = $d06F
+          player4Input_W  = $d070
           player1Input_R  = player1Input_W | $80
           player2Input_R  = player2Input_W | $80
           player3Input_R  = player3Input_W | $80

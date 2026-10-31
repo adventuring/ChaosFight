@@ -461,7 +461,7 @@ SelectUpdatePlayerAnimation
           ;; Re-detect controllers on Select/Pause/ColorB&W toggle
           ;; Returns: Far (return otherbank)
           ;; if switchselect then jmp CharacterSelectDoRescan
-          lda INPT4
+          lda player1Input_R
           bmi CheckColorBWToggle  ; bit 7 = 1 means not pressed
           jmp CharacterSelectDoRescan
 CheckColorBWToggle:

@@ -95,7 +95,7 @@ SkipReturnToCharacterSelect:
           ;; Check Player 1 fire button
           ;; Check Player 2 fire button
           ;; If joy0fire, then set temp1 = 1
-          lda joy0fire
+          lda joy0fire_R
           beq CheckJoy1Fire
 
           lda # 1
@@ -105,7 +105,7 @@ CheckJoy1Fire:
 
           ;; Check Quadtari players (3 & 4) if active
           ;; If joy1fire, then set temp1 = 1
-          lda joy1fire
+          lda joy1fire_R
           beq CheckQuadtariFire
 
           lda # 1
@@ -160,7 +160,7 @@ ArenaSelectNavigation:
 
           ;; Handle LEFT/RIGHT navigation for arena selection
           ;; if joy0left then jmp ArenaSelectLeft
-          lda joy0left
+          lda joy0left_R
           beq ArenaSelectDoneLeft
 
           jmp ArenaSelectLeft
@@ -220,7 +220,7 @@ ArenaSelectLeftSound .block
 AfterPlaySoundEffectLeft:
 
           ;; if joy0right then jmp ArenaSelectRight
-          lda joy0right
+          lda joy0right_R
           beq ArenaSelectDoneLeftSecond
 
           jmp ArenaSelectRight
@@ -507,7 +507,7 @@ AfterSetGlyphRandom2:
 
 DisplayDone
           ;; Handle fire button press (confirm selection, start game)
-          lda joy0fire
+          lda joy0fire_R
           beq ArenaSelectDoneConfirm
           jmp ArenaSelectConfirm
 
@@ -581,7 +581,7 @@ CheckQuadtariFireHold
           ;; Check Player 3 and 4 fire buttons (Quadtari)
           ;; Player 3 fire button (left port, odd frame)
           ;; If !INPT0{7}, then set temp1 = 1
-          lda INPT0
+          lda player1Input_R
           bmi CheckINPT2Fire
           lda # 1
           sta temp1
@@ -589,7 +589,7 @@ CheckINPT2Fire:
 
           ;; Player 4 fire button (right port, odd frame)
           ;; If !INPT2{7}, then set temp1 = 1
-          lda INPT2
+          lda player2Input_R
           bmi CheckQuadtariFireHoldDone
           lda # 1
           sta temp1

@@ -403,8 +403,15 @@ CheckKnightGuy:
           ;; Handler extracted to MissileCharacterHandlers.bas
           lda temp6
           cmp #CharacterKnightGuy
-          bne CheckGravityFlag
+          bne CheckJoanna
           jmp HandleKnightGuyMissile
+CheckJoanna:
+
+          ;; Joanna orbital missile (character 16)
+          lda temp6
+          cmp #CharacterJoanna
+          bne CheckGravityFlag
+          jmp HandleJoannaMissile
 CheckGravityFlag:
 
 

@@ -56,7 +56,7 @@ title_playfield:
 
 ;; ======== BEGIN of the custom kernel!!!!! All of the work is done in the playfield.
 
-          lda # 230
+          lda #37+128
           sta TIM64T
 
           lda # 1

@@ -707,12 +707,21 @@ HandleUpInputEnhancedButtonHandleUp .proc
           ;; Returns: Far (return otherbank)
 
           ;; Switch Shamone -> MethHound
-
+          lda temp1
+          tax
+          lda playerCharacter,x
+          cmp #CharacterShamone
+          bne CheckMethHoundUp
+          lda #CharacterMethHound
+          sta playerCharacter,x
           jmp BS_return
-
-          ;; Switch MethHound -> Shamone
-
+CheckMethHoundUp:
+          cmp #CharacterMethHound
+          bne SkipShamoneSwitch
+          lda #CharacterShamone
+          sta playerCharacter,x
           jmp BS_return
+SkipShamoneSwitch:
 
           ;; Robo Tito: Hold UP to ascend; auto-latch on ceiling contact
 
@@ -1091,14 +1100,18 @@ HandleUpInputEnhancedButtonEnhancedCheck .proc
 AfterCheckEnhancedJumpButtonEnhanced:
 
 
-          ;; For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
-
-          jmp BS_return
-
-          jmp BS_return
-
-          jmp BS_return
-
+          ;; For Shamone/Meth Hound: enhanced button = jump (UP is form switch)
+          lda temp1
+          tax
+          lda playerCharacter,x
+          cmp #CharacterShamone
+          bne CheckMethHoundJump
+          jmp HandleUpInputEnhancedButtonExecuteJump
+CheckMethHoundJump:
+          cmp #CharacterMethHound
+          bne SkipShamoneJump
+          jmp HandleUpInputEnhancedButtonExecuteJump
+SkipShamoneJump:
           jmp HandleUpInputEnhancedButtonExecuteJump
 
 .pend

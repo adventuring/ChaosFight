@@ -171,6 +171,14 @@ CheckMethHound:
 
 
 
+CheckJoanna:
+          ;; Joanna: orbital missile
+          lda temp4
+          cmp #CharacterJoanna
+          bne CheckCharacters16to30
+          jmp JoannaAttack
+CheckCharacters16to30:
+
           ;; Characters 16-30: Basic mêlée attacks
 
           ;; if temp4 >= 16 && temp4 <= 30 then jmp PerformGenericAttack bank7

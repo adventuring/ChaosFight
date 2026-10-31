@@ -899,7 +899,12 @@ units (5-100 range):
 
 ### Character 16: Joanna
 
-- FIXME: populate details
+- **Weight**: ~150 lbs (game unit 48, analogous to Zoe Ryen)
+- **Attack Type**: Ranged (orbital missile, 4×4 pixels)
+- **Special Move / Attack**: Missile spawns centered on Joanna, moves outward in facing direction, then performs a single circular orbit around her (~300 ms, ~18 frames at 60 fps). Hits anything it touches. Vanishes if struck by any melee or ranged attack.
+- **Controls**: Left/Right move; Jump (UP / Button C/II); Defend (DOWN); Attack (Fire/B/I). All five inputs handled like standard characters.
+- **Timer**: Attack lifetime / orbit duration ~18 frames; missile deactivates when struck or after loop completes.
+- **Missile Properties**: 4×4, centered spawn offset (0), emission height 8, horizontal momentum 6, vertical 0, lifetime 12, flags HitBackground | HitPlayer (3).
 
 ---
 

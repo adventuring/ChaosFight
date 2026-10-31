@@ -1,9 +1,9 @@
 @subsection Joanna
 @display
 @group
-    Weight: TBD
-    Attack: Mêlée (sword) and sorcery
-    Special: Skilled swordsman and sorceress
+    Weight: 150 lbs (game unit 48)
+    Attack: Ranged (4×4 orbital missile)
+    Special: Missile spawns centered, moves outward, orbits once, hits anything, vanishes if struck by attack
     Original Game: Black Forest
     Author: Chris Wiese (dragonsbrethren)
     Forum: @url{https://forums.atariage.com/topic/377834-black-forest-wip/,Black Forest development thread}

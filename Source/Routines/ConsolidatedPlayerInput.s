@@ -52,7 +52,7 @@
 
 ConsolidatedPlayerInput .proc
           ;; Returns: Near (return thisbank)
-          ;; Refreshes player1Input_W-player4Input_W ($d060-$d063) from the TIA
+          ;; Refreshes player1Input_W-player4Input_W ($d060, $d061, $d06F, $d070) from the TIA
           ;; input registers and the console switches.
           ;;
           ;; Mutates: player1Input_W, player2Input_W, player3Input_W, player4Input_W

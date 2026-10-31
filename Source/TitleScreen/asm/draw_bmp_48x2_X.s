@@ -86,11 +86,13 @@ pf48x2_X_loop:
         stx GRP1                        ;;;3
         sty GRP0                        ;;;3
 
-	.SLEEP 4
+	.SLEEP 3
 
 	lda missile0y
 	sta COLUP1
 	sta COLUP0
+
+	sta WSYNC         ;; sync to scanline for 192-line safe area
 
 	ldy aux2                ;;;3  (reload once the second half has finished)
 	bpl pf48x2_X_loop      ; branch while aux2 >= 0

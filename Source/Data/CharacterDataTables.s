@@ -10,6 +10,7 @@ rem_label_2_1:
           ;; Character heights (in pixels)
 CharacterHeights:
           .byte 10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
+          .byte 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16
 CharacterHeights_end:
 
           ;; Global label for cross-bank access to CharacterHeights data table
@@ -17,7 +18,7 @@ CharacterHeights_end:
 
           ;; Issue #1194: Extended to 32 entries, entry 31 (Meth Hound) duplicates entry 15 (Shamone)
 CharacterAttackTypes:
-          .byte AttackMelee, AttackRanged, AttackRanged, AttackRanged, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackRanged, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee
+          .byte AttackMelee, AttackRanged, AttackRanged, AttackRanged, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackRanged, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackRanged, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee, AttackMelee
 CharacterAttackTypes_end:
 
           ;; Global label for cross-bank access to CharacterAttackTypes data table
@@ -36,5 +37,5 @@ CharacterAOEOffsets_end:
           ;; Frooty, Nefertem, Ninjish, PorkChop, Radish, RoboTito, Ursulo, Shamone
           ;; Issue #1194: Extended to 32 entries, entry 31 (Meth Hound) duplicates entry 15 (Shamone)
 CharacterMovementSpeed:
-          .byte 1, 1, 2, 2, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
+          .byte 1, 1, 2, 2, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 CharacterMovementSpeed_end:

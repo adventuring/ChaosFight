@@ -116,6 +116,24 @@ ApplyDamage .proc
           lda # 1
           sta temp1
 
+;; If defender is also attacking, halve damage (simultaneous attack)
+          lda defenderID
+          tax
+          lda playerState,x
+          and # MaskPlayerStateAnimation
+          lsr
+          lsr
+          lsr
+          lsr
+          cmp # 13
+          bcc SimultaneousDone
+          cmp # 16
+          bcs SimultaneousDone
+          lda temp1
+          lsr
+          sta temp1
+SimultaneousDone:
+
 CheckPlayerWillDie:
 
           ;; Check if player will die from this damage

@@ -534,7 +534,7 @@
           ;;   $02 - down
           ;;   $01 - up
           ;;
-          ;; These live in SCRAM at $d060-$d063 (write ports) so that they
+          ;; These live in SCRAM at $d060, $d061, $d06F, $d070 (write ports) so that they
           ;; are never aliased by the temp1-temp6 scratch words or by the
           ;; scorePointers block that both display kernels scribble over.
           ;; No variables are permitted in $F0-$FF (stack space).

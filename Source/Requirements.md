@@ -12,8 +12,9 @@ Then continues into warm start:
 
 - Common and admin vars are cleared
 - Hardware registers are set up (TIA colors, audio)
-- Controller detection (Mega Drive/Genesis, Joy2b+, or Quadtari) is
+- Controller detection (Mega Drive/Genesis, Joy2b+, Artendo NES adapter, or Quadtari) is
   performed
+  - Artendo NES adapter functions natively like a CX-40 from software perspective; no special detection required
 - COLUBK is set to black and remains black throughout
 
 ---
@@ -109,11 +110,12 @@ bank's 4kiB space.
   Always `BS_return` must be called with `jmp`, NOT `jsr`. Using
   a `jsr BS_return` pushes another return address on the stack, corrupting the
   encoded return address that `BS_return` expects to decode.
-- The stack-underflow probe previously showed `MainLoopModePublisherPrelude`,
-  `MainLoopModeAuthorPrelude`, `MainLoopModeTitleScreen`, and cousins in
-  `Source/Routines/MainLoop.s` returning with `rts` even though the dispatcher
-  had just performed a cross-bank call. The resulting `RTS` at `$f:faaf` is
-  exactly where the stack dropped to `$FF`.
+- The stack-underflow probe previously showed 
+  the `MainLoopModePublisherPrelude`, `MainLoopModeAuthorPrelude`,
+  the `MainLoopModeTitleScreen`, and cousins in `Source/Routines/MainLoop.s`
+  returning with `rts` even though the dispatcher had just performed a
+  cross-bank call.  The resulting `RTS` at `$f:faaf` is exactly where the
+  stack dropped to `$FF`.
 - Remediation completed 2025‑11‑26: all mode handlers now issue `jmp BS_return`,
   preventing the bare `RTS` that corrupted the encoded far-return sequence.
   Rebuilds must still re-check the far-call trampoline at `$f:fa5c` to confirm
@@ -176,8 +178,10 @@ button press, advance to Title Screen.
 
 ### Attract Mode
 
-Attract mode forms an endless wait loop. For now, Attract mode handler
-simply jumps back to Publisher Prelude screen.
+In Attract Mode, the game will begin a 2 player contest with the "CPU"
+("AI") player controlling both characters.  Both characters and the arena
+layout are chosen randomly.  When any button or joystick direction is
+pressed (by any player) we return immediately to the title screen.
 
 ---
 
@@ -185,14 +189,16 @@ simply jumps back to Publisher Prelude screen.
 
 ### Overview
 
-Players select their fighters from 15 available characters (0-14).
-Supports 2-player (standard ports) and 4-player (Quadtari adapter)
-modes.
-Once all active players have locked in their selections, proceed to
+Players select their fighters from MaxCharacters available characters
+(0-16).  Supports 2-player (standard ports) and 4-player (Quadtari adapter)
+modes.  Once all active players have locked in their selections, proceed to
 Arena Select.
 
 Players 2 (and if present) 3 & 4 start "locked in" to "CPU" and "NO" and
 "NO" and unlock on any action.
+
+If either Player 3 or Player 4 is enabled, then "CPU" player is not
+available, player 2 shows "NO" rather than "CPU"
 
 ### Controller Support
 
@@ -204,29 +210,31 @@ Players 2 (and if present) 3 & 4 start "locked in" to "CPU" and "NO" and
 
 ### Input Handling
 
-- **Left/Right**: Cycle through 16 characters (0-15), wraps from 15→0 or
-  0→15
-  (but when wrapping, presents "?" (Random) and either "CPU" or "NO"
-  (Player
-  2, depending on player 3/4 state) or "NO" (player 3 or 4). Player 1
-  has
-  only "?" and the 16 characters (NumCharacters)
+- **Left/Right**: Cycle through MaxCharacters characters (0-30), wraps from 14→0 or
+  0→14 (but when wrapping, presents "?" (Random) and either "CPU" or "NO"
+  (Player 2, depending on player 3/4 state) or "NO" (player 3 or 4).  Player
+  1 has only "?" and the 15 characters (NumCharacters)
+
+  i.e. the cycle for Player 1 is "Char 0" ... "Char 30" (skip Char 31, not
+  selectable), then also "?"; for Player 2 is "Char 0" ... "Char 30", then
+  also "?", and then (default) either "CPU" (if neither player 3 nor 4 are
+  enabled, i.e. if both of these are "NO") or "NO" (if there are two other
+  players, i.e. player 1 and either or both of players 3 & 4). Players 3 and
+  4 have "Char 0" ... "Char 30", then also "?", and "NO".
 
 - **Fire/B/I button**: Lock in current character selection
 - **Up**: Unlock current selection (returns to browsing)
 - **Down**: Hold to prepare for handicapping. Character shows
-  "recovering
-  from a hard fall" animation while held.
+  "recovering from a hard fall" animation while held.
 
-- **Down + Fire/B/I button**: Lock in with handicap (75% health instead
-  of
-  100%; character remains in "recovering from a hard fall" state
-  visually
+- **Down + Fire/B/I button**: Lock in with handicap (75% health instead of
+  100%; character remains in "recovering from a hard fall" state visually
+  while on the character select and arena select screens
 
 ### Character Selection States
 
-- **playerCharacter[0-3]**: Current character index being browsed (0-15,
-  or 255 for "NO")
+- **playerCharacter[0-3]**: Current character index being browsed (0-14),
+  or 255 for "NO" (or "CPU" for 2 players)
 
 Player 1 options: ? or 0 ↔ MaxCharacterID
 
@@ -288,6 +296,18 @@ Player 2: ? or 0 ↔ MaxCharacterID and
 
 ## Arena Select
 
+- arena select digits (P0 and P1 used for digits) occur mid-screen, with the
+  PMG sprites for 2, 3, or 4 player characters in the corners of the screen
+  above and below it.
+
+```
+   P0 = player 1           P1 = player 2
+
+                 P0 P1 = arena number
+
+   P0 = player 3           P1 = player 4
+```
+
 - Player 1 only can use left/right to cycle through:
   - Decimal numbers " 1" up to MaxArenaID + 1 (currently 15, so 15+1=16,
     displayed as " 1" through "16")
@@ -299,8 +319,7 @@ Player 2: ? or 0 ↔ MaxCharacterID and
   to Character Select
 - Game Select switch pressed: return to Character Select
 - Up to four locked-in player graphics remain on screen (blank if no
-  player
-  or locked in at "NO")
+  player or locked in at "NO")
 
 - "CPU" or "?" already have random character selected
 - Digits appear in center, white-on-black, use virtual sprites 5-6
@@ -316,7 +335,9 @@ Player 2: ? or 0 ↔ MaxCharacterID and
     32×8 display
   - Start at top of screen and continue downwards until finding clear
     pixels wide enough for double-width player
-- Characters are positioned there
+- Characters are positioned there, typically this is near the top of the
+  screen. They will then "fall" down to the floor. Once all characters are
+  on a floor, then we proceed to a countdown and begin the game.
 - "Nudged" down if there are playfield pixels near their fixed starting
   point
 - Re-initialize for Game Mode and switch to it
@@ -331,7 +352,7 @@ brick" logic when he falls off the screen and resets at the top.
 ### Initialization
 
 - Call BeginGameLoop before entering Game Mode:
-  - Initialize player positions from Falling In animation final
+  - Initialize player positions from "Falling In" animation to final
     positions
   - Set player facing directions (alternating: P1 right, P2 left, P3
     right, P4 left)
@@ -343,6 +364,14 @@ brick" logic when he falls off the screen and resets at the top.
   - Set frame counter and game state
   - Load arena data
 
+### Countdown
+
+- once all players have "fallen in" to their positions we hold for a brief
+  countdown
+- this countdown is from 3, 2, 1 and occurs in the "score" display
+- the "score" will show ONLY the digits " CF 3 ", " CF 2 ",
+  and " CF 1 ", then "  CF  " as regular game play begins.
+
 ### Playfield and Colors
 
 - Set Playfield and pfcolors:
@@ -350,19 +379,16 @@ brick" logic when he falls off the screen and resets at the top.
     playfield row)
   - **B&W or SECAM**: white COLUPF (single color for entire playfield)
 - Playfield layout: 32×8 pixel data (mirrored 16×8)
-- Color data defined per arena in area data files (pfcolors)
+- Color data defined per arena in arena data files (pfcolors)
 
 ### Game Cycle (Per Frame)
 
-1. **Console Switch Handling**: Check select, reset, color/B&W/pause,
-   right
+1.  **Console Switch Handling**: Check select, reset, color/B&W/pause, right
    difficulty (if CPU running player 2)
 
-2. **Player Input**: Handle all player inputs (with Quadtari
-   multiplexing if 4-player)
-   **CPU Input**: Allow CPU players to contribute by controlling their
-   own
-   sprite
+2.  **Player Input**: Handle all player inputs (with Quadtari multiplexing
+   if 4-player) **CPU Input**: Allow CPU players to contribute by
+   controlling their own sprite
 
 3. **Animation System**: Update character animations (10fps animation
    rate, 8-frame sequences)
@@ -511,7 +537,7 @@ Knight Guy's sword starts at −2px overlap and animates out to +1px gap,
 then back.
 
 Robo Tito's trunk occupies pixels x=6–9 beneath sprite, ending 1px above
-ground.new
+ground.
 
 These offsets guarantee that missiles spawn at artist-authored
 positions; adjusting a single character’s values will not affect others.
@@ -548,8 +574,7 @@ positions; adjusting a single character’s values will not affect others.
   - On 7800, the pause button is a momentary contact switch that
     occupies the same hardware pin as the 2600 Color/B&W switch
   - On 2600: Color/B&W switch is binary (color position vs B&W position)
-    - determines if playfield uses color-per-row
-    or single-white color
+    - determines if playfield uses color-per-row or single-white color
 
   - On 7800: Pause button is momentary toggle - each press toggles
     between White-only mode and Color-Per-Row (pfcolor) mode
@@ -570,13 +595,19 @@ positions; adjusting a single character’s values will not affect others.
 
 - If a 3- or 4-player game, all but the last player
   appear. The winner (last man standing) appears in the top-center.
+
   The runner-up (last eliminated) appears at the mid-left.
+
   The second runner-up (next-to-last eliminated) appears at the
-  mid-right.
-  The last place (if 4 players) appears at the bottom-left.
+  mid-right, at a lower level than the runner-up.
+
+  The last place (if 4 players) is omitted.
 
 - Playfield pattern represents "steps" upon which the
   characters are "standing"
+
+- No flicker: these sprites are vertically separated enough to allow PMG
+  re-use.
 
 ---
 
@@ -620,7 +651,7 @@ units (5-100 range):
 - **Attack Type**: Mêlée (hits BOTH DIRECTIONS - dual-direction AOE)
 - **Missile**: None (mêlée only, 4-frame lifetime for visual)
 - **Special Moves**:
-  - No jumping
+  - No jumping ("Jump" stick/button causes "fall through floor"
   - **Fall abilities**:
     - Wraps from bottom to top of screen when falling off
     - Fall damage immunity
@@ -648,6 +679,8 @@ units (5-100 range):
   - Great for hitting low targets
   - Projectile spawns at character's feet and slides horizontally across
     floor
+  - reflects off barriers, falling down until it leaves the screen or max
+    255 frames have occurred (about 4 seconds)
 
 ### Character 2: Dragon of Storms
 
@@ -665,6 +698,7 @@ units (5-100 range):
   - Projectile travels in parabolic arc, excellent for hitting enemies
     at different heights
   - Aerial mobility with full flight control
+  - Momentum-based (thrust-based) movement, unlike Frooty
 
 ### Character 3: Zoe Ryen
 
@@ -697,14 +731,15 @@ units (5-100 range):
   - Force: 4
 - **Special Moves**:
   - **Laser ring**: Magic ring shoots laser projectiles
-  - Geography expert
+  - Geography expert (not actually useful but mention in manual for humorous
+    effect)
   - Magic ring wielder (laser ring weapon)
 
 ### Character 5: Megax
 
 - **Weight**: 3500 lbs (1588 kg) - Game Unit: 100
 - **Attack Type**: Ranged
-- **Missile**: Fire breath (4×2 pixels, ballistic arc)
+- **Missile**: Fire breath (4×2 pixels, static position)
 - **Missile Properties**:
   - Emission height: 4 pixels (from mouth)
   - Momentum X: 0 pixels/frame
@@ -713,19 +748,14 @@ units (5-100 range):
   - Lifetime: 4 frames (brief visual)
 - **Special Moves**: Giant monster-eating powerhouse, biggest and most
   powerful known, breathes fire
+- fire breath missile varies in position and size slightly each frame
+  (random or fuzz factor) to give a flickery, fire-like effect (this is
+  distinct from any multiplexing flicker effect)
 
 ### Character 6: Harpy
 
 - **Weight**: 30 lbs (13.6 kg) - Game Unit: 23
-- **Attack Type**: Ranged (diagonal downward swoop)
-- **Missile**: 0×0 (uses character sprite during swoop - no visible
-  missile)
-- **Missile Properties**:
-  - Emission height: 4 pixels
-  - Momentum X: 5 pixels/frame
-  - Momentum Y: 4 pixels/frame (downward)
-  - Flags: None
-  - Lifetime: 5 frames (swoop duration)
+- **Attack Type**: Mêlée (diagonal downward swoop)
 - **Special Moves**:
   - **Flight pattern**: Can "fly" by repeatedly pressing UP (flap to
     maintain altitude)
@@ -733,7 +763,8 @@ units (5-100 range):
     attacking (5-frame lifetime)
   - Diagonal downward swoop combines movement and attack in single
     motion
-  - Character sprite itself becomes the attack during swoop animation
+  - Character sprite itself becomes the attack during swoop animation (no
+    missile)
 
 ### Character 7: Knight Guy
 
@@ -745,6 +776,9 @@ units (5-100 range):
   - **Sword**: Mêlée weapon is a sword
   - Armored fighter with powerful sword attacks
   - Longest mêlée attack duration (6 frames)
+  - sword appears as a missile positioned beside the sprite, but extends
+    outwards and then retracts back, similar but distinct from the "flame"
+    effect for Megax
 
 ### Character 8: Frooty
 
@@ -763,7 +797,9 @@ units (5-100 range):
   - No gravity, full vertical flight control
   - Cannot guard (pressing DOWN makes her fly down instead)
   - Magical sparkles from lollipop weapon
-  - Complete aerial mobility like Dragon of Storms
+  - Complete aerial mobility like Dragon of Storms, but no momentum physics
+    (moves under direct joystick control rather than adding joystick input
+    to the momentum)
 
 ### Character 9: Nefertem
 
@@ -771,17 +807,21 @@ units (5-100 range):
 - **Attack Type**: Mêlée
 - **Missile**: None (mêlée only, 5-frame lifetime)
 - **Special Moves**: Loyalist to the High Council, feline reflexes
+- attack is an animation that uses the PMG player as the weapon (bite/claw
+  animation)
 
 ### Character 10: Ninjish Guy
 
 - **Weight**: 130 lbs (59.0 kg) - Game Unit: 47
 - **Attack Type**: Mêlée
-- **Missile**: None (mêlée only, 4-frame lifetime)
+- **Missile**: Shuriken
 - **Special Moves**:
   - Highest jumps
   - Fastest movement
   - 50% fall damage reduction
-  - Ninja mobility with mêlée attacks
+  - Ninja mobility with ranged attacks
+- single-pixel sized missile ricochets once off a wall, second wall strike
+  or striking any player character or other missile deletes it
 
 ### Character 11: Pork Chop
 
@@ -814,6 +854,11 @@ units (5-100 range):
   - Press DOWN to return to floor
   - Fall damage immunity
   - Vulnerable entire length to collisions
+- uses missile for the body stretching effect (the missile's height extends
+  from the bottom of the PMG player sprite to the floor under it)
+- missile width is 2px and positioned centered on the 16px (8px double
+  width) sprite
+- when hanging from the ceiling, the "jump" pose is used
 
 ### Character 14: Ursulo
 
@@ -822,10 +867,15 @@ units (5-100 range):
 - **Missile**: None (mêlée only, 5-frame lifetime)
 - **Missile Properties**:
   - No missile (0×0) - mêlée attack uses character sprite
-  - Changed from ranged to mêlée (claw swipe attack)
 - **Special Moves**:
   - Strongest throw
   - Mêlée claw swipe attack
+  - Opposing character is picked up and thrown, taking damage;
+    - Dragon of Storms takes momentum from the throw
+    - Frooty is thrown a distance but does not fall
+    - ...both of which still take strike damage from the attack
+    - Robo Tito is not "budged" when his "foot" is on the ground, only
+      thrown if he was "hanging" from his arms ("jump" pose)
 
 ### Character 15: Shamone
 
@@ -834,8 +884,7 @@ units (5-100 range):
 - **Missile**: None (mêlée only, 4-frame lifetime)
 - **Special Moves**:
   - Special upward attack/jump: When attacking, simultaneously jumps
-    upward while performing
-    mel\e'e attack
+    upward while performing mêlée attack
 
   - Form switching: Pressing UP switches between Shamone (character 15)
     and Meth Hound (character 31)
@@ -847,6 +896,10 @@ units (5-100 range):
   - Meth Hound shares all gameplay mechanics with Shamone
   - Jumping must be done via attack buttons (Fire/B/I) when playing as
     Shamone/MethHound
+
+### Character 16: Joanna
+
+- FIXME: populate details
 
 ---
 
@@ -863,18 +916,15 @@ Standardize on "Arena" consistently (not "Level" or "Map"):
 - Reserve 1 full bank for sound effects
 - Reserve 1 full bank for music
 - Bank 1 now hosts the music system (StartMusic/PlayMusic, song tables
-  for
-  songs 6-28, build info)
+  for songs 6-28, build info)
 
 - Bank 15 holds the low-ID themes (songs 0-5: Bernie, EXO, OCascadia,
   Revontuli, Grizzards, MagicalFairyForce) alongside the shared sound-effect
   tables
 
 - Bank 16 carries MainLoop, drawscreen, ArenaLoader, SetPlayerGlyphFromFont, and
-  the
-  `game` entry point because the multisprite kernel insists the hot loop
-  lives
-  in the final bank
+  the `game` entry point because the multisprite kernel insists the hot loop
+  lives in the final bank
 
 - Reserve 4 banks for character art (2,3,4,5)
 - Reserve slots for 32 characters and 32 arenas
@@ -899,25 +949,24 @@ See `Source/StyleGuide.md` for detailed guidelines.
 
 ## SCRAM Variable Access Rules
 
-SuperChip RAM (SCRAM) variables have separate read (`r000`-`r127`) and
-write (`w000`-`w127`) ports that map to the same physical 128-byte RAM.
-To ensure correct operation and code clarity:
+SuperChip RAM (SCRAM) variables have separate read and write ports that map
+to the same physical 128-byte RAM.  To ensure correct operation and code
+clarity:
 
 - **MUST use `_R` suffix for all read operations** (e.g.,
-  `selectedArena_R`)
+  as `selectedArena_R`)
 - **MUST use `_W` suffix for all write operations** (e.g.,
-  `selectedArena_W`)
-- **Convenience aliases are NOT permitted** - do not declare `dim
-  selectedArena = w014` without `_R`/`_W` suffix
+  as `selectedArena_W`)
+- **Convenience aliases are NOT permitted** - do not declare `selectedArena = w014`
+   without `_R`/`_W` suffix
 - All SCRAM variable declarations must include both `_R` and `_W`
   variants
 - Code must explicitly use the appropriate port for each operation
 
-**Rationale**: SCRAM has separate read/write ports. Using convenience
+**Rationale**: SCRAM has separate read/write ports.  Using convenience
 aliases makes it unclear which port is accessed, which can lead to bugs
-where writes are attempted via read ports or reads via write ports.
-Explicit `_R`/`_W` usage makes the code intent clear and prevents
-errors.
+where writes are attempted via read ports or reads via write ports. 
+Explicit `_R`/`_W` usage makes the code intent clear and prevents errors.
 
 ## Indentation
 
@@ -938,39 +987,46 @@ errors.
 
 Different contexts require different quotation mark characters:
 
-- **`rem` statements** (in `.bas` files): **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes. U+0027 (straight apostrophe `'`) is **NEVER** allowed. Examples: use "don't" (U+2019) not "don't" (U+0027), use "doesn't" (U+2019) not "doesn't" (U+0027), use "they're" (U+2019) not "they're" (U+0027).
-
 - **`echo` statements**: **MUST** use U+0022 (straight double quotation mark `"`) for all string delimiters. U+2019, U+2018, U+201C, U+201D (typographic quotes) are **NEVER** allowed. Example: `echo "// Bank 14: ", [size]d, " bytes"`
-
-- **`#include` statements** (for `.bas` files): **MUST** use U+0022 (straight double quotation mark `"`) for all file paths. Example: `#include "Source/Common/Constants.bas"`
 
 - **`.include` statements** (for `.s` files): **MUST** use U+0022 (straight double quotation mark `"`) for all file paths. Example: `.include "Source/Common/Preamble.s"`
 
 - **Assembly comments (`;;`)**: **MUST** use U+2019 (right single quotation mark `'`) for all apostrophes. Example: `;; They don't need EQU definitions - they're resolved by 64tass`
 
-**Rationale**: The C preprocessor (used for `.bas` files) interprets straight apostrophes (`'`) as string delimiters, causing "missing terminating ' character" errors. Using U+2019 in comments prevents these errors while maintaining readability. `echo`, `#include`, and `.include` statements are processed differently and require straight double quotes.
+**Rationale**: `.include` statements are processed differently and require straight double quotes.
 
 ## Calling Conventions
 
-**CRITICAL**: Failure to comply with these rules *will* break the game every time, causing stack corruption, BRK instructions, and crashes.
+**CRITICAL**: Failure to comply with these rules *will* break the game every
+time, causing stack corruption, BRK instructions, and crashes.
 
 ### The Fundamental Rule: Consistency is Mandatory
 
-**If a routine is EVER called cross-bank (via `BS_jsr`), it MUST ALWAYS use `jmp BS_return` for ALL return paths. If a routine is ONLY called same-bank, it MUST use `rts` (near return) for efficiency.**
+**If a routine is EVER called cross-bank (via `BS_jsr`), it MUST ALWAYS use
+`jmp BS_return` for ALL return paths.  If a routine is ONLY called
+same-bank, it MUST use `rts` (near return) for efficiency.**
 
-**Mixing calling conventions within a single routine is a critical bug that will cause stack corruption.**
+**Mixing calling conventions within a single routine is a critical bug that
+will cause stack corruption.**
 
 ### How Cross-Bank Calls Work
 
 When you call a routine cross-bank using `BS_jsr`:
-1. Push the **encoded return address** onto the stack (4 bytes: high byte, low byte of return address, then high byte, low byte of target routine)
+1. Push the **encoded return address** onto the stack (4 bytes: high byte, 
+   low byte of return address, then high byte, low byte of target routine)
+   - this must be adjusted for RTS (address - 1) in the destination case,
+     and 
+   - it must be encoded for returning by replacing the high nybble with the
+     bank number to which to return, e.g. $c123 would represent $c:f124
 2. Call `BS_jsr` which switches banks and does an `RTS` to the target routine
 3. The target routine **MUST** use `jmp BS_return` which:
    - Decodes the encoded return address
    - Switches back to the original bank
    - Does an `RTS` to return to the caller
 
-**CRITICAL**: `BS_return` must be called with `jmp`, NOT `jsr`. Using `jsr BS_return` pushes another return address on the stack, corrupting the encoded return address that `BS_return` expects to decode at stack offset 2.
+**CRITICAL**: `BS_return` must be called with `jmp`, NOT `jsr`.  Using 
+the `jsr BS_return` pushes another return address on the stack, corrupting the
+encoded return address that `BS_return` expects to decode at stack offset 2.
 
 If the target routine uses plain `rts` instead of `jmp BS_return`:
 - An `RTS` instruction pops the encoded return address as a normal address

@@ -169,24 +169,24 @@ PublisherPreludeComplete
           ;; OPTIMIZATION: Call BeginAuthorPrelude directly to save 4 bytes (skip ChangeGameMode)
           lda #ModeAuthorPrelude
           sta gameMode
-          ;; Cross-bank call to BeginAuthorPrelude in bank 14
-          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           ;; Cross-bank call to BeginAuthorPrelude in bank 13
-          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
+          ;; BS_jsr expects: [SP+0: return lo] [SP+1: return hi] [SP+2: target lo] [SP+3: target hi]
+          ;; After RTS pops target (SP+2/SP+3 after increment): [SP+0: return lo] [SP+1: return hi]
+          ;; Push return FIRST (earliest), target LAST (most recent for RTS to pop)
           ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
           lda # ((>(AfterBeginAuthorPrelude-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
           pha
-          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginAuthorPrelude hi (encoded)]
+          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi (return hi)] [SP+0: AfterBeginAuthorPrelude hi (encoded)]
           lda # <(AfterBeginAuthorPrelude-1)
           pha
-          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: AfterBeginAuthorPrelude hi (encoded)] [SP+0: AfterBeginAuthorPrelude lo]
+          ;; STACK PICTURE: [SP+4: caller ret hi] [SP+3: caller ret lo] [SP+2: encoded ret hi] [SP+1: encoded ret lo] [SP+0: AfterBeginAuthorPrelude hi]
           ;; Target address: RAW (for RTS to jump to) - NOT encoded
           lda # >(BeginAuthorPrelude-1)
           pha
-          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: AfterBeginAuthorPrelude hi (encoded)] [SP+1: AfterBeginAuthorPrelude lo] [SP+0: BeginAuthorPrelude hi (raw)]
+          ;; STACK PICTURE: [SP+5: caller ret hi] [SP+4: caller ret lo] [SP+3: encoded ret hi] [SP+2: encoded ret lo] [SP+1: BeginAuthorPrelude hi] [SP+0: AfterBeginAuthorPrelude lo]
           lda # <(BeginAuthorPrelude-1)
           pha
-          ;; STACK PICTURE: [SP+7: caller ret hi] [SP+6: caller ret lo] [SP+5: encoded ret hi] [SP+4: encoded ret lo] [SP+3: AfterBeginAuthorPrelude hi (encoded)] [SP+2: AfterBeginAuthorPrelude lo] [SP+1: BeginAuthorPrelude hi (raw)] [SP+0: BeginAuthorPrelude lo]
+          ;; STACK PICTURE: [SP+6: caller ret hi] [SP+5: caller ret lo] [SP+4: encoded ret hi] [SP+3: encoded ret lo] [SP+2: BeginAuthorPrelude hi] [SP+1: BeginAuthorPrelude lo] [SP+0: AfterBeginAuthorPrelude lo]
           ldx # 13
           jmp BS_jsr
 AfterBeginAuthorPrelude:

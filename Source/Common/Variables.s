@@ -117,6 +117,7 @@
           ;; Port-only bytes carved out of the otherwise unused $9E-$A1 gap
           ;; between the multisprite kernel's shadows and bB's var block.
           fireEdgeState  = $9E
+          flickerState = $9F
           lockedState  = $A1
 
           ;; Consolidated player input (4 bytes, one per player) was intended
@@ -533,13 +534,20 @@
           ;;   $02 - down
           ;;   $01 - up
           ;;
-          ;; These live in dedicated zero page bytes at $FB-$FE so that they
+          ;; These live in SCRAM at $d060-$d063 (write ports) so that they
           ;; are never aliased by the temp1-temp6 scratch words or by the
           ;; scorePointers block that both display kernels scribble over.
-          player0Input  = $FB
-          player1Input  = $FC
-          player2Input  = $FD
-          player3Input  = $FE
+          ;; No variables are permitted in $F0-$FF (stack space).
+          player1Input_W  = $d060
+          player2Input_W  = $d061
+          player3Input_W  = $d062
+          player4Input_W  = $d063
+          player1Input_R  = player1Input_W | $80
+          player2Input_R  = player2Input_W | $80
+          player3Input_R  = player3Input_W | $80
+          player4Input_R  = player4Input_W | $80
+playerColor_W  = $d07F
+playerColor_R  = playerColor_W | $80
 
           ;; playerAttackType[0-3] - Attack type for each player (0=MeleeAttack, 1=RangedAttack, 2=AreaAttack)
           ;; Initialized from CharacterAttackTypes[playerCharacter[playerIndex]]

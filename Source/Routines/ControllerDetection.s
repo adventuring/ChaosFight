@@ -33,20 +33,38 @@ DetectPads .proc
           and # ClearSystemFlagPauseButtonPrev
           sta systemFlags
           .fi
-          ;; Check for Quadtari
-          ;; If INPT0{7} is set, check right side
-          lda INPT0
-          bpl CDP_CheckRightSide
+          ;; Check for QuadTari on either port (proper detection with timing)
+          ;; For QuadTari detection: after grounding paddle ports (VBLANK bit 6 = 1),
+          ;; QuadTari switches the second player's fire button to INPT1/INPT3.
+          ;; Without QuadTari, these ports float high (idle).
+          ;; We need to wait for VBLANK to ground capacitors, then check.
+          ;;
+          ;; First: wait one frame for capacitors to discharge after grounding
+          ;; Set VBLANK bit 6 = 1 (ground paddle ports)
+          lda # $40
+          ora VBLANK
+          sta VBLANK
 
-          ;; If !INPT1{7}, check right side
+          ;; Wait for timer to expire (INTIM reaches 0)
+          lda INTIM
+          bne *-3                    ; Wait for timer to expire (end of frame)
+
+          ;; Left port: INPT1 high (no fire pressed) = QuadTari present
           lda INPT1
-          bmi CheckLeftSideQuadtari
+          bmi CDP_QuadtariFound
 
-          jmp CDP_CheckRightSide
+          ;; If INPT1 low, not QuadTari on left port
+          jmp CDP_CheckGenesis
 
-CheckLeftSideQuadtari:
+CheckRightPortQuadTari:
+          ;; Right port: INPT3 high (no fire pressed) = QuadTari present
+          lda INPT3
+          bmi CDP_QuadtariFound
 
-          jmp CDP_QuadtariFound
+          ;; If INPT3 low, not QuadTari on right port
+          jmp CDP_CheckGenesis
+
+          ;; No QuadTari - check for Genesis controllers
 
 .pend
 
@@ -58,19 +76,11 @@ CDP_QuadtariFound:
           jmp CDP_MergeStatus
 
 CDP_CheckRightSide .proc
-          ;; If INPT2{7} is set, check Genesis
-          lda INPT2
-          bpl CDP_CheckGenesis
-
-          ;; If !INPT3{7}, check Genesis
+          ;; Right port: INPT3 high (no fire pressed) = QuadTari present
           lda INPT3
-          bmi CheckRightSideQuadtari
+          bmi CDP_QuadtariFound
 
           jmp CDP_CheckGenesis
-
-CheckRightSideQuadtari:
-
-          jmp CDP_QuadtariFound
 
 .pend
 
@@ -96,16 +106,17 @@ CDP_CheckGenesis .proc
           ;; Wait one frame for capacitors to discharge
           ;; This gives us time for the capacitors to drain through joystick ports
           lda INTIM
-          bmi *-3                    ; Wait for timer to expire (end of frame)
+          bne *-3                    ; Wait for timer to expire (end of frame)
 
           ;; Check left side (INPT0, INPT1) for Genesis controller
           ;; Genesis controllers will pull these HIGH when idle
+          ;; If both HIGH → Genesis present; if either LOW → not Genesis
           lda INPT0
-          bpl CheckGenesisRightSide
+          bmi CheckGenesisRightSide    ; If LOW, not Genesis on left
           lda INPT1
-          bpl CheckGenesisRightSide
+          bmi CheckGenesisRightSide    ; If LOW, not Genesis on left
 
-          ;; Left side detected Genesis - set flag + Joy2b+ enabled for INPT0-1
+          ;; Both HIGH → Left side Genesis detected
           lda temp2
           ora # SetLeftPortGenesis
           ora # SetLeftPortJoy2bPlus
@@ -114,11 +125,11 @@ CDP_CheckGenesis .proc
 CheckGenesisRightSide:
           ;; Check right side (INPT2, INPT3) for Genesis controller
           lda INPT2
-          bpl CDP_CheckGenesisDone
+          bpl CDP_CheckGenesisDone       ; If LOW, not Genesis on right
           lda INPT3
-          bpl CDP_CheckGenesisDone
+          bpl CDP_CheckGenesisDone       ; If LOW, not Genesis on right
 
-          ;; Right side detected Genesis - set flag + Joy2b+ enabled for INPT2-3
+          ;; Both HIGH → Right side Genesis detected
           lda temp2
           ora # SetRightPortGenesis
           ora # SetRightPortJoy2bPlus
@@ -138,4 +149,3 @@ CDP_MergeStatus .proc
           jmp BS_return
 
 .pend
-

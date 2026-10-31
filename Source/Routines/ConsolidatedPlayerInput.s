@@ -6,14 +6,14 @@
 ;;; Four bytes, one per player, refreshed once per frame.  Every byte uses
 ;;; the same layout:
 ;;;
-;;;   $80  controller disconnected
+;;;   $80  attack (fire button) — testable via N flag (bmi/bpl)
 ;;;   $40  button 3 - console Game Select / select / pause
-;;;   $20  button 2 - jump
-;;;   $10  button 1 - fire
+;;;   $20  button 2 - jump (same logical input as UP/$01)
+;;;   $10  controller disconnected (players 3-4 without Quadtari)
 ;;;   $08  right
 ;;;   $04  left
-;;;   $02  down
-;;;   $01  up
+;;;   $02  down / defend
+;;;   $01  jump (UP D-pad / Button-2)
 ;;;
 ;;; Sources:
 ;;;   SWCHA   the two joystick directions, active-low, bits 7-4 for
@@ -52,10 +52,10 @@
 
 ConsolidatedPlayerInput .proc
           ;; Returns: Near (return thisbank)
-          ;; Refreshes player0Input-player3Input ($FB-$FE) from the TIA
+          ;; Refreshes player1Input_W-player4Input_W ($d060-$d063) from the TIA
           ;; input registers and the console switches.
           ;;
-          ;; Mutates: player0Input, player1Input, player2Input, player3Input
+          ;; Mutates: player1Input_W, player2Input_W, player3Input_W, player4Input_W
           ;;          (A only - no scratch registers are touched, so this is
           ;;          safe to call from the middle of MainLoop)
           ;; Constraints: Must be in the same bank as its caller so that a
@@ -74,100 +74,136 @@ ConsolidatedPlayerInput .proc
           lsr a
           lsr a
           lsr a
-          sta player0Input
+          sta player1Input_W
           lda INPT4
           bmi NoP0Fire
-          lda player0Input
-          ora # $10
-          sta player0Input
- NoP0Fire:
+          lda player1Input_R
+          ora # $80
+          sta player1Input_W
+  NoP0Fire:
           lda controllerStatus
           and # (SetLeftPortGenesis | SetLeftPortJoy2bPlus)
           beq NoLeftJumpButton
           lda INPT0
           bmi NoLeftJumpButton
-          lda player0Input
+          ;; Button-2 ($20) = jump, same as UP ($01); both map to PlayerInputJump
+          lda player1Input_R
           ora # $20
-          sta player0Input
- NoLeftJumpButton:
+          sta player1Input_W
+  NoLeftJumpButton:
           lda controllerStatus
           and # SetLeftPortJoy2bPlus
           beq NoLeftSelectButton
           lda INPT1
           bmi NoLeftSelectButton
-          lda player0Input
+          lda player1Input_R
           ora # $40
-          sta player0Input
- NoLeftSelectButton:
+          sta player1Input_W
+  NoLeftSelectButton:
 
           ;; Player 2: right port.  SWCHA bits 3-0 already use the same
           ;; order as the consolidated byte, so no shift is needed.
           lda SWCHA
           eor # $ff
           and # $0f
-          sta player1Input
+          sta player2Input_W
           lda INPT5
           bmi NoP1Fire
-          lda player1Input
-          ora # $10
-          sta player1Input
- NoP1Fire:
+          lda player2Input_R
+          ora # $80
+          sta player2Input_W
+  NoP1Fire:
           lda controllerStatus
           and # (SetRightPortGenesis | SetRightPortJoy2bPlus)
           beq NoRightJumpButton
           lda INPT2
           bmi NoRightJumpButton
-          lda player1Input
+          lda player2Input_R
           ora # $20
-          sta player1Input
- NoRightJumpButton:
+          sta player2Input_W
+  NoRightJumpButton:
           lda controllerStatus
           and # SetRightPortJoy2bPlus
           beq NoRightSelectButton
           lda INPT3
           bmi NoRightSelectButton
-          lda player1Input
+          lda player2Input_R
           ora # $40
-          sta player1Input
- NoRightSelectButton:
+          sta player2Input_W
+  NoRightSelectButton:
 
           ;; Players 3 and 4 share the two joysticks with players 1 and 2
           ;; when a Quadtari is present.
-          lda player0Input
-          sta player2Input
-          lda player1Input
-          sta player3Input
+          lda player1Input_R
+          sta player3Input_W
+          lda player2Input_R
+          sta player4Input_W
+
+          ;; Artendo: SELECT = UP+LEFT+RIGHT, START = DOWN+LEFT+RIGHT.
+          ;; If both left ($04) and right ($08) pressed, clear both.
+          lda player1Input_R
+          and # $0c
+          cmp # $0c
+          bne NoArtendoP0
+          lda player1Input_R
+          and # $f3
+          sta player1Input_W
+  NoArtendoP0:
+          lda player2Input_R
+          and # $0c
+          cmp # $0c
+          bne NoArtendoP1
+          lda player2Input_R
+          and # $f3
+          sta player2Input_W
+  NoArtendoP1:
+          lda player3Input_R
+          and # $0c
+          cmp # $0c
+          bne NoArtendoP2
+          lda player3Input_R
+          and # $f3
+          sta player3Input_W
+  NoArtendoP2:
+          lda player4Input_R
+          and # $0c
+          cmp # $0c
+          bne NoArtendoP3
+          lda player4Input_R
+          and # $f3
+          sta player4Input_W
+  NoArtendoP3:
 
           ;; The console Game Select switch is a global select/pause event,
           ;; so it is ORed into all four bytes.
           lda SWCHB
           and # SWCHBSelect
           bne NoGameSelect
-          lda player0Input
+          lda player1Input_R
           ora # $40
-          sta player0Input
-          lda player1Input
+          sta player1Input_W
+          lda player2Input_R
           ora # $40
-          sta player1Input
-          lda player2Input
+          sta player2Input_W
+          lda player3Input_R
           ora # $40
-          sta player2Input
-          lda player3Input
+          sta player3Input_W
+          lda player4Input_R
           ora # $40
-          sta player3Input
- NoGameSelect:
+          sta player4Input_W
+  NoGameSelect:
 
           ;; Without a Quadtari there are no players 3 and 4.
           lda controllerStatus
           and # SetQuadtariDetected
           bne QuadPlayersPresent
-          lda player2Input
-          ora # $80
-          sta player2Input
-          lda player3Input
-          ora # $80
-          sta player3Input
- QuadPlayersPresent:
+          lda player3Input_R
+          ora # $10
+          sta player3Input_W
+          lda player4Input_R
+          ora # $10
+          sta player4Input_W
+  QuadPlayersPresent:
 
           jmp BS_return
-.pend
+  .pend

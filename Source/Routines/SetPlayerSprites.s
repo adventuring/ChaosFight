@@ -151,7 +151,9 @@ SetPlayer3Color:
           lda # 2
           tax
           lda playerState,x
-          sta temp3 & PlayerStateBitGuarding
+          lda playerState,x
+          and # PlayerStateBitGuarding
+          sta temp3
           lda # 2
           tax
           lda playerState,x
@@ -273,7 +275,9 @@ SetPlayer4Color:
           lda # 3
           tax
           lda playerState,x
-          sta temp3 & PlayerStateBitGuarding
+          lda playerState,x
+          and # PlayerStateBitGuarding
+          sta temp3
           lda # 3
           tax
           lda playerState,x

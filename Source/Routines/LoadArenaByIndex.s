@@ -59,9 +59,12 @@ MultiplyBy8:
 
           lda temp4
           sta pf1Pointer
+          clc
+          adc # 8
           sta pf2Pointer
           lda temp5
           sta pf1Pointer+1
+          adc # 0
           sta pf2Pointer+1
           jmp BS_return
 

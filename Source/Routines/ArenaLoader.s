@@ -49,9 +49,6 @@ LoadArenaDispatch:
           sta temp1
           ;; Get arena index (0-15)
 
-.pend
-
-LoadArenaDispatch .proc
           ;; Returns: Far (return otherbank)
           ;; Cross-bank call to GetBWModeWinScreen in bank 15
           ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
@@ -198,9 +195,9 @@ LoadArenaRandom .proc
           ;; If temp1 > MaxArenaID, then LoadArenaRandom
           lda temp1
           cmp # MaxArenaID
-          bcc LoadArenaDispatch
+          bcc LoadArenaDispatchRandom
           jmp LoadArenaRandom
-LoadArenaDispatch:
+LoadArenaDispatchRandom:
           ;; Fall through to LoadArenaDispatch logic (inline to avoid goto)
           ;; Cross-bank call to GetBWModeWinScreen in bank 15
           ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode

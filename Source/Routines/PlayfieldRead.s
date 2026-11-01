@@ -47,7 +47,6 @@ PlayfieldRead .proc
           ;; Read playfield pixel
           lda BitMask,x
           and playfield,y
-          eor BitMask,x
           beq ReadZero
 
           lda #$80

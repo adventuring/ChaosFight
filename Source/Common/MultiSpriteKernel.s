@@ -31,20 +31,20 @@ BlankPF:
 pfsub:
           .byte 8, 4, 2, 2, 1, 0, 0, 1, 0
 
-	;; set initial P1 positions
+          ;; set initial P1 positions
 MultiSpriteSetup:
           lda # 15 ;c=2
           sta pfHeight ;c=3
 
-	ldx #4 ;c=2
+          ldx #4 ;c=2
 SetCopyHeight:
-	txa ;c=2
-	sta SpriteGfxIndex, x ;c=4
-	sta spritesort, x ;c=4
-	dex ;c=2
-	bpl SetCopyHeight ;c=2/3
+          txa ;c=2
+          sta SpriteGfxIndex, x ;c=4
+          sta spritesort, x ;c=4
+          dex ;c=2
+          bpl SetCopyHeight ;c=2/3
 
-          ;; since we can't turn off pf, point PF to zeros here
+          ;; since we can’t turn off pf, point PF to zeros here
           lda # > BlankPF ;c=2
           sta pf2Pointer + 1 ;c=3
           sta pf1Pointer + 1 ;c=3
@@ -55,21 +55,21 @@ SetCopyHeight:
 
 drawscreen:
 WaitForOverscanEnd:
-	lda INTIM ;c=3
-	bmi WaitForOverscanEnd ;c=2/3
+          lda INTIM ;c=3
+          bmi WaitForOverscanEnd ;c=2/3
 
-	lda # 2 ;c=2
-	stx WSYNC ;c=3
-	sta VSYNC ;c=3
-	stx WSYNC ;c=3
-	stx WSYNC ;c=3
-	lsr a ;c=2
-	sta VDELBL ;c=3
-	sta VDELP0 ;c=3
-	stx WSYNC ;c=3
-	sta VSYNC ;c=3 ;turn off VSYNC
+          lda # 2 ;c=2
+          stx WSYNC ;c=3
+          sta VSYNC ;c=3
+          stx WSYNC ;c=3
+          stx WSYNC ;c=3
+          lsr a ;c=2
+          sta VDELBL ;c=3
+          sta VDELP0 ;c=3
+          stx WSYNC ;c=3
+          sta VSYNC ;c=3 ;turn off VSYNC
           lda #overscan_time+5 + 128 ;c=2
-	sta TIM64T ;c=3
+          sta TIM64T ;c=3
 
           ;; Run optional vblank batariBASIC code (defined by the project).
           lda vblank_bB_code ;c=4
@@ -79,38 +79,38 @@ WaitForOverscanEnd:
 SkipVblankCall:
 
           	jsr setscorePointers ;c=6
-	jsr SetupP1Subroutine ;c=6
+          jsr SetupP1Subroutine ;c=6
 
-	;-------------
-
-
+          ;-------------
 
 
 
-	;--position P0, M0, M1, BL
 
-	jsr PrePositionAllObjects ;c=6
 
-	;--set up player 0 pointer
+          ;--position P0, M0, M1, BL
+
+          jsr PrePositionAllObjects ;c=6
+
+          ;--set up player 0 pointer
 
           dec player0y ;c=5
-	lda player0pointer ;c=3 ; player0: must be run every frame!
-	sec ;c=2
-	sbc player0y ;c=3
-	clc ;c=2
-	adc player0Height ;c=3
-	sta player0pointer ;c=3
+          lda player0pointer ;c=3 ; player0: must be run every frame!
+          sec ;c=2
+          sbc player0y ;c=3
+          clc ;c=2
+          adc player0Height ;c=3
+          sta player0pointer ;c=3
 
-	lda player0y ;c=3
-	sta p0Top ;c=3
-	sec ;c=2
-	sbc player0Height ;c=3
-	clc ;c=2
-	adc #$80 ;c=2
-	sta p0Bottom ;c=3
-	
+          lda player0y ;c=3
+          sta p0Top ;c=3
+          sec ;c=2
+          sbc player0Height ;c=3
+          clc ;c=2
+          adc #$80 ;c=2
+          sta p0Bottom ;c=3
+          
 
-	;--some final setup
+          ;--some final setup
 
           ldx #4 ;c=2
           lda #$80 ;c=2
@@ -121,74 +121,74 @@ cycle74_HMCLR:
 ;	sta HMCLR
 
 
-	lda # 0 ;c=2
-	sta PF1 ;c=3
-	sta PF2 ;c=3
-	sta GRP0 ;c=3
-	sta GRP1 ;c=3
+          lda # 0 ;c=2
+          sta PF1 ;c=3
+          sta PF2 ;c=3
+          sta GRP0 ;c=3
+          sta GRP1 ;c=3
 
 
-	jsr KernelSetupSubroutine ;c=6
+          jsr KernelSetupSubroutine ;c=6
 
 WaitForVblankEnd:
-	lda INTIM ;c=3
-	bmi WaitForVblankEnd ;c=2/3
+          lda INTIM ;c=3
+          bmi WaitForVblankEnd ;c=2/3
           lda # 0 ;c=2
-	stx WSYNC ;c=3
-	sta VBLANK ;c=3 ;turn off VBLANK - it was turned on by overscan
-	sta CXCLR ;c=3
+          stx WSYNC ;c=3
+          sta VBLANK ;c=3 ;turn off VBLANK - it was turned on by overscan
+          sta CXCLR ;c=3
 
 
-	jmp KernelRoutine ;c=3
+          jmp KernelRoutine ;c=3
 
 
 PositionASpriteSubroutine	;call this function with A == horizontal position (0-159)
-				;and X == the object to be positioned (0=P0, 1=P1, 2=M0, etc.)
-				;if you do not wish to write to P1 during this function, make
-				;sure Y==0 before you call it. This function will change Y, and A
-				;will be the value put into HMxx when returned.
-				;Call this function with at least 11 cycles left in the scanline 
-				;(jsr + sec + stx WSYNC = 11); it will return 9 cycles
-				;into the second scanline
-	sec ;c=2
-	stx WSYNC ;c=3 ;begin line 1
-	sta @w HMCLR ;c=4 ;+4	 4
+          			;and X == the object to be positioned (0=P0, 1=P1, 2=M0, etc.)
+          			;if you do not wish to write to P1 during this function, make
+          			;sure Y==0 before you call it. This function will change Y, and A
+          			;will be the value put into HMxx when returned.
+          			;Call this function with at least 11 cycles left in the scanline 
+          			;(jsr + sec + stx WSYNC = 11); it will return 9 cycles
+          			;into the second scanline
+          sec ;c=2
+          stx WSYNC ;c=3 ;begin line 1
+          sta @w HMCLR ;c=4 ;+4	 4
 DivideBy15Loop:
-	sbc #15 ;c=2
-	bcs DivideBy15Loop ;c=2/3 ;+4/5	8/13.../58
+          sbc #15 ;c=2
+          bcs DivideBy15Loop ;c=2/3 ;+4/5	8/13.../58
 
-	tay ;c=2 ;+2	10/15/...60
-	lda FineAdjustTableEnd, y ;c=4+1* ;+5	15/20/...65
+          tay ;c=2 ;+2	10/15/...60
+          lda FineAdjustTableEnd, y ;c=4+1* ;+5	15/20/...65
 
-			;	15
-	sta HMP0, x ;c=4 ;+4	19/24/...69
-	sta RESP0, x ;c=4 ;+4	23/28/33/38/43/48/53/58/63/68/73
-	stx WSYNC ;c=3 ; + 3	 0	begin line 2
-	sta HMOVE ;c=3 ; + 3
-	rts ;c=6 ;+6	 9
+          		;	15
+          sta HMP0, x ;c=4 ;+4	19/24/...69
+          sta RESP0, x ;c=4 ;+4	23/28/33/38/43/48/53/58/63/68/73
+          stx WSYNC ;c=3 ; + 3	 0	begin line 2
+          sta HMOVE ;c=3 ; + 3
+          rts ;c=6 ;+6	 9
 
 ;-------------------------------------------------------------------------
 
 PrePositionAllObjects:
 
-	ldx #4 ;c=2
-	lda ballx ;c=3
-	jsr PositionASpriteSubroutine ;c=6
-	
-	dex ;c=2
-	lda missile1x ;c=3
-	jsr PositionASpriteSubroutine ;c=6
-	
-	dex ;c=2
-	lda missile0x ;c=3
-	jsr PositionASpriteSubroutine ;c=6
+          ldx #4 ;c=2
+          lda ballx ;c=3
+          jsr PositionASpriteSubroutine ;c=6
+          
+          dex ;c=2
+          lda missile1x ;c=3
+          jsr PositionASpriteSubroutine ;c=6
+          
+          dex ;c=2
+          lda missile0x ;c=3
+          jsr PositionASpriteSubroutine ;c=6
 
-	dex ;c=2
-	dex ;c=2
-	lda player0x ;c=3
-	jsr PositionASpriteSubroutine ;c=6
+          dex ;c=2
+          dex ;c=2
+          lda player0x ;c=3
+          jsr PositionASpriteSubroutine ;c=6
 
-	rts ;c=6
+          rts ;c=6
 
 
 ;-------------------------------------------------------------------------
@@ -205,45 +205,45 @@ PrePositionAllObjects:
 
 KernelSetupSubroutine:
 
-	ldx #4 ;c=2
+          ldx #4 ;c=2
 AdjustYValuesUpLoop:
-	lda newSpriteY, x ;c=4
-	clc ;c=2
-	adc #2 ;c=2
-	sta newSpriteY, x ;c=4
-	dex ;c=2
-	bpl AdjustYValuesUpLoop ;c=2/3
+          lda newSpriteY, x ;c=4
+          clc ;c=2
+          adc #2 ;c=2
+          sta newSpriteY, x ;c=4
+          dex ;c=2
+          bpl AdjustYValuesUpLoop ;c=2/3
 
 
-	ldx temp3 ;c=3 ; first sprite displayed
+          ldx temp3 ;c=3 ; first sprite displayed
 
-	lda SpriteGfxIndex, x ;c=4
-	tay ;c=2
-	lda newSpriteY, y ;c=4+1*
-	sta repoLine ;c=3
+          lda SpriteGfxIndex, x ;c=4
+          tay ;c=2
+          lda newSpriteY, y ;c=4+1*
+          sta repoLine ;c=3
 
-	lda SpriteGfxIndex-1, x ;c=4
-	tay ;c=2
-	lda newSpriteY, y ;c=4+1*
-	sta temp6 ;c=3
+          lda SpriteGfxIndex-1, x ;c=4
+          tay ;c=2
+          lda newSpriteY, y ;c=4+1*
+          sta temp6 ;c=3
 
-	stx spriteIndex ;c=3
+          stx spriteIndex ;c=3
 
 
 
-	lda #255 ;c=2
-	sta p1Bottom ;c=3
+          lda #255 ;c=2
+          sta p1Bottom ;c=3
 
-	lda player0y ;c=3
-	cmp #screenheight + 1 ;c=2
-	bcc nottoohigh ;c=2/3
-	lda p0Bottom ;c=3
-	sta p0Top ;c=3
+          lda player0y ;c=3
+          cmp #screenheight + 1 ;c=2
+          bcc nottoohigh ;c=2/3
+          lda p0Bottom ;c=3
+          sta p0Top ;c=3
 
           
 
 nottoohigh:
-	rts ;c=6
+          rts ;c=6
 
 ;-------------------------------------------------------------------------
 
@@ -258,20 +258,20 @@ nottoohigh:
 ;-------------------------------------------------------------------------
 
 MaskTable:
-	.byte 1, 3, 7, 15, 31
+          .byte 1, 3, 7, 15, 31
 
           ; shove 6-digit score routine here
 
 sixdigscore:
-	lda # 0 ;c=2
+          lda # 0 ;c=2
 ;	sta COLUBK
-	sta PF0 ;c=3
-	sta PF1 ;c=3
-	sta PF2 ;c=3
-	sta ENABL ;c=3
-	sta ENAM0 ;c=3
-	sta ENAM1 ;c=3
-	;end of kernel here
+          sta PF0 ;c=3
+          sta PF1 ;c=3
+          sta PF2 ;c=3
+          sta ENABL ;c=3
+          sta ENAM0 ;c=3
+          sta ENAM1 ;c=3
+          ;end of kernel here
 
 
           ; 6 digit score routine
@@ -291,21 +291,21 @@ sixdigscore:
 
           ; restore P0pointer
 
-	lda player0pointer ;c=3
-	clc ;c=2
-	adc player0y ;c=3
-	sec ;c=2
-	sbc player0Height ;c=3
-	sta player0pointer ;c=3
+          lda player0pointer ;c=3
+          clc ;c=2
+          adc player0y ;c=3
+          sec ;c=2
+          sbc player0Height ;c=3
+          sta player0pointer ;c=3
           inc player0y ;c=5
 
           .if screenheight == 84
           	 lda #vblank_time+9 + 128 + 10 ;c=2
           .else
-	 lda #vblank_time+9 + 128 + 19 ;c=2
+           lda #vblank_time+9 + 128 + 19 ;c=2
           .endif
 
-	sta TIM64T ;c=3
+          sta TIM64T ;c=3
           .if minikernel
                     jsr minikernel ;c=6
           .fi
@@ -347,27 +347,27 @@ sixdigscore:
 ;	org $F240
 
 SwitchDrawP0K1				;	72
-	lda p0Bottom ;c=3
-	sta p0Top ;c=3 ;+6	 2
-	jmp BackFromSwitchDrawP0K1 ;c=3 ; + 3	 5
+          lda p0Bottom ;c=3
+          sta p0Top ;c=3 ;+6	 2
+          jmp BackFromSwitchDrawP0K1 ;c=3 ; + 3	 5
 
 WaitDrawP0K1				;	74
-	.Sleep 4 ;c=4 ;+4	 2
-	jmp BackFromSwitchDrawP0K1 ;c=3 ; + 3	 5
+          .Sleep 4 ;c=4 ;+4	 2
+          jmp BackFromSwitchDrawP0K1 ;c=3 ; + 3	 5
 
 SkipDrawP1K1				;	11
-	lda # 0 ;c=2
-	sta GRP1 ;c=3 ;+5	16	so Ball gets drawn
-	jmp BackFromSkipDrawP1 ;c=3 ; + 3	19
+          lda # 0 ;c=2
+          sta GRP1 ;c=3 ;+5	16	so Ball gets drawn
+          jmp BackFromSkipDrawP1 ;c=3 ; + 3	19
 
 ;-------------------------------------------------------------------------
 
 KernelRoutine:
           .Sleep 6 ;c=6
-	tsx ;c=2
-	stx aux2 ;c=3
-	ldx #ENABL ;c=2
-	txs ;c=2 ;+9	 9
+          tsx ;c=2
+          stx aux2 ;c=3
+          ldx #ENABL ;c=2
+          txs ;c=2 ;+9	 9
 
           ldx # 0 ;c=2
           lda pfHeight ;c=3
@@ -395,61 +395,60 @@ KernelRoutine:
 ; sleep 25
           .Sleep 2 ;c=2
 KernelLoopa			;	50
-	.Sleep 7 ;c=7 ;+4	54
+          .Sleep 7 ;c=7 ;+4	54
 KernelLoopb			;	54
-	.Sleep 2 ;c=2 ; + 12	66
-	cpy p0Top ;c=3 ; + 3	69
-	beq SwitchDrawP0K1 ;c=2/3 ;+2	71
+          .Sleep 2 ;c=2 ; + 12	66
+          cpy p0Top ;c=3 ; + 3	69
+          beq SwitchDrawP0K1 ;c=2/3 ;+2	71
 
-	bpl WaitDrawP0K1 ;c=2/3 ;+2	73
+          bpl WaitDrawP0K1 ;c=2/3 ;+2	73
 
-	lda (player0pointer), y ;c=5+1* ;+5	 2
-	sta GRP0 ;c=3 ; + 3	 5	VDEL because of repokernel
+          lda (player0pointer), y ;c=5+1* ;+5	 2
+          sta GRP0 ;c=3 ; + 3	 5	VDEL because of repokernel
 BackFromSwitchDrawP0K1:
-	cpy p1Bottom ;c=3 ; + 3	 8	unless we mean to draw immediately, this should be set
-				;		to a value greater than maximum Y value initially
-	bcc SkipDrawP1K1 ;c=2/3 ;+2	10
+          cpy p1Bottom ;c=3 ; + 3	 8	unless we mean to draw immediately, this should be set
+          			;		to a value greater than maximum Y value initially
+          bcc SkipDrawP1K1 ;c=2/3 ;+2	10
 
-	lda (p1Display), y ;c=5+1* ;+5	15
-	sta @w GRP1 ;c=4 ;+4	19
+          lda (p1Display), y ;c=5+1* ;+5	15
+          sta @w GRP1 ;c=4 ;+4	19
 BackFromSkipDrawP1:
 
-;fuck	
           sty temp1 ;c=3
           ldy pfPixelHeight ;c=3
-	lax (pf1Pointer), y ;c=5+1*
-	stx PF1 ;c=3 ;+7	26
-	lda (pf2Pointer), y ;c=5+1*
-	sta PF2 ;c=3 ;+7	33
+          lax (pf1Pointer), y ;c=5+1*
+          stx PF1 ;c=3 ;+7	26
+          lda (pf2Pointer), y ;c=5+1*
+          sta PF2 ;c=3 ;+7	33
           ;sleep 6
-	stx pf1Temp2 ;c=3
-	sta pf2Temp2 ;c=3
-	dey ;c=2
+          stx pf1Temp2 ;c=3
+          sta pf2Temp2 ;c=3
+          dey ;c=2
           bmi pagewraphandler ;c=2/3
-	lda (pf1Pointer), y ;c=5+1*
+          lda (pf1Pointer), y ;c=5+1*
 cyclebalance:
-	sta pf1Temp1 ;c=3
-	lda (pf2Pointer), y ;c=5+1*
-	sta pf2Temp1 ;c=3
+          sta pf1Temp1 ;c=3
+          lda (pf2Pointer), y ;c=5+1*
+          sta pf2Temp1 ;c=3
           ldy temp1 ;c=3
 
           ldx #ENABL ;c=2
           txs ;c=2
-	cpy bally ;c=3
-	php ;c=3 ;+6	39	VDEL ball
+          cpy bally ;c=3
+          php ;c=3 ;+6	39	VDEL ball
 
 
-	cpy missile1y ;c=3
-	php ;c=3 ;+6	71
+          cpy missile1y ;c=3
+          php ;c=3 ;+6	71
 
-	cpy missile0y ;c=3
-	php ;c=3 ;+6	 1
-	
+          cpy missile0y ;c=3
+          php ;c=3 ;+6	 1
+          
 
-	dey ;c=2 ;+2	15
+          dey ;c=2 ;+2	15
 
-	cpy repoLine ;c=3 ; + 3	18
-	beq RepoKernel ;c=2/3 ;+2	20
+          cpy repoLine ;c=3 ; + 3	18
+          beq RepoKernel ;c=2/3 ;+2	20
 ;	.Sleep 20		;+23	43
           .Sleep 6 ;c=6
 
@@ -462,16 +461,16 @@ newrepo ; since we have time here, store next repoline
           .Sleep 4 ;c=4
 
 BackFromRepoKernel:
-	tya ;c=2 ;+2	45
-	and pfHeight ;c=3 ;+2	47
-	bne KernelLoopa ;c=2/3 ;+2	49
-	dec pfPixelHeight ;c=5
-	bpl KernelLoopb ;c=2/3 ; + 3	54
+          tya ;c=2 ;+2	45
+          and pfHeight ;c=3 ;+2	47
+          bne KernelLoopa ;c=2/3 ;+2	49
+          dec pfPixelHeight ;c=5
+          bpl KernelLoopb ;c=2/3 ; + 3	54
 ;	bmi donewkernel		; + 3	54
 ;	bne KernelLoopb + 1		; + 3	54
 
 donewkernel:
-	jmp DoneWithKernel ;c=3 ; + 3	56
+          jmp DoneWithKernel ;c=3 ; + 3	56
 
 pagewraphandler:
           jmp cyclebalance ;c=3
@@ -516,13 +515,13 @@ scorePointerset:
 ;	align 256
 
 SwitchDrawP0KR				;	45
-	lda p0Bottom ;c=3
-	sta p0Top ;c=3 ;+6	51
-	jmp BackFromSwitchDrawP0KR ;c=3 ; + 3	54
+          lda p0Bottom ;c=3
+          sta p0Top ;c=3 ;+6	51
+          jmp BackFromSwitchDrawP0KR ;c=3 ; + 3	54
 
 WaitDrawP0KR				;	47
-	.Sleep 4 ;c=4 ;+4	51
-	jmp BackFromSwitchDrawP0KR ;c=3 ; + 3	54
+          .Sleep 4 ;c=4 ;+4	51
+          jmp BackFromSwitchDrawP0KR ;c=3 ; + 3	54
 
 ;-----------------------------------------------------------
 
@@ -536,168 +535,167 @@ skipthis:
           jmp goback ;c=3
 
 RepoKernel			;	22	crosses page boundary
-	tya ;c=2
-	and pfHeight ;c=3 ;+2	26
-	bne noUpdateXKR ;c=2/3 ;+2	28
+          tya ;c=2
+          and pfHeight ;c=3 ;+2	26
+          bne noUpdateXKR ;c=2/3 ;+2	28
           tax ;c=2
 ;	dex			;+2	30
-	dec pfPixelHeight ;c=5
+          dec pfPixelHeight ;c=5
 ;	stx Temp		; + 3	35
 ;	.Sleep 3
 
-	cpy p0Top ;c=3 ; + 3	42
+          cpy p0Top ;c=3 ; + 3	42
 retXKR:
-	beq SwitchDrawP0KR ;c=2/3 ;+2	44
-	bpl WaitDrawP0KR ;c=2/3 ;+2	46
-	lda (player0pointer), y ;c=5+1* ;+5	51
-	sta GRP0 ;c=3 ; + 3	54	VDEL
+          beq SwitchDrawP0KR ;c=2/3 ;+2	44
+          bpl WaitDrawP0KR ;c=2/3 ;+2	46
+          lda (player0pointer), y ;c=5+1* ;+5	51
+          sta GRP0 ;c=3 ; + 3	54	VDEL
 BackFromSwitchDrawP0KR:
-	sec ;c=2 ;+2	56
+          sec ;c=2 ;+2	56
           
 
 
-	lda pf2Temp1, x ;c=4
-	ldy pf1Temp1, x ;c=4
+          lda pf2Temp1, x ;c=4
+          ldy pf1Temp1, x ;c=4
 
-	ldx spriteIndex ;c=3 ; + 3	 2
+          ldx spriteIndex ;c=3 ; + 3	 2
 
-	sta PF2 ;c=3 ;+7	63
+          sta PF2 ;c=3 ;+7	63
 
-	lda SpriteGfxIndex, x ;c=4
-	sty PF1 ;c=3 ;+7	70	too early?
-	tax ;c=2
-	lda # 0 ;c=2
-	sta GRP1 ;c=3 ;+5	75	to display player 0
-	lda newSpriteX, x ;c=4 ;+4	 6
+          lda SpriteGfxIndex, x ;c=4
+          sty PF1 ;c=3 ;+7	70	too early?
+          tax ;c=2
+          lda # 0 ;c=2
+          sta GRP1 ;c=3 ;+5	75	to display player 0
+          lda newSpriteX, x ;c=4 ;+4	 6
           
 DivideBy15LoopK				;	 6	(carry set above)
-	sbc #15 ;c=2
-	bcs DivideBy15LoopK ;c=2/3 ;+4/5	10/15.../60
+          sbc #15 ;c=2
+          bcs DivideBy15LoopK ;c=2/3 ;+4/5	10/15.../60
 
-	tax ;c=2 ;+2	12/17/...62
-	lda FineAdjustTableEnd, x ;c=4+1* ;+5	17/22/...67
+          tax ;c=2 ;+2	12/17/...62
+          lda FineAdjustTableEnd, x ;c=4+1* ;+5	17/22/...67
 
-	sta HMP1 ;c=3 ; + 3	20/25/...70
-	sta RESP1 ;c=3 ; + 3	23/28/33/38/43/48/53/58/63/68/73
-	stx WSYNC ;c=3 ; + 3	 0	begin line 2
-	;sta HMOVE			; + 3	 3
+          sta HMP1 ;c=3 ; + 3	20/25/...70
+          sta RESP1 ;c=3 ; + 3	23/28/33/38/43/48/53/58/63/68/73
+          stx WSYNC ;c=3 ; + 3	 0	begin line 2
+          ;sta HMOVE			; + 3	 3
 
-	ldx #ENABL ;c=2
-	txs ;c=2 ;+4	25
-	ldy repoLine ;c=3 ; restore y
-	cpy bally ;c=3
-	php ;c=3 ;+6	 9	VDEL ball
+          ldx #ENABL ;c=2
+          txs ;c=2 ;+4	25
+          ldy repoLine ;c=3 ; restore y
+          cpy bally ;c=3
+          php ;c=3 ;+6	 9	VDEL ball
 
-	cpy missile1y ;c=3
-	php ;c=3 ;+6	15
+          cpy missile1y ;c=3
+          php ;c=3 ;+6	15
 
-	cpy missile0y ;c=3
-	php ;c=3 ;+6	21
+          cpy missile0y ;c=3
+          php ;c=3 ;+6	21
 ;15 cycles
-	tya ;c=2
-	and pfHeight ;c=3
+          tya ;c=2
+          and pfHeight ;c=3
           ;eor #1
-	and #$FE ;c=2
-	bne skipthis ;c=2/3
+          and #$FE ;c=2
+          bne skipthis ;c=2/3
 
           tax ;c=2
           .Sleep 4 ;c=4
 goback:
-	dey ;c=2
-	cpy p0Top ;c=3 ; + 3	52
-	beq SwitchDrawP0KV ;c=2/3 ;+2	54
+          dey ;c=2
+          cpy p0Top ;c=3 ; + 3	52
+          beq SwitchDrawP0KV ;c=2/3 ;+2	54
 
-	bpl WaitDrawP0KV ;c=2/3 ;+2	56
+          bpl WaitDrawP0KV ;c=2/3 ;+2	56
 
-	lda (player0pointer), y ;c=5+1* ;+5	61
-	sta GRP0 ;c=3 ; + 3	64	VDEL
+          lda (player0pointer), y ;c=5+1* ;+5	61
+          sta GRP0 ;c=3 ; + 3	64	VDEL
 BackFromSwitchDrawP0KV:
 
 ; .Sleep 3
 
-	lda pf2Temp1, x ;c=4
-	sta PF2 ;c=3 ;+7	 5
-	lda pf1Temp1, x ;c=4
-	sta PF1 ;c=3 ;+7	74 
+          lda pf2Temp1, x ;c=4
+          sta PF2 ;c=3 ;+7	 5
+          lda pf1Temp1, x ;c=4
+          sta PF1 ;c=3 ;+7	74 
           sta HMOVE ;c=3
 
-	lda # 0 ;c=2
-	sta GRP1 ;c=3 ;+5	10	to display GRP0
+          lda # 0 ;c=2
+          sta GRP1 ;c=3 ;+5	10	to display GRP0
 
-	ldx #ENABL ;c=2
-	txs ;c=2 ;+4	 8
+          ldx #ENABL ;c=2
+          txs ;c=2 ;+4	 8
 
-	ldx spriteIndex ;c=3 ; + 3	13	restore index into new sprite vars
-	;--now, set all new variables and return to main kernel loop
+          ldx spriteIndex ;c=3 ; + 3	13	restore index into new sprite vars
+          ;--now, set all new variables and return to main kernel loop
 
 
 ;
-	lda SpriteGfxIndex, x ;c=4 ;+4	31
-	tax ;c=2 ;+2	33
+          lda SpriteGfxIndex, x ;c=4 ;+4	31
+          tax ;c=2 ;+2	33
 ;
 
 
 
-	lda newNUSIZ, x ;c=4
-	sta NUSIZ1 ;c=3 ;+7	20
+          lda newNUSIZ, x ;c=4
+          sta NUSIZ1 ;c=3 ;+7	20
           sta REFP1 ;c=3
-	lda NewCOLUP1, x ;c=4
-	sta COLUP1 ;c=3 ;+7	27
+          lda NewCOLUP1, x ;c=4
+          sta COLUP1 ;c=3 ;+7	27
 
 ;	lda SpriteGfxIndex, x	;+4	31
 ;	tax				;+2	33
-;fuck2
-	lda newSpriteY, x ;c=4 ;+4	46
-	sec ;c=2 ;+2	38
-	sbc spriteHeight, x ;c=4 ;+4	42
-	sta p1Bottom ;c=3 ; + 3	45
+          lda newSpriteY, x ;c=4 ;+4	46
+          sec ;c=2 ;+2	38
+          sbc spriteHeight, x ;c=4 ;+4	42
+          sta p1Bottom ;c=3 ; + 3	45
 
           .Sleep 6 ;c=6
-	lda player1PointerLo, x ;c=4 ;+4	49
-	sbc p1Bottom ;c=3 ; + 3	52	carry should still be set
-	sta p1Display ;c=3 ; + 3	55
-	lda player1PointerHi, x ;c=4
-	sta p1Display + 1 ;c=3 ;+7	62
+          lda player1PointerLo, x ;c=4 ;+4	49
+          sbc p1Bottom ;c=3 ; + 3	52	carry should still be set
+          sta p1Display ;c=3 ; + 3	55
+          lda player1PointerHi, x ;c=4
+          sta p1Display + 1 ;c=3 ;+7	62
 
 
-	cpy bally ;c=3
-	php ;c=3 ;+6	68	VDELed
+          cpy bally ;c=3
+          php ;c=3 ;+6	68	VDELed
 
-	cpy missile1y ;c=3
-	php ;c=3 ;+6	74
+          cpy missile1y ;c=3
+          php ;c=3 ;+6	74
 
-	cpy missile0y ;c=3
-	php ;c=3 ;+6	 4
+          cpy missile0y ;c=3
+          php ;c=3 ;+6	 4
 
 
 
 ; lda SpriteGfxIndex-1, x
 ; .Sleep 3
-	dec spriteIndex ;c=5 ;+5	13
+          dec spriteIndex ;c=5 ;+5	13
 ; tax
 ; lda newSpriteY, x
 ; sta repoLine
 
 ; 10 cycles below...
-	bpl SetNextLine ;c=2/3
-	lda #255 ;c=2
-	jmp SetLastLine ;c=3
+          bpl SetNextLine ;c=2/3
+          lda #255 ;c=2
+          jmp SetLastLine ;c=3
 SetNextLine:
 ;	lda newSpriteY-1, x
-	lda @w temp6 ;c=4
+          lda @w temp6 ;c=4
 SetLastLine:
-	sta repoLine ;c=3
+          sta repoLine ;c=3
 
           tya ;c=2
           and pfHeight ;c=3
           bne nodec ;c=2/3
           dec pfPixelHeight ;c=5
-	dey ;c=2 ;+2	30
+          dey ;c=2 ;+2	30
 
 ; 10 cycles 
           
 
-	jmp BackFromRepoKernel ;c=3 ; + 3	43
+          jmp BackFromRepoKernel ;c=3 ; + 3	43
 
 nodec:
           .Sleep 4 ;c=4
@@ -708,13 +706,13 @@ nodec:
 
 
 SwitchDrawP0KV				;	69
-	lda p0Bottom ;c=3
-	sta p0Top ;c=3 ;+6	75
-	jmp BackFromSwitchDrawP0KV ;c=3 ; + 3	 2
+          lda p0Bottom ;c=3
+          sta p0Top ;c=3 ;+6	75
+          jmp BackFromSwitchDrawP0KV ;c=3 ; + 3	 2
 
 WaitDrawP0KV				;	71
-	.Sleep 4 ;c=4 ;+4	75
-	jmp BackFromSwitchDrawP0KV ;c=3 ; + 3	 2
+          .Sleep 4 ;c=4 ;+4	75
+          jmp BackFromSwitchDrawP0KV ;c=3 ; + 3	 2
 
 ;-------------------------------------------------------------------------
 
@@ -724,7 +722,7 @@ BottomOfKernelLoop:
           lda # CTRLPFSCORE | CTRLPFREF ;c=2
           sta CTRLPF ;c=3
 
-	stx WSYNC ;c=3
+          stx WSYNC ;c=3
           ldx aux2 ;c=3
           txs ;c=2
           jsr sixdigscore ;c=6 ; set up score
@@ -788,7 +786,7 @@ beginscore:
           dey ;c=2
           bpl loop2 ;c=2/3 ;+2 60 180
           	ldx aux2 ;c=3
-	txs ;c=2
+          txs ;c=2
 
 
 ; lda scorePointers + 1
@@ -823,8 +821,8 @@ SkipScore:
           .else
                     lda # 2 ;c=2
           .fi
-	sta WSYNC ;c=3
-	sta VBLANK ;c=3 ;turn on VBLANK
+          sta WSYNC ;c=3
+          sta VBLANK ;c=3 ;turn on VBLANK
 
           ; Set overscan timer before returning to MainLoop, which runs
           ; the mode handlers during overscan.
@@ -843,14 +841,14 @@ SkipScore:
 
 KernelCleanupSubroutine:
 
-	ldx #4 ;c=2
+          ldx #4 ;c=2
 AdjustYValuesDownLoop:
-	lda newSpriteY, x ;c=4
-	sec ;c=2
-	sbc #2 ;c=2
-	sta newSpriteY, x ;c=4
-	dex ;c=2
-	bpl AdjustYValuesDownLoop ;c=2/3
+          lda newSpriteY, x ;c=4
+          sec ;c=2
+          sbc #2 ;c=2
+          sta newSpriteY, x ;c=4
+          dex ;c=2
+          bpl AdjustYValuesDownLoop ;c=2/3
 
           rts ;c=6
 
@@ -990,4 +988,5 @@ ScoreBCD1:
           .byte $21, $21, $22, $23, $23, $24, $24, $25, $26, $26
 
           .bend
+
 

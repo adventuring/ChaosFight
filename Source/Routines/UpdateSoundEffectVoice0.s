@@ -30,9 +30,10 @@ UpdateSoundEffectVoice0 .proc
           sta temp4
           lda temp4
           sta soundEffectFrame_W
-          jmp BS_return
 
           ;; Frame counter reached 0 - load next note from Sounds bank
+          lda temp4
+          bne UpdateSoundEffectVoice0Done
           ;; Cross-bank call to LoadSoundNote in bank 14
           ;; Return address: ENCODED with caller bank 14 ($e0) for BS_return to decode
           lda # ((>(AfterLoadSoundNoteVoice0-1)) & $0f) | $e0  ;;; Encode bank 14 in high nybble
@@ -63,6 +64,9 @@ AfterLoadSoundNoteVoice0:
           ;; - Handle end-of-sound: set soundEffectPointer = 0, AUDV0
           ;; = 0, free voice
           jmp BS_return
+
+UpdateSoundEffectVoice0Done:
+          rts
 
 .pend
 

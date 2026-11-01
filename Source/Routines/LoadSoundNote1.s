@@ -64,8 +64,10 @@ LoadSoundNote1 .proc
           sta AUDC1
           lda temp3
           sta AUDF1
-          lda soundEffectID_R
+          lda temp2
+          and # 15
           sta AUDV1
+          sta soundEffectID_W
 
           ;; Set frame counter = Duration + Delay
           ;; Set soundEffectFrame1_W = temp4 + temp5

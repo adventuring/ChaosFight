@@ -36,13 +36,15 @@ LoadSoundNote .proc
           sta temp5
 
           ;; Check for end of sound (Duration = 0)
-          jmp BS_return
+          lda temp4
+          beq LoadSoundNoteEnd
 
           ;; Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           ;; AUDCV
           ;; Set temp6 = temp2 & %11110000
           ;; Set temp6 = temp6 / 16
-          lda temp6
+          lda temp2
+          and # $f0
           lsr
           lsr
           lsr
@@ -58,8 +60,10 @@ LoadSoundNote .proc
           sta AUDC0
           lda temp3
           sta AUDF0
-          lda soundEffectID_R
+          lda temp2
+          and # 15
           sta AUDV0
+          sta soundEffectID_W
 
           ;; Set frame counter = Duration + Delay
           ;; Set soundEffectFrame_W = temp4 + temp5

@@ -83,8 +83,8 @@ NoP1Press:
            ;; The enhanced buttons are consolidated into per-player bytes
            ;; by ConsolidatedPlayerInput.s:
            ;;   player1Input_W $20 = P1 jump, $40 = P1 select (was INPT0/INPT1)
-           ;;   player1Input_W $20 = P2 jump, $40 = P2 select (was INPT2/INPT3)
-           ;;   player2Input_W / player3Input_W = P3/P4 (Quadtari only)
+           ;;   player2Input_W $20 = P2 jump, $40 = P2 select (was INPT2/INPT3)
+           ;;   player3Input_W / player4Input_W = P3/P4 (Quadtari only)
            lda # 0
            sta temp2
            ;; Player 1 enhanced ($20/$40) -> temp2 $10

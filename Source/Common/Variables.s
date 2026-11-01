@@ -676,9 +676,9 @@ playerColor_R  = playerColor_W | $80
           ;; screen only), safe in SCRAM
           ;; Allocated in SCRAM to free ZPRAM var24-var31 for physics
           ;; animation vars
-          playersRemaining_W  = $d060
+          playersRemaining_W  = $d071
           ;; Game Mode: Count of active players (SCRAM - low frequency
-          playersRemaining_R  = $d0E0
+          playersRemaining_R  = $d0F1
           ;; access)
           gameEndTimer_W  = $d062
           gameEndTimer_R  = $d0E2
@@ -796,12 +796,12 @@ playerColor_R  = playerColor_W | $80
           ;; (SuperChip RAM)
           ;; Uses w097-w100 so w000-w063 remain dedicated to PlayerFrameBuffer
           ;; PlayerFrameBuffer
-          missileY_W  = $d061
+          missileY_W  = $d073
           ;; NOTE: batariBASIC uses array syntax - missileY[0] =
           ;; w097/r097, missileY[1] = w098/r098, etc.
           ;; NOTE: Must use missileY_R for reads and missileY_W for
           ;; writes to avoid RMW issues
-          missileY_R  = $d0E1
+          missileY_R  = $d0F3
 
           ;; Game Mode: Player timers array [0-3] - used for guard
           ;; cooldowns and other timers

@@ -881,7 +881,7 @@ UpdateMusicVoice1Done:
 
 .pend
 
-;; StopMusic .proc (no matching .pend)
+StopMusic .proc
 
           ;;
           ;; Returns: Far (return otherbank)
@@ -942,4 +942,5 @@ UpdateMusicVoice1Done:
           sta musicVoice1Frame_W
 
           jmp BS_return
+.pend
 

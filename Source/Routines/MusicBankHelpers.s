@@ -291,8 +291,10 @@ LoadMusicNote0 .proc
           sta AUDC0
           lda temp3
           sta AUDF0
-          lda musicVoice0TargetAUDV_R
+          lda temp2
+          and # 15
           sta AUDV0
+          sta musicVoice0TargetAUDV_W
 
 
 
@@ -390,8 +392,10 @@ LoadMusicNote1 .proc
           ;; Check for end of track (Duration = 0)
           lda temp4
           beq LoadMusicNote1EndOfTrack
-          ;; Set temp6 = temp6 / 16
-          lda temp6
+
+          ;; Extract AUDC (upper 4 bits) from AUDCV
+          lda temp2
+          and # $f0
           lsr
           lsr
           lsr
@@ -422,8 +426,10 @@ LoadMusicNote1 .proc
           sta AUDC1
           lda temp3
           sta AUDF1
-          lda musicVoice1TargetAUDV_R
+          lda temp2
+          and # 15
           sta AUDV1
+          sta musicVoice1TargetAUDV_W
 
 
 

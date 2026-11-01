@@ -53,9 +53,6 @@
 
 
 PublisherPreludeMain .proc
-          ;; NTSC VBLANK timer (37+128 = 165 ticks = ~262 scanlines total)
-          lda # 37+128
-          sta TIM64T
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           ;; Expected: 4 bytes on stack from BS_jsr call (cross-bank call from MainLoop)
           ;; Check for button press on any controller to skip

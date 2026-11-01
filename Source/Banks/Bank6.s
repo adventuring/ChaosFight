@@ -52,3 +52,4 @@ Bank6BS: .block
           current_bank = 6
           .include "Source/Common/BankSwitching.s"
           .bend
+.include "Source/Routines/HandleJoannaMissile.s"

@@ -52,3 +52,4 @@ Bank9BS: .block
           current_bank = 9        
           .include "Source/Common/BankSwitching.s"
           .bend
+.include "Source/Routines/JoannaAttack.s"

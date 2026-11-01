@@ -7,7 +7,7 @@
           ;; Bank 15
           ;; Duplicate of MusicBankHelpers.bas but for Bank 15 songs
 
-LoadSongPointerBank15:
+LoadSongPointerBank15 .proc
           ;; Lookup song pointer from tables (Bank 15 songs: 0-Bank14MaxSongID)
           ;;
           ;; Input: temp1 = song ID (Bank 15 songs: 0-Bank14MaxSongID),
@@ -57,6 +57,7 @@ SongIDInRange:
           ;; LoadSongPointerBank15 is called from StartMusic which is called cross-bank
           ;; Therefore it must always use return thisbank, even when called same-bank
           rts
+.pend
 
 LSP15_InvalidSong:
           lda # 0
@@ -64,7 +65,7 @@ LSP15_InvalidSong:
           ;; LoadSongPointerBank15 is called from StartMusic which is called cross-bank
           ;; Therefore it must always use return thisbank, even when called same-bank
           rts
-LoadSongVoice1PointerBank15:
+LoadSongVoice1PointerBank15 .proc
 
           ;; Lookup Voice 1 song pointer from tables (Bank 15 songs)
           ;;
@@ -98,7 +99,8 @@ LoadSongVoice1PointerBank15:
           ;; LoadSongVoice1PointerBank15 is called from StartMusic which is called cross-bank
           ;; Therefore it must always use return thisbank, even when called same-bank
           rts
-LoadMusicNote0Bank15:
+.pend
+LoadMusicNote0Bank15 .proc
 
           ;; Load next note from Voice 0 stream (Bank 15, assembly pointer access).
           ;; Input: musicVoice0Pointer (global 16-bit) = current Song_Voice0 pointer
@@ -165,8 +167,10 @@ LoadMusicNote0Bank15:
           sta AUDC0
           lda temp3
           sta AUDF0
-          lda musicVoice0TargetAUDV_R
+          lda temp2
+          and # 15
           sta AUDV0
+          sta musicVoice0TargetAUDV_W
 
           ;; Set musicVoice0Frame_W = temp4 + temp5
           lda temp4
@@ -184,7 +188,8 @@ LoadMusicNote0Bank15:
           ;; LoadMusicNote0Bank15 is called from UpdateMusicVoice0 which is reached via cross-bank call
           ;; (PlayMusic is called cross-bank from MainLoop). Therefore it must always use return thisbank.
           rts
-LoadMusicNote1Bank15:
+.pend
+LoadMusicNote1Bank15 .proc
 
           ;; Load next note from Voice 1 stream using assembly for pointer access (Bank 15)
           ;;
@@ -256,8 +261,10 @@ LoadMusicNote1Bank15:
           sta AUDC1
           lda temp3
           sta AUDF1
-          lda musicVoice1TargetAUDV_R
+          lda temp2
+          and # 15
           sta AUDV1
+          sta musicVoice1TargetAUDV_W
 
           ;; Set musicVoice1Frame_W = temp4 + temp5
           lda temp4
@@ -275,6 +282,7 @@ LoadMusicNote1Bank15:
           ;; LoadMusicNote1Bank15 is called from UpdateMusicVoice1 which is reached via cross-bank call
           ;; (PlayMusic is called cross-bank from MainLoop). Therefore it must always use return thisbank.
           rts
+.pend
 
 LoadMusicNote1EndOfTrack:
           ;; End of track reached - return without advancing pointer

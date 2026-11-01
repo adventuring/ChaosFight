@@ -42,6 +42,10 @@ title_do_vertical_sync:
 titleframe = missile0x
           inc titleframe ;;; increment the frame counter
 
+          ;; VBLANK timer must be loaded BEFORE the loop starts
+          lda # 37+128
+          sta TIM64T
+
 
 title_vblank_loop:
           lda INTIM
@@ -55,9 +59,6 @@ title_vblank_loop:
 title_playfield:
 
 ;; ======== BEGIN of the custom kernel!!!!! All of the work is done in the playfield.
-
-          lda #37+128
-          sta TIM64T
 
           lda # 1
           sta CTRLPF

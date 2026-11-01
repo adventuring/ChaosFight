@@ -48,7 +48,8 @@ PlaySoundEffect .proc
           ;; active). No queuing - sound forgotten if both voices busy.
           ;; Voice 0 tried first, Voice 1 as fallback
           ;; Check if music is active (music takes priority)
-          jmp BS_return
+          lda musicPlaying
+          bne PlaySoundEffectDone
 
           ;; Lookup sound pointer from Sounds bank (Bank 0)
           ;; Cross-bank call to LoadSoundPointer in bank 0
@@ -85,6 +86,9 @@ UseVoice0:
           sta soundEffectFrame_W
           ;; tail call
           jmp UpdateSoundEffectVoice0
+
+PlaySoundEffectDone:
+          jmp BS_return
 
 .pend
 

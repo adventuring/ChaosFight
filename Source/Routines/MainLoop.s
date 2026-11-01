@@ -71,7 +71,7 @@ SkipResetCheck:
           sta temp1
 NoP0Press:
           ;; Player 2 fire (bit $80) -> temp1 $20
-          lda player1Input_R
+          lda player2Input_R
           and # $80
           beq NoP1Press
           lda temp1
@@ -95,7 +95,7 @@ NoP1Press:
            sta temp2
 NoP1Enh:
            ;; Player 2 enhanced ($20/$40) -> temp2 $08
-           lda player1Input_R
+           lda player2Input_R
            and # ($20 | $40)
            beq NoP2Enh
            lda temp2

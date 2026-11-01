@@ -1,11 +1,11 @@
 ;;; ChaosFight - Source/Routines/SetSpritePositions.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
-;;; Assign p0/p1 hardware sprites to Players 1-4 with frame multiplexing
-;;; Only multiplex when Player 3 or Player 4 are active
-;;; Even frames: p0 = Player 1, p1 = Player 2
-;;; Odd frames:  p0 = Player 3, p1 = Player 4
-;;; If only Players 1-2 active: p0 = Player 1 always, p1 = Player 2 always
+;;; Assign p0/p1 hardware sprites to Players 1-4 with intelligent multiplexing
+;;; P0=(Player 1, Player 3, or both); P1=(Player 2, Player 4, or both)
+;;; Multiplex only when BOTH players in a pair are active
+;;; Even frames: P0=Player 1 (if active) or Player 3; P1=Player 2 (if active) or Player 4
+;;; Odd frames:  P0=Player 3 (if active) or Player 1; P1=Player 4 (if active) or Player 2
 AssignP0P1Sprites:
            ;; Returns: Near (return thisbank)
            ;;
@@ -18,49 +18,127 @@ AssignP0P1Sprites:
            and # SetQuadtariDetected
            beq AssignP0P1_TwoPlayerOnly
 
-           ;; Quadtari detected - check if Player 3 or 4 have health
-           lda playerHealth+2
-           bne AssignP0P1_NeedMultiplex
-           lda playerHealth+3
-           bne AssignP0P1_NeedMultiplex
+           ;; Quadtari detected - check if Players 1&3 or 2&4 are both active for multiplexing
+           ;; --- P0 assignment (Player 1 / Player 3) ---
+           lda playerHealth+0   ; Player 1 health
+           beq .P0_Player1Dead
 
-AssignP0P1_TwoPlayerOnly:
-           ;; Only Players 1-2 active: no multiplexing needed
-           ;; p0 = Player 1 (array [0])
+           ;; Player 1 alive - check Player 3 health
+           lda playerHealth+2   ; Player 3 health
+           bne .P0_Multiplex   ; Player 3 also alive → multiplex p0
+
+           ;; Player 1 alive, Player 3 dead → P0 = Player 1 always
            lda playerX
            sta p0x
            lda playerY
            sta p0y
-           ;; p1 = Player 2 (array [1])
-           lda playerX+1
-           sta p1x
-           lda playerY+1
-           sta p1y
-           rts
+           jmp .P0_Done
 
-AssignP0P1_NeedMultiplex:
-           ;; Player 3 or 4 active: use frame parity multiplexing
-           lda frame
-           and # 1
-           beq AssignP0P1_EvenFrame
-
-           ;; Odd frame: p0 = Player 3, p1 = Player 4
+.P0_Player1Dead:
+           ;; Player 1 dead - check Player 3 health
+           lda playerHealth+2   ; Player 3 health
+           beq .P0_BothDead
+           ;; Player 1 dead, Player 3 alive → P0 = Player 3 always
            lda playerX+2
            sta p0x
            lda playerY+2
            sta p0y
-           lda playerX+3
-           sta p1x
-           lda playerY+3
-           sta p1y
-           rts
+           jmp .P0_Done
 
-AssignP0P1_EvenFrame:
-           ;; Even frame: p0 = Player 1, p1 = Player 2
+.P0_BothDead:
+           ;; Both Player 1 and 3 dead - disable P0
+           lda # 0
+           sta p0x
+           lda # 0
+           sta p0y
+           jmp .P0_Done
+
+.P0_Multiplex:
+           ;; Both Player 1 and Player 3 alive → multiplex based on frame parity
+           lda frame
+           and # 1
+           bne .P0_OddFrame
+.P0_EvenFrame:
+           ;; Even frame: P0 = Player 1
            lda playerX
            sta p0x
            lda playerY
            sta p0y
+           jmp .P0_Done
+
+.P0_OddFrame:
+           ;; Odd frame: P0 = Player 3
+           lda playerX+2
+           sta p0x
+           lda playerY+2
+           sta p0y
+
+.P0_Done:
+           ;; --- P1 assignment (Player 2 / Player 4) ---
+           lda playerHealth+1   ; Player 2 health
+           beq .P1_Player2Dead
+
+           ;; Player 2 alive
+           lda playerHealth+3   ; Player 4 health
+           bne .P1_Multiplex   ; Player 4 also alive → multiplex p1
+
+           ;; Player 2 alive, Player 4 dead → P1 = Player 2 always
+           lda playerX+1
+           sta p1x
+           lda playerY+1
+           sta p1y
+           jmp .P1_Done
+
+.P1_Player2Dead:
+           ;; Player 2 dead - check Player 4 health
+           lda playerHealth+3   ; Player 4 health
+           beq .P1_BothDead
+           ;; Player 2 dead, Player 4 alive → P1 = Player 4 always
+           lda playerX+3
+           sta p1x
+           lda playerY+3
+           sta p1y
+           jmp .P1_Done
+
+.P1_BothDead:
+           ;; Both Player 2 and 4 dead - disable P1
+           lda # 0
+           sta p1x
+           lda # 0
+           sta p1y
+           jmp .P1_Done
+
+.P1_Multiplex:
+           ;; Both Player 2 and Player 4 alive → multiplex based on frame parity
+           lda frame
+           and # 1
+           bne .P1_OddFrame
+.P1_EvenFrame:
+           ;; Even frame: P1 = Player 2
+           lda playerX+1
+           sta p1x
+           lda playerY+1
+           sta p1y
+           jmp .P1_Done
+
+.P1_OddFrame:
+           ;; Odd frame: P1 = Player 4
+           lda playerX+3
+           sta p1x
+           lda playerY+3
+           sta p1y
+
+.P1_Done:
+           rts
+
+AssignP0P1_TwoPlayerOnly:
+           ;; Only Players 1-2 active: no multiplexing needed
+           ;; P0 = Player 1 (array [0])
+           lda playerX
+           sta p0x
+           lda playerY
+           sta p0y
+           ;; P1 = Player 2 (array [1])
            lda playerX+1
            sta p1x
            lda playerY+1

@@ -133,7 +133,7 @@ LoadMusicNote0Bank15 .proc
             sta temp4
             iny
             lda (musicVoice0Pointer),y  ; Load Delay
-            sta temp5
+          sta temp5
 
           ;; Check for end of track (Duration = 0)
           lda temp4
@@ -283,6 +283,9 @@ LoadMusicNote1Bank15 .proc
           ;; (PlayMusic is called cross-bank from MainLoop). Therefore it must always use return thisbank.
           rts
 .pend
+
+LoadMusicNote0EndOfTrack:
+          jmp BS_return
 
 LoadMusicNote1EndOfTrack:
           ;; End of track reached - return without advancing pointer

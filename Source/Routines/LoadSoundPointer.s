@@ -6,13 +6,13 @@
 
 
 LoadSoundPointer .proc
-
-
-
-
+          ;;
+          ;;
+          ;;
+          ;;
           ;; Lookup sound pointer from tables (Bank 15 sounds: 0-9)
           ;; Returns: Far (return otherbank)
-
+          ;;
           ;;
           ;; Input: temp1 = sound ID (0-9), SoundPointersL[],
 

@@ -740,14 +740,14 @@ UpdateMusicVoice0 .proc
           ldx # 0
           jmp BS_jsr
 AfterLoadMusicNote0Bank0:
-          jmp UpdateMusicVoice0Done
+          jmp BS_return
 
 LoadMusicNote0FromBank14:
           ;; Song in Bank 14
           jsr LoadMusicNote0Bank15
 
 UpdateMusicVoice0Done:
-          rts
+          jmp BS_return
 
 .pend
 
@@ -870,14 +870,13 @@ UpdateMusicVoice1 .proc
           ldx # 0
           jmp BS_jsr
 AfterLoadMusicNote1Bank0:
-          jmp UpdateMusicVoice1Done
+          jmp BS_return
 
 LoadMusicNote1FromBank14:
           ;; Song in Bank 14
           jsr LoadMusicNote1Bank15
 
-UpdateMusicVoice1Done:
-          rts
+          jmp BS_return
 
 .pend
 

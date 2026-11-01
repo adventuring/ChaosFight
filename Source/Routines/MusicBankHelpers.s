@@ -242,7 +242,7 @@ LoadMusicNote0 .proc
           iny
           lda (musicVoice0Pointer),y      ; Load Delay
 
-            sta temp5
+          sta temp5
 
 
 
@@ -320,9 +320,9 @@ LoadMusicNote0 .proc
 
 
 
-.pend
 LoadMusicNote0EndOfTrack:
-          jmp BS_return
+           jmp BS_return
+.pend
 
 LoadMusicNote1 .proc
 
@@ -384,7 +384,7 @@ LoadMusicNote1 .proc
           iny
           lda (musicVoice1Pointer),y      ; Load Delay
 
-            sta temp5
+          sta temp5
 
 
 

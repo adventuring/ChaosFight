@@ -28,7 +28,7 @@ MultiSpriteKernel .block
 FineAdjustTableBegin:
           .byte range(6, 0) << 4
           .byte range(15, 8, -1) << 4
-FineAdjustTableEnd = FineAdjustTableBegin - 241
+          FineAdjustTableEnd = FineAdjustTableBegin - 241
 
 PFStart:
           .byte 87, 43, 0, 21, 0, 0, 0, 10
@@ -42,7 +42,7 @@ MultiSpriteSetup:
           lda # 15 ;c=2
           sta pfHeight ;c=3
 
-          ldx #4 ;c=2
+          ldx # 4 ;c=2
 SetCopyHeight:
           txa ;c=2
           sta SpriteGfxIndex, x ;c=4
@@ -74,23 +74,23 @@ WaitForOverscanEnd:
           sta VDELP0 ;c=3
           stx WSYNC ;c=3
           sta VSYNC ;c=3 ;turn off VSYNC
-          lda #overscan_time+5 + 128 ;c=2
+          lda # overscan_time+5 + 128 ;c=2
           sta TIM64T ;c=3
 
           ;; Run optional vblank batariBASIC code (defined by the project).
           lda vblank_bB_code ;c=4
           ora vblank_bB_code + 1 ;c=4
           beq SkipVblankCall ;c=2/3
+
           jsr vblank_bB_code ;c=6
+
 SkipVblankCall:
 
-          	jsr setscorePointers ;c=6
+                     jsr setscorePointers ;c=6
+
           jsr SetupP1Subroutine ;c=6
 
           ;-------------
-
-
-
 
 
           ;--position P0, M0, M1, BL
@@ -118,13 +118,14 @@ SkipVblankCall:
 
           ;--some final setup
 
-          ldx #4 ;c=2
+          ldx # 4 ;c=2
           lda #$80 ;c=2
 cycle74_HMCLR:
           sta HMP0, x ;c=4
           dex ;c=2
           bpl cycle74_HMCLR ;c=2/3
-;	sta HMCLR
+
+          ;	sta HMCLR
 
 
           lda # 0 ;c=2
@@ -139,6 +140,7 @@ cycle74_HMCLR:
 WaitForVblankEnd:
           lda INTIM ;c=3
           bmi WaitForVblankEnd ;c=2/3
+
           lda # 0 ;c=2
           stx WSYNC ;c=3
           sta VBLANK ;c=3 ;turn off VBLANK - it was turned on by overscan
@@ -147,8 +149,7 @@ WaitForVblankEnd:
 
           jmp KernelRoutine ;c=3
 
-
-PositionASpriteSubroutine	;call this function with A == horizontal position (0-159)
+          PositionASpriteSubroutine	;call this function with A == horizontal position (0-159)
           			;and X == the object to be positioned (0=P0, 1=P1, 2=M0, etc.)
           			;if you do not wish to write to P1 during this function, make
           			;sure Y==0 before you call it. This function will change Y, and A
@@ -160,7 +161,7 @@ PositionASpriteSubroutine	;call this function with A == horizontal position (0-1
           stx WSYNC ;c=3 ;begin line 1
           sta @w HMCLR ;c=4 ;+4	 4
 DivideBy15Loop:
-          sbc #15 ;c=2
+          sbc # 15 ;c=2
           bcs DivideBy15Loop ;c=2/3 ;+4/5	8/13.../58
 
           tay ;c=2 ;+2	10/15/...60
@@ -173,18 +174,18 @@ DivideBy15Loop:
           sta HMOVE ;c=3 ; + 3
           rts ;c=6 ;+6	 9
 
-;-------------------------------------------------------------------------
+          ;-------------------------------------------------------------------------
 
 PrePositionAllObjects:
 
-          ldx #4 ;c=2
+          ldx # 4 ;c=2
           lda ballx ;c=3
           jsr PositionASpriteSubroutine ;c=6
-          
+
           dex ;c=2
           lda missile1x ;c=3
           jsr PositionASpriteSubroutine ;c=6
-          
+
           dex ;c=2
           lda missile0x ;c=3
           jsr PositionASpriteSubroutine ;c=6
@@ -196,30 +197,22 @@ PrePositionAllObjects:
 
           rts ;c=6
 
-
-;-------------------------------------------------------------------------
-
+          ;-------------------------------------------------------------------------
 
 
-
-
-
-
-
-;-------------------------------------------------------------------------
+          ;-------------------------------------------------------------------------
 
 
 KernelSetupSubroutine:
 
-          ldx #4 ;c=2
+          ldx # 4 ;c=2
 AdjustYValuesUpLoop:
           lda newSpriteY, x ;c=4
           clc ;c=2
-          adc #2 ;c=2
+          adc # 2 ;c=2
           sta newSpriteY, x ;c=4
           dex ;c=2
           bpl AdjustYValuesUpLoop ;c=2/3
-
 
           ldx temp3 ;c=3 ; first sprite displayed
 
@@ -236,13 +229,13 @@ AdjustYValuesUpLoop:
           stx spriteIndex ;c=3
 
 
-
-          lda #255 ;c=2
+          lda # 255 ;c=2
           sta p1Bottom ;c=3
 
           lda player0y ;c=3
-          cmp #screenheight + 1 ;c=2
+          cmp # screenheight + 1 ;c=2
           bcc nottoohigh ;c=2/3
+
           lda p0Bottom ;c=3
           sta p0Top ;c=3
 
@@ -251,17 +244,13 @@ AdjustYValuesUpLoop:
 nottoohigh:
           rts ;c=6
 
-;-------------------------------------------------------------------------
+          ;-------------------------------------------------------------------------
 
 
-
-
-
-;*************************************************************************
-
-;-------------------------------------------------------------------------
-;-------------------------Data Below--------------------------------------
-;-------------------------------------------------------------------------
+          ;*************************************************************************
+          ;-------------------------------------------------------------------------
+          ;-------------------------Data Below--------------------------------------
+          ;-------------------------------------------------------------------------
 
 MaskTable:
           .byte 1, 3, 7, 15, 31
@@ -270,7 +259,7 @@ MaskTable:
 
 sixdigscore:
           lda # 0 ;c=2
-;	sta COLUBK
+          ;	sta COLUBK
           sta PF0 ;c=3
           sta PF1 ;c=3
           sta PF2 ;c=3
@@ -281,14 +270,14 @@ sixdigscore:
 
 
           ; 6 digit score routine
-; lda # 0
-; sta PF1
-; sta PF2
-; tax
+          ; lda # 0
+          ; sta PF1
+          ; sta PF2
+          ; tax
 
           stx WSYNC ;c=3 ;, x
 
-; stx WSYNC ;first one, need one more
+          ; stx WSYNC ;first one, need one more
           sta REFP0 ;c=3
           sta REFP1 ;c=3
           sta GRP0 ;c=3
@@ -306,21 +295,22 @@ sixdigscore:
           inc player0y ;c=5
 
           .if screenheight == 84
-          	 lda #vblank_time+9 + 128 + 10 ;c=2
+          	 lda # vblank_time+9 + 128 + 10 ;c=2
           .else
-           lda #vblank_time+9 + 128 + 19 ;c=2
+           lda # vblank_time+9 + 128 + 19 ;c=2
           .endif
 
           sta TIM64T ;c=3
           .if minikernel
                     jsr minikernel ;c=6
+
           .fi
 
-; score pointers contain:
-; score1-5: lo1, lo2, lo3, lo4, lo5, lo6
-; swap lo2->temp1
-; swap lo4->temp3
-; swap lo6->temp5
+          ; score pointers contain:
+          ; score1-5: lo1, lo2, lo3, lo4, lo5, lo6
+          ; swap lo2->temp1
+          ; swap lo4->temp3
+          ; swap lo6->temp5
 
           lda scorePointers+5 ;c=3
           sta temp5 ;c=3
@@ -339,40 +329,38 @@ sixdigscore:
 
           rts ;c=6
 
+          ;-------------------------------------------------------------------------
+          ;----------------------Kernel Routine-------------------------------------
+          ;-------------------------------------------------------------------------
 
 
-;-------------------------------------------------------------------------
-;----------------------Kernel Routine-------------------------------------
-;-------------------------------------------------------------------------
+          ;-------------------------------------------------------------------------
+          ; repeat $f147-*
+          ; brk
+          ; repend
+          ;	org $F240
 
-
-;-------------------------------------------------------------------------
-; repeat $f147-*
-; brk
-; repend
-;	org $F240
-
-SwitchDrawP0K1				;	72
+          SwitchDrawP0K1				;	72
           lda p0Bottom ;c=3
           sta p0Top ;c=3 ;+6	 2
           jmp BackFromSwitchDrawP0K1 ;c=3 ; + 3	 5
 
-WaitDrawP0K1				;	74
+          WaitDrawP0K1				;	74
           .Sleep 4 ;c=4 ;+4	 2
           jmp BackFromSwitchDrawP0K1 ;c=3 ; + 3	 5
 
-SkipDrawP1K1				;	11
+          SkipDrawP1K1				;	11
           lda # 0 ;c=2
           sta GRP1 ;c=3 ;+5	16	so Ball gets drawn
           jmp BackFromSkipDrawP1 ;c=3 ; + 3	19
 
-;-------------------------------------------------------------------------
+          ;-------------------------------------------------------------------------
 
 KernelRoutine:
           .Sleep 6 ;c=6
           tsx ;c=2
           stx aux2 ;c=3
-          ldx #ENABL ;c=2
+          ldx # ENABL ;c=2
           txs ;c=2 ;+9	 9
 
           ldx # 0 ;c=2
@@ -380,7 +368,7 @@ KernelRoutine:
           bpl + ;c=2/3
 
           .byte $24 ;c=3
-+
+          +
           tax ;c=2
 
           lda PFStart, x ;c=4+1* ; get pf pixel resolution for heights 15, 7, 3, 1, 0
@@ -393,16 +381,15 @@ KernelRoutine:
           
           sta pfPixelHeight ;c=3
 
-          ldy #screenheight ;c=2
+          ldy # screenheight ;c=2
           
-;	lda #$02
-;	sta COLUBK		;+5	18
-
-; sleep 25
+          ;	lda #$02
+          ;	sta COLUBK		;+5	18
+          ; sleep 25
           .Sleep 2 ;c=2
-KernelLoopa			;	50
+          KernelLoopa			;	50
           .Sleep 7 ;c=7 ;+4	54
-KernelLoopb			;	54
+          KernelLoopb			;	54
           .Sleep 2 ;c=2 ; + 12	66
           cpy p0Top ;c=3 ; + 3	69
           beq SwitchDrawP0K1 ;c=2/3 ;+2	71
@@ -431,6 +418,7 @@ BackFromSkipDrawP1:
           sta pf2Temp2 ;c=3
           dey ;c=2
           bmi pagewraphandler ;c=2/3
+
           lda (pf1Pointer), y ;c=5+1*
 cyclebalance:
           sta pf1Temp1 ;c=3
@@ -438,7 +426,7 @@ cyclebalance:
           sta pf2Temp1 ;c=3
           ldy temp1 ;c=3
 
-          ldx #ENABL ;c=2
+          ldx # ENABL ;c=2
           txs ;c=2
           cpy bally ;c=3
           php ;c=3 ;+6	39	VDEL ball
@@ -455,10 +443,11 @@ cyclebalance:
 
           cpy repoLine ;c=3 ; + 3	18
           beq RepoKernel ;c=2/3 ;+2	20
-;	.Sleep 20		;+23	43
+
+          ;	.Sleep 20		;+23	43
           .Sleep 6 ;c=6
 
-newrepo ; since we have time here, store next repoline
+          newrepo ; since we have time here, store next repoline
           ldx spriteIndex ;c=3
           lda SpriteGfxIndex-1, x ;c=4
           tax ;c=2
@@ -470,10 +459,12 @@ BackFromRepoKernel:
           tya ;c=2 ;+2	45
           and pfHeight ;c=3 ;+2	47
           bne KernelLoopa ;c=2/3 ;+2	49
+
           dec pfPixelHeight ;c=5
           bpl KernelLoopb ;c=2/3 ; + 3	54
-;	bmi donewkernel		; + 3	54
-;	bne KernelLoopb + 1		; + 3	54
+
+          ;	bmi donewkernel		; + 3	54
+          ;	bne KernelLoopb + 1		; + 3	54
 
 donewkernel:
           jmp DoneWithKernel ;c=3 ; + 3	56
@@ -481,21 +472,23 @@ donewkernel:
 pagewraphandler:
           jmp cyclebalance ;c=3
 
-;-------------------------------------------------------------------------
-          
+          ;-------------------------------------------------------------------------
           ; room here for score?
 
 setscorePointers:
           lax score+2 ;c=3
           jsr scorePointerset ;c=6
+
           sty scorePointers+5 ;c=3
           stx scorePointers+2 ;c=3
           lax score + 1 ;c=3
           jsr scorePointerset ;c=6
+
           sty scorePointers+4 ;c=3
           stx scorePointers + 1 ;c=3
           lax score ;c=3
           jsr scorePointerset ;c=6
+
           sty scorePointers + 3 ;c=3
           stx scorePointers ;c=3
 wastetime:
@@ -518,42 +511,46 @@ scorePointerset:
           adc #<FontData ;c=2
           tax ;c=2
           rts ;c=6
-;	align 256
 
-SwitchDrawP0KR				;	45
+          ;	align 256
+
+          SwitchDrawP0KR				;	45
           lda p0Bottom ;c=3
           sta p0Top ;c=3 ;+6	51
           jmp BackFromSwitchDrawP0KR ;c=3 ; + 3	54
 
-WaitDrawP0KR				;	47
+          WaitDrawP0KR				;	47
           .Sleep 4 ;c=4 ;+4	51
           jmp BackFromSwitchDrawP0KR ;c=3 ; + 3	54
 
-;-----------------------------------------------------------
+          ;-----------------------------------------------------------
 
 noUpdateXKR:
-          ldx #1 ;c=2
+          ldx # 1 ;c=2
           cpy @w p0Top ;c=4
           jmp retXKR ;c=3
 
 skipthis:
-          ldx #1 ;c=2
+          ldx # 1 ;c=2
           jmp goback ;c=3
 
-RepoKernel			;	22	crosses page boundary
+          RepoKernel			;	22	crosses page boundary
           tya ;c=2
           and pfHeight ;c=3 ;+2	26
           bne noUpdateXKR ;c=2/3 ;+2	28
+
           tax ;c=2
-;	dex			;+2	30
+          ;	dex			;+2	30
           dec pfPixelHeight ;c=5
-;	stx Temp		; + 3	35
-;	.Sleep 3
+          ;	stx Temp		; + 3	35
+          ;	.Sleep 3
 
           cpy p0Top ;c=3 ; + 3	42
 retXKR:
           beq SwitchDrawP0KR ;c=2/3 ;+2	44
+
           bpl WaitDrawP0KR ;c=2/3 ;+2	46
+
           lda (player0pointer), y ;c=5+1* ;+5	51
           sta GRP0 ;c=3 ; + 3	54	VDEL
 BackFromSwitchDrawP0KR:
@@ -575,8 +572,8 @@ BackFromSwitchDrawP0KR:
           sta GRP1 ;c=3 ;+5	75	to display player 0
           lda newSpriteX, x ;c=4 ;+4	 6
           
-DivideBy15LoopK				;	 6	(carry set above)
-          sbc #15 ;c=2
+          DivideBy15LoopK				;	 6	(carry set above)
+          sbc # 15 ;c=2
           bcs DivideBy15LoopK ;c=2/3 ;+4/5	10/15.../60
 
           tax ;c=2 ;+2	12/17/...62
@@ -587,7 +584,7 @@ DivideBy15LoopK				;	 6	(carry set above)
           stx WSYNC ;c=3 ; + 3	 0	begin line 2
           ;sta HMOVE			; + 3	 3
 
-          ldx #ENABL ;c=2
+          ldx # ENABL ;c=2
           txs ;c=2 ;+4	25
           ldy repoLine ;c=3 ; restore y
           cpy bally ;c=3
@@ -598,7 +595,7 @@ DivideBy15LoopK				;	 6	(carry set above)
 
           cpy missile0y ;c=3
           php ;c=3 ;+6	21
-;15 cycles
+          ;15 cycles
           tya ;c=2
           and pfHeight ;c=3
           ;eor #1
@@ -617,8 +614,7 @@ goback:
           lda (player0pointer), y ;c=5+1* ;+5	61
           sta GRP0 ;c=3 ; + 3	64	VDEL
 BackFromSwitchDrawP0KV:
-
-; .Sleep 3
+          ; .Sleep 3
 
           lda pf2Temp1, x ;c=4
           sta PF2 ;c=3 ;+7	 5
@@ -629,18 +625,17 @@ BackFromSwitchDrawP0KV:
           lda # 0 ;c=2
           sta GRP1 ;c=3 ;+5	10	to display GRP0
 
-          ldx #ENABL ;c=2
+          ldx # ENABL ;c=2
           txs ;c=2 ;+4	 8
 
           ldx spriteIndex ;c=3 ; + 3	13	restore index into new sprite vars
           ;--now, set all new variables and return to main kernel loop
 
 
-;
+          ;
           lda SpriteGfxIndex, x ;c=4 ;+4	31
           tax ;c=2 ;+2	33
-;
-
+          ;
 
 
           lda newNUSIZ, x ;c=4
@@ -649,8 +644,8 @@ BackFromSwitchDrawP0KV:
           lda NewCOLUP1, x ;c=4
           sta COLUP1 ;c=3 ;+7	27
 
-;	lda SpriteGfxIndex, x	;+4	31
-;	tax				;+2	33
+          ;	lda SpriteGfxIndex, x	;+4	31
+          ;	tax				;+2	33
           lda newSpriteY, x ;c=4 ;+4	46
           sec ;c=2 ;+2	38
           sbc spriteHeight, x ;c=4 ;+4	42
@@ -674,20 +669,20 @@ BackFromSwitchDrawP0KV:
           php ;c=3 ;+6	 4
 
 
-
-; lda SpriteGfxIndex-1, x
-; .Sleep 3
+          ; lda SpriteGfxIndex-1, x
+          ; .Sleep 3
           dec spriteIndex ;c=5 ;+5	13
-; tax
-; lda newSpriteY, x
-; sta repoLine
-
-; 10 cycles below...
+          ; tax
+          ; lda newSpriteY, x
+          ; sta repoLine
+          ; 10 cycles below...
           bpl SetNextLine ;c=2/3
-          lda #255 ;c=2
+
+          lda # 255 ;c=2
           jmp SetLastLine ;c=3
+
 SetNextLine:
-;	lda newSpriteY-1, x
+          ;	lda newSpriteY-1, x
           lda @w temp6 ;c=4
 SetLastLine:
           sta repoLine ;c=3
@@ -695,10 +690,11 @@ SetLastLine:
           tya ;c=2
           and pfHeight ;c=3
           bne nodec ;c=2/3
+
           dec pfPixelHeight ;c=5
           dey ;c=2 ;+2	30
 
-; 10 cycles 
+          ; 10 cycles
           
 
           jmp BackFromRepoKernel ;c=3 ; + 3	43
@@ -708,19 +704,19 @@ nodec:
           dey ;c=2
           jmp BackFromRepoKernel ;c=3
 
-;-------------------------------------------------------------------------
+          ;-------------------------------------------------------------------------
 
 
-SwitchDrawP0KV				;	69
+          SwitchDrawP0KV				;	69
           lda p0Bottom ;c=3
           sta p0Top ;c=3 ;+6	75
           jmp BackFromSwitchDrawP0KV ;c=3 ; + 3	 2
 
-WaitDrawP0KV				;	71
+          WaitDrawP0KV				;	71
           .Sleep 4 ;c=4 ;+4	75
           jmp BackFromSwitchDrawP0KV ;c=3 ; + 3	 2
 
-;-------------------------------------------------------------------------
+          ;-------------------------------------------------------------------------
 
 DoneWithKernel:
 
@@ -733,14 +729,13 @@ BottomOfKernelLoop:
           txs ;c=2
           jsr sixdigscore ;c=6 ; set up score
 
-
           stx WSYNC ;c=3
           ldx # 0 ;c=2
           sta HMCLR ;c=3
           stx GRP0 ;c=3
           stx GRP1 ;c=3 ; seems to be needed because of vdel
 
-          ldy #7 ;c=2
+          ldy # 7 ;c=2
           sty VDELP0 ;c=3
           sty VDELP1 ;c=3
           lda #$10 ;c=2
@@ -764,7 +759,6 @@ BottomOfKernelLoop:
           sta HMOVE ;c=3
           lda (scorePointers + 8), y ;c=5+1*
           jmp beginscore ;c=3
-
 
 loop2:
           lda (scorePointers), y ;c=5+1* ;+5 68 204
@@ -791,13 +785,14 @@ beginscore:
           sty GRP0 ;c=3 ; + 3 53 159 D4* D5! D6 D6
           dey ;c=2
           bpl loop2 ;c=2/3 ;+2 60 180
+
           	ldx aux2 ;c=3
           txs ;c=2
 
 
-; lda scorePointers + 1
+          ; lda scorePointers + 1
           ldy temp1 ;c=3
-; sta temp1
+          ; sta temp1
           sty scorePointers + 1 ;c=3
 
           lda # 0 ;c=2
@@ -815,7 +810,7 @@ beginscore:
           ldy temp5 ;c=3
           sty scorePointers + 5 ;c=3
 
-;------------------------Overscan Routine---------------------------------
+          ;------------------------Overscan Routine---------------------------------
 
 OverscanRoutine:
 SkipScore:
@@ -833,25 +828,25 @@ SkipScore:
           ; Set overscan timer before returning to MainLoop, which runs
           ; the mode handlers during overscan.
           .if overscan_time
-                    lda #overscan_time+128 ;c=2
+                    lda # overscan_time+128 ;c=2
           .else
-                    lda #30+128 ;c=2
+                    lda # 30+128 ;c=2
           .fi
           sta TIM64T ;c=3
 
-          ldx #15 ;c=2
+          ldx # 15 ;c=2
           nop $ffe0, x ;c=4+1*
           jmp MainLoop ;c=3
 
-;----------------------Begin Subroutines----------------------------------
+          ;----------------------Begin Subroutines----------------------------------
 
 KernelCleanupSubroutine:
 
-          ldx #4 ;c=2
+          ldx # 4 ;c=2
 AdjustYValuesDownLoop:
           lda newSpriteY, x ;c=4
           sec ;c=2
-          sbc #2 ;c=2
+          sbc # 2 ;c=2
           sta newSpriteY, x ;c=4
           dex ;c=2
           bpl AdjustYValuesDownLoop ;c=2/3
@@ -859,19 +854,19 @@ AdjustYValuesDownLoop:
           rts ;c=6
 
 SetupP1Subroutine:
-; flickersort algorithm
-; count 4-0
-; table2=table1 (?)
-; detect overlap of sprites in table 2
-; if overlap, do regular sort in table2, then place one sprite at top of table 1, decrement # displayed
-; if no overlap, do regular sort in table 2 and table 1
+          ; flickersort algorithm
+          ; count 4-0
+          ; table2=table1 (?)
+          ; detect overlap of sprites in table 2
+          ; if overlap, do regular sort in table2, then place one sprite at top of table 1, decrement # displayed
+          ; if no overlap, do regular sort in table 2 and table 1
 fsstart:
-          ldx #255 ;c=2
+          ldx # 255 ;c=2
 copytable:
           inx ;c=2
           lda spritesort, x ;c=4
           sta SpriteGfxIndex, x ;c=4
-          cpx #4 ;c=2
+          cpx # 4 ;c=2
           bne copytable ;c=2/3
 
           stx temp3 ;c=3 ; highest displayed sprite
@@ -893,42 +888,47 @@ sortloop:
           sbc temp1 ;c=3
           bcc largerXislower ;c=2/3
 
-; larger x is higher (A>=temp1)
+          ; larger x is higher (A>=temp1)
           cmp spriteHeight, x ;c=4
           bcs countdown ;c=2/3
-; overlap with x + 1>x
-; 
-; stick x at end of gfxtable, dec counter
+
+          ; overlap with x + 1>x
+          ;
+          ; stick x at end of gfxtable, dec counter
 overlapping:
           dec temp3 ;c=5
           ldx temp2 ;c=3
-; inx
+          ; inx
           jsr ShiftNumbers ;c=6
+
           jmp SkipSwapGfxTable ;c=3
 
-largerXislower ; (temp1>A)
+          largerXislower ; (temp1>A)
           tay ;c=2
           ldx temp2 ;c=3
           lda spritesort, x ;c=4
           tax ;c=2
           tya ;c=2
           eor #$FF ;c=2
-          sbc #1 ;c=2
+          sbc # 1 ;c=2
           bcc overlapping ;c=2/3
+
           cmp spriteHeight, x ;c=4
           bcs notoverlapping ;c=2/3
 
           dec temp3 ;c=5
           ldx temp2 ;c=3
-; inx
+          ; inx
           jsr ShiftNumbers ;c=6
+
           jmp SkipSwapGfxTable ;c=3
+
 notoverlapping:
-; ldx temp2 ; swap display table
-; ldy SpriteGfxIndex + 1, x
-; lda SpriteGfxIndex, x
-; sty SpriteGfxIndex, x
-; sta SpriteGfxIndex + 1, x 
+          ; ldx temp2 ; swap display table
+          ; ldy SpriteGfxIndex + 1, x
+          ; lda SpriteGfxIndex, x
+          ; sty SpriteGfxIndex, x
+          ; sta SpriteGfxIndex + 1, x
 
 SkipSwapGfxTable:
           ldx temp2 ;c=3 ; swap sort table

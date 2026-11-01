@@ -22,6 +22,7 @@ verify-calls:
 64TASS = 64tass
 PATH := $(abspath bin):$(PATH)
 export PATH
+CC ?= cc
 STELLA = stella
 # -i taken out for now from gimp
 GIMP = xvfb-run -a --server-args="-screen 0 1920x1080x24" gimp --batch-interpreter plug-in-script-fu-eval -c --no-shm
@@ -79,7 +80,7 @@ ALL_SOURCES = $(shell find Source -name \*.s -not -path "Source/Generated/*" -no
 # (for example anything under Source/TitleScreen/asm/) is edited.
 ALL_DEPS = $(shell find Source -name \*.s -o -name \*.inc | grep -v '^Source/Reference/')
 
-.PHONY: all clean emu game help doc nowready ready web
+.PHONY: all clean emu game help doc nowready ready web gimp-export
 
 # Directory targets for order-only prerequisites (prevents race conditions in parallel builds)
 bin/:
@@ -582,7 +583,6 @@ play: $(ROM) Dist/$(GAME)$(GAMEYEAR).NTSC.pro
 # Clean all generated files
 clean:
 	rm -rf Dist Object Source/Generated
-	rm -f Source/Art/*.png
 	rm -f Source/Songs/*.pdf
 	rm -f Source/Songs/*.midi
 	rm -f $(GAME)*.aux $(GAME)*.cp $(GAME)*.cps $(GAME)*.toc $(GAME)*.log

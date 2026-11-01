@@ -23,7 +23,6 @@ missile0height = $A5
 ;; BASIC runtime, so nothing else uses that area.
 ;; rand16 is defined in Variables.s as rand16_W and rand16_R
 ;; All code must use rand16_W for writes and rand16_R for reads - no aliases allowed
-
 ;; .include "vcs.h" (commented out - DASM header, not needed for 64tass)
 ;; .include "macro.h" (commented out - DASM header, not needed for 64tass)
 ;; Issue #930: Ensure every SuperChip SCRAM port symbol is exported here so
@@ -160,8 +159,10 @@ qtcontroller = $e7
           RETURN .macro
           .if !bankswitch
           rts
+
           .else
           jmp BS_return
+
           .fi
           .endmacro
 
@@ -207,7 +208,6 @@ qtcontroller = $e7
 ;; Base variables (var0, n, u, etc.) and SuperChip ports (r000-r127, w000-w127) are defined above
 ;; before this include, so they exist when the redefs file references them
           ;; .include "2600basic_variable_redefs.h" (commented out - DASM header, not needed for 64tass)
-
 ;; Define compiler constants if not already defined by batariBASIC
 ;; These are forward declarations that may be redefined by batariBASIC’s generated constants
 ;; Note: pfres is already defined in AssemblyConfig.s, so we don't redefine it here
@@ -216,14 +216,12 @@ superchip = 1
 bankswitch_hotspot = $ffe0
 overscan_time = 36
           ;; vblank_bB_code is defined in Bank15.s where VblankHandlerTrampoline is located
-
 ;; Bank boundary definitions for 64K SuperChip ROM (16 banks x 4K each)
 ;; Each bank reserves space for bankswitching code at the end
 ;; Bankswitch code starts at $FE0 - bscode_length in each bank’s ORG space
 BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;; NOTE: These definitions are generated based on Bank*CodeEnds
 ;; labels, so they should not be defined here to avoid overwriting the calculated values.
-
 ;; Note: ORG/RORG and repeat block removed - these cause issues when included
 ;; in batariBASIC asm blocks. The variable definitions below don’t require
 ;; these directives.
@@ -232,7 +230,6 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;; repeat 256
 ;; .byte $ff
 ;; repend
-
 ;; ChaosFight combined multisprite + superchip header.
 ;; Provides the 2600basic variable map alongside the multisprite kernel aliases
 ;; so DASM receives a single, consistent definition set.
@@ -251,10 +248,8 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           missile0x = $80
 ;;           missile1x = $81
 ;;           ballx = $82
-
 ;; multisprite bookkeeping (5 bytes per sprite set)
 ;; spriteIndex = $83 (duplicate - already defined above)
-
 ;;           player0x = $84
 ;; X position for multiplexed sprites
 ;; newSpriteX = $85 (duplicate - already defined above)
@@ -263,12 +258,10 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           player3x = $87
 ;;           player4x = $88
 ;;           player5x = $89
-
 ;;           objecty = $8A
 ;;           missile0y = $8A
 ;;           missile1y = $8B
 ;;           bally = $8C
-
 ;;           player0y = $8D
 ;; Y position for multiplexed sprites
 ;; newSpriteY = $8E (duplicate - already defined above)
@@ -277,44 +270,36 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           player3y = $90
 ;;           player4y = $91
 ;;           player5y = $92
-
 ;; newNUSIZ = $93 (duplicate - already defined above)
 ;;           _NUSIZ1 = $93
 ;; nusiz2 = $94 (duplicate - already defined above)
 ;; nusiz3 = $95 (duplicate - already defined above)
 ;; nusiz4 = $96 (duplicate - already defined above)
 ;; nusiz5 = $97 (duplicate - already defined above)
-
 ;; newCOLUP1 = $98 (duplicate - already defined above)
 ;;           _COLUP1 = $98
 ;; colup2 = $99 (duplicate - already defined above)
 ;; colup3 = $9A (duplicate - already defined above)
 ;; colup4 = $9B (duplicate - already defined above)
 ;; colup5 = $9C (duplicate - already defined above)
-
 ;; spriteGfxIndex = $9D (duplicate - already defined above)
-
 ;;           player0pointer = $A2
 ;;           player0PointerLo = $A2
 ;;           player0PointerHi = $A3
-
 ;; p0Top = temp5 in original kernel; use a hard value to avoid dasm issues.
 ;; p0Top = $CF (duplicate - already defined above)
 ;; p0Bottom = $A4 (duplicate - already defined above)
 ;; p1Bottom = $A5 (duplicate - already defined above)
-
 ;;           player1PointerLo = $A6
 ;;           player2PointerLo = $A7
 ;;           player3PointerLo = $A8
 ;;           player4PointerLo = $A9
 ;;           player5PointerLo = $AA
-
 ;;           player1PointerHi = $AB
 ;;           player2PointerHi = $AC
 ;;           player3PointerHi = $AD
 ;;           player4PointerHi = $AE
 ;;           player5PointerHi = $AF
-
 ;;           player0Height = $B0
 ;; heights of multiplexed player sprite
 ;;           spriteHeight = $B1
@@ -323,19 +308,14 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           player3Height = $B3
 ;;           player4Height = $B4
 ;;           player5Height = $B5
-
 ;;           pfPixelHeight = $BA
-
 ;; playfield pointers now reference sprite data
 ;;           playfield = $BB
-
 ;;           statusBarLength = $BF
 ;;           aux3 = $BF
-
 ;;           lifeColor = $C0
 ;;           pfScoreColor = $C0
 ;;           aux4 = $C0
-
 ;; p1Display reused for multisprite bookkeeping (hard-coded to avoid dasm issues)
 ;;           lifePointer = $C1
 ;;           lives = $C2
@@ -343,14 +323,10 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           pfScore2 = $C2
 ;;           aux5 = $C1
 ;;           aux6 = $C2
-
 ;;           playfieldPos = $C3
-
 ;; repoLine reused for multisprite bookkeeping
-
 ;;           pfHeight = $C4
 ;;           scorePointers = $C5
-
 ;; kernel temps are relocated for multisprite
 ;;           temp1 = $CB
 ;;           temp2 = $CC
@@ -360,7 +336,6 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           temp6 = $D0
 ;; used to aid in bankswitching
 ;;           temp7 = $D1
-
 ;;           score = $D2
 ;; Kernel variables moved from stack space ($f0-$ff) to safe zero-page locations
 ;;           pfColorTable = $D3
@@ -372,7 +347,6 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;;           spritesort5 = $D9
 ;;           scorecolor = $DA
 ;;           rand = $DB
-
 ;;           A = $DC
 ;;           a = $DC
 ;;           B = $DD
@@ -430,7 +404,6 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;; BASIC runtime, so nothing else uses that area.
 ;; Z/z not available - use SCRAM for any variables that were using z
 ;; $f0-$ff is allocated to persistent variables - see Variables.s
-
 ;; --- Zero-page utility aliases ------------------------------------------------
           ;; NOTE: missile1height, missile0height are now defined at the top of this file
           ;; to allow DASM to resolve forward references
@@ -502,7 +475,6 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
 ;; These are defined in Variables.s as dim aliases, but assembler needs labels
 ;; Use = instead of EQU so it’s a label (not just a constant) for indexed addressing
 ;; playerCharacter is in SCRAM (w111-w114), not zero-page, so no label needed here
-
 ;;           var0 = $A4
 ;;           var1 = $A5
 ;;           var2 = $A6
@@ -558,13 +530,11 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
           PXE = 0
           ;;           pfrowheight = 16
           ;;           pfrows = 8
-
   ;; Define debugcycles as a stub label (kernel defines it when debugscore enabled)
   ;; MS_ASSIGN would create a constant, but we need a label for jsr debugcycles
   ;; This prevents phase errors when debugscore is disabled but jsr debugcycles is generated
   ;; Note: debugcycles is defined above as a label, not a constant
   ;; This matches the kernel’s usage where jsr debugcycles is called
-
   ;; Forward declarations for batariBASIC built-in variables and routines
   ;; These will be defined by batariBASIC compiler/generated code
   ;; ECHOFIRST is defined above unconditionally
@@ -573,7 +543,6 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
   ;; These are labels, not constants, but we forward-declare them here for symbol resolution
   ;; Note: These are actual assembly routines, not variables
   ;; randomize, setuppointers, ConvertToBCD, BlankPlayfield, PlayfieldRead, etc.
-  
   ;; Forward declarations for cross-bank function labels are not allowed nor needed.
   
           interlaced = 0
@@ -615,7 +584,6 @@ BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
   ;; For multisprite, frame should be dimmed to a standard RAM location (a-z or var0-var47)
   ;; scoretable is defined in Source/Common/ScoreTable.s (replacement for score_graphics.asm)
 ;; NOTE: pfread stub moved to end of file to avoid adding byte before data section
-
 ;; --- Superchip RAM mapping --------------------------------------------------
 ;; Mirror the standard SuperChip read/write port map so DASM exports every alias.
           write_RAM = $F000

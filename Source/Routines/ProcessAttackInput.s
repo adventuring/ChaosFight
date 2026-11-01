@@ -1,129 +1,54 @@
-;;; ChaosFight - Source/Routines/ProcessAttackInput.bas
-
-;;; Copyright © 2025 Bruce-Robert Pocock.
-
-
-
+; ChaosFight - Source/Routines/ProcessAttackInput.s
+;; Copyright © 2025 Bruce-Robert Pocock.
 
 ProcessAttackInput .proc
+    ;; Shared Attack Input Handler
+    ;; Handles attack input (fire button) for both ports.
+    ;; Attack/fire = bit 7 ($80) of each consolidated playerXInput byte.
+    ;;
+    ;; INPUT:  temp1 = player index (0-3)
+    ;; Mutates: temp1, temp2, temp4, playerCharacter[]
+    ;; Called Routines: DispatchCharacterAttack (bank 9)
+    ;; Constraints: Far-called; ends with jmp BS_return
 
+    ;; Map temp1 -> consolidated input read port
+    lda temp1
+    tax
 
+    ;; Read consolidated input byte for this player
+    lda player1Input_R,x   ; player1Input_R..player4Input_R are consecutive ($FB..$FE)
+    bmi ProcessAttack_FirePressed
+    jmp ProcessAttack_Return
 
+ProcessAttack_FirePressed:
+    ;; Check if player is guarding - guard blocks attacks
+    lda temp1
+    tax
+    lda playerState,x
+    sta temp2
+    and # 2
+    bne ProcessAttack_Return         ; guarding -> block attack
 
-          ;;
-          ;; Returns: Far (return otherbank)
+    ;; Set temp4 = playerCharacter[temp1]
+    lda temp1
+    tax
+    lda playerCharacter,x
+    sta temp4
 
-          ;; Shared Attack Input Handler
-
-          ;; Handles attack input (fire button) for both ports
-
-          ;; Uses temp1 & 2 pattern to select joy0 vs joy1
-
-          ;;
-          ;; INPUT: temp1 = player index (0-3), temp2 = cached animation sta
-
-
-          ;; NOTE: Uses consolidated playerXInput bytes ($FB-$FE), NOT joy*
-          ;; hardware variables.  Attack/fire = bit 7 ($80) of each byte, testable via N flag.
-          ;; Jump sources ($01 UP D-pad, $20 Button-2) are identical; do NOT split paths.
-
-          ;;
-          ;; Mutates: temp2, temp4, playerCharacter[]
-
-          ;;
-          ;; Called Routines: DispatchCharacterAttack (bank10)
-
-          ;;
-          ;; Constraints: Must be colocated with PAI_UseJoy0 helper
-
-          ;; Process attack input
-
-          ;; Map MethHound (31) to ShamoneAttack handler
-
-          ;; Use cached animation state - block attack input during attack
-
-          ;; animations (states 13-15)
-
-          ;; Block attack input during attack windup/execute/recovery
-
-          jmp BS_return
-
-          ;; Check if player is guarding - guard blocks attacks
-
-          ;; Set temp2 = playerState[temp1] & 2
-          lda temp1
-          tax
-          lda playerState,x
-          sta temp2
-
-          ;; Guarding - block attack input
-
-          jmp BS_return
-
-          ;; Determine which joy port to use based on player index
-
-
-
-          ;; Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
-
-          ;; Players 1,3 use joy1
-          ;; If temp1 & 2 = 0, then PAI_UseJoy0
-          lda temp1
-          and # 2
-          bne PAI_UseJoy1
-          jmp PAI_UseJoy0
-
-PAI_UseJoy1:
-          jmp BS_return
-
-          jmp PAI_ExecuteAttack
-
-
-
-.pend
-
-PAI_UseJoy0 .proc
-
-          ;; Players 0,2 use joy0
-          ;; Returns: Far (return otherbank)
-
-          jmp BS_return
-
-
-
-.pend
-
-PAI_ExecuteAttack .proc
-          ;; Returns: Far (return otherbank)
-
-          ;; Set temp4 = playerCharacter[temp1]
-          lda temp1
-          tax
-          lda playerCharacter,x
-          sta temp4
-
-          ;; Cross-bank call to DispatchCharacterAttack in bank 9
-          ;; Return address: ENCODED with caller bank 9 ($90) for BS_return to decode
-          lda # ((>(AfterDispatchCharacterAttack-1)) & $0f) | $90  ;;; Encode bank 9 in high nybble
-          pha
-          ;; STACK PICTURE: [SP+0: AfterDispatchCharacterAttack hi (encoded)]
-          lda # <(AfterDispatchCharacterAttack-1)
-          pha
-          ;; STACK PICTURE: [SP+1: AfterDispatchCharacterAttack hi (encoded)] [SP+0: AfterDispatchCharacterAttack lo]
-          ;; Target address: RAW (for RTS to jump to) - NOT encoded
-          lda # >(DispatchCharacterAttack-1)
-          pha
-          ;; STACK PICTURE: [SP+2: AfterDispatchCharacterAttack hi (encoded)] [SP+1: AfterDispatchCharacterAttack lo] [SP+0: DispatchCharacterAttack hi (raw)]
-          lda # <(DispatchCharacterAttack-1)
-          pha
-          ;; STACK PICTURE: [SP+3: AfterDispatchCharacterAttack hi (encoded)] [SP+2: AfterDispatchCharacterAttack lo] [SP+1: DispatchCharacterAttack hi (raw)] [SP+0: DispatchCharacterAttack lo]
-          ldx # 9
-          jmp BS_jsr
+    ;; Cross-bank call to DispatchCharacterAttack in bank 9
+    lda # ((>(AfterDispatchCharacterAttack-1)) & $0f) | $90   ; Encode bank 9
+    pha
+    lda # <(AfterDispatchCharacterAttack-1)
+    pha
+    lda # >(DispatchCharacterAttack-1)
+    pha
+    lda # <(DispatchCharacterAttack-1)
+    pha
+    ldx # 9
+    jmp BS_jsr
 AfterDispatchCharacterAttack:
+    jmp BS_return
 
-          jmp BS_return
-
-
-
-.pend
-
+ProcessAttack_Return:
+    jmp BS_return
+    .pend

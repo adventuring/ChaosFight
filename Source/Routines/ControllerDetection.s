@@ -1,151 +1,83 @@
-;;; ControllerDetection.bas - Console and controller detection
+; ChaosFight - Source/Routines/ControllerDetection.s
+;; Copyright © 2025 Bruce-Robert Pocock.
 
-          ;; Include ConsoleDetection.s to get ConsoleDetHW
-          .include "ConsoleDetection.s"
+; Detects whether running on Atari 2600 or 7800 console.
+; Based on DetectConsole.s assembly implementation.
 
-CtrlDetConsole:
-          ;; Console detection (7800 vs 2600) - calls ConsoleDetHW
-          ;; Returns: Far (return otherbank)
-          jsr ConsoleDetHW
+ConsoleDetHW .proc
+    ; Initialize console7800Detected to 0 (assume 2600 initially)
+    lda # 0
+    sta console7800Detected
 
-          ;;
-          ;; Fall through to controller detection
+    ; Read $D0
+    lda $d0
+    sta temp1
+    lda temp1
+    beq CheckD1                     ; If zero, check $D1
 
-DetectPads .proc
-          ;; Re-detect controllers (monotonic upgrade only)
-          ;; Returns: Far (return otherbank)
-          ;; Public entry point used by console handling and character select flows
-          ;; Input: controllerStatus (global) = existing capabilities, INPT0-5 = paddle port sta
+CheckD0For7800:
+    ; Check if $D0 = $2C (7800 indicator)
+    cmp # ConsoleDetectD0
+    bne Not7800ConsoleD0
+    jmp CheckD1
 
-          ;; Output: controllerStatus updated with any newly detected capabilities
-          ;; Constraints: Upgrades only – never clears previously detected hardware
-          lda controllerStatus
-          sta temp1
-          lda # 0
-          sta temp2
+Not7800ConsoleD0:
+    jmp Is2600Console
 
-          ;; Clear system flags for NTSC/PAL (not SECAM)
-          .if TVStandard != SECAM
-          lda systemFlags
-          and # ClearSystemFlagColorBWOverride
-          sta systemFlags
-          lda systemFlags
-          and # ClearSystemFlagPauseButtonPrev
-          sta systemFlags
-          .fi
-          ;; Check for QuadTari on either port (proper detection with timing)
-          ;; For QuadTari detection: after grounding paddle ports (VBLANK bit 6 = 1),
-          ;; QuadTari switches the second player's fire button to INPT1/INPT3.
-          ;; Without QuadTari, these ports float high (idle).
-          ;; We need to wait for VBLANK to ground capacitors, then check.
-          ;;
-          ;; First: wait one frame for capacitors to discharge after grounding
-          ;; Set VBLANK bit 6 = 1 (ground paddle ports)
-          lda # $40
-          ora VBLANK
-          sta VBLANK
+CheckD1 .proc
+    ; Check $D1 for 7800 confirmation
+    lda $D1
+    sta temp1
+    cmp # ConsoleDetectD1
+    bne Not7800ConsoleD1
+    jmp Is7800Console
 
-          ;; Wait for timer to expire (INTIM reaches 0)
-          lda INTIM
-          bne *-3                    ; Wait for timer to expire (end of frame)
+Not7800ConsoleD1:
+    jmp Is2600Console
 
-          ;; Left port: INPT1 high (no fire pressed) = QuadTari present
-          lda INPT1
-          bmi CDP_QuadtariFound
+CheckFlashed .proc
+    ; Check if game was flashed to Harmony/Melody (both $D0 and $D1 are $00)
+    lda $D1
+    sta temp1
+    ; If temp1 is non-zero, jmp Is2600Console
+    lda temp1
+    beq CheckCDFJDriver
+    jmp Is2600Console
 
-          ;; If INPT1 low, not QuadTari on left port
-          jmp CDP_CheckGenesis
+CheckCDFJDriver:
+    ; Both $D0 and $D1 are $00 - check $80 for CDFJ driver result
+    lda console7800Detected
+    sta temp1
+    lda temp1
+    cmp # $80
+    beq CDFJDriverDetected7800
+    cmp # $00
+    beq CDFJDriverDetected2600
+    jmp Is2600Console
 
-CheckRightPortQuadTari:
-          ;; Right port: INPT3 high (no fire pressed) = QuadTari present
-          lda INPT3
-          bmi CDP_QuadtariFound
+CDFJDriverDetected2600:
+    jmp Is2600Console
 
-          ;; If INPT3 low, not QuadTari on right port
-          jmp CDP_CheckGenesis
+CDFJDriverDetected7800:
+    ; fall through to Is7800Console
+    jmp Is7800Console
 
-          ;; No QuadTari - check for Genesis controllers
+    .pend
 
-.pend
+Is7800Console .proc
+    ; 7800 console detected
+    lda # $80
+    sta console7800Detected          ; Set $80 to $80 for 7800 console
+    jmp ConsoleDetected
 
-CDP_QuadtariFound:
-          ;; Returns: Far (return otherbank)
-          lda temp2
-          ora # SetQuadtariDetected
-          sta temp2
-          jmp CDP_MergeStatus
+    .pend
 
-CDP_CheckRightSide .proc
-          ;; Right port: INPT3 high (no fire pressed) = QuadTari present
-          lda INPT3
-          bmi CDP_QuadtariFound
+Is2600Console .proc
+    ; 2600 console detected
+    lda # $00
+    sta console7800Detected          ; Set $80 to $00 for 2600 console
+    jmp ConsoleDetected
 
-          jmp CDP_CheckGenesis
+    .pend
 
-.pend
-
-CDP_CheckGenesis .proc
-          ;; Check for Genesis controller (only if Quadtari not already
-          ;; Returns: Far (return otherbank)
-          ;; detected)
-          ;; If Quadtari was previously detected, skip all other
-          ;; detection
-          ;; If temp1 & SetQuadtariDetected, then jmp CDP_MergeStatus
-          lda temp1
-          and # SetQuadtariDetected
-          bne CDP_CheckGenesisDone
-
-          ;; Genesis controllers pull INPT0 and INPT1 HIGH when idle
-          ;; Method: Ground paddle ports via VBLANK, wait a frame,
-          ;; check levels
-          ;; Set VBLANK to ground paddle capacitors (bit 6 = 1)
-          lda # $40
-          ora VBLANK
-          sta VBLANK
-
-          ;; Wait one frame for capacitors to discharge
-          ;; This gives us time for the capacitors to drain through joystick ports
-          lda INTIM
-          bne *-3                    ; Wait for timer to expire (end of frame)
-
-          ;; Check left side (INPT0, INPT1) for Genesis controller
-          ;; Genesis controllers will pull these HIGH when idle
-          ;; If both HIGH → Genesis present; if either LOW → not Genesis
-          lda INPT0
-          bmi CheckGenesisRightSide    ; If LOW, not Genesis on left
-          lda INPT1
-          bmi CheckGenesisRightSide    ; If LOW, not Genesis on left
-
-          ;; Both HIGH → Left side Genesis detected
-          lda temp2
-          ora # SetLeftPortGenesis
-          ora # SetLeftPortJoy2bPlus
-          sta temp2
-
-CheckGenesisRightSide:
-          ;; Check right side (INPT2, INPT3) for Genesis controller
-          lda INPT2
-          bpl CDP_CheckGenesisDone       ; If LOW, not Genesis on right
-          lda INPT3
-          bpl CDP_CheckGenesisDone       ; If LOW, not Genesis on right
-
-          ;; Both HIGH → Right side Genesis detected
-          lda temp2
-          ora # SetRightPortGenesis
-          ora # SetRightPortJoy2bPlus
-          sta temp2
-
-CDP_CheckGenesisDone:
-          jmp CDP_MergeStatus
-
-.pend
-
-CDP_MergeStatus .proc
-          ;; Merge detected capabilities into controllerStatus
-          ;; Returns: Far (return otherbank)
-          lda controllerStatus
-          ora temp2
-          sta controllerStatus
-          jmp BS_return
-
-.pend
+ConsoleDetected:

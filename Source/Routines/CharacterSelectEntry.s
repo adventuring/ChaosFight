@@ -12,7 +12,7 @@ CharacterSelectEntry .block
           ;; initialized, animation state initialized,
           ;; COLUBK set, Quadtari detection called
           ;;
-          ;; Mutates: playerCharacter[0-3] (P1=RandomCharacter, P2=CPUCharacter,
+          ;; Mutates: playerCharacter[0-3] (P1=RandomCharacter, P2=RandomCharacter,
           ;; P3/P4=NoCharacter), playerLocked (P2/P3/P4 locked),
           ;; characterSelectAnimationTimer,
           ;; characterSelectAnimationState, characterSelectCharacterIndex,
@@ -27,7 +27,7 @@ CharacterSelectEntry .block
           ;; Per-frame loop is handled by CharacterSelectInputEntry
           ;; (in CharacterSelectMain.bas, called from MainLoop)
           ;; Player 1: RandomCharacter (not locked)
-          ;; Player 2: CPUCharacter (locked)
+          ;; Player 2: RandomCharacter (locked)
           lda # 0
           tax
           lda # RandomCharacter
@@ -35,8 +35,9 @@ CharacterSelectEntry .block
           ;; Player 3: NoCharacter (locked)
           lda # 1
           tax
-          lda # CPUCharacter
-          sta playerCharacter,x
+          lda rand16_R
+           and #$0F
+           sta playerCharacter,x
           ;; Player 4: NoCharacter (locked)
           lda # 2
           tax
@@ -47,7 +48,7 @@ CharacterSelectEntry .block
           tax
           lda # NoCharacter
           sta playerCharacter,x
-          ;; Lock Player 2 (CPUCharacter)
+          ;; Lock Player 2 (RandomCharacter)
           lda # 0
           sta playerLocked
           ;; Lock Player 3 (NoCharacter)

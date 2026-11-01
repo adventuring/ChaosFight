@@ -52,7 +52,6 @@ DisplayWinScreen .proc
           ;; DWS_LoadColorColors (all called via jmp or
           ;; gosub)
           ;; Called from WinnerAnnouncementLoop per-frame loop
-
           ;; Set screen layout (32×8 for character display) - inlined
           lda # ScreenPfRowHeight
           sta pfrowheight
@@ -84,7 +83,6 @@ DisplayWinScreen .proc
           Winner = not eliminated (already have winnerPlayerIndex)
           ;; 2nd place = highest eliminationOrder (last eliminated)
           ;; 3rd place = second highest eliminationOrder
-
           ;; Find 2nd and 3rd place rankings
           lda # 255
           sta temp3
@@ -127,7 +125,9 @@ DWS_RankLoop .proc
           lda temp1
           cmp temp2
           bne GetEliminationOrder
+
           jmp RankNextWinScreen
+
 GetEliminationOrder:
 
 
@@ -143,7 +143,9 @@ GetEliminationOrder:
           lda winScreenCandidateOrder
           cmp temp5
           bcc CheckThirdPlace
+
           beq CheckThirdPlace
+
           jmp UpdateSecondPlace
 
 UpdateSecondPlace:
@@ -194,7 +196,9 @@ CheckThirdPlace .proc
           lda winScreenCandidateOrder
           cmp winScreenThirdPlaceOrder
           bcc CheckThirdPlaceDone
+
           beq CheckThirdPlaceDone
+
           lda winScreenCandidateOrder
           sta winScreenThirdPlaceOrder
           lda temp1
@@ -219,10 +223,13 @@ RankNextWinScreen .proc
           ;; Constraints: Must be colocated with DisplayWinScreen, RankLoopWinScreen
           inc temp1
           ;; if temp1 < 4 then jmp RankLoopWinScreen
+
           lda temp1
           cmp # 4
           bcs PositionCharacters
+
           jmp DWS_RankLoop
+
 PositionCharacters:
 
           jmp BS_return
@@ -234,18 +241,21 @@ PositionCharacters:
           ;; 2 players: Winner centered (X=80), Runner-up left (X=40)
           ;; 3+ players: Winner centered high (X=80,y=row 16), 2nd
           ;; left (X=40), 3rd right (X=120)
-
           ;; Position winner (always centered)
           lda temp1
           cmp # 1
           bne CheckTwoPlayers
+
           jmp Position1PlayerWinScreen
+
 CheckTwoPlayers:
           lda temp1
           cmp # 2
           bne PositionThreePlayers
+
           ;; Forward jump - label defined later in file
           jmp Position2PlayersWinScreen
+
 PositionThreePlayers:
           ;; Forward jump - label defined later in file
           jmp Position3PlayersWinScreen
@@ -276,6 +286,7 @@ LoadIdleSpriteWinScreen .proc
           ;; STACK PICTURE: [SP+3: AfterLoadCharacterSpriteWinScreen hi (encoded)] [SP+2: AfterLoadCharacterSpriteWinScreen lo] [SP+1: LoadCharacterSprite hi (raw)] [SP+0: LoadCharacterSprite lo]
           ldx # 15
           jmp BS_jsr
+
 AfterLoadCharacterSpriteWinScreen:
 
 
@@ -368,7 +379,9 @@ Position2PlayersWinScreen:
           lda temp3
           cmp # 255
           bne PositionRunnerUp
+
           jmp Hide2PlayerWinScreen
+
 PositionRunnerUp:
 
 
@@ -471,7 +484,9 @@ Position3PlayersWinScreen:
           lda temp3
           cmp # 255
           bne PositionSecondPlace
+
           jmp Hide3Player2WinScreen
+
 PositionSecondPlace:
 
 
@@ -528,12 +543,13 @@ Hide3Player2WinScreenDone:
           ;; Called Routines: None
           ;;
           ;; Constraints: Must be colocated with DisplayWinScreen
-
           ;; 3rd place (P2) - right platform
           lda temp4
           cmp # 255
           bne PositionThirdPlace
+
           jmp Hide3Player3WinScreen
+
 PositionThirdPlace:
 
 
@@ -637,6 +653,7 @@ GetBWModeWinScreen .proc
           ;; If temp2, set temp2 = 1
           lda temp2
           beq GetBWModeWinScreenDone
+
           lda # 1
           sta temp2
 GetBWModeWinScreenDone:
@@ -652,7 +669,6 @@ LoadColorColorsWinScreen .proc
           ;; Mutates: pfColorTable (via inline assembly)
           ;; Called Routines: None (uses inline assembly)
           ;; Constraints: Must be colocated with DisplayWinScreen
-
           ;; Set pfColorTable pointer to WinnerScreenColorsColor
             lda # <WinnerScreenColorsColor
             sta pfColorTable

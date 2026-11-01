@@ -905,10 +905,11 @@ NextAttacker:
           jmp BS_return
 .pend
 
-;; CombatShowDamageIndicator .proc (no matching .pend)
+CombatShowDamageIndicator .proc
           ;; Damage indicator system (handled inline)
           ;; Returns: Far (return otherbank)
           jmp BS_return
+.pend
 
 PlayDamageSound .proc
           ;; Damage sound effect handler

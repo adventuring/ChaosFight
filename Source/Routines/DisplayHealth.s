@@ -1,5 +1,4 @@
 ;;; ChaosFight - Source/Routines/DisplayHealth.s
-
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 DisplayHealth .proc

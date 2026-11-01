@@ -147,6 +147,9 @@ GameMainLoopContinue
           ;; II/III)
           jsr ReadEnhancedButtons
 
+          ;; Handle CPU opponent input for Player 2
+          jsr CPUOpponent
+
           ;; Handle console switches (in Bank 12)
           ;; Cross-bank call to HandleConsoleSwitches in bank 12
           ;; Return address: ENCODED with caller bank 10 ($a0) for BS_return to decode

@@ -23,8 +23,8 @@ CharacterWeightDiv12_end:
 
           ;; Missile widths per character
 CharacterMissileWidths:
-          .byte 0, 4, 2, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
-          .byte 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+          .byte 0, 4, 2, 2, 2, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+          .byte 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 CharacterMissileWidths_end:
 
           ;; Precomputed NUSIZ values per character (optimization)
@@ -36,8 +36,8 @@ CharacterMissileNUSIZ_end:
 
           ;; Missile heights per character
 CharacterMissileHeights:
-          .byte 0, 4, 2, 1, 1, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
-          .byte 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+          .byte 0, 2, 2, 2, 2, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+          .byte 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 CharacterMissileHeights_end:
 
           ;; Missile maximum × travel
@@ -57,13 +57,13 @@ CharacterMissileForce_end:
 
           ;; Missile lifetime
 CharacterMissileLifetime:
-          .byte 8, 16, 12, 12, 12, 12, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0
+          .byte 0, 255, 255, 255, 255, 4, 0, 0, 255, 0, 0, 0, 0, 0, 0, 0
           .byte 12, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 CharacterMissileLifetime_end:
 
           ;; Missile emission heights
 CharacterMissileEmissionHeights:
-          .byte 8, 8, 8, 8, 8, 8, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0
+          .byte 0, 14, 4, 4, 3, 4, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0
           .byte 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 CharacterMissileEmissionHeights_end:
 
@@ -81,19 +81,19 @@ CharacterMissileSpawnOffsetLeft_end:
 
           ;; Missile horizontal momentum
 CharacterMissileMomentumX:
-          .byte 5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 0, 0
+          .byte 0, 6, 4, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
           .byte 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 CharacterMissileMomentumX_end:
 
           ;; Missile vertical momentum
 CharacterMissileMomentumY:
-          .byte 0, 0, 4, 0, 0, 0, 4, 0, 5, 0, 0, 0, 0, 0, 0, 0
+          .byte 0, 0, 252, 0, 0, 0, 0, 0, 251, 0, 0, 0, 0, 0, 0, 0
           .byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 CharacterMissileMomentumY_end:
 
           ;; Missile behaviour flags
 CharacterMissileFlags:
-          .byte 0, MissileFlagCurlerFull, MissileFlagHitBackgroundAndGravity, MissileFlagHitBackground, 0, 0, 0, 0, MissileFlagHitBackgroundAndGravity, 0, 0, 0, 0, 0, 0, 0
+          .byte 0, MissileFlagCurlerFull, MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, 0, 0
           .byte 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 CharacterMissileFlags_end:
 

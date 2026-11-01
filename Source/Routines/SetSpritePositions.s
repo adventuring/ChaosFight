@@ -1,6 +1,72 @@
 ;;; ChaosFight - Source/Routines/SetSpritePositions.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
+;;; Assign p0/p1 hardware sprites to Players 1-4 with frame multiplexing
+;;; Only multiplex when Player 3 or Player 4 are active
+;;; Even frames: p0 = Player 1, p1 = Player 2
+;;; Odd frames:  p0 = Player 3, p1 = Player 4
+;;; If only Players 1-2 active: p0 = Player 1 always, p1 = Player 2 always
+AssignP0P1Sprites:
+           ;; Returns: Near (return thisbank)
+           ;;
+           ;; Input: controllerStatus, playerHealth[0-3], frame
+           ;; Output: p0x/p0y, p1x/p1y set from playerX/playerY arrays
+           ;; Mutates: temp1-temp3, p0x, p0y, p1x, p1y
+
+           ;; Check if Player 3 or Player 4 are active (health > 0 and Quadtari)
+           lda controllerStatus
+           and # SetQuadtariDetected
+           beq AssignP0P1_TwoPlayerOnly
+
+           ;; Quadtari detected - check if Player 3 or 4 have health
+           lda playerHealth+2
+           bne AssignP0P1_NeedMultiplex
+           lda playerHealth+3
+           bne AssignP0P1_NeedMultiplex
+
+AssignP0P1_TwoPlayerOnly:
+           ;; Only Players 1-2 active: no multiplexing needed
+           ;; p0 = Player 1 (array [0])
+           lda playerX
+           sta p0x
+           lda playerY
+           sta p0y
+           ;; p1 = Player 2 (array [1])
+           lda playerX+1
+           sta p1x
+           lda playerY+1
+           sta p1y
+           rts
+
+AssignP0P1_NeedMultiplex:
+           ;; Player 3 or 4 active: use frame parity multiplexing
+           lda frame
+           and # 1
+           beq AssignP0P1_EvenFrame
+
+           ;; Odd frame: p0 = Player 3, p1 = Player 4
+           lda playerX+2
+           sta p0x
+           lda playerY+2
+           sta p0y
+           lda playerX+3
+           sta p1x
+           lda playerY+3
+           sta p1y
+           rts
+
+AssignP0P1_EvenFrame:
+           ;; Even frame: p0 = Player 1, p1 = Player 2
+           lda playerX
+           sta p0x
+           lda playerY
+           sta p0y
+           lda playerX+1
+           sta p1x
+           lda playerY+1
+           sta p1y
+           rts
+
 ;;; Missile active mask lookup for participants 0-3
 SetSpriteMissileMask:
               .byte 1, 2, 4, 8
@@ -59,19 +125,13 @@ SetSpritePositions:
           ;; Handles sprite positioning, colors, and graphics for all
           ;; players.
           ;; SPRITE ASSIGNMENTS (MULTISPRITE KERNEL):
-          ;; Participant 1 (array [0]): P0 sprite (player0x/player0y,
-          ;; COLUP0)
-          ;; Participant 2 (array [1]): P1 sprite (player1x/player1y,
-          ;; _COLUP1 - virtual sprite)
-          ;; Participant 3 (array [2]): P2 sprite (player2x/player2y,
-          ;; colup2)
-          ;; Participant 4 (array [3]): P3 sprite (player3x/player3y,
-          ;; colup3)
+          ;; Player 1 (array [0]): p0 PMG sprite (p0x/p0y, COLUP0)
+          ;; Player 2 (array [1]): p1 PMG sprite (p1x/p1y, NewCOLUP1 - virtual sprite)
+          ;; Player 3 (array [2]): P2 sprite (player2x/player2y, colup2)
+          ;; Player 4 (array [3]): P3 sprite (player3x/player3y, colup3)
           ;; MISSILE SPRITES:
-          ;; 2-player mode: missile0 = Participant 1, missile1 =
-          ;; Participant 2 (no multiplexing)
-          ;; 4-player mode: missile0 and missile1 multiplexed between
-          ;; all 4 participants (even/odd frames)
+          ;; 2-player mode: missile0 = Player 1, missile1 = Player 2 (no multiplexing)
+          ;; 4-player mode: missile0/missile1 multiplexed between all 4 players (even/odd frames)
           ;; AVAILABLE VARIABLES:
           ;; playerX[0-3], playerY[0-3] - Positions
           ;; playerState[0-3] - State flags
@@ -122,6 +182,10 @@ SetSpritePositions:
           ;; player1x = (values set via CopyParticipantSpritePosition)
           ;; player1y = (values set via CopyParticipantSpritePosition)
 
+          ;; Assign p0 (PMG) and p1 (PMG) to active Players 1-4
+          ;; Multiplex only when Player 3 or 4 are active; otherwise p0=Player 1, p1=Player 2
+          jsr AssignP0P1Sprites
+
           ;; Set positions for participants 3 & 4 in 4-player mode
           ;; (multisprite kernel)
           ;; Participant 3 (array [2]): P2 sprite (player2x/player2y,
@@ -145,19 +209,14 @@ SSP_ParticipantLoop:
           jmp SSP_ParticipantLoop
 SSP_ParticipantLoopDone:
 
-SSP_NextParticipant .proc
 
           ;; Set missile positions for projectiles
           ;; Hardware missiles: missile0 and missile1 (only 2 physical
           ;; missiles available on TIA)
-          ;; In 2-player mode: missile0 = Participant 1, missile1 =
-          ;; Participant 2 (no multiplexing needed)
-          ;; In 4-player mode: Use frame multiplexing to support 4
-          ;; logical missiles with 2 hardware missiles:
-          ;; Even frames: missile0 = Participant 1 (array [0]),
-          ;; missile1 = Participant 2 (array [1])
-          ;; Odd frames: missile0 = Participant 3 (array [2]), missile1
-          ;; = Participant 4 (array [3])
+          ;; In 2-player mode: missile0 = Player 1, missile1 = Player 2 (no multiplexing needed)
+          ;; In 4-player mode: missile0/missile1 multiplexed between all 4 Players (even/odd frames)
+          ;; Even frames: missile0 = Participant 1 (array [0]), missile1 = Participant 2 (array [1])
+          ;; Odd frames: missile0 = Participant 3 (array [2]), missile1 = Participant 4 (array [3])
           ;; Use missileActive bit flags: bit 0 = Participant 1, bit 1
           ;; = Participant 2, bit 2 = Participant 3, bit 3 =
           ;; Participant 4
@@ -294,7 +353,6 @@ RMF_ReturnPoint:
 
           jmp BS_return
 
-.pend
 
 RMF_MissileActive .proc
           ;; Returns: Far (return otherbank)

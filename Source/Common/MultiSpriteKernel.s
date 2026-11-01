@@ -15,7 +15,13 @@
 ; values added here are authoritative.  On the no-page-cross path the main
 ; scanline loop body (KernelLoopb -> KernelLoopa) totals 152 cycles = 2
 ; scanlines per iteration.
-; ---------------------------------------------------------------------------
+; --------------------------------------------------------------------------- 
+           .align 256
+
+;; CRITICAL: Compile-time page-alignment check; build fails if page crossing detected.
+           .if (($ - $$) % $100) >= $fc
+             .error "MultiSpriteKernel entry page-cross detected (within $fc-$ff of page) - add .fill padding before loop entry"
+           .fi
 
 MultiSpriteKernel .block
 

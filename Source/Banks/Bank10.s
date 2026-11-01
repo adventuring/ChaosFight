@@ -16,6 +16,10 @@ GameLoopInitStart:
 .include "Source/Routines/GameLoopInit.s"
 GameLoopMainStart:
 .include "Source/Routines/GameLoopMain.s"
+CPUOpponentStart:
+.include "Source/Routines/CPUOpponent.s"
+CPUOpponentEnd:
+            .warn format("// Bank 10: %d bytes = CPUOpponent", [CPUOpponentEnd - CPUOpponentStart])
 PlayerCollisionResolutionStart:
 .include "Source/Routines/PlayerCollisionResolution.s"
 PlayerCollisionResolutionEnd:

@@ -111,7 +111,6 @@ TryVoice1 .proc
           ;; Constraints: Internal helper for PlaySoundEffect, only
           ;; called when Voice 0 is busy
           ;; Try Voice 1
-          jmp BS_return
 
           ;; Copy soundEffectPointer to soundEffectPointer1
           lda soundEffectPointer

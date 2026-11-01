@@ -1,6 +1,5 @@
-;;; ChaosFight - Source/Routines/CharacterSelectRender.bas
+;;; ChaosFight - Source/Routines/CharacterSelectRender.s
 ;;; Copyright © 2025 Bruce-Robert Pocock.
-
 ;;; Player preview coordinate tables
 SelectPreviewX:
           .byte 56, 104, 56, 104
@@ -32,6 +31,7 @@ SelectDrawScreen .proc
           lda controllerStatus
           and # SetQuadtariDetected
           beq SetPlayerCount
+
           lda # 4
           sta temp6
 SetPlayerCount:
@@ -42,8 +42,10 @@ SetPlayerCount:
 
 SelectDrawScreenLoop .proc
           jsr SelectRenderPlayerPreview
+
           inc temp1
           ;; if temp1 < temp6 then jmp SelectDrawScreenLoop
+
           lda temp1
           cmp temp6
           bcs SelectDrawScreenDone
@@ -98,6 +100,7 @@ SelectRenderPlayerPreview .proc
           ;; STACK PICTURE: [SP+3: AfterPlayerPreviewSetPosition hi (encoded)] [SP+2: AfterPlayerPreviewSetPosition lo] [SP+1: PlayerPreviewSetPosition hi (raw)] [SP+0: PlayerPreviewSetPosition lo]
           ldx # 5
           jmp BS_jsr
+
 AfterPlayerPreviewSetPosition:
 
 
@@ -119,6 +122,7 @@ AfterPlayerPreviewSetPosition:
           ;; STACK PICTURE: [SP+3: AfterRenderPlayerPreview hi (encoded)] [SP+2: AfterRenderPlayerPreview lo] [SP+1: RenderPlayerPreview hi (raw)] [SP+0: RenderPlayerPreview lo]
           ldx # 5
           jmp BS_jsr
+
 AfterRenderPlayerPreview:
 
 
@@ -140,6 +144,7 @@ AfterRenderPlayerPreview:
           ;; STACK PICTURE: [SP+3: AfterGetPlayerLockedRender hi (encoded)] [SP+2: AfterGetPlayerLockedRender lo] [SP+1: GetPlayerLocked hi (raw)] [SP+0: GetPlayerLocked lo]
           ldx # 5
           jmp BS_jsr
+
 AfterGetPlayerLockedRender:
 
 
@@ -153,7 +158,8 @@ AfterGetPlayerLockedRender:
 
           ;; Normal locked state - color already set by RenderPlayerPreview
           rts
-PlayerPreviewSetPosition
+
+          PlayerPreviewSetPosition
           ;; Returns: Far (return otherbank)
           ;; Position player preview sprites in the four select quadrants
           ;; Set temp2 = SelectPreviewX[temp1]
@@ -172,32 +178,36 @@ PlayerPreviewSetPosition
           sta temp3
           jsr SelectApplyPreviewPosition
 
-SelectApplyPreviewPosition
+          SelectApplyPreviewPosition
           ;; Returns: Far (return thisbank)
           ;; Input: temp1 = player index, temp2 = X position, temp3 = y position
           ;; Returns: Near (return thisbank)
           ;; Called same-bank from SelectRenderPlayerPreview, so use return thisbank
           ;; Optimized: Use on...jmp jump table for O(1) dispatch
           jmp SelectApplyPreviewPositionP0
-SelectApplyPreviewPositionP0
+
+          SelectApplyPreviewPositionP0
           lda temp2
           sta player0x
           lda temp3
           sta player0y
           jmp BS_return
-SelectApplyPreviewPositionP1
+
+          SelectApplyPreviewPositionP1
           lda temp2
           sta player1x
           lda temp3
           sta player1y
           jmp BS_return
-SelectApplyPreviewPositionP2
+
+          SelectApplyPreviewPositionP2
           lda temp2
           sta player2x
           lda temp3
           sta player2y
           jmp BS_return
-SelectApplyPreviewPositionP3
+
+          SelectApplyPreviewPositionP3
           lda temp2
           sta player3x
           lda temp3
@@ -225,6 +235,7 @@ RenderPlayerPreview .proc
           lda playerCharacter,x
           sta currentCharacter
           ;; if currentCharacter >= RandomCharacter then jmp RenderPlayerPreviewDefault
+
           lda currentCharacter
           cmp # RandomCharacter
 
@@ -256,6 +267,7 @@ GetAnimationFrame:
           ;; STACK PICTURE: [SP+3: AfterGetPlayerLockedPreview hi (encoded)] [SP+2: AfterGetPlayerLockedPreview lo] [SP+1: GetPlayerLocked hi (raw)] [SP+0: GetPlayerLocked lo]
           ldx # 5
           jmp BS_jsr
+
 AfterGetPlayerLockedPreview:
 
           lda temp2
@@ -267,12 +279,14 @@ AfterGetPlayerLockedPreview:
           lda temp5
           cmp #PlayerHandicapped
           bne RenderPlayerPreviewInvoke
+
           lda # ActionFallen
           sta temp3
 RenderPlayerPreviewInvoke:
 
           jmp RenderPlayerPreviewInvoke
-RenderPlayerPreviewDefault
+
+          RenderPlayerPreviewDefault
           lda # 0
           sta temp2
           lda # ActionIdle
@@ -294,14 +308,15 @@ RenderPlayerPreviewDefault
           ;; STACK PICTURE: [SP+3: AfterLoadCharacterSpritePreview hi (encoded)] [SP+2: AfterLoadCharacterSpritePreview lo] [SP+1: LoadCharacterSprite hi (raw)] [SP+0: LoadCharacterSprite lo]
           ldx # 15
           jmp BS_jsr
-AfterLoadCharacterSpritePreview:
 
+AfterLoadCharacterSpritePreview:
           ;; Set temp2 = SelectPlayerColorNormal[currentPlayer]
           lda currentPlayer
           tax
           lda SelectPlayerColorNormal,x
           sta temp2
           jsr SelectApplyPlayerColor
+
           lda # 0
           sta temp2
           lda # 0
@@ -315,18 +330,21 @@ SelectApplyPlayerColor .proc
           ;; Called same-bank from SelectSetPlayerColorUnlocked/Handicap, so use return thisbank
           ;; Optimized: Use on...jmp jump table for O(1) dispatch
           jmp SelectApplyPlayerColorP0
+
 .pend
 
 SelectApplyPlayerColorP0 .proc
           lda temp2
           sta COLUP0
           rts
+
 .pend
 
 SelectApplyPlayerColorP1 .proc
           lda temp2
           sta NewCOLUP1
           rts
+
 .pend
 
 SelectApplyPlayerColorP2 .proc
@@ -347,7 +365,6 @@ SelectSetPlayerColorUnlocked .proc
           lda # 14
           sta temp2
           jsr SelectApplyPlayerColor
-
 
 .pend
 
@@ -376,12 +393,13 @@ SelectUpdateAnimations .proc
           lda controllerStatus
           and # SetQuadtariDetected
           beq SetPlayerCountCheck
+
           lda # 4
           sta temp6
 SetPlayerCountCheck:
           lda # 0
           sta temp1
-SelectUpdateAnimationLoop
+          SelectUpdateAnimationLoop
           ;; Cross-bank call to GetPlayerLocked in bank 5
           ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
           lda # ((>(AfterGetPlayerLockedAnimation-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
@@ -399,25 +417,33 @@ SelectUpdateAnimationLoop
           ;; STACK PICTURE: [SP+3: AfterGetPlayerLockedAnimation hi (encoded)] [SP+2: AfterGetPlayerLockedAnimation lo] [SP+1: GetPlayerLocked hi (raw)] [SP+0: GetPlayerLocked lo]
           ldx # 5
           jmp BS_jsr
-AfterGetPlayerLockedAnimation:
 
+AfterGetPlayerLockedAnimation:
           ;; if temp2 then jmp SelectUpdateAnimationNext
+
           lda temp2
           beq UpdatePlayerAnimation
+
           jmp SelectUpdateAnimationNext
+
 UpdatePlayerAnimation:
           ;; if playerCharacter[temp1] >= RandomCharacter then jmp SelectUpdateAnimationNext
+
           jsr SelectUpdatePlayerAnimation
-SelectUpdateAnimationNext
+
+          SelectUpdateAnimationNext
           ;; if temp1 < temp6 then jmp SelectUpdateAnimationLoop
+
           lda temp1
           cmp temp6
           bcs SelectUpdateAnimationsDone
+
           jmp SelectUpdateAnimationLoop
+
 SelectUpdateAnimationsDone:
           
 
-SelectUpdatePlayerAnimation
+          SelectUpdatePlayerAnimation
           ;; Returns: Near (return thisbank)
           ;; Update character select animation counters for one player
           ;; Returns: Near (return thisbank)
@@ -457,22 +483,27 @@ SelectUpdatePlayerAnimation
           lda temp3
           sta characterSelectPlayerAnimationFrame_W,x
           rts
+
           ;; Returns: Far (return otherbank)
           ;; Re-detect controllers on Select/Pause/ColorB&W toggle
           ;; Returns: Far (return otherbank)
           ;; if switchselect then jmp CharacterSelectDoRescan
+
           lda player1Input_R
           bmi CheckColorBWToggle  ; bit 7 = 1 means not pressed
+
           jmp CharacterSelectDoRescan
+
 CheckColorBWToggle:
           lda switchbw
           sta temp6
           lda temp6
           cmp colorBWPrevious_R
           bne TriggerRescan
-          jmp BS_return
-TriggerRescan:
 
+          jmp BS_return
+
+TriggerRescan:
           ;; Cross-bank call to DetectPads in bank 12
           ;; Return address: ENCODED with caller bank 5 ($50) for BS_return to decode
           lda # ((>(AfterDetectPadsColorBW-1)) & $0f) | $50  ;;; Encode bank 5 in high nybble
@@ -490,11 +521,13 @@ TriggerRescan:
           ;; STACK PICTURE: [SP+3: AfterDetectPadsColorBW hi (encoded)] [SP+2: AfterDetectPadsColorBW lo] [SP+1: DetectPads hi (raw)] [SP+0: DetectPads lo]
           ldx # 12
           jmp BS_jsr
+
 AfterDetectPadsColorBW:
 
           lda switchbw
           sta colorBWPrevious_W
           jmp BS_return
+
 .pend
 
 CharacterSelectDoRescan .proc
@@ -515,6 +548,7 @@ CharacterSelectDoRescan .proc
           ;; STACK PICTURE: [SP+3: AfterDetectPadsRescan hi (encoded)] [SP+2: AfterDetectPadsRescan lo] [SP+1: DetectPads hi (raw)] [SP+0: DetectPads lo]
           ldx # 12
           jmp BS_jsr
+
 AfterDetectPadsRescan:
 
 CharacterSelectRescanDone:

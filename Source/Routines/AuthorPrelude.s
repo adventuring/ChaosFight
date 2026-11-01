@@ -52,6 +52,21 @@
           ;; bitmap display
 
 AuthorPrelude .proc
+           ;; Author Prelude Screen - Per-frame display loop
+           ;;
+           ;; Input: fireEdgeState (global), preambleTimer (global),
+           ;;        musicPlaying (global), controllerStatus (global),
+           ;;        INPT0-3 (hardware), QuadtariDetected (global)
+           ;;
+           ;; Output: Dispatches to AuthorPreludeComplete or returns
+           ;;
+           ;; Mutates: preambleTimer (incremented)
+           ;;
+           ;; Called Routines: PlayMusic (bank1)
+           ;;
+           ;; Constraints: Colocated with AuthorPreludeComplete;
+           ;;              called from MainLoop (gameMode 1)
+           ;; Bitmap loaded automatically by titlescreen kernel
           ;; Skip on fresh fire press
           lda fireEdgeState
           bmi AuthorPreludeComplete
@@ -62,8 +77,6 @@ AuthorPrelude .proc
           ;; Advance only on a *fresh* press (MainLoop sets newFirePress on
           ;; the frame either fire button goes down); a held button must not
           ;; race through the remaining screens.
-          lda fireEdgeState
-          bmi AuthorPreludeComplete
 
 CheckEnhancedControllers:
 
@@ -122,6 +135,7 @@ CheckAutoAdvance:
           lda preambleTimer
           cmp # 31
           bcc IncrementTimer
+
           lda musicPlaying
           bne IncrementTimer
           jmp AuthorPreludeComplete
@@ -181,4 +195,6 @@ AfterChangeGameModeAuthorPrelude:
           ;; automatically - no explicit loading needed.
 
 .pend
+
+
 

@@ -1,4 +1,4 @@
-;;; ChaosFight - Source/Routines/CharacterSelectFire.bas
+;;; ChaosFight - Source/Routines/CharacterSelectFire.s
 
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
@@ -114,8 +114,6 @@ HCSF_CheckJoy0 .block
 
           ;; Players 0,2 use joy0
 
-          jmp BS_return
-
           lda # 1
           sta temp2
 
@@ -134,8 +132,6 @@ SetNormalLockJoy0:
           sta temp4
 
           jmp HCSF_HandleFire
-          lda # 0
-          sta temp4
 
 .bend
 

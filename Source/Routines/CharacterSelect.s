@@ -1,4 +1,4 @@
-;;; ChaosFight - Source/Routines/CharacterSelect.bas
+;;; ChaosFight - Source/Routines/CharacterSelect.s
 ;;; Copyright © 2025 Bruce-Robert Pocock.
 
 

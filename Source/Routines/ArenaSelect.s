@@ -15,16 +15,12 @@ ArenaSelect1Loop .block
           ;;
           ;; Input: selectedArena_R (global SCRAM) = current arena
           ;; controllerStatus (global) = controller detection sta
-
           ;; fireHoldTimer_R (global SCRAM) = fire button hold
           ;; timer
           ;; joy0fire, joy1fire (hardware) = fire button sta
-
           ;; joy0left, joy0right (hardware) = navigation button sta
-
           ;; switchselect (hardware) = game select switch
           ;; INPT0, INPT2 (hardware) = Quadtari fire button sta
-
           ;; playerCharacter[] (global array) = character selections
           ;; frame (global) = frame counter
           ;;
@@ -43,7 +39,6 @@ ArenaSelect1Loop .block
           ;; sounds,
           ;; SetGlyph (bank16) - draws arena number digits,
           ;; ChangeGameMode (bank14) - accesses game mode sta
-
           ;;
           ;; Constraints: Must be colocated with ArenaSelect1Loop,
           ;; CheckQuadtariFireHold,
@@ -73,7 +68,6 @@ ArenaSelect1Loop .block
           jmp BS_jsr
 
 AfterSelectUpdateAnimations:
-
           ;; Draw locked-in player characters
           jsr ArenaSelectDrawCharacters
 
@@ -87,7 +81,6 @@ AfterSelectUpdateAnimations:
           jmp DisplayRandomArena.ReturnToCharacterSelect
 
 SkipReturnToCharacterSelect:
-
           ;; Check fire button hold detection (1 second to return to
           ;; Character Select)
           lda # 0
@@ -102,7 +95,6 @@ SkipReturnToCharacterSelect:
           sta temp1
 
 CheckJoy1Fire:
-
           ;; Check Quadtari players (3 & 4) if active
           ;; If joy1fire, then set temp1 = 1
           lda joy1fire_R
@@ -112,29 +104,30 @@ CheckJoy1Fire:
           sta temp1
 
 CheckQuadtariFire:
-
           ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
           ;; If (controllerStatus & SetQuadtariDetected) <> 0, then jmp CheckQuadtariFireHold
+
           lda controllerStatus
           and # SetQuadtariDetected
           beq CheckQuadtariFireHoldSkip
+
           jmp DisplayRandomArena.CheckQuadtariFireHold
+
 CheckQuadtariFireHoldSkip:
           beq CheckFireHoldTimer
 
           jmp DisplayRandomArena.CheckQuadtariFireHold
 
 CheckFireHoldTimer:
-
           ;; If fire button held, increment timer
           ;; if temp1 then jmp IncrementFireHold
+
           lda temp1
           beq FireHoldCheckDone
 
           jmp IncrementFireHold
 
 FireHoldCheckDone:
-
           ;; Fire released, reset timer
           lda # 0
           sta fireHoldTimer_W
@@ -149,6 +142,7 @@ IncrementFireHold:
           lda temp2
           sta fireHoldTimer_W
           ;; if temp2 >= FramesPerSecond then jmp ReturnToCharacterSelect
+
           lda temp2
           cmp # FramesPerSecond
 
@@ -157,9 +151,9 @@ IncrementFireHold:
           jmp DisplayRandomArena.ReturnToCharacterSelect
 
 ArenaSelectNavigation:
-
           ;; Handle LEFT/RIGHT navigation for arena selection
           ;; if joy0left then jmp ArenaSelectLeft
+
           lda joy0left_R
           beq ArenaSelectDoneLeft
 
@@ -173,7 +167,9 @@ ArenaSelectLeft .block
           ;; Decrement arena, wrap from 0 to RandomArena (255)
           lda selectedArena_R
           bne CheckRandomArenaLeft
+
           ;; Set selectedArena_W = RandomArena jmp ArenaSelectLeftSound
+
 CheckRandomArenaLeft:
 
           lda selectedArena_R
@@ -181,6 +177,7 @@ CheckRandomArenaLeft:
           bne DecrementArena
 
           ;; Set selectedArena_W = MaxArenaID jmp ArenaSelectLeftSound
+
           lda # MaxArenaID
           sta selectedArena_W
           jmp ArenaSelectLeftSound
@@ -218,8 +215,8 @@ ArenaSelectLeftSound .block
           jmp BS_jsr
 
 AfterPlaySoundEffectLeft:
-
           ;; if joy0right then jmp ArenaSelectRight
+
           lda joy0right_R
           beq ArenaSelectDoneLeftSecond
 
@@ -237,6 +234,7 @@ ArenaSelectRight .block
           bne CheckRandomArenaRight
 
           ;; Set selectedArena_W = RandomArena jmp ArenaSelectRightSound
+
           lda # RandomArena
           sta selectedArena_W
           jmp ArenaSelectRightSound
@@ -248,6 +246,7 @@ CheckRandomArenaRight:
           bne IncrementArena
 
           ;; Set selectedArena_W = 0 jmp ArenaSelectRightSound
+
           lda # 0
           sta selectedArena_W
           jmp ArenaSelectRightSound
@@ -262,9 +261,10 @@ IncrementArena:
           sta selectedArena_W
           cmp # (MaxArenaID + 1)
           bcc ArenaRightWrapDone
+
           lda # 0
           sta selectedArena_W
-ArenaRightWrapDone
+          ArenaRightWrapDone
 
 .bend
 
@@ -291,7 +291,6 @@ ArenaSelectRightSound .block
           jmp BS_jsr
 
 AfterPlaySoundEffectRight:
-
           ;; Display arena number ( 1-32) or ?? (random)
           ;; Display using player4 (tens digit) and player5 (ones
           ;; digit)
@@ -350,7 +349,6 @@ FastBCDDivideBy10:
 
 FastBCDDone:
           ;; temp2 = tens digit (0-3), temp4 = ones digit (0-9)
-
           ;; Draw tens digit (player4) - only if tensDigit > 0 (for
           ;; arenas 10-32)
           lda temp2
@@ -371,7 +369,7 @@ DrawTensDigit .block
           sta player4x
           lda # 20
           sta player4y
-          lda # $0E
+          lda #$0E
           sta colup4
           ;; Use player4 for tens digit
           lda # 4
@@ -408,7 +406,7 @@ SkipTens .block
           sta player5x
           lda # 20
           sta player5y
-          lda # $0E
+          lda #$0E
           sta colup5
           ;; Use player5 for ones digit
           lda # 5
@@ -430,6 +428,7 @@ SkipTens .block
           ;; STACK PICTURE: [SP+3: AfterSetGlyphOnes hi (encoded)] [SP+2: AfterSetGlyphOnes lo] [SP+1: SetGlyph hi (raw)] [SP+0: SetGlyph lo]
           ldx # 15
           jmp BS_jsr
+
 AfterSetGlyphOnes:
 
 
@@ -448,7 +447,7 @@ DisplayRandomArena .block
           sta player4x
           lda # 20
           sta player4y
-          lda # $0E
+          lda #$0E
           sta colup4
           ;; White
           lda # 4
@@ -473,13 +472,12 @@ DisplayRandomArena .block
           jmp BS_jsr
 
 AfterSetGlyphRandom1:
-
           ;; Second question mark: set P5 fixed position/color
           lda # 88
           sta player5x
           lda # 20
           sta player5y
-          lda # $0E
+          lda #$0E
           sta colup5
           ;; Use player5
           lda # 5
@@ -505,13 +503,14 @@ AfterSetGlyphRandom1:
 AfterSetGlyphRandom2:
 
 
-DisplayDone
+          DisplayDone
           ;; Handle fire button press (confirm selection, start game)
           lda joy0fire_R
           beq ArenaSelectDoneConfirm
+
           jmp ArenaSelectConfirm
 
-ArenaSelectConfirm
+          ArenaSelectConfirm
           ;; Play selection sound
           lda #SoundMenuSelect
           sta temp1
@@ -532,6 +531,7 @@ ArenaSelectConfirm
           ;; STACK PICTURE: [SP+3: AfterPlaySoundEffectConfirm hi (encoded)] [SP+2: AfterPlaySoundEffectConfirm lo] [SP+1: PlaySoundEffect hi (raw)] [SP+0: PlaySoundEffect lo]
           ldx # 14
           jmp BS_jsr
+
 AfterPlaySoundEffectConfirm:
 
 
@@ -557,19 +557,18 @@ ArenaSelectDoneConfirm:
           ;; STACK PICTURE: [SP+3: AfterUpdateSoundEffect hi (encoded)] [SP+2: AfterUpdateSoundEffect lo] [SP+1: UpdateSoundEffect hi (raw)] [SP+0: UpdateSoundEffect lo]
           ldx # 14
           jmp BS_jsr
+
 AfterUpdateSoundEffect:
 
 
           ;; drawscreen called by MainLoop
           jmp BS_return
 
-CheckQuadtariFireHold
+          CheckQuadtariFireHold
           ;; Check Player 3 and 4 fire buttons (Quadtari)
           ;;
           ;; Input: INPT0 (hardware) = Player 3 fire button sta
-
           ;; INPT2 (hardware) = Player 4 fire button sta
-
           ;;
           ;; Output: temp1 = 1 if any Quadtari fire button pressed, 0
           ;; otherwise
@@ -583,20 +582,21 @@ CheckQuadtariFireHold
           ;; If !INPT0{7}, then set temp1 = 1
           lda player1Input_R
           bmi CheckINPT2Fire
+
           lda # 1
           sta temp1
 CheckINPT2Fire:
-
           ;; Player 4 fire button (right port, odd frame)
           ;; If !INPT2{7}, then set temp1 = 1
           lda player2Input_R
           bmi CheckQuadtariFireHoldDone
+
           lda # 1
           sta temp1
 CheckQuadtariFireHoldDone:
           jmp BS_return
 
-ReturnToCharacterSelect
+          ReturnToCharacterSelect
           ;; Return to Character Select screen
           ;;
           ;; Input: None (called from ArenaSelect1)
@@ -608,7 +608,6 @@ ReturnToCharacterSelect
           ;;
           ;; Called Routines: ChangeGameMode (bank14) - accesses game
           ;; mode sta
-
           ;; Constraints: Must be colocated with ArenaSelect1
           lda # 0
           sta fireHoldTimer_W
@@ -631,6 +630,7 @@ ReturnToCharacterSelect
           ;; STACK PICTURE: [SP+3: AfterChangeGameModeReturnToCharacterSelect hi (encoded)] [SP+2: AfterChangeGameModeReturnToCharacterSelect lo] [SP+1: ChangeGameMode hi (raw)] [SP+0: ChangeGameMode lo]
           ldx # 13
           jmp BS_jsr
+
 AfterChangeGameModeReturnToCharacterSelect:
 
 
@@ -649,7 +649,6 @@ StartGame1 .block
           ;;
           ;; Called Routines: ChangeGameMode (bank14) - accesses game
           ;; mode sta
-
           ;; Constraints: Must be colocated with ArenaSelect1
           lda #ModeGame
           sta gameMode
@@ -670,10 +669,12 @@ StartGame1 .block
           ;; STACK PICTURE: [SP+3: AfterChangeGameModeStartGame hi (encoded)] [SP+2: AfterChangeGameModeStartGame lo] [SP+1: ChangeGameMode hi (raw)] [SP+0: ChangeGameMode lo]
           ldx # 13
           jmp BS_jsr
+
 AfterChangeGameModeStartGame:
 
 
           jmp BS_return
+
           ;;
           ;; Character Display and Animation
 
@@ -686,7 +687,6 @@ ArenaSelectDrawCharacters .block
           ;; Input: playerCharacter[] (global array) = character selections
           ;; controllerStatus (global) = controller detection
           ;; sta
-
           ;; frame (global) = frame counter
           ;;
           ;; Output: player0-3x, player0-3y (TIA registers) set,
@@ -711,27 +711,30 @@ ArenaSelectDrawCharacters .block
           ;; positions
           ;; Characters remain in same positions as character select
           ;; screen
-
           ;; Playfield defined by ArenaSelect data; no per-frame register writes
           ;; Draw Player 1 character (top left) if selected
           ;; if playerCharacter[0] = NoCharacter then jmp ArenaSelectDoneDrawP0
-
           ;; if playerCharacter[0] = CPUCharacter then jmp ArenaSelectDoneDrawP0
+
           lda # 0
           tax
           lda playerCharacter,x
           cmp # CPUCharacter
           bne CheckRandomCharacterP0
-          jmp ArenaSelectDoneDrawP0
-CheckRandomCharacterP0:
 
+          jmp ArenaSelectDoneDrawP0
+
+CheckRandomCharacterP0:
           ;; if playerCharacter[0] = RandomCharacter then jmp ArenaSelectDoneDrawP0
+
           lda # 0
           tax
           lda playerCharacter,x
           cmp # RandomCharacter
           bne DrawPlayer0Character
+
           jmp ArenaSelectDoneDrawP0
+
 DrawPlayer0Character:
           lda # 0
           sta temp1
@@ -752,6 +755,7 @@ DrawPlayer0Character:
           ;; STACK PICTURE: [SP+3: AfterPlayerPreviewSetPositionP0 hi (encoded)] [SP+2: AfterPlayerPreviewSetPositionP0 lo] [SP+1: PlayerPreviewSetPosition hi (raw)] [SP+0: PlayerPreviewSetPosition lo]
           ldx # 5
           jmp BS_jsr
+
 AfterPlayerPreviewSetPositionP0:
 
 
@@ -772,10 +776,11 @@ AfterPlayerPreviewSetPositionP0:
           ;; STACK PICTURE: [SP+3: AfterRenderPlayerPreviewP0 hi (encoded)] [SP+2: AfterRenderPlayerPreviewP0 lo] [SP+1: RenderPlayerPreview hi (raw)] [SP+0: RenderPlayerPreview lo]
           ldx # 5
           jmp BS_jsr
+
 AfterRenderPlayerPreviewP0:
 
 
-ArenaSelectDoneDrawP0
+          ArenaSelectDoneDrawP0
           ;; Skip Player 1 character drawing (not selected)
           ;;
           ;; Input: None (label only, no execution)
@@ -790,23 +795,27 @@ ArenaSelectDoneDrawP0
           ;; ArenaSelectDrawCharacters
           ;; Draw Player 2 character (top right) if selected
           ;; if playerCharacter[1] = NoCharacter then jmp ArenaSelectDoneDrawP1
-
           ;; if playerCharacter[1] = CPUCharacter then jmp ArenaSelectDoneDrawP1
+
           lda # 1
           tax
           lda playerCharacter,x
           cmp # CPUCharacter
           bne CheckRandomCharacterP1
-          jmp ArenaSelectDoneDrawP1
-CheckRandomCharacterP1:
 
+          jmp ArenaSelectDoneDrawP1
+
+CheckRandomCharacterP1:
           ;; if playerCharacter[1] = RandomCharacter then jmp ArenaSelectDoneDrawP1
+
           lda # 1
           tax
           lda playerCharacter,x
           cmp # RandomCharacter
           bne DrawPlayer1Character
+
           jmp ArenaSelectDoneDrawP1
+
 DrawPlayer1Character:
           lda # 1
           sta temp1
@@ -827,6 +836,7 @@ DrawPlayer1Character:
           ;; STACK PICTURE: [SP+3: AfterPlayerPreviewSetPositionP1 hi (encoded)] [SP+2: AfterPlayerPreviewSetPositionP1 lo] [SP+1: PlayerPreviewSetPosition hi (raw)] [SP+0: PlayerPreviewSetPosition lo]
           ldx # 5
           jmp BS_jsr
+
 AfterPlayerPreviewSetPositionP1:
 
 
@@ -847,10 +857,11 @@ AfterPlayerPreviewSetPositionP1:
           ;; STACK PICTURE: [SP+3: AfterRenderPlayerPreviewP1 hi (encoded)] [SP+2: AfterRenderPlayerPreviewP1 lo] [SP+1: RenderPlayerPreview hi (raw)] [SP+0: RenderPlayerPreview lo]
           ldx # 5
           jmp BS_jsr
+
 AfterRenderPlayerPreviewP1:
 
 
-ArenaSelectDoneDrawP1
+          ArenaSelectDoneDrawP1
           ;; Skip Player 2 character drawing (not selected)
           ;;
           ;; Input: None (label only, no execution)
@@ -883,27 +894,32 @@ ArenaSelectDoneDrawP1
           ;; STACK PICTURE: [SP+3: AfterSelectHideLowerPlayerPreviews hi (encoded)] [SP+2: AfterSelectHideLowerPlayerPreviews lo] [SP+1: SelectHideLowerPlayerPreviews hi (raw)] [SP+0: SelectHideLowerPlayerPreviews lo]
           ldx # 5
           jmp BS_jsr
+
 AfterSelectHideLowerPlayerPreviews:
 
 
           ;; if playerCharacter[2] = NoCharacter then jmp ArenaSelectDoneDrawP2
-
           ;; if playerCharacter[2] = CPUCharacter then jmp ArenaSelectDoneDrawP2
+
           lda # 2
           tax
           lda playerCharacter,x
           cmp # CPUCharacter
           bne CheckRandomCharacterP2
-          jmp ArenaSelectDoneDrawP2
-CheckRandomCharacterP2:
 
+          jmp ArenaSelectDoneDrawP2
+
+CheckRandomCharacterP2:
           ;; if playerCharacter[2] = RandomCharacter then jmp ArenaSelectDoneDrawP2
+
           lda # 2
           tax
           lda playerCharacter,x
           cmp # RandomCharacter
           bne DrawPlayer2Character
+
           jmp ArenaSelectDoneDrawP2
+
 DrawPlayer2Character:
           lda # 2
           sta temp1
@@ -924,6 +940,7 @@ DrawPlayer2Character:
           ;; STACK PICTURE: [SP+3: AfterPlayerPreviewSetPositionP2 hi (encoded)] [SP+2: AfterPlayerPreviewSetPositionP2 lo] [SP+1: PlayerPreviewSetPosition hi (raw)] [SP+0: PlayerPreviewSetPosition lo]
           ldx # 5
           jmp BS_jsr
+
 AfterPlayerPreviewSetPositionP2:
 
 
@@ -944,10 +961,11 @@ AfterPlayerPreviewSetPositionP2:
           ;; STACK PICTURE: [SP+3: AfterRenderPlayerPreviewP2 hi (encoded)] [SP+2: AfterRenderPlayerPreviewP2 lo] [SP+1: RenderPlayerPreview hi (raw)] [SP+0: RenderPlayerPreview lo]
           ldx # 5
           jmp BS_jsr
+
 AfterRenderPlayerPreviewP2:
 
 
-ArenaSelectDoneDrawP2
+          ArenaSelectDoneDrawP2
           ;; Skip Player 3 character drawing (not in 4-player mode or
           ;; not selected)
           ;;
@@ -968,27 +986,32 @@ ArenaSelectDoneDrawP2
           bne CheckPlayer3Character
 
           jmp ArenaSelectDoneDrawP23
+
 CheckPlayer3Character:
 
 
           ;; if playerCharacter[3] = NoCharacter then jmp ArenaSelectDoneDrawP23
-
           ;; if playerCharacter[3] = CPUCharacter then jmp ArenaSelectDoneDrawP23
+
           lda # 3
           tax
           lda playerCharacter,x
           cmp # CPUCharacter
           bne CheckRandomCharacterP3
-          jmp ArenaSelectDoneDrawP23
-CheckRandomCharacterP3:
 
+          jmp ArenaSelectDoneDrawP23
+
+CheckRandomCharacterP3:
           ;; if playerCharacter[3] = RandomCharacter then jmp ArenaSelectDoneDrawP23
+
           lda # 3
           tax
           lda playerCharacter,x
           cmp # RandomCharacter
           bne DrawPlayer3Character
+
           jmp ArenaSelectDoneDrawP23
+
 DrawPlayer3Character:
           lda # 3
           sta temp1
@@ -1009,6 +1032,7 @@ DrawPlayer3Character:
           ;; STACK PICTURE: [SP+3: AfterPlayerPreviewSetPositionP3 hi (encoded)] [SP+2: AfterPlayerPreviewSetPositionP3 lo] [SP+1: PlayerPreviewSetPosition hi (raw)] [SP+0: PlayerPreviewSetPosition lo]
           ldx # 5
           jmp BS_jsr
+
 AfterPlayerPreviewSetPositionP3:
 
 
@@ -1029,10 +1053,11 @@ AfterPlayerPreviewSetPositionP3:
           ;; STACK PICTURE: [SP+3: AfterRenderPlayerPreviewP3 hi (encoded)] [SP+2: AfterRenderPlayerPreviewP3 lo] [SP+1: RenderPlayerPreview hi (raw)] [SP+0: RenderPlayerPreview lo]
           ldx # 5
           jmp BS_jsr
+
 AfterRenderPlayerPreviewP3:
 
 
-ArenaSelectDoneDrawP23
+          ArenaSelectDoneDrawP23
           ;; Skip Player 3/4 character drawing (not in 4-player mode or
           ;; not selected)
           jmp BS_return

@@ -11,7 +11,7 @@
 ;;; Difficulty: Right Difficulty Switch (SWCHB bit 7)
 ;;;   A / Advanced / Expert (bit 7 = 1) -> aggressive
 ;;;   B / Beginner / Novice (bit 7 = 0) -> less aggressive
-
+;;;
 CPUOpponent .proc
             ;; Returns: Near (return thisbank)
             ;;
@@ -27,6 +27,7 @@ CPUOpponent .proc
             ;; Called Routines: None (self-contained)
             ;;
             ;; Constraints: Must be called before InputHandleAllPlayers
+            ;;
 
             ;; Only run if Player 2 is CPU
             lda playerCharacter+1
@@ -34,7 +35,7 @@ CPUOpponent .proc
             bne CPUOpponentDone
 
             ;; Clear input byte
-            lda #0
+            lda # 0
             sta player2Input_W
 
             ;; Determine difficulty from Right Difficulty Switch (SWCHB bit 7)
@@ -88,16 +89,15 @@ CPUOpponentDone:
             rts
 
 .pend
-
 CPUOpponentFindTarget .proc
             ;; Find nearest alive opponent for Player 2
-            ;; Returns: temp2 = target index (0, 2, 3) or $FF if none
+            ;; Returns: temp2 = target index (0, 2, or 3) or $FF if none
             ;;
             ;; Mutates: temp2, temp4, temp5
 
             lda #$FF
             sta temp2          ;; Default: no target
-            lda #255
+            lda # 255
             sta temp4          ;; Best distance (high)
 
             ;; Check Player 1 (index 0)
@@ -106,25 +106,25 @@ CPUOpponentFindTarget .proc
             jsr CPUOpponentCheckTarget
             ;; temp4/5 updated if Player 1 is closer
 
-CheckPlayer3:
+          CheckPlayer3:
             ;; Check Player 3 (index 2) - only if Quadtari detected
             lda controllerStatus
             and #SetQuadtariDetected
             beq CheckPlayer4
             lda playerHealth+2
             beq CheckPlayer4
-            lda #2
+            lda # 2
             tax
             jsr CPUOpponentCheckTarget
 
-CheckPlayer4:
+          CheckPlayer4:
             ;; Check Player 4 (index 3) - only if Quadtari detected
             lda controllerStatus
             and #SetQuadtariDetected
             beq CPUOpponentFindTargetDone
             lda playerHealth+3
             beq CPUOpponentFindTargetDone
-            lda #3
+            lda # 3
             tax
             jsr CPUOpponentCheckTarget
 
@@ -145,7 +145,7 @@ CPUOpponentCheckTarget .proc
             eor #$FF
             clc
             adc #1
-DistXPositive:
+                    DistXPositive:
             sta temp5          ;; |dx| in temp5
 
             ;; Vertical distance
@@ -156,7 +156,7 @@ DistXPositive:
             eor #$FF
             clc
             adc #1
-DistYPositive:
+                    DistYPositive:
             sta temp6          ;; |dy| in temp6
 
             ;; Approximate distance squared: dx*dx + dy*dy (8-bit, saturating)
@@ -177,7 +177,6 @@ CPUOpponentCheckTargetDone:
             rts
 
 .pend
-
 CPUOpponentDecideHorizontal .proc
             ;; Decide left/right movement based on target position
             ;; temp3 = target index, temp4 = dx (target - self)
@@ -211,7 +210,7 @@ CPUOpponentDecideHorizontal .proc
             sta player2Input_W
             jmp CPUOpponentHorizontalDone
 
-TargetToRight:
+                    TargetToRight:
             ;; Target is to the right (positive dx)
             ;; Move right
             lda player2Input_R
@@ -222,7 +221,6 @@ CPUOpponentHorizontalDone:
             rts
 
 .pend
-
 CPUOpponentDecideVertical .proc
             ;; Decide jump/up input based on target vertical position
             ;; and platform layout
@@ -270,7 +268,7 @@ CPUOpponentDecideVertical .proc
             sta player2Input_W
             jmp CPUOpponentVerticalDone
 
-TargetBelowOrLevel:
+                    TargetBelowOrLevel:
             ;; Target at same level or below - small chance to jump
             ;; based on difficulty
             lda temp1          ;; difficulty
@@ -284,7 +282,7 @@ TargetBelowOrLevel:
             sta player2Input_W
             jmp CPUOpponentVerticalDone
 
-NoviceJumpCheck:
+                    NoviceJumpCheck:
             ;; Novice: 10% chance
             lda rand
             and #7
@@ -305,7 +303,7 @@ CPUOpponentFrootyVertical:
             ora #PlayerInputJump
             sta player2Input_W
             jmp CPUOpponentVerticalDone
-FrootyTargetBelow:
+                    FrootyTargetBelow:
             ;; Target below - fly down (DOWN = $02)
             lda player2Input_R
             ora #PlayerInputDefend
@@ -320,7 +318,7 @@ CPUOpponentDragonVertical:
             ora #PlayerInputJump
             sta player2Input_W
             jmp CPUOpponentVerticalDone
-DragonTargetBelow:
+                    DragonTargetBelow:
             lda player2Input_R
             ora #PlayerInputDefend
             sta player2Input_W
@@ -334,8 +332,8 @@ CPUOpponentHarpyVertical:
             ora #PlayerInputJump
             sta player2Input_W
             jmp CPUOpponentVerticalDone
-HarpyTargetBelow:
-            ;; Don't flap down - just don't flap
+                    HarpyTargetBelow:
+            ;; Don’t flap down - just don’t flap
             jmp CPUOpponentVerticalDone
 
 CPUOpponentRoboTitoVertical:
@@ -346,7 +344,7 @@ CPUOpponentRoboTitoVertical:
             ora #PlayerInputJump
             sta player2Input_W
             jmp CPUOpponentVerticalDone
-RoboTitoTargetBelow:
+                    RoboTitoTargetBelow:
             ;; Press DOWN to return to floor
             lda player2Input_R
             ora #PlayerInputDefend
@@ -361,7 +359,7 @@ CPUOpponentBernieVertical:
             ora #PlayerInputJump
             sta player2Input_W
             jmp CPUOpponentVerticalDone
-BernieTargetBelow:
+                    BernieTargetBelow:
             jmp CPUOpponentVerticalDone
 
 CPUOpponentShamoneVertical:
@@ -373,11 +371,10 @@ CPUOpponentShamoneVertical:
             ora #PlayerInputJump
             sta player2Input_W
             jmp CPUOpponentVerticalDone
-ShamoneTargetBelow:
+                    ShamoneTargetBelow:
             jmp CPUOpponentVerticalDone
 
 .pend
-
 CPUOpponentDecideAttack .proc
             ;; Decide attack input based on proximity and difficulty
             ;;
@@ -408,18 +405,10 @@ CPUOpponentDecideAttack .proc
             eor #$FF
             clc
             adc #1
-AttackDistPositive:
+                    AttackDistPositive:
             sta temp5
 
             ;; Calculate absolute vertical distance
-            lda temp5          ;; |dx| already in temp5 from horizontal
-            lda temp5          ;; Actually temp5 has |dx|, need |dy|
-            lda temp5
-            ;; temp5 currently has |dx| from horizontal decision
-            ;; Recalculate |dy| from temp5 (which was dy signed)
-            lda temp5          ;; Wait, temp5 was overwritten. Use temp5 from earlier.
-            ;; Actually vertical distance is in temp5 from FindTarget
-            ;; But it was overwritten. Recompute:
             lda playerY+1
             ldy temp3
             sec
@@ -428,15 +417,15 @@ AttackDistPositive:
             eor #$FF
             clc
             adc #1
-AttackDyPositive:
+                    AttackDyPositive:
             sta temp6          ;; |dy| in temp6
 
             ;; Attack if target is close horizontally and vertically aligned
             lda temp5          ;; |dx|
-            cmp #24            ;; Within ~24 pixels horizontally
+            cmp # 24            ;; Within ~24 pixels horizontally
             bcs CPUOpponentAttackDone
             lda temp6          ;; |dy|
-            cmp #16            ;; Within ~16 pixels vertically
+            cmp # 16            ;; Within ~16 pixels vertically
             bcs CPUOpponentAttackDone
 
             ;; In range - decide based on difficulty and character
@@ -449,7 +438,7 @@ AttackDyPositive:
             bcs CPUOpponentAttackDone
             jmp CPUOpponentDoAttack
 
-NoviceAttackCheck:
+                    NoviceAttackCheck:
             ;; Novice: 30% chance
             lda rand
             and #7
@@ -465,7 +454,6 @@ CPUOpponentAttackDone:
             rts
 
 .pend
-
 CPUOpponentDecideGuard .proc
             ;; Decide guard/defend input based on incoming threats
             ;; and difficulty
@@ -477,7 +465,7 @@ CPUOpponentDecideGuard .proc
             and #PlayerStateBitGuarding
             bne CPUOpponentGuardDone
 
-            ;; Check if attacking (can't guard while attacking)
+            ;; Check if attacking (can’t guard while attacking)
             lda playerState+1
             and #PlayerStateBitAttacking
             bne CPUOpponentGuardDone
@@ -501,28 +489,28 @@ CPUOpponentDecideGuard .proc
             lda missileActive
             beq CPUOpponentGuardChance
 
-            ;; Check missile 0 (Player 1's missile on even frames)
+            ;; Check missile 0 (Player 1’s missile on even frames)
             lda missileActive
             and #$01
             beq CheckMissile1
             jsr CPUOpponentCheckMissileThreat
             bcs CPUOpponentDoGuard
 
-CheckMissile1:
+                    CheckMissile1:
             lda missileActive
             and #$02
             beq CheckMissile2
             jsr CPUOpponentCheckMissileThreat
             bcs CPUOpponentDoGuard
 
-CheckMissile2:
+                    CheckMissile2:
             lda missileActive
             and #$04
             beq CheckMissile3
             jsr CPUOpponentCheckMissileThreat
             bcs CPUOpponentDoGuard
 
-CheckMissile3:
+                    CheckMissile3:
             lda missileActive
             and #$08
             beq CPUOpponentGuardChance
@@ -540,7 +528,7 @@ CPUOpponentGuardChance:
             bcs CPUOpponentGuardDone
             jmp CPUOpponentDoGuard
 
-NoviceGuardChance:
+                    NoviceGuardChance:
             ;; Novice: 5% chance
             lda rand
             and #$1F
@@ -562,11 +550,9 @@ CPUOpponentCheckMissileThreat .proc
             ;; Mutates: temp4, temp5, temp6
 
             ;; This is a simplified check - in practice would need to check
-            ;; each active missile's position against Player 2
+            ;; each active missile’s position against Player 2
             ;; For now, return carry clear (no threat)
             clc
             rts
 
-.pend
-
-.pend
+.pend.pend

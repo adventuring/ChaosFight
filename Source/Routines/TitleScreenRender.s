@@ -123,36 +123,22 @@ DrawTitleScreenCommon .proc
           ;; STACK PICTURE: [SP+3: AfterDrawParadeCharacter hi (encoded)] [SP+2: AfterDrawParadeCharacter lo] [SP+1: DrawParadeCharacter hi (raw)] [SP+0: DrawParadeCharacter lo]
           ldx # 13
           jmp BS_jsr
+
 AfterDrawParadeCharacter:
 
 
           ;; Call titlescreen kernel to render the bitmap(s)
           ;; titledrawscreen is defined in Source/TitleScreen/asm/titlescreen.s
           ;; Kernel uses titlescreenWindow1-4 runtime variables to select bitmaps
-            jsr titledrawscreen
+           jsr titledrawscreen
+
           jmp BS_return
-          ;;
-          ;; Load Title Bitmap
-          ;; Loads the ChaosFight title bitmap data for titlescreen
-          ;; kernel.
-          ;; Generated from Source/Art/ChaosFight.xcf → ChaosFight.png
-          ;; SkylineTool creates: Source/Generated/Art.ChaosFight.s
-          ;; - BitmapChaosFight: 6 columns × 42 bytes (inverted-y)
-          ;; - BitmapChaosFightColors: 84 color values (double-height)
+
 
 .pend
 
 LoadTitleBitmap .proc
           jmp BS_return
-          ;; Configure titlescreen kernel to show Title (ChaosFight)
-          ;; Returns: Far (return otherbank)
-          ;; bitmap
-          ;; Uses 48x2_3 minikernel - set window/height via assembly
-          ;; consta
-
-          ;; Other screens’ minikernels should have window=0 in their
-          ;; Bitmap data in: Source/Generated/Art.ChaosFight.s
-          ;; image files
 
 .pend
 

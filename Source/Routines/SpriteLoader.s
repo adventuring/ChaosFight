@@ -1,6 +1,5 @@
 ;;; ChaosFight - Source/Routines/SpriteLoader.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
-
           ;; SUPPORTED SPRITE CONFIGURATIONS:
           ;; P0 = character | ?
           ;; P1 = character | CPU | No | ?
@@ -43,7 +42,6 @@ LoadCharacterSprite .proc
           jmp BS_jsr
 
 AfterCopyGlyphToPlayerBank15:
-
           ;; Cross-bank call to CopyGlyphToPlayer in bank 15
           ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
           lda # ((>(AfterCopyGlyphToPlayerBank16-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
@@ -63,7 +61,6 @@ AfterCopyGlyphToPlayerBank15:
           jmp BS_jsr
 
 AfterCopyGlyphToPlayerBank16:
-
           ;; Cross-bank call to CopyGlyphToPlayer in bank 15
           ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
           lda # ((>(AfterCopyGlyphToPlayerBank16Second-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
@@ -83,7 +80,6 @@ AfterCopyGlyphToPlayerBank16:
           jmp BS_jsr
 
 AfterCopyGlyphToPlayerBank16Second:
-
           ;; Normal character sprite loading
           lda currentPlayer
           sta temp4
@@ -106,6 +102,7 @@ AfterCopyGlyphToPlayerBank16Second:
           ;; STACK PICTURE: [SP+3: AfterLocateCharacterArt hi (encoded)] [SP+2: AfterLocateCharacterArt lo] [SP+1: LocateCharacterArt hi (raw)] [SP+0: LocateCharacterArt lo]
           ldx # 8
           jmp BS_jsr
+
 AfterLocateCharacterArt:
 
 
@@ -142,7 +139,7 @@ LoadPlayerSprite .proc
           tax
           lda playerCharacter,x
           sta currentCharacter
-; Set currentCharacter from playerCharacter[currentPlayer]
+          ; Set currentCharacter from playerCharacter[currentPlayer]
           ;; CRITICAL: Guard against invalid characters - prevent calling bank 2 when no characters on screen
           ;; Handle special sprite cases first (these are safe and don’t need bank dispatch)
           ;; Cross-bank call to CopyGlyphToPlayer in bank 15
@@ -162,8 +159,8 @@ LoadPlayerSprite .proc
           ;; STACK PICTURE: [SP+3: AfterCopyGlyphToPlayerBank16First hi (encoded)] [SP+2: AfterCopyGlyphToPlayerBank16First lo] [SP+1: CopyGlyphToPlayer hi (raw)] [SP+0: CopyGlyphToPlayer lo]
           ldx # 15
           jmp BS_jsr
-AfterCopyGlyphToPlayerBank16First:
 
+AfterCopyGlyphToPlayerBank16First:
           ;; Cross-bank call to CopyGlyphToPlayer in bank 15
           ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
           lda # ((>(AfterCopyGlyphToPlayerBank16SecondFirst-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
@@ -181,8 +178,8 @@ AfterCopyGlyphToPlayerBank16First:
           ;; STACK PICTURE: [SP+3: AfterCopyGlyphToPlayerBank16SecondFirst hi (encoded)] [SP+2: AfterCopyGlyphToPlayerBank16SecondFirst lo] [SP+1: CopyGlyphToPlayer hi (raw)] [SP+0: CopyGlyphToPlayer lo]
           ldx # 15
           jmp BS_jsr
-AfterCopyGlyphToPlayerBank16SecondFirst:
 
+AfterCopyGlyphToPlayerBank16SecondFirst:
           ;; Cross-bank call to CopyGlyphToPlayer in bank 15
           ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
           lda # ((>(AfterCopyGlyphToPlayerBank16SecondSecond-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
@@ -200,8 +197,8 @@ AfterCopyGlyphToPlayerBank16SecondFirst:
           ;; STACK PICTURE: [SP+3: AfterCopyGlyphToPlayerBank16SecondSecond hi (encoded)] [SP+2: AfterCopyGlyphToPlayerBank16SecondSecond lo] [SP+1: CopyGlyphToPlayer hi (raw)] [SP+0: CopyGlyphToPlayer lo]
           ldx # 15
           jmp BS_jsr
-AfterCopyGlyphToPlayerBank16SecondSecond:
 
+AfterCopyGlyphToPlayerBank16SecondSecond:
           ;; Cross-bank call to CopyGlyphToPlayer in bank 15
           ;; Return address: ENCODED with caller bank 15 ($f0) for BS_return to decode
           lda # ((>(AfterCopyGlyphToPlayerBank16Third-1)) & $0f) | $f0  ;;; Encode bank 15 in high nybble
@@ -219,8 +216,8 @@ AfterCopyGlyphToPlayerBank16SecondSecond:
           ;; STACK PICTURE: [SP+3: AfterCopyGlyphToPlayerBank16Third hi (encoded)] [SP+2: AfterCopyGlyphToPlayerBank16Third lo] [SP+1: CopyGlyphToPlayer hi (raw)] [SP+0: CopyGlyphToPlayer lo]
           ldx # 15
           jmp BS_jsr
-AfterCopyGlyphToPlayerBank16Third:
 
+AfterCopyGlyphToPlayerBank16Third:
           ;; Inline LocateCharacterArt to reduce call chain depth (stack overflow fix)
           ;; Returns: Far (return otherbank)
           ;; CRITICAL: Inlined to reduce stack depth from 19 to 15 bytes (within 16-byte limit)
@@ -232,32 +229,38 @@ AfterCopyGlyphToPlayerBank16Third:
           sta temp6
           ;; Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
           ;; Use jmp instead of cross-bank call to to avoid stack push
+
           lda temp1
           cmp # 8
           bcs CheckBank3
+
           jmp LoadPlayerSprite_Bank2Dispatch
 
 CheckBank3:
 
 
           ;; if temp1 < 16 then jmp LoadPlayerSprite_Bank3Dispatch
+
           lda temp1
           cmp # 16
           bcs CheckBank4
+
           jmp LoadPlayerSprite_Bank3Dispatch
 
 CheckBank4:
 
 
           ;; if temp1 < 24 then jmp LoadPlayerSprite_Bank4Dispatch
+
           lda temp1
           cmp # 24
           bcs LoadPlayerSprite_Bank5Dispatch
+
           jmp LoadPlayerSprite_Bank4Dispatch
 
           ;; temp1 >= 24, fall through to LoadPlayerSprite_Bank5Dispatch (defined below)
 
-LoadPlayerSprite_Bank2Dispatch
+          LoadPlayerSprite_Bank2Dispatch
           ;; Bank 2: Characters 0-7 (bank-relative 0-7)
           ;; CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank2 uses BS_return which requires return address
           lda temp1
@@ -281,11 +284,12 @@ LoadPlayerSprite_Bank2Dispatch
           ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank2 hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank2 lo] [SP+1: SetPlayerCharacterArtBank2 hi (raw)] [SP+0: SetPlayerCharacterArtBank2 lo]
           ldx # 1
           jmp BS_jsr
+
 AfterSetPlayerCharacterArtBank2:
 
           jmp BS_return
 
-LoadPlayerSprite_Bank3Dispatch
+          LoadPlayerSprite_Bank3Dispatch
           ;; Bank 3: Characters 8-15 (bank-relative 0-7)
           ;; CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank3 uses BS_return which requires return address
           ;; Set temp6 = temp1 - 8          lda temp1          sec          sbc # 8          sta temp6
@@ -318,11 +322,12 @@ LoadPlayerSprite_Bank3Dispatch
           ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank3 hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank3 lo] [SP+1: SetPlayerCharacterArtBank3 hi (raw)] [SP+0: SetPlayerCharacterArtBank3 lo]
           ldx # 2
           jmp BS_jsr
+
 AfterSetPlayerCharacterArtBank3:
 
           jmp BS_return
 
-LoadPlayerSprite_Bank4Dispatch
+          LoadPlayerSprite_Bank4Dispatch
           ;; Bank 4: Characters 16-23 (bank-relative 0-7)
           ;; CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank4 uses BS_return which requires return address
           ;; Set temp6 = temp1 - 16          lda temp1          sec          sbc # 16          sta temp6
@@ -355,11 +360,12 @@ LoadPlayerSprite_Bank4Dispatch
           ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank4 hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank4 lo] [SP+1: SetPlayerCharacterArtBank4 hi (raw)] [SP+0: SetPlayerCharacterArtBank4 lo]
           ldx # 3
           jmp BS_jsr
+
 AfterSetPlayerCharacterArtBank4:
 
           jmp BS_return
 
-LoadPlayerSprite_Bank5Dispatch
+          LoadPlayerSprite_Bank5Dispatch
           ;; Bank 5: Characters 24-31 (bank-relative 0-7)
           ;; CRITICAL: Must use gosub, not goto - SetPlayerCharacterArtBank5 uses BS_return which requires return address
           ;; Set temp6 = temp1 - 24          lda temp1          sec          sbc # 24          sta temp6
@@ -392,6 +398,7 @@ LoadPlayerSprite_Bank5Dispatch
           ;; STACK PICTURE: [SP+3: AfterSetPlayerCharacterArtBank5 hi (encoded)] [SP+2: AfterSetPlayerCharacterArtBank5 lo] [SP+1: SetPlayerCharacterArtBank5 hi (raw)] [SP+0: SetPlayerCharacterArtBank5 lo]
           ldx # 4
           jmp BS_jsr
+
 AfterSetPlayerCharacterArtBank5:
 
           jmp BS_return

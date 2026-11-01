@@ -1,364 +1,307 @@
-;;; ChaosFight - Source/Routines/TitleCharacterParade.bas
-
-;;; Copyright © 2025 Bruce-Robert Pocock.
-
-
-
+;; ChaosFight - Source/Routines/TitleCharacterParade.bas
+;; Copyright © 2025 Bruce-Robert Pocock.
 
 UpdateCharacterParade .proc
-          ;; Title Screen Character Parade
-          ;; Returns: Far (return otherbank)
+           ;; Title Screen Character Parade
+           ;; Returns: Far (return otherbank)
 
-          ;; Manages the animated character parade that runs across the bottom of the title screen after 5 seconds (when copyright disappears).
+           ;; Manages the animated character parade that runs across the bottom of the title screen after 5 seconds (when copyright disappears).
 
-          ;; AVAILABLE VARIABLES (from Variables.bas):
+           ;; AVAILABLE VARIABLES (from Variables.bas):
+           ;; titleParadeTimer - Frame counter (increments each frame)
 
-          ;; titleParadeTimer - Frame counter (increments each frame)
+           ;; titleParadeCharacter - Current character index (0-MaxCharacter)
 
-          ;; titleParadeCharacter - Current character index (0-MaxCharacter)
+           ;; titleParadeX - X position of parade character
 
-          ;; titleParadeX - X position of parade character
+           ;; titleParadeActive - Boolean: parade currently running
 
-          ;; titleParadeActive - Boolean: parade currently running
+           ;; TIMING:
 
-          ;; TIMING:
+           ;; - Parade starts after ~4 seconds (TitleParadeDelayFrames frames, TV-dependent)
 
-          ;; - Parade starts after ~4 seconds (TitleParadeDelayFrames frames, TV-dependent)
+           ;; - Each character moves at 2 pixels/frame (left to right)
 
-          ;; - Each character moves at 2 pixels/frame (left to right)
+           ;; - 1 second pause (FramesPerSecond frames) between characters
 
-          ;; - 1 second pause (FramesPerSecond frames) between characters
+           ;; - Characters chosen randomly from NumCharacters available
 
-          ;; - Characters chosen randomly from NumCharacters available
+           ;; CHARACTER INDICES:
 
-          ;; CHARACTER INDICES:
+           ;; 0=Bernie, 1=Curler, 2=Dragon of Storms, 3=EXO, 4=FatTony,
 
-          ;; 0=Bernie, 1=Curler, 2=Dragon of Storms, 3=EXO, 4=FatTony,
+           ;; 5=Grizzard,
 
-          ;; 5=Grizzard,
+           ;; 6=Harpy, 7=Knight Guy, 8=Frooty, 9=Nefertem, 10=Ninjish
 
-          ;; 6=Harpy, 7=Knight Guy, 8=Frooty, 9=Nefertem, 10=Ninjish
+           ;; Guy,
 
-          ;; Guy,
+           ;; 11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo,
 
-          ;; 11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo,
+           ;; 15=Shamone
 
-          ;; 15=Shamone
+           ;; Update parade state (called every frame)
 
-          ;; Update parade state (called every frame)
+           ;; Manages the animated character parade that runs across the bottom of the title screen
 
-          ;; Manages the animated character parade that runs across the
+           ;; Input: titleParadeTimer (global) = frame counter
 
-          ;; bottom of the title screen
+           ;; titleParadeActive (global) = parade active flag
 
-          ;;
-          ;; Input: titleParadeTimer (global) = frame counter
+           ;; TitleParadeDelayFrames (constant) = delay before parade starts
 
-          ;; titleParadeActive (global) = parade active flag
+           ;; Output: titleParadeTimer incremented, parade state updated
 
-          ;; TitleParadeDelayFrames (constant) = delay before
+           ;; (set via StartNewParadeCharacter, MoveParadeCharacter)
 
-          ;; parade sta
+           ;; titleParadeCharacter, titleParadeX (set via StartNewParadeCharacter, MoveParadeCharacter)
 
+           ;; Constraints: Must be colocated with StartNewParadeCharacter, MoveParadeCharacter, ParadeCharacterLeft (all called via goto)
 
-          ;;
-          ;; Output: titleParadeTimer incremented, parade state updated
+           ;; Called every frame from TitleScreenMain
 
-          ;;
-          ;; Mutates: titleParadeTimer (incremented), titleParadeActive
+           ;; Increment parade timer
 
-          ;; (set via StartNewParadeCharacter),
+           inc titleParadeTimer
 
-          ;; titleParadeCharacter, titleParadeX (set via
+           ;; Start parade after ~4 seconds (TitleParadeDelayFrames frames)
 
-          ;; StartNewParadeCharacter, MoveParadeCharacter)
+           lda titleParadeTimer
 
-          ;;
-          ;; Called Routines: StartNewParadeCharacter - accesses rand,
+           cmp # TitleParadeDelayFrames
 
-          ;; MaxCharacter,
+           bcc StartParadeNotYet
 
-          ;; MoveParadeCharacter - accesses titleParadeX
+           lda titleParadeActive
 
-          ;;
-          ;; Constraints: Must be colocated with
+           bne MoveParadeCharacter
 
-          ;; StartNewParadeCharacter, MoveParadeCharacter,
+           jmp StartNewParadeCharacter
 
-          ;; ParadeCharacterLeft (all called via goto)
-
-          ;; Called every frame from TitleScreenMain
-
-          ;; Increment parade timer
-
-          inc titleParadeTimer
-
-
-
-          ;; Start parade after ~4 seconds (TitleParadeDelayFrames frames)
-          lda titleParadeTimer
-          cmp # TitleParadeDelayFrames
-          bcc StartParadeNotYet
-          lda titleParadeActive
-          bne MoveParadeCharacter
-          jmp StartNewParadeCharacter
 StartParadeNotYet:
-          jmp BS_return
+
+           jmp BS_return
 
 MoveParadeCharacter:
-          ;; Move 2 pixels per frame
-          lda titleParadeX
-          clc
-          adc # 2
-          sta titleParadeX
 
-          ;; Check if character has left screen
-          lda # 170
-          cmp titleParadeX
-          bcc ParadeCharacterLeft
-          jmp BS_return
+           ;; Move 2 pixels per frame
+
+           lda titleParadeX
+
+           clc
+
+           adc # 2
+
+           sta titleParadeX
+
+           ;; Check if character has left screen
+
+           lda titleParadeX
+
+           cmp # 170
+
+           bcs ParadeCharacterLeft  ; branch if carry set (x >= 170)
+
+UpdateCharacterParadeDone:
+
+           jmp BS_return
 
 ParadeCharacterLeft:
-          ;; Deactivate parade; reset timer
-          lda # 0
-          sta titleParadeActive
-          jmp BS_return
+
+           ;; Character has left - wait 1 second (FramesPerSecond frames) before next character
+
+           ;; Returns: Far (return otherbank)
+
+           ;; Input: titleParadeTimer, titleParadeActive (from UpdateCharacterParade)
+
+           ;; Output: titleParadeActive set to 0, titleParadeTimer decremented by FramesPerSecond
+
+           lda # 0
+
+           sta titleParadeActive
+
+           ;; Reset timer for next character
+
+           ;; Set titleParadeTimer = titleParadeTimer - FramesPerSecond (decremented twice for 1 second)
+
+           lda titleParadeTimer
+
+           sec
+
+           sbc #FramesPerSecond
+
+           sta titleParadeTimer
+
+           lda titleParadeTimer
+
+           sec
+
+           sbc #FramesPerSecond
+
+           sta titleParadeTimer
+
+           jmp BS_return
 
 .pend
 
 StartNewParadeCharacter .proc
-          jmp Roll
+
+           jmp Roll
 
 .pend
 
 Roll .proc
-          ;; Returns: Far (return otherbank)
 
-          lda rand
-          and #$1f
-          sta titleParadeCharacter
+           ;; Returns: Far (return otherbank)
 
-          ;; Random character 0-MaxCharacter
-          ;; Returns: Far (return otherbank)
-          ;; If titleParadeCharacter > MaxCharacter, then Roll
-          lda titleParadeCharacter
-          cmp # MaxCharacter
-          bcc CheckRollDone
-          jmp Roll
+           lda rand
+
+           and #$1f
+
+           sta titleParadeCharacter
+
+           ;; Random character 0-MaxCharacter
+
+           ;; Returns: Far (return otherbank)
+
+           ;; If titleParadeCharacter > MaxCharacter, then Roll
+
+           lda titleParadeCharacter
+
+           cmp # MaxCharacter
+
+           bcc CheckRollDone
+
+           jmp Roll
+
 CheckRollDone:
 
-          ;; Start off-screen left
-          lda # 246
-          sta titleParadeX
+           ;; Start off-screen left
 
-          lda # 1
-          sta titleParadeActive
+           lda # 246
 
-          jmp BS_return
+           sta titleParadeX
+
+           lda # 1
+
+           sta titleParadeActive
+
+           jmp BS_return
 
 .pend
 
 MoveParadeCharacter .proc
 
-          ;; Move character across screen
-          ;; Returns: Far (return otherbank)
+           ;; Move character across screen
 
-          ;;
-          ;; Input: titleParadeX (global) = current X position
+           ;; Returns: Far (return otherbank)
 
-          ;;
-          ;; Output: titleParadeX incremented by 2, dispatches to
+           ;; Input: titleParadeX (global) = current X position
 
-          ;; ParadeCharacterLeft if off-screen
+           ;; Output: titleParadeX incremented by 2, dispatches to ParadeCharacterLeft if off-screen
 
-          ;;
-          ;; Mutates: titleParadeX (incremented by 2)
+           ;; Mutates: titleParadeX (incremented by 2)
 
-          ;;
-          ;; Called Routines: None (dispatcher only)
+           lda titleParadeX
 
-          ;; Constraints: Must be colocated with UpdateCharacterParade, ParadeCharacterLeft
+           clc
 
-          ;; Move 2 pixels per frame
+           adc # 2
 
-          lda titleParadeX
-          clc
-          adc # 2
-          sta titleParadeX
+           sta titleParadeX
 
+           UpdateCharacterParadeDone:
 
-
-          ;; Check if character has left screen
-
-          lda titleParadeX
-          cmp # 171
-          bcc UpdateCharacterParadeDone
-          jmp ParadeCharacterLeft
-UpdateCharacterParadeDone:
-
-
-          jmp BS_return
-
-.pend
+           jmp BS_return
 
 ParadeCharacterLeft .proc
 
-          ;; Character has left - wait 1 second (FramesPerSecond frames) before next
-          ;; Returns: Far (return otherbank)
+           ;; Character has left - wait 1 second (FramesPerSecond frames) before next character
 
-          ;;
-          ;; Input: titleParadeTimer, titleParadeActive (from
+           ;; Returns: Far (return otherbank)
 
-          ;; UpdateCharacterParade)
+           lda # 0
 
-          ;;
-          ;; Output: titleParadeActive set to 0, titleParadeTimer
+           sta titleParadeActive
 
-          ;; decremented by FramesPerSecond
+           lda titleParadeTimer
 
-          ;;
-          ;; Mutates: titleParadeActive (set to 0), titleParadeTimer
+           sec
 
-          ;; (decremented by FramesPerSecond)
+           sbc #FramesPerSecond
 
-          ;;
-          ;; Called Routines: None
+           sta titleParadeTimer
 
-          ;; Constraints: Must be colocated with UpdateCharacterParade
+           lda titleParadeTimer
 
-          lda # 0
-          sta titleParadeActive
+           sec
 
-          ;; Reset timer for next character
+           sbc #FramesPerSecond
 
-          ;; Set titleParadeTimer = titleParadeTimer - FramesPerSecond          lda titleParadeTimer          sec          sbc FramesPerSecond          sta titleParadeTimer
-          lda titleParadeTimer
-          sec
-          sbc #FramesPerSecond
-          sta titleParadeTimer
+           sta titleParadeTimer
 
-          lda titleParadeTimer
-          sec
-          sbc #FramesPerSecond
-          sta titleParadeTimer
+           jmp BS_return
 
+.pend
+DrawParadeCharacter .proc
+           ;; Draw Parade Character
+           ;; Returns: Far (return otherbank)
+           ;; Render the current parade character at the bottom of the screen
+           ;; Input: titleParadeCharacter, titleParadeX, controllerStatus, rand
+           ;; Output: player0x, player0y set, COLUP0 set, sprite drawn
+           ;; Mutates: player0x, player0y (TIA registers), COLUP0 (TIA register)
+           ;; Constraints: Must be colocated with DrawParadeCharacterSprite (tail call)
 
-          jmp BS_return
+           ;; Position character at bottom (y=80) and current X position
+           lda titleParadeX
+           sta player0x
+           lda # 80
+           sta player0y
+
+           ;; Always face right while marching across the title screen
+           lda # PlayerStateBitFacing
+           sta REFP0
+
+           ;; Parade render uses fixed white color
+           lda # $0C
+           sta COLUP0
+
+           jmp DrawParadeCharacterSprite
 
 .pend
 
-DrawParadeCharacter .block
+DrawParadeCharacterSprite .proc
+           ;; Draw Parade Character Sprite
+           ;; Returns: Far (return otherbank)
+           ;; Load actual character artwork for the parade sprite
 
+           lda titleParadeCharacter
+           sta currentCharacter
 
+           lda # 0
+           sta currentPlayer
 
+           ;; Set temp2 = titleParadeTimer & 7
+           lda titleParadeTimer
+           and # 7
+           sta temp2
 
-          ;;
-          ;; Returns: Far (return otherbank)
+           lda # ActionWalking
+           sta temp3
 
-          ;; Draw Parade Character
-
-          ;; Render the current parade character at the bottom of the screen.
-
-          ;; Input: titleParadeCharacter, titleParadeX, controllerStatus, rand
-
-          ;;
-          ;; Output: player0x, player0y set, COLUP0 set, sprite drawn
-
-          ;; via DrawParadeCharacterSprite
-
-          ;;
-          ;; Mutates: player0x, player0y (TIA registers),
-
-          ;; COLUP0 (TIA register), currentCharacter, currentPlayer,
-
-          ;; temp2-temp3 (LoadCharacterSprite parameters)
-
-          ;;
-          ;; Called Routines: DrawParadeCharacterSprite (bank14, colocated) - draws
-
-          ;; character sprite
-
-          ;;
-          ;; Constraints: Must be colocated with DrawParadeCharacterSprite
-
-          ;; (tail call)
-
-          ;; Position character at bottom (y=80) and current X position
-          lda titleParadeX
-          sta player0x
-          lda # 80
-          sta player0y
-
-          ;; Always face right while marching across the title screen
-          lda # PlayerStateBitFacing
-          sta REFP0
-
-          ;; Parade render uses fixed white color
-          lda # $0C
-          sta COLUP0
-
-
-
-.bend
-
-DrawParadeCharacterSprite .block
-
-          ;;
-          ;; Returns: Far (return otherbank)
-
-          ;; Draw Parade Character Sprite
-
-          ;; Load actual character artwork for the parade sprite using
-
-          ;; the character art system.
-
-          ;;
-          ;; Input: titleParadeTimer (animation timing), titleParadeCharacter
-
-          ;; Output: Player 0 sprite data populated in SCRAM buffers
-
-          ;; Uses default walking animation for parade march
-
-          lda titleParadeCharacter
-          sta currentCharacter
-
-          lda # 0
-          sta currentPlayer
-
-          ;; Set temp2 = titleParadeTimer & 7
-          lda titleParadeTimer
-          and # 7
-          sta temp2
-
-          lda titleParadeTimer
-          and # 7
-          sta temp2
-
-
-          lda #ActionWalking
-          sta temp3
-
-          ;; Cross-bank call to LoadCharacterSprite in bank 15
-          ;; Return address: ENCODED with caller bank 13 ($d0) for BS_return to decode
-          lda # ((>(AfterLoadCharacterSpriteParade-1)) & $0f) | $d0  ;;; Encode bank 13 in high nybble
-          pha
-          ;; STACK PICTURE: [SP+0: AfterLoadCharacterSpriteParade hi (encoded)]
-          lda # <(AfterLoadCharacterSpriteParade-1)
-          pha
-          ;; STACK PICTURE: [SP+1: AfterLoadCharacterSpriteParade hi (encoded)] [SP+0: AfterLoadCharacterSpriteParade lo]
-          ;; Target address: RAW (for RTS to jump to) - NOT encoded
-          lda # >(LoadCharacterSprite-1)
-          pha
-          ;; STACK PICTURE: [SP+2: AfterLoadCharacterSpriteParade hi (encoded)] [SP+1: AfterLoadCharacterSpriteParade lo] [SP+0: LoadCharacterSprite hi (raw)]
-          lda # <(LoadCharacterSprite-1)
-          pha
-          ;; STACK PICTURE: [SP+3: AfterLoadCharacterSpriteParade hi (encoded)] [SP+2: AfterLoadCharacterSpriteParade lo] [SP+1: LoadCharacterSprite hi (raw)] [SP+0: LoadCharacterSprite lo]
-          ldx # 15
-          jmp BS_jsr
+           ;; Cross-bank call to LoadCharacterSprite in bank 15
+           lda # ((>(AfterLoadCharacterSpriteParade-1)) & $0f) | $d0
+           pha
+           lda # <(AfterLoadCharacterSpriteParade-1)
+           pha
+           lda # >(LoadCharacterSprite-1)
+           pha
+           lda # <(LoadCharacterSprite-1)
+           pha
+           ldx # 15
+           jmp BS_jsr
 AfterLoadCharacterSpriteParade:
 
+           jmp BS_return
 
-          jmp BS_return
-
-.bend
-
+.pend

@@ -3,39 +3,20 @@
 ;;; Publisher Prelude Screen - Per-frame Loop
 ;;; Per-frame publisher prelude display and input handling.
 ;;; Called from MainLoop each frame (gameMode 0).
-          ;; Setup is handled by BeginPublisherPrelude in
-          ;; ChangeGameMode.bas.
-          ;; This function processes one frame and returns.
-          ;; FLOW PER FRAME (OVerscan only - minimal work):
+          ;; Setup handled by BeginPublisherPrelude.
+          ;; FLOW PER FRAME (overscan only - minimal work):
           ;; 1. Handle input - any button press skips to author prelude
           ;; 2. Check auto-advance timer (music completion + 0.5s)
           ;; 3. Increment timer
           ;; 4. Return to MainLoop (music and drawing handled by MainLoop)
-          ;; BITMAP CONFIGURATION:
-          ;; - Size: 48×42 pixels (displayed as 48×84 scanlines in
-          ;; double-height mode)
-          ;; - Uses titlescreen kernel minikernel for display
-          ;; - Color-per-line support (84 color values, 42 × 2 for
-          ;; double-height)
-          ;; - Bitmap data stored in ROM:
-          ;; Source/Generated/Art.AtariAge.s
-          ;; AVAILABLE VARIABLES:
-          ;; preambleTimer - Frame counter for timing
-          ;; musicPlaying - Music state flag
-          ;; QuadtariDetected - For checking all controllers
-          ;; Per-frame publisher prelude display and input handling
+          ;; BITMAP: 48×42 pixels (48×84 scanlines double-height)
+          ;; Uses titlescreen kernel minikernel; bitmap data: Source/Generated/Art.AtariAge.s
           ;;
-          ;; Input: joy0fire, joy1fire (hardware) = button sta
-
-          ;; controllerStatus (global) = controller detection
-          ;; sta
-
-          ;; INPT0-3 (hardware) = MegaDrive/Joy2b+ controller
-          ;; button sta
-
-          ;; preambleTimer (global) = frame counter
-          ;; musicPlaying (global) = music playback sta
-
+          ;; Input: joy0fire, joy1fire (hardware) = button state
+          ;;        controllerStatus (global) = controller detection state
+          ;;        INPT0-3 (hardware) = MegaDrive/Joy2b+ controller button state
+          ;;        preambleTimer (global) = frame counter
+          ;;        musicPlaying (global) = music playback state
           ;;
           ;; Output: Dispatches to PublisherPreludeComplete or returns
           ;;
@@ -43,13 +24,7 @@
           ;;
           ;; Called Routines: None (music handled by MainLoop, window values set in BeginPublisherPrelude)
           ;;
-          ;; Constraints: Must be colocated with
-          ;; PublisherPreludeComplete
-          ;; Called from MainLoop each frame (gameMode 0)
-          ;; Bitmap data is loaded automatically by titlescreen kernel
-          ;; via includes
-          ;; No explicit loading needed - titlescreen kernel handles
-          ;; bitmap display
+          ;; Constraints: Must be colocated with PublisherPreludeComplete
 
 
 PublisherPreludeMain .proc
@@ -128,7 +103,6 @@ CheckAutoAdvance:
           bmi PublisherPreludeComplete
 
           ;; Auto-advance after music completes + 0.5s
-          ;; Long branch - use goto (generates JMP) instead of if-then (generates branch)
           ;; If preambleTimer > 30 && musicPlaying = 0, then jmp PublisherPreludeComplete
           ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
           lda preambleTimer
@@ -136,10 +110,6 @@ CheckAutoAdvance:
           bcc IncrementTimer
           lda musicPlaying
           bne IncrementTimer
-          goto_label:
-
-          ;; STACK PICTURE: [SP+3: caller ret hi] [SP+2: caller ret lo] [SP+1: encoded ret hi] [SP+0: encoded ret lo]
-          ;; (jmp PublisherPreludeComplete preserves stack)
           jmp PublisherPreludeComplete
 IncrementTimer:
           ;; PublisherPreludeComplete

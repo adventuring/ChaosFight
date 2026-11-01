@@ -1,6 +1,5 @@
 ;;; ChaosFight - Source/Routines/SetSpritePositions.bas
 ;;; Copyright © 2025 Bruce-Robert Pocock.
-
 ;;; Assign p0/p1 hardware sprites to Players 1-4 with intelligent multiplexing
 ;;; P0=(Player 1, Player 3, or both); P1=(Player 2, Player 4, or both)
 ;;; Multiplex only when BOTH players in a pair are active
@@ -12,7 +11,6 @@ AssignP0P1Sprites:
            ;; Input: controllerStatus, playerHealth[0-3], frame
            ;; Output: p0x/p0y, p1x/p1y set from playerX/playerY arrays
            ;; Mutates: temp1-temp3, p0x, p0y, p1x, p1y
-
            ;; Check if Player 3 or Player 4 are active (health > 0 and Quadtari)
            lda controllerStatus
            and # SetQuadtariDetected
@@ -38,6 +36,7 @@ AssignP0P1Sprites:
            ;; Player 1 dead - check Player 3 health
            lda playerHealth+2   ; Player 3 health
            beq .P0_BothDead
+
            ;; Player 1 dead, Player 3 alive → P0 = Player 3 always
            lda playerX+2
            sta p0x
@@ -58,6 +57,7 @@ AssignP0P1Sprites:
            lda frame
            and # 1
            bne .P0_OddFrame
+
 .P0_EvenFrame:
            ;; Even frame: P0 = Player 1
            lda playerX
@@ -93,6 +93,7 @@ AssignP0P1Sprites:
            ;; Player 2 dead - check Player 4 health
            lda playerHealth+3   ; Player 4 health
            beq .P1_BothDead
+
            ;; Player 2 dead, Player 4 alive → P1 = Player 4 always
            lda playerX+3
            sta p1x
@@ -113,6 +114,7 @@ AssignP0P1Sprites:
            lda frame
            and # 1
            bne .P1_OddFrame
+
 .P1_EvenFrame:
            ;; Even frame: P1 = Player 2
            lda playerX+1
@@ -183,7 +185,6 @@ CPS_WritePlayer3:
           rts
 
 SetSpritePositions:
-
           ;; Returns: Far (return otherbank)
           ;;
           ;; Input: temp1 = player index, temp2 = (document other inputs)
@@ -195,9 +196,7 @@ SetSpritePositions:
           ;; Called Routines: (document subroutines called)
           ;;
           ;; Constraints: (document colocation/bank requirements)
-
           ;; Returns: Far (return otherbank)
-
           ;; Player Sprite Rendering
           ;; Returns: Far (return otherbank)
           ;; Handles sprite positioning, colors, and graphics for all
@@ -227,7 +226,6 @@ SetSpritePositions:
           ;; positions, missileActive (global) = missile active flags,
           ;; playerCharacter[] (global array) = character types,
           ;; controllerStatus (global) = controller sta
-
           ;; playerHealth[] (global array) = player
           ;; health, frame (global) = frame counter, missileNUSIZ[]
           ;; (global array) = missile size registers,
@@ -259,7 +257,6 @@ SetSpritePositions:
           ;; player0y = (values set via CopyParticipantSpritePosition)
           ;; player1x = (values set via CopyParticipantSpritePosition)
           ;; player1y = (values set via CopyParticipantSpritePosition)
-
           ;; Assign p0 (PMG) and p1 (PMG) to active Players 1-4
           ;; Multiplex only when Player 3 or 4 are active; otherwise p0=Player 1, p1=Player 2
           jsr AssignP0P1Sprites
@@ -284,7 +281,9 @@ SSP_ParticipantLoop:
           lda temp1
           cmp # 4
           bcs SSP_ParticipantLoopDone
+
           jmp SSP_ParticipantLoop
+
 SSP_ParticipantLoopDone:
 
 
@@ -298,7 +297,6 @@ SSP_ParticipantLoopDone:
           ;; Use missileActive bit flags: bit 0 = Participant 1, bit 1
           ;; = Participant 2, bit 2 = Participant 3, bit 3 =
           ;; Participant 4
-
           ;; Check if participants 3 or 4 are active (selected and not
           ;; eliminated)
           ;; Use this flag instead of QuadtariDetected for missile
@@ -326,7 +324,6 @@ SetSpritePositionsRenderMissiles:
           jmp RenderMissilesTwoPlayer
 
 SSP_CheckTwoPlayer:
-
           ;; Set temp6 = frame & 1
           lda frame
           and # 1
@@ -337,6 +334,7 @@ SSP_CheckTwoPlayer:
           sta temp6
 
           ;; if temp6 then jmp RenderMissilesOddFrame
+
           lda temp6
           beq SSP_CheckEvenFrame
 
@@ -401,6 +399,7 @@ RenderMissileForParticipant:
           and temp3
           sta temp5
           ;; if RMF_active then jmp RMF_MissileActive
+
           lda temp5
           beq RMF_CheckMissileActive
 
@@ -431,7 +430,6 @@ RMF_ReturnPoint:
 
           jmp BS_return
 
-
 RMF_MissileActive .proc
           ;; Returns: Far (return otherbank)
           ;; Set RMF_character = playerCharacter[RMF_participant]
@@ -442,7 +440,9 @@ RMF_MissileActive .proc
           lda temp2
           sta temp5
           jsr SSP_WriteMissileRegisters
+
           jmp BS_return
+
 .pend
 
 SSP_WriteMissileRegisters .proc
@@ -488,7 +488,9 @@ SSP_WriteMissileRegistersUnified .proc
           ;; temp6 = X position, temp2 = Y position, temp3 = NUSIZ, temp4 = height
           lda temp5
           bne SSP_CheckMissile0
+
           jmp SSP_WriteUnified0
+
 SSP_CheckMissile0:
 
 
@@ -521,7 +523,6 @@ SSP_WriteUnified0:
 
 RenderRoboTitoStretchMissile .proc
           ;; Returns: Far (return otherbank)
-
           ;; Render RoboTito stretch visual missiles for whichever hardware slot
           ;; Returns: Far (return otherbank)
           ;; is currently multiplexed to the participant.
@@ -542,7 +543,9 @@ RenderRoboTitoStretchMissile .proc
           lda playerCharacter,x
           cmp # CharacterRoboTito
           bne RRTM_CheckStretchDone
+
           jmp RRTM_CheckStretch
+
 RRTM_CheckStretchDone:
           jmp BS_return
 
@@ -551,6 +554,7 @@ RRTM_CheckStretchDone:
 RRTM_CheckStretch .proc
           ;; Returns: Far (return otherbank)
           jmp BS_return
+
           ;; Set temp3 = playerState[temp1]
           lda temp1
           tax
@@ -569,23 +573,23 @@ RRTM_CheckStretch .proc
           lda temp3
           cmp # 10
           bne RRTM_CheckStretchActive
+
           jsr RRTM_ReadStretchHeight
+
 RRTM_CheckStretchActive:
 
           jmp BS_return
+
 .pend
 
 RRTM_ReadStretchHeight .proc
-          ;; Set temp4 = missileStretchHeight_R[temp1]
-          lda temp1
-          tax
-          lda missileStretchHeight_R,x
-          sta temp4
-          jmp BS_return
-          lda temp2
-          sta temp5
-          jsr SSP_WriteStretchMissile
-          jmp BS_return
+           ;; Set temp4 = missileStretchHeight_R[temp1]
+           lda temp1
+           tax
+           lda missileStretchHeight_R,x
+           sta temp4
+           jmp BS_return
+
 .pend
 
 SSP_WriteStretchMissile .proc
